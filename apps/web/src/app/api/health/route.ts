@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ensureStoreHydrated } from "@/lib/store";
+import { telemetryMode } from "@/lib/telemetry";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,7 @@ export async function GET() {
     walletMode: process.env.MIAI_WALLET_MODE ?? "mock",
     modelMode: process.env.MIAI_MODEL_MODE ?? "mock",
     database: process.env.DATABASE_URL || process.env.MIAI_DATABASE_URL ? "configured" : "file-fallback",
+    telemetry: telemetryMode(),
   };
 
   try {

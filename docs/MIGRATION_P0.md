@@ -13,6 +13,8 @@ Work completed in-repo so migration week can wire live credentials instead of in
 | Rentals | Durable store: `DATABASE_URL` (Postgres) with JSON file fallback (`RENTAL_STORE_PATH`) |
 | Health | `GET /api/health` for Container Apps / Railway probes |
 | Azure | Expanded [`infra/azure/main.bicep`](../infra/azure/main.bicep) — CA env, Postgres, Container App, KV, probes, wallet/model/OIDC params |
+| Cutover | See [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md) (P1) — DNS flip, smoke, rollback |
+| Telemetry | `APPLICATIONINSIGHTS_CONNECTION_STRING` → audit events as `miai.audit.*` |
 
 ## Env contract (production)
 

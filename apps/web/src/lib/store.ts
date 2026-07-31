@@ -344,6 +344,12 @@ export async function appendAudit(event: Omit<AuditEvent, "id" | "at">): Promise
   s.audit.unshift(row);
   if (s.audit.length > 500) s.audit.length = 500;
   await persist();
+  try {
+    const { trackAudit } = await import("@/lib/telemetry");
+    trackAudit(row);
+  } catch {
+    // telemetry must never break audit persistence
+  }
   return row;
 }
 

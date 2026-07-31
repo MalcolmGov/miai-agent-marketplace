@@ -46,9 +46,11 @@ Wallet/model adapters remain mockable independently of connector OAuth.
 
 Set `MIAI_WALLET_MODE=mock`, `MIAI_MODEL_MODE=mock`, `MIAI_AUTH_MODE=mock` to develop without live credentials.
 
-## Azure migration (P0)
+## Azure migration
 
-Adapters and durable rentals are implemented. Wire live credentials using [MIGRATION_P0.md](./MIGRATION_P0.md).
+- **P0 adapters / store:** [MIGRATION_P0.md](./MIGRATION_P0.md)
+- **P1 cutover runbook:** [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md)
+- **Infra:** [`infra/azure/`](../infra/azure/)
 
 ## Agent package import
 

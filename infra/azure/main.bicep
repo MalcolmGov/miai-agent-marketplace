@@ -1,5 +1,5 @@
 // Azure landing zone for Agent Marketplace
-// Container Apps + Postgres + Key Vault + Log Analytics
+// Container Apps + Postgres + Key Vault + Log Analytics + App Insights
 targetScope = 'resourceGroup'
 
 @description('Azure region')
@@ -35,6 +35,13 @@ param modelGatewayKey string = ''
 var kvName = take('${namePrefix}-kv', 24)
 var pgName = take('${namePrefix}-pg', 60)
 var caName = take('${namePrefix}-web', 32)
+var oauthTokenSecret = uniqueString(resourceGroup().id, namePrefix)
+
+// Built-in: Key Vault Secrets User
+var roleKeyVaultSecretsUser = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions',
+  '4633458b-17de-408a-b874-0445c86b69e6'
+)
 
 resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: kvName
@@ -46,10 +53,48 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
+resource kvSecretOauth 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'oauth-token-secret'
+  properties: { value: oauthTokenSecret }
+}
+
+resource kvSecretWallet 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'wallet-api-key'
+  properties: { value: walletApiKey }
+}
+
+resource kvSecretModel 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'model-gateway-key'
+  properties: { value: modelGatewayKey }
+}
+
+resource kvSecretDb 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: kv
+  name: 'database-url'
+  properties: {
+    value: 'postgresql://miaiadmin:${postgresAdminPassword}@${postgres.properties.fullyQualifiedDomainName}:5432/miai_agents?sslmode=require'
+  }
+}
+
 resource log 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: '${namePrefix}-logs'
   location: location
   properties: { sku: { name: 'PerGB2018' } }
+}
+
+resource appi 'Microsoft.Insights/components@2020-02-02' = {
+  name: '${namePrefix}-appi'
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: log.id
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+  }
 }
 
 resource env 'Microsoft.App/managedEnvironments@2024-03-01' = {
@@ -103,6 +148,8 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
         transport: 'auto'
         allowInsecure: false
       }
+      // Values mirrored into Key Vault for ops; CA uses secret refs for first-boot reliability.
+      // After MI role assignment propagates, secrets can be switched to keyVaultUrl.
       secrets: [
         {
           name: 'database-url'
@@ -110,7 +157,7 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
         }
         {
           name: 'oauth-token-secret'
-          value: uniqueString(resourceGroup().id, namePrefix)
+          value: oauthTokenSecret
         }
         {
           name: 'wallet-api-key'
@@ -152,6 +199,7 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'MIAI_MODEL_PASSTHROUGH', value: '1' }
             { name: 'DATABASE_URL', secretRef: 'database-url' }
             { name: 'OAUTH_TOKEN_SECRET', secretRef: 'oauth-token-secret' }
+            { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: appi.properties.ConnectionString }
           ]
           probes: [
             {
@@ -177,8 +225,23 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
   }
 }
 
+// Container App MI can read secrets for future keyVaultUrl secret refs / runtime.
+resource kvRoleApp 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(kv.id, app.id, 'kv-secrets-user')
+  scope: kv
+  properties: {
+    roleDefinitionId: roleKeyVaultSecretsUser
+    principalId: app.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
 output containerAppEnvironmentId string = env.id
 output keyVaultName string = kv.name
+output keyVaultUri string = kv.properties.vaultUri
 output containerAppFqdn string = app.properties.configuration.ingress.fqdn
+output containerAppPrincipalId string = app.identity.principalId
 output postgresFqdn string = postgres.properties.fullyQualifiedDomainName
 output databaseName string = postgresDb.name
+output appInsightsName string = appi.name
+output appInsightsConnectionString string = appi.properties.ConnectionString
