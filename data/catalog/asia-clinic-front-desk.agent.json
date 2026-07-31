@@ -13,7 +13,6 @@
     ],
     "summary": "Strictly non-clinical Asia clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",

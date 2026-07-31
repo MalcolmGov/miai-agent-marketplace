@@ -13,7 +13,6 @@
     ],
     "summary": "Strictly non-clinical EU clinic front desk — booking and logistics only; clinical questions always escalate.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

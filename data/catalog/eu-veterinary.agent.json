@@ -13,7 +13,6 @@
     ],
     "summary": "EU veterinary front desk — booking and non-clinical logistics; clinical and emergency matters escalate (112 when life-threatening).",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

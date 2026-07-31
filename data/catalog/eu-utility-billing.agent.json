@@ -13,7 +13,6 @@
     ],
     "summary": "EU utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

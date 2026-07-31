@@ -6,9 +6,8 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",

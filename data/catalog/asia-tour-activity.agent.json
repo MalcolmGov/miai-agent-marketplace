@@ -6,9 +6,8 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
+    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",

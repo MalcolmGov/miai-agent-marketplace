@@ -8,7 +8,6 @@
     "tier": "enterprise",
     "summary": "EU Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

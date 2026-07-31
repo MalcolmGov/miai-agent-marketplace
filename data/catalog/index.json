@@ -127,7 +127,6 @@
     "market": "asia",
     "summary": "Asia Accounting Practice Desk — Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -145,7 +144,6 @@
     "market": "asia",
     "summary": "Asia Admissions Assistant — Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and c…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -163,7 +161,6 @@
     "market": "asia",
     "summary": "Asia Agency & Studio — Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -181,7 +178,6 @@
     "market": "asia",
     "summary": "Asia Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -199,7 +195,6 @@
     "market": "asia",
     "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -217,7 +212,6 @@
     "market": "asia",
     "summary": "Asia Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -235,7 +229,6 @@
     "market": "asia",
     "summary": "Strictly non-clinical Asia clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -253,7 +246,6 @@
     "market": "asia",
     "summary": "Asia Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -269,9 +261,8 @@
     "tier": "standard",
     "category": "front-office",
     "market": "asia",
-    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -287,9 +278,8 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -307,7 +297,6 @@
     "market": "asia",
     "summary": "Strictly non-clinical Asia dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -325,7 +314,6 @@
     "market": "asia",
     "summary": "Asia Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -343,7 +331,6 @@
     "market": "asia",
     "summary": "Asia Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -361,7 +348,6 @@
     "market": "asia",
     "summary": "Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -379,7 +365,6 @@
     "market": "asia",
     "summary": "Asia Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -397,7 +382,6 @@
     "market": "asia",
     "summary": "Asia Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -413,9 +397,8 @@
     "tier": "standard",
     "category": "front-office",
     "market": "asia",
-    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -433,7 +416,6 @@
     "market": "asia",
     "summary": "Asia Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -451,7 +433,6 @@
     "market": "asia",
     "summary": "Asia Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -469,7 +450,6 @@
     "market": "asia",
     "summary": "Asia Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -487,7 +467,6 @@
     "market": "asia",
     "summary": "Asia Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -503,9 +482,8 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, …",
+    "summary": "Asia Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -523,7 +501,6 @@
     "market": "asia",
     "summary": "Asia HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -541,7 +518,6 @@
     "market": "asia",
     "summary": "Asia Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -559,7 +535,6 @@
     "market": "asia",
     "summary": "Asia Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -577,7 +552,6 @@
     "market": "asia",
     "summary": "Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -595,7 +569,6 @@
     "market": "asia",
     "summary": "Asia Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -613,7 +586,6 @@
     "market": "asia",
     "summary": "Asia Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -631,7 +603,6 @@
     "market": "asia",
     "summary": "Asia Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -649,7 +620,6 @@
     "market": "asia",
     "summary": "Asia Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -667,7 +637,6 @@
     "market": "asia",
     "summary": "Asia Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -685,7 +654,6 @@
     "market": "asia",
     "summary": "Asia Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -703,7 +671,6 @@
     "market": "asia",
     "summary": "Asia Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -721,7 +688,6 @@
     "market": "asia",
     "summary": "Asia Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -739,7 +705,6 @@
     "market": "asia",
     "summary": "Asia Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -757,7 +722,6 @@
     "market": "asia",
     "summary": "Asia Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -775,7 +739,6 @@
     "market": "asia",
     "summary": "Asia Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -793,7 +756,6 @@
     "market": "asia",
     "summary": "Asia Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -811,7 +773,6 @@
     "market": "asia",
     "summary": "Asia Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -829,7 +790,6 @@
     "market": "asia",
     "summary": "Asia Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -847,7 +807,6 @@
     "market": "asia",
     "summary": "Asia Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -865,7 +824,6 @@
     "market": "asia",
     "summary": "Asia Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -883,7 +841,6 @@
     "market": "asia",
     "summary": "Asia Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -901,7 +858,6 @@
     "market": "asia",
     "summary": "Asia Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -919,7 +875,6 @@
     "market": "asia",
     "summary": "Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -935,9 +890,8 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -953,9 +907,8 @@
     "tier": "enterprise",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -973,7 +926,6 @@
     "market": "asia",
     "summary": "Asia Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -991,7 +943,6 @@
     "market": "asia",
     "summary": "Asia Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1007,9 +958,8 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
+    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1027,7 +977,6 @@
     "market": "asia",
     "summary": "Asia Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1045,7 +994,6 @@
     "market": "asia",
     "summary": "Asia Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1063,7 +1011,6 @@
     "market": "asia",
     "summary": "Asia Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1081,7 +1028,6 @@
     "market": "asia",
     "summary": "Asia Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1099,7 +1045,6 @@
     "market": "asia",
     "summary": "Asia Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
     "channels": [
-      "whatsapp",
       "web",
       "app",
       "sms",
@@ -1245,7 +1190,6 @@
     "market": "eu",
     "summary": "EU accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1263,7 +1207,6 @@
     "market": "eu",
     "summary": "EU Admissions Assistant — Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and c…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1281,7 +1224,6 @@
     "market": "eu",
     "summary": "EU Agency & Studio — Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1299,7 +1241,6 @@
     "market": "eu",
     "summary": "EU Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1317,7 +1258,6 @@
     "market": "eu",
     "summary": "EU Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1335,7 +1275,6 @@
     "market": "eu",
     "summary": "EU Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1353,7 +1292,6 @@
     "market": "eu",
     "summary": "Strictly non-clinical EU clinic front desk — booking and logistics only; clinical questions always escalate.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1371,7 +1309,6 @@
     "market": "eu",
     "summary": "EU Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1387,9 +1324,8 @@
     "tier": "standard",
     "category": "front-office",
     "market": "eu",
-    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across WhatsApp, SMS, web, app and voice.",
+    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across, SMS, web, app and voice.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1405,9 +1341,8 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "EU Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1425,7 +1360,6 @@
     "market": "eu",
     "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SM…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1443,7 +1377,6 @@
     "market": "eu",
     "summary": "EU Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1461,7 +1394,6 @@
     "market": "eu",
     "summary": "EU Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1479,7 +1411,6 @@
     "market": "eu",
     "summary": "EU Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1497,7 +1428,6 @@
     "market": "eu",
     "summary": "EU Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1515,7 +1445,6 @@
     "market": "eu",
     "summary": "EU Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1533,7 +1462,6 @@
     "market": "eu",
     "summary": "EU front desk — greets visitors, routes enquiries, books appointments and takes messages with GDPR-safe data handling.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1551,7 +1479,6 @@
     "market": "eu",
     "summary": "EU Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1569,7 +1496,6 @@
     "market": "eu",
     "summary": "EU gym membership desk — plans, hours, freeze/cancel intake; billing disputes escalate.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1587,7 +1513,6 @@
     "market": "eu",
     "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1605,7 +1530,6 @@
     "market": "eu",
     "summary": "EU hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to front desk.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1621,9 +1545,8 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, web, app and voice.",
+    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and voice.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1641,7 +1564,6 @@
     "market": "eu",
     "summary": "EU HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1659,7 +1581,6 @@
     "market": "eu",
     "summary": "EU Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1677,7 +1598,6 @@
     "market": "eu",
     "summary": "EU insurance claims helper — explains process and captures intakes; never adjudicates coverage or promises payouts.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1695,7 +1615,6 @@
     "market": "eu",
     "summary": "EU IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1713,7 +1632,6 @@
     "market": "eu",
     "summary": "EU Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1731,7 +1649,6 @@
     "market": "eu",
     "summary": "EU Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1749,7 +1666,6 @@
     "market": "eu",
     "summary": "EU Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1767,7 +1683,6 @@
     "market": "eu",
     "summary": "EU Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1785,7 +1700,6 @@
     "market": "eu",
     "summary": "EU Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1803,7 +1717,6 @@
     "market": "eu",
     "summary": "EU Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1821,7 +1734,6 @@
     "market": "eu",
     "summary": "EU Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1839,7 +1751,6 @@
     "market": "eu",
     "summary": "EU Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1857,7 +1768,6 @@
     "market": "eu",
     "summary": "EU payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1875,7 +1785,6 @@
     "market": "eu",
     "summary": "EU pharmacy assistant — hours and refill request logging; never diagnoses or changes prescriptions; GDPR-safe.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1893,7 +1802,6 @@
     "market": "eu",
     "summary": "EU Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1911,7 +1819,6 @@
     "market": "eu",
     "summary": "EU Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1929,7 +1836,6 @@
     "market": "eu",
     "summary": "EU Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1947,7 +1853,6 @@
     "market": "eu",
     "summary": "EU Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1965,7 +1870,6 @@
     "market": "eu",
     "summary": "EU Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -1983,7 +1887,6 @@
     "market": "eu",
     "summary": "EU rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2001,7 +1904,6 @@
     "market": "eu",
     "summary": "EU restaurant and takeaway — menu, hours, allergens and order capture with complaint escalation.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2019,7 +1921,6 @@
     "market": "eu",
     "summary": "EU Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2037,7 +1938,6 @@
     "market": "eu",
     "summary": "EU sales qualifier — qualifies inbound interest, books demos/callbacks, stays inside approved pricing knowledge.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2053,9 +1953,8 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU salon and barber booking — services, availability, appointments and reschedules across WhatsApp, SMS, web, app and voice.",
+    "summary": "EU salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and voice.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2071,9 +1970,8 @@
     "tier": "enterprise",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "EU Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2091,7 +1989,6 @@
     "market": "eu",
     "summary": "EU Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2109,7 +2006,6 @@
     "market": "eu",
     "summary": "EU Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2125,9 +2021,8 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
+    "summary": "EU Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2143,9 +2038,8 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across WhatsApp, SMS, web, app and voice.",
+    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, app and voice.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2163,7 +2057,6 @@
     "market": "eu",
     "summary": "EU travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2181,7 +2074,6 @@
     "market": "eu",
     "summary": "EU utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2199,7 +2091,6 @@
     "market": "eu",
     "summary": "EU Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2217,7 +2108,6 @@
     "market": "eu",
     "summary": "EU veterinary front desk — booking and non-clinical logistics; clinical and emergency matters escalate (112 when life-threatening).",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",
@@ -2826,8 +2716,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -2844,8 +2733,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -2857,13 +2745,12 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
+    "summary": "US Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across, web and app.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -2880,8 +2767,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 13,
@@ -2898,8 +2784,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 13,
@@ -2916,8 +2801,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -2934,8 +2818,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -2952,8 +2835,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -2965,13 +2847,12 @@
     "tier": "standard",
     "category": "front-office",
     "market": "us",
-    "summary": "US customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
+    "summary": "US customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -2983,13 +2864,12 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -3001,13 +2881,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SMS, web, app and WhatsApp.",
+    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SMS, web, app and.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -3024,8 +2903,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -3037,13 +2915,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across WhatsApp, web a…",
+    "summary": "US Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across, web a…",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -3060,8 +2937,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3078,8 +2954,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3096,8 +2971,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 13,
@@ -3109,13 +2983,12 @@
     "tier": "standard",
     "category": "front-office",
     "market": "us",
-    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3132,8 +3005,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -3150,8 +3022,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3163,13 +3034,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and WhatsApp.",
+    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -3186,8 +3056,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 21,
@@ -3199,13 +3068,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, web, app and voice.",
+    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and voice.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 18,
@@ -3222,8 +3090,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3240,8 +3107,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3258,8 +3124,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -3276,8 +3141,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3294,8 +3158,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 18,
@@ -3312,8 +3175,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -3330,8 +3192,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3348,8 +3209,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3366,8 +3226,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 14,
@@ -3384,8 +3243,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -3402,8 +3260,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 17,
@@ -3420,8 +3277,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -3438,8 +3294,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -3456,8 +3311,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3474,8 +3328,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -3492,8 +3345,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3510,8 +3362,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -3528,8 +3379,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -3546,8 +3396,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 14,
@@ -3564,8 +3413,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3582,8 +3430,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 20,
@@ -3600,8 +3447,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -3618,8 +3464,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -3631,13 +3476,12 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
+    "summary": "US salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -3649,13 +3493,12 @@
     "tier": "enterprise",
     "category": "commerce",
     "market": "us",
-    "summary": "US Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry befo…",
+    "summary": "US Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry befo…",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -3672,8 +3515,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3690,8 +3532,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -3703,13 +3544,12 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web a…",
+    "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, web a…",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -3721,13 +3561,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across WhatsApp, SMS, web, ap…",
+    "summary": "US Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -3744,8 +3583,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -3762,8 +3600,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -3780,8 +3617,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -3798,8 +3634,7 @@
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "tools": 5,
     "evals": 20,

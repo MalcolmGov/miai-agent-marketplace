@@ -11,13 +11,12 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "languages": [
       "en",

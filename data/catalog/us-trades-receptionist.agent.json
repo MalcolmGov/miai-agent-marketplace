@@ -11,13 +11,12 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "US Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across WhatsApp, SMS, web, ap…",
+    "summary": "US Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "languages": [
       "en",

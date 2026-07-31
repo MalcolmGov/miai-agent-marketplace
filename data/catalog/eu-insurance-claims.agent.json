@@ -13,7 +13,6 @@
     ],
     "summary": "EU insurance claims helper — explains process and captures intakes; never adjudicates coverage or promises payouts.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

@@ -13,7 +13,6 @@
     ],
     "summary": "EU restaurant and takeaway — menu, hours, allergens and order capture with complaint escalation.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

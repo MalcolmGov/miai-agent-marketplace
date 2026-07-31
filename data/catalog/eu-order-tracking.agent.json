@@ -12,7 +12,6 @@
     ],
     "summary": "EU Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

@@ -13,7 +13,6 @@
     ],
     "summary": "EU front desk — greets visitors, routes enquiries, books appointments and takes messages with GDPR-safe data handling.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

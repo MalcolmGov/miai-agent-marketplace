@@ -13,7 +13,6 @@
     ],
     "summary": "EU rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

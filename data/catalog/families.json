@@ -23,8 +23,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "admissions",
@@ -50,8 +50,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "agency-studio",
@@ -77,8 +77,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "bank-branch",
@@ -89,9 +89,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-bank-branch",
@@ -106,8 +104,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "bookkeeping",
@@ -118,9 +116,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-bookkeeping",
@@ -135,8 +131,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "building-management",
@@ -147,9 +143,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-building-management",
@@ -164,8 +158,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "clinic-front-desk",
@@ -176,9 +170,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-clinic-front-desk",
@@ -193,8 +185,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "course-advisor",
@@ -205,9 +197,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-course-advisor",
@@ -222,21 +212,19 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "customer-support",
     "name": "Customer Support",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-customer-support",
@@ -251,21 +239,19 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "delivery-tracking",
     "name": "Delivery & Tracking",
     "tier": "pro",
     "category": "operations",
-    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-delivery-tracking",
@@ -280,8 +266,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "dental-front-desk",
@@ -309,8 +295,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "dental-practice",
@@ -321,9 +307,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-dental-practice",
@@ -338,8 +322,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "events-venue",
@@ -350,9 +334,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-events-venue",
@@ -367,8 +349,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "executive-assistant",
@@ -379,9 +361,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-executive-assistant",
@@ -396,8 +376,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "field-service",
@@ -408,9 +388,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-field-service",
@@ -425,8 +403,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "fleet-driver",
@@ -437,9 +415,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-fleet-driver",
@@ -454,21 +430,19 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "front-desk",
     "name": "Front Desk / Reception",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-front-desk",
@@ -483,8 +457,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "grant-stock-planner",
@@ -494,10 +468,7 @@
     "summary": "Asia Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
     "channels": [
       "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-grant-stock-planner",
@@ -512,8 +483,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "gym-membership",
@@ -524,9 +495,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-gym-membership",
@@ -541,8 +510,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "home-services",
@@ -570,8 +539,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "hotel-concierge",
@@ -582,9 +551,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-hotel-concierge",
@@ -599,8 +566,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "hotel-guest",
@@ -628,8 +595,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "hr-helpdesk",
@@ -640,9 +607,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-hr-helpdesk",
@@ -657,8 +622,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "insurance-broker",
@@ -669,9 +634,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-insurance-broker",
@@ -686,8 +649,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "insurance-claims",
@@ -698,9 +661,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-insurance-claims",
@@ -715,8 +676,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "it-helpdesk",
@@ -727,9 +688,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-it-helpdesk",
@@ -744,8 +703,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "law-firm-intake",
@@ -756,9 +715,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-law-firm-intake",
@@ -773,8 +730,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "loan-prequalifier",
@@ -785,9 +742,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-loan-prequalifier",
@@ -802,8 +757,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "loyalty-rewards",
@@ -814,9 +769,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-loyalty-rewards",
@@ -831,8 +784,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "marketing-assistant",
@@ -843,9 +796,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-marketing-assistant",
@@ -860,8 +811,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "mobile-money",
@@ -871,10 +822,7 @@
     "summary": "Asia Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
     "channels": [
       "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-mobile-money",
@@ -889,8 +837,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "onboarding-buddy",
@@ -901,9 +849,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-onboarding-buddy",
@@ -918,8 +864,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "order-tracking",
@@ -930,9 +876,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-order-tracking",
@@ -947,8 +891,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "payment-disputes",
@@ -959,9 +903,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-payment-disputes",
@@ -976,8 +918,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "payroll-queries",
@@ -988,9 +930,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-payroll-queries",
@@ -1005,8 +945,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "pharmacy",
@@ -1017,9 +957,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-pharmacy",
@@ -1034,8 +972,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "policy-compliance",
@@ -1046,9 +984,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-policy-compliance",
@@ -1063,8 +999,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "procurement",
@@ -1075,9 +1011,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-procurement",
@@ -1092,8 +1026,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "product-finder",
@@ -1104,9 +1038,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-product-finder",
@@ -1121,8 +1053,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "property-enquiries",
@@ -1133,9 +1065,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-property-enquiries",
@@ -1150,8 +1080,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "remittance",
@@ -1162,9 +1092,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-remittance",
@@ -1179,8 +1107,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "rental-enquiries",
@@ -1192,7 +1120,6 @@
       "whatsapp",
       "web",
       "app",
-      "sms",
       "voice"
     ],
     "markets": {
@@ -1208,8 +1135,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "restaurant-takeaway",
@@ -1219,10 +1146,7 @@
     "summary": "Asia Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
     "channels": [
       "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
+      "web"
     ],
     "markets": {
       "asia": "asia-restaurant-takeaway",
@@ -1237,8 +1161,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "returns-exchanges",
@@ -1249,9 +1173,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-returns-exchanges",
@@ -1266,8 +1188,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "sales-qualifier",
@@ -1278,9 +1200,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-sales-qualifier",
@@ -1295,21 +1215,19 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "salon-booking",
     "name": "Salon & Barber Booking",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-salon-booking",
@@ -1324,21 +1242,17 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "spaza-merchant",
     "name": "Spaza & Merchant",
     "tier": "enterprise",
     "category": "commerce",
-    "summary": "Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
     "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
+      "whatsapp"
     ],
     "markets": {
       "asia": "asia-spaza-merchant",
@@ -1353,8 +1267,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "stock-availability",
@@ -1365,9 +1279,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-stock-availability",
@@ -1382,8 +1294,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "student-helpdesk",
@@ -1394,9 +1306,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-student-helpdesk",
@@ -1411,21 +1321,19 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "tour-activity",
     "name": "Tour & Activity Desk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
+    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-tour-activity",
@@ -1440,8 +1348,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "trades-receptionist",
@@ -1469,8 +1377,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "travel-desk",
@@ -1481,9 +1389,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-travel-desk",
@@ -1498,8 +1404,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "utility-billing",
@@ -1510,9 +1416,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-utility-billing",
@@ -1527,8 +1431,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "vas-concierge",
@@ -1539,9 +1443,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-vas-concierge",
@@ -1556,8 +1458,8 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   },
   {
     "id": "veterinary",
@@ -1569,7 +1471,6 @@
       "whatsapp",
       "web",
       "app",
-      "sms",
       "voice"
     ],
     "markets": {
@@ -1585,7 +1486,7 @@
       "asia"
     ],
     "hasZa": false,
-    "catalogueReady": true,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
   }
 ]

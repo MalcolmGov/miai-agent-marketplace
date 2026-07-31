@@ -13,7 +13,6 @@
     ],
     "summary": "EU travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

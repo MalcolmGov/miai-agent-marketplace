@@ -13,7 +13,6 @@
     ],
     "summary": "EU pharmacy assistant — hours and refill request logging; never diagnoses or changes prescriptions; GDPR-safe.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

@@ -13,7 +13,6 @@
     ],
     "summary": "EU sales qualifier — qualifies inbound interest, books demos/callbacks, stays inside approved pricing knowledge.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

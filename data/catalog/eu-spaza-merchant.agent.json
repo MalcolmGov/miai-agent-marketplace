@@ -6,9 +6,8 @@
     "version": "1.0.0",
     "category": "commerce",
     "tier": "enterprise",
-    "summary": "EU Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "EU Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

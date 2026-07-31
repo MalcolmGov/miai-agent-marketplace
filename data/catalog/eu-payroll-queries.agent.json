@@ -13,7 +13,6 @@
     ],
     "summary": "EU payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

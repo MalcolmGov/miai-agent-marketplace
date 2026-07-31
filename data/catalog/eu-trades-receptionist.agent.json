@@ -11,9 +11,8 @@
       "gdpr",
       "eu-ai-act"
     ],
-    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across WhatsApp, SMS, web, app and voice.",
+    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, app and voice.",
     "channels": [
-      "whatsapp",
       "sms",
       "web",
       "app",

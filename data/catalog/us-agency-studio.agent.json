@@ -6,13 +6,12 @@
     "version": "1.0.1",
     "category": "vertical",
     "tier": "standard",
-    "summary": "US Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
+    "summary": "US Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across, web and app.",
     "channels": [
       "voice",
       "sms",
       "web",
-      "app",
-      "whatsapp"
+      "app"
     ],
     "languages": [
       "en",
