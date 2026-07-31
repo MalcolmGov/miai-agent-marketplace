@@ -15,6 +15,7 @@ interface FamilyItem {
   hasZa: boolean;
   pilot: boolean;
   liveReady: boolean;
+  catalogueReady: boolean;
   defaultAgentId: string;
 }
 
@@ -66,13 +67,15 @@ export function CatalogGrid() {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Agent Marketplace</h1>
           <p className="mt-2 max-w-xl text-sm text-[var(--muted)]">
-            Browse agent families with US, EU, Africa, and Asia market packs. Rent by tier,
+            55 catalogue-ready families with US, EU, Africa, and Asia market packs. Rent by tier,
             configure model & knowledge, connect Actions, and go live on prepaid tokens. ZA remains
             available as its own market.
           </p>
         </div>
         <div className="text-sm text-[var(--muted)]">
-          {pending ? "Updating…" : `${items.length} families`}
+          {pending
+            ? "Updating…"
+            : `${items.length} families · ${items.filter((i) => i.catalogueReady).length} catalogue-ready`}
         </div>
       </div>
 
@@ -131,6 +134,7 @@ export function CatalogGrid() {
                   {item.name}
                 </h2>
                 <div className="flex flex-wrap justify-end gap-1">
+                  {item.catalogueReady && <span className="chip chip-live">Catalogue ready</span>}
                   {item.pilot && <span className="chip chip-live">Pilot</span>}
                   {item.liveReady && <span className="chip chip-live">LIVE</span>}
                   <span className="chip">{item.tier}</span>

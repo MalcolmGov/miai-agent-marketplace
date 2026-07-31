@@ -1,24 +1,21 @@
 #!/usr/bin/env node
 /**
- * Runtime eval smoke — exercises mock model + connector stubs for pilot agents.
+ * Runtime eval smoke — pilots + market-pack matrix + category sample.
  */
-import { createRequire } from "module";
 import { promises as fs } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
-const require = createRequire(import.meta.url);
 
-// Prefer built packages
 const { runTurn, MockModelAdapter } = await import(
   path.join(root, "packages/runtime/dist/index.js")
 );
 const { MockWalletAdapter } = await import(
   path.join(root, "packages/wallet-adapter/dist/index.js")
 );
-const { loadAgentPackage } = await import(
+const { loadAgentPackage, marketplaceCategory } = await import(
   path.join(root, "packages/agent-protocol/dist/index.js")
 );
 
@@ -36,10 +33,13 @@ const prompts = {
   "us-home-services": "Book a callback please",
   "eu-trades-receptionist": "Can I book a visit Thursday?",
   "eu-hotel-guest": "What time is check-in and wifi password?",
+  "customer-support": "Where is my order ORD-4821?",
+  "eu-customer-support": "Where is my order ORD-4821?",
+  "africa-customer-support": "Where is my order ORD-4821?",
+  "asia-customer-support": "Where is my order ORD-4821?",
 };
 
-let failed = 0;
-for (const id of pilots) {
+async function smoke(id, userMessage) {
   const raw = JSON.parse(
     await fs.readFile(path.join(root, "data/catalog", `${id}.agent.json`), "utf8"),
   );
@@ -51,7 +51,7 @@ for (const id of pilots) {
       agentId: id,
       pkg,
       messages: [],
-      userMessage: prompts[id],
+      userMessage,
       model: "claude-sonnet",
       mode: "sandbox",
       state: "rented",
@@ -59,13 +59,68 @@ for (const id of pilots) {
     { wallet, model: new MockModelAdapter() },
   );
   const ok = !result.paused && result.assistantMessage.length > 10;
-  console.log(ok ? "PASS" : "FAIL", id, "tools=", result.toolCalls.map((t) => t.name).join(",") || "-", "tokens", result.tokensDebited);
+  console.log(
+    ok ? "PASS" : "FAIL",
+    id,
+    "tools=",
+    result.toolCalls.map((t) => t.name).join(",") || "-",
+    "tokens",
+    result.tokensDebited,
+  );
+  return ok;
+}
+
+let failed = 0;
+
+for (const id of pilots) {
+  if (!(await smoke(id, prompts[id] || "Hello, can you help me?"))) failed++;
+}
+
+// Market-pack matrix for customer-support
+const marketMatrix = [
+  "customer-support",
+  "us-customer-support",
+  "eu-customer-support",
+  "africa-customer-support",
+  "asia-customer-support",
+];
+for (const id of marketMatrix) {
+  if (pilots.includes(id)) continue;
+  if (!(await smoke(id, prompts[id] || "Where is my order ORD-4821?"))) failed++;
+}
+
+// One agent per marketplace category
+const index = JSON.parse(
+  await fs.readFile(path.join(root, "data/catalog/index.json"), "utf8"),
+);
+const byCategory = new Map();
+for (const row of index) {
+  const cat = marketplaceCategory({
+    id: row.id,
+    name: row.name,
+    version: "1",
+    category: row.category,
+    tier: row.tier,
+    summary: row.summary,
+    channels: row.channels ?? [],
+    languages: ["en"],
+    market: row.market,
+    model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
+  });
+  if (!byCategory.has(cat)) byCategory.set(cat, row.id);
+}
+for (const [cat, id] of byCategory) {
+  if (pilots.includes(id) || marketMatrix.includes(id)) continue;
+  const ok = await smoke(id, "Hello, can you help me today?");
+  console.log(ok ? "PASS" : "FAIL", `category:${cat}`, id);
   if (!ok) failed++;
 }
 
 // Injection refusal
 const pkg = loadAgentPackage(
-  JSON.parse(await fs.readFile(path.join(root, "data/catalog/us-customer-support.agent.json"), "utf8")),
+  JSON.parse(
+    await fs.readFile(path.join(root, "data/catalog/us-customer-support.agent.json"), "utf8"),
+  ),
 );
 const inj = await runTurn(
   {
@@ -89,5 +144,3 @@ if (failed) {
   process.exit(1);
 }
 console.log("\nEval smoke: all passed");
-// silence unused
-void require;

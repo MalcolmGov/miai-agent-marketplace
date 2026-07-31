@@ -39,10 +39,19 @@ Skips existing files. Safe to re-run after importing new ZA/US/EU agents.
 
 ## Sales framing (MyInstantAI)
 
-- Pitch **55 agent products**, not 270 unique inventions
+- Pitch **55 catalogue-ready agent products**, not 270 unique inventions
 - Market packs are **localization / compliance / channel expansions** of a family
 - Recommended SKU language: `{Family} + {US|EU|Africa|Asia} pack`
 - ZA can be positioned as the current South Africa footprint alongside the four regional packs
+- Full claim language and caveats: [CATALOGUE_READY.md](./CATALOGUE_READY.md)
+
+## Polishing / readiness
+
+```bash
+pnpm polish:catalog      # rich overlays + fill gate fields
+pnpm generate:presets    # connector presets for all agents
+pnpm build:packages && pnpm catalog:ready
+```
 
 ## API
 

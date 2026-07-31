@@ -11,6 +11,10 @@
     "start:web": "sh scripts/start-web.sh",
     "import:catalog": "node scripts/import-catalog.mjs",
     "generate:packs": "node scripts/generate-market-packs.mjs",
+    "polish:catalog": "node scripts/polish-catalog.mjs --force",
+    "generate:presets": "node scripts/generate-presets.mjs",
+    "catalog:ready": "node scripts/catalog-readiness.mjs",
+    "catalogue:ship": "pnpm polish:catalog && pnpm generate:presets && pnpm build:packages && pnpm catalog:ready",
     "typecheck": "pnpm -r typecheck",
     "eval:smoke": "pnpm build:packages && node scripts/eval-smoke.mjs",
     "demo:phase1": "node scripts/phase1-demo.mjs"

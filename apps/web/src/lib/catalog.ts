@@ -16,6 +16,7 @@ export interface CatalogEntry {
   marketplaceCategory: string;
   pilot: boolean;
   liveReady: boolean;
+  catalogueReady: boolean;
   familyId: string;
 }
 
@@ -32,6 +33,7 @@ export interface FamilyEntry {
   hasZa: boolean;
   pilot: boolean;
   liveReady: boolean;
+  catalogueReady: boolean;
   defaultAgentId: string;
 }
 
@@ -74,10 +76,12 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
     channels: string[];
     tools: number;
     evals: number;
+    readiness?: string;
   }>;
   const pilots = new Set(pilotAgentIds());
   return index.map((e) => {
     const preset = getPreset(e.id);
+    const catalogueReady = e.readiness === "catalogue-ready";
     return {
       id: e.id,
       name: e.name,
@@ -101,7 +105,8 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
         model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
       }),
       pilot: pilots.has(e.id) || Boolean(preset?.pilot),
-      liveReady: Boolean(preset?.pilot) || (preset?.phase === 1 && Boolean(preset)),
+      liveReady: Boolean(preset?.pilot) || (catalogueReady && preset?.phase === 1),
+      catalogueReady,
       familyId: familyIdFromAgentId(e.id),
     };
   });
@@ -136,6 +141,8 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
     markets: Record<string, string>;
     packs: string[];
     hasZa: boolean;
+    catalogueReady?: boolean;
+    readiness?: string;
   }>;
 
   try {
@@ -152,6 +159,8 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
     }
     familiesRaw = [...map.entries()].map(([id, markets]) => {
       const m = meta.get(id)!;
+      const variantIds = Object.values(markets);
+      const catalogueReady = variantIds.every((vid) => byId.get(vid)?.catalogueReady);
       return {
         id,
         name: m.name.replace(/^(US|EU|Africa|Asia|ZA)\s+/i, ""),
@@ -162,6 +171,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
         markets,
         packs: ["us", "eu", "africa", "asia"].filter((p) => markets[p]),
         hasZa: Boolean(markets.za),
+        catalogueReady,
       };
     });
   }
@@ -172,6 +182,9 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
     const defaultAgentId = pickDefaultAgentId(f.markets, preferredMarket);
     const defaultAgent = byId.get(defaultAgentId);
     const sample = defaultAgent ?? variants[0];
+    const catalogueReady =
+      f.catalogueReady ??
+      (variants.length > 0 && variants.every((v) => v.catalogueReady));
     return {
       id: f.id,
       name: f.name,
@@ -197,6 +210,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
       hasZa: f.hasZa,
       pilot: variants.some((v) => v.pilot),
       liveReady: variants.some((v) => v.liveReady),
+      catalogueReady,
       defaultAgentId,
     };
   });
