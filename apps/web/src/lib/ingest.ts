@@ -35,6 +35,34 @@ export function extractTitle(html: string): string | null {
   return htmlToText(m[1]).slice(0, 120) || null;
 }
 
+function metaContent(html: string, nameOrProp: string): string | null {
+  const re = new RegExp(
+    `<meta[^>]+(?:name|property)=["']${nameOrProp}["'][^>]+content=["']([^"']+)["']`,
+    "i",
+  );
+  const re2 = new RegExp(
+    `<meta[^>]+content=["']([^"']+)["'][^>]+(?:name|property)=["']${nameOrProp}["']`,
+    "i",
+  );
+  const m = html.match(re) || html.match(re2);
+  return m?.[1]?.trim() || null;
+}
+
+/** When the page is a JS SPA shell, still capture title/description/keywords. */
+export function extractMetaKnowledge(html: string, pageUrl: string): string {
+  const title = extractTitle(html) || metaContent(html, "og:title") || pageUrl;
+  const description =
+    metaContent(html, "description") || metaContent(html, "og:description") || "";
+  const keywords = metaContent(html, "keywords") || "";
+  const lines = [
+    `Page: ${title}`,
+    `URL: ${pageUrl}`,
+    description ? `Summary: ${description}` : null,
+    keywords ? `Keywords: ${keywords}` : null,
+  ].filter(Boolean);
+  return lines.join("\n");
+}
+
 export function formatFetchError(e: unknown): string {
   if (!(e instanceof Error)) return "fetch failed";
   const cause = (e as Error & { cause?: { code?: string; message?: string } }).cause;
@@ -152,7 +180,12 @@ export async function fetchPage(
       return { url: res.url || url, title: url, text: body.slice(0, 100_000), html: "" };
     }
     const title = extractTitle(body) ?? url;
-    const text = htmlToText(body).slice(0, 100_000);
+    let text = htmlToText(body).slice(0, 100_000);
+    // SPA / client-rendered sites often ship an empty body — keep SEO meta as knowledge.
+    if (text.length < 80 && body) {
+      const meta = extractMetaKnowledge(body, res.url || url);
+      text = [meta, text].filter(Boolean).join("\n\n").trim();
+    }
     return { url: res.url || url, title, text, html: body };
   } catch (e) {
     throw new Error(formatFetchError(e));
@@ -209,7 +242,7 @@ export async function crawlSite(
     try {
       const page = seedCache.get(next) ?? (await fetchPage(next));
       if (page.text.length < 40) {
-        errors.push(`${next}: little text extracted`);
+        errors.push(`${next}: little text extracted (site may be JavaScript-only — paste FAQs or upload a file)`);
       } else {
         pages.push({ url: page.url, title: page.title, text: page.text });
       }
