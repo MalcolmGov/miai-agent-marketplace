@@ -40,7 +40,7 @@ const ZA_PACK = {
   label: "ZA",
   namePrefix: "",
   languages: ["en", "af", "zu"],
-  channels: ["whatsapp", "web", "app", "sms", "voice"],
+  channels: ["whatsapp", "web", "app", "sms"],
   compliance: ["popia"],
   healthCompliance: ["popia"],
   emergency: "10111",
