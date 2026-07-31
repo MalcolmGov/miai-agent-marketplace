@@ -1,46 +1,89 @@
 # Connector OAuth setup
 
-All OAuth connectors use authorization code flow with a shared callback:
+All OAuth connectors use authorization code flow with a **shared** callback:
 
-`{APP_BASE_URL}/api/oauth/callback`
+```
+{APP_BASE_URL}/api/oauth/callback
+```
 
-Redirect URI to register in every provider console:
+Examples:
 
 ```
 http://localhost:3000/api/oauth/callback
+https://miaiweb-production.up.railway.app/api/oauth/callback
 ```
 
-(Production: `https://your-host/api/oauth/callback`)
+Register that exact redirect URI in **every** provider console.
 
-## Env
+OAuth `state` is HMAC-signed (self-contained) so consent → callback works across Railway instances. Signing key: `OAUTH_STATE_SECRET` or fallback `OAUTH_TOKEN_SECRET`.
 
-Copy `apps/web/.env.example` → `apps/web/.env.local` and fill client id/secret pairs.
+## Why you see “Env missing”
+
+The Connect button is only enabled when both client id **and** secret exist in the process env.  
+Slack works today because `SLACK_OAUTH_CLIENT_ID` / `SLACK_OAUTH_CLIENT_SECRET` are set on Railway.  
+Google, Microsoft, Shopify, HubSpot, etc. need the same treatment.
+
+Live tool execution for those connectors is already implemented in `@miai/connectors` — credentials are the blocker, not product code.
+
+## Env matrix
 
 | Connector | Env vars | Notes |
 |---|---|---|
-| Google Calendar | `GOOGLE_OAUTH_*` | Calendar scopes + PKCE |
-| Email (Gmail) | `GOOGLE_OAUTH_*` | Gmail send scope |
-| Email (Microsoft) | `MICROSOFT_OAUTH_*` | Choose Microsoft in Actions |
-| M365 Calendar | `MICROSOFT_OAUTH_*` | Graph Calendars.ReadWrite |
-| Teams | `MICROSOFT_OAUTH_*` | Also set `TEAMS_TEAM_ID` + `TEAMS_CHANNEL_ID` |
-| Slack | `SLACK_OAUTH_*` | After Connect, pick handoff channel in Actions UI (`channels:join` scope; reconnect once if upgrading) |
-| Shopify | `SHOPIFY_OAUTH_*` | Enter `*.myshopify.com` before Connect |
-| HubSpot | `HUBSPOT_OAUTH_*` | CRM + tickets |
-| Xero | `XERO_OAUTH_*` | Tenant resolved after consent |
-| QuickBooks | `QUICKBOOKS_OAUTH_*` | `realmId` from callback |
-| Calendly | `CALENDLY_OAUTH_*` | |
-| Zendesk | `ZENDESK_OAUTH_*` | Enter subdomain before Connect |
+| Google Calendar | `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` | Calendar + PKCE |
+| Email (Gmail) | same Google vars | Gmail send scope |
+| Email (Microsoft) | `MICROSOFT_OAUTH_CLIENT_ID`, `MICROSOFT_OAUTH_CLIENT_SECRET` | Pick Microsoft in Actions |
+| M365 Calendar | Microsoft vars | Graph Calendars.ReadWrite |
+| Teams | Microsoft vars | Also `TEAMS_TEAM_ID` + `TEAMS_CHANNEL_ID` for live handoff |
+| Slack | `SLACK_OAUTH_CLIENT_ID`, `SLACK_OAUTH_CLIENT_SECRET` | Pick handoff channel after Connect |
+| Shopify | `SHOPIFY_OAUTH_CLIENT_ID`, `SHOPIFY_OAUTH_CLIENT_SECRET` | Enter `*.myshopify.com` before Connect |
+| HubSpot | `HUBSPOT_OAUTH_CLIENT_ID`, `HUBSPOT_OAUTH_CLIENT_SECRET` | CRM + tickets |
+| Xero | `XERO_OAUTH_CLIENT_ID`, `XERO_OAUTH_CLIENT_SECRET` | Tenant resolved after consent |
+| QuickBooks | `QUICKBOOKS_OAUTH_CLIENT_ID`, `QUICKBOOKS_OAUTH_CLIENT_SECRET` | `realmId` from callback query |
+| Calendly | `CALENDLY_OAUTH_CLIENT_ID`, `CALENDLY_OAUTH_CLIENT_SECRET` | |
+| Zendesk | `ZENDESK_OAUTH_CLIENT_ID`, `ZENDESK_OAUTH_CLIENT_SECRET` | Enter subdomain before Connect |
+
+Also set:
+
+```bash
+APP_BASE_URL=https://<your-host>
+NEXT_PUBLIC_APP_URL=https://<your-host>
+OAUTH_TOKEN_SECRET=<long-random>
+OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json   # Railway volume recommended
+```
 
 Non-OAuth (credentials form in Actions): Webhook, MCP, WhatsApp, WooCommerce, Stripe.
 
-## Test Slack end-to-end
+## Railway — enable Phase 1 like Slack
 
-1. Create a Slack app → OAuth & Permissions → redirect URL above → bot scopes `chat:write`, `channels:read`, `channels:join`, `groups:read`, `users:read`
-2. Install to workspace; put Client ID/Secret in env (Railway / `.env.local`)
-3. Agent → **Actions** → **Connect with OAuth** on Slack (Reconnect if scopes changed)
-4. Pick a handoff channel in the dropdown → **Set handoff channel**
-5. Private channels: run `/invite @YourBot` once if prompted
-6. Switch chat to **live (OAuth APIs)** → “speak to a human”
-7. Expect a handoff post in the picked channel (`SLACK_DEFAULT_CHANNEL` is legacy fallback only)
+1. Create OAuth apps (Google Cloud, Entra, Shopify Partners, HubSpot, …).
+2. Add redirect URI: `https://miaiweb-production.up.railway.app/api/oauth/callback` (or your custom domain).
+3. In Railway → `@miai/web` → Variables, add each `*_OAUTH_CLIENT_ID` / `*_OAUTH_CLIENT_SECRET` pair.
+4. Redeploy.
+5. Agent → **Actions** → badge flips from **Env missing** → **Ready** → **Connect with OAuth**.
+6. Switch chat to **live** and exercise the tool.
 
-Tokens are sealed in `data/oauth-tokens.json` (HMAC via `OAUTH_TOKEN_SECRET`). Never injected into LLM prompts.
+### Minimum Phase 1 set (recommended next)
+
+| Priority | Vars |
+|---|---|
+| 1 | `GOOGLE_OAUTH_*` (Calendar + Gmail) |
+| 2 | `MICROSOFT_OAUTH_*` (M365 Calendar / Teams / Outlook mail) |
+| 3 | `SHOPIFY_OAUTH_*` |
+| 4 | `HUBSPOT_OAUTH_*` |
+
+## Local
+
+```bash
+cp apps/web/.env.example apps/web/.env.local
+# fill client id/secret pairs
+pnpm --filter @miai/web dev
+```
+
+## Test Slack end-to-end (reference)
+
+1. Slack app → OAuth & Permissions → redirect URL above → bot scopes `chat:write`, `channels:read`, `channels:join`, `groups:read`, `users:read`
+2. Install; put Client ID/Secret in env
+3. Actions → Connect Slack → pick handoff channel
+4. Live chat → “speak to a human” → message in channel
+
+Tokens are sealed in the OAuth token store (HMAC via `OAUTH_TOKEN_SECRET`). Never injected into LLM prompts.

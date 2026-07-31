@@ -19,6 +19,8 @@ interface OauthStatus {
   requiresShop?: boolean;
   requiresSubdomain?: boolean;
   missingEnv: string[];
+  clientIdEnv?: string;
+  clientSecretEnv?: string;
 }
 
 export function ActionsPanel({
@@ -34,6 +36,7 @@ export function ActionsPanel({
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [status, setStatus] = useState<OauthStatus[]>([]);
+  const [callbackUrl, setCallbackUrl] = useState("");
   const [webhookUrl, setWebhookUrl] = useState("");
   const [webhookSecret, setWebhookSecret] = useState("");
   const [mcpEndpoint, setMcpEndpoint] = useState("");
@@ -57,6 +60,7 @@ export function ActionsPanel({
 
   const byId = useMemo(() => new Map(status.map((s) => [s.id, s])), [status]);
   const slackConnected = Boolean(byId.get("slack")?.connected) || connected.includes("slack");
+  const missingCount = status.filter((s) => !s.configured).length;
 
   async function loadSlackChannels() {
     const res = await fetch("/api/slack/channels");
@@ -75,7 +79,6 @@ export function ActionsPanel({
 
   async function saveSlackChannel() {
     if (!slackChannel) return;
-    // Distinct from connector id "slack" so Connect/Disconnect busy state never collides.
     setBusy("slack-channel");
     setError(null);
     try {
@@ -100,13 +103,12 @@ export function ActionsPanel({
     const res = await fetch("/api/oauth/status");
     const data = await res.json();
     setStatus(data.oauth ?? []);
+    if (typeof data.callbackUrl === "string") setCallbackUrl(data.callbackUrl);
     if (Array.isArray(data.connected)) onConnected(data.connected);
     const slackOn =
       Array.isArray(data.connected) && data.connected.includes("slack")
         ? true
-        : (data.oauth ?? []).some(
-            (o: OauthStatus) => o.id === "slack" && o.connected,
-          );
+        : (data.oauth ?? []).some((o: OauthStatus) => o.id === "slack" && o.connected);
     if (slackOn) void loadSlackChannels();
   }
 
@@ -122,6 +124,14 @@ export function ActionsPanel({
   }, [agentId]);
 
   async function startOAuth(connectorId: string) {
+    const oauth = byId.get(connectorId);
+    if (oauth && !oauth.configured) {
+      setError(
+        `${oauth.name} needs Railway / .env credentials: ${(oauth.missingEnv ?? []).join(", ")}. Register redirect URI ${callbackUrl || "/api/oauth/callback"} in the provider console.`,
+      );
+      return;
+    }
+
     setBusy(connectorId);
     setError(null);
     try {
@@ -151,7 +161,9 @@ export function ActionsPanel({
       if (!res.ok) {
         setError(
           data.error +
-            (data.missingEnv?.length ? ` — set ${data.missingEnv.join(", ")} in .env.local` : ""),
+            (data.missingEnv?.length
+              ? ` — set ${data.missingEnv.join(", ")} on Railway or in apps/web/.env.local`
+              : ""),
         );
         return;
       }
@@ -222,10 +234,16 @@ export function ActionsPanel({
               <span className="font-medium">{c.name}</span>
               {c.recommended && <span className="chip chip-live">Recommended</span>}
               {on && <span className="chip chip-live">Connected</span>}
+              {isOauth && configured && !on && <span className="chip chip-live">Ready</span>}
               {isOauth && !configured && <span className="chip">Env missing</span>}
               {isOauth && <span className="chip">OAuth</span>}
             </div>
             <p className="text-xs text-[var(--muted)]">{c.description}</p>
+            {isOauth && !configured && oauth?.missingEnv?.length ? (
+              <p className="mt-1 font-mono text-[11px] text-[var(--warn)]">
+                Set {oauth.missingEnv.join(" + ")}
+              </p>
+            ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
             {isOauth ? (
@@ -233,10 +251,15 @@ export function ActionsPanel({
                 <button
                   type="button"
                   className="btn btn-primary text-xs"
-                  disabled={busy === c.id}
+                  disabled={busy === c.id || !configured}
+                  title={
+                    !configured
+                      ? `Configure ${(oauth?.missingEnv ?? []).join(", ")} first`
+                      : undefined
+                  }
                   onClick={() => startOAuth(c.id)}
                 >
-                  {on ? "Reconnect" : "Connect with OAuth"}
+                  {!configured ? "Add credentials first" : on ? "Reconnect" : "Connect with OAuth"}
                 </button>
                 {on && (
                   <button
@@ -280,7 +303,7 @@ export function ActionsPanel({
                 {slackChannels.length === 0 && <option value="">Loading channels…</option>}
                 {slackChannels.map((ch) => (
                   <option key={ch.id} value={ch.id}>
-                    {ch.is_private ? "🔒" : "#"}
+                    {ch.is_private ? "private · " : "#"}
                     {ch.name}
                   </option>
                 ))}
@@ -291,7 +314,7 @@ export function ActionsPanel({
                 disabled={busy === "slack-channel" || !slackChannel}
                 onClick={() => void saveSlackChannel()}
               >
-                {slackSavedChannel === slackChannel ? "Saved ✓" : "Set handoff channel"}
+                {slackSavedChannel === slackChannel ? "Saved" : "Set handoff channel"}
               </button>
             </div>
             {slackSavedChannel && (
@@ -304,8 +327,7 @@ export function ActionsPanel({
                 {slackNeedsInvite && (
                   <>
                     {" "}
-                    — it&apos;s a private channel, so run <code>/invite @MIAI</code> in Slack
-                    once so the bot can post.
+                    — private channel: run <code>/invite @YourBot</code> in Slack once.
                   </>
                 )}
               </p>
@@ -483,11 +505,25 @@ export function ActionsPanel({
       <div className="panel p-4">
         <h2 className="text-sm font-semibold">Connector Hub — Phase 1</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">
-          OAuth connectors open the provider consent screen. Tokens are sealed in{" "}
-          <code>data/oauth-tokens.json</code> (never sent to the model). Use{" "}
-          <strong className="text-[var(--text)]">live</strong> chat mode after Connect to hit real
-          APIs. For Slack, pick a handoff channel after connecting.
+          OAuth connectors open the provider consent screen. Tokens are sealed server-side and never
+          sent to the model. Use <strong className="text-[var(--text)]">live</strong> chat after
+          Connect. For Slack, pick a handoff channel after connecting.
         </p>
+        {callbackUrl ? (
+          <div className="mt-3 rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-xs">
+            <p className="font-medium text-[var(--text)]">Shared redirect URI (all providers)</p>
+            <code className="mt-1 block break-all text-[var(--accent-bright)]">{callbackUrl}</code>
+            {missingCount > 0 ? (
+              <p className="mt-2 text-[var(--muted)]">
+                {missingCount} connector{missingCount === 1 ? "" : "s"} still need client id/secret
+                on Railway (same pattern as Slack). See{" "}
+                <code>docs/CONNECTOR_OAUTH.md</code>.
+              </p>
+            ) : (
+              <p className="mt-2 text-[var(--accent)]">All OAuth apps have credentials configured.</p>
+            )}
+          </div>
+        ) : null}
         <div className="mt-4 grid gap-2">{phase1.map(row)}</div>
       </div>
 

@@ -14,6 +14,7 @@ export {
   resolveProvider,
   isOAuthConfigured,
   getClientCredentials,
+  connectorOAuthConfigured,
   type OAuthConnectorId,
   type OAuthStartContext,
   type OAuthProvider,

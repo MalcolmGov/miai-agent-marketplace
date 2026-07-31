@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import {
   CONNECTORS,
-  getClientCredentials,
-  isOAuthConfigured,
+  connectorOAuthConfigured,
   isOAuthConnector,
   listConnected,
   listOAuthProviders,
-  resolveProvider,
+  oauthCallbackUrl,
+  type OAuthConnectorId,
 } from "@miai/connectors";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
@@ -23,30 +23,32 @@ export async function GET(req: Request) {
   const connected = await listConnected(workspaceId);
 
   const oauth = listOAuthProviders().map((p) => {
-    const provider = resolveProvider(p.id);
-    const creds = getClientCredentials(provider);
+    const cfg = connectorOAuthConfigured(p.id as OAuthConnectorId);
     return {
       id: p.id,
       name: p.name,
-      configured: isOAuthConfigured(provider),
+      configured: cfg.configured,
       connected: connected.includes(p.id),
       requiresShop: Boolean(p.requiresShop),
       requiresSubdomain: Boolean(p.requiresSubdomain),
-      missingEnv: creds.clientId && creds.clientSecret ? [] : [p.clientIdEnv, p.clientSecretEnv],
+      missingEnv: cfg.missingEnv,
+      clientIdEnv: p.clientIdEnv,
+      clientSecretEnv: p.clientSecretEnv,
     };
   });
 
-  const apiKey = CONNECTORS.filter((c) => c.auth === "api_key" || c.auth === "webhook_secret" || c.auth === "mcp").map(
-    (c) => ({
-      id: c.id,
-      name: c.name,
-      auth: c.auth,
-      connected: connected.includes(c.id),
-    }),
-  );
+  const apiKey = CONNECTORS.filter(
+    (c) => c.auth === "api_key" || c.auth === "webhook_secret" || c.auth === "mcp",
+  ).map((c) => ({
+    id: c.id,
+    name: c.name,
+    auth: c.auth,
+    connected: connected.includes(c.id),
+  }));
 
   return NextResponse.json({
     workspaceId,
+    callbackUrl: oauthCallbackUrl(),
     connected,
     oauth,
     other: apiKey,

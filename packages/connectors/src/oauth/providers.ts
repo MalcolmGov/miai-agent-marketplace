@@ -96,7 +96,13 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     name: "Microsoft 365 Calendar",
     clientIdEnv: "MICROSOFT_OAUTH_CLIENT_ID",
     clientSecretEnv: "MICROSOFT_OAUTH_CLIENT_SECRET",
-    scopes: ["offline_access", "Calendars.ReadWrite", "User.Read"],
+    scopes: [
+      "offline_access",
+      "openid",
+      "profile",
+      "https://graph.microsoft.com/Calendars.ReadWrite",
+      "https://graph.microsoft.com/User.Read",
+    ],
     pkce: true,
     authStyle: "body",
     authorizeUrl: () => "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
@@ -107,7 +113,14 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     name: "Microsoft Teams",
     clientIdEnv: "MICROSOFT_OAUTH_CLIENT_ID",
     clientSecretEnv: "MICROSOFT_OAUTH_CLIENT_SECRET",
-    scopes: ["offline_access", "ChannelMessage.Send", "Chat.ReadWrite", "User.Read"],
+    scopes: [
+      "offline_access",
+      "openid",
+      "profile",
+      "https://graph.microsoft.com/ChannelMessage.Send",
+      "https://graph.microsoft.com/Chat.ReadWrite",
+      "https://graph.microsoft.com/User.Read",
+    ],
     pkce: true,
     authStyle: "body",
     authorizeUrl: () => "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
@@ -188,8 +201,9 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     name: "Calendly",
     clientIdEnv: "CALENDLY_OAUTH_CLIENT_ID",
     clientSecretEnv: "CALENDLY_OAUTH_CLIENT_SECRET",
-    scopes: ["default"],
-    pkce: false,
+    // Calendly OAuth apps expect PKCE (S256). scopes space-separated.
+    scopes: ["users:read", "event_types:read", "scheduled_events:read"],
+    pkce: true,
     authStyle: "body",
     authorizeUrl: () => "https://auth.calendly.com/oauth/authorize",
     tokenUrl: () => "https://auth.calendly.com/oauth/token",
@@ -246,9 +260,55 @@ export function resolveProvider(
       ...base,
       clientIdEnv: "MICROSOFT_OAUTH_CLIENT_ID",
       clientSecretEnv: "MICROSOFT_OAUTH_CLIENT_SECRET",
-      scopes: ["offline_access", "Mail.Send", "User.Read"],
+      scopes: [
+        "offline_access",
+        "openid",
+        "profile",
+        "https://graph.microsoft.com/Mail.Send",
+        "https://graph.microsoft.com/User.Read",
+      ],
       extraAuthParams: undefined,
     };
   }
   return base;
+}
+
+/** Whether credentials exist for a connector (email checks Google and/or Microsoft). */
+export function connectorOAuthConfigured(
+  id: OAuthConnectorId,
+  emailProvider: "google" | "microsoft" | "either" = "either",
+): { configured: boolean; missingEnv: string[] } {
+  if (id === "email") {
+    const google = resolveProvider("email", { emailProvider: "google" });
+    const ms = resolveProvider("email", { emailProvider: "microsoft" });
+    const gOk = isOAuthConfigured(google);
+    const mOk = isOAuthConfigured(ms);
+    if (emailProvider === "google") {
+      return {
+        configured: gOk,
+        missingEnv: gOk ? [] : [google.clientIdEnv, google.clientSecretEnv],
+      };
+    }
+    if (emailProvider === "microsoft") {
+      return {
+        configured: mOk,
+        missingEnv: mOk ? [] : [ms.clientIdEnv, ms.clientSecretEnv],
+      };
+    }
+    return {
+      configured: gOk || mOk,
+      missingEnv: gOk || mOk ? [] : [
+        google.clientIdEnv,
+        google.clientSecretEnv,
+        ms.clientIdEnv,
+        ms.clientSecretEnv,
+      ],
+    };
+  }
+  const provider = resolveProvider(id);
+  const ok = isOAuthConfigured(provider);
+  return {
+    configured: ok,
+    missingEnv: ok ? [] : [provider.clientIdEnv, provider.clientSecretEnv],
+  };
 }

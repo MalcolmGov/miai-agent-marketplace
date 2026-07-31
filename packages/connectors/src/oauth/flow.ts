@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import {
   getClientCredentials,
   isOAuthConfigured,
@@ -21,19 +21,18 @@ export interface OAuthStatePayload {
   exp: number;
 }
 
-const g = globalThis as typeof globalThis & {
-  __miaiOauthStates?: Map<string, OAuthStatePayload>;
-};
-
-function states(): Map<string, OAuthStatePayload> {
-  if (!g.__miaiOauthStates) g.__miaiOauthStates = new Map();
-  return g.__miaiOauthStates;
-}
-
 function env(name: string): string | undefined {
   return (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.[
     name
   ];
+}
+
+function stateSecret(): string {
+  return (
+    env("OAUTH_STATE_SECRET") ||
+    env("OAUTH_TOKEN_SECRET") ||
+    "dev-only-change-me"
+  );
 }
 
 export function publicAppBase(): string {
@@ -47,12 +46,18 @@ export function oauthCallbackUrl(): string {
   return `${publicAppBase()}/api/oauth/callback`;
 }
 
-function b64url(buf: Buffer): string {
-  return buf
+function b64url(buf: Buffer | string): string {
+  const b = typeof buf === "string" ? Buffer.from(buf, "utf8") : buf;
+  return b
     .toString("base64")
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/, "");
+}
+
+function fromB64url(s: string): Buffer {
+  const pad = s.length % 4 === 0 ? "" : "=".repeat(4 - (s.length % 4));
+  return Buffer.from(s.replace(/-/g, "+").replace(/_/g, "/") + pad, "base64");
 }
 
 export function createPkce(): { verifier: string; challenge: string } {
@@ -61,22 +66,42 @@ export function createPkce(): { verifier: string; challenge: string } {
   return { verifier, challenge };
 }
 
+/**
+ * Self-contained signed state — survives multi-instance / cold starts on Railway.
+ * Format: base64url(json).base64url(hmac)
+ */
 export function createState(payload: Omit<OAuthStatePayload, "nonce" | "exp">): string {
-  const state = b64url(randomBytes(24));
-  states().set(state, {
+  const body: OAuthStatePayload = {
     ...payload,
-    nonce: state,
+    nonce: b64url(randomBytes(12)),
     exp: Date.now() + 15 * 60 * 1000,
-  });
-  return state;
+  };
+  const data = b64url(JSON.stringify(body));
+  const mac = createHmac("sha256", stateSecret()).update(data).digest();
+  return `${data}.${b64url(mac)}`;
 }
 
 export function consumeState(state: string): OAuthStatePayload | null {
-  const row = states().get(state);
-  if (!row) return null;
-  states().delete(state);
-  if (row.exp < Date.now()) return null;
-  return row;
+  const parts = state.split(".");
+  if (parts.length !== 2) return null;
+  const [data, macB64] = parts;
+  const expected = createHmac("sha256", stateSecret()).update(data).digest();
+  let mac: Buffer;
+  try {
+    mac = fromB64url(macB64);
+  } catch {
+    return null;
+  }
+  if (mac.length !== expected.length || !timingSafeEqual(mac, expected)) return null;
+
+  try {
+    const row = JSON.parse(fromB64url(data).toString("utf8")) as OAuthStatePayload;
+    if (!row?.connectorId || !row.workspaceId || !row.agentId) return null;
+    if (typeof row.exp !== "number" || row.exp < Date.now()) return null;
+    return row;
+  } catch {
+    return null;
+  }
 }
 
 export interface AuthorizeStartResult {
@@ -84,6 +109,7 @@ export interface AuthorizeStartResult {
   state: string;
   configured: boolean;
   missingEnv?: string[];
+  callbackUrl?: string;
 }
 
 export function buildAuthorizeUrl(
@@ -104,12 +130,14 @@ export function buildAuthorizeUrl(
   };
   const provider = resolveProvider(connectorId, ctx);
   const { clientId, clientSecret } = getClientCredentials(provider);
+  const callbackUrl = oauthCallbackUrl();
   if (!clientId || !clientSecret) {
     return {
       url: "",
       state: "",
       configured: false,
       missingEnv: [provider.clientIdEnv, provider.clientSecretEnv],
+      callbackUrl,
     };
   }
 
@@ -134,7 +162,7 @@ export function buildAuthorizeUrl(
 
   const params = new URLSearchParams({
     client_id: clientId,
-    redirect_uri: oauthCallbackUrl(),
+    redirect_uri: callbackUrl,
     response_type: "code",
     state,
     scope: provider.scopes.join(" "),
@@ -153,8 +181,10 @@ export function buildAuthorizeUrl(
     params.set("scope", provider.scopes.join(","));
   }
 
+  // HubSpot uses space-separated scopes (default) — keep as-is
+
   const url = `${provider.authorizeUrl(ctx)}?${params.toString()}`;
-  return { url, state, configured: true };
+  return { url, state, configured: true, callbackUrl };
 }
 
 export async function exchangeCode(opts: {
@@ -225,7 +255,7 @@ export async function exchangeCode(opts: {
       (json.incoming_webhook as { channel?: string } | undefined)?.channel ?? "";
   }
 
-  if (opts.statePayload.shop) meta.shop = opts.statePayload.shop;
+  if (opts.statePayload.shop) meta.shop = normalizeShopMeta(opts.statePayload.shop);
   if (opts.statePayload.subdomain) meta.subdomain = opts.statePayload.subdomain;
   if (opts.statePayload.emailProvider) meta.emailProvider = opts.statePayload.emailProvider;
   if (json.realmId) meta.realmId = String(json.realmId);
@@ -262,6 +292,12 @@ export async function exchangeCode(opts: {
 
   await saveToken(token);
   return token;
+}
+
+function normalizeShopMeta(shop: string): string {
+  let s = shop.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/$/, "");
+  if (!s.includes(".")) s = `${s}.myshopify.com`;
+  return s;
 }
 
 export async function refreshAccessToken(token: StoredToken): Promise<StoredToken> {
