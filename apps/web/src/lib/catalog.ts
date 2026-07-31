@@ -1,6 +1,12 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { loadAgentPackage, marketplaceCategory, type AgentPackage } from "@miai/agent-protocol";
+import {
+  agentAudience,
+  loadAgentPackage,
+  marketplaceCategory,
+  type AgentAudience,
+  type AgentPackage,
+} from "@miai/agent-protocol";
 import { getPreset, pilotAgentIds } from "@miai/presets";
 
 export interface CatalogEntry {
@@ -14,6 +20,7 @@ export interface CatalogEntry {
   tools: number;
   evals: number;
   marketplaceCategory: string;
+  audience: AgentAudience;
   pilot: boolean;
   liveReady: boolean;
   catalogueReady: boolean;
@@ -28,6 +35,7 @@ export interface FamilyEntry {
   summary: string;
   channels: string[];
   marketplaceCategory: string;
+  audience: AgentAudience;
   markets: Record<string, string>;
   packs: string[];
   hasZa: boolean;
@@ -104,6 +112,7 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
         market: e.market,
         model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
       }),
+      audience: agentAudience(e.category),
       pilot: pilots.has(e.id) || Boolean(preset?.pilot),
       liveReady: Boolean(preset?.pilot) || (catalogueReady && preset?.phase === 1),
       catalogueReady,
@@ -205,6 +214,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
           languages: ["en"],
           model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
         }),
+      audience: agentAudience(f.category),
       markets: f.markets,
       packs: f.packs,
       hasZa: f.hasZa,

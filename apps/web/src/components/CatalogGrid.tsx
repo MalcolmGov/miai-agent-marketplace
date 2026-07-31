@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
 
 interface FamilyItem {
   id: string;
@@ -10,6 +11,7 @@ interface FamilyItem {
   summary: string;
   channels: string[];
   marketplaceCategory: string;
+  audience: "customer" | "internal";
   markets: Record<string, string>;
   packs: string[];
   hasZa: boolean;
@@ -25,6 +27,12 @@ const MARKETS = [
   { id: "eu", label: "EU" },
   { id: "africa", label: "Africa" },
   { id: "asia", label: "Asia" },
+] as const;
+
+const AUDIENCES = [
+  { id: "all", label: "All audiences" },
+  { id: "customer", label: "Customer-facing" },
+  { id: "internal", label: "Internal" },
 ] as const;
 
 const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
@@ -72,12 +80,13 @@ function initials(name: string) {
 export function CatalogGrid() {
   const [items, setItems] = useState<FamilyItem[]>([]);
   const [familyCount, setFamilyCount] = useState(0);
-  const [agentCount, setAgentCount] = useState(0);
-  const [totalAgents, setTotalAgents] = useState(0);
+  const [totalFamilies, setTotalFamilies] = useState(0);
   const [allCategories, setAllCategories] = useState<string[]>(["all"]);
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
   const [q, setQ] = useState("");
   const [market, setMarket] = useState("all");
   const [category, setCategory] = useState("all");
+  const [audience, setAudience] = useState("all");
   const [pending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -89,12 +98,14 @@ export function CatalogGrid() {
           new Set(next.map((i) => i.marketplaceCategory).filter(Boolean)),
         ).sort();
         setAllCategories(["all", ...cats]);
-        if (!q && market === "all" && category === "all") {
-          setTotalAgents(d.totalAgents ?? 0);
+        setTotalFamilies(d.familyCount ?? next.length);
+        const counts: Record<string, number> = {};
+        for (const item of next) {
+          counts[item.marketplaceCategory] = (counts[item.marketplaceCategory] ?? 0) + 1;
         }
+        setCategoryCounts(counts);
       })
       .catch(() => undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- seed full category list once
   }, []);
 
   useEffect(() => {
@@ -103,6 +114,7 @@ export function CatalogGrid() {
     if (q) params.set("q", q);
     if (market !== "all") params.set("market", market);
     if (category !== "all") params.set("category", category);
+    if (audience !== "all") params.set("audience", audience);
     startTransition(() => {
       fetch(`/api/catalog?${params}`)
         .then((r) => r.json())
@@ -110,83 +122,33 @@ export function CatalogGrid() {
           const next = (d.items ?? []) as FamilyItem[];
           setItems(next);
           setFamilyCount(d.familyCount ?? d.count ?? 0);
-          setAgentCount(d.agentCount ?? 0);
-          setTotalAgents(d.totalAgents ?? 0);
         });
     });
-  }, [q, market, category]);
+  }, [q, market, category, audience]);
 
   const categories = useMemo(() => allCategories, [allCategories]);
-  const readyCount = items.filter((i) => i.catalogueReady).length;
+
+  const industryCategoryCount = Math.max(0, allCategories.length - 1);
 
   return (
     <div className="space-y-10">
-      {/* Hero — brand-first, high visibility */}
-      <section className="relative overflow-hidden border-b border-[var(--line)] pb-10 pt-8 sm:pt-12">
-        <div
-          aria-hidden
-          className="hero-sheen pointer-events-none absolute -left-1/4 top-0 h-full w-[150%] opacity-60"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 80% at 30% 40%, rgba(61,214,198,0.14), transparent 55%), radial-gradient(ellipse 40% 60% at 75% 20%, rgba(94,168,240,0.1), transparent 50%)",
-          }}
-        />
-        <div className="rise relative grid gap-8 lg:grid-cols-[1.35fr_0.85fr] lg:items-end">
-          <div>
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-              MyInstantAI · Global agent marketplace
-            </p>
-            <h1 className="display max-w-2xl text-[2rem] font-semibold leading-[1.15] tracking-tight text-[var(--text)] sm:text-4xl lg:text-[2.75rem]">
-              The world&apos;s agent{" "}
-              <span className="bg-gradient-to-r from-[var(--accent-bright)] to-[#7ec8f0] bg-clip-text text-transparent">
-                operating system
-              </span>{" "}
-              for every market.
-            </h1>
-            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--muted)] sm:text-base">
-              Catalogue-ready agent families across US, EU, Africa, and Asia — rent by tier, wire
-              Actions, embed on your site, and run on prepaid tokens.
-            </p>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <a href="#catalogue" className="btn btn-primary">
-                Browse catalogue
-              </a>
-              <Link href="/install" className="btn btn-ghost">
-                Install embed
-              </Link>
-            </div>
-          </div>
-
-          <div className="rise panel relative grid grid-cols-2 gap-px overflow-hidden p-0 sm:grid-cols-2" style={{ animationDelay: "80ms" }}>
-            <StatCell label="Agent families" value={String(familyCount || 55)} />
-            <StatCell label="Live agents" value={String(agentCount || totalAgents || 220)} />
-            <StatCell label="Market packs" value="4" sub="US · EU · Africa · Asia" />
-            <StatCell
-              label="Catalogue ready"
-              value={pending ? "…" : String(readyCount || familyCount || 55)}
-              sub="Ship-ready SKUs"
-            />
-          </div>
-        </div>
-      </section>
+      <MarketplaceHero
+        familyCount={totalFamilies || familyCount || 55}
+        categoryCount={industryCategoryCount}
+      />
 
       {/* Catalogue controls */}
       <section id="catalogue" className="scroll-mt-24 space-y-5">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="display text-xl font-semibold tracking-tight sm:text-2xl">
-              Browse agent families
-            </h2>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              {pending
-                ? "Updating catalogue…"
-                : `${familyCount} families · ${agentCount} agents${market !== "all" ? " in this market" : ""}`}
-            </p>
-          </div>
+        <div className="flex items-start gap-2.5 text-sm text-[var(--muted)]">
+          <span className="pulse-dot mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
+          <p>
+            Every agent here is live on the production runtime — rent one and it answers today. No
+            build queue.
+          </p>
         </div>
 
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="relative max-w-md flex-1">
+          <div className="relative max-w-xl flex-1">
             <svg
               aria-hidden
               className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted-dim)]"
@@ -200,7 +162,7 @@ export function CatalogGrid() {
             </svg>
             <input
               className="input pl-10"
-              placeholder="Search agent families…"
+              placeholder="Search agents — try 'booking', 'claims', 'stock'…"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               aria-label="Search agent families"
@@ -220,17 +182,34 @@ export function CatalogGrid() {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Category">
-          {categories.map((c) => (
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Audience">
+          {AUDIENCES.map((a) => (
             <button
-              key={c}
+              key={a.id}
               type="button"
-              onClick={() => setCategory(c)}
-              className={`chip ${category === c ? "filter-active" : ""}`}
+              onClick={() => setAudience(a.id)}
+              className={`chip ${audience === a.id ? "filter-active" : ""}`}
             >
-              {c === "all" ? "All categories" : c}
+              {a.label}
             </button>
           ))}
+        </div>
+
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Category">
+          {categories.map((c) => {
+            const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setCategory(c)}
+                className={`chip ${category === c ? "filter-active" : ""}`}
+              >
+                {c === "all" ? "All agents" : c}
+                <span className="cat-count">{count}</span>
+              </button>
+            );
+          })}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -279,6 +258,18 @@ export function CatalogGrid() {
                   </p>
 
                   <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                    <span
+                      className={`chip ${
+                        item.audience === "internal" ? "chip-internal" : "chip-live"
+                      }`}
+                      title={
+                        item.audience === "internal"
+                          ? "Built for employees / internal ops"
+                          : "Built for end customers / guests / clients"
+                      }
+                    >
+                      {item.audience === "internal" ? "Internal" : "Customer-facing"}
+                    </span>
                     {badge ? (
                       <span className={`chip ${badge.tone === "live" ? "chip-live" : ""}`}>
                         {badge.tone === "live" ? (
@@ -351,6 +342,7 @@ export function CatalogGrid() {
                 setQ("");
                 setMarket("all");
                 setCategory("all");
+                setAudience("all");
               }}
             >
               Reset filters
@@ -358,28 +350,8 @@ export function CatalogGrid() {
           </div>
         ) : null}
       </section>
-    </div>
-  );
-}
 
-function StatCell({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-}) {
-  return (
-    <div className="bg-[color-mix(in_srgb,var(--bg-elev)_90%,transparent)] px-5 py-5">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-        {label}
-      </p>
-      <p className="display mt-2 text-[1.75rem] font-semibold tracking-tight text-[var(--text)] tabular-nums">
-        {value}
-      </p>
-      {sub ? <p className="mt-1 text-xs text-[var(--muted-dim)]">{sub}</p> : null}
+      <MarketplaceCTA />
     </div>
   );
 }

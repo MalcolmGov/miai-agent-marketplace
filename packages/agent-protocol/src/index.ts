@@ -73,6 +73,17 @@ export const RENT_EUR: Record<AgentTier, number> = {
   enterprise: 1099,
 };
 
+/** Primary audience for catalogue chips / filters. */
+export type AgentAudience = "customer" | "internal";
+
+/**
+ * Customer-facing vs internal workforce agents.
+ * `operations` maps to Internal & back office; all other categories are customer-facing.
+ */
+export function agentAudience(category: AgentCategory | string): AgentAudience {
+  return category === "operations" ? "internal" : "customer";
+}
+
 export function marketplaceCategory(manifest: AgentManifest): string {
   const map: Record<string, string> = {
     "front-office": "Customer & front office",

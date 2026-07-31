@@ -8,6 +8,7 @@ export async function GET(req: Request) {
   const q = (searchParams.get("q") ?? "").toLowerCase().trim();
   const market = searchParams.get("market");
   const category = searchParams.get("category");
+  const audience = searchParams.get("audience");
   const view = searchParams.get("view") ?? "families";
   const packs = await listMarketPacks();
   const allAgents = await listCatalog();
@@ -21,6 +22,9 @@ export async function GET(req: Request) {
     }
     if (category && category !== "all")
       items = items.filter((i) => i.marketplaceCategory === category);
+    if (audience === "customer" || audience === "internal") {
+      items = items.filter((i) => i.audience === audience);
+    }
     if (q) {
       items = items.filter(
         (i) =>
@@ -47,6 +51,9 @@ export async function GET(req: Request) {
   }
   if (category && category !== "all") {
     items = items.filter((i) => i.marketplaceCategory === category);
+  }
+  if (audience === "customer" || audience === "internal") {
+    items = items.filter((i) => i.audience === audience);
   }
   if (q) {
     items = items.filter(
