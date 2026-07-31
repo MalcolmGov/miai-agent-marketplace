@@ -76,9 +76,9 @@ const SCRIPT = String.raw`
     '@keyframes miai-b{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}',
 
     /* ---- suggestion chips ---- */
-    '#miai-sugs{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 6px;max-width:100%}',
-    '.miai-chip{border:1px solid ' + accent + '4d;background:#1b2635;color:#e6eef8;border-radius:18px;padding:8px 14px;font-size:12.5px;font-weight:500;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:all .14s ease}',
-    '.miai-chip:hover{border-color:transparent;color:#fff;background:linear-gradient(135deg,var(--mi-a),var(--mi-a2));transform:translateY(-1px);box-shadow:0 4px 12px ' + accent + '44}',
+    '#miai-sugs{display:flex;flex-wrap:wrap;gap:8px;row-gap:9px;padding:2px 14px 8px;max-width:100%}',
+    '.miai-chip{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;border:0;background:linear-gradient(135deg,var(--mi-a),var(--mi-a2));color:#fff;border-radius:999px;padding:9px 16px;font-size:12px;font-weight:600;line-height:1.2;letter-spacing:.01em;cursor:pointer;white-space:nowrap;max-width:100%;box-shadow:0 2px 8px ' + accent + '3d;transition:all .14s ease}',
+    '.miai-chip:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 5px 14px ' + accent + '55}',
 
     /* ---- input ---- */
     '#miai-form{display:flex;align-items:center;gap:9px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)}',
