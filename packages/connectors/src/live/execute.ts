@@ -43,7 +43,9 @@ async function slackHandoff(
   const channel =
     String(args.channel ?? meta.default_channel ?? process.env.SLACK_DEFAULT_CHANNEL ?? "").trim();
   if (!channel) {
-    throw new Error("Slack connected but no channel set — set SLACK_DEFAULT_CHANNEL or pass channel");
+    throw new Error(
+      "Slack connected but no handoff channel set — pick one in Actions after connecting",
+    );
   }
   const text = [
     `*Agent handoff*`,

@@ -48,14 +48,66 @@ export function ActionsPanel({
   const [wooKey, setWooKey] = useState("");
   const [wooSecret, setWooSecret] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [slackChannels, setSlackChannels] = useState<
+    Array<{ id: string; name: string; is_private: boolean; is_member: boolean }>
+  >([]);
+  const [slackChannel, setSlackChannel] = useState("");
+  const [slackSavedChannel, setSlackSavedChannel] = useState<string | null>(null);
+  const [slackNeedsInvite, setSlackNeedsInvite] = useState(false);
 
   const byId = useMemo(() => new Map(status.map((s) => [s.id, s])), [status]);
+  const slackConnected = Boolean(byId.get("slack")?.connected) || connected.includes("slack");
+
+  async function loadSlackChannels() {
+    const res = await fetch("/api/slack/channels");
+    if (!res.ok) return;
+    const data = await res.json();
+    setSlackChannels(data.channels ?? []);
+    setSlackSavedChannel(data.current ?? null);
+    if (data.current) setSlackChannel(data.current);
+    else if (data.channels?.length) setSlackChannel(data.channels[0].id);
+  }
+
+  useEffect(() => {
+    if (!slackConnected) return;
+    void loadSlackChannels();
+  }, [slackConnected]);
+
+  async function saveSlackChannel() {
+    if (!slackChannel) return;
+    // Distinct from connector id "slack" so Connect/Disconnect busy state never collides.
+    setBusy("slack-channel");
+    setError(null);
+    try {
+      const res = await fetch("/api/slack/channels", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ channel: slackChannel }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Could not save the channel");
+        return;
+      }
+      setSlackSavedChannel(data.channel);
+      setSlackNeedsInvite(Boolean(data.needs_invite));
+    } finally {
+      setBusy(null);
+    }
+  }
 
   async function refreshStatus() {
     const res = await fetch("/api/oauth/status");
     const data = await res.json();
     setStatus(data.oauth ?? []);
     if (Array.isArray(data.connected)) onConnected(data.connected);
+    const slackOn =
+      Array.isArray(data.connected) && data.connected.includes("slack")
+        ? true
+        : (data.oauth ?? []).some(
+            (o: OauthStatus) => o.id === "slack" && o.connected,
+          );
+    if (slackOn) void loadSlackChannels();
   }
 
   useEffect(() => {
@@ -117,6 +169,12 @@ export function ActionsPanel({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ agentId }),
       });
+      if (connectorId === "slack") {
+        setSlackChannels([]);
+        setSlackChannel("");
+        setSlackSavedChannel(null);
+        setSlackNeedsInvite(false);
+      }
       await refreshStatus();
     } finally {
       setBusy(null);
@@ -210,6 +268,49 @@ export function ActionsPanel({
             value={zendeskSub}
             onChange={(e) => setZendeskSub(e.target.value)}
           />
+        )}
+        {c.id === "slack" && on && (
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                className="input text-xs"
+                value={slackChannel}
+                onChange={(e) => setSlackChannel(e.target.value)}
+              >
+                {slackChannels.length === 0 && <option value="">Loading channels…</option>}
+                {slackChannels.map((ch) => (
+                  <option key={ch.id} value={ch.id}>
+                    {ch.is_private ? "🔒" : "#"}
+                    {ch.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="btn btn-primary text-xs"
+                disabled={busy === "slack-channel" || !slackChannel}
+                onClick={() => void saveSlackChannel()}
+              >
+                {slackSavedChannel === slackChannel ? "Saved ✓" : "Set handoff channel"}
+              </button>
+            </div>
+            {slackSavedChannel && (
+              <p className="text-xs text-[var(--muted)]">
+                Handoffs go to{" "}
+                <code>
+                  {slackChannels.find((ch) => ch.id === slackSavedChannel)?.name ??
+                    slackSavedChannel}
+                </code>
+                {slackNeedsInvite && (
+                  <>
+                    {" "}
+                    — it&apos;s a private channel, so run <code>/invite @MIAI</code> in Slack
+                    once so the bot can post.
+                  </>
+                )}
+              </p>
+            )}
+          </div>
         )}
         {c.id === "email" && (
           <div className="flex gap-2">
@@ -385,7 +486,7 @@ export function ActionsPanel({
           OAuth connectors open the provider consent screen. Tokens are sealed in{" "}
           <code>data/oauth-tokens.json</code> (never sent to the model). Use{" "}
           <strong className="text-[var(--text)]">live</strong> chat mode after Connect to hit real
-          APIs. Set <code>SLACK_DEFAULT_CHANNEL</code> for Slack handoffs.
+          APIs. For Slack, pick a handoff channel after connecting.
         </p>
         <div className="mt-4 grid gap-2">{phase1.map(row)}</div>
       </div>

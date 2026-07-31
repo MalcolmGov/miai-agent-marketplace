@@ -155,7 +155,7 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     name: "Slack",
     clientIdEnv: "SLACK_OAUTH_CLIENT_ID",
     clientSecretEnv: "SLACK_OAUTH_CLIENT_SECRET",
-    scopes: ["chat:write", "channels:read", "groups:read", "users:read"],
+    scopes: ["chat:write", "channels:read", "channels:join", "groups:read", "users:read"],
     pkce: false,
     authStyle: "body",
     authorizeUrl: () => "https://slack.com/oauth/v2/authorize",
