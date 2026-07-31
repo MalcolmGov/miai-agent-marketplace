@@ -14,7 +14,6 @@
     ],
     "summary": "US pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

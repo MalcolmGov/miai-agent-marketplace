@@ -8,7 +8,6 @@
     "tier": "pro",
     "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

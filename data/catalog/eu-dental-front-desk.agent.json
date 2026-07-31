@@ -10,12 +10,11 @@
     "compliance": [
       "gdpr"
     ],
-    "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SM…",
+    "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, SM…",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "languages": [
       "en",

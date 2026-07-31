@@ -8,7 +8,6 @@
     "tier": "pro",
     "summary": "Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

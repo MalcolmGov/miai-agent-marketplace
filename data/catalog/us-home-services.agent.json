@@ -11,9 +11,8 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and.",
+    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

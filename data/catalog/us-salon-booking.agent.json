@@ -11,9 +11,8 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "US salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
+    "summary": "US salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

@@ -37,13 +37,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice…",
+    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across…",
     "channels": [
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -55,13 +54,12 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
+    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -78,8 +76,7 @@
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 18,
@@ -96,8 +93,7 @@
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -129,8 +125,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -146,8 +141,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -163,8 +157,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -180,8 +173,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 13,
@@ -193,12 +185,11 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 13,
@@ -214,8 +205,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -231,8 +221,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 18,
@@ -248,8 +237,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -261,12 +249,11 @@
     "tier": "standard",
     "category": "front-office",
     "market": "asia",
-    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and.",
+    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across, SMS, web, app and.",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -282,8 +269,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 14,
@@ -295,12 +281,11 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Strictly non-clinical Asia dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, …",
+    "summary": "Strictly non-clinical Asia dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, …",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -316,8 +301,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 18,
@@ -333,8 +317,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -350,8 +333,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -367,8 +349,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -384,8 +365,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 13,
@@ -397,12 +377,11 @@
     "tier": "standard",
     "category": "front-office",
     "market": "asia",
-    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
+    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -418,8 +397,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 14,
@@ -435,8 +413,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -448,12 +425,11 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
+    "summary": "Asia Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -469,8 +445,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 21,
@@ -486,8 +461,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 18,
@@ -503,8 +477,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -520,8 +493,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -537,8 +509,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 19,
@@ -554,8 +525,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -571,8 +541,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 18,
@@ -588,8 +557,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -605,8 +573,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -622,8 +589,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -639,8 +605,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 14,
@@ -656,8 +621,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -673,8 +637,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 17,
@@ -690,8 +653,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 14,
@@ -707,8 +669,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 19,
@@ -724,8 +685,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -741,8 +701,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 14,
@@ -758,8 +717,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -775,8 +733,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -792,8 +749,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 19,
@@ -809,8 +765,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 14,
@@ -826,8 +781,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -843,8 +797,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 20,
@@ -860,8 +813,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -877,8 +829,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 17,
@@ -890,12 +841,11 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
+    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 18,
@@ -911,8 +861,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -928,8 +877,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -945,8 +893,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 15,
@@ -962,8 +909,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 16,
@@ -979,8 +925,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 16,
@@ -996,8 +941,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 19,
@@ -1013,8 +957,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 4,
     "evals": 19,
@@ -1030,8 +973,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 18,
@@ -1047,8 +989,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "tools": 5,
     "evals": 20,
@@ -1076,7 +1017,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkeeper.",
+    "summary": "Africa — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkeeper.",
     "channels": [
       "whatsapp",
       "web",
@@ -1192,8 +1133,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1209,8 +1149,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -1226,8 +1165,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1243,8 +1181,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 13,
@@ -1256,12 +1193,11 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "EU Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 13,
@@ -1277,8 +1213,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -1294,8 +1229,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -1311,8 +1245,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1324,12 +1257,11 @@
     "tier": "standard",
     "category": "front-office",
     "market": "eu",
-    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across, SMS, web, app and voice.",
+    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across, SMS, web, app and.",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1345,8 +1277,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -1358,12 +1289,11 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SM…",
+    "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, SM…",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -1379,8 +1309,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -1396,8 +1325,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -1413,8 +1341,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1430,8 +1357,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1447,8 +1373,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 13,
@@ -1464,8 +1389,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1481,8 +1405,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -1498,8 +1421,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1511,12 +1433,11 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
+    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -1532,8 +1453,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 21,
@@ -1545,12 +1465,11 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and voice.",
+    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and.",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 18,
@@ -1566,8 +1485,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1583,8 +1501,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1600,8 +1517,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -1617,8 +1533,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1634,8 +1549,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 18,
@@ -1651,8 +1565,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -1668,8 +1581,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1685,8 +1597,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1702,8 +1613,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 14,
@@ -1719,8 +1629,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -1736,8 +1645,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 17,
@@ -1753,8 +1661,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -1770,8 +1677,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -1787,8 +1693,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1804,8 +1709,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 14,
@@ -1821,8 +1725,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -1838,8 +1741,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -1855,8 +1757,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -1872,8 +1773,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 14,
@@ -1889,8 +1789,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1906,8 +1805,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 20,
@@ -1923,8 +1821,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -1940,8 +1837,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 17,
@@ -1953,12 +1849,11 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and voice.",
+    "summary": "EU salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -1974,8 +1869,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -1991,8 +1885,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -2008,8 +1901,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -2025,8 +1917,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 16,
@@ -2038,12 +1929,11 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, app and voice.",
+    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, app and.",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 16,
@@ -2059,8 +1949,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -2076,8 +1965,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 19,
@@ -2093,8 +1981,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 18,
@@ -2110,8 +1997,7 @@
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 20,
@@ -2553,12 +2439,11 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and voice.",
+    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 4,
     "evals": 15,
@@ -2663,7 +2548,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. Voice here means WhatsApp voice notes (Whisper transcription in, ElevenLabs read-back out), not a standalone voice channel.",
+    "summary": "Africa — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. here means WhatsApp notes (Whisper transcription in, ElevenLabs read-back out), not a standalone channel.",
     "channels": [
       "whatsapp",
       "web",
@@ -2713,7 +2598,6 @@
     "market": "us",
     "summary": "US Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2730,7 +2614,6 @@
     "market": "us",
     "summary": "US Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. R…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2747,7 +2630,6 @@
     "market": "us",
     "summary": "US Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across, web and app.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2764,7 +2646,6 @@
     "market": "us",
     "summary": "Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 ac…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2779,9 +2660,8 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "summary": "Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2798,7 +2678,6 @@
     "market": "us",
     "summary": "US Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2815,7 +2694,6 @@
     "market": "us",
     "summary": "Strictly non-clinical US clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2832,7 +2710,6 @@
     "market": "us",
     "summary": "US Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2847,9 +2724,8 @@
     "tier": "standard",
     "category": "front-office",
     "market": "us",
-    "summary": "US customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and.",
+    "summary": "US customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2866,7 +2742,6 @@
     "market": "us",
     "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2881,9 +2756,8 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SMS, web, app and.",
+    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2900,7 +2774,6 @@
     "market": "us",
     "summary": "US Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2917,7 +2790,6 @@
     "market": "us",
     "summary": "US Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across, web a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2934,7 +2806,6 @@
     "market": "us",
     "summary": "US Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitiv…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2951,7 +2822,6 @@
     "market": "us",
     "summary": "Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsAp…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2968,7 +2838,6 @@
     "market": "us",
     "summary": "US Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance reminders — escalating acc…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -2983,9 +2852,8 @@
     "tier": "standard",
     "category": "front-office",
     "market": "us",
-    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
+    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3002,7 +2870,6 @@
     "market": "us",
     "summary": "US Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3019,7 +2886,6 @@
     "market": "us",
     "summary": "US gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3034,9 +2900,8 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and.",
+    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3053,7 +2918,6 @@
     "market": "us",
     "summary": "US hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3068,9 +2932,8 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and voice.",
+    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3087,7 +2950,6 @@
     "market": "us",
     "summary": "US HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical m…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3104,7 +2966,6 @@
     "market": "us",
     "summary": "US Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3121,7 +2982,6 @@
     "market": "us",
     "summary": "US insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3138,7 +2998,6 @@
     "market": "us",
     "summary": "First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3155,7 +3014,6 @@
     "market": "us",
     "summary": "US law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3172,7 +3030,6 @@
     "market": "us",
     "summary": "US Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never a credit decision, ac…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3189,7 +3046,6 @@
     "market": "us",
     "summary": "US Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing off account disputes…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3206,7 +3062,6 @@
     "market": "us",
     "summary": "US marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3223,7 +3078,6 @@
     "market": "us",
     "summary": "US Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalat…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3240,7 +3094,6 @@
     "market": "us",
     "summary": "US Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3257,7 +3110,6 @@
     "market": "us",
     "summary": "US order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3274,7 +3126,6 @@
     "market": "us",
     "summary": "Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3291,7 +3142,6 @@
     "market": "us",
     "summary": "US Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3308,7 +3158,6 @@
     "market": "us",
     "summary": "US pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3325,7 +3174,6 @@
     "market": "us",
     "summary": "US Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance of…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3342,7 +3190,6 @@
     "market": "us",
     "summary": "Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3359,7 +3206,6 @@
     "market": "us",
     "summary": "US Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3376,7 +3222,6 @@
     "market": "us",
     "summary": "US property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3393,7 +3238,6 @@
     "market": "us",
     "summary": "US Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to pay out. Never moves…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3410,7 +3254,6 @@
     "market": "us",
     "summary": "US Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3427,7 +3270,6 @@
     "market": "us",
     "summary": "US restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3444,7 +3286,6 @@
     "market": "us",
     "summary": "US Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3461,7 +3302,6 @@
     "market": "us",
     "summary": "US sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3476,9 +3316,8 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
+    "summary": "US salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3495,7 +3334,6 @@
     "market": "us",
     "summary": "US Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry befo…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3512,7 +3350,6 @@
     "market": "us",
     "summary": "Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3529,7 +3366,6 @@
     "market": "us",
     "summary": "Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3546,7 +3382,6 @@
     "market": "us",
     "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, web a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3563,7 +3398,6 @@
     "market": "us",
     "summary": "US Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3580,7 +3414,6 @@
     "market": "us",
     "summary": "US Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3597,7 +3430,6 @@
     "market": "us",
     "summary": "US Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3614,7 +3446,6 @@
     "market": "us",
     "summary": "US gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3631,7 +3462,6 @@
     "market": "us",
     "summary": "US veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
@@ -3678,12 +3508,11 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa — A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and voice.",
+    "summary": "Africa — A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "tools": 5,
     "evals": 18,

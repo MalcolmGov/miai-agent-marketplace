@@ -15,8 +15,7 @@
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "languages": [
       "en",

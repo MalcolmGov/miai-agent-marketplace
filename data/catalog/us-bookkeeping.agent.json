@@ -6,9 +6,8 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "summary": "Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

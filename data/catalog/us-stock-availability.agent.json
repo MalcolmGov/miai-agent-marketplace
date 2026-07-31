@@ -8,7 +8,6 @@
     "tier": "pro",
     "summary": "Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

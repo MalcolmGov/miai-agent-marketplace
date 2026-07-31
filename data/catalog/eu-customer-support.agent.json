@@ -11,12 +11,11 @@
       "gdpr",
       "eu-ai-act"
     ],
-    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across, SMS, web, app and voice.",
+    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across, SMS, web, app and.",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "languages": [
       "en",

@@ -13,7 +13,6 @@
     ],
     "summary": "US hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

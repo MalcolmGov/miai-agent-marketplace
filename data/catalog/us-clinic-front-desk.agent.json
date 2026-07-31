@@ -14,7 +14,6 @@
     ],
     "summary": "Strictly non-clinical US clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

@@ -8,7 +8,6 @@
     "summary": "Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
     "tier": "pro",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

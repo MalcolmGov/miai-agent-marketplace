@@ -8,7 +8,6 @@
     "tier": "pro",
     "summary": "US Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

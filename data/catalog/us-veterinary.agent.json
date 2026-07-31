@@ -13,7 +13,6 @@
     ],
     "summary": "US veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

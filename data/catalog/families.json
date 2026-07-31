@@ -112,7 +112,7 @@
     "name": "Bookkeeping Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
       "whatsapp",
       "web",
@@ -220,7 +220,7 @@
     "name": "Customer Support",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and.",
+    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across, SMS, web, app and.",
     "channels": [
       "whatsapp",
       "web",
@@ -274,13 +274,12 @@
     "name": "Dental Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice…",
+    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across…",
     "channels": [
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "markets": {
       "africa": "africa-dental-front-desk",
@@ -438,7 +437,7 @@
     "name": "Front Desk / Reception",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
+    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
     "channels": [
       "whatsapp",
       "web",
@@ -518,13 +517,12 @@
     "name": "Home Services Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
+    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "markets": {
       "africa": "africa-home-services",
@@ -579,8 +577,7 @@
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "markets": {
       "africa": "africa-hotel-guest",
@@ -1119,8 +1116,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-rental-enquiries",
@@ -1223,7 +1219,7 @@
     "name": "Salon & Barber Booking",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
+    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
     "channels": [
       "whatsapp",
       "web",
@@ -1361,8 +1357,7 @@
       "whatsapp",
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "markets": {
       "africa": "africa-trades-receptionist",
@@ -1470,8 +1465,7 @@
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "markets": {
       "asia": "asia-veterinary",

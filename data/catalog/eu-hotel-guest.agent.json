@@ -11,12 +11,11 @@
       "gdpr",
       "eu-ai-act"
     ],
-    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and voice.",
+    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and.",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "languages": [
       "en",

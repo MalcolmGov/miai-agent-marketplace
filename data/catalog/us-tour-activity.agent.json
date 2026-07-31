@@ -8,7 +8,6 @@
     "tier": "standard",
     "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, web a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

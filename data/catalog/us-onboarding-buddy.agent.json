@@ -8,7 +8,6 @@
     "tier": "standard",
     "summary": "US Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

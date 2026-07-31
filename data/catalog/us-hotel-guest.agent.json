@@ -11,9 +11,8 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and voice.",
+    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

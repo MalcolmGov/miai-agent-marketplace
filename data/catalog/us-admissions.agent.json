@@ -8,7 +8,6 @@
     "tier": "pro",
     "summary": "US Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. R…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

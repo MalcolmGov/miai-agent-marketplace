@@ -13,7 +13,6 @@
     ],
     "summary": "US property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

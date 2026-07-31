@@ -13,7 +13,6 @@
     ],
     "summary": "US Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

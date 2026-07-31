@@ -13,7 +13,6 @@
     ],
     "summary": "US sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

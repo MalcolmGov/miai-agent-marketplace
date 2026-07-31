@@ -13,7 +13,6 @@
     ],
     "summary": "US gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

@@ -8,7 +8,6 @@
     "tier": "pro",
     "summary": "First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

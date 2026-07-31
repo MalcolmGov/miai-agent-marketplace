@@ -10,12 +10,11 @@
     "compliance": [
       "gdpr"
     ],
-    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
+    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
     "channels": [
       "sms",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "languages": [
       "en",

@@ -13,7 +13,6 @@
     ],
     "summary": "US law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

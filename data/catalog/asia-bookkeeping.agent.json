@@ -6,12 +6,11 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "languages": [
       "en",

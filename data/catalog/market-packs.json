@@ -5,10 +5,24 @@
       "label": "US",
       "prefix": "us-",
       "namePrefix": "US ",
-      "languages": ["en", "es"],
-      "channels": ["voice", "sms", "web", "app"],
-      "compliance": ["tcpa", "ccpa"],
-      "healthCompliance": ["hipaa", "tcpa", "ccpa"],
+      "languages": [
+        "en",
+        "es"
+      ],
+      "channels": [
+        "sms",
+        "web",
+        "app"
+      ],
+      "compliance": [
+        "tcpa",
+        "ccpa"
+      ],
+      "healthCompliance": [
+        "hipaa",
+        "tcpa",
+        "ccpa"
+      ],
       "emergency": "911",
       "currency": "USD",
       "privacyLabel": "CCPA/HIPAA where applicable",
@@ -21,10 +35,24 @@
       "label": "EU",
       "prefix": "eu-",
       "namePrefix": "EU ",
-      "languages": ["en", "de", "fr", "es", "it"],
-      "channels": ["sms", "web", "app", "voice"],
-      "compliance": ["gdpr"],
-      "healthCompliance": ["gdpr"],
+      "languages": [
+        "en",
+        "de",
+        "fr",
+        "es",
+        "it"
+      ],
+      "channels": [
+        "sms",
+        "web",
+        "app"
+      ],
+      "compliance": [
+        "gdpr"
+      ],
+      "healthCompliance": [
+        "gdpr"
+      ],
       "emergency": "112",
       "currency": "EUR",
       "privacyLabel": "GDPR",
@@ -37,10 +65,25 @@
       "label": "Africa",
       "prefix": "africa-",
       "namePrefix": "Africa ",
-      "languages": ["en", "fr", "sw"],
-      "channels": ["whatsapp", "web", "app", "sms", "voice"],
-      "compliance": ["popia", "regional_privacy"],
-      "healthCompliance": ["popia", "regional_privacy"],
+      "languages": [
+        "en",
+        "fr",
+        "sw"
+      ],
+      "channels": [
+        "whatsapp",
+        "web",
+        "app",
+        "sms"
+      ],
+      "compliance": [
+        "popia",
+        "regional_privacy"
+      ],
+      "healthCompliance": [
+        "popia",
+        "regional_privacy"
+      ],
       "emergency": "local emergency services",
       "currency": "local currency",
       "privacyLabel": "POPIA-style / regional privacy",
@@ -53,10 +96,24 @@
       "label": "Asia",
       "prefix": "asia-",
       "namePrefix": "Asia ",
-      "languages": ["en", "zh", "hi"],
-      "channels": ["web", "app", "sms", "voice"],
-      "compliance": ["pdpa", "regional_privacy"],
-      "healthCompliance": ["pdpa", "regional_privacy"],
+      "languages": [
+        "en",
+        "zh",
+        "hi"
+      ],
+      "channels": [
+        "web",
+        "app",
+        "sms"
+      ],
+      "compliance": [
+        "pdpa",
+        "regional_privacy"
+      ],
+      "healthCompliance": [
+        "pdpa",
+        "regional_privacy"
+      ],
       "emergency": "local emergency services",
       "currency": "local currency",
       "privacyLabel": "PDPA-style / regional privacy",

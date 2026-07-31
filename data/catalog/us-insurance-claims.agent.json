@@ -13,7 +13,6 @@
     ],
     "summary": "US insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

@@ -8,7 +8,6 @@
     "tier": "enterprise",
     "summary": "US Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry befo…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

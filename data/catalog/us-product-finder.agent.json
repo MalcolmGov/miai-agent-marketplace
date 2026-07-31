@@ -8,7 +8,6 @@
     "tier": "standard",
     "summary": "US Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 a…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

@@ -11,9 +11,8 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and.",
+    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

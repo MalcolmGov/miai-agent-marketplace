@@ -13,7 +13,6 @@
     ],
     "summary": "US gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

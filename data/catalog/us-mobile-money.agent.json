@@ -8,7 +8,6 @@
     "tier": "enterprise",
     "summary": "US Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalat…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

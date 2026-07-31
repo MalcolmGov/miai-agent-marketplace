@@ -13,7 +13,6 @@
     ],
     "summary": "US Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

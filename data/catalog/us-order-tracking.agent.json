@@ -13,7 +13,6 @@
     ],
     "summary": "US order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

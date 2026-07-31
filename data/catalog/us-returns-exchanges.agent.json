@@ -8,7 +8,6 @@
     "tier": "standard",
     "summary": "US Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across …",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

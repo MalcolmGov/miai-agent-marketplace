@@ -8,7 +8,6 @@
     "tier": "standard",
     "summary": "US Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

@@ -12,9 +12,8 @@
       "tcpa",
       "ccpa"
     ],
-    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SMS, web, app and.",
+    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, SMS, web, app and.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

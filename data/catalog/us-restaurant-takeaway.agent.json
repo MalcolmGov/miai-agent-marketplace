@@ -13,7 +13,6 @@
     ],
     "summary": "US restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

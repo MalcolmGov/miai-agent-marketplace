@@ -6,12 +6,11 @@
     "version": "1.1.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and voice.",
+    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "voice"
+      "app"
     ],
     "languages": [
       "en",

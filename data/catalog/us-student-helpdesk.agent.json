@@ -8,7 +8,6 @@
     "tier": "standard",
     "summary": "Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"

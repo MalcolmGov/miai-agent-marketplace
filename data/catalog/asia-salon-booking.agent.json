@@ -11,12 +11,11 @@
       "pdpa",
       "regional_privacy"
     ],
-    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and.",
+    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
     "channels": [
       "web",
       "app",
-      "sms",
-      "voice"
+      "sms"
     ],
     "languages": [
       "en",

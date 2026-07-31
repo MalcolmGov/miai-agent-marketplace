@@ -6,7 +6,7 @@
     "version": "1.1.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Africa — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. Voice here means WhatsApp voice notes (Whisper transcription in, ElevenLabs read-back out), not a standalone voice channel.",
+    "summary": "Africa — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. here means WhatsApp notes (Whisper transcription in, ElevenLabs read-back out), not a standalone channel.",
     "channels": [
       "whatsapp",
       "web",

@@ -13,7 +13,6 @@
     ],
     "summary": "US Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
     "channels": [
-      "voice",
       "sms",
       "web",
       "app"
