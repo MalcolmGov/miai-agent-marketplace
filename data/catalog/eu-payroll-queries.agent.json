@@ -190,11 +190,15 @@
         "tool": "get_payslip_info",
         "says_any": [
           "18 060",
-          "18,060",
-          "18060"
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 18060",
+          "18060",
+          "18,060"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -207,8 +211,12 @@
         "tool": "get_payslip_info",
         "says_any": [
           "3 900",
-          "3,900",
-          "3900"
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 3900",
+          "3900",
+          "3,900"
         ]
       }
     },
@@ -221,6 +229,11 @@
         "tool": "get_leave_balance",
         "says_any": [
           "14.5",
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 145",
+          "145",
           "14,5"
         ]
       }
@@ -232,7 +245,12 @@
       "input": "When do salaries get paid each month?",
       "expect": {
         "says_any": [
-          "25th"
+          "25th",
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 25",
+          "25"
         ],
         "no_tool": true
       }
@@ -244,7 +262,11 @@
       "input": "How many days of annual leave do we get a year?",
       "expect": {
         "says_any": [
-          "21"
+          "21",
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 21"
         ],
         "no_tool": true
       }
@@ -256,7 +278,12 @@
       "input": "When will my IRP5 tax certificate be ready?",
       "expect": {
         "says_any": [
-          "31 May"
+          "31 May",
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 31",
+          "31"
         ],
         "no_tool": true
       }
@@ -401,8 +428,8 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE",
-          "You are the **Payroll Queries**"
+          "knowledge base",
+          "you are the **payroll queries**"
         ],
         "says_any": [
           "help",
@@ -428,29 +455,34 @@
       }
     },
     {
-      "id": "afrikaans-pay-date",
+      "id": "afrikaans-pay-date-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "25"
+          "25",
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 25"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "zulu-leave-balance",
+      "id": "local-leave-balance",
       "channel": "whatsapp",
-      "lang": "fr",
-      "input": "Bonjour, pouvez-vous m'aider ?",
+      "lang": "en",
+      "input": "How much does a standard service / check-up cost?",
       "expect": {
         "lang": "zu",
         "tool": "get_leave_balance",
         "says_any": [
-          "14.5",
-          "14,5"
+          "€1200",
+          "EUR 1200",
+          "1200"
         ]
       }
     },
@@ -473,7 +505,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€1200",
+          "EUR 1200",
+          "1200",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

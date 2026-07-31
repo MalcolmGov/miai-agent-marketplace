@@ -5,8 +5,16 @@ import { getToken } from "../oauth/tokens.js";
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
   if (n.includes("order")) return { status: "out_for_delivery", eta: "tomorrow", order_id: args.order_id ?? "4821" };
-  if (n.includes("availability") || n.includes("check_availability"))
-    return { available: true, slots: [{ datetime: "2026-08-07T10:00:00" }], requested: args };
+  if (n.includes("availability") || n.includes("check_availability") || n.includes("check_calendar"))
+    return {
+      ok: true,
+      available: true,
+      slots: [
+        { datetime: "2026-08-07T10:00:00", label: "Thursday 10:00" },
+        { datetime: "2026-08-07T14:30:00", label: "Thursday 14:30" },
+      ],
+      requested: args,
+    };
   if (n.includes("book")) return { booked: true, booking_ref: "BK-3391", ...args };
   if (n.includes("job_opening") || n.includes("list_jobs") || n.includes("open_role")) {
     return {
@@ -48,8 +56,18 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
   if (n.includes("handoff")) return { routed: true, queue: "human_desk" };
   if (n.includes("guest")) return { request_ref: "GR-1001", status: "logged" };
   if (n.includes("estimate")) return { estimate_ref: "EST-2201", status: "logged" };
-  if (n.includes("catalogue") || n.includes("list_services") || n.includes("menu"))
-    return { ok: true, items: ["Sample item A", "Sample item B"] };
+  if (
+    n.includes("catalogue") ||
+    n.includes("list_services") ||
+    n.includes("get_services") ||
+    n.includes("menu") ||
+    n.includes("list_catalogue")
+  )
+    return {
+      ok: true,
+      items: ["Check-up", "Standard service", "Follow-up consultation"],
+      note: "Sandbox stub — prefer prices/details from knowledge base.",
+    };
   if (n.includes("policy"))
     return {
       ok: true,

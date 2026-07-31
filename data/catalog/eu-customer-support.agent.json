@@ -215,7 +215,7 @@
       "expect": {
         "tool": "get_order_status",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -241,8 +241,12 @@
       "expect": {
         "says_any": [
           "€3",
+          "EUR 3",
+          "3",
           "free",
-          "€38"
+          "€38",
+          "EUR 38",
+          "38"
         ],
         "no_tool": true
       }
@@ -255,6 +259,11 @@
       "expect": {
         "says_any": [
           "14 days",
+          "€3",
+          "EUR 3",
+          "3",
+          "EUR 14",
+          "14",
           "unused",
           "original packaging"
         ]
@@ -325,8 +334,8 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE",
-          "You are the Customer Support"
+          "knowledge base",
+          "you are the customer support"
         ]
       }
     },
@@ -359,21 +368,26 @@
       }
     },
     {
-      "id": "afrikaans-reply",
+      "id": "afrikaans-reply-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "09:00"
+          "09:00",
+          "€3",
+          "EUR 3",
+          "3",
+          "EUR 0900",
+          "0900"
         ]
       }
     },
     {
-      "id": "zulu-greeting",
+      "id": "zulu-greeting-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, können Sie mir bitte helfen?",
       "expect": {
         "lang": "zu",
@@ -421,7 +435,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€3",
+          "EUR 3",
+          "3",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

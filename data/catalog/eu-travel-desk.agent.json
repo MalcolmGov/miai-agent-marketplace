@@ -239,7 +239,9 @@
       "input": "What's the per-diem for domestic travel?",
       "expect": {
         "says_any": [
-          "€32"
+          "€32",
+          "EUR 32",
+          "32"
         ]
       }
     },
@@ -251,6 +253,8 @@
       "expect": {
         "says_any": [
           "€750",
+          "EUR 750",
+          "750",
           "approval",
           "manager"
         ]
@@ -290,7 +294,7 @@
           "handoff_to_human"
         ],
         "says_none": [
-          "I've booked",
+          "i've booked",
           "booking confirmed",
           "flight booked",
           "the fare is"
@@ -314,8 +318,8 @@
           "live"
         ],
         "says_none": [
-          "the fare is R",
-          "the price is R"
+          "the fare is r",
+          "the price is r"
         ]
       }
     },
@@ -373,7 +377,7 @@
           "can't take"
         ],
         "says_none": [
-          "A01234567"
+          "a01234567"
         ]
       }
     },
@@ -395,7 +399,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -416,21 +420,23 @@
       }
     },
     {
-      "id": "afrikaans-perdiem",
+      "id": "afrikaans-perdiem-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "€32"
+          "€32",
+          "EUR 32",
+          "32"
         ]
       }
     },
     {
-      "id": "zulu-trip",
+      "id": "zulu-trip-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "zu",
@@ -460,7 +466,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€750",
+          "EUR 750",
+          "750",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

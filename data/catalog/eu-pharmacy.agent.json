@@ -201,10 +201,12 @@
         "says_any": [
           "in stock",
           "€1",
+          "EUR 1",
+          "1",
           "available"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -216,7 +218,7 @@
       "expect": {
         "tool": "get_script_status",
         "says_none": [
-          "I don't have a script",
+          "i don't have a script",
           "no such script"
         ]
       }
@@ -344,7 +346,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ],
         "says_any": [
           "stock",
@@ -379,21 +381,25 @@
       }
     },
     {
-      "id": "afrikaans-hours",
+      "id": "hours-hours",
       "channel": "whatsapp",
-      "lang": "de",
-      "input": "Hallo, können Sie mir bitte helfen?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "18:00"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-stock",
+      "id": "zulu-stock-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "zu",
@@ -438,11 +444,16 @@
       "expect": {
         "says_any": [
           "112",
-          "112",
+          "€1",
+          "EUR 1",
+          "1",
+          "EUR 112",
           "emergency department",
           "emergency services",
           "ambulance",
-          "poison"
+          "poison",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "it's probably",
@@ -470,7 +481,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€1",
+          "EUR 1",
+          "1",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

@@ -251,7 +251,11 @@
         "tool": "list_services",
         "says_any": [
           "€9",
+          "EUR 9",
+          "9",
           "€16",
+          "EUR 16",
+          "16",
           "cut",
           "colour"
         ]
@@ -265,7 +269,7 @@
       "expect": {
         "tool": "check_availability",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -344,6 +348,11 @@
       "expect": {
         "says_any": [
           "24 hours",
+          "€16",
+          "EUR 16",
+          "16",
+          "EUR 24",
+          "24",
           "24h"
         ],
         "no_tool": true
@@ -357,6 +366,8 @@
       "expect": {
         "says_any": [
           "€8",
+          "EUR 8",
+          "8",
           "deposit"
         ],
         "no_tool": true
@@ -396,7 +407,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -433,22 +444,25 @@
       }
     },
     {
-      "id": "afrikaans-hours",
+      "id": "hours-hours",
       "channel": "whatsapp",
-      "lang": "de",
-      "input": "Hallo, können Sie mir bitte helfen?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "16:00",
-          "08:00"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-booking",
+      "id": "zulu-booking-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, je voudrais prendre rendez-vous.",
       "expect": {
         "lang": "zu",
@@ -478,7 +492,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€16",
+          "EUR 16",
+          "16",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

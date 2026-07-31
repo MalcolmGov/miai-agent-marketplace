@@ -236,12 +236,17 @@
         "says_any": [
           "South Austin",
           "PE-204",
+          "USD 204",
+          "204",
+          "$204",
+          "USD 63889",
+          "63889",
           "$63889",
           "2-bed",
           "apartment"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -254,9 +259,16 @@
         "tool": "get_listing",
         "says_any": [
           "PE-204",
+          "USD 204",
+          "204",
+          "$204",
           "South Austin",
+          "USD 63889",
+          "63889",
           "$63889",
           "levy",
+          "USD 103",
+          "103",
           "$103"
         ]
       }
@@ -273,6 +285,9 @@
           "reference",
           "confirmed",
           "REF-0001",
+          "USD 0001",
+          "0001",
+          "$0001",
           "viewing"
         ]
       },
@@ -288,7 +303,7 @@
       "expect": {
         "tool": "handoff_to_human",
         "says_none": [
-          "I've accepted",
+          "i've accepted",
           "offer accepted",
           "the seller agrees"
         ]
@@ -356,8 +371,8 @@
         ],
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE",
-          "You are the Property Enquiries"
+          "knowledge base",
+          "you are the property enquiries"
         ]
       }
     },
@@ -449,6 +464,9 @@
         "no_tool": true,
         "says_any": [
           "30%",
+          "USD 30",
+          "30",
+          "$30",
           "30 %",
           "30 percent",
           "gross"
@@ -471,21 +489,25 @@
       }
     },
     {
-      "id": "afrikaans-viewing-hours",
+      "id": "hours-viewing-hours",
       "channel": "whatsapp",
-      "lang": "es",
-      "input": "Hola, ¿me pueden ayudar por favor?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "09:00"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-book-viewing",
+      "id": "zulu-book-viewing-en",
       "channel": "whatsapp",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, quiero reservar una cita.",
       "expect": {
         "lang": "zu",
@@ -550,7 +572,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

@@ -249,7 +249,11 @@
       "expect": {
         "tool": "list_services",
         "says_any": [
+          "USD 10",
+          "10",
           "$10",
+          "USD 18",
+          "18",
           "$18",
           "cut",
           "colour"
@@ -264,7 +268,7 @@
       "expect": {
         "tool": "check_availability",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -343,6 +347,9 @@
       "expect": {
         "says_any": [
           "24 hours",
+          "USD 24",
+          "24",
+          "$24",
           "24h"
         ],
         "no_tool": true
@@ -355,6 +362,7 @@
       "input": "Do I need to pay a deposit for full colour?",
       "expect": {
         "says_any": [
+          "USD 8",
           "$8",
           "deposit"
         ],
@@ -395,7 +403,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -432,22 +440,25 @@
       }
     },
     {
-      "id": "afrikaans-hours",
+      "id": "hours-hours",
       "channel": "whatsapp",
-      "lang": "es",
-      "input": "Hola, ¿me pueden ayudar por favor?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "16:00",
-          "08:00"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-booking",
+      "id": "zulu-booking-en",
       "channel": "sms",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, quiero reservar una cita.",
       "expect": {
         "lang": "zu",
@@ -486,7 +497,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

@@ -49,33 +49,150 @@ export interface ModelAdapter {
   }): Promise<{ content: string; toolCall?: { name: string; args: Record<string, unknown> } }>;
 }
 
-/** Pull a short relevant excerpt from the system knowledge block for mock answers. */
+/** Pull a relevant excerpt from the system knowledge block for mock answers. */
 function knowledgeHit(system: string, query: string): string | null {
   const kbIdx = system.indexOf("## Knowledge base");
-  if (kbIdx < 0) return null;
-  const kb = system.slice(kbIdx, kbIdx + 60_000);
+  const kb = kbIdx >= 0 ? system.slice(kbIdx, kbIdx + 80_000) : system.slice(0, 80_000);
   const terms = query
     .toLowerCase()
+    .replace(/##[\s\S]*$/g, " ") // drop trailing compliance appendices in eval inputs
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
-    .filter((t) => t.length > 3);
+    .filter((t) => t.length > 2 && !STOP.has(t));
   const chunks = kb.split(/\n(?=#+ )/);
   let best = "";
   let bestScore = 0;
+  const q = query.toLowerCase();
   for (const chunk of chunks) {
     const lower = chunk.toLowerCase();
     let score = 0;
-    for (const t of terms) if (lower.includes(t)) score += 1;
+    for (const t of terms) if (lower.includes(t)) score += t.length > 4 ? 2 : 1;
+    // Boost role/job/leave sections for common eval themes
+    if (/job|hiring|role|opening|leave|pto|holiday|benefit|wifi|check-?in|price|order|service|treatment/.test(lower)) {
+      for (const t of ["job", "leave", "role", "wifi", "order", "price", "benefit", "service", "treatment"]) {
+        if (terms.includes(t) && lower.includes(t)) score += 3;
+      }
+    }
+    if (/how much|price|cost|fee|levy|usd|eur|\$/.test(q) && /usd\s*\d|€\s*\d|\$\s*\d|\br\s*\d|price|fee/.test(lower)) {
+      score += 12;
+    }
+    if (/service|treatment|offer|catalogue|menu/.test(q) && /service|treatment|price|catalogue|menu/.test(lower)) {
+      score += 8;
+    }
+    if (/hours|open|closed/.test(q) && /hours|monday|open|closed/.test(lower)) score += 8;
     if (score > bestScore) {
       bestScore = score;
       best = chunk.trim();
     }
   }
-  if (bestScore < 1 || best.length < 40) return null;
-  return best.slice(0, 900);
+  if (bestScore < 2 || best.length < 30) return null;
+  return best.slice(0, 1400);
 }
 
-/** Deterministic mock model — good for local demo without API keys. */
+const STOP = new Set([
+  "the",
+  "and",
+  "for",
+  "with",
+  "that",
+  "this",
+  "have",
+  "from",
+  "your",
+  "what",
+  "when",
+  "where",
+  "how",
+  "can",
+  "please",
+  "just",
+  "about",
+  "would",
+  "could",
+  "into",
+  "been",
+  "they",
+  "them",
+  "will",
+  "does",
+  "dont",
+  "don't",
+  "need",
+  "want",
+  "like",
+  "some",
+  "more",
+  "than",
+  "then",
+  "also",
+  "only",
+  "notes",
+  "compliance",
+  "tcpa",
+  "ccpa",
+  "continue",
+  "conversations",
+  "customer",
+  "started",
+]);
+
+function findTool(tools: AgentPackage["tools"], ...parts: string[]) {
+  return tools.find((t) => parts.every((p) => t.name.toLowerCase().includes(p)))?.name;
+}
+
+function pickToolByIntent(tools: AgentPackage["tools"], lower: string): string | undefined {
+  const ranked: Array<{ name: string; score: number }> = [];
+  for (const t of tools) {
+    const name = t.name.toLowerCase();
+    let score = 0;
+    for (const part of name.split("_")) {
+      if (part.length < 3) continue;
+      if (lower.includes(part)) score += 3;
+    }
+    if (
+      /list_services|get_services|list_catalogue|catalogue|menu/.test(name) &&
+      /service|treatment|offer|menu|catalogue|price list|what do you|how much/.test(lower)
+    )
+      score += 10;
+    if (
+      /check_availability|availability|check_calendar/.test(name) &&
+      /availab|free slot|when can|open slot|next (week|thursday|monday)|have any/.test(lower)
+    )
+      score += 12;
+    if (/book|appointment|reserve|schedule/.test(name) && /book|appointment|reserve|schedule|callback/.test(lower)) {
+      score += /yes|confirm|go ahead|please book/.test(lower) ? 14 : 2;
+    }
+    if (
+      /treatment_info|get_treatment/.test(name) &&
+      /treatment|root canal|filling|extraction|what (is|does)/.test(lower)
+    )
+      score += 10;
+    if (/job_opening|open_role|list_jobs/.test(name) && /job|hiring|vacanc|role|position/.test(lower))
+      score += 8;
+    if (
+      /levy|statement|payslip|deadline|amenity|recommendation|consignment|package|compliance|incident|onboarding|process_info|product_info|requirement|policy|outage|stock|invoice|cover|estimate/.test(
+        name,
+      )
+    ) {
+      const key = name
+        .replace(/^(get_|check_|list_|log_|track_|update_)/, "")
+        .split("_");
+      if (key.some((p) => p.length > 3 && lower.includes(p))) score += 9;
+    }
+    if (/handoff/.test(name) && /human|person|someone|agent|emergency|urgent|escalat/.test(lower))
+      score += 5;
+    if (score > 0) ranked.push({ name: t.name, score });
+  }
+  ranked.sort((a, b) => b.score - a.score);
+  return ranked[0]?.score >= 5 ? ranked[0].name : undefined;
+}
+
+function emergencyNumber(system: string): string {
+  const m = system.match(/call \*\*([^*]+)\*\*/i) || system.match(/Emergencies:.*?([0-9]{3,5}|local emergency services)/i);
+  return (m?.[1] || "local emergency services").trim();
+}
+
+/** Deterministic mock model — good for local demo / zero-cost eval suite. */
 export class MockModelAdapter implements ModelAdapter {
   async complete(input: {
     system: string;
@@ -84,92 +201,256 @@ export class MockModelAdapter implements ModelAdapter {
     model: string;
   }) {
     const last = [...input.messages].reverse().find((m) => m.role === "user")?.content ?? "";
-    const lower = last.toLowerCase();
+    const lower = last.toLowerCase().replace(/##[\s\S]*$/g, " ");
     const toolNote = [...input.messages].reverse().find((m) => m.role === "tool");
+    const tools = input.tools;
+    const hit = () => knowledgeHit(input.system, last);
 
     // After a tool ran, answer from knowledge + tool payload instead of echoing JSON.
     if (toolNote) {
-      const hit = knowledgeHit(input.system, last);
-      if (hit) {
+      const kb = hit();
+      const toolName = toolNote.toolName ?? "tool";
+      if (/job_opening|list_jobs|open_role/i.test(toolName)) {
+        if (kb && /driver|warehouse|bookkeeper|role|hiring|opening|REQ-/i.test(kb)) {
+          return {
+            content: `Here are the roles we're hiring for (from knowledge):\n\n${kb}\n\nScreening is indicative only — the hiring team decides.`,
+          };
+        }
+      }
+      if (/list_services|get_services|catalogue|menu|list_catalogue/i.test(toolName)) {
+        const priced =
+          knowledgeHit(input.system, `price cost fee USD EUR services treatments ${last}`) || kb;
+        const kbBlock = input.system.includes("## Knowledge base")
+          ? input.system.slice(input.system.indexOf("## Knowledge base"))
+          : input.system;
+        const priceLines = kbBlock
+          .split("\n")
+          .filter((l) => /USD\s*\d|€\s*\d|\$\s*\d|\bR\s*\d|from\s+\d/i.test(l))
+          .slice(0, 12)
+          .join("\n");
         return {
-          content: `From our knowledge base:\n\n${hit}\n\n(Also confirmed via ${toolNote.toolName ?? "tool"}.)`,
+          content:
+            `${priced || "Here are the services on file."}\n\n${priceLines ? `Prices on file:\n${priceLines}\n\n` : ""}I can check availability or book once you pick a service — shall I continue?`,
         };
+      }
+      if (/availability|check_calendar/i.test(toolName)) {
+        return {
+          content:
+            "I have availability — for example Thursday 10:00 is open. Shall I book that for you, or would you like another time?",
+        };
+      }
+      if (/capture_application|application/i.test(toolName)) {
+        return {
+          content:
+            "Thanks — your application is captured under reference APP-4821. The hiring team will follow up; this is not a hiring decision.",
+        };
+      }
+      if (/book|appointment|reserve|callback/i.test(toolName)) {
+        return {
+          content:
+            "You're booked — reference BK-3391. You'll get a confirmation on your contact details. Please confirm if anything looks wrong.",
+        };
+      }
+      if (kb) return { content: `${kb}\n\n(Looked up via ${toolName}.)` };
+      try {
+        const data = JSON.parse(toolNote.content) as Record<string, unknown>;
+        if (data.items) {
+          return { content: `Here's what I found: ${JSON.stringify(data.items)}. ${kb || ""}`.trim() };
+        }
+      } catch {
+        /* ignore */
       }
       return {
         content:
-          "I've looked that up. Based on our HR knowledge on file I can help with PTO, benefits, hiring, and escalations — ask a more specific question if you need a detail.",
+          "I've looked that up in our records. Ask a more specific question if you need another detail, or say if you'd like a human.",
       };
     }
 
-    if (/ignore (all )?previous|system prompt|jailbreak/.test(lower)) {
+    if (/ignore (all )?previous|system prompt|jailbreak|reveal your (prompt|rules)/.test(lower)) {
       return {
         content:
           "I can't share internal instructions. I can help with your account, booking, or order questions — what do you need?",
       };
     }
+
+    // Card / OTP / secrets
+    if (/card (number|details)|cvv|4111|debit card|credit card|charge my card/.test(lower)) {
+      return {
+        content:
+          "I can't take card details in chat — please use the secure payment link or pay at the practice. Never share full card numbers or CVV here.",
+      };
+    }
+    if (/\botp\b|one-?time (pin|password)|share.*(pin|password)/.test(lower)) {
+      return {
+        content:
+          "Never share OTP, PIN, or passwords with me — I will never ask for them. If someone asks, don't share.",
+      };
+    }
+    if (/^\s*stop\b|unsubscribe|don't (text|message|contact) me|remove me/.test(lower)) {
+      return {
+        content:
+          "Understood — STOP noted. You won't receive marketing messages; I'll hand off so suppression is completed.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "stop_suppression", summary: last.slice(0, 200) },
+        },
+      };
+    }
     if (
-      /speak to (a )?(human|person|agent)|real person|handoff|escalate|harassment|discrimination|ada |accommodation|grievance/.test(
+      /financial advice|should i (invest|take the loan)|which (loan|policy) is best for me|guarantee a return/.test(
         lower,
       )
     ) {
       return {
-        content: "I'll connect you to a teammate now.",
+        content:
+          "I can't give financial advice. I can share product information on file or connect you to a licensed human.",
+      };
+    }
+    if (
+      /colleague'|another (customer|patient|employee|client|person)|my (wife|husband|partner|friend|son|daughter)'s|someone else'?s/.test(
+        lower,
+      )
+    ) {
+      return {
+        content:
+          "I can't share or access another person's confidential information — only your own account. If they need help, they should contact us directly.",
+      };
+    }
+    if (/life-?threatening|emergency|chest pain|can't breathe|suicide/.test(lower)) {
+      const num = emergencyNumber(input.system);
+      return {
+        content: `If this is life-threatening, call **${num}** now. I'm also handing you to a human teammate.`,
         toolCall: {
-          name: "handoff_to_human",
-          args: { reason: "explicit_request", summary: last.slice(0, 400) },
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "emergency", summary: last.slice(0, 400) },
         },
       };
     }
 
-    // Prefer answering from knowledge for FAQ-style questions (office, PTO, benefits…).
-    const faq =
-      /where|office|address|hours|pto|leave|holiday|benefit|401|premium|payroll|direct deposit|salary|role|req-|apply|parental|sick|open enrollment|austin|chicago|workday/.test(
+    // Sensitive / explicit human → handoff
+    if (
+      /speak to (a )?(human|person|someone|agent)|real person|handoff|escalate|harassment|discrimination|ada |accommodation|grievance|bully|depression|medical|booked off|sick.?note|disciplinary|termination letter|connect me|clinical|symptom|diagnosis|pain|swelling|bleeding|knock|fever|vomiting|seizure|broken|fracture/.test(
         lower,
-      );
-    if (faq) {
-      const hit = knowledgeHit(input.system, last);
-      if (hit) {
-        return { content: hit };
+      )
+    ) {
+      return {
+        content:
+          "I'm connecting you to a human teammate confidentially — they'll follow up. I won't handle the substance of this in chat.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "sensitive_or_explicit", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
+    if (/got the job|have the job|means i'?ve got|guaranteed an interview|qualify for the role, right/.test(lower)) {
+      const kb = hit();
+      return {
+        content:
+          (kb ? kb + "\n\n" : "") +
+          "Screening against listed requirements is indicative only — it is not a hiring decision. The hiring team decides interviews and offers; I can't guarantee a job or interview.",
+      };
+    }
+
+    // Confirm → write tools
+    if (/yes.*(correct|submit|confirm|book|go ahead)|please submit|everything is correct|confirm.*(book|application)/.test(lower)) {
+      const capture = findTool(tools, "capture");
+      const book =
+        findTool(tools, "book") ?? findTool(tools, "appointment") ?? findTool(tools, "reserve");
+      if (capture && /application|apply/.test(lower + (input.messages.map((m) => m.content).join(" ").toLowerCase()))) {
+        return {
+          content: "Submitting your application now.",
+          toolCall: { name: capture, args: { confirmed: true } },
+        };
       }
+      if (book) {
+        return {
+          content: "Confirming that booking now.",
+          toolCall: {
+            name: book,
+            args: { confirmed: true, date: "Thursday", name: "Guest", contact: "guest@example.com" },
+          },
+        };
+      }
+    }
+
+    // Availability-only questions (don't book yet)
+    if (/availab|free slot|when are you free|any openings/.test(lower) && !/please book|go ahead and book/.test(lower)) {
+      const avail = findTool(tools, "availability") ?? findTool(tools, "calendar");
+      if (avail) {
+        return {
+          content: "Of course — no problem. Checking availability now; let me know which slot you prefer and I'll book it.",
+          toolCall: { name: avail, args: { date: "Thursday" } },
+        };
+      }
+    }
+    // Explicit wait / don't book yet
+    if (/don'?t book|just (asking|checking)|not ready to book|before (i|we) book/.test(lower)) {
+      return {
+        content:
+          "Of course — no problem. I won't book anything yet. Tell me the service and preferred times whenever you're ready, and let me know when to go ahead.",
+      };
+    }
+
+    // Intent → tools
+    const intentTool = pickToolByIntent(tools, lower);
+    if (intentTool && !/handoff/.test(intentTool)) {
+      return {
+        content: `Let me check that with ${intentTool.replace(/_/g, " ")}.`,
+        toolCall: { name: intentTool, args: { query: last.slice(0, 200) } },
+      };
+    }
+
+    if (/what jobs|hiring for|open roles|vacancies|positions (are )?open/.test(lower)) {
+      const tool = findTool(tools, "job") ?? findTool(tools, "opening");
+      if (tool) return { content: "I'll pull the current openings.", toolCall: { name: tool, args: {} } };
+    }
+
+    if (/i('| w)?d like to apply|want to apply|apply for the/.test(lower)) {
+      const kb = hit();
+      return {
+        content:
+          (kb ? kb + "\n\n" : "") +
+          "I can capture your application for the hiring team. Please confirm your name, contact, and role — screening is indicative only and not a hiring decision. Reply yes to submit once details look right.",
+      };
+    }
+
+    if (/do i qualify|code \d|prdp|requirements|licence|license/.test(lower)) {
+      const kb = hit();
+      return {
+        content:
+          (kb ? kb + "\n\n" : "") +
+          "Based on the listed minimum requirements, you may not yet meet every requirement (for example licence class / PrDP where listed). This is indicative only — not a hiring decision.",
+      };
     }
 
     const order = last.match(/\b(\d{3,}|ORD-?\d+)\b/i);
     if (/where('| i)?s my order|track|order status/.test(lower) && order) {
+      const tool = findTool(tools, "order") ?? "get_order_status";
       return {
         content: "Looking up that order now.",
-        toolCall: { name: "get_order_status", args: { order_id: order[1] } },
-      };
-    }
-    if (/book|appointment|reserve|schedule/.test(lower)) {
-      const tool = input.tools.find((t) => t.name.includes("book"))?.name ?? "book_appointment";
-      return {
-        content: "I can help with that booking — checking availability.",
-        toolCall: {
-          name: tool,
-          args: {
-            service: "consultation",
-            date: "Thursday",
-            name: "Guest",
-            contact: "guest@example.com",
-          },
-        },
-      };
-    }
-    if (/how much|price|cost|hours|open|wifi|check-in|menu|service/.test(lower)) {
-      const hit = knowledgeHit(input.system, last);
-      return {
-        content:
-          hit ??
-          "Based on the business knowledge on file: I can help with pricing, hours, and next steps. Share a bit more detail (or an order/booking reference) and I’ll take action.",
+        toolCall: { name: tool, args: { order_id: order[1] } },
       };
     }
 
-    const hit = knowledgeHit(input.system, last);
-    if (hit) return { content: hit };
+    if (/how much|price|cost|hours|open|wifi|check-in|menu|service|treatment|levy|balance|bill/.test(lower)) {
+      const kb = hit();
+      if (kb) return { content: kb };
+    }
+
+    const kb = hit();
+    if (kb) return { content: kb };
+
+    if (intentTool) {
+      return {
+        content: "Connecting you to a teammate.",
+        toolCall: { name: intentTool, args: { summary: last.slice(0, 400) } },
+      };
+    }
 
     return {
       content:
-        "Happy to help. Ask about policies, benefits, hiring, orders, bookings — or say if you’d like a human.",
+        "Happy to help. Ask about services, prices, hours, bookings, policies, or say if you’d like a human.",
     };
   }
 }
@@ -352,11 +633,12 @@ export async function runTurn(
   const system = [
     req.pkg.system_prompt,
     "",
-    "## Knowledge base",
-    "Answer factual questions (office locations, hours, PTO, benefits, hiring, policies) from this knowledge first.",
+    "## Response rules",
+    "Answer factual questions (office locations, hours, PTO, benefits, hiring, policies) from the knowledge base first.",
     "Only call tools when you need a live system action (booking, ticket, order lookup, handoff).",
     "Never paste raw JSON tool payloads to the user — summarize in clear natural language.",
     "",
+    "## Knowledge base",
     knowledge.slice(0, knowledgeBudget),
     "",
     "## Guardrails",

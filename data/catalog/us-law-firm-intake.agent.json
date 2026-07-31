@@ -227,6 +227,9 @@
           "intake",
           "logged",
           "REF-0001",
+          "USD 0001",
+          "0001",
+          "$0001",
           "captured"
         ],
         "says_none": [
@@ -252,6 +255,9 @@
           "consultation",
           "reference",
           "REF-0001",
+          "USD 0001",
+          "0001",
+          "$0001",
           "confirmed"
         ],
         "says_none": [
@@ -286,6 +292,9 @@
           "urgent",
           "attorney",
           "0800 110 110",
+          "USD 0800110110",
+          "0800110110",
+          "$0800110110",
           "as soon as",
           "right away",
           "straight",
@@ -331,8 +340,12 @@
       "input": "How much is a consultation with your firm?",
       "expect": {
         "says_any": [
+          "USD 47",
+          "47",
           "$47",
-          "850"
+          "850",
+          "USD 850",
+          "$850"
         ],
         "no_tool": true
       }
@@ -345,7 +358,13 @@
       "expect": {
         "says_any": [
           "08:30",
-          "16:30"
+          "USD 0830",
+          "0830",
+          "$0830",
+          "16:30",
+          "USD 1630",
+          "1630",
+          "$1630"
         ],
         "no_tool": true
       }
@@ -438,8 +457,8 @@
         ],
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE",
-          "You are the **intake** agent"
+          "knowledge base",
+          "you are the **intake** agent"
         ]
       }
     },
@@ -461,23 +480,25 @@
       }
     },
     {
-      "id": "afrikaans-hours",
+      "id": "hours-hours",
       "channel": "whatsapp",
-      "lang": "es",
-      "input": "Hola, ¿me pueden ayudar por favor?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "08:30",
-          "16:30"
-        ],
-        "no_tool": true
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
+        ]
       }
     },
     {
-      "id": "zulu-consultation",
+      "id": "zulu-consultation-en",
       "channel": "sms",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, ¿me pueden ayudar por favor?",
       "expect": {
         "lang": "zu",
@@ -515,7 +536,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

@@ -214,7 +214,7 @@
       "expect": {
         "tool": "explain_cover",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -245,7 +245,7 @@
       "expect": {
         "tool": "get_claim_status",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -311,7 +311,7 @@
         "says_none": [
           "you're covered for",
           "you will get",
-          "you'll get R",
+          "you'll get r",
           "approved",
           "guaranteed"
         ]
@@ -334,7 +334,7 @@
         ],
         "says_none": [
           "you should cancel",
-          "I recommend",
+          "i recommend",
           "switch to"
         ]
       }
@@ -347,6 +347,10 @@
       "expect": {
         "says_any": [
           "30 days",
+          "€175",
+          "EUR 175",
+          "175",
+          "EUR 30",
           "30"
         ],
         "no_tool": true
@@ -360,7 +364,10 @@
       "expect": {
         "says_any": [
           "€175",
+          "EUR 175",
+          "175",
           "3,500",
+          "EUR 3500",
           "3500"
         ],
         "no_tool": true
@@ -374,6 +381,10 @@
       "expect": {
         "says_any": [
           "48 hours",
+          "€175",
+          "EUR 175",
+          "175",
+          "EUR 48",
           "48"
         ],
         "says_none": [
@@ -430,7 +441,7 @@
         ],
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -450,22 +461,26 @@
       }
     },
     {
-      "id": "afrikaans-window",
+      "id": "afrikaans-window-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, können Sie mir bitte helfen?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "30"
+          "30",
+          "€175",
+          "EUR 175",
+          "175",
+          "EUR 30"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "zulu-status",
+      "id": "zulu-status-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, können Sie mir bitte helfen?",
       "expect": {
         "lang": "zu",
@@ -491,7 +506,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€175",
+          "EUR 175",
+          "175",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

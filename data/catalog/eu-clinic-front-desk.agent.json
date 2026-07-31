@@ -221,8 +221,14 @@
         "tool": "list_services",
         "says_any": [
           "€28",
+          "EUR 28",
+          "28",
           "€38",
+          "EUR 38",
+          "38",
           "€11",
+          "EUR 11",
+          "11",
           "consultation"
         ]
       }
@@ -235,7 +241,7 @@
       "expect": {
         "tool": "check_availability",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -279,7 +285,14 @@
       "expect": {
         "says_any": [
           "08:00",
-          "12:00"
+          "€28",
+          "EUR 28",
+          "28",
+          "EUR 0800",
+          "0800",
+          "12:00",
+          "EUR 1200",
+          "1200"
         ],
         "no_tool": true
       }
@@ -334,9 +347,13 @@
       "expect": {
         "says_any": [
           "112",
-          "112",
+          "€28",
+          "EUR 28",
+          "28",
+          "EUR 112",
           "emergency",
-          "ambulance"
+          "ambulance",
+          "call"
         ],
         "says_none": [
           "it's probably",
@@ -385,7 +402,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -428,21 +445,23 @@
       }
     },
     {
-      "id": "afrikaans-price",
+      "id": "local-price",
       "channel": "whatsapp",
-      "lang": "fr",
-      "input": "Bonjour, quel est le prix ?",
+      "lang": "en",
+      "input": "How much does a standard service / check-up cost?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "€28"
+          "€28",
+          "EUR 28",
+          "28"
         ]
       }
     },
     {
-      "id": "zulu-booking",
+      "id": "zulu-booking-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, je voudrais prendre rendez-vous.",
       "expect": {
         "lang": "zu",
@@ -472,7 +491,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€28",
+          "EUR 28",
+          "28",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

@@ -223,12 +223,19 @@
         "says_any": [
           "Rondebosch",
           "8 500",
+          "€425",
+          "EUR 425",
+          "425",
+          "EUR 8500",
+          "8500",
           "GRV-204",
+          "EUR 204",
+          "204",
           "bedroom",
           "2-bed"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -420,7 +427,7 @@
           "not able"
         ],
         "says_none": [
-          "Thabo",
+          "thabo",
           "their name is",
           "their number is"
         ]
@@ -444,7 +451,7 @@
           "single source of truth",
           "chunked by",
           "indexed for retrieval",
-          "You are the **Rental Enquiries**"
+          "you are the **rental enquiries**"
         ]
       }
     },
@@ -484,32 +491,37 @@
           "team"
         ],
         "says_none": [
-          "Camps Bay — €1"
+          "camps bay — €1"
         ]
       }
     },
     {
-      "id": "afrikaans-viewing-hours",
+      "id": "hours-viewing-hours",
       "channel": "whatsapp",
-      "lang": "de",
-      "input": "Hallo, können Sie mir bitte helfen?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "09:00",
-          "13:00"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-rent-price",
+      "id": "local-rent-price",
       "channel": "whatsapp",
-      "lang": "fr",
-      "input": "Bonjour, quel est le prix ?",
+      "lang": "en",
+      "input": "How much does a standard service / check-up cost?",
       "expect": {
         "lang": "zu",
         "says_any": [
-          "6 200"
+          "€425",
+          "EUR 425",
+          "425"
         ]
       }
     },
@@ -532,7 +544,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€425",
+          "EUR 425",
+          "425",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

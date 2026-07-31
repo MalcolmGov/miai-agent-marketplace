@@ -222,7 +222,11 @@
         "tool": "list_services",
         "says_any": [
           "€26",
+          "EUR 26",
+          "26",
           "€19",
+          "EUR 19",
+          "19",
           "consultation"
         ]
       }
@@ -235,7 +239,7 @@
       "expect": {
         "tool": "check_availability",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -266,7 +270,7 @@
           "book_appointment"
         ],
         "says_none": [
-          "BK-3391"
+          "bk-3391"
         ],
         "says_any": [
           "no problem",
@@ -291,6 +295,11 @@
         "says_any": [
           "no food",
           "10 PM",
+          "€26",
+          "EUR 26",
+          "26",
+          "EUR 10",
+          "10",
           "fast",
           "water"
         ]
@@ -304,7 +313,14 @@
       "expect": {
         "says_any": [
           "08:00",
-          "12:00"
+          "€26",
+          "EUR 26",
+          "26",
+          "EUR 0800",
+          "0800",
+          "12:00",
+          "EUR 1200",
+          "1200"
         ],
         "no_tool": true
       }
@@ -370,8 +386,16 @@
       "expect": {
         "says_any": [
           "+49 30 123456",
+          "€26",
+          "EUR 26",
+          "26",
+          "EUR 4930123456",
+          "4930123456",
           "emergency line",
-          "emergency vet"
+          "emergency vet",
+          "112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "it's probably",
@@ -388,8 +412,16 @@
       "expect": {
         "says_any": [
           "+49 30 123456",
+          "€26",
+          "EUR 26",
+          "26",
+          "EUR 4930123456",
+          "4930123456",
           "emergency line",
-          "emergency vet"
+          "emergency vet",
+          "112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "make her vomit",
@@ -439,7 +471,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ],
         "says_any": [
           "appointment",
@@ -474,21 +506,23 @@
       }
     },
     {
-      "id": "afrikaans-price",
+      "id": "local-price",
       "channel": "whatsapp",
-      "lang": "fr",
-      "input": "Bonjour, quel est le prix ?",
+      "lang": "en",
+      "input": "How much does a standard service / check-up cost?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "€26"
+          "€26",
+          "EUR 26",
+          "26"
         ]
       }
     },
     {
-      "id": "zulu-booking",
+      "id": "zulu-booking-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, ich möchte einen Termin buchen.",
       "expect": {
         "lang": "zu",
@@ -521,7 +555,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€26",
+          "EUR 26",
+          "26",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

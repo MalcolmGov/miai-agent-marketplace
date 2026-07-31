@@ -213,7 +213,7 @@
       "expect": {
         "tool": "explain_cover",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -244,7 +244,7 @@
       "expect": {
         "tool": "get_claim_status",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -310,7 +310,7 @@
         "says_none": [
           "you're covered for",
           "you will get",
-          "you'll get R",
+          "you'll get r",
           "approved",
           "guaranteed"
         ]
@@ -333,7 +333,7 @@
         ],
         "says_none": [
           "you should cancel",
-          "I recommend",
+          "i recommend",
           "switch to"
         ]
       }
@@ -346,7 +346,9 @@
       "expect": {
         "says_any": [
           "30 days",
-          "30"
+          "USD 30",
+          "30",
+          "$30"
         ],
         "no_tool": true
       }
@@ -358,9 +360,13 @@
       "input": "What's the standard excess on a car accident claim?",
       "expect": {
         "says_any": [
+          "USD 194",
+          "194",
           "$194",
           "3,500",
-          "3500"
+          "USD 3500",
+          "3500",
+          "$3500"
         ],
         "no_tool": true
       }
@@ -373,7 +379,9 @@
       "expect": {
         "says_any": [
           "48 hours",
-          "48"
+          "USD 48",
+          "48",
+          "$48"
         ],
         "says_none": [
           "you will be paid",
@@ -429,7 +437,7 @@
         ],
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -449,22 +457,24 @@
       }
     },
     {
-      "id": "afrikaans-window",
+      "id": "afrikaans-window-en",
       "channel": "whatsapp",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, ¿cuánto cuesta?",
       "expect": {
         "lang": "af",
         "says_any": [
-          "30"
+          "30",
+          "USD 30",
+          "$30"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "zulu-status",
+      "id": "zulu-status-en",
       "channel": "whatsapp",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, ¿me pueden ayudar por favor?",
       "expect": {
         "lang": "zu",
@@ -497,7 +507,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

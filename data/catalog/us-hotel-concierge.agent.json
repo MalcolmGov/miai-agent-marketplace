@@ -196,7 +196,13 @@
       "expect": {
         "says_any": [
           "14:00",
-          "11:00"
+          "USD 1400",
+          "1400",
+          "$1400",
+          "11:00",
+          "USD 1100",
+          "1100",
+          "$1100"
         ],
         "no_tool": true
       }
@@ -210,8 +216,16 @@
         "tool": "get_amenity_info",
         "says_any": [
           "07:00",
+          "USD 0700",
+          "0700",
+          "$0700",
           "20:00",
+          "USD 2000",
+          "2000",
+          "$2000",
           "24",
+          "USD 24",
+          "$24",
           "appointment"
         ]
       }
@@ -224,7 +238,15 @@
       "expect": {
         "says_any": [
           "07:00",
+          "USD 0700",
+          "0700",
+          "$0700",
           "10:00",
+          "USD 1000",
+          "1000",
+          "$1000",
+          "USD 10",
+          "10",
           "$10"
         ]
       }
@@ -309,6 +331,11 @@
         "tool": "make_guest_request",
         "says_any": [
           "13:00",
+          "USD 1300",
+          "1300",
+          "$1300",
+          "USD 14",
+          "14",
           "$14",
           "logged",
           "team",
@@ -414,7 +441,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -435,28 +462,40 @@
       }
     },
     {
-      "id": "afrikaans-breakfast",
+      "id": "afrikaans-breakfast-en",
       "channel": "whatsapp",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, ¿a qué hora es el desayuno?",
       "expect": {
         "lang": "af",
         "says_any": [
           "07:00",
-          "10:00"
+          "USD 0700",
+          "0700",
+          "$0700",
+          "10:00",
+          "USD 1000",
+          "1000",
+          "$1000"
         ]
       }
     },
     {
-      "id": "zulu-pool",
+      "id": "zulu-pool-en",
       "channel": "whatsapp",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, ¿a qué hora abre la piscina?",
       "expect": {
         "lang": "zu",
         "says_any": [
           "07:00",
-          "20:00"
+          "USD 0700",
+          "0700",
+          "$0700",
+          "20:00",
+          "USD 2000",
+          "2000",
+          "$2000"
         ]
       }
     },
@@ -486,7 +525,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

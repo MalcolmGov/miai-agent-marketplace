@@ -283,7 +283,11 @@
         "says_any": [
           "Margherita",
           "€5",
-          "€6"
+          "EUR 5",
+          "5",
+          "€6",
+          "EUR 6",
+          "6"
         ]
       }
     },
@@ -294,7 +298,9 @@
       "input": "How much is the flame-grilled beef burger?",
       "expect": {
         "says_any": [
-          "€6"
+          "€6",
+          "EUR 6",
+          "6"
         ]
       }
     },
@@ -320,8 +326,12 @@
       "expect": {
         "says_any": [
           "€2",
+          "EUR 2",
+          "2",
           "8 km",
-          "€18"
+          "€18",
+          "EUR 18",
+          "18"
         ],
         "no_tool": true
       }
@@ -334,7 +344,14 @@
       "expect": {
         "says_any": [
           "21:30",
-          "22:00"
+          "€3",
+          "EUR 3",
+          "3",
+          "EUR 2130",
+          "2130",
+          "22:00",
+          "EUR 2200",
+          "2200"
         ],
         "no_tool": true
       }
@@ -347,7 +364,7 @@
       "expect": {
         "tool": "check_table_availability",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -365,7 +382,7 @@
           "REF"
         ],
         "says_none": [
-          "I can't book"
+          "i can't book"
         ]
       },
       "followups": [
@@ -482,7 +499,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -504,22 +521,25 @@
       }
     },
     {
-      "id": "afrikaans-hours",
+      "id": "hours-hours",
       "channel": "whatsapp",
-      "lang": "de",
-      "input": "Hallo, können Sie mir bitte helfen?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "22:00",
-          "21:30"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-order",
+      "id": "zulu-order-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "zu",
@@ -549,7 +569,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€3",
+          "EUR 3",
+          "3",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

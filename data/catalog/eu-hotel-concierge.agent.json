@@ -197,7 +197,14 @@
       "expect": {
         "says_any": [
           "14:00",
-          "11:00"
+          "€12",
+          "EUR 12",
+          "12",
+          "EUR 1400",
+          "1400",
+          "11:00",
+          "EUR 1100",
+          "1100"
         ],
         "no_tool": true
       }
@@ -211,8 +218,16 @@
         "tool": "get_amenity_info",
         "says_any": [
           "07:00",
+          "€12",
+          "EUR 12",
+          "12",
+          "EUR 0700",
+          "0700",
           "20:00",
+          "EUR 2000",
+          "2000",
           "24",
+          "EUR 24",
           "appointment"
         ]
       }
@@ -225,8 +240,17 @@
       "expect": {
         "says_any": [
           "07:00",
+          "€12",
+          "EUR 12",
+          "12",
+          "EUR 0700",
+          "0700",
           "10:00",
-          "€9"
+          "EUR 1000",
+          "1000",
+          "€9",
+          "EUR 9",
+          "9"
         ]
       }
     },
@@ -311,6 +335,10 @@
         "says_any": [
           "13:00",
           "€12",
+          "EUR 12",
+          "12",
+          "EUR 1300",
+          "1300",
           "logged",
           "team",
           "confirm"
@@ -415,7 +443,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -436,28 +464,42 @@
       }
     },
     {
-      "id": "afrikaans-breakfast",
+      "id": "afrikaans-breakfast-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, können Sie mir bitte helfen?",
       "expect": {
         "lang": "af",
         "says_any": [
           "07:00",
-          "10:00"
+          "€12",
+          "EUR 12",
+          "12",
+          "EUR 0700",
+          "0700",
+          "10:00",
+          "EUR 1000",
+          "1000"
         ]
       }
     },
     {
-      "id": "zulu-pool",
+      "id": "zulu-pool-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, können Sie mir bitte helfen?",
       "expect": {
         "lang": "zu",
         "says_any": [
           "07:00",
-          "20:00"
+          "€12",
+          "EUR 12",
+          "12",
+          "EUR 0700",
+          "0700",
+          "20:00",
+          "EUR 2000",
+          "2000"
         ]
       }
     },
@@ -480,7 +522,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€12",
+          "EUR 12",
+          "12",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

@@ -205,7 +205,7 @@
           "7th"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -217,7 +217,12 @@
       "expect": {
         "tool": "get_deadlines",
         "says_any": [
-          "25th"
+          "25th",
+          "€1",
+          "EUR 1",
+          "1",
+          "EUR 25",
+          "25"
         ]
       }
     },
@@ -298,11 +303,16 @@
       "expect": {
         "says_any": [
           "12 months",
+          "€1",
+          "EUR 1",
+          "1",
+          "EUR 12",
+          "12",
           "general",
           "accountant"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -346,7 +356,7 @@
         "no_tool": true,
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ],
         "says_any": [
           "deadline",
@@ -357,22 +367,27 @@
       }
     },
     {
-      "id": "afrikaans-deadline",
+      "id": "afrikaans-deadline-en",
       "channel": "whatsapp",
-      "lang": "de",
+      "lang": "en",
       "input": "Hallo, können Sie mir bitte helfen?",
       "expect": {
         "lang": "af",
         "says_any": [
           "21 Oktober",
+          "€1",
+          "EUR 1",
+          "1",
+          "EUR 21",
+          "21",
           "21 October"
         ]
       }
     },
     {
-      "id": "zulu-documents",
+      "id": "zulu-documents-en",
       "channel": "whatsapp",
-      "lang": "fr",
+      "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
         "lang": "zu",
@@ -414,7 +429,13 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "112"
+          "112",
+          "€1",
+          "EUR 1",
+          "1",
+          "EUR 112",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

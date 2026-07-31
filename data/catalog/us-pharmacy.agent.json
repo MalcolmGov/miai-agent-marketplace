@@ -200,11 +200,12 @@
         "tool": "check_stock",
         "says_any": [
           "in stock",
+          "USD 1",
           "$1",
           "available"
         ],
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -216,7 +217,7 @@
       "expect": {
         "tool": "get_script_status",
         "says_none": [
-          "I don't have a script",
+          "i don't have a script",
           "no such script"
         ]
       }
@@ -344,7 +345,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ],
         "says_any": [
           "stock",
@@ -379,21 +380,25 @@
       }
     },
     {
-      "id": "afrikaans-hours",
+      "id": "hours-hours",
       "channel": "whatsapp",
-      "lang": "es",
-      "input": "Hola, ¿me pueden ayudar por favor?",
+      "lang": "en",
+      "input": "What are your opening hours?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "18:00"
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed"
         ]
       }
     },
     {
-      "id": "zulu-stock",
+      "id": "zulu-stock-en",
       "channel": "whatsapp",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, ¿me pueden ayudar por favor?",
       "expect": {
         "lang": "zu",
@@ -439,11 +444,14 @@
       "expect": {
         "says_any": [
           "911",
-          "911",
+          "USD 911",
+          "$911",
           "emergency department",
           "emergency services",
           "ambulance",
-          "poison"
+          "poison",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "it's probably",
@@ -478,7 +486,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"

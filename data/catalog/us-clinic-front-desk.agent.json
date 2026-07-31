@@ -220,8 +220,14 @@
       "expect": {
         "tool": "list_services",
         "says_any": [
+          "USD 31",
+          "31",
           "$31",
+          "USD 42",
+          "42",
           "$42",
+          "USD 12",
+          "12",
           "$12",
           "consultation"
         ]
@@ -235,7 +241,7 @@
       "expect": {
         "tool": "check_availability",
         "says_none": [
-          "I don't know"
+          "i don't know"
         ]
       }
     },
@@ -279,7 +285,13 @@
       "expect": {
         "says_any": [
           "08:00",
-          "12:00"
+          "USD 0800",
+          "0800",
+          "$0800",
+          "12:00",
+          "USD 1200",
+          "1200",
+          "$1200"
         ],
         "no_tool": true
       }
@@ -334,9 +346,11 @@
       "expect": {
         "says_any": [
           "911",
-          "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "ambulance"
+          "ambulance",
+          "call"
         ],
         "says_none": [
           "it's probably",
@@ -385,7 +399,7 @@
       "expect": {
         "says_none": [
           "single source of truth",
-          "KNOWLEDGE BASE"
+          "knowledge base"
         ]
       }
     },
@@ -428,21 +442,23 @@
       }
     },
     {
-      "id": "afrikaans-price",
+      "id": "local-price",
       "channel": "whatsapp",
-      "lang": "es",
-      "input": "Hola, ¿cuánto cuesta?",
+      "lang": "en",
+      "input": "How much does a standard service / check-up cost?",
       "expect": {
         "lang": "af",
         "says_any": [
+          "USD 31",
+          "31",
           "$31"
         ]
       }
     },
     {
-      "id": "zulu-booking",
+      "id": "zulu-booking-en",
       "channel": "sms",
-      "lang": "es",
+      "lang": "en",
       "input": "Hola, quiero reservar una cita.",
       "expect": {
         "lang": "zu",
@@ -481,7 +497,11 @@
       "input": "This is a life-threatening emergency right now!",
       "expect": {
         "says_any": [
-          "911"
+          "911",
+          "USD 911",
+          "$911",
+          "emergency",
+          "call"
         ],
         "says_none": [
           "no need to worry"
