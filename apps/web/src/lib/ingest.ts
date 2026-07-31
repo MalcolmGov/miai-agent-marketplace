@@ -35,13 +35,66 @@ export function extractTitle(html: string): string | null {
   return htmlToText(m[1]).slice(0, 120) || null;
 }
 
+export function formatFetchError(e: unknown): string {
+  if (!(e instanceof Error)) return "fetch failed";
+  const cause = (e as Error & { cause?: { code?: string; message?: string } }).cause;
+  const code = cause?.code ?? "";
+  if (code === "ENOTFOUND") {
+    return "DNS lookup failed (try www. or check the domain)";
+  }
+  if (code === "ECONNREFUSED") return "connection refused";
+  if (code === "CERT_HAS_EXPIRED" || /certificate/i.test(e.message)) {
+    return "TLS/certificate error";
+  }
+  if (e.name === "AbortError") return "timed out";
+  if (cause?.message) return `${e.message}: ${cause.message}`;
+  return e.message || "fetch failed";
+}
+
+/** Build URL candidates: https, www, apex, http fallbacks. */
+export function urlCandidates(startUrl: string): string[] {
+  const raw = startUrl.trim();
+  const withProto = raw.match(/^https?:\/\//i) ? raw : `https://${raw}`;
+  const out: string[] = [];
+  const push = (u: string) => {
+    try {
+      const parsed = new URL(u);
+      const normalized = parsed.toString().replace(/\/$/, "") || parsed.toString();
+      if (!out.includes(normalized)) out.push(normalized);
+      const home = `${parsed.origin}/`;
+      if (!out.includes(home)) out.push(home);
+    } catch {
+      /* skip */
+    }
+  };
+
+  push(withProto);
+  try {
+    const u = new URL(withProto);
+    if (u.hostname.startsWith("www.")) {
+      push(`${u.protocol}//${u.hostname.slice(4)}${u.pathname}${u.search}`);
+    } else {
+      push(`${u.protocol}//www.${u.hostname}${u.pathname}${u.search}`);
+    }
+    if (u.protocol === "https:") {
+      push(`http://${u.hostname}${u.pathname}${u.search}`);
+      if (!u.hostname.startsWith("www.")) {
+        push(`http://www.${u.hostname}${u.pathname}${u.search}`);
+      }
+    }
+  } catch {
+    /* skip */
+  }
+  return out;
+}
+
 export function sameOriginLinks(html: string, pageUrl: string, limit = 8): string[] {
   let origin: string;
   let host: string;
   try {
     const u = new URL(pageUrl);
     origin = u.origin;
-    host = u.host;
+    host = u.host.replace(/^www\./i, "");
   } catch {
     return [];
   }
@@ -52,7 +105,8 @@ export function sameOriginLinks(html: string, pageUrl: string, limit = 8): strin
   while ((m = re.exec(html)) && found.size < limit * 3) {
     try {
       const abs = new URL(m[1], pageUrl);
-      if (abs.host !== host) continue;
+      const absHost = abs.host.replace(/^www\./i, "");
+      if (absHost !== host) continue;
       if (!/^https?:$/i.test(abs.protocol)) continue;
       if (/\.(pdf|jpg|jpeg|png|gif|svg|zip|css|js|mp4|webp)(\?|$)/i.test(abs.pathname)) continue;
       abs.hash = "";
@@ -62,7 +116,6 @@ export function sameOriginLinks(html: string, pageUrl: string, limit = 8): strin
     }
   }
 
-  // Prefer homepage-adjacent paths
   return [...found]
     .filter((u) => u !== pageUrl)
     .slice(0, limit)
@@ -77,7 +130,7 @@ export function sameOriginLinks(html: string, pageUrl: string, limit = 8): strin
 
 export async function fetchPage(
   url: string,
-  timeoutMs = 12_000,
+  timeoutMs = 15_000,
 ): Promise<{ url: string; title: string; text: string; html: string }> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -85,8 +138,10 @@ export async function fetchPage(
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "user-agent": "MyInstantAI-KnowledgeBot/1.0 (+https://myinstantai.com)",
+        "user-agent":
+          "Mozilla/5.0 (compatible; MyInstantAI-KnowledgeBot/1.0; +https://www.myinstantai.com)",
         accept: "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.8",
+        "accept-language": "en-ZA,en;q=0.9",
       },
       redirect: "follow",
     });
@@ -99,9 +154,25 @@ export async function fetchPage(
     const title = extractTitle(body) ?? url;
     const text = htmlToText(body).slice(0, 100_000);
     return { url: res.url || url, title, text, html: body };
+  } catch (e) {
+    throw new Error(formatFetchError(e));
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function fetchFirstWorking(
+  candidates: string[],
+): Promise<{ url: string; title: string; text: string; html: string }> {
+  const errors: string[] = [];
+  for (const candidate of candidates) {
+    try {
+      return await fetchPage(candidate);
+    } catch (e) {
+      errors.push(`${candidate}: ${e instanceof Error ? e.message : "fetch failed"}`);
+    }
+  }
+  throw new Error(errors[0] ?? "All URL variants failed");
 }
 
 export async function crawlSite(
@@ -109,18 +180,34 @@ export async function crawlSite(
   opts?: { maxPages?: number },
 ): Promise<{ pages: Array<{ url: string; title: string; text: string }>; errors: string[] }> {
   const maxPages = opts?.maxPages ?? 5;
-  const normalized = startUrl.match(/^https?:\/\//i) ? startUrl : `https://${startUrl}`;
+  const candidates = urlCandidates(startUrl);
   const pages: Array<{ url: string; title: string; text: string }> = [];
   const errors: string[] = [];
   const seen = new Set<string>();
 
-  let queue: string[] = [normalized];
+  let seed: { url: string; title: string; text: string; html: string };
+  try {
+    seed = await fetchFirstWorking(candidates);
+  } catch (e) {
+    return {
+      pages: [],
+      errors: [
+        e instanceof Error
+          ? e.message
+          : "Could not reach that site — try https://www.yourdomain.com",
+      ],
+    };
+  }
+
+  let queue: string[] = [seed.url];
+  const seedCache = new Map<string, typeof seed>([[seed.url, seed]]);
+
   while (queue.length && pages.length < maxPages) {
     const next = queue.shift()!;
     if (seen.has(next)) continue;
     seen.add(next);
     try {
-      const page = await fetchPage(next);
+      const page = seedCache.get(next) ?? (await fetchPage(next));
       if (page.text.length < 40) {
         errors.push(`${next}: little text extracted`);
       } else {
@@ -131,7 +218,6 @@ export async function crawlSite(
         for (const link of links) {
           if (!seen.has(link)) queue.push(link);
         }
-        // Prefer shorter paths (about, faq, contact, pricing, services)
         queue = queue.sort((a, b) => {
           const score = (u: string) => {
             const p = new URL(u).pathname.toLowerCase();
@@ -162,7 +248,6 @@ export function fileToText(filename: string, mime: string | undefined, buf: Buff
     return raw;
   }
 
-  // Naive PDF text scrape (no full PDF parser) — extracts readable strings between streams
   if (/\.pdf$/i.test(lower) || mime === "application/pdf") {
     const raw = buf.toString("latin1");
     const chunks: string[] = [];

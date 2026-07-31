@@ -190,7 +190,7 @@ export function KnowledgePanel({
           <div className="flex flex-col gap-2">
             <input
               className="input text-xs"
-              placeholder="https://gaslite.co.za"
+              placeholder="https://www.gaslite.co.za"
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
               onKeyDown={(e) => {
