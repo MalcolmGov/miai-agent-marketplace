@@ -1,5 +1,22 @@
+import { createHmac } from "node:crypto";
 import type { AgentState, ChatMessage } from "@miai/runtime";
 import type { ToolBinding } from "@miai/connectors";
+
+/** Secret for deriving embed keys. Falls back to OAUTH_TOKEN_SECRET so no extra
+ *  config is needed; set EMBED_KEY_SECRET separately if you ever rotate the OAuth
+ *  secret without wanting to invalidate installed website snippets. */
+function embedSecret(): string {
+  return process.env.EMBED_KEY_SECRET ?? process.env.OAUTH_TOKEN_SECRET ?? "dev-only-change-me";
+}
+
+/** Deterministic, stateless embed key: survives redeploys, needs no storage, and
+ *  is verifiable by recomputation. A customer's installed snippet keeps working
+ *  forever — the in-memory registry is only a legacy fallback. */
+export function embedKeyFor(workspaceId: string, agentId: string): string {
+  const id = Buffer.from(`${workspaceId}::${agentId}`, "utf8").toString("base64url");
+  const mac = createHmac("sha256", embedSecret()).update(id).digest("hex").slice(0, 10);
+  return `mia_pk_${id}_${mac}`;
+}
 
 export type RentTier = "standard" | "pro" | "enterprise";
 
@@ -73,7 +90,7 @@ export function upsertWorkspaceAgent(
     model: "claude-sonnet",
     knowledge: "",
     tier: "standard",
-    publicKey: current?.publicKey ?? `mia_pk_${agentId.replace(/[^a-z0-9]/gi, "").slice(0, 12)}_${Math.random().toString(36).slice(2, 8)}`,
+    publicKey: current?.publicKey ?? embedKeyFor(workspaceId, agentId),
     bindings: [],
     connectedConnectors: [],
     messages: [],
@@ -87,6 +104,20 @@ export function upsertWorkspaceAgent(
 }
 
 export function resolveEmbedKey(publicKey: string): { workspaceId: string; agentId: string } | null {
+  // Deterministic keys: decode + verify by recomputing the MAC. No storage involved.
+  const m = /^mia_pk_([A-Za-z0-9_-]+)_([a-f0-9]{10})$/.exec(publicKey);
+  if (m) {
+    const [, id, mac] = m;
+    const expected = createHmac("sha256", embedSecret()).update(id).digest("hex").slice(0, 10);
+    if (mac === expected) {
+      const decoded = Buffer.from(id, "base64url").toString("utf8");
+      const sep = decoded.indexOf("::");
+      if (sep > 0) {
+        return { workspaceId: decoded.slice(0, sep), agentId: decoded.slice(sep + 2) };
+      }
+    }
+  }
+  // Legacy fallback: keys minted by older builds live in the in-memory registry.
   for (const [workspaceId, rec] of store().workspaces) {
     const agentId = rec.embedKeys.get(publicKey);
     if (agentId) return { workspaceId, agentId };
