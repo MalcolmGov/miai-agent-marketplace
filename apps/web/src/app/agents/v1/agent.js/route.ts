@@ -27,8 +27,9 @@ const SCRIPT = String.raw`
   var suggestions = sugAttr.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 4);
 
   var css = [
-    '#miai-agent-root{all:initial;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mi-a:' + accent + ';--mi-a2:' + accent2 + '}',
-    '#miai-agent-root *{box-sizing:border-box;margin:0;padding:0}',
+    ':host{all:initial;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mi-a:' + accent + ';--mi-a2:' + accent2 + '}',
+    '*{box-sizing:border-box;margin:0;padding:0;font-family:inherit}',
+    'button{border:none;background:none;color:inherit;font:inherit;line-height:normal}',
 
     /* ---- launcher ---- */
     '#miai-fab{position:fixed;right:22px;bottom:22px;z-index:2147483000;width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--mi-a),var(--mi-a2));box-shadow:0 6px 22px rgba(0,0,0,.38),0 2px 8px ' + accent + '55;transition:transform .18s ease,box-shadow .18s ease}',
@@ -102,7 +103,8 @@ const SCRIPT = String.raw`
 
   var root = document.createElement("div");
   root.id = "miai-agent-root";
-  root.innerHTML =
+  var shadow = root.attachShadow({ mode: "open" });
+  shadow.innerHTML =
     '<style>' + css + '</style>' +
     '<button id="miai-fab" type="button" aria-label="Open chat">' + chatIcon + xIcon + '<span id="miai-dot"></span></button>' +
     '<div id="miai-panel" role="dialog" aria-label="Chat with ' + title.replace(/[<>&"]/g, "") + '">' +
@@ -121,13 +123,13 @@ const SCRIPT = String.raw`
     '</div>';
   document.body.appendChild(root);
 
-  var panel = root.querySelector("#miai-panel");
-  var fab = root.querySelector("#miai-fab");
-  var msgs = root.querySelector("#miai-msgs");
-  var sugs = root.querySelector("#miai-sugs");
-  var form = root.querySelector("#miai-form");
-  var input = root.querySelector("#miai-input");
-  var send = root.querySelector("#miai-send");
+  var panel = shadow.querySelector("#miai-panel");
+  var fab = shadow.querySelector("#miai-fab");
+  var msgs = shadow.querySelector("#miai-msgs");
+  var sugs = shadow.querySelector("#miai-sugs");
+  var form = shadow.querySelector("#miai-form");
+  var input = shadow.querySelector("#miai-input");
+  var send = shadow.querySelector("#miai-send");
   var typing = null;
   var opened = false;
   var sessionId = newSession();
@@ -143,7 +145,7 @@ const SCRIPT = String.raw`
     sessionId = newSession();
   }
 
-  root.querySelector("#miai-ttl b").textContent = title;
+  shadow.querySelector("#miai-ttl b").textContent = title;
 
   function toggle(openState) {
     var willOpen = typeof openState === "boolean" ? openState : !panel.classList.contains("open");
@@ -159,7 +161,7 @@ const SCRIPT = String.raw`
     if (willOpen) setTimeout(function () { input.focus(); }, 220);
   }
   fab.addEventListener("click", function () { toggle(); });
-  root.querySelector("#miai-close").addEventListener("click", function () { toggle(false); });
+  shadow.querySelector("#miai-close").addEventListener("click", function () { toggle(false); });
 
   function renderSuggestions() {
     sugs.innerHTML = "";
