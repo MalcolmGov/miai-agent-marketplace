@@ -1,0 +1,399 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+
+interface Connector {
+  id: string;
+  name: string;
+  phase: number;
+  description: string;
+  recommended?: boolean;
+  auth?: string;
+}
+
+interface OauthStatus {
+  id: string;
+  name: string;
+  configured: boolean;
+  connected: boolean;
+  requiresShop?: boolean;
+  requiresSubdomain?: boolean;
+  missingEnv: string[];
+}
+
+export function ActionsPanel({
+  agentId,
+  connectors,
+  connected,
+  onConnected,
+}: {
+  agentId: string;
+  connectors: Connector[];
+  connected: string[];
+  onConnected: (ids: string[]) => void;
+}) {
+  const [busy, setBusy] = useState<string | null>(null);
+  const [status, setStatus] = useState<OauthStatus[]>([]);
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [webhookSecret, setWebhookSecret] = useState("");
+  const [mcpEndpoint, setMcpEndpoint] = useState("");
+  const [mcpToken, setMcpToken] = useState("");
+  const [shop, setShop] = useState("");
+  const [zendeskSub, setZendeskSub] = useState("");
+  const [emailProvider, setEmailProvider] = useState<"google" | "microsoft">("google");
+  const [whatsappToken, setWhatsappToken] = useState("");
+  const [whatsappPhoneId, setWhatsappPhoneId] = useState("");
+  const [stripeKey, setStripeKey] = useState("");
+  const [wooUrl, setWooUrl] = useState("");
+  const [wooKey, setWooKey] = useState("");
+  const [wooSecret, setWooSecret] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const byId = useMemo(() => new Map(status.map((s) => [s.id, s])), [status]);
+
+  async function refreshStatus() {
+    const res = await fetch("/api/oauth/status");
+    const data = await res.json();
+    setStatus(data.oauth ?? []);
+    if (Array.isArray(data.connected)) onConnected(data.connected);
+  }
+
+  useEffect(() => {
+    void refreshStatus();
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("oauth") === "error") {
+      setError(params.get("message") ?? "OAuth failed");
+    } else if (params.get("oauth") && params.get("oauth") !== "error") {
+      void refreshStatus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [agentId]);
+
+  async function startOAuth(connectorId: string) {
+    setBusy(connectorId);
+    setError(null);
+    try {
+      const qs = new URLSearchParams({
+        agentId,
+        format: "json",
+        returnTo: `/agents/${agentId}?tab=actions`,
+      });
+      if (connectorId === "shopify") {
+        if (!shop.trim()) {
+          setError("Enter your Shopify store domain first (e.g. my-store.myshopify.com)");
+          return;
+        }
+        qs.set("shop", shop.trim());
+      }
+      if (connectorId === "zendesk") {
+        if (!zendeskSub.trim()) {
+          setError("Enter your Zendesk subdomain first");
+          return;
+        }
+        qs.set("subdomain", zendeskSub.trim());
+      }
+      if (connectorId === "email") qs.set("emailProvider", emailProvider);
+
+      const res = await fetch(`/api/oauth/${connectorId}/start?${qs}`);
+      const data = await res.json();
+      if (!res.ok) {
+        setError(
+          data.error +
+            (data.missingEnv?.length ? ` — set ${data.missingEnv.join(", ")} in .env.local` : ""),
+        );
+        return;
+      }
+      window.location.href = data.url;
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function disconnect(connectorId: string) {
+    setBusy(connectorId);
+    try {
+      await fetch(`/api/oauth/${connectorId}/disconnect`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ agentId }),
+      });
+      await refreshStatus();
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function saveCredentials(connectorId: string, config: Record<string, string>) {
+    setBusy(connectorId);
+    setError(null);
+    try {
+      const res = await fetch("/api/connectors/credentials", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ agentId, connectorId, config }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Failed to save credentials");
+        return;
+      }
+      if (data.rental) onConnected(data.rental.connectedConnectors);
+      await refreshStatus();
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const phase1 = connectors.filter((c) => c.phase === 1);
+  const phase2 = connectors.filter((c) => c.phase === 2);
+
+  function row(c: Connector) {
+    const oauth = byId.get(c.id);
+    const isOauth = Boolean(oauth) || c.auth === "oauth";
+    const on = connected.includes(c.id) || Boolean(oauth?.connected);
+    const configured = oauth ? oauth.configured : true;
+
+    return (
+      <div
+        key={c.id}
+        className="flex flex-col gap-2 rounded-lg border border-[var(--line)] p-3"
+      >
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-medium">{c.name}</span>
+              {c.recommended && <span className="chip chip-live">Recommended</span>}
+              {on && <span className="chip chip-live">Connected</span>}
+              {isOauth && !configured && <span className="chip">Env missing</span>}
+              {isOauth && <span className="chip">OAuth</span>}
+            </div>
+            <p className="text-xs text-[var(--muted)]">{c.description}</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {isOauth ? (
+              <>
+                <button
+                  type="button"
+                  className="btn btn-primary text-xs"
+                  disabled={busy === c.id}
+                  onClick={() => startOAuth(c.id)}
+                >
+                  {on ? "Reconnect" : "Connect with OAuth"}
+                </button>
+                {on && (
+                  <button
+                    type="button"
+                    className="btn btn-ghost text-xs"
+                    disabled={busy === c.id}
+                    onClick={() => disconnect(c.id)}
+                  >
+                    Disconnect
+                  </button>
+                )}
+              </>
+            ) : null}
+          </div>
+        </div>
+
+        {c.id === "shopify" && (
+          <input
+            className="input text-xs"
+            placeholder="my-store.myshopify.com"
+            value={shop}
+            onChange={(e) => setShop(e.target.value)}
+          />
+        )}
+        {c.id === "zendesk" && (
+          <input
+            className="input text-xs"
+            placeholder="your-subdomain"
+            value={zendeskSub}
+            onChange={(e) => setZendeskSub(e.target.value)}
+          />
+        )}
+        {c.id === "email" && (
+          <div className="flex gap-2">
+            {(["google", "microsoft"] as const).map((p) => (
+              <button
+                key={p}
+                type="button"
+                className={`chip ${emailProvider === p ? "chip-live" : ""}`}
+                onClick={() => setEmailProvider(p)}
+              >
+                {p === "google" ? "Gmail" : "Microsoft 365"}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {c.id === "webhook" && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <input
+              className="input text-xs"
+              placeholder="https://hooks.example.com/miai"
+              value={webhookUrl}
+              onChange={(e) => setWebhookUrl(e.target.value)}
+            />
+            <input
+              className="input text-xs"
+              placeholder="shared secret"
+              value={webhookSecret}
+              onChange={(e) => setWebhookSecret(e.target.value)}
+            />
+            <button
+              type="button"
+              className="btn btn-ghost text-xs sm:col-span-2"
+              disabled={busy === "webhook"}
+              onClick={() =>
+                saveCredentials("webhook", {
+                  url: webhookUrl,
+                  secret: webhookSecret || "miai",
+                })
+              }
+            >
+              Save webhook
+            </button>
+          </div>
+        )}
+
+        {c.id === "mcp" && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <input
+              className="input text-xs"
+              placeholder="https://mcp.example.com"
+              value={mcpEndpoint}
+              onChange={(e) => setMcpEndpoint(e.target.value)}
+            />
+            <input
+              className="input text-xs"
+              placeholder="bearer token"
+              value={mcpToken}
+              onChange={(e) => setMcpToken(e.target.value)}
+            />
+            <button
+              type="button"
+              className="btn btn-ghost text-xs sm:col-span-2"
+              disabled={busy === "mcp"}
+              onClick={() =>
+                saveCredentials("mcp", { endpoint: mcpEndpoint, token: mcpToken })
+              }
+            >
+              Save MCP
+            </button>
+          </div>
+        )}
+
+        {c.id === "whatsapp" && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <input
+              className="input text-xs"
+              placeholder="Cloud API permanent token"
+              value={whatsappToken}
+              onChange={(e) => setWhatsappToken(e.target.value)}
+            />
+            <input
+              className="input text-xs"
+              placeholder="Phone number ID"
+              value={whatsappPhoneId}
+              onChange={(e) => setWhatsappPhoneId(e.target.value)}
+            />
+            <button
+              type="button"
+              className="btn btn-ghost text-xs sm:col-span-2"
+              disabled={busy === "whatsapp"}
+              onClick={() =>
+                saveCredentials("whatsapp", {
+                  api_key: whatsappToken,
+                  phone_number_id: whatsappPhoneId,
+                })
+              }
+            >
+              Save WhatsApp credentials
+            </button>
+          </div>
+        )}
+
+        {c.id === "stripe" && (
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <input
+              className="input text-xs"
+              placeholder="sk_live_… or sk_test_…"
+              value={stripeKey}
+              onChange={(e) => setStripeKey(e.target.value)}
+            />
+            <button
+              type="button"
+              className="btn btn-ghost text-xs"
+              disabled={busy === "stripe"}
+              onClick={() => saveCredentials("stripe", { api_key: stripeKey })}
+            >
+              Save Stripe
+            </button>
+          </div>
+        )}
+
+        {c.id === "woocommerce" && (
+          <div className="grid gap-2 sm:grid-cols-3">
+            <input
+              className="input text-xs sm:col-span-3"
+              placeholder="https://shop.example.com"
+              value={wooUrl}
+              onChange={(e) => setWooUrl(e.target.value)}
+            />
+            <input
+              className="input text-xs"
+              placeholder="Consumer key"
+              value={wooKey}
+              onChange={(e) => setWooKey(e.target.value)}
+            />
+            <input
+              className="input text-xs"
+              placeholder="Consumer secret"
+              value={wooSecret}
+              onChange={(e) => setWooSecret(e.target.value)}
+            />
+            <button
+              type="button"
+              className="btn btn-ghost text-xs"
+              disabled={busy === "woocommerce"}
+              onClick={() =>
+                saveCredentials("woocommerce", {
+                  store_url: wooUrl,
+                  consumer_key: wooKey,
+                  consumer_secret: wooSecret,
+                })
+              }
+            >
+              Save Woo
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {error && (
+        <div className="rounded-lg border border-[var(--danger)]/40 bg-[color-mix(in_srgb,var(--danger)_12%,transparent)] px-3 py-2 text-sm text-[var(--danger)]">
+          {error}
+        </div>
+      )}
+      <div className="panel p-4">
+        <h2 className="text-sm font-semibold">Connector Hub — Phase 1</h2>
+        <p className="mt-1 text-xs text-[var(--muted)]">
+          OAuth connectors open the provider consent screen. Tokens are sealed in{" "}
+          <code>data/oauth-tokens.json</code> (never sent to the model). Use{" "}
+          <strong className="text-[var(--text)]">live</strong> chat mode after Connect to hit real
+          APIs. Set <code>SLACK_DEFAULT_CHANNEL</code> for Slack handoffs.
+        </p>
+        <div className="mt-4 grid gap-2">{phase1.map(row)}</div>
+      </div>
+
+      <div className="panel p-4">
+        <h2 className="text-sm font-semibold">Phase 2 connectors</h2>
+        <div className="mt-3 grid gap-2">{phase2.map(row)}</div>
+      </div>
+    </div>
+  );
+}

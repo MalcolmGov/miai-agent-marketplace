@@ -1,0 +1,17 @@
+{
+  "name": "miai-agent-marketplace",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --filter @miai/web dev",
+    "build": "pnpm -r build",
+    "build:packages": "pnpm -r --filter './packages/*' build",
+    "build:web": "pnpm build:packages && pnpm --filter @miai/web build",
+    "start:web": "sh scripts/start-web.sh",
+    "import:catalog": "node scripts/import-catalog.mjs",
+    "typecheck": "pnpm -r typecheck",
+    "eval:smoke": "pnpm build:packages && node scripts/eval-smoke.mjs",
+    "demo:phase1": "node scripts/phase1-demo.mjs"
+  }
+}

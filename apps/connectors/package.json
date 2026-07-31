@@ -1,0 +1,19 @@
+{
+  "name": "@miai/connectors-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "OAuth callback + connector admin surface scaffold.",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@miai/connectors": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5.7.3"
+  }
+}

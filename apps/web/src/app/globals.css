@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b0f14;
+  --bg-elev: #121821;
+  --bg-panel: #161d28;
+  --line: #243041;
+  --text: #e8eef7;
+  --muted: #8b9bb0;
+  --accent: #3dd6c6;
+  --accent-dim: #1f9e92;
+  --warn: #f0b429;
+  --danger: #f07178;
+  --live: #5eead4;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #1a3a3a 0%, transparent 55%),
+    radial-gradient(900px 500px at 90% 0%, #1a2740 0%, transparent 50%),
+    var(--bg);
+  font-family: var(--font-display), "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.chip {
+  @apply inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] uppercase tracking-wide;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
+}
+
+.chip-live {
+  color: var(--live);
+  border-color: color-mix(in srgb, var(--live) 40%, transparent);
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-3.5 py-2 text-sm font-medium transition;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #4ae3d2, #2bb8a8);
+  color: #06201c;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+.panel {
+  background: color-mix(in srgb, var(--bg-panel) 92%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.input {
+  @apply w-full rounded-md px-3 py-2 text-sm outline-none;
+  background: #0d1219;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.input:focus {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.45s ease both;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}

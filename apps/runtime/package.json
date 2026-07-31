@@ -1,0 +1,20 @@
+{
+  "name": "@miai/runtime-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent turn worker entry — wraps @miai/runtime for Container Apps / queue consumers.",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/worker.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@miai/runtime": "workspace:*",
+    "@miai/wallet-adapter": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5.7.3"
+  }
+}

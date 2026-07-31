@@ -1,0 +1,65 @@
+import { NextResponse } from "next/server";
+import { runTurn } from "@miai/runtime";
+import { createWalletAdapter } from "@miai/wallet-adapter";
+import { getAgentPackage } from "@/lib/catalog";
+import { appendAudit, getWorkspaceAgent, resolveEmbedKey, upsertWorkspaceAgent } from "@/lib/store";
+
+export async function POST(req: Request) {
+  const body = (await req.json()) as {
+    key: string;
+    message: string;
+    sessionId?: string;
+  };
+  const resolved = resolveEmbedKey(body.key);
+  if (!resolved) return NextResponse.json({ error: "Invalid key" }, { status: 401 });
+
+  const { workspaceId, agentId } = resolved;
+  const pkg = await getAgentPackage(agentId);
+  if (!pkg) return NextResponse.json({ error: "Agent missing" }, { status: 404 });
+
+  let rental = getWorkspaceAgent(workspaceId, agentId);
+  if (!rental) {
+    rental = upsertWorkspaceAgent(workspaceId, agentId, {
+      agentId,
+      state: "live",
+      publicKey: body.key,
+      knowledge: pkg.knowledge,
+      model: pkg.manifest.model.primary,
+    });
+  }
+
+  const result = await runTurn(
+    {
+      workspaceId,
+      agentId,
+      pkg,
+      messages: rental.messages,
+      userMessage: body.message,
+      model: rental.model,
+      mode: rental.state === "selected" || rental.state === "configuring" ? "sandbox" : "live",
+      knowledgeOverride: rental.knowledge,
+      bindings: rental.bindings,
+      state: rental.state,
+    },
+    { wallet: createWalletAdapter() },
+  );
+
+  upsertWorkspaceAgent(workspaceId, agentId, {
+    agentId,
+    messages: result.messages,
+    state: result.paused ? "paused_no_tokens" : "live",
+  });
+
+  appendAudit({
+    workspaceId,
+    agentId,
+    type: "embed_turn",
+    detail: { tokensDebited: result.tokensDebited, paused: result.paused },
+  });
+
+  return NextResponse.json({
+    reply: result.assistantMessage,
+    paused: result.paused,
+    balance: result.balance,
+  });
+}
