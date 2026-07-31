@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "front-office",
     "tier": "standard",
-    "summary": "Answers product and order questions, captures support tickets, and hands off to a human with full context — 24/7, across WhatsApp, web and app.",
+    "summary": "Africa — Answers product and order questions, captures support tickets, and hands off to a human with full context — 24/7, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -48,7 +48,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 900
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

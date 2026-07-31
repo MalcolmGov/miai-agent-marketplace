@@ -5,7 +5,7 @@
     "name": "Grant-Day Stock Planner",
     "version": "1.0.0",
     "category": "operations",
-    "summary": "Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the supplier account, confirming before it commits.",
+    "summary": "Africa — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the supplier account, confirming before it commits.",
     "tier": "enterprise",
     "channels": [
       "whatsapp",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 12000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

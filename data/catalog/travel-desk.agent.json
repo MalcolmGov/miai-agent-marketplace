@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "pro",
-    "summary": "Answers destination and travel-policy questions and captures trip requests for the travel team to action — honest that it doesn't book or quote live fares itself, across WhatsApp, web and app.",
+    "summary": "Africa — Answers destination and travel-policy questions and captures trip requests for the travel team to action — honest that it doesn't book or quote live fares itself, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

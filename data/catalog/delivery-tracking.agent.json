@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or disputed parcels with full context.",
+    "summary": "Africa — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or disputed parcels with full context.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 8000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

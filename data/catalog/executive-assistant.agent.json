@@ -6,7 +6,7 @@
     "version": "1.0.1",
     "category": "operations",
     "tier": "pro",
-    "summary": "Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitive or conflicting — across WhatsApp, web and app.",
+    "summary": "Africa — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitive or conflicting — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 4000,
       "avg_tokens_per_msg": 1000
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -10,10 +10,8 @@
       "web",
       "app"
     ],
-    "health": false,
     "markets": {
-      "za": "accounting-practice",
-      "africa": "africa-accounting-practice",
+      "africa": "accounting-practice",
       "asia": "asia-accounting-practice",
       "eu": "eu-accounting-practice",
       "us": "us-accounting-practice"
@@ -24,9 +22,9 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "admissions",
@@ -39,10 +37,8 @@
       "web",
       "app"
     ],
-    "health": false,
     "markets": {
-      "za": "admissions",
-      "africa": "africa-admissions",
+      "africa": "admissions",
       "asia": "asia-admissions",
       "eu": "eu-admissions",
       "us": "us-admissions"
@@ -53,27 +49,23 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "agency-studio",
     "name": "Agency & Studio",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Agency & Studio — Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
+    "summary": "Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
-      "app",
-      "sms",
-      "voice"
+      "app"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-agency-studio",
-      "za": "agency-studio",
+      "africa": "agency-studio",
       "asia": "asia-agency-studio",
       "eu": "eu-agency-studio",
       "us": "us-agency-studio"
@@ -84,16 +76,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "bank-branch",
     "name": "Bank Branch Assistant",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
+    "summary": "Asia Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
     "channels": [
       "whatsapp",
       "web",
@@ -101,11 +93,9 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-bank-branch",
       "asia": "asia-bank-branch",
-      "za": "bank-branch",
+      "africa": "bank-branch",
       "eu": "eu-bank-branch",
       "us": "us-bank-branch"
     },
@@ -115,16 +105,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "bookkeeping",
     "name": "Bookkeeping Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
     "channels": [
       "whatsapp",
       "web",
@@ -132,11 +122,9 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-bookkeeping",
       "asia": "asia-bookkeeping",
-      "za": "bookkeeping",
+      "africa": "bookkeeping",
       "eu": "eu-bookkeeping",
       "us": "us-bookkeeping"
     },
@@ -146,16 +134,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "building-management",
     "name": "Building Management",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "summary": "Asia Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
     "channels": [
       "whatsapp",
       "web",
@@ -163,11 +151,9 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-building-management",
       "asia": "asia-building-management",
-      "za": "building-management",
+      "africa": "building-management",
       "eu": "eu-building-management",
       "us": "us-building-management"
     },
@@ -177,16 +163,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "clinic-front-desk",
     "name": "Clinic Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Strictly non-clinical Africa clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
+    "summary": "Strictly non-clinical Asia clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
     "channels": [
       "whatsapp",
       "web",
@@ -194,11 +180,9 @@
       "sms",
       "voice"
     ],
-    "health": true,
     "markets": {
-      "africa": "africa-clinic-front-desk",
       "asia": "asia-clinic-front-desk",
-      "za": "clinic-front-desk",
+      "africa": "clinic-front-desk",
       "eu": "eu-clinic-front-desk",
       "us": "us-clinic-front-desk"
     },
@@ -208,16 +192,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "course-advisor",
     "name": "Course Advisor",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "summary": "Asia Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
     "channels": [
       "whatsapp",
       "web",
@@ -225,11 +209,9 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-course-advisor",
       "asia": "asia-course-advisor",
-      "za": "course-advisor",
+      "africa": "course-advisor",
       "eu": "eu-course-advisor",
       "us": "us-course-advisor"
     },
@@ -239,16 +221,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "customer-support",
     "name": "Customer Support",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
     "channels": [
       "whatsapp",
       "web",
@@ -256,11 +238,9 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-customer-support",
       "asia": "asia-customer-support",
-      "za": "customer-support",
+      "africa": "customer-support",
       "eu": "eu-customer-support",
       "us": "us-customer-support"
     },
@@ -270,16 +250,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "delivery-tracking",
     "name": "Delivery & Tracking",
     "tier": "pro",
     "category": "operations",
-    "summary": "Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
     "channels": [
       "whatsapp",
       "web",
@@ -287,11 +267,9 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-delivery-tracking",
       "asia": "asia-delivery-tracking",
-      "za": "delivery-tracking",
+      "africa": "delivery-tracking",
       "eu": "eu-delivery-tracking",
       "us": "us-delivery-tracking"
     },
@@ -301,9 +279,9 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "dental-front-desk",
@@ -318,7 +296,6 @@
       "sms",
       "voice"
     ],
-    "health": true,
     "markets": {
       "africa": "africa-dental-front-desk",
       "asia": "asia-dental-front-desk",
@@ -332,15 +309,15 @@
       "asia"
     ],
     "hasZa": false,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "dental-practice",
     "name": "Dental Practice",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "summary": "Asia Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
     "channels": [
       "whatsapp",
       "web",
@@ -348,11 +325,9 @@
       "sms",
       "voice"
     ],
-    "health": true,
     "markets": {
-      "africa": "africa-dental-practice",
       "asia": "asia-dental-practice",
-      "za": "dental-practice",
+      "africa": "dental-practice",
       "eu": "eu-dental-practice",
       "us": "us-dental-practice"
     },
@@ -362,16 +337,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "events-venue",
     "name": "Events & Venue",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "summary": "Asia Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
     "channels": [
       "whatsapp",
       "web",
@@ -379,12 +354,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-events-venue",
       "asia": "asia-events-venue",
       "eu": "eu-events-venue",
-      "za": "events-venue",
+      "africa": "events-venue",
       "us": "us-events-venue"
     },
     "packs": [
@@ -393,16 +366,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "executive-assistant",
     "name": "Executive Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
+    "summary": "Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
     "channels": [
       "whatsapp",
       "web",
@@ -410,12 +383,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-executive-assistant",
       "asia": "asia-executive-assistant",
       "eu": "eu-executive-assistant",
-      "za": "executive-assistant",
+      "africa": "executive-assistant",
       "us": "us-executive-assistant"
     },
     "packs": [
@@ -424,16 +395,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "field-service",
     "name": "Field Service Dispatch",
     "tier": "pro",
     "category": "operations",
-    "summary": "Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
+    "summary": "Asia Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
     "channels": [
       "whatsapp",
       "web",
@@ -441,12 +412,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-field-service",
       "asia": "asia-field-service",
       "eu": "eu-field-service",
-      "za": "field-service",
+      "africa": "field-service",
       "us": "us-field-service"
     },
     "packs": [
@@ -455,16 +424,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "fleet-driver",
     "name": "Fleet & Driver Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "summary": "Asia Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
     "channels": [
       "whatsapp",
       "web",
@@ -472,12 +441,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-fleet-driver",
       "asia": "asia-fleet-driver",
       "eu": "eu-fleet-driver",
-      "za": "fleet-driver",
+      "africa": "fleet-driver",
       "us": "us-fleet-driver"
     },
     "packs": [
@@ -486,16 +453,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "front-desk",
     "name": "Front Desk / Reception",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
     "channels": [
       "whatsapp",
       "web",
@@ -503,12 +470,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-front-desk",
       "asia": "asia-front-desk",
       "eu": "eu-front-desk",
-      "za": "front-desk",
+      "africa": "front-desk",
       "us": "us-front-desk"
     },
     "packs": [
@@ -517,16 +482,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "grant-stock-planner",
     "name": "Grant-Day Stock Planner",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
+    "summary": "Asia Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
     "channels": [
       "whatsapp",
       "web",
@@ -534,12 +499,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-grant-stock-planner",
       "asia": "asia-grant-stock-planner",
       "eu": "eu-grant-stock-planner",
-      "za": "grant-stock-planner",
+      "africa": "grant-stock-planner",
       "us": "us-grant-stock-planner"
     },
     "packs": [
@@ -548,16 +511,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "gym-membership",
     "name": "Gym Membership Desk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
+    "summary": "Asia Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
     "channels": [
       "whatsapp",
       "web",
@@ -565,12 +528,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-gym-membership",
       "asia": "asia-gym-membership",
       "eu": "eu-gym-membership",
-      "za": "gym-membership",
+      "africa": "gym-membership",
       "us": "us-gym-membership"
     },
     "packs": [
@@ -579,16 +540,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "home-services",
     "name": "Home Services Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
+    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, ap…",
     "channels": [
       "whatsapp",
       "web",
@@ -596,7 +557,6 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
       "africa": "africa-home-services",
       "asia": "asia-home-services",
@@ -610,15 +570,15 @@
       "asia"
     ],
     "hasZa": false,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "hotel-concierge",
     "name": "Hotel Concierge",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
+    "summary": "Asia Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
     "channels": [
       "whatsapp",
       "web",
@@ -626,12 +586,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-hotel-concierge",
       "asia": "asia-hotel-concierge",
       "eu": "eu-hotel-concierge",
-      "za": "hotel-concierge",
+      "africa": "hotel-concierge",
       "us": "us-hotel-concierge"
     },
     "packs": [
@@ -640,16 +598,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "hotel-guest",
     "name": "Hotel Guest Concierge",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, …",
+    "summary": "Africa Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, …",
     "channels": [
       "whatsapp",
       "web",
@@ -657,7 +615,6 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
       "africa": "africa-hotel-guest",
       "asia": "asia-hotel-guest",
@@ -671,15 +628,15 @@
       "asia"
     ],
     "hasZa": false,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "hr-helpdesk",
     "name": "HR Helpdesk",
     "tier": "pro",
     "category": "operations",
-    "summary": "HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "summary": "Asia HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
     "channels": [
       "whatsapp",
       "web",
@@ -687,12 +644,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-hr-helpdesk",
       "asia": "asia-hr-helpdesk",
       "eu": "eu-hr-helpdesk",
-      "za": "hr-helpdesk",
+      "africa": "hr-helpdesk",
       "us": "us-hr-helpdesk"
     },
     "packs": [
@@ -701,16 +656,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "insurance-broker",
     "name": "Insurance Broker",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "summary": "Asia Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
     "channels": [
       "whatsapp",
       "web",
@@ -718,12 +673,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-insurance-broker",
       "asia": "asia-insurance-broker",
       "eu": "eu-insurance-broker",
-      "za": "insurance-broker",
+      "africa": "insurance-broker",
       "us": "us-insurance-broker"
     },
     "packs": [
@@ -732,16 +685,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "insurance-claims",
     "name": "Insurance Claims Helper",
     "tier": "pro",
     "category": "operations",
-    "summary": "Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
+    "summary": "Asia Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
     "channels": [
       "whatsapp",
       "web",
@@ -749,12 +702,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-insurance-claims",
       "asia": "asia-insurance-claims",
       "eu": "eu-insurance-claims",
-      "za": "insurance-claims",
+      "africa": "insurance-claims",
       "us": "us-insurance-claims"
     },
     "packs": [
@@ -763,16 +714,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "it-helpdesk",
     "name": "IT Helpdesk",
     "tier": "pro",
     "category": "operations",
-    "summary": "IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "summary": "Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
     "channels": [
       "whatsapp",
       "web",
@@ -780,12 +731,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-it-helpdesk",
       "asia": "asia-it-helpdesk",
       "eu": "eu-it-helpdesk",
-      "za": "it-helpdesk",
+      "africa": "it-helpdesk",
       "us": "us-it-helpdesk"
     },
     "packs": [
@@ -794,16 +743,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "law-firm-intake",
     "name": "Law Firm Intake",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "summary": "Asia Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
     "channels": [
       "whatsapp",
       "web",
@@ -811,12 +760,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-law-firm-intake",
       "asia": "asia-law-firm-intake",
       "eu": "eu-law-firm-intake",
-      "za": "law-firm-intake",
+      "africa": "law-firm-intake",
       "us": "us-law-firm-intake"
     },
     "packs": [
@@ -825,16 +772,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "loan-prequalifier",
     "name": "Loan Pre-Qualifier",
     "tier": "pro",
     "category": "operations",
-    "summary": "Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "summary": "Asia Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
     "channels": [
       "whatsapp",
       "web",
@@ -842,12 +789,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-loan-prequalifier",
       "asia": "asia-loan-prequalifier",
       "eu": "eu-loan-prequalifier",
-      "za": "loan-prequalifier",
+      "africa": "loan-prequalifier",
       "us": "us-loan-prequalifier"
     },
     "packs": [
@@ -856,16 +801,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "loyalty-rewards",
     "name": "Loyalty & Rewards",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "summary": "Asia Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
     "channels": [
       "whatsapp",
       "web",
@@ -873,12 +818,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-loyalty-rewards",
       "asia": "asia-loyalty-rewards",
       "eu": "eu-loyalty-rewards",
-      "za": "loyalty-rewards",
+      "africa": "loyalty-rewards",
       "us": "us-loyalty-rewards"
     },
     "packs": [
@@ -887,16 +830,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "marketing-assistant",
     "name": "Marketing Assistant",
     "tier": "pro",
     "category": "sales",
-    "summary": "Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "summary": "Asia Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
     "channels": [
       "whatsapp",
       "web",
@@ -904,12 +847,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-marketing-assistant",
       "asia": "asia-marketing-assistant",
       "eu": "eu-marketing-assistant",
-      "za": "marketing-assistant",
+      "africa": "marketing-assistant",
       "us": "us-marketing-assistant"
     },
     "packs": [
@@ -918,16 +859,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "mobile-money",
     "name": "Mobile Money Desk",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "summary": "Asia Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
     "channels": [
       "whatsapp",
       "web",
@@ -935,12 +876,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-mobile-money",
       "asia": "asia-mobile-money",
       "eu": "eu-mobile-money",
-      "za": "mobile-money",
+      "africa": "mobile-money",
       "us": "us-mobile-money"
     },
     "packs": [
@@ -949,16 +888,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "onboarding-buddy",
     "name": "Onboarding Buddy",
     "tier": "standard",
     "category": "operations",
-    "summary": "Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
+    "summary": "Asia Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
     "channels": [
       "whatsapp",
       "web",
@@ -966,12 +905,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-onboarding-buddy",
       "asia": "asia-onboarding-buddy",
       "eu": "eu-onboarding-buddy",
-      "za": "onboarding-buddy",
+      "africa": "onboarding-buddy",
       "us": "us-onboarding-buddy"
     },
     "packs": [
@@ -980,16 +917,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "order-tracking",
     "name": "Order Tracking",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "summary": "Asia Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
     "channels": [
       "whatsapp",
       "web",
@@ -997,12 +934,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-order-tracking",
       "asia": "asia-order-tracking",
       "eu": "eu-order-tracking",
-      "za": "order-tracking",
+      "africa": "order-tracking",
       "us": "us-order-tracking"
     },
     "packs": [
@@ -1011,16 +946,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "payment-disputes",
     "name": "Card & Payment Disputes",
     "tier": "pro",
     "category": "operations",
-    "summary": "Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
+    "summary": "Asia Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
     "channels": [
       "whatsapp",
       "web",
@@ -1028,12 +963,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-payment-disputes",
       "asia": "asia-payment-disputes",
       "eu": "eu-payment-disputes",
-      "za": "payment-disputes",
+      "africa": "payment-disputes",
       "us": "us-payment-disputes"
     },
     "packs": [
@@ -1042,16 +975,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "payroll-queries",
     "name": "Payroll Queries",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "summary": "Asia Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
     "channels": [
       "whatsapp",
       "web",
@@ -1059,12 +992,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-payroll-queries",
       "asia": "asia-payroll-queries",
       "eu": "eu-payroll-queries",
-      "za": "payroll-queries",
+      "africa": "payroll-queries",
       "us": "us-payroll-queries"
     },
     "packs": [
@@ -1073,16 +1004,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "pharmacy",
     "name": "Pharmacy Assistant",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
+    "summary": "Asia Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
     "channels": [
       "whatsapp",
       "web",
@@ -1090,12 +1021,10 @@
       "sms",
       "voice"
     ],
-    "health": true,
     "markets": {
-      "africa": "africa-pharmacy",
       "asia": "asia-pharmacy",
       "eu": "eu-pharmacy",
-      "za": "pharmacy",
+      "africa": "pharmacy",
       "us": "us-pharmacy"
     },
     "packs": [
@@ -1104,16 +1033,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "policy-compliance",
     "name": "Policy & Compliance",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "summary": "Asia Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
     "channels": [
       "whatsapp",
       "web",
@@ -1121,12 +1050,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-policy-compliance",
       "asia": "asia-policy-compliance",
       "eu": "eu-policy-compliance",
-      "za": "policy-compliance",
+      "africa": "policy-compliance",
       "us": "us-policy-compliance"
     },
     "packs": [
@@ -1135,16 +1062,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "procurement",
     "name": "Procurement Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "summary": "Asia Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
     "channels": [
       "whatsapp",
       "web",
@@ -1152,12 +1079,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-procurement",
       "asia": "asia-procurement",
       "eu": "eu-procurement",
-      "za": "procurement",
+      "africa": "procurement",
       "us": "us-procurement"
     },
     "packs": [
@@ -1166,16 +1091,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "product-finder",
     "name": "Product Finder",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "summary": "Asia Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
     "channels": [
       "whatsapp",
       "web",
@@ -1183,12 +1108,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-product-finder",
       "asia": "asia-product-finder",
       "eu": "eu-product-finder",
-      "za": "product-finder",
+      "africa": "product-finder",
       "us": "us-product-finder"
     },
     "packs": [
@@ -1197,16 +1120,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "property-enquiries",
     "name": "Property Enquiries",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "summary": "Asia Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
     "channels": [
       "whatsapp",
       "web",
@@ -1214,12 +1137,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-property-enquiries",
       "asia": "asia-property-enquiries",
       "eu": "eu-property-enquiries",
-      "za": "property-enquiries",
+      "africa": "property-enquiries",
       "us": "us-property-enquiries"
     },
     "packs": [
@@ -1228,16 +1149,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "remittance",
     "name": "Remittance Helper",
     "tier": "pro",
     "category": "operations",
-    "summary": "Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "summary": "Asia Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
     "channels": [
       "whatsapp",
       "web",
@@ -1245,12 +1166,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-remittance",
       "asia": "asia-remittance",
       "eu": "eu-remittance",
-      "za": "remittance",
+      "africa": "remittance",
       "us": "us-remittance"
     },
     "packs": [
@@ -1259,16 +1178,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "rental-enquiries",
     "name": "Rental Enquiries",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "summary": "Asia Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
     "channels": [
       "whatsapp",
       "web",
@@ -1276,12 +1195,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-rental-enquiries",
       "asia": "asia-rental-enquiries",
       "eu": "eu-rental-enquiries",
-      "za": "rental-enquiries",
+      "africa": "rental-enquiries",
       "us": "us-rental-enquiries"
     },
     "packs": [
@@ -1290,16 +1207,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "restaurant-takeaway",
     "name": "Restaurant & Takeaway",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
+    "summary": "Asia Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
     "channels": [
       "whatsapp",
       "web",
@@ -1307,12 +1224,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-restaurant-takeaway",
       "asia": "asia-restaurant-takeaway",
       "eu": "eu-restaurant-takeaway",
-      "za": "restaurant-takeaway",
+      "africa": "restaurant-takeaway",
       "us": "us-restaurant-takeaway"
     },
     "packs": [
@@ -1321,16 +1236,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "returns-exchanges",
     "name": "Returns & Exchanges",
     "tier": "standard",
     "category": "operations",
-    "summary": "Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "summary": "Asia Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
     "channels": [
       "whatsapp",
       "web",
@@ -1338,12 +1253,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-returns-exchanges",
       "asia": "asia-returns-exchanges",
       "eu": "eu-returns-exchanges",
-      "za": "returns-exchanges",
+      "africa": "returns-exchanges",
       "us": "us-returns-exchanges"
     },
     "packs": [
@@ -1352,16 +1265,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "sales-qualifier",
     "name": "Sales Qualifier",
     "tier": "pro",
     "category": "sales",
-    "summary": "Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
+    "summary": "Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
     "channels": [
       "whatsapp",
       "web",
@@ -1369,12 +1282,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-sales-qualifier",
       "asia": "asia-sales-qualifier",
       "eu": "eu-sales-qualifier",
-      "za": "sales-qualifier",
+      "africa": "sales-qualifier",
       "us": "us-sales-qualifier"
     },
     "packs": [
@@ -1383,16 +1294,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "salon-booking",
     "name": "Salon & Barber Booking",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
+    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
     "channels": [
       "whatsapp",
       "web",
@@ -1400,12 +1311,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-salon-booking",
       "asia": "asia-salon-booking",
       "eu": "eu-salon-booking",
-      "za": "salon-booking",
+      "africa": "salon-booking",
       "us": "us-salon-booking"
     },
     "packs": [
@@ -1414,16 +1323,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "spaza-merchant",
     "name": "Spaza & Merchant",
     "tier": "enterprise",
     "category": "commerce",
-    "summary": "Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
     "channels": [
       "whatsapp",
       "web",
@@ -1431,12 +1340,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-spaza-merchant",
       "asia": "asia-spaza-merchant",
       "eu": "eu-spaza-merchant",
-      "za": "spaza-merchant",
+      "africa": "spaza-merchant",
       "us": "us-spaza-merchant"
     },
     "packs": [
@@ -1445,16 +1352,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "stock-availability",
     "name": "Stock & Availability",
     "tier": "pro",
     "category": "commerce",
-    "summary": "Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
+    "summary": "Asia Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
     "channels": [
       "whatsapp",
       "web",
@@ -1462,12 +1369,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-stock-availability",
       "asia": "asia-stock-availability",
       "eu": "eu-stock-availability",
-      "za": "stock-availability",
+      "africa": "stock-availability",
       "us": "us-stock-availability"
     },
     "packs": [
@@ -1476,16 +1381,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "student-helpdesk",
     "name": "Student Helpdesk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "summary": "Asia Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
     "channels": [
       "whatsapp",
       "web",
@@ -1493,12 +1398,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-student-helpdesk",
       "asia": "asia-student-helpdesk",
       "eu": "eu-student-helpdesk",
-      "za": "student-helpdesk",
+      "africa": "student-helpdesk",
       "us": "us-student-helpdesk"
     },
     "packs": [
@@ -1507,16 +1410,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "tour-activity",
     "name": "Tour & Activity Desk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
+    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
     "channels": [
       "whatsapp",
       "web",
@@ -1524,12 +1427,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-tour-activity",
       "asia": "asia-tour-activity",
       "eu": "eu-tour-activity",
-      "za": "tour-activity",
+      "africa": "tour-activity",
       "us": "us-tour-activity"
     },
     "packs": [
@@ -1538,16 +1439,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "trades-receptionist",
     "name": "Trades Receptionist",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
+    "summary": "Africa Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
     "channels": [
       "whatsapp",
       "web",
@@ -1555,7 +1456,6 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
       "africa": "africa-trades-receptionist",
       "asia": "asia-trades-receptionist",
@@ -1569,15 +1469,15 @@
       "asia"
     ],
     "hasZa": false,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "travel-desk",
     "name": "Travel Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "summary": "Asia Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
     "channels": [
       "whatsapp",
       "web",
@@ -1585,12 +1485,10 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-travel-desk",
       "asia": "asia-travel-desk",
       "eu": "eu-travel-desk",
-      "za": "travel-desk",
+      "africa": "travel-desk",
       "us": "us-travel-desk"
     },
     "packs": [
@@ -1599,16 +1497,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "utility-billing",
     "name": "Utility & Billing",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "summary": "Asia Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
     "channels": [
       "whatsapp",
       "web",
@@ -1616,13 +1514,11 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-utility-billing",
       "asia": "asia-utility-billing",
       "eu": "eu-utility-billing",
       "us": "us-utility-billing",
-      "za": "utility-billing"
+      "africa": "utility-billing"
     },
     "packs": [
       "us",
@@ -1630,16 +1526,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "vas-concierge",
     "name": "Gift Card & VAS Concierge",
     "tier": "pro",
     "category": "commerce",
-    "summary": "Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "summary": "Asia Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
     "channels": [
       "whatsapp",
       "web",
@@ -1647,13 +1543,11 @@
       "sms",
       "voice"
     ],
-    "health": false,
     "markets": {
-      "africa": "africa-vas-concierge",
       "asia": "asia-vas-concierge",
       "eu": "eu-vas-concierge",
       "us": "us-vas-concierge",
-      "za": "vas-concierge"
+      "africa": "vas-concierge"
     },
     "packs": [
       "us",
@@ -1661,16 +1555,16 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "veterinary",
     "name": "Veterinary Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
+    "summary": "Asia Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
     "channels": [
       "whatsapp",
       "web",
@@ -1678,13 +1572,11 @@
       "sms",
       "voice"
     ],
-    "health": true,
     "markets": {
-      "africa": "africa-veterinary",
       "asia": "asia-veterinary",
       "eu": "eu-veterinary",
       "us": "us-veterinary",
-      "za": "veterinary"
+      "africa": "veterinary"
     },
     "packs": [
       "us",
@@ -1692,8 +1584,8 @@
       "africa",
       "asia"
     ],
-    "hasZa": true,
-    "readiness": "catalogue-ready",
-    "catalogueReady": true
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   }
 ]

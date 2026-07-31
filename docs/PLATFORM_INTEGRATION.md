@@ -12,7 +12,7 @@ Binding agreement for the greenfield **Agent Marketplace** integrating with MyIn
 
 ## Market packs
 
-Catalogue is sold as **agent families** with **US / EU / Africa / Asia** packs. ZA remains a separate market. See [MARKET_PACKS.md](./MARKET_PACKS.md).
+Catalogue is sold as **agent families** with **US / EU / Africa / Asia** packs (ZA merged into Africa). See [MARKET_PACKS.md](./MARKET_PACKS.md).
 
 ## Required APIs from MyInstantAI
 

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "enterprise",
-    "summary": "Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance officer, and treats every whistleblowing report as a confidential, protected route — across WhatsApp, web and app.",
+    "summary": "Africa — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance officer, and treats every whistleblowing report as a confidential, protected route — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 10000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

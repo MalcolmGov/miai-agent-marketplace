@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web and app.",
+    "summary": "Africa — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 2500,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

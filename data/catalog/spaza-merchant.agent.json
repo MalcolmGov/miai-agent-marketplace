@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "commerce",
     "tier": "enterprise",
-    "summary": "A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry before it writes.",
+    "summary": "Africa — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry before it writes.",
     "channels": [
       "whatsapp"
     ],
@@ -45,7 +45,7 @@
       "tier_cap_msgs_month": 15000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

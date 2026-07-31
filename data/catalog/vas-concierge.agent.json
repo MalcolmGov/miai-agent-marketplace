@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "commerce",
     "tier": "pro",
-    "summary": "Sells and redeems gift cards, airtime, data and wallet top-ups right in the chat — instant PIN delivery, powered by the EZ PIN network.",
+    "summary": "Africa — Sells and redeems gift cards, airtime, data and wallet top-ups right in the chat — instant PIN delivery, powered by the EZ PIN network.",
     "channels": [
       "whatsapp",
       "web",
@@ -48,7 +48,7 @@
       "tier_cap_msgs_month": 5000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "standard",
-    "summary": "Answers 'where is my order', gives delivery windows, updates delivery preferences, and flags delays proactively — 24/7 across WhatsApp, web and app, handing off cleanly for lost or disputed parcels.",
+    "summary": "Africa — Answers 'where is my order', gives delivery windows, updates delivery preferences, and flags delays proactively — 24/7 across WhatsApp, web and app, handing off cleanly for lost or disputed parcels.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -58,7 +58,7 @@ function pickDefaultAgentId(
   preferredMarket?: string | null,
 ): string {
   if (preferredMarket && markets[preferredMarket]) return markets[preferredMarket];
-  for (const m of ["us", "eu", "africa", "asia", "za"]) {
+  for (const m of ["us", "eu", "africa", "asia"]) {
     if (markets[m]) return markets[m];
   }
   return Object.values(markets)[0];
@@ -87,7 +87,7 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
       name: e.name,
       tier: e.tier,
       category: e.category,
-      market: e.market ?? "za",
+      market: e.market === "za" ? "africa" : (e.market ?? "africa"),
       summary: e.summary,
       channels: e.channels ?? [],
       tools: e.tools,

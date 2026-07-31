@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "pro",
-    "summary": "A non-clinical front desk — books appointment requests, shares preparation instructions and practice basics, and hands every clinical or emergency question straight to a human, across WhatsApp, web and app.",
+    "summary": "Africa — A non-clinical front desk — books appointment requests, shares preparation instructions and practice basics, and hands every clinical or emergency question straight to a human, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

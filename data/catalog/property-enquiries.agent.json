@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "pro",
-    "summary": "Qualifies buyers and tenants, matches them to available listings, and books a viewing — with a clean handoff to the agency the moment an offer or negotiation starts. WhatsApp, web and app.",
+    "summary": "Africa — Qualifies buyers and tenants, matches them to available listings, and books a viewing — with a clean handoff to the agency the moment an offer or negotiation starts. WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a human when needed.",
+    "summary": "Africa — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a human when needed.",
     "channels": [
       "whatsapp",
       "web",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

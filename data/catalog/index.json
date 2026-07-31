@@ -4,8 +4,8 @@
     "name": "Accounting Practice",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.",
+    "market": "africa",
+    "summary": "Africa — Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.",
     "channels": [
       "whatsapp",
       "web",
@@ -20,8 +20,8 @@
     "name": "Admissions Assistant",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -29,186 +29,6 @@
     ],
     "tools": 4,
     "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-accounting-practice",
-    "name": "Africa Accounting Practice Desk",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Accounting Practice Desk — Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-admissions",
-    "name": "Africa Admissions Assistant",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Admissions Assistant — Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and c…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-agency-studio",
-    "name": "Africa Agency & Studio",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Agency & Studio — Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-bank-branch",
-    "name": "Africa Bank Branch Assistant",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-bookkeeping",
-    "name": "Africa Bookkeeping Assistant",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-building-management",
-    "name": "Africa Building Management",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-clinic-front-desk",
-    "name": "Africa Clinic Front Desk",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Strictly non-clinical Africa clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-course-advisor",
-    "name": "Africa Course Advisor",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-customer-support",
-    "name": "Africa Customer Support",
-    "tier": "standard",
-    "category": "front-office",
-    "market": "africa",
-    "summary": "Africa Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-delivery-tracking",
-    "name": "Africa Delivery & Tracking",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 14,
     "readiness": "catalogue-ready"
   },
   {
@@ -226,150 +46,6 @@
       "voice"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-dental-practice",
-    "name": "Africa Dental Practice",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-events-venue",
-    "name": "Africa Events & Venue",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-executive-assistant",
-    "name": "Africa Executive Assistant",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-field-service",
-    "name": "Africa Field Service Dispatch",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-fleet-driver",
-    "name": "Africa Fleet & Driver Desk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-front-desk",
-    "name": "Africa Front Desk / Reception",
-    "tier": "standard",
-    "category": "front-office",
-    "market": "africa",
-    "summary": "Africa Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-grant-stock-planner",
-    "name": "Africa Grant-Day Stock Planner",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-gym-membership",
-    "name": "Africa Gym Membership Desk",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
     "evals": 16,
     "readiness": "catalogue-ready"
   },
@@ -392,24 +68,6 @@
     "readiness": "catalogue-ready"
   },
   {
-    "id": "africa-hotel-concierge",
-    "name": "Africa Hotel Concierge",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 21,
-    "readiness": "catalogue-ready"
-  },
-  {
     "id": "africa-hotel-guest",
     "name": "Africa Hotel Guest Concierge",
     "tier": "pro",
@@ -425,510 +83,6 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-hr-helpdesk",
-    "name": "Africa HR Helpdesk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-insurance-broker",
-    "name": "Africa Insurance Broker",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-insurance-claims",
-    "name": "Africa Insurance Claims Helper",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-it-helpdesk",
-    "name": "Africa IT Helpdesk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-law-firm-intake",
-    "name": "Africa Law Firm Intake",
-    "tier": "enterprise",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-loan-prequalifier",
-    "name": "Africa Loan Pre-Qualifier",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-loyalty-rewards",
-    "name": "Africa Loyalty & Rewards",
-    "tier": "standard",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-marketing-assistant",
-    "name": "Africa Marketing Assistant",
-    "tier": "pro",
-    "category": "sales",
-    "market": "africa",
-    "summary": "Africa Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-mobile-money",
-    "name": "Africa Mobile Money Desk",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-onboarding-buddy",
-    "name": "Africa Onboarding Buddy",
-    "tier": "standard",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-order-tracking",
-    "name": "Africa Order Tracking",
-    "tier": "standard",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-payment-disputes",
-    "name": "Africa Card & Payment Disputes",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-payroll-queries",
-    "name": "Africa Payroll Queries",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-pharmacy",
-    "name": "Africa Pharmacy Assistant",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-policy-compliance",
-    "name": "Africa Policy & Compliance",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-procurement",
-    "name": "Africa Procurement Desk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-product-finder",
-    "name": "Africa Product Finder",
-    "tier": "standard",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-property-enquiries",
-    "name": "Africa Property Enquiries",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-remittance",
-    "name": "Africa Remittance Helper",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-rental-enquiries",
-    "name": "Africa Rental Enquiries",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-restaurant-takeaway",
-    "name": "Africa Restaurant & Takeaway",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-returns-exchanges",
-    "name": "Africa Returns & Exchanges",
-    "tier": "standard",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-sales-qualifier",
-    "name": "Africa Sales Qualifier",
-    "tier": "pro",
-    "category": "sales",
-    "market": "africa",
-    "summary": "Africa Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-salon-booking",
-    "name": "Africa Salon & Barber Booking",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-spaza-merchant",
-    "name": "Africa Spaza & Merchant",
-    "tier": "enterprise",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-stock-availability",
-    "name": "Africa Stock & Availability",
-    "tier": "pro",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-student-helpdesk",
-    "name": "Africa Student Helpdesk",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-tour-activity",
-    "name": "Africa Tour & Activity Desk",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, we…",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 16,
     "readiness": "catalogue-ready"
   },
   {
@@ -950,84 +104,12 @@
     "readiness": "catalogue-ready"
   },
   {
-    "id": "africa-travel-desk",
-    "name": "Africa Travel Desk",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-utility-billing",
-    "name": "Africa Utility & Billing",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-vas-concierge",
-    "name": "Africa Gift Card & VAS Concierge",
-    "tier": "pro",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "africa-veterinary",
-    "name": "Africa Veterinary Front Desk",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app",
-      "sms",
-      "voice"
-    ],
-    "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
-  },
-  {
     "id": "agency-studio",
     "name": "Agency & Studio",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -2032,8 +1114,8 @@
     "name": "Bank Branch Assistant",
     "tier": "enterprise",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -2048,8 +1130,8 @@
     "name": "Bookkeeping Assistant",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkeeper.",
+    "market": "africa",
+    "summary": "Africa — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkeeper.",
     "channels": [
       "whatsapp",
       "web",
@@ -2064,8 +1146,8 @@
     "name": "Building Management",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -2080,8 +1162,8 @@
     "name": "Clinic Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "A non-clinical front desk — books appointment requests, shares preparation instructions and practice basics, and hands every clinical or emergency question straight to a human, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — A non-clinical front desk — books appointment requests, shares preparation instructions and practice basics, and hands every clinical or emergency question straight to a human, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -2096,8 +1178,8 @@
     "name": "Course Advisor",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a human when needed.",
+    "market": "africa",
+    "summary": "Africa — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a human when needed.",
     "channels": [
       "whatsapp",
       "web",
@@ -2112,8 +1194,8 @@
     "name": "Customer Support",
     "tier": "standard",
     "category": "front-office",
-    "market": "za",
-    "summary": "Answers product and order questions, captures support tickets, and hands off to a human with full context — 24/7, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers product and order questions, captures support tickets, and hands off to a human with full context — 24/7, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -2128,8 +1210,8 @@
     "name": "Delivery & Tracking",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or disputed parcels with full context.",
+    "market": "africa",
+    "summary": "Africa — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or disputed parcels with full context.",
     "channels": [
       "whatsapp",
       "web",
@@ -2144,8 +1226,8 @@
     "name": "Dental Practice",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter to a human, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter to a human, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3150,8 +2232,8 @@
     "name": "Events & Venue",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3166,8 +2248,8 @@
     "name": "Executive Assistant",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitive or conflicting — across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitive or conflicting — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3182,8 +2264,8 @@
     "name": "Field Service Dispatch",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3198,8 +2280,8 @@
     "name": "Fleet & Driver Desk",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance reminders — escalating accidents, injuries and breakdowns to a human urgently, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance reminders — escalating accidents, injuries and breakdowns to a human urgently, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3214,8 +2296,8 @@
     "name": "Front Desk / Reception",
     "tier": "standard",
     "category": "front-office",
-    "market": "za",
-    "summary": "Greets visitors, answers the basics, routes people to the right person or department, books appointments and takes messages — across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Greets visitors, answers the basics, routes people to the right person or department, books appointments and takes messages — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3230,8 +2312,8 @@
     "name": "Grant-Day Stock Planner",
     "tier": "enterprise",
     "category": "operations",
-    "market": "za",
-    "summary": "Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the supplier account, confirming before it commits.",
+    "market": "africa",
+    "summary": "Africa — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the supplier account, confirming before it commits.",
     "channels": [
       "whatsapp",
       "app"
@@ -3245,8 +2327,8 @@
     "name": "Gym & Membership",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers questions on membership plans, class times, freezes and cancellations, logs freeze/cancel requests for the team to confirm, and hands off contracts and billing disputes to a human — across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers questions on membership plans, class times, freezes and cancellations, logs freeze/cancel requests for the team to confirm, and hands off contracts and billing disputes to a human — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3261,8 +2343,8 @@
     "name": "Hotel Concierge",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers pre-arrival and in-stay questions about amenities and the local area, and logs guest requests for the team — a warm 24/7 concierge across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers pre-arrival and in-stay questions about amenities and the local area, and logs guest requests for the team — a warm 24/7 concierge across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3277,8 +2359,8 @@
     "name": "HR Helpdesk",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical matter to a human, POPIA-safe, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical matter to a human, POPIA-safe, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3293,8 +2375,8 @@
     "name": "Insurance Broker",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3309,8 +2391,8 @@
     "name": "Insurance & Claims Helper",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Explains cover in plain language, walks a customer through starting a claim, and captures every detail — then hands off to a human for any decision. Across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Explains cover in plain language, walks a customer through starting a claim, and captures every detail — then hands off to a human for any decision. Across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3325,8 +2407,8 @@
     "name": "IT Helpdesk",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages and security incidents to a human, 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages and security incidents to a human, 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3341,8 +2423,8 @@
     "name": "Law Firm Intake",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Runs a structured, conflict-safe first contact for a law firm — explains practice areas, captures the matter, books an initial consultation, and routes every request for legal advice to an attorney. Gives no legal advice itself. Across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Runs a structured, conflict-safe first contact for a law firm — explains practice areas, captures the matter, books an initial consultation, and routes every request for legal advice to an attorney. Gives no legal advice itself. Across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3357,8 +2439,8 @@
     "name": "Loan Pre-Qualifier",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never a credit decision, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never a credit decision, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3373,8 +2455,8 @@
     "name": "Loyalty & Rewards",
     "tier": "standard",
     "category": "commerce",
-    "market": "za",
-    "summary": "Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing off account disputes to a human.",
+    "market": "africa",
+    "summary": "Africa — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing off account disputes to a human.",
     "channels": [
       "whatsapp",
       "web",
@@ -3389,8 +2471,8 @@
     "name": "Marketing Assistant",
     "tier": "pro",
     "category": "sales",
-    "market": "za",
-    "summary": "Answers campaign and promotion questions and captures interest at the moment of intent, feeding warm, opted-in leads straight to the team.",
+    "market": "africa",
+    "summary": "Africa — Answers campaign and promotion questions and captures interest at the moment of intent, feeding warm, opted-in leads straight to the team.",
     "channels": [
       "whatsapp",
       "web",
@@ -3405,8 +2487,8 @@
     "name": "Mobile Money Desk",
     "tier": "enterprise",
     "category": "operations",
-    "market": "za",
-    "summary": "Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalating anything that looks like fraud.",
+    "market": "africa",
+    "summary": "Africa — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalating anything that looks like fraud.",
     "channels": [
       "whatsapp",
       "app"
@@ -3420,8 +2502,8 @@
     "name": "Onboarding Buddy",
     "tier": "standard",
     "category": "operations",
-    "market": "za",
-    "summary": "Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT issue to a person — across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT issue to a person — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3436,8 +2518,8 @@
     "name": "Order Tracking",
     "tier": "standard",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers 'where is my order', gives delivery windows, updates delivery preferences, and flags delays proactively — 24/7 across WhatsApp, web and app, handing off cleanly for lost or disputed parcels.",
+    "market": "africa",
+    "summary": "Africa — Answers 'where is my order', gives delivery windows, updates delivery preferences, and flags delays proactively — 24/7 across WhatsApp, web and app, handing off cleanly for lost or disputed parcels.",
     "channels": [
       "whatsapp",
       "web",
@@ -3452,8 +2534,8 @@
     "name": "Card & Payment Disputes",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guarantees an outcome and never processes refunds itself. 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guarantees an outcome and never processes refunds itself. 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3468,8 +2550,8 @@
     "name": "Payroll Queries",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers staff payslip, leave-balance and payroll-policy questions, logs anything payroll needs to action, and routes every pay dispute or confidential matter to a person — POPIA-safe, 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers staff payslip, leave-balance and payroll-policy questions, logs anything payroll needs to action, and routes every pay dispute or confidential matter to a person — POPIA-safe, 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3484,8 +2566,8 @@
     "name": "Pharmacy Assistant",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers customers on stock, prescription collection status, and store information — non-clinically — and routes every medicine, dosage or script problem to the pharmacist. 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers customers on stock, prescription collection status, and store information — non-clinically — and routes every medicine, dosage or script problem to the pharmacist. 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3500,8 +2582,8 @@
     "name": "Policy & Compliance",
     "tier": "enterprise",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance officer, and treats every whistleblowing report as a confidential, protected route — across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance officer, and treats every whistleblowing report as a confidential, protected route — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3516,8 +2598,8 @@
     "name": "Procurement Desk",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals and conflicts of interest to a human.",
+    "market": "africa",
+    "summary": "Africa — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals and conflicts of interest to a human.",
     "channels": [
       "whatsapp",
       "web",
@@ -3532,8 +2614,8 @@
     "name": "Product Finder",
     "tier": "standard",
     "category": "commerce",
-    "market": "za",
-    "summary": "Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3548,8 +2630,8 @@
     "name": "Property Enquiries",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Qualifies buyers and tenants, matches them to available listings, and books a viewing — with a clean handoff to the agency the moment an offer or negotiation starts. WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Qualifies buyers and tenants, matches them to available listings, and books a viewing — with a clean handoff to the agency the moment an offer or negotiation starts. WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3564,8 +2646,8 @@
     "name": "Remittance Helper",
     "tier": "pro",
     "category": "operations",
-    "market": "za",
-    "summary": "Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to pay out. Never moves money itself.",
+    "market": "africa",
+    "summary": "Africa — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to pay out. Never moves money itself.",
     "channels": [
       "whatsapp",
       "web",
@@ -3580,8 +2662,8 @@
     "name": "Rental Enquiries",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and voice.",
+    "market": "africa",
+    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and voice.",
     "channels": [
       "whatsapp",
       "web",
@@ -3597,8 +2679,8 @@
     "name": "Restaurant & Takeaway",
     "tier": "enterprise",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers menu questions, checks and books tables, and captures collection or delivery orders — grounded in the restaurant's real menu and hours, across WhatsApp and web.",
+    "market": "africa",
+    "summary": "Africa — Answers menu questions, checks and books tables, and captures collection or delivery orders — grounded in the restaurant's real menu and hours, across WhatsApp and web.",
     "channels": [
       "whatsapp",
       "web"
@@ -3612,8 +2694,8 @@
     "name": "Returns & Exchanges",
     "tier": "standard",
     "category": "operations",
-    "market": "za",
-    "summary": "Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3628,8 +2710,8 @@
     "name": "Sales Qualifier",
     "tier": "pro",
     "category": "sales",
-    "market": "za",
-    "summary": "Qualifies inbound leads conversationally — understands need, budget, timeline and authority — then hands the sales team a complete, contextual brief.",
+    "market": "africa",
+    "summary": "Africa — Qualifies inbound leads conversationally — understands need, budget, timeline and authority — then hands the sales team a complete, contextual brief.",
     "channels": [
       "whatsapp",
       "web",
@@ -3644,8 +2726,8 @@
     "name": "Salon & Barber Booking",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Fills the chair — captures the service, preferred time and stylist, checks availability and books the appointment, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Fills the chair — captures the service, preferred time and stylist, checks availability and books the appointment, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3660,8 +2742,8 @@
     "name": "Spaza & Merchant",
     "tier": "enterprise",
     "category": "commerce",
-    "market": "za",
-    "summary": "A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry before it writes.",
+    "market": "africa",
+    "summary": "Africa — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry before it writes.",
     "channels": [
       "whatsapp"
     ],
@@ -3674,8 +2756,8 @@
     "name": "Stock & Availability",
     "tier": "pro",
     "category": "commerce",
-    "market": "za",
-    "summary": "Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-stock alerts.",
+    "market": "africa",
+    "summary": "Africa — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-stock alerts.",
     "channels": [
       "whatsapp",
       "web",
@@ -3690,8 +2772,8 @@
     "name": "Student Helpdesk",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. Voice here means WhatsApp voice notes (Whisper transcription in, ElevenLabs read-back out), not a standalone voice channel.",
+    "market": "africa",
+    "summary": "Africa — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. Voice here means WhatsApp voice notes (Whisper transcription in, ElevenLabs read-back out), not a standalone voice channel.",
     "channels": [
       "whatsapp",
       "web",
@@ -3706,8 +2788,8 @@
     "name": "Tour & Activity Desk",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -3722,8 +2804,8 @@
     "name": "Travel Desk",
     "tier": "pro",
     "category": "vertical",
-    "market": "za",
-    "summary": "Answers destination and travel-policy questions and captures trip requests for the travel team to action — honest that it doesn't book or quote live fares itself, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Answers destination and travel-policy questions and captures trip requests for the travel team to action — honest that it doesn't book or quote live fares itself, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -4728,8 +3810,8 @@
     "name": "Utility & Billing",
     "tier": "enterprise",
     "category": "operations",
-    "market": "za",
-    "summary": "Reports outages and interruptions, captures meter readings, and answers billing questions — routing gas and electrical emergencies and billing disputes to a human, across WhatsApp, web and app.",
+    "market": "africa",
+    "summary": "Africa — Reports outages and interruptions, captures meter readings, and answers billing questions — routing gas and electrical emergencies and billing disputes to a human, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -4744,8 +3826,8 @@
     "name": "Gift Card & VAS Concierge",
     "tier": "pro",
     "category": "commerce",
-    "market": "za",
-    "summary": "Sells and redeems gift cards, airtime, data and wallet top-ups right in the chat — instant PIN delivery, powered by the EZ PIN network.",
+    "market": "africa",
+    "summary": "Africa — Sells and redeems gift cards, airtime, data and wallet top-ups right in the chat — instant PIN delivery, powered by the EZ PIN network.",
     "channels": [
       "whatsapp",
       "web",
@@ -4760,8 +3842,8 @@
     "name": "Veterinary Practice",
     "tier": "standard",
     "category": "vertical",
-    "market": "za",
-    "summary": "A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and voice.",
+    "market": "africa",
+    "summary": "Africa — A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and voice.",
     "channels": [
       "whatsapp",
       "web",

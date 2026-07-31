@@ -6,7 +6,7 @@
     "version": "1.1.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and voice.",
+    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and voice.",
     "channels": [
       "whatsapp",
       "web",
@@ -48,7 +48,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

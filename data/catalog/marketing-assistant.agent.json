@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "sales",
     "tier": "pro",
-    "summary": "Answers campaign and promotion questions and captures interest at the moment of intent, feeding warm, opted-in leads straight to the team.",
+    "summary": "Africa — Answers campaign and promotion questions and captures interest at the moment of intent, feeding warm, opted-in leads straight to the team.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 4000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

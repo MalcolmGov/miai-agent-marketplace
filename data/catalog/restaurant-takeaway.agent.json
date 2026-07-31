@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "enterprise",
-    "summary": "Answers menu questions, checks and books tables, and captures collection or delivery orders — grounded in the restaurant's real menu and hours, across WhatsApp and web.",
+    "summary": "Africa — Answers menu questions, checks and books tables, and captures collection or delivery orders — grounded in the restaurant's real menu and hours, across WhatsApp and web.",
     "channels": [
       "whatsapp",
       "web"
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 5000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

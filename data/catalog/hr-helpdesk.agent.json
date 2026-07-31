@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical matter to a human, POPIA-safe, across WhatsApp, web and app.",
+    "summary": "Africa — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical matter to a human, POPIA-safe, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 5000,
       "avg_tokens_per_msg": 900
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

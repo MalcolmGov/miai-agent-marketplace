@@ -6,7 +6,7 @@
     "version": "1.0.1",
     "category": "operations",
     "tier": "pro",
-    "summary": "First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages and security incidents to a human, 24/7 across WhatsApp, web and app.",
+    "summary": "Africa — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages and security incidents to a human, 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 5000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

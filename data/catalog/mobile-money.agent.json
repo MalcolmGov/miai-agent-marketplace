@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "enterprise",
-    "summary": "Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalating anything that looks like fraud.",
+    "summary": "Africa — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalating anything that looks like fraud.",
     "channels": [
       "whatsapp",
       "app"
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 8000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

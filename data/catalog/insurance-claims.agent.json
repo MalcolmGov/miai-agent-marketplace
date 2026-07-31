@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Explains cover in plain language, walks a customer through starting a claim, and captures every detail — then hands off to a human for any decision. Across WhatsApp, web and app.",
+    "summary": "Africa — Explains cover in plain language, walks a customer through starting a claim, and captures every detail — then hands off to a human for any decision. Across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 5000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

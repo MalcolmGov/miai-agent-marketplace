@@ -6,7 +6,7 @@
     "version": "1.0.1",
     "category": "vertical",
     "tier": "pro",
-    "summary": "Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, across WhatsApp, web and app.",
+    "summary": "Africa — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 4000,
       "avg_tokens_per_msg": 1000
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "front-office",
     "tier": "standard",
-    "summary": "Greets visitors, answers the basics, routes people to the right person or department, books appointments and takes messages — across WhatsApp, web and app.",
+    "summary": "Africa — Greets visitors, answers the basics, routes people to the right person or department, books appointments and takes messages — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

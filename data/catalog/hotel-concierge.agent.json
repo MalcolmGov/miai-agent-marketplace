@@ -5,7 +5,7 @@
     "name": "Hotel Concierge",
     "version": "1.0.0",
     "category": "vertical",
-    "summary": "Answers pre-arrival and in-stay questions about amenities and the local area, and logs guest requests for the team — a warm 24/7 concierge across WhatsApp, web and app.",
+    "summary": "Africa — Answers pre-arrival and in-stay questions about amenities and the local area, and logs guest requests for the team — a warm 24/7 concierge across WhatsApp, web and app.",
     "tier": "pro",
     "channels": [
       "whatsapp",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

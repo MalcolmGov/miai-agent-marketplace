@@ -6,7 +6,7 @@
     "version": "1.0.1",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Answers questions on membership plans, class times, freezes and cancellations, logs freeze/cancel requests for the team to confirm, and hands off contracts and billing disputes to a human — across WhatsApp, web and app.",
+    "summary": "Africa — Answers questions on membership plans, class times, freezes and cancellations, logs freeze/cancel requests for the team to confirm, and hands off contracts and billing disputes to a human — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -45,7 +45,7 @@
       "tier_cap_msgs_month": 2500,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

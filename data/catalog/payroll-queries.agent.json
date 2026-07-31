@@ -6,7 +6,7 @@
     "version": "1.0.1",
     "category": "operations",
     "tier": "pro",
-    "summary": "Answers staff payslip, leave-balance and payroll-policy questions, logs anything payroll needs to action, and routes every pay dispute or confidential matter to a person — POPIA-safe, 24/7 across WhatsApp, web and app.",
+    "summary": "Africa — Answers staff payslip, leave-balance and payroll-policy questions, logs anything payroll needs to action, and routes every pay dispute or confidential matter to a person — POPIA-safe, 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

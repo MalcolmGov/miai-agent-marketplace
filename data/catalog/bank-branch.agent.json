@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "enterprise",
-    "summary": "Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 across WhatsApp, web and app.",
+    "summary": "Africa — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 10000,
       "avg_tokens_per_msg": 900
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

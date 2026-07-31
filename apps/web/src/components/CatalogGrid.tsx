@@ -25,10 +25,9 @@ const MARKETS = [
   { id: "eu", label: "EU" },
   { id: "africa", label: "Africa" },
   { id: "asia", label: "Asia" },
-  { id: "za", label: "ZA" },
 ];
 
-const PACK_ORDER = ["us", "eu", "africa", "asia", "za"] as const;
+const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
 
 function packLabel(m: string) {
   if (m === "africa") return "Africa";
@@ -38,6 +37,9 @@ function packLabel(m: string) {
 
 export function CatalogGrid() {
   const [items, setItems] = useState<FamilyItem[]>([]);
+  const [familyCount, setFamilyCount] = useState(0);
+  const [agentCount, setAgentCount] = useState(0);
+  const [totalAgents, setTotalAgents] = useState(0);
   const [q, setQ] = useState("");
   const [market, setMarket] = useState("all");
   const [category, setCategory] = useState("all");
@@ -52,7 +54,12 @@ export function CatalogGrid() {
     startTransition(() => {
       fetch(`/api/catalog?${params}`)
         .then((r) => r.json())
-        .then((d) => setItems(d.items ?? []));
+        .then((d) => {
+          setItems(d.items ?? []);
+          setFamilyCount(d.familyCount ?? d.count ?? 0);
+          setAgentCount(d.agentCount ?? 0);
+          setTotalAgents(d.totalAgents ?? 0);
+        });
     });
   }, [q, market, category]);
 
@@ -61,21 +68,32 @@ export function CatalogGrid() {
     return ["all", ...Array.from(set).sort()];
   }, [items]);
 
+  const readyCount = items.filter((i) => i.catalogueReady).length;
+
   return (
     <div className="space-y-6">
       <div className="rise flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Agent Marketplace</h1>
           <p className="mt-2 max-w-xl text-sm text-[var(--muted)]">
-            55 catalogue-ready families with US, EU, Africa, and Asia market packs. Rent by tier,
-            configure model & knowledge, connect Actions, and go live on prepaid tokens. ZA remains
-            available as its own market.
+            Catalogue-ready agent families with US, EU, Africa, and Asia market packs. Rent by tier,
+            configure model & knowledge, connect Actions, and go live on prepaid tokens.
           </p>
         </div>
-        <div className="text-sm text-[var(--muted)]">
-          {pending
-            ? "Updating…"
-            : `${items.length} families · ${items.filter((i) => i.catalogueReady).length} catalogue-ready`}
+        <div className="text-right text-sm text-[var(--muted)]">
+          {pending ? (
+            "Updating…"
+          ) : (
+            <>
+              <div className="font-medium text-[var(--fg)]">
+                {familyCount} families · {agentCount} agents
+                {market === "all" && totalAgents !== agentCount ? "" : market !== "all" ? " in market" : ""}
+              </div>
+              <div className="mt-0.5">
+                {totalAgents} agents catalogue-wide · {readyCount} families ready
+              </div>
+            </>
+          )}
         </div>
       </div>
 

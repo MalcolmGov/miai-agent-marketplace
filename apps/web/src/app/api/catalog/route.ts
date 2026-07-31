@@ -10,10 +10,15 @@ export async function GET(req: Request) {
   const category = searchParams.get("category");
   const view = searchParams.get("view") ?? "families";
   const packs = await listMarketPacks();
+  const allAgents = await listCatalog();
+  const totalAgents = allAgents.length;
 
   if (view === "agents") {
-    let items = await listCatalog();
-    if (market && market !== "all") items = items.filter((i) => i.market === market);
+    let items = allAgents;
+    if (market && market !== "all") {
+      const m = market === "za" ? "africa" : market;
+      items = items.filter((i) => i.market === m);
+    }
     if (category && category !== "all")
       items = items.filter((i) => i.marketplaceCategory === category);
     if (q) {
@@ -25,12 +30,20 @@ export async function GET(req: Request) {
           i.familyId.includes(q),
       );
     }
-    return NextResponse.json({ view: "agents", count: items.length, items, packs });
+    return NextResponse.json({
+      view: "agents",
+      count: items.length,
+      totalAgents,
+      familyCount: new Set(items.map((i) => i.familyId)).size,
+      items,
+      packs,
+    });
   }
 
-  let items = await listFamilies(market && market !== "all" ? market : null);
-  if (market && market !== "all") {
-    items = items.filter((f) => Boolean(f.markets[market]));
+  const preferred = market && market !== "all" ? (market === "za" ? "africa" : market) : null;
+  let items = await listFamilies(preferred);
+  if (preferred) {
+    items = items.filter((f) => Boolean(f.markets[preferred]));
   }
   if (category && category !== "all") {
     items = items.filter((i) => i.marketplaceCategory === category);
@@ -43,9 +56,18 @@ export async function GET(req: Request) {
         i.id.includes(q),
     );
   }
+
+  const agentCount = items.reduce((n, f) => {
+    if (preferred) return n + (f.markets[preferred] ? 1 : 0);
+    return n + Object.keys(f.markets).length;
+  }, 0);
+
   return NextResponse.json({
     view: "families",
     count: items.length,
+    familyCount: items.length,
+    agentCount,
+    totalAgents,
     items,
     packs,
   });

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "pro",
-    "summary": "Runs a structured, conflict-safe first contact for a law firm — explains practice areas, captures the matter, books an initial consultation, and routes every request for legal advice to an attorney. Gives no legal advice itself. Across WhatsApp, web and app.",
+    "summary": "Africa — Runs a structured, conflict-safe first contact for a law firm — explains practice areas, captures the matter, books an initial consultation, and routes every request for legal advice to an attorney. Gives no legal advice itself. Across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

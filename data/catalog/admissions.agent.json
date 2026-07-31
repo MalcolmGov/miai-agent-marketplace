@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "pro",
-    "summary": "Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.",
+    "summary": "Africa — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "standard",
-    "summary": "Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT issue to a person — across WhatsApp, web and app.",
+    "summary": "Africa — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT issue to a person — across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 2500,
       "avg_tokens_per_msg": 900
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

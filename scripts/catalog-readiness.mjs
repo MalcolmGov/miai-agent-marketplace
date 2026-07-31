@@ -33,7 +33,7 @@ function checkAgent(pkg) {
   const m = pkg.manifest || {};
   if (pkg.format !== "miai.agent-package/v1") issues.push("bad_format");
   if (!m.id) issues.push("missing_id");
-  if (!m.market || !["za", "us", "eu", "africa", "asia"].includes(m.market))
+  if (!m.market || !["us", "eu", "africa", "asia"].includes(m.market))
     issues.push("bad_market");
   if (!(pkg.system_prompt || "").trim() || pkg.system_prompt.length < 800)
     issues.push("thin_prompt");

@@ -8,18 +8,16 @@ Commercial model for the Agent Marketplace: sell **agent families**, expand with
 |--------|------|-----------------|
 | **US** | Sellable pack | `us-{family}` |
 | **EU** | Sellable pack | `eu-{family}` |
-| **Africa** | Sellable pack | `africa-{family}` |
+| **Africa** | Sellable pack (includes former ZA footprint) | unprefixed `{family}` or `africa-{family}` |
 | **Asia** | Sellable pack | `asia-{family}` |
-| **ZA** | Separate installed base (not a pack SKU) | unprefixed `{family}` |
 
-ZA is kept as its own market filter. Africa is **not** a rename of ZA — it is a distinct pack.
+ZA has been **merged into Africa**. Former ZA packages keep stable unprefixed ids; duplicate generated `africa-*` variants were removed.
 
 ## Catalogue shape
 
-- **~55 families** (unique jobs / verticals)
-- Each family has **US / EU / Africa / Asia** variants
-- Many families also have a **ZA** variant from the original catalogue
-- Flat agent count is larger (~270); buyer-facing UI defaults to **family cards** with pack chips
+- **55 families** (unique jobs / verticals)
+- Each family has **US / EU / Africa / Asia** variants (220 agents total)
+- Buyer-facing UI defaults to **family cards** with pack chips and shows family + agent counts
 
 ## Files
 
@@ -42,7 +40,7 @@ Skips existing files. Safe to re-run after importing new ZA/US/EU agents.
 - Pitch **55 catalogue-ready agent products**, not 270 unique inventions
 - Market packs are **localization / compliance / channel expansions** of a family
 - Recommended SKU language: `{Family} + {US|EU|Africa|Asia} pack`
-- ZA can be positioned as the current South Africa footprint alongside the four regional packs
+- Africa pack includes the former ZA footprint (no separate ZA SKU)
 - Full claim language and caveats: [CATALOGUE_READY.md](./CATALOGUE_READY.md)
 
 ## Polishing / readiness

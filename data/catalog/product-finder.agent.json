@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "commerce",
     "tier": "standard",
-    "summary": "Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 across WhatsApp, web and app.",
+    "summary": "Africa — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -46,7 +46,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 900
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

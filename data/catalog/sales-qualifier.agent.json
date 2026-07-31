@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "sales",
     "tier": "pro",
-    "summary": "Qualifies inbound leads conversationally — understands need, budget, timeline and authority — then hands the sales team a complete, contextual brief.",
+    "summary": "Africa — Qualifies inbound leads conversationally — understands need, budget, timeline and authority — then hands the sales team a complete, contextual brief.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 4000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

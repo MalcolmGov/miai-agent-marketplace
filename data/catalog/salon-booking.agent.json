@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "Fills the chair — captures the service, preferred time and stylist, checks availability and books the appointment, across WhatsApp, web and app.",
+    "summary": "Africa — Fills the chair — captures the service, preferred time and stylist, checks availability and books the appointment, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 2500,
       "avg_tokens_per_msg": 750
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "operations",
     "tier": "pro",
-    "summary": "Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guarantees an outcome and never processes refunds itself. 24/7 across WhatsApp, web and app.",
+    "summary": "Africa — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guarantees an outcome and never processes refunds itself. 24/7 across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 5000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

@@ -6,7 +6,7 @@
     "version": "1.1.0",
     "category": "operations",
     "tier": "enterprise",
-    "summary": "Reports outages and interruptions, captures meter readings, and answers billing questions — routing gas and electrical emergencies and billing disputes to a human, across WhatsApp, web and app.",
+    "summary": "Africa — Reports outages and interruptions, captures meter readings, and answers billing questions — routing gas and electrical emergencies and billing disputes to a human, across WhatsApp, web and app.",
     "channels": [
       "whatsapp",
       "web",
@@ -45,7 +45,7 @@
       "tier_cap_msgs_month": 6000,
       "avg_tokens_per_msg": 900
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

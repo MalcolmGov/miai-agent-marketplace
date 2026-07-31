@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "category": "vertical",
     "tier": "pro",
-    "summary": "Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.",
+    "summary": "Africa — Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.",
     "channels": [
       "whatsapp",
       "web",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 4000,
       "avg_tokens_per_msg": 800
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

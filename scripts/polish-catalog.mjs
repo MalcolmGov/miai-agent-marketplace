@@ -15,7 +15,7 @@ const packsFile = path.join(catalogDir, "market-packs.json");
 const force = process.argv.includes("--force");
 
 const PACK_MARKETS = ["us", "eu", "africa", "asia"];
-const ALL_MARKETS = ["za", ...PACK_MARKETS];
+const ALL_MARKETS = [...PACK_MARKETS];
 const PREFIX_RE = /^(us|eu|africa|asia)-/;
 
 /** Original hand-authored set before market-pack expansion (87). */
@@ -57,14 +57,20 @@ function familyIdFromAgentId(id) {
 }
 
 function marketFromAgentId(id, manifestMarket) {
+  if (manifestMarket === "za") return "africa";
   if (manifestMarket && ALL_MARKETS.includes(manifestMarket)) return manifestMarket;
   const m = id.match(PREFIX_RE);
   if (m) return m[1];
-  return "za";
+  // Unprefixed ids are the Africa pack (former ZA)
+  return "africa";
 }
 
-function variantId(family, market) {
-  if (market === "za") return family;
+function variantId(family, market, existingVariants = {}) {
+  // Prefer stable unprefixed Africa id when present (former ZA)
+  if (market === "africa" && existingVariants.africa) {
+    return existingVariants.africa.manifest?.id || `africa-${family}`;
+  }
+  if (market === "africa") return `africa-${family}`;
   return `${market}-${family}`;
 }
 
@@ -239,11 +245,11 @@ function ensureGuardrails(text, pack) {
   return g;
 }
 
-function applyRichOverlay(sourcePkg, sourceMarket, family, pack, health) {
-  const id = variantId(family, pack.id);
+function applyRichOverlay(sourcePkg, sourceMarket, family, pack, health, existingId) {
+  const id = existingId || variantId(family, pack.id);
   const baseName = stripMarketNamePrefix(sourcePkg.manifest.name) || titleCaseFamily(family);
   const name =
-    pack.id === "za"
+    pack.id === "africa" && !id.startsWith("africa-")
       ? baseName
       : `${pack.namePrefix}${baseName}`.replace(/\s+/g, " ").trim();
   const compliance = health ? pack.healthCompliance || pack.compliance : pack.compliance;
@@ -352,7 +358,7 @@ function loadAll() {
   for (const file of files) {
     const pkg = JSON.parse(fs.readFileSync(path.join(catalogDir, file), "utf8"));
     const id = pkg.manifest?.id || file.replace(/\.agent\.json$/, "");
-    if (!PREFIX_RE.test(id) && (pkg.manifest?.market === "za" || !pkg.manifest?.market)) {
+    if (!PREFIX_RE.test(id) || ORIGINAL_HAND.has(id)) {
       ORIGINAL_HAND.add(id);
     }
     const market = marketFromAgentId(id, pkg.manifest?.market);
@@ -367,7 +373,7 @@ function pickSource(variants, targetMarket) {
   if (variants[targetMarket] && ORIGINAL_HAND.has(variants[targetMarket].manifest.id)) {
     return { market: targetMarket, pkg: variants[targetMarket] };
   }
-  for (const m of [targetMarket, "us", "eu", "za", "africa", "asia"]) {
+  for (const m of [targetMarket, "us", "eu", "africa", "asia"]) {
     if (variants[m]) return { market: m, pkg: variants[m] };
   }
   return null;
@@ -436,19 +442,17 @@ function main() {
   for (const [family, variants] of byFamily) {
     const health = isHealthFamily(family, healthHints);
     for (const market of ALL_MARKETS) {
-      const id = variantId(family, market);
+      const existing = variants[market];
+      if (!existing) continue;
+      const id = existing.manifest?.id || variantId(family, market, variants);
       const pack = packs[market];
       if (!pack) continue;
-
-      const existing = variants[market];
-      if (!existing && !PACK_MARKETS.includes(market)) continue;
-      if (!existing) continue;
 
       const shouldForceRewrite = force && isGeneratedOrFilled(id);
       if (shouldForceRewrite) {
         const source = pickSource(variants, market);
         if (!source) continue;
-        const pkg = applyRichOverlay(source.pkg, source.market, family, pack, health);
+        const pkg = applyRichOverlay(source.pkg, source.market, family, pack, health, id);
         fs.writeFileSync(path.join(catalogDir, `${id}.agent.json`), JSON.stringify(pkg, null, 2) + "\n");
         variants[market] = pkg;
         rewritten++;

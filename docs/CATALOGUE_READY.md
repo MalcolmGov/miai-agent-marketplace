@@ -2,7 +2,7 @@
 
 ## Commercial framing (safe to sell)
 
-**55 agent families × US / EU / Africa / Asia market packs (+ ZA footprint) are catalogue-production-ready** in this marketplace.
+**55 agent families × US / EU / Africa / Asia market packs (220 agents) are catalogue-production-ready** in this marketplace. Former ZA agents are included in the **Africa** pack (no separate ZA market).
 
 That means every variant:
 

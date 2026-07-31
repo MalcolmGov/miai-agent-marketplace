@@ -6,7 +6,7 @@
     "version": "1.1.0",
     "category": "vertical",
     "tier": "standard",
-    "summary": "A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and voice.",
+    "summary": "Africa — A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and voice.",
     "channels": [
       "whatsapp",
       "web",
@@ -49,7 +49,7 @@
       "tier_cap_msgs_month": 3000,
       "avg_tokens_per_msg": 850
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

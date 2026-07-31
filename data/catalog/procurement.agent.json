@@ -5,7 +5,7 @@
     "name": "Procurement Desk",
     "version": "1.0.0",
     "category": "operations",
-    "summary": "Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals and conflicts of interest to a human.",
+    "summary": "Africa — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals and conflicts of interest to a human.",
     "tier": "pro",
     "channels": [
       "whatsapp",
@@ -47,7 +47,7 @@
       "tier_cap_msgs_month": 4000,
       "avg_tokens_per_msg": 950
     },
-    "market": "za",
+    "market": "africa",
     "compliance": [
       "popia"
     ],

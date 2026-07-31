@@ -77,11 +77,11 @@ for (const id of pilots) {
 }
 
 // Market-pack matrix for customer-support
+// Africa pack uses former ZA id `customer-support` (ZA merged into Africa)
 const marketMatrix = [
   "customer-support",
   "us-customer-support",
   "eu-customer-support",
-  "africa-customer-support",
   "asia-customer-support",
 ];
 for (const id of marketMatrix) {
