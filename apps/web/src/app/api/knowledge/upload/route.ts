@@ -2,14 +2,20 @@ import { NextResponse } from "next/server";
 import { addKnowledgeSource } from "@/lib/knowledge";
 import { fileToText } from "@/lib/ingest";
 import { appendAudit } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const form = await req.formData();
   const agentId = String(form.get("agentId") ?? "");
-  const workspaceId = String(form.get("workspaceId") ?? WORKSPACE_ID);
+  const workspaceId =
+    auth.mode === "oidc"
+      ? auth.workspaceId
+      : String(form.get("workspaceId") || auth.workspaceId);
   const file = form.get("file");
 
   if (!agentId) return NextResponse.json({ error: "agentId required" }, { status: 400 });
@@ -38,7 +44,7 @@ export async function POST(req: Request) {
       status: "ready",
     });
 
-    appendAudit({
+    await appendAudit({
       workspaceId,
       agentId,
       type: "knowledge_ingest",

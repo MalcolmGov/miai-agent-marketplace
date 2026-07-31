@@ -34,6 +34,11 @@ ENV HOSTNAME=0.0.0.0
 ENV CATALOG_DIR=/app/data/catalog
 ENV OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json
 ENV KNOWLEDGE_STORE_PATH=/data/knowledge-sources.json
+ENV RENTAL_STORE_PATH=/data/rentals.json
+# Modes default to mock for local/Railway; set http/gateway/oidc + secrets in Azure
+ENV MIAI_AUTH_MODE=mock
+ENV MIAI_WALLET_MODE=mock
+ENV MIAI_MODEL_MODE=mock
 
 WORKDIR /app
 COPY --from=builder /app ./
@@ -41,4 +46,5 @@ RUN mkdir -p /data && chown -R node:node /data /app
 USER node
 
 EXPOSE 3000
+# Azure Container Apps / Railway set PORT; health at /api/health
 CMD ["sh", "-c", "pnpm --filter @miai/web exec next start -H 0.0.0.0 -p ${PORT:-3000}"]

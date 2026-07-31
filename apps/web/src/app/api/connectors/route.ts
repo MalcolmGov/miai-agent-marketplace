@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { listConnectors, type ConnectorId } from "@miai/connectors";
 import { getPreset } from "@miai/presets";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export async function GET(req: Request) {
   const phase = new URL(req.url).searchParams.get("phase");
@@ -11,14 +11,18 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     agentId: string;
     connectorId: ConnectorId;
     workspaceId?: string;
     config?: Record<string, string>;
   };
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
-  const rental = getWorkspaceAgent(workspaceId, body.agentId);
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
+  const rental = await getWorkspaceAgent(workspaceId, body.agentId);
   if (!rental) return NextResponse.json({ error: "Rent first" }, { status: 400 });
 
   const connected = Array.from(new Set([...rental.connectedConnectors, body.connectorId]));
@@ -29,13 +33,13 @@ export async function POST(req: Request) {
       : b,
   );
 
-  const next = upsertWorkspaceAgent(workspaceId, body.agentId, {
+  const next = await upsertWorkspaceAgent(workspaceId, body.agentId, {
     agentId: body.agentId,
     connectedConnectors: connected,
     bindings,
   });
 
-  appendAudit({
+  await appendAudit({
     workspaceId,
     agentId: body.agentId,
     type: "connector_connect",

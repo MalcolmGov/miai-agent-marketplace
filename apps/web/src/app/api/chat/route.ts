@@ -4,22 +4,26 @@ import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     agentId: string;
     message: string;
     workspaceId?: string;
     mode?: "sandbox" | "live";
   };
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const pkg = await getAgentPackage(body.agentId);
   if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
 
-  let rental = getWorkspaceAgent(workspaceId, body.agentId);
+  let rental = await getWorkspaceAgent(workspaceId, body.agentId);
   if (!rental) {
-    rental = upsertWorkspaceAgent(workspaceId, body.agentId, {
+    rental = await upsertWorkspaceAgent(workspaceId, body.agentId, {
       agentId: body.agentId,
       state: "selected",
       knowledge: pkg.knowledge,
@@ -56,13 +60,13 @@ export async function POST(req: Request) {
       ? "live"
       : rental.state;
 
-  upsertWorkspaceAgent(workspaceId, body.agentId, {
+  await upsertWorkspaceAgent(workspaceId, body.agentId, {
     agentId: body.agentId,
     messages: result.messages,
     state: nextState as AgentState,
   });
 
-  appendAudit({
+  await appendAudit({
     workspaceId,
     agentId: body.agentId,
     type: result.paused ? "paused_no_tokens" : "agent_turn",
@@ -76,7 +80,7 @@ export async function POST(req: Request) {
 
   for (const tc of result.toolCalls) {
     if ((tc.result as { error?: string })?.error) {
-      appendAudit({
+      await appendAudit({
         workspaceId,
         agentId: body.agentId,
         type: "tool_error",

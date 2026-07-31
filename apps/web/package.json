@@ -15,13 +15,16 @@
     "@miai/presets": "workspace:^",
     "@miai/runtime": "workspace:^",
     "@miai/wallet-adapter": "workspace:^",
+    "jose": "^6.2.5",
     "next": "^15.2.8",
+    "pg": "^8.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

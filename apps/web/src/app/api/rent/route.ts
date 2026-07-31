@@ -2,16 +2,21 @@ import { NextResponse } from "next/server";
 import { getPreset, defaultBindingsForTools } from "@miai/presets";
 import { getAgentPackage } from "@/lib/catalog";
 import { appendAudit, upsertWorkspaceAgent } from "@/lib/store";
-import { WORKSPACE_ID, TIER_PRICES } from "@/lib/constants";
+import { TIER_PRICES } from "@/lib/constants";
 import type { RentTier } from "@/lib/store";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     agentId: string;
     tier?: RentTier;
     workspaceId?: string;
   };
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const pkg = await getAgentPackage(body.agentId);
   if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
 
@@ -20,7 +25,7 @@ export async function POST(req: Request) {
   const bindings =
     preset?.bindings ?? defaultBindingsForTools(pkg.tools.map((t) => t.name));
 
-  const rental = upsertWorkspaceAgent(workspaceId, body.agentId, {
+  const rental = await upsertWorkspaceAgent(workspaceId, body.agentId, {
     agentId: body.agentId,
     state: "configuring",
     tier,
@@ -30,11 +35,16 @@ export async function POST(req: Request) {
     rentedAt: new Date().toISOString(),
   });
 
-  appendAudit({
+  await appendAudit({
     workspaceId,
     agentId: body.agentId,
     type: "rent",
-    detail: { tier, priceUsd: TIER_PRICES[tier], publicKey: rental.publicKey },
+    detail: {
+      tier,
+      priceUsd: TIER_PRICES[tier],
+      publicKey: rental.publicKey,
+      userId: auth.userId,
+    },
   });
 
   return NextResponse.json({ ok: true, rental, priceUsd: TIER_PRICES[tier] });

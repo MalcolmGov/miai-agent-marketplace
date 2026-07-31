@@ -4,13 +4,16 @@ import {
   isOAuthConnector,
   type OAuthConnectorId,
 } from "@miai/connectors";
-import { WORKSPACE_ID } from "@/lib/constants";
 import { getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export async function GET(
   req: Request,
   ctx: { params: Promise<{ connector: string }> },
 ) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const { connector } = await ctx.params;
   if (!isOAuthConnector(connector)) {
     return NextResponse.json({ error: "Not an OAuth connector" }, { status: 400 });
@@ -18,7 +21,10 @@ export async function GET(
 
   const url = new URL(req.url);
   const agentId = url.searchParams.get("agentId");
-  const workspaceId = url.searchParams.get("workspaceId") ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc"
+      ? auth.workspaceId
+      : (url.searchParams.get("workspaceId") ?? auth.workspaceId);
   const shop = url.searchParams.get("shop") ?? undefined;
   const subdomain = url.searchParams.get("subdomain") ?? undefined;
   const emailProvider =
@@ -31,8 +37,8 @@ export async function GET(
   }
 
   // Ensure rental exists so callback can mark connected
-  if (!getWorkspaceAgent(workspaceId, agentId)) {
-    upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "configuring" });
+  if (!await getWorkspaceAgent(workspaceId, agentId)) {
+    await upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "configuring" });
   }
 
   const result = buildAuthorizeUrl(connector as OAuthConnectorId, {

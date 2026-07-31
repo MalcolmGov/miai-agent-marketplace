@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getValidAccessToken, updateTokenFields, getToken } from "@miai/connectors";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { getToken, getValidAccessToken, updateTokenFields } from "@miai/connectors";
 import { appendAudit } from "@/lib/store";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +15,13 @@ interface SlackChannel {
 
 /** GET → list channels the connected Slack workspace exposes, plus the saved default. */
 export async function GET(req: Request) {
-  const workspaceId = new URL(req.url).searchParams.get("workspaceId") ?? WORKSPACE_ID;
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
+  const workspaceId =
+    auth.mode === "oidc"
+      ? auth.workspaceId
+      : (new URL(req.url).searchParams.get("workspaceId") ?? auth.workspaceId);
   const stored = await getValidAccessToken(workspaceId, "slack");
   if (!stored?.accessToken) {
     return NextResponse.json({ error: "slack_not_connected" }, { status: 404 });
@@ -41,7 +47,10 @@ export async function GET(req: Request) {
       response_metadata?: { next_cursor?: string };
     };
     if (!json.ok) {
-      return NextResponse.json({ error: json.error ?? "slack_list_failed" }, { status: 502 });
+      return NextResponse.json(
+        { error: json.error ?? "slack_list_failed" },
+        { status: 502 },
+      );
     }
     channels.push(...(json.channels ?? []));
     cursor = json.response_metadata?.next_cursor ?? "";
@@ -62,15 +71,17 @@ export async function GET(req: Request) {
   });
 }
 
-/** POST {channel, workspaceId?} → save as the workspace's default handoff channel.
- *  Public channels the bot isn't in are auto-joined (channels:join); private ones
- *  need a manual /invite, which we surface as needs_invite. */
+/** POST {channel, workspaceId?} → save as the workspace's default handoff channel. */
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json().catch(() => ({}))) as {
     channel?: string;
     workspaceId?: string;
   };
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const channel = (body.channel ?? "").trim();
   if (!channel) {
     return NextResponse.json({ error: "channel_required" }, { status: 400 });
@@ -99,7 +110,7 @@ export async function POST(req: Request) {
   await updateTokenFields(workspaceId, "slack", {
     meta: { ...(stored.meta ?? {}), default_channel: channel },
   });
-  appendAudit({
+  await appendAudit({
     workspaceId,
     type: "connector",
     detail: { connector: "slack", action: "default_channel_set", channel },

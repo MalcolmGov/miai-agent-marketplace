@@ -1,19 +1,23 @@
 import { NextResponse } from "next/server";
 import { saveToken, type ConnectorId } from "@miai/connectors";
 import { getPreset } from "@miai/presets";
-import { WORKSPACE_ID } from "@/lib/constants";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 /** Store API-key / webhook / MCP credentials (non-OAuth connectors). */
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     agentId: string;
     connectorId: ConnectorId;
     workspaceId?: string;
     config: Record<string, string>;
   };
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
-  const rental = getWorkspaceAgent(workspaceId, body.agentId);
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
+  const rental = await getWorkspaceAgent(workspaceId, body.agentId);
   if (!rental) return NextResponse.json({ error: "Rent the agent first" }, { status: 400 });
 
   // Persist secrets in token store (sealed) — not returned to client
@@ -44,13 +48,13 @@ export async function POST(req: Request) {
   );
 
   // Also attach binding for tools that use this connector even if not in preset list
-  const next = upsertWorkspaceAgent(workspaceId, body.agentId, {
+  const next = await upsertWorkspaceAgent(workspaceId, body.agentId, {
     agentId: body.agentId,
     connectedConnectors: connected,
     bindings,
   });
 
-  appendAudit({
+  await appendAudit({
     workspaceId,
     agentId: body.agentId,
     type: "credentials_saved",

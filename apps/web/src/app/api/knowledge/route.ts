@@ -4,18 +4,24 @@ import {
   listKnowledgeSources,
 } from "@/lib/knowledge";
 import { getWorkspaceAgent } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const url = new URL(req.url);
   const agentId = url.searchParams.get("agentId");
-  const workspaceId = url.searchParams.get("workspaceId") ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc"
+      ? auth.workspaceId
+      : (url.searchParams.get("workspaceId") ?? auth.workspaceId);
   if (!agentId) return NextResponse.json({ error: "agentId required" }, { status: 400 });
 
   const sources = await listKnowledgeSources(workspaceId, agentId);
-  const rental = getWorkspaceAgent(workspaceId, agentId);
+  const rental = await getWorkspaceAgent(workspaceId, agentId);
   const base = rental?.knowledge ?? "";
   return NextResponse.json({
     sources: sources.map((s) => ({

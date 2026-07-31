@@ -1,23 +1,30 @@
 import { NextResponse } from "next/server";
 import { createWalletAdapter, type TopUpRequest } from "@miai/wallet-adapter";
 import { appendAudit } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
-  const workspaceId = new URL(req.url).searchParams.get("workspaceId") ?? WORKSPACE_ID;
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+  const q = new URL(req.url).searchParams.get("workspaceId");
+  const workspaceId = auth.mode === "oidc" ? auth.workspaceId : (q ?? auth.workspaceId);
   const bal = await createWalletAdapter().getBalance(workspaceId);
   return NextResponse.json(bal);
 }
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     workspaceId?: string;
     packageId: TopUpRequest["packageId"];
     usdAmount?: number;
   };
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const wallet = createWalletAdapter();
   const usd =
     body.usdAmount ??
@@ -27,10 +34,10 @@ export async function POST(req: Request) {
     packageId: body.packageId,
     usdAmount: usd,
   });
-  appendAudit({
+  await appendAudit({
     workspaceId,
     type: "wallet_topup",
-    detail: { packageId: body.packageId, tokens: bal.tokens, usd },
+    detail: { packageId: body.packageId, tokens: bal.tokens, usd, userId: auth.userId },
   });
   return NextResponse.json(bal);
 }

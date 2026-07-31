@@ -122,87 +122,121 @@ const OPENAI_MODEL_MAP: Record<string, string> = {
   "claude-opus": "gpt-4o",
 };
 
-/** Live OpenAI adapter (MIAI_MODEL_MODE=openai + OPENAI_API_KEY). Real completions with
- *  tool calling; grounded by the composed knowledge in the system message. Fails soft —
- *  a provider outage degrades to an apology, never a crashed chat. */
+async function openAiCompatibleComplete(
+  baseUrl: string,
+  apiKey: string,
+  input: {
+    system: string;
+    messages: ChatMessage[];
+    tools: AgentPackage["tools"];
+    model: string;
+  },
+  modelId: string,
+): Promise<{ content: string; toolCall?: { name: string; args: Record<string, unknown> } }> {
+  const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${apiKey}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: modelId,
+        temperature: 0.4,
+        max_tokens: 500,
+        messages: [
+          { role: "system", content: input.system },
+          ...input.messages.map((m) =>
+            m.role === "tool"
+              ? {
+                  role: "assistant" as const,
+                  content: `[${m.toolName ?? "tool"} result] ${m.content}`,
+                }
+              : { role: m.role, content: m.content },
+          ),
+        ],
+        tools: input.tools.length
+          ? input.tools.map((t) => ({
+              type: "function",
+              function: {
+                name: t.name,
+                description: t.description,
+                parameters: t.parameters ?? { type: "object", properties: {} },
+              },
+            }))
+          : undefined,
+      }),
+    });
+    const json = (await res.json()) as {
+      choices?: Array<{
+        message?: {
+          content?: string | null;
+          tool_calls?: Array<{ function: { name: string; arguments: string } }>;
+        };
+      }>;
+      error?: { message?: string };
+    };
+    if (!res.ok) throw new Error(json.error?.message ?? `Model API ${res.status}`);
+    const msg = json.choices?.[0]?.message;
+    const tc = msg?.tool_calls?.[0];
+    if (tc) {
+      let args: Record<string, unknown> = {};
+      try {
+        args = JSON.parse(tc.function.arguments || "{}") as Record<string, unknown>;
+      } catch {
+        /* tolerate malformed args */
+      }
+      return { content: (msg?.content ?? "").trim(), toolCall: { name: tc.function.name, args } };
+    }
+    return { content: (msg?.content ?? "").trim() || "…" };
+  } catch {
+    return {
+      content:
+        "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.",
+    };
+  }
+}
+
+/** Live OpenAI adapter (MIAI_MODEL_MODE=openai + OPENAI_API_KEY). */
 export class OpenAIModelAdapter implements ModelAdapter {
   async complete(input: {
     system: string;
     messages: ChatMessage[];
     tools: AgentPackage["tools"];
     model: string;
-  }): Promise<{ content: string; toolCall?: { name: string; args: Record<string, unknown> } }> {
+  }) {
     const apiKey = env("OPENAI_API_KEY") ?? "";
     const model = OPENAI_MODEL_MAP[input.model] ?? env("OPENAI_MODEL_DEFAULT") ?? "gpt-4o-mini";
-    try {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          authorization: `Bearer ${apiKey}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          model,
-          temperature: 0.4,
-          max_tokens: 500,
-          messages: [
-            { role: "system", content: input.system },
-            // OpenAI rejects bare role:"tool" messages (they need a tool_call_id we don't
-            // persist), so tool results ride along as assistant context notes instead.
-            ...input.messages.map((m) =>
-              m.role === "tool"
-                ? {
-                    role: "assistant" as const,
-                    content: `[${m.toolName ?? "tool"} result] ${m.content}`,
-                  }
-                : { role: m.role, content: m.content },
-            ),
-          ],
-          tools: input.tools.length
-            ? input.tools.map((t) => ({
-                type: "function",
-                function: {
-                  name: t.name,
-                  description: t.description,
-                  parameters: t.parameters ?? { type: "object", properties: {} },
-                },
-              }))
-            : undefined,
-        }),
-      });
-      const json = (await res.json()) as {
-        choices?: Array<{
-          message?: {
-            content?: string | null;
-            tool_calls?: Array<{ function: { name: string; arguments: string } }>;
-          };
-        }>;
-        error?: { message?: string };
-      };
-      if (!res.ok) throw new Error(json.error?.message ?? `OpenAI ${res.status}`);
-      const msg = json.choices?.[0]?.message;
-      const tc = msg?.tool_calls?.[0];
-      if (tc) {
-        let args: Record<string, unknown> = {};
-        try {
-          args = JSON.parse(tc.function.arguments || "{}") as Record<string, unknown>;
-        } catch {
-          /* tolerate malformed args */
-        }
-        return { content: (msg?.content ?? "").trim(), toolCall: { name: tc.function.name, args } };
-      }
-      return { content: (msg?.content ?? "").trim() || "…" };
-    } catch {
-      return {
-        content:
-          "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.",
-      };
-    }
+    return openAiCompatibleComplete("https://api.openai.com/v1", apiKey, input, model);
+  }
+}
+
+/** MyInstantAI model gateway (OpenAI-compatible). MIAI_MODEL_MODE=gateway. */
+export class GatewayModelAdapter implements ModelAdapter {
+  async complete(input: {
+    system: string;
+    messages: ChatMessage[];
+    tools: AgentPackage["tools"];
+    model: string;
+  }) {
+    const base = env("MIAI_MODEL_GATEWAY_URL") ?? "";
+    const apiKey = env("MIAI_MODEL_GATEWAY_KEY") ?? env("MIAI_MODEL_API_KEY") ?? "";
+    // Gateway may accept catalogue aliases directly; fall back to OpenAI map.
+    const model =
+      env("MIAI_MODEL_PASSTHROUGH") === "1"
+        ? input.model
+        : (OPENAI_MODEL_MAP[input.model] ?? input.model);
+    return openAiCompatibleComplete(base, apiKey, input, model);
   }
 }
 
 export function createModelAdapter(): ModelAdapter {
-  if (env("MIAI_MODEL_MODE") === "openai" && env("OPENAI_API_KEY")) {
+  const mode = env("MIAI_MODEL_MODE") ?? "mock";
+  if ((mode === "gateway" || mode === "http") && env("MIAI_MODEL_GATEWAY_URL")) {
+    return new GatewayModelAdapter();
+  }
+  if (mode === "openai" && env("OPENAI_API_KEY")) {
     return new OpenAIModelAdapter();
   }
   return new MockModelAdapter();

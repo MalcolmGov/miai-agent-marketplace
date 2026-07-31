@@ -8,12 +8,18 @@ import {
   listOAuthProviders,
   resolveProvider,
 } from "@miai/connectors";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
-  const workspaceId = new URL(req.url).searchParams.get("workspaceId") ?? WORKSPACE_ID;
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
+  const workspaceId =
+    auth.mode === "oidc"
+      ? auth.workspaceId
+      : (new URL(req.url).searchParams.get("workspaceId") ?? auth.workspaceId);
   const connected = await listConnected(workspaceId);
 
   const oauth = listOAuthProviders().map((p) => {

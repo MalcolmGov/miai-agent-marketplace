@@ -55,9 +55,9 @@ export async function POST(req: Request) {
   if (!pkg)
     return NextResponse.json({ error: "Agent missing" }, { status: 404, headers: CORS_HEADERS });
 
-  let rental = getWorkspaceAgent(workspaceId, agentId);
+  let rental = await getWorkspaceAgent(workspaceId, agentId);
   if (!rental) {
-    rental = upsertWorkspaceAgent(workspaceId, agentId, {
+    rental = await upsertWorkspaceAgent(workspaceId, agentId, {
       agentId,
       state: "live",
       publicKey: body.key,
@@ -102,10 +102,10 @@ export async function POST(req: Request) {
   store.set(sessionKey, result.messages.slice(-MAX_TURNS_KEPT));
 
   if (result.paused) {
-    upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "paused_no_tokens" });
+    await upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "paused_no_tokens" });
   }
 
-  appendAudit({
+  await appendAudit({
     workspaceId,
     agentId,
     type: "embed_turn",

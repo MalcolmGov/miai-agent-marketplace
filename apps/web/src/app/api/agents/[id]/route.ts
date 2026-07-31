@@ -4,16 +4,21 @@ import { getPreset } from "@miai/presets";
 import { listConnectors } from "@miai/connectors";
 import { getAgentPackage } from "@/lib/catalog";
 import { getWorkspaceAgent } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const { id } = await ctx.params;
   const pkg = await getAgentPackage(id);
   if (!pkg) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const q = new URL(req.url).searchParams.get("workspaceId");
+  const workspaceId = auth.mode === "oidc" ? auth.workspaceId : (q ?? auth.workspaceId);
   const preset = getPreset(id);
-  const rental = getWorkspaceAgent(WORKSPACE_ID, id);
+  const rental = await getWorkspaceAgent(workspaceId, id);
   return NextResponse.json({
     package: pkg,
     marketplaceCategory: marketplaceCategory(pkg.manifest),
@@ -29,5 +34,6 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
       auth: c.auth,
     })),
     rental: rental ?? null,
+    workspaceId,
   });
 }

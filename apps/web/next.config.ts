@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     "@miai/presets",
     "@miai/runtime",
   ],
+  serverExternalPackages: ["pg", "jose"],
   outputFileTracingRoot: path.join(__dirname, "../.."),
   experimental: {
     externalDir: true,

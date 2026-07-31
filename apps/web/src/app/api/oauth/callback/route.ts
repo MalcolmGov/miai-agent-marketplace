@@ -45,7 +45,7 @@ export async function GET(req: Request) {
       await saveToken(token);
     }
 
-    const rental = getWorkspaceAgent(payload.workspaceId, payload.agentId);
+    const rental = await getWorkspaceAgent(payload.workspaceId, payload.agentId);
     const connected = Array.from(
       new Set([...(rental?.connectedConnectors ?? []), payload.connectorId]),
     );
@@ -65,13 +65,13 @@ export async function GET(req: Request) {
         : b,
     );
 
-    upsertWorkspaceAgent(payload.workspaceId, payload.agentId, {
+    await upsertWorkspaceAgent(payload.workspaceId, payload.agentId, {
       agentId: payload.agentId,
       connectedConnectors: connected,
       bindings,
     });
 
-    appendAudit({
+    await appendAudit({
       workspaceId: payload.workspaceId,
       agentId: payload.agentId,
       type: "oauth_connected",

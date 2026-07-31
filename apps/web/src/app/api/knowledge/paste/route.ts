@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { addKnowledgeSource } from "@/lib/knowledge";
 import { appendAudit } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     agentId?: string;
     workspaceId?: string;
@@ -17,7 +20,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Paste at least a short FAQ or policy note" }, { status: 400 });
   }
 
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const source = await addKnowledgeSource({
     workspaceId,
     agentId,
@@ -27,7 +31,7 @@ export async function POST(req: Request) {
     status: "ready",
   });
 
-  appendAudit({
+  await appendAudit({
     workspaceId,
     agentId,
     type: "knowledge_ingest",

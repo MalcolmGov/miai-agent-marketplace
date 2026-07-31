@@ -2,12 +2,15 @@ import { NextResponse } from "next/server";
 import { addKnowledgeSource, updateKnowledgeSource } from "@/lib/knowledge";
 import { crawlSite } from "@/lib/ingest";
 import { appendAudit } from "@/lib/store";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { isAuthContext, requireAuth } from "@/lib/request-auth";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+
   const body = (await req.json()) as {
     agentId?: string;
     workspaceId?: string;
@@ -19,7 +22,8 @@ export async function POST(req: Request) {
   if (!agentId) return NextResponse.json({ error: "agentId required" }, { status: 400 });
   if (!url) return NextResponse.json({ error: "url required" }, { status: 400 });
 
-  const workspaceId = body.workspaceId ?? WORKSPACE_ID;
+  const workspaceId =
+    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const maxPages = Math.min(Math.max(Number(body.maxPages ?? 5), 1), 8);
 
   const pending = await addKnowledgeSource({
@@ -59,7 +63,7 @@ export async function POST(req: Request) {
       error: errors.length ? errors.slice(0, 3).join("; ") : undefined,
     });
 
-    appendAudit({
+    await appendAudit({
       workspaceId,
       agentId,
       type: "knowledge_ingest",
