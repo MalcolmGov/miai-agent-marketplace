@@ -18,6 +18,28 @@ export function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
 }
 
+/** Per-visitor conversation histories. Keyed by workspace::agent::session so two website
+ *  visitors NEVER share context (rental.messages is the studio's sandbox thread, not ours).
+ *  In-memory with a simple cap; a session dies with the container, which is fine for a
+ *  website chat. */
+type EmbedMessage = { role: "user" | "assistant" | "tool"; content: string; toolName?: string };
+const gEmbed = globalThis as typeof globalThis & { __miaiEmbedSessions?: Map<string, EmbedMessage[]> };
+function sessions(): Map<string, EmbedMessage[]> {
+  if (!gEmbed.__miaiEmbedSessions) gEmbed.__miaiEmbedSessions = new Map();
+  return gEmbed.__miaiEmbedSessions;
+}
+const MAX_SESSIONS = 500;
+const MAX_TURNS_KEPT = 24;
+
+const EMBED_HANDOFF_POLICY = [
+  "## Handoff contact policy (website chat)",
+  "When a visitor wants a human (or you decide to hand off), you MUST first collect their",
+  "full name, best phone number, and email address so the team can reach them — ask briefly",
+  "and naturally, in one message, for whichever of the three you don't have yet. Only call",
+  "handoff_to_human once you have them, passing customer: {name, phone, email} in the args.",
+  "After the tool succeeds, confirm that a team member will contact them on those details.",
+].join("\n");
+
 export async function POST(req: Request) {
   const body = (await req.json()) as {
     key: string;
@@ -50,27 +72,38 @@ export async function POST(req: Request) {
     rental.knowledge || pkg.knowledge,
   );
 
+  const sessionKey =
+    workspaceId + "::" + agentId + "::" + (body.sessionId ?? "anon");
+  const history = sessions().get(sessionKey) ?? [];
+
   const result = await runTurn(
     {
       workspaceId,
       agentId,
       pkg,
-      messages: rental.messages,
+      messages: history,
       userMessage: body.message,
       model: rental.model,
       mode: rental.state === "selected" || rental.state === "configuring" ? "sandbox" : "live",
       knowledgeOverride,
       bindings: rental.bindings,
       state: rental.state,
+      systemAppend: EMBED_HANDOFF_POLICY,
     },
     { wallet: createWalletAdapter() },
   );
 
-  upsertWorkspaceAgent(workspaceId, agentId, {
-    agentId,
-    messages: result.messages,
-    state: result.paused ? "paused_no_tokens" : "live",
-  });
+  // Persist this visitor's thread (trimmed) and cap the session table.
+  const store = sessions();
+  if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
+    const oldest = store.keys().next().value;
+    if (oldest) store.delete(oldest);
+  }
+  store.set(sessionKey, result.messages.slice(-MAX_TURNS_KEPT));
+
+  if (result.paused) {
+    upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "paused_no_tokens" });
+  }
 
   appendAudit({
     workspaceId,

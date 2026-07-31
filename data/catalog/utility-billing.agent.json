@@ -155,6 +155,24 @@
           "summary": {
             "type": "string",
             "description": "One-paragraph summary of the situation and what the customer needs, so the human can pick up without re-asking."
+          },
+          "customer": {
+            "type": "object",
+            "description": "Contact details for the outbound follow-up. Collect BEFORE handing off.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Customer's full name."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Best phone number for a call-back."
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address for written follow-up."
+              }
+            }
           }
         },
         "required": [

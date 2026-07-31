@@ -26,6 +26,8 @@ export interface TurnRequest {
   knowledgeOverride?: string;
   bindings?: ToolBinding[];
   state: AgentState;
+  /** Extra platform-level instructions appended to the system message (e.g. embed policies). */
+  systemAppend?: string;
 }
 
 export interface TurnResult {
@@ -252,6 +254,7 @@ export async function runTurn(
     "## Guardrails",
     req.pkg.guardrails.slice(0, 4000),
     "",
+    req.systemAppend ? req.systemAppend + "\n" : "",
     `Mode: ${req.mode}. Model: ${req.model}.`,
   ].join("\n");
 

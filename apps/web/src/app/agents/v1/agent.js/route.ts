@@ -23,8 +23,8 @@ const SCRIPT = String.raw`
   var title   = (current && current.getAttribute("data-title"))    || "Assistant";
   var greeting = (current && current.getAttribute("data-greeting")) ||
     "Hi! I'm the AI assistant. Ask me anything about our products and services, or say you'd like a human.";
-  var sugAttr = (current && current.getAttribute("data-suggestions")) || "What do you offer?,Talk to a human";
-  var suggestions = sugAttr.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 3);
+  var sugAttr = (current && current.getAttribute("data-suggestions")) || "What do you offer?,How does it work?,What does it cost?,Talk to a human";
+  var suggestions = sugAttr.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 4);
 
   var css = [
     '#miai-agent-root{all:initial;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mi-a:' + accent + ';--mi-a2:' + accent2 + '}',
@@ -76,9 +76,9 @@ const SCRIPT = String.raw`
     '@keyframes miai-b{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}',
 
     /* ---- suggestion chips ---- */
-    '#miai-sugs{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 4px}',
-    '.miai-chip{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04);color:#c4d2e2;border-radius:16px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .13s ease}',
-    '.miai-chip:hover{border-color:var(--mi-a);color:#fff;background:' + accent + '22}',
+    '#miai-sugs{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 6px;max-width:100%}',
+    '.miai-chip{border:1px solid ' + accent + '4d;background:#1b2635;color:#e6eef8;border-radius:18px;padding:8px 14px;font-size:12.5px;font-weight:500;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:all .14s ease}',
+    '.miai-chip:hover{border-color:transparent;color:#fff;background:linear-gradient(135deg,var(--mi-a),var(--mi-a2));transform:translateY(-1px);box-shadow:0 4px 12px ' + accent + '44}',
 
     /* ---- input ---- */
     '#miai-form{display:flex;align-items:center;gap:9px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)}',
@@ -130,11 +130,24 @@ const SCRIPT = String.raw`
   var send = root.querySelector("#miai-send");
   var typing = null;
   var opened = false;
+  var sessionId = newSession();
+
+  function newSession() {
+    return "ms_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  }
+
+  function resetConversation() {
+    msgs.innerHTML = "";
+    sugs.innerHTML = "";
+    opened = false;
+    sessionId = newSession();
+  }
 
   root.querySelector("#miai-ttl b").textContent = title;
 
   function toggle(openState) {
     var willOpen = typeof openState === "boolean" ? openState : !panel.classList.contains("open");
+    if (!willOpen) resetConversation();
     panel.classList.toggle("open", willOpen);
     fab.classList.toggle("open", willOpen);
     fab.setAttribute("aria-label", willOpen ? "Close chat" : "Open chat");
@@ -197,7 +210,7 @@ const SCRIPT = String.raw`
     fetch(origin + "/api/embed/chat", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ key: key, message: text })
+      body: JSON.stringify({ key: key, message: text, sessionId: sessionId })
     })
       .then(function (r) { return r.json(); })
       .then(function (data) {

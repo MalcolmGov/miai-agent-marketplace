@@ -6,7 +6,7 @@
       "prefix": "us-",
       "namePrefix": "US ",
       "languages": ["en", "es"],
-      "channels": ["voice", "sms", "web", "app", "whatsapp"],
+      "channels": ["voice", "sms", "web", "app"],
       "compliance": ["tcpa", "ccpa"],
       "healthCompliance": ["hipaa", "tcpa", "ccpa"],
       "emergency": "911",
@@ -22,7 +22,7 @@
       "prefix": "eu-",
       "namePrefix": "EU ",
       "languages": ["en", "de", "fr", "es", "it"],
-      "channels": ["whatsapp", "sms", "web", "app", "voice"],
+      "channels": ["sms", "web", "app", "voice"],
       "compliance": ["gdpr"],
       "healthCompliance": ["gdpr"],
       "emergency": "112",
@@ -54,7 +54,7 @@
       "prefix": "asia-",
       "namePrefix": "Asia ",
       "languages": ["en", "zh", "hi"],
-      "channels": ["whatsapp", "web", "app", "sms", "voice"],
+      "channels": ["web", "app", "sms", "voice"],
       "compliance": ["pdpa", "regional_privacy"],
       "healthCompliance": ["pdpa", "regional_privacy"],
       "emergency": "local emergency services",
@@ -62,7 +62,7 @@
       "privacyLabel": "PDPA-style / regional privacy",
       "regionPhrase": "Asia",
       "summaryPrefix": "Asia ",
-      "complianceNotes": "## Asia compliance notes\n- **Privacy (PDPA-style):** Collect only what the task needs. Honour opt-out and access requests by handing off. Never reveal another customer's data.\n- **Channels:** Prefer WhatsApp and web chat. Do not cold-message new numbers for marketing.\n- **Emergencies:** Life-threatening situations — tell them to call **local emergency services**, then hand off.\n"
+      "complianceNotes": "## Asia compliance notes\n- **Privacy (PDPA-style):** Collect only what the task needs. Honour opt-out and access requests by handing off. Never reveal another customer's data.\n- **Channels:** Prefer web chat, app, SMS and voice. Do not cold-message new numbers for marketing.\n- **Emergencies:** Life-threatening situations — tell them to call **local emergency services**, then hand off.\n"
     }
   ],
   "healthFamilyHints": [

@@ -176,6 +176,24 @@
           "summary": {
             "type": "string",
             "description": "One-paragraph factual summary of the situation and what the patient needs. Do not include a clinical opinion or assessment — describe the request factually."
+          },
+          "customer": {
+            "type": "object",
+            "description": "Contact details for the outbound follow-up. Collect BEFORE handing off.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Customer's full name."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Best phone number for a call-back."
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address for written follow-up."
+              }
+            }
           }
         },
         "required": [

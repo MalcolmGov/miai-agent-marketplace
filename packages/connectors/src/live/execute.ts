@@ -47,11 +47,18 @@ async function slackHandoff(
       "Slack connected but no handoff channel set — pick one in Actions after connecting",
     );
   }
+  const customer = (args.customer ?? {}) as Record<string, unknown>;
+  const custName = customer.name ?? args.name;
+  const custPhone = customer.phone ?? args.phone ?? args.contact;
+  const custEmail = customer.email ?? args.email;
   const text = [
     `*Agent handoff*`,
     args.reason ? `Reason: ${args.reason}` : null,
     args.summary ? `Summary: ${args.summary}` : null,
-    args.customer ? `Customer: ${JSON.stringify(args.customer)}` : null,
+    custName || custPhone || custEmail ? `*Contact for follow-up:*` : null,
+    custName ? `• Name: ${custName}` : null,
+    custPhone ? `• Phone: ${custPhone}` : null,
+    custEmail ? `• Email: ${custEmail}` : null,
   ]
     .filter(Boolean)
     .join("\n");
