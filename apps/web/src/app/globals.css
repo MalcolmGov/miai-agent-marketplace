@@ -19,9 +19,8 @@
   --warn: #f0b429;
   --danger: #f07178;
   --live: #5eead4;
-  --font-body: var(--font-body), "Segoe UI", sans-serif;
-  --font-display: var(--font-display), var(--font-body), sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, monospace;
+  --font-ui: var(--font-sans), "Segoe UI", sans-serif;
+  --font-mono-stack: var(--font-mono), ui-monospace, monospace;
   --radius-panel: 16px;
   --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -28px rgba(0, 0, 0, 0.75);
 }
@@ -33,7 +32,7 @@ body {
 
 body {
   color: var(--text);
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
   background-color: var(--bg);
   background-image:
     radial-gradient(ellipse 900px 520px at 8% -8%, rgba(61, 214, 198, 0.16), transparent 55%),
@@ -154,7 +153,7 @@ body::before {
   background: color-mix(in srgb, #060a10 88%, transparent);
   border: 1px solid var(--line);
   color: var(--text);
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
 }
 
 .input::placeholder {
@@ -167,8 +166,8 @@ body::before {
 }
 
 .display {
-  font-family: var(--font-display);
-  letter-spacing: -0.03em;
+  font-family: var(--font-ui);
+  letter-spacing: -0.02em;
 }
 
 @keyframes rise {

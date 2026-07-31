@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Syne, JetBrains_Mono } from "next/font/google";
+import { Manrope, JetBrains_Mono } from "next/font/google";
 import { Shell } from "@/components/Shell";
 import "./globals.css";
 
-const display = Syne({
-  variable: "--font-display",
+const sans = Manrope({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-});
-
-const body = Plus_Jakarta_Sans({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const mono = JetBrains_Mono({
@@ -29,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable} ${mono.variable} antialiased`}>
+      <body className={`${sans.variable} ${mono.variable} antialiased`}>
         <div id="app-root">
           <Shell>{children}</Shell>
         </div>

@@ -136,14 +136,14 @@ export function CatalogGrid() {
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
               MyInstantAI · Global agent marketplace
             </p>
-            <h1 className="display max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-[var(--text)] sm:text-5xl lg:text-[3.35rem]">
+            <h1 className="display max-w-2xl text-[2rem] font-semibold leading-[1.15] tracking-tight text-[var(--text)] sm:text-4xl lg:text-[2.75rem]">
               The world&apos;s agent{" "}
               <span className="bg-gradient-to-r from-[var(--accent-bright)] to-[#7ec8f0] bg-clip-text text-transparent">
                 operating system
               </span>{" "}
               for every market.
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-[var(--muted)] sm:text-[1.05rem]">
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--muted)] sm:text-base">
               Catalogue-ready agent families across US, EU, Africa, and Asia — rent by tier, wire
               Actions, embed on your site, and run on prepaid tokens.
             </p>
@@ -174,7 +174,7 @@ export function CatalogGrid() {
       <section id="catalogue" className="scroll-mt-24 space-y-5">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="display text-2xl font-bold tracking-tight sm:text-3xl">
+            <h2 className="display text-xl font-semibold tracking-tight sm:text-2xl">
               Browse agent families
             </h2>
             <p className="mt-1 text-sm text-[var(--muted)]">
@@ -255,13 +255,13 @@ export function CatalogGrid() {
                   <div className="mb-4 flex items-start gap-3">
                     <span
                       aria-hidden
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_8%,var(--bg-elev))] display text-sm font-bold text-[var(--accent-bright)]"
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_8%,var(--bg-elev))] text-sm font-semibold text-[var(--accent-bright)]"
                     >
                       {initials(item.name)}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="display text-[1.05rem] font-bold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
+                        <h3 className="display text-[0.98rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                           {item.name}
                         </h3>
                         <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
@@ -340,7 +340,7 @@ export function CatalogGrid() {
 
         {!pending && items.length === 0 ? (
           <div className="panel px-6 py-12 text-center">
-            <p className="display text-xl font-bold">No families match</p>
+            <p className="display text-xl font-semibold">No families match</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Clear search or switch market / category to see the full catalogue.
             </p>
@@ -376,7 +376,7 @@ function StatCell({
       <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
         {label}
       </p>
-      <p className="display mt-2 text-3xl font-extrabold tracking-tight text-[var(--text)]">
+      <p className="display mt-2 text-[1.75rem] font-semibold tracking-tight text-[var(--text)] tabular-nums">
         {value}
       </p>
       {sub ? <p className="mt-1 text-xs text-[var(--muted-dim)]">{sub}</p> : null}

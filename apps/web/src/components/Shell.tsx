@@ -38,16 +38,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 aria-hidden
                 className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_12%,var(--bg-elev))]"
               >
-                <span className="display text-sm font-bold tracking-tight text-[var(--accent-bright)]">
+                <span className="text-sm font-semibold tracking-tight text-[var(--accent-bright)]">
                   M
                 </span>
                 <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-sm bg-[var(--accent)] shadow-[0_0_10px_var(--accent)]" />
               </span>
               <span className="flex flex-col leading-none">
-                <span className="display text-[1.05rem] font-bold tracking-tight text-[var(--text)]">
+                <span className="text-[1.02rem] font-semibold tracking-tight text-[var(--text)]">
                   MyInstant<span className="text-[var(--accent-bright)]">AI</span>
                 </span>
-                <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+                <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--muted)]">
                   Agent Marketplace
                 </span>
               </span>
