@@ -49,6 +49,32 @@ export interface ModelAdapter {
   }): Promise<{ content: string; toolCall?: { name: string; args: Record<string, unknown> } }>;
 }
 
+/** Pull a short relevant excerpt from the system knowledge block for mock answers. */
+function knowledgeHit(system: string, query: string): string | null {
+  const kbIdx = system.indexOf("## Knowledge base");
+  if (kbIdx < 0) return null;
+  const kb = system.slice(kbIdx, kbIdx + 60_000);
+  const terms = query
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((t) => t.length > 3);
+  const chunks = kb.split(/\n(?=#+ )/);
+  let best = "";
+  let bestScore = 0;
+  for (const chunk of chunks) {
+    const lower = chunk.toLowerCase();
+    let score = 0;
+    for (const t of terms) if (lower.includes(t)) score += 1;
+    if (score > bestScore) {
+      bestScore = score;
+      best = chunk.trim();
+    }
+  }
+  if (bestScore < 1 || best.length < 40) return null;
+  return best.slice(0, 900);
+}
+
 /** Deterministic mock model — good for local demo without API keys. */
 export class MockModelAdapter implements ModelAdapter {
   async complete(input: {
@@ -59,6 +85,21 @@ export class MockModelAdapter implements ModelAdapter {
   }) {
     const last = [...input.messages].reverse().find((m) => m.role === "user")?.content ?? "";
     const lower = last.toLowerCase();
+    const toolNote = [...input.messages].reverse().find((m) => m.role === "tool");
+
+    // After a tool ran, answer from knowledge + tool payload instead of echoing JSON.
+    if (toolNote) {
+      const hit = knowledgeHit(input.system, last);
+      if (hit) {
+        return {
+          content: `From our knowledge base:\n\n${hit}\n\n(Also confirmed via ${toolNote.toolName ?? "tool"}.)`,
+        };
+      }
+      return {
+        content:
+          "I've looked that up. Based on our HR knowledge on file I can help with PTO, benefits, hiring, and escalations — ask a more specific question if you need a detail.",
+      };
+    }
 
     if (/ignore (all )?previous|system prompt|jailbreak/.test(lower)) {
       return {
@@ -66,7 +107,11 @@ export class MockModelAdapter implements ModelAdapter {
           "I can't share internal instructions. I can help with your account, booking, or order questions — what do you need?",
       };
     }
-    if (/speak to (a )?(human|person|agent)|real person|handoff|escalate/.test(lower)) {
+    if (
+      /speak to (a )?(human|person|agent)|real person|handoff|escalate|harassment|discrimination|ada |accommodation|grievance/.test(
+        lower,
+      )
+    ) {
       return {
         content: "I'll connect you to a teammate now.",
         toolCall: {
@@ -75,6 +120,19 @@ export class MockModelAdapter implements ModelAdapter {
         },
       };
     }
+
+    // Prefer answering from knowledge for FAQ-style questions (office, PTO, benefits…).
+    const faq =
+      /where|office|address|hours|pto|leave|holiday|benefit|401|premium|payroll|direct deposit|salary|role|req-|apply|parental|sick|open enrollment|austin|chicago|workday/.test(
+        lower,
+      );
+    if (faq) {
+      const hit = knowledgeHit(input.system, last);
+      if (hit) {
+        return { content: hit };
+      }
+    }
+
     const order = last.match(/\b(\d{3,}|ORD-?\d+)\b/i);
     if (/where('| i)?s my order|track|order status/.test(lower) && order) {
       return {
@@ -88,19 +146,30 @@ export class MockModelAdapter implements ModelAdapter {
         content: "I can help with that booking — checking availability.",
         toolCall: {
           name: tool,
-          args: { service: "consultation", date: "Thursday", name: "Guest", contact: "guest@example.com" },
+          args: {
+            service: "consultation",
+            date: "Thursday",
+            name: "Guest",
+            contact: "guest@example.com",
+          },
         },
       };
     }
     if (/how much|price|cost|hours|open|wifi|check-in|menu|service/.test(lower)) {
+      const hit = knowledgeHit(input.system, last);
       return {
         content:
+          hit ??
           "Based on the business knowledge on file: I can help with pricing, hours, and next steps. Share a bit more detail (or an order/booking reference) and I’ll take action.",
       };
     }
+
+    const hit = knowledgeHit(input.system, last);
+    if (hit) return { content: hit };
+
     return {
       content:
-        "Happy to help. Ask about orders, bookings, services, or say if you’d like a human — I’ll use the right tools.",
+        "Happy to help. Ask about policies, benefits, hiring, orders, bookings — or say if you’d like a human.",
     };
   }
 }
@@ -279,11 +348,16 @@ export async function runTurn(
   }
 
   const knowledge = req.knowledgeOverride?.trim() || req.pkg.knowledge;
+  const knowledgeBudget = Number(env("RUNTIME_KNOWLEDGE_CHARS") ?? 40_000);
   const system = [
     req.pkg.system_prompt,
     "",
     "## Knowledge base",
-    knowledge.slice(0, 12000),
+    "Answer factual questions (office locations, hours, PTO, benefits, hiring, policies) from this knowledge first.",
+    "Only call tools when you need a live system action (booking, ticket, order lookup, handoff).",
+    "Never paste raw JSON tool payloads to the user — summarize in clear natural language.",
+    "",
+    knowledge.slice(0, knowledgeBudget),
     "",
     "## Guardrails",
     req.pkg.guardrails.slice(0, 4000),
@@ -359,8 +433,30 @@ export async function runTurn(
         content: `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`,
       };
     } else {
+      // Second model pass: turn tool JSON + knowledge into a natural answer
+      // (avoids dumping stub payloads like get_policy echo).
+      const follow = await model.complete({
+        system,
+        messages: [
+          ...messages,
+          {
+            role: "user",
+            content:
+              `Using the ${name} tool result above and the knowledge base, answer my last question in clear natural language. ` +
+              `Do not show JSON. If the tool only echoed args, answer fully from the knowledge base.`,
+          },
+        ],
+        tools: [],
+        model: req.model,
+      });
+      const text = follow.content.trim();
+      const looksLikeJson = text.startsWith("{") || /Done — I used/.test(text);
       completion = {
-        content: `Done — I used **${name}** and have the result. ${JSON.stringify(result.data).slice(0, 220)}`,
+        content:
+          text && !looksLikeJson
+            ? text
+            : knowledgeHit(system, req.userMessage) ??
+              "I've checked our records. Please ask about a specific policy detail (PTO days, benefits start date, office address) and I'll answer from the knowledge base.",
       };
     }
   }

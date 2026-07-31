@@ -126,14 +126,15 @@ export async function deleteKnowledgeSource(
   return true;
 }
 
-/** Compose base knowledge + ingested sources for the runtime prompt. */
+/** Compose base knowledge + ingested sources for the runtime prompt.
+ * Uploaded/pasted/crawled sources are placed first so they survive the
+ * runtime prompt budget (catalogue templates are secondary). */
 export function composeKnowledge(base: string, sources: KnowledgeSource[]): string {
+  const max = Number(process.env.KNOWLEDGE_MAX_CHARS ?? 80_000);
+  const ready = sources.filter((x) => x.status === "ready" && x.content.trim());
   const parts: string[] = [];
-  const trimmed = base.trim();
-  if (trimmed) {
-    parts.push("# Business knowledge (edited)\n\n" + trimmed);
-  }
-  for (const s of sources.filter((x) => x.status === "ready" && x.content.trim())) {
+
+  for (const s of ready) {
     const header =
       s.type === "website"
         ? `## Website: ${s.title}${s.url ? ` (${s.url})` : ""}`
@@ -142,9 +143,25 @@ export function composeKnowledge(base: string, sources: KnowledgeSource[]): stri
           : `## Notes: ${s.title}`;
     parts.push(`${header}\n\n${s.content.trim()}`);
   }
+
+  const trimmed = base.trim();
+  if (trimmed) {
+    // When the tenant uploaded their own knowledge, keep only a short catalogue
+    // excerpt so onboarding docs aren't crowded out of the model context.
+    const baseBudget = ready.length
+      ? Math.min(4_000, Math.max(1_500, max - parts.join("").length - 500))
+      : max;
+    const baseBody =
+      trimmed.length > baseBudget
+        ? trimmed.slice(0, baseBudget) + "\n\n[…catalogue template truncated]"
+        : trimmed;
+    parts.push(
+      (ready.length ? "# Catalogue template (secondary)\n\n" : "# Business knowledge (edited)\n\n") +
+        baseBody,
+    );
+  }
+
   const joined = parts.join("\n\n---\n\n");
-  // Keep prompt budget sane for mock/live turns
-  const max = Number(process.env.KNOWLEDGE_MAX_CHARS ?? 80_000);
   return joined.length > max ? joined.slice(0, max) + "\n\n[…truncated for length]" : joined;
 }
 

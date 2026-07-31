@@ -84,8 +84,8 @@ export function SandboxChat({
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
           <p className="text-sm text-[var(--muted)]">
-            Try: “Where&apos;s my order ORD-4821?” · “Book an appointment Thursday” · “Speak to a
-            human”
+            Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” ·
+            “Speak to a human”
           </p>
         )}
         {messages.map((m, i) => (

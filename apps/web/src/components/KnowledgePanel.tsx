@@ -167,7 +167,8 @@ export function KnowledgePanel({
         <div className="rounded-lg border border-[var(--line)] p-3">
           <div className="mb-2 text-xs font-medium">Add file</div>
           <p className="mb-2 text-[11px] text-[var(--muted)]">
-            .txt, .md, .csv, .json, .html (PDF best-effort, 4MB max)
+            Accepted: .txt, .md, .csv, .json, .html (PDF best-effort). Word .docx is not supported
+            yet — export or convert to .md/.txt (4MB max).
           </p>
           <input
             ref={fileRef}
