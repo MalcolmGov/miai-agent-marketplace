@@ -324,7 +324,8 @@ export function AgentStudio({ agentId }: { agentId: string }) {
 
         <SandboxChat
           agentId={agentId}
-          mode={state === "live" || state === "rented" ? "live" : "sandbox"}
+          // Keep sandbox as the default for safe testing; Live is opt-in via the chat toggle.
+          mode="sandbox"
         />
       </div>
     </div>

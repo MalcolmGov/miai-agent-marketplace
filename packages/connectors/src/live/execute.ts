@@ -8,13 +8,55 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
   if (n.includes("availability") || n.includes("check_availability"))
     return { available: true, slots: [{ datetime: "2026-08-07T10:00:00" }], requested: args };
   if (n.includes("book")) return { booked: true, booking_ref: "BK-3391", ...args };
-  if (n.includes("ticket") || n.includes("lead") || n.includes("capture"))
-    return { ok: true, reference: "TKT-4821", ...args };
+  if (n.includes("job_opening") || n.includes("list_jobs") || n.includes("open_role")) {
+    return {
+      ok: true,
+      source: "sandbox_stub",
+      note: "No live ATS connected — answer from knowledge base open roles when available.",
+      openings: [
+        {
+          req_id: "REQ-CSM-2241",
+          title: "Customer Success Manager",
+          location: "Austin or remote US",
+          salary_band: "$85k–$105k",
+          requirements: [
+            "3+ years B2B SaaS customer success",
+            "Salesforce or similar CRM",
+            "Excellent written communication",
+          ],
+        },
+        {
+          req_id: "REQ-HR-1188",
+          title: "People Operations Generalist",
+          location: "Chicago",
+          salary_band: "$70k–$88k",
+          requirements: ["2+ years HR/People Ops", "Workday experience preferred"],
+        },
+        {
+          req_id: "REQ-ENG-4402",
+          title: "Staff Software Engineer",
+          location: "Remote US",
+          salary_band: "$160k–$190k",
+          requirements: ["7+ years software engineering", "Distributed systems experience"],
+        },
+      ],
+      filter: args,
+    };
+  }
+  if (n.includes("ticket") || n.includes("lead") || n.includes("capture") || n.includes("application"))
+    return { ok: true, reference: "APP-4821", status: "captured", ...args };
   if (n.includes("handoff")) return { routed: true, queue: "human_desk" };
   if (n.includes("guest")) return { request_ref: "GR-1001", status: "logged" };
   if (n.includes("estimate")) return { estimate_ref: "EST-2201", status: "logged" };
   if (n.includes("catalogue") || n.includes("list_services") || n.includes("menu"))
     return { ok: true, items: ["Sample item A", "Sample item B"] };
+  if (n.includes("policy"))
+    return {
+      ok: true,
+      source: "sandbox_stub",
+      note: "Answer from the knowledge base policy sections for this topic.",
+      topic: args.topic ?? args.name ?? "general",
+    };
   return { ok: true, reference: "REF-0001", echo: args };
 }
 

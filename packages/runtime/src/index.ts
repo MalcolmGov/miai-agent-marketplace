@@ -412,7 +412,33 @@ export async function runTurn(
       toolName: name,
     });
 
-    if (!result.ok) {
+    const isReadTool =
+      /^(get_|list_|lookup_|check_)/i.test(name) ||
+      /job_opening|policy|catalogue|menu|availability/i.test(name);
+
+    if (!result.ok && isReadTool) {
+      // Live ATS/HRIS not connected — still answer from uploaded knowledge.
+      const follow = await model.complete({
+        system,
+        messages: [
+          ...messages,
+          {
+            role: "user",
+            content:
+              `The ${name} system was unreachable. Answer my last question from the knowledge base only ` +
+              `(open roles, requirements, policies). Do not mention JSON or connection errors unless you truly have no info.`,
+          },
+        ],
+        tools: [],
+        model: req.model,
+      });
+      completion = {
+        content:
+          follow.content.trim() ||
+          knowledgeHit(system, req.userMessage) ||
+          "I couldn't reach the connected HR system, and I don't have that role list in knowledge yet. Upload open roles to Knowledge, or try again shortly.",
+      };
+    } else if (!result.ok) {
       completion = {
         content:
           "I couldn't reach the connected system just now. I can hand this to a teammate, or we can retry shortly.",
@@ -432,6 +458,12 @@ export async function runTurn(
       completion = {
         content: `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`,
       };
+    } else if (name.includes("capture_application") || name.includes("application")) {
+      const ref =
+        String((result.data as { reference?: string }).reference ?? "APP-4821");
+      completion = {
+        content: `Thanks — your application is captured under reference **${ref}**. The hiring team will follow up; this is not a hiring decision.`,
+      };
     } else {
       // Second model pass: turn tool JSON + knowledge into a natural answer
       // (avoids dumping stub payloads like get_policy echo).
@@ -443,7 +475,7 @@ export async function runTurn(
             role: "user",
             content:
               `Using the ${name} tool result above and the knowledge base, answer my last question in clear natural language. ` +
-              `Do not show JSON. If the tool only echoed args, answer fully from the knowledge base.`,
+              `Do not show JSON. If the tool only echoed args or is a sandbox stub, answer fully from the knowledge base open roles / policies.`,
           },
         ],
         tools: [],
