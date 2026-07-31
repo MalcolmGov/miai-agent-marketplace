@@ -16,23 +16,38 @@ export async function POST(req: Request) {
   const workspaceId = body.workspaceId ?? WORKSPACE_ID;
   const existing = getWorkspaceAgent(workspaceId, body.agentId);
   if (!existing) {
-    return NextResponse.json({ error: "Rent the agent first" }, { status: 400 });
+    // Soft-create entitlement so Configure works even if Rent wasn't clicked first
+    // (common after Railway redeploys wipe in-memory state).
+    const { getAgentPackage } = await import("@/lib/catalog");
+    const { getPreset, defaultBindingsForTools } = await import("@miai/presets");
+    const pkg = await getAgentPackage(body.agentId);
+    if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
+    const preset = getPreset(body.agentId);
+    upsertWorkspaceAgent(workspaceId, body.agentId, {
+      agentId: body.agentId,
+      state: "configuring",
+      model: body.model ?? pkg.manifest.model.primary,
+      knowledge: body.knowledge ?? pkg.knowledge,
+      bindings: preset?.bindings ?? defaultBindingsForTools(pkg.tools.map((t) => t.name)),
+      rentedAt: new Date().toISOString(),
+    });
   }
 
+  const current = getWorkspaceAgent(workspaceId, body.agentId)!;
   const state =
-    body.markRented || existing.state === "configuring"
+    body.markRented || current.state === "configuring"
       ? body.markRented
         ? "rented"
         : "configuring"
-      : existing.state;
+      : current.state;
 
   const rental = upsertWorkspaceAgent(workspaceId, body.agentId, {
     agentId: body.agentId,
-    model: body.model ?? existing.model,
-    knowledge: body.knowledge ?? existing.knowledge,
-    bindings: body.bindings ?? existing.bindings,
-    connectedConnectors: body.connectedConnectors ?? existing.connectedConnectors,
-    state: state as typeof existing.state,
+    model: body.model ?? current.model,
+    knowledge: body.knowledge ?? current.knowledge,
+    bindings: body.bindings ?? current.bindings,
+    connectedConnectors: body.connectedConnectors ?? current.connectedConnectors,
+    state: state as typeof current.state,
   });
 
   appendAudit({

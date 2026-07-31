@@ -48,6 +48,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [state, setState] = useState("selected");
   const [connected, setConnected] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+  const [configMsg, setConfigMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [tab, setTab] = useState<"configure" | "actions" | "install">("configure");
 
   async function load() {
@@ -75,18 +76,32 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     return `<script src="${typeof window !== "undefined" ? window.location.origin : ""}/agents/v1/agent.js" data-key="${key}" async></script>`;
   }, [publicKey, agentId]);
 
+  /** Ensure workspace entitlement exists (survives “selected” and post-redeploy memory wipe). */
+  async function ensureRented(): Promise<boolean> {
+    if (state !== "selected" && publicKey) return true;
+    const res = await fetch("/api/rent", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ agentId, tier }),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      setConfigMsg({ kind: "err", text: json.error ?? "Could not create rental entitlement" });
+      return false;
+    }
+    setPublicKey(json.rental.publicKey);
+    setState(json.rental.state);
+    return true;
+  }
+
   async function rent() {
     setSaving(true);
+    setConfigMsg(null);
     try {
-      const res = await fetch("/api/rent", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ agentId, tier }),
-      });
-      const json = await res.json();
-      setPublicKey(json.rental.publicKey);
-      setState(json.rental.state);
+      const ok = await ensureRented();
+      if (!ok) return;
       setTab("configure");
+      setConfigMsg({ kind: "ok", text: "Rented — configure knowledge, then Mark rented → ready." });
       await load();
     } finally {
       setSaving(false);
@@ -95,7 +110,10 @@ export function AgentStudio({ agentId }: { agentId: string }) {
 
   async function saveConfig(markRented = false) {
     setSaving(true);
+    setConfigMsg(null);
     try {
+      if (!(await ensureRented())) return;
+
       const res = await fetch("/api/configure", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -108,10 +126,21 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         }),
       });
       const json = await res.json();
+      if (!res.ok) {
+        setConfigMsg({ kind: "err", text: json.error ?? "Save failed" });
+        return;
+      }
       if (json.rental) {
         setState(json.rental.state);
         setPublicKey(json.rental.publicKey);
       }
+      setConfigMsg({
+        kind: "ok",
+        text: markRented
+          ? "Ready — agent is rented. Connect Actions, then use live chat."
+          : "Draft saved.",
+      });
+      if (markRented) setTab("actions");
     } finally {
       setSaving(false);
     }
@@ -216,19 +245,34 @@ export function AgentStudio({ agentId }: { agentId: string }) {
                     type="button"
                     className="btn btn-ghost"
                     disabled={saving}
-                    onClick={() => saveConfig(false)}
+                    onClick={() => void saveConfig(false)}
                   >
                     Save draft
                   </button>
                   <button
                     type="button"
                     className="btn btn-primary"
-                    disabled={saving || state === "selected"}
-                    onClick={() => saveConfig(true)}
+                    disabled={saving}
+                    onClick={() => void saveConfig(true)}
                   >
-                    Mark rented → ready
+                    {saving ? "Saving…" : "Mark rented → ready"}
                   </button>
                 </div>
+                {configMsg && (
+                  <p
+                    className={`mt-2 text-xs ${
+                      configMsg.kind === "ok" ? "text-[var(--accent)]" : "text-[var(--danger)]"
+                    }`}
+                  >
+                    {configMsg.text}
+                  </p>
+                )}
+                {state === "selected" && (
+                  <p className="mt-2 text-xs text-[var(--muted)]">
+                    Tip: you can click <strong className="text-[var(--text)]">Mark rented → ready</strong>{" "}
+                    directly — it will create the rental and save this knowledge in one step.
+                  </p>
+                )}
               </div>
             </>
           )}
