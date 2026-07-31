@@ -49,6 +49,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [connected, setConnected] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [configMsg, setConfigMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [copied, setCopied] = useState(false);
   const [tab, setTab] = useState<"configure" | "actions" | "install">("configure");
 
   async function load() {
@@ -75,6 +76,16 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     const key = publicKey || `mia_pk_${agentId}_demo`;
     return `<script src="${typeof window !== "undefined" ? window.location.origin : ""}/agents/v1/agent.js" data-key="${key}" async></script>`;
   }, [publicKey, agentId]);
+
+  async function copySnippet() {
+    try {
+      await navigator.clipboard.writeText(snippet);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setConfigMsg({ kind: "err", text: "Could not copy — select the snippet and copy manually." });
+    }
+  }
 
   /** Ensure workspace entitlement exists (survives “selected” and post-redeploy memory wipe). */
   async function ensureRented(): Promise<boolean> {
@@ -288,12 +299,21 @@ export function AgentStudio({ agentId }: { agentId: string }) {
 
           {tab === "install" && (
             <div className="panel space-y-4 p-4">
-              <div>
-                <h2 className="text-sm font-semibold">Web embed</h2>
-                <p className="mt-1 text-xs text-[var(--muted)]">
-                  Paste before <code>&lt;/body&gt;</code>. Key:{" "}
-                  <code className="text-[var(--accent)]">{publicKey || "rent to mint"}</code>
-                </p>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h2 className="text-sm font-semibold">Web embed</h2>
+                  <p className="mt-1 text-xs text-[var(--muted)]">
+                    Paste before <code>&lt;/body&gt;</code>. Key:{" "}
+                    <code className="text-[var(--accent)]">{publicKey || "rent to mint"}</code>
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary text-xs"
+                  onClick={() => void copySnippet()}
+                >
+                  {copied ? "Copied ✓" : "Copy snippet"}
+                </button>
               </div>
               <pre className="overflow-x-auto rounded-lg bg-[#0d1219] p-3 text-xs text-[var(--accent)]">
                 {snippet}
