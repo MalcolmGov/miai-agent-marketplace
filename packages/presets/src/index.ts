@@ -91,9 +91,111 @@ export const PRESETS: AgentPreset[] = [
     ],
   },
 
+  // —— Africa / Asia pack variants of pilots (WhatsApp + Slack handoff) ——
+  {
+    agentId: "africa-customer-support",
+    phase: 1,
+    bindings: supportShopify("slack"),
+  },
+  {
+    agentId: "asia-customer-support",
+    phase: 1,
+    bindings: supportShopify("slack"),
+  },
+  {
+    agentId: "africa-dental-front-desk",
+    phase: 1,
+    bindings: [
+      ...booking("google_calendar"),
+      { tool: "list_services", connector: "webhook" },
+      { tool: "get_treatment_info", connector: "webhook" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "asia-dental-front-desk",
+    phase: 1,
+    bindings: [
+      ...booking("google_calendar"),
+      { tool: "list_services", connector: "webhook" },
+      { tool: "get_treatment_info", connector: "webhook" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "africa-home-services",
+    phase: 1,
+    bindings: [
+      ...booking("google_calendar"),
+      { tool: "list_services", connector: "webhook" },
+      { tool: "request_estimate", connector: "hubspot" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "asia-home-services",
+    phase: 1,
+    bindings: [
+      ...booking("google_calendar"),
+      { tool: "list_services", connector: "webhook" },
+      { tool: "request_estimate", connector: "hubspot" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "africa-trades-receptionist",
+    phase: 1,
+    bindings: [
+      ...booking("google_calendar"),
+      { tool: "list_services", connector: "webhook" },
+      { tool: "request_estimate", connector: "hubspot" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "asia-trades-receptionist",
+    phase: 1,
+    bindings: [
+      ...booking("google_calendar"),
+      { tool: "list_services", connector: "webhook" },
+      { tool: "request_estimate", connector: "hubspot" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "africa-hotel-guest",
+    phase: 1,
+    bindings: [
+      { tool: "get_amenity_info", connector: "webhook" },
+      { tool: "get_local_recommendations", connector: "webhook" },
+      { tool: "make_guest_request", connector: "webhook" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+  {
+    agentId: "asia-hotel-guest",
+    phase: 1,
+    bindings: [
+      { tool: "get_amenity_info", connector: "webhook" },
+      { tool: "get_local_recommendations", connector: "webhook" },
+      { tool: "make_guest_request", connector: "webhook" },
+      { tool: "handoff_to_human", connector: "slack" },
+    ],
+  },
+
   // —— Remaining US agents (phase 1 core connectors where possible) ——
   { agentId: "us-front-desk", phase: 1, bindings: frontDesk("google_calendar", "slack") },
   { agentId: "us-clinic-front-desk", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "list_services", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "africa-clinic-front-desk", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "list_services", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-clinic-front-desk", phase: 1, bindings: [
     ...booking("google_calendar"),
     { tool: "list_services", connector: "webhook" },
     { tool: "handoff_to_human", connector: "slack" },
@@ -103,7 +205,27 @@ export const PRESETS: AgentPreset[] = [
     { tool: "list_services", connector: "webhook" },
     { tool: "handoff_to_human", connector: "slack" },
   ]},
+  { agentId: "africa-salon-booking", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "list_services", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-salon-booking", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "list_services", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
   { agentId: "us-hotel-concierge", phase: 1, bindings: [
+    { tool: "get_amenity_info", connector: "webhook" },
+    { tool: "make_guest_request", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "africa-hotel-concierge", phase: 1, bindings: [
+    { tool: "get_amenity_info", connector: "webhook" },
+    { tool: "make_guest_request", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-hotel-concierge", phase: 1, bindings: [
     { tool: "get_amenity_info", connector: "webhook" },
     { tool: "make_guest_request", connector: "webhook" },
     { tool: "handoff_to_human", connector: "slack" },
@@ -119,6 +241,16 @@ export const PRESETS: AgentPreset[] = [
     { tool: "book_consultation", connector: "google_calendar" },
     { tool: "handoff_to_human", connector: "slack" },
   ]},
+  { agentId: "africa-sales-qualifier", phase: 1, bindings: [
+    { tool: "capture_lead", connector: "hubspot" },
+    { tool: "book_consultation", connector: "google_calendar" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-sales-qualifier", phase: 1, bindings: [
+    { tool: "capture_lead", connector: "hubspot" },
+    { tool: "book_consultation", connector: "google_calendar" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
   { agentId: "us-insurance-claims", phase: 2, bindings: [
     { tool: "start_claim", connector: "webhook" },
     { tool: "get_claim_status", connector: "webhook" },
@@ -129,7 +261,27 @@ export const PRESETS: AgentPreset[] = [
     { tool: "check_availability", connector: "webhook" },
     { tool: "handoff_to_human", connector: "slack" },
   ]},
+  { agentId: "africa-pharmacy", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "check_availability", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-pharmacy", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "check_availability", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
   { agentId: "us-veterinary", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "list_services", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "africa-veterinary", phase: 1, bindings: [
+    ...booking("google_calendar"),
+    { tool: "list_services", connector: "webhook" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-veterinary", phase: 1, bindings: [
     ...booking("google_calendar"),
     { tool: "list_services", connector: "webhook" },
     { tool: "handoff_to_human", connector: "slack" },
@@ -149,6 +301,16 @@ export const PRESETS: AgentPreset[] = [
     { tool: "capture_lead", connector: "hubspot" },
     { tool: "handoff_to_human", connector: "slack" },
   ]},
+  { agentId: "africa-property-enquiries", phase: 1, bindings: [
+    { tool: "book_viewing", connector: "google_calendar" },
+    { tool: "capture_lead", connector: "hubspot" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-property-enquiries", phase: 1, bindings: [
+    { tool: "book_viewing", connector: "google_calendar" },
+    { tool: "capture_lead", connector: "hubspot" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
   { agentId: "us-law-firm-intake", phase: 1, bindings: [
     { tool: "capture_lead", connector: "hubspot" },
     { tool: "book_consultation", connector: "google_calendar" },
@@ -159,6 +321,16 @@ export const PRESETS: AgentPreset[] = [
     { tool: "handoff_to_human", connector: "slack" },
   ]},
   { agentId: "us-order-tracking", phase: 1, bindings: [
+    { tool: "get_order_status", connector: "shopify" },
+    { tool: "create_ticket", connector: "hubspot" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "africa-order-tracking", phase: 1, bindings: [
+    { tool: "get_order_status", connector: "shopify" },
+    { tool: "create_ticket", connector: "hubspot" },
+    { tool: "handoff_to_human", connector: "slack" },
+  ]},
+  { agentId: "asia-order-tracking", phase: 1, bindings: [
     { tool: "get_order_status", connector: "shopify" },
     { tool: "create_ticket", connector: "hubspot" },
     { tool: "handoff_to_human", connector: "slack" },

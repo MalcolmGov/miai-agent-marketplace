@@ -3,27 +3,40 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 
-interface Item {
+interface FamilyItem {
   id: string;
   name: string;
   tier: string;
-  market: string;
   summary: string;
   channels: string[];
   marketplaceCategory: string;
+  markets: Record<string, string>;
+  packs: string[];
+  hasZa: boolean;
   pilot: boolean;
   liveReady: boolean;
+  defaultAgentId: string;
 }
 
 const MARKETS = [
   { id: "all", label: "All markets" },
   { id: "us", label: "US" },
   { id: "eu", label: "EU" },
+  { id: "africa", label: "Africa" },
+  { id: "asia", label: "Asia" },
   { id: "za", label: "ZA" },
 ];
 
+const PACK_ORDER = ["us", "eu", "africa", "asia", "za"] as const;
+
+function packLabel(m: string) {
+  if (m === "africa") return "Africa";
+  if (m === "asia") return "Asia";
+  return m.toUpperCase();
+}
+
 export function CatalogGrid() {
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<FamilyItem[]>([]);
   const [q, setQ] = useState("");
   const [market, setMarket] = useState("all");
   const [category, setCategory] = useState("all");
@@ -31,6 +44,7 @@ export function CatalogGrid() {
 
   useEffect(() => {
     const params = new URLSearchParams();
+    params.set("view", "families");
     if (q) params.set("q", q);
     if (market !== "all") params.set("market", market);
     if (category !== "all") params.set("category", category);
@@ -52,19 +66,20 @@ export function CatalogGrid() {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Agent Marketplace</h1>
           <p className="mt-2 max-w-xl text-sm text-[var(--muted)]">
-            Browse production agents, rent by tier, configure model & knowledge, connect Actions,
-            install the web snippet, and run sandbox → live on prepaid tokens.
+            Browse agent families with US, EU, Africa, and Asia market packs. Rent by tier,
+            configure model & knowledge, connect Actions, and go live on prepaid tokens. ZA remains
+            available as its own market.
           </p>
         </div>
         <div className="text-sm text-[var(--muted)]">
-          {pending ? "Updating…" : `${items.length} agents`}
+          {pending ? "Updating…" : `${items.length} families`}
         </div>
       </div>
 
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         <input
           className="input max-w-md"
-          placeholder="Search agents…"
+          placeholder="Search agent families…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
@@ -96,35 +111,53 @@ export function CatalogGrid() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {items.map((item, idx) => (
-          <Link
-            key={item.id}
-            href={`/agents/${item.id}`}
-            className="panel group rise p-4 transition hover:border-[var(--accent-dim)]"
-            style={{ animationDelay: `${Math.min(idx, 12) * 30}ms` }}
-          >
-            <div className="mb-3 flex items-start justify-between gap-2">
-              <h2 className="text-base font-semibold group-hover:text-[var(--accent)]">
-                {item.name}
-              </h2>
-              <div className="flex flex-wrap justify-end gap-1">
-                {item.pilot && <span className="chip chip-live">Pilot</span>}
-                {item.liveReady && <span className="chip chip-live">LIVE</span>}
-                <span className="chip">{item.tier}</span>
-                <span className="chip">{item.market.toUpperCase()}</span>
+        {items.map((item, idx) => {
+          const hrefMarket = market !== "all" && item.markets[market] ? market : null;
+          const href =
+            hrefMarket && item.markets[hrefMarket]
+              ? `/agents/${item.markets[hrefMarket]}`
+              : `/agents/${item.defaultAgentId}`;
+          const available = PACK_ORDER.filter((m) => item.markets[m]);
+
+          return (
+            <Link
+              key={item.id}
+              href={href}
+              className="panel group rise p-4 transition hover:border-[var(--accent-dim)]"
+              style={{ animationDelay: `${Math.min(idx, 12) * 30}ms` }}
+            >
+              <div className="mb-3 flex items-start justify-between gap-2">
+                <h2 className="text-base font-semibold group-hover:text-[var(--accent)]">
+                  {item.name}
+                </h2>
+                <div className="flex flex-wrap justify-end gap-1">
+                  {item.pilot && <span className="chip chip-live">Pilot</span>}
+                  {item.liveReady && <span className="chip chip-live">LIVE</span>}
+                  <span className="chip">{item.tier}</span>
+                </div>
               </div>
-            </div>
-            <p className="line-clamp-3 text-sm text-[var(--muted)]">{item.summary}</p>
-            <div className="mt-4 flex flex-wrap gap-1">
-              {item.channels.slice(0, 4).map((c) => (
-                <span key={c} className="chip">
-                  {c}
-                </span>
-              ))}
-            </div>
-            <div className="mt-4 text-sm text-[var(--accent)]">Rent / setup →</div>
-          </Link>
-        ))}
+              <p className="line-clamp-3 text-sm text-[var(--muted)]">{item.summary}</p>
+              <div className="mt-3 flex flex-wrap gap-1">
+                {available.map((m) => (
+                  <span
+                    key={m}
+                    className={`chip ${hrefMarket === m || (!hrefMarket && item.defaultAgentId === item.markets[m]) ? "chip-live" : ""}`}
+                  >
+                    {packLabel(m)}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-4 flex flex-wrap gap-1">
+                {item.channels.slice(0, 4).map((c) => (
+                  <span key={c} className="chip">
+                    {c}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-4 text-sm text-[var(--accent)]">Rent / setup →</div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

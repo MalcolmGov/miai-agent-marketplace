@@ -10,6 +10,10 @@ Binding agreement for the greenfield **Agent Marketplace** integrating with MyIn
 | Marketplace UI + Agent Runtime + Connectors | Move Digital | This repo |
 | Auth / SSO, Token wallet, Model gateway | MyInstantAI | Consumed via adapters |
 
+## Market packs
+
+Catalogue is sold as **agent families** with **US / EU / Africa / Asia** packs. ZA remains a separate market. See [MARKET_PACKS.md](./MARKET_PACKS.md).
+
 ## Required APIs from MyInstantAI
 
 ### 1. Auth (OIDC / JWT)

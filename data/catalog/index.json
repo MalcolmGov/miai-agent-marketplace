@@ -30,6 +30,941 @@
     "evals": 15
   },
   {
+    "id": "africa-accounting-practice",
+    "name": "Africa Accounting Practice Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-admissions",
+    "name": "Africa Admissions Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and conf…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-agency-studio",
+    "name": "Africa Agency & Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-bank-branch",
+    "name": "Africa Bank Branch Assistant",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 ac…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "africa-bookkeeping",
+    "name": "Africa Bookkeeping Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "africa-building-management",
+    "name": "Africa Building Management",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-clinic-front-desk",
+    "name": "Africa Clinic Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Strictly non-clinical Africa clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-course-advisor",
+    "name": "Africa Course Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-customer-support",
+    "name": "Africa Customer Support",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "summary": "Africa Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-delivery-tracking",
+    "name": "Africa Delivery & Tracking",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-dental-front-desk",
+    "name": "Africa Dental Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "africa-dental-practice",
+    "name": "Africa Dental Practice",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-events-venue",
+    "name": "Africa Events & Venue",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "africa-executive-assistant",
+    "name": "Africa Executive Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-field-service",
+    "name": "Africa Field Service Dispatch",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsAp…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-fleet-driver",
+    "name": "Africa Fleet & Driver Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "africa-front-desk",
+    "name": "Africa Front Desk / Reception",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "summary": "Africa Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-grant-stock-planner",
+    "name": "Africa Grant-Day Stock Planner",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and place…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-gym-membership",
+    "name": "Africa Gym Membership Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-home-services",
+    "name": "Africa Home Services Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and W…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "africa-hotel-concierge",
+    "name": "Africa Hotel Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 21
+  },
+  {
+    "id": "africa-hotel-guest",
+    "name": "Africa Hotel Guest Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, web,…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-hr-helpdesk",
+    "name": "Africa HR Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-insurance-broker",
+    "name": "Africa Insurance Broker",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-insurance-claims",
+    "name": "Africa Insurance Claims Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-it-helpdesk",
+    "name": "Africa IT Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-law-firm-intake",
+    "name": "Africa Law Firm Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-loan-prequalifier",
+    "name": "Africa Loan Pre-Qualifier",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-loyalty-rewards",
+    "name": "Africa Loyalty & Rewards",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-marketing-assistant",
+    "name": "Africa Marketing Assistant",
+    "tier": "pro",
+    "category": "sales",
+    "market": "africa",
+    "summary": "Africa Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-mobile-money",
+    "name": "Africa Mobile Money Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "africa-onboarding-buddy",
+    "name": "Africa Onboarding Buddy",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-order-tracking",
+    "name": "Africa Order Tracking",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "africa-payment-disputes",
+    "name": "Africa Card & Payment Disputes",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-payroll-queries",
+    "name": "Africa Payroll Queries",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-pharmacy",
+    "name": "Africa Pharmacy Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-policy-compliance",
+    "name": "Africa Policy & Compliance",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-procurement",
+    "name": "Africa Procurement Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-product-finder",
+    "name": "Africa Product Finder",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-property-enquiries",
+    "name": "Africa Property Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-remittance",
+    "name": "Africa Remittance Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "africa-rental-enquiries",
+    "name": "Africa Rental Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-restaurant-takeaway",
+    "name": "Africa Restaurant & Takeaway",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 20
+  },
+  {
+    "id": "africa-returns-exchanges",
+    "name": "Africa Returns & Exchanges",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-sales-qualifier",
+    "name": "Africa Sales Qualifier",
+    "tier": "pro",
+    "category": "sales",
+    "market": "africa",
+    "summary": "Africa Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-salon-booking",
+    "name": "Africa Salon & Barber Booking",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-spaza-merchant",
+    "name": "Africa Spaza & Merchant",
+    "tier": "enterprise",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "africa-stock-availability",
+    "name": "Africa Stock & Availability",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-student-helpdesk",
+    "name": "Africa Student Helpdesk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-tour-activity",
+    "name": "Africa Tour & Activity Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web a…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-trades-receptionist",
+    "name": "Africa Trades Receptionist",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "africa-travel-desk",
+    "name": "Africa Travel Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-utility-billing",
+    "name": "Africa Utility & Billing",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-vas-concierge",
+    "name": "Africa Gift Card & VAS Concierge",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-veterinary",
+    "name": "Africa Veterinary Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 20
+  },
+  {
     "id": "agency-studio",
     "name": "Agency & Studio",
     "tier": "standard",
@@ -43,6 +978,941 @@
     ],
     "tools": 4,
     "evals": 16
+  },
+  {
+    "id": "asia-accounting-practice",
+    "name": "Asia Accounting Practice Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-admissions",
+    "name": "Asia Admissions Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and conf…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-agency-studio",
+    "name": "Asia Agency & Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-bank-branch",
+    "name": "Asia Bank Branch Assistant",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 ac…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "asia-bookkeeping",
+    "name": "Asia Bookkeeping Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "asia-building-management",
+    "name": "Asia Building Management",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-clinic-front-desk",
+    "name": "Asia Clinic Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Strictly non-clinical Asia clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "asia-course-advisor",
+    "name": "Asia Course Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-customer-support",
+    "name": "Asia Customer Support",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "asia",
+    "summary": "Asia Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across voice, SMS, web, app and WhatsApp.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-delivery-tracking",
+    "name": "Asia Delivery & Tracking",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "asia-dental-front-desk",
+    "name": "Asia Dental Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Strictly non-clinical Asia dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "asia-dental-practice",
+    "name": "Asia Dental Practice",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "asia-events-venue",
+    "name": "Asia Events & Venue",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "asia-executive-assistant",
+    "name": "Asia Executive Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-field-service",
+    "name": "Asia Field Service Dispatch",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsAp…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-fleet-driver",
+    "name": "Asia Fleet & Driver Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "asia-front-desk",
+    "name": "Asia Front Desk / Reception",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "asia",
+    "summary": "Asia Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across voice, SMS, web, app and WhatsApp.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-grant-stock-planner",
+    "name": "Asia Grant-Day Stock Planner",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and place…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "asia-gym-membership",
+    "name": "Asia Gym Membership Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-home-services",
+    "name": "Asia Home Services Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and W…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "asia-hotel-concierge",
+    "name": "Asia Hotel Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 21
+  },
+  {
+    "id": "asia-hotel-guest",
+    "name": "Asia Hotel Guest Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, web,…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "asia-hr-helpdesk",
+    "name": "Asia HR Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-insurance-broker",
+    "name": "Asia Insurance Broker",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-insurance-claims",
+    "name": "Asia Insurance Claims Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "asia-it-helpdesk",
+    "name": "Asia IT Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-law-firm-intake",
+    "name": "Asia Law Firm Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "asia-loan-prequalifier",
+    "name": "Asia Loan Pre-Qualifier",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-loyalty-rewards",
+    "name": "Asia Loyalty & Rewards",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-marketing-assistant",
+    "name": "Asia Marketing Assistant",
+    "tier": "pro",
+    "category": "sales",
+    "market": "asia",
+    "summary": "Asia Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-mobile-money",
+    "name": "Asia Mobile Money Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "asia-onboarding-buddy",
+    "name": "Asia Onboarding Buddy",
+    "tier": "standard",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-order-tracking",
+    "name": "Asia Order Tracking",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "asia-payment-disputes",
+    "name": "Asia Card & Payment Disputes",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "asia-payroll-queries",
+    "name": "Asia Payroll Queries",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "asia-pharmacy",
+    "name": "Asia Pharmacy Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-policy-compliance",
+    "name": "Asia Policy & Compliance",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "asia-procurement",
+    "name": "Asia Procurement Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-product-finder",
+    "name": "Asia Product Finder",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-property-enquiries",
+    "name": "Asia Property Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "asia-remittance",
+    "name": "Asia Remittance Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "asia-rental-enquiries",
+    "name": "Asia Rental Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-restaurant-takeaway",
+    "name": "Asia Restaurant & Takeaway",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 20
+  },
+  {
+    "id": "asia-returns-exchanges",
+    "name": "Asia Returns & Exchanges",
+    "tier": "standard",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-sales-qualifier",
+    "name": "Asia Sales Qualifier",
+    "tier": "pro",
+    "category": "sales",
+    "market": "asia",
+    "summary": "Asia Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "asia-salon-booking",
+    "name": "Asia Salon & Barber Booking",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across voice, SMS, web, app and WhatsApp.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "asia-spaza-merchant",
+    "name": "Asia Spaza & Merchant",
+    "tier": "enterprise",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "asia-stock-availability",
+    "name": "Asia Stock & Availability",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-student-helpdesk",
+    "name": "Asia Student Helpdesk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "asia-tour-activity",
+    "name": "Asia Tour & Activity Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web a…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "asia-trades-receptionist",
+    "name": "Asia Trades Receptionist",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "asia-travel-desk",
+    "name": "Asia Travel Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "asia-utility-billing",
+    "name": "Asia Utility & Billing",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "asia-vas-concierge",
+    "name": "Asia Gift Card & VAS Concierge",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "asia-veterinary",
+    "name": "Asia Veterinary Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 20
   },
   {
     "id": "bank-branch",
@@ -182,6 +2052,91 @@
     "evals": 16
   },
   {
+    "id": "eu-admissions",
+    "name": "EU Admissions Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and conf…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "eu-agency-studio",
+    "name": "EU Agency & Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "eu-bank-branch",
+    "name": "EU Bank Branch Assistant",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 ac…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "eu-bookkeeping",
+    "name": "EU Bookkeeping Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Bookkeeping Assistant — Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "eu-building-management",
+    "name": "EU Building Management",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
     "id": "eu-clinic-front-desk",
     "name": "EU Clinic Front Desk",
     "tier": "pro",
@@ -197,6 +2152,23 @@
     ],
     "tools": 5,
     "evals": 18
+  },
+  {
+    "id": "eu-course-advisor",
+    "name": "EU Course Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
   },
   {
     "id": "eu-customer-support",
@@ -216,6 +2188,125 @@
     "evals": 17
   },
   {
+    "id": "eu-delivery-tracking",
+    "name": "EU Delivery & Tracking",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "eu-dental-front-desk",
+    "name": "EU Dental Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across voice, SM…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "eu-dental-practice",
+    "name": "EU Dental Practice",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "eu-events-venue",
+    "name": "EU Events & Venue",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "eu-executive-assistant",
+    "name": "EU Executive Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "eu-field-service",
+    "name": "EU Field Service Dispatch",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsAp…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "eu-fleet-driver",
+    "name": "EU Fleet & Driver Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
     "id": "eu-front-desk",
     "name": "EU Front Desk / Reception",
     "tier": "standard",
@@ -233,6 +2324,23 @@
     "evals": 16
   },
   {
+    "id": "eu-grant-stock-planner",
+    "name": "EU Grant-Day Stock Planner",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and place…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
     "id": "eu-gym-membership",
     "name": "EU Gym Membership Desk",
     "tier": "standard",
@@ -247,6 +2355,23 @@
       "voice"
     ],
     "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "eu-home-services",
+    "name": "EU Home Services Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across voice, SMS, web, app and W…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
     "evals": 16
   },
   {
@@ -284,6 +2409,40 @@
     "evals": 18
   },
   {
+    "id": "eu-hr-helpdesk",
+    "name": "EU HR Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "eu-insurance-broker",
+    "name": "EU Insurance Broker",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
     "id": "eu-insurance-claims",
     "name": "EU Insurance Claims Helper",
     "tier": "pro",
@@ -299,6 +2458,159 @@
     ],
     "tools": 4,
     "evals": 19
+  },
+  {
+    "id": "eu-it-helpdesk",
+    "name": "EU IT Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "eu-law-firm-intake",
+    "name": "EU Law Firm Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "eu-loan-prequalifier",
+    "name": "EU Loan Pre-Qualifier",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "eu-loyalty-rewards",
+    "name": "EU Loyalty & Rewards",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "eu-marketing-assistant",
+    "name": "EU Marketing Assistant",
+    "tier": "pro",
+    "category": "sales",
+    "market": "eu",
+    "summary": "EU Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "eu-mobile-money",
+    "name": "EU Mobile Money Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "eu-onboarding-buddy",
+    "name": "EU Onboarding Buddy",
+    "tier": "standard",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "eu-order-tracking",
+    "name": "EU Order Tracking",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "eu-payment-disputes",
+    "name": "EU Card & Payment Disputes",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
   },
   {
     "id": "eu-payroll-queries",
@@ -335,6 +2647,91 @@
     "evals": 16
   },
   {
+    "id": "eu-policy-compliance",
+    "name": "EU Policy & Compliance",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "eu-procurement",
+    "name": "EU Procurement Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "eu-product-finder",
+    "name": "EU Product Finder",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "eu-property-enquiries",
+    "name": "EU Property Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "eu-remittance",
+    "name": "EU Remittance Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
     "id": "eu-rental-enquiries",
     "name": "EU Rental Enquiries",
     "tier": "pro",
@@ -369,6 +2766,23 @@
     "evals": 20
   },
   {
+    "id": "eu-returns-exchanges",
+    "name": "EU Returns & Exchanges",
+    "tier": "standard",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
     "id": "eu-sales-qualifier",
     "name": "EU Sales Qualifier",
     "tier": "pro",
@@ -401,6 +2815,74 @@
     ],
     "tools": 5,
     "evals": 18
+  },
+  {
+    "id": "eu-spaza-merchant",
+    "name": "EU Spaza & Merchant",
+    "tier": "enterprise",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Spaza & Merchant — Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "eu-stock-availability",
+    "name": "EU Stock & Availability",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "eu-student-helpdesk",
+    "name": "EU Student Helpdesk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "eu-tour-activity",
+    "name": "EU Tour & Activity Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web a…",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 4,
+    "evals": 16
   },
   {
     "id": "eu-trades-receptionist",
@@ -452,6 +2934,23 @@
     ],
     "tools": 4,
     "evals": 19
+  },
+  {
+    "id": "eu-vas-concierge",
+    "name": "EU Gift Card & VAS Concierge",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "channels": [
+      "whatsapp",
+      "sms",
+      "web",
+      "app",
+      "voice"
+    ],
+    "tools": 5,
+    "evals": 18
   },
   {
     "id": "eu-veterinary",
@@ -1022,6 +3521,108 @@
     "evals": 17
   },
   {
+    "id": "us-accounting-practice",
+    "name": "US Accounting Practice Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "us-admissions",
+    "name": "US Admissions Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Rout…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "us-agency-studio",
+    "name": "US Agency & Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "us-bank-branch",
+    "name": "US Bank Branch Assistant",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 ac…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "us-bookkeeping",
+    "name": "US Bookkeeping Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "Answers a business's account queries — invoice status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
+    "id": "us-building-management",
+    "name": "US Building Management",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
     "id": "us-clinic-front-desk",
     "name": "US Clinic Front Desk",
     "tier": "pro",
@@ -1037,6 +3638,23 @@
     ],
     "tools": 5,
     "evals": 18
+  },
+  {
+    "id": "us-course-advisor",
+    "name": "US Course Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a …",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 17
   },
   {
     "id": "us-customer-support",
@@ -1056,6 +3674,23 @@
     "evals": 17
   },
   {
+    "id": "us-delivery-tracking",
+    "name": "US Delivery & Tracking",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
     "id": "us-dental-front-desk",
     "name": "US Dental Front Desk",
     "tier": "pro",
@@ -1073,6 +3708,91 @@
     "evals": 16
   },
   {
+    "id": "us-dental-practice",
+    "name": "US Dental Practice",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "us-events-venue",
+    "name": "US Events & Venue",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across WhatsApp, web a…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "us-executive-assistant",
+    "name": "US Executive Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitiv…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "us-field-service",
+    "name": "US Field Service Dispatch",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsAp…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "us-fleet-driver",
+    "name": "US Fleet & Driver Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance reminders — escalating acc…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 13
+  },
+  {
     "id": "us-front-desk",
     "name": "US Front Desk / Reception",
     "tier": "standard",
@@ -1088,6 +3808,23 @@
     ],
     "tools": 4,
     "evals": 16
+  },
+  {
+    "id": "us-grant-stock-planner",
+    "name": "US Grant-Day Stock Planner",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the suppl…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 14
   },
   {
     "id": "us-gym-membership",
@@ -1141,6 +3878,57 @@
     "evals": 21
   },
   {
+    "id": "us-hotel-guest",
+    "name": "US Hotel Guest Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, web, app and voice.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "us-hr-helpdesk",
+    "name": "US HR Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical m…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "us-insurance-broker",
+    "name": "US Insurance Broker",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, …",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
     "id": "us-insurance-claims",
     "name": "US Insurance Claims Helper",
     "tier": "pro",
@@ -1156,6 +3944,23 @@
     ],
     "tools": 4,
     "evals": 19
+  },
+  {
+    "id": "us-it-helpdesk",
+    "name": "US IT Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
   },
   {
     "id": "us-law-firm-intake",
@@ -1175,6 +3980,40 @@
     "evals": 18
   },
   {
+    "id": "us-loan-prequalifier",
+    "name": "US Loan Pre-Qualifier",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never a credit decision, ac…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "us-loyalty-rewards",
+    "name": "US Loyalty & Rewards",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "us",
+    "summary": "US Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing off account disputes…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
     "id": "us-marketing-assistant",
     "name": "US Marketing Assistant",
     "tier": "pro",
@@ -1190,6 +4029,40 @@
     ],
     "tools": 4,
     "evals": 17
+  },
+  {
+    "id": "us-mobile-money",
+    "name": "US Mobile Money Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalat…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "us-onboarding-buddy",
+    "name": "US Onboarding Buddy",
+    "tier": "standard",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT …",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
   },
   {
     "id": "us-order-tracking",
@@ -1209,6 +4082,40 @@
     "evals": 17
   },
   {
+    "id": "us-payment-disputes",
+    "name": "US Card & Payment Disputes",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "us-payroll-queries",
+    "name": "US Payroll Queries",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
     "id": "us-pharmacy",
     "name": "US Pharmacy Assistant",
     "tier": "pro",
@@ -1224,6 +4131,57 @@
     ],
     "tools": 4,
     "evals": 16
+  },
+  {
+    "id": "us-policy-compliance",
+    "name": "US Policy & Compliance",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance of…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "us-procurement",
+    "name": "US Procurement Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "us-product-finder",
+    "name": "US Product Finder",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "us",
+    "summary": "US Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 a…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
   },
   {
     "id": "us-property-enquiries",
@@ -1243,6 +4201,40 @@
     "evals": 19
   },
   {
+    "id": "us-remittance",
+    "name": "US Remittance Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to pay out. Never moves…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 5,
+    "evals": 14
+  },
+  {
+    "id": "us-rental-enquiries",
+    "name": "US Rental Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
     "id": "us-restaurant-takeaway",
     "name": "US Restaurant & Takeaway",
     "tier": "pro",
@@ -1258,6 +4250,23 @@
     ],
     "tools": 5,
     "evals": 20
+  },
+  {
+    "id": "us-returns-exchanges",
+    "name": "US Returns & Exchanges",
+    "tier": "standard",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across …",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
   },
   {
     "id": "us-sales-qualifier",
@@ -1292,6 +4301,125 @@
     ],
     "tools": 5,
     "evals": 18
+  },
+  {
+    "id": "us-spaza-merchant",
+    "name": "US Spaza & Merchant",
+    "tier": "enterprise",
+    "category": "commerce",
+    "market": "us",
+    "summary": "US Spaza & Merchant — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry befo…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "us-stock-availability",
+    "name": "US Stock & Availability",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "us",
+    "summary": "Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "us-student-helpdesk",
+    "name": "US Student Helpdesk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "us",
+    "summary": "Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "us-tour-activity",
+    "name": "US Tour & Activity Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "us",
+    "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web a…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "us-trades-receptionist",
+    "name": "US Trades Receptionist",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across WhatsApp, SMS, web, ap…",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "us-travel-desk",
+    "name": "US Travel Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "us-utility-billing",
+    "name": "US Utility & Billing",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "channels": [
+      "voice",
+      "sms",
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "tools": 4,
+    "evals": 19
   },
   {
     "id": "us-vas-concierge",

@@ -1,0 +1,75 @@
+{
+  "packs": [
+    {
+      "id": "us",
+      "label": "US",
+      "prefix": "us-",
+      "namePrefix": "US ",
+      "languages": ["en", "es"],
+      "channels": ["voice", "sms", "web", "app", "whatsapp"],
+      "compliance": ["tcpa", "ccpa"],
+      "healthCompliance": ["hipaa", "tcpa", "ccpa"],
+      "emergency": "911",
+      "currency": "USD",
+      "privacyLabel": "CCPA/HIPAA where applicable",
+      "regionPhrase": "United States",
+      "summaryPrefix": "US ",
+      "complianceNotes": "## US compliance notes\n- **TCPA:** Continue conversations the customer started. Do not cold-message new numbers for marketing. Honor STOP/unsubscribe by acknowledging and handing off for suppression. Appointment/order updates are transactional only.\n- **Privacy (CCPA):** Collect only what the task needs. Never reveal another customer's data.\n- **Emergencies:** Life-threatening situations — tell them to call **911**, then hand off.\n"
+    },
+    {
+      "id": "eu",
+      "label": "EU",
+      "prefix": "eu-",
+      "namePrefix": "EU ",
+      "languages": ["en", "de", "fr", "es", "it"],
+      "channels": ["whatsapp", "sms", "web", "app", "voice"],
+      "compliance": ["gdpr"],
+      "healthCompliance": ["gdpr"],
+      "emergency": "112",
+      "currency": "EUR",
+      "privacyLabel": "GDPR",
+      "regionPhrase": "European Union",
+      "summaryPrefix": "EU ",
+      "complianceNotes": "## EU compliance notes\n- **GDPR:** Minimise personal data. Only collect what the task needs. Do not retain or share data beyond the handoff. Honour access/erasure requests by handing off to a human.\n- **Marketing:** Do not cold-message. Continue conversations the customer started.\n- **Emergencies:** Life-threatening situations — tell them to call **112**, then hand off.\n"
+    },
+    {
+      "id": "africa",
+      "label": "Africa",
+      "prefix": "africa-",
+      "namePrefix": "Africa ",
+      "languages": ["en", "fr", "sw"],
+      "channels": ["whatsapp", "web", "app", "sms", "voice"],
+      "compliance": ["popia", "regional_privacy"],
+      "healthCompliance": ["popia", "regional_privacy"],
+      "emergency": "local emergency services",
+      "currency": "local currency",
+      "privacyLabel": "POPIA-style / regional privacy",
+      "regionPhrase": "Africa",
+      "summaryPrefix": "Africa ",
+      "complianceNotes": "## Africa compliance notes\n- **Privacy:** Follow POPIA-style and local data-protection norms. Collect only what the task needs. Never share another customer's data.\n- **Channels:** Prefer WhatsApp and mobile-friendly flows. Mobile-money and airtime contexts may apply — never invent balances or payment confirmations.\n- **Emergencies:** Life-threatening situations — tell them to call **local emergency services**, then hand off.\n"
+    },
+    {
+      "id": "asia",
+      "label": "Asia",
+      "prefix": "asia-",
+      "namePrefix": "Asia ",
+      "languages": ["en", "zh", "hi"],
+      "channels": ["whatsapp", "web", "app", "sms", "voice"],
+      "compliance": ["pdpa", "regional_privacy"],
+      "healthCompliance": ["pdpa", "regional_privacy"],
+      "emergency": "local emergency services",
+      "currency": "local currency",
+      "privacyLabel": "PDPA-style / regional privacy",
+      "regionPhrase": "Asia",
+      "summaryPrefix": "Asia ",
+      "complianceNotes": "## Asia compliance notes\n- **Privacy (PDPA-style):** Collect only what the task needs. Honour opt-out and access requests by handing off. Never reveal another customer's data.\n- **Channels:** Prefer WhatsApp and web chat. Do not cold-message new numbers for marketing.\n- **Emergencies:** Life-threatening situations — tell them to call **local emergency services**, then hand off.\n"
+    }
+  ],
+  "healthFamilyHints": [
+    "clinic",
+    "dental",
+    "pharmacy",
+    "veterinary",
+    "hospital"
+  ]
+}

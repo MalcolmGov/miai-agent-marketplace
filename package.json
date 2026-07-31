@@ -10,6 +10,7 @@
     "build:web": "pnpm build:packages && pnpm --filter @miai/web build",
     "start:web": "sh scripts/start-web.sh",
     "import:catalog": "node scripts/import-catalog.mjs",
+    "generate:packs": "node scripts/generate-market-packs.mjs",
     "typecheck": "pnpm -r typecheck",
     "eval:smoke": "pnpm build:packages && node scripts/eval-smoke.mjs",
     "demo:phase1": "node scripts/phase1-demo.mjs"

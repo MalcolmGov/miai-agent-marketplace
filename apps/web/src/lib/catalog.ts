@@ -16,10 +16,50 @@ export interface CatalogEntry {
   marketplaceCategory: string;
   pilot: boolean;
   liveReady: boolean;
+  familyId: string;
 }
+
+export interface FamilyEntry {
+  id: string;
+  name: string;
+  tier: string;
+  category: string;
+  summary: string;
+  channels: string[];
+  marketplaceCategory: string;
+  markets: Record<string, string>;
+  packs: string[];
+  hasZa: boolean;
+  pilot: boolean;
+  liveReady: boolean;
+  defaultAgentId: string;
+}
+
+export interface MarketPack {
+  id: string;
+  label: string;
+  prefix: string;
+}
+
+const FAMILY_PREFIX_RE = /^(us|eu|africa|asia)-/;
 
 function catalogDir(): string {
   return path.resolve(process.cwd(), process.env.CATALOG_DIR ?? "../../data/catalog");
+}
+
+export function familyIdFromAgentId(id: string): string {
+  return id.replace(FAMILY_PREFIX_RE, "");
+}
+
+function pickDefaultAgentId(
+  markets: Record<string, string>,
+  preferredMarket?: string | null,
+): string {
+  if (preferredMarket && markets[preferredMarket]) return markets[preferredMarket];
+  for (const m of ["us", "eu", "africa", "asia", "za"]) {
+    if (markets[m]) return markets[m];
+  }
+  return Object.values(markets)[0];
 }
 
 export async function listCatalog(): Promise<CatalogEntry[]> {
@@ -62,6 +102,102 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
       }),
       pilot: pilots.has(e.id) || Boolean(preset?.pilot),
       liveReady: Boolean(preset?.pilot) || (preset?.phase === 1 && Boolean(preset)),
+      familyId: familyIdFromAgentId(e.id),
+    };
+  });
+}
+
+export async function listMarketPacks(): Promise<MarketPack[]> {
+  try {
+    const raw = await fs.readFile(path.join(catalogDir(), "market-packs.json"), "utf8");
+    const data = JSON.parse(raw) as { packs: MarketPack[] };
+    return data.packs.map((p) => ({ id: p.id, label: p.label, prefix: p.prefix }));
+  } catch {
+    return [
+      { id: "us", label: "US", prefix: "us-" },
+      { id: "eu", label: "EU", prefix: "eu-" },
+      { id: "africa", label: "Africa", prefix: "africa-" },
+      { id: "asia", label: "Asia", prefix: "asia-" },
+    ];
+  }
+}
+
+export async function listFamilies(preferredMarket?: string | null): Promise<FamilyEntry[]> {
+  const agents = await listCatalog();
+  const byId = new Map(agents.map((a) => [a.id, a]));
+
+  let familiesRaw: Array<{
+    id: string;
+    name: string;
+    tier: string;
+    category: string;
+    summary: string;
+    channels: string[];
+    markets: Record<string, string>;
+    packs: string[];
+    hasZa: boolean;
+  }>;
+
+  try {
+    const raw = await fs.readFile(path.join(catalogDir(), "families.json"), "utf8");
+    familiesRaw = JSON.parse(raw);
+  } catch {
+    const map = new Map<string, FamilyEntry["markets"]>();
+    const meta = new Map<string, CatalogEntry>();
+    for (const a of agents) {
+      const fid = a.familyId;
+      if (!map.has(fid)) map.set(fid, {});
+      map.get(fid)![a.market] = a.id;
+      if (!meta.has(fid)) meta.set(fid, a);
+    }
+    familiesRaw = [...map.entries()].map(([id, markets]) => {
+      const m = meta.get(id)!;
+      return {
+        id,
+        name: m.name.replace(/^(US|EU|Africa|Asia|ZA)\s+/i, ""),
+        tier: m.tier,
+        category: m.category,
+        summary: m.summary,
+        channels: m.channels,
+        markets,
+        packs: ["us", "eu", "africa", "asia"].filter((p) => markets[p]),
+        hasZa: Boolean(markets.za),
+      };
+    });
+  }
+
+  return familiesRaw.map((f) => {
+    const variantIds = Object.values(f.markets);
+    const variants = variantIds.map((id) => byId.get(id)).filter(Boolean) as CatalogEntry[];
+    const defaultAgentId = pickDefaultAgentId(f.markets, preferredMarket);
+    const defaultAgent = byId.get(defaultAgentId);
+    const sample = defaultAgent ?? variants[0];
+    return {
+      id: f.id,
+      name: f.name,
+      tier: f.tier,
+      category: f.category,
+      summary: f.summary || sample?.summary || "",
+      channels: f.channels?.length ? f.channels : sample?.channels ?? [],
+      marketplaceCategory:
+        sample?.marketplaceCategory ??
+        marketplaceCategory({
+          id: f.id,
+          name: f.name,
+          version: "1",
+          category: f.category as never,
+          tier: f.tier as never,
+          summary: f.summary,
+          channels: f.channels ?? [],
+          languages: ["en"],
+          model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
+        }),
+      markets: f.markets,
+      packs: f.packs,
+      hasZa: f.hasZa,
+      pilot: variants.some((v) => v.pilot),
+      liveReady: variants.some((v) => v.liveReady),
+      defaultAgentId,
     };
   });
 }
