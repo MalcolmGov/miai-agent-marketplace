@@ -33,6 +33,7 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV CATALOG_DIR=/app/data/catalog
 ENV OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json
+ENV KNOWLEDGE_STORE_PATH=/data/knowledge-sources.json
 
 WORKDIR /app
 COPY --from=builder /app ./

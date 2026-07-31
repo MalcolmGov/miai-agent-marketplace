@@ -30,6 +30,7 @@ Service → **Variables**. Minimum for a customer-like walk:
 | `NEXT_PUBLIC_APP_URL` | same as `APP_BASE_URL` |
 | `OAUTH_TOKEN_SECRET` | long random string |
 | `OAUTH_TOKEN_STORE_PATH` | `/data/oauth-tokens.json` |
+| `KNOWLEDGE_STORE_PATH` | `/data/knowledge-sources.json` |
 | `CATALOG_DIR` | `/app/data/catalog` |
 | `NODE_ENV` | `production` |
 

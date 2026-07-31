@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { runTurn, type AgentState } from "@miai/runtime";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
+import { getComposedKnowledge } from "@/lib/knowledge";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { WORKSPACE_ID } from "@/lib/constants";
 
@@ -27,6 +28,12 @@ export async function POST(req: Request) {
   }
 
   const mode = body.mode ?? (rental.state === "live" ? "live" : "sandbox");
+  const knowledgeOverride = await getComposedKnowledge(
+    workspaceId,
+    body.agentId,
+    rental.knowledge || pkg.knowledge,
+  );
+
   const result = await runTurn(
     {
       workspaceId,
@@ -36,7 +43,7 @@ export async function POST(req: Request) {
       userMessage: body.message,
       model: rental.model,
       mode,
-      knowledgeOverride: rental.knowledge,
+      knowledgeOverride,
       bindings: rental.bindings,
       state: rental.state as AgentState,
     },

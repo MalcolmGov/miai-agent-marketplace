@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { runTurn } from "@miai/runtime";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
+import { getComposedKnowledge } from "@/lib/knowledge";
 import { appendAudit, getWorkspaceAgent, resolveEmbedKey, upsertWorkspaceAgent } from "@/lib/store";
 
 export async function POST(req: Request) {
@@ -28,6 +29,12 @@ export async function POST(req: Request) {
     });
   }
 
+  const knowledgeOverride = await getComposedKnowledge(
+    workspaceId,
+    agentId,
+    rental.knowledge || pkg.knowledge,
+  );
+
   const result = await runTurn(
     {
       workspaceId,
@@ -37,7 +44,7 @@ export async function POST(req: Request) {
       userMessage: body.message,
       model: rental.model,
       mode: rental.state === "selected" || rental.state === "configuring" ? "sandbox" : "live",
-      knowledgeOverride: rental.knowledge,
+      knowledgeOverride,
       bindings: rental.bindings,
       state: rental.state,
     },

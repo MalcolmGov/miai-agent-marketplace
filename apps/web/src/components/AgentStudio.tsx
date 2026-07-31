@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { KnowledgePanel } from "./KnowledgePanel";
+import { ActionsPanel } from "./ActionsPanel";
+import { SandboxChat } from "./SandboxChat";
 import { MODELS } from "@/lib/models";
 import { TIER_PRICES } from "@/lib/constants";
-import { SandboxChat } from "./SandboxChat";
-import { ActionsPanel } from "./ActionsPanel";
+import { useEffect, useMemo, useState } from "react";
 
 interface AgentPayload {
   package: {
@@ -241,50 +242,16 @@ export function AgentStudio({ agentId }: { agentId: string }) {
                   ))}
                 </div>
               </div>
-              <div className="panel p-4">
-                <h2 className="mb-2 text-sm font-semibold">Knowledge</h2>
-                <p className="mb-2 text-xs text-[var(--muted)]">
-                  Paste FAQs, policies, hours. File upload / website crawl jobs plug in here later.
-                </p>
-                <textarea
-                  className="input min-h-[180px] font-mono text-xs"
-                  value={knowledge}
-                  onChange={(e) => setKnowledge(e.target.value)}
-                />
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    disabled={saving}
-                    onClick={() => void saveConfig(false)}
-                  >
-                    Save draft
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    disabled={saving}
-                    onClick={() => void saveConfig(true)}
-                  >
-                    {saving ? "Saving…" : "Mark rented → ready"}
-                  </button>
-                </div>
-                {configMsg && (
-                  <p
-                    className={`mt-2 text-xs ${
-                      configMsg.kind === "ok" ? "text-[var(--accent)]" : "text-[var(--danger)]"
-                    }`}
-                  >
-                    {configMsg.text}
-                  </p>
-                )}
-                {state === "selected" && (
-                  <p className="mt-2 text-xs text-[var(--muted)]">
-                    Tip: you can click <strong className="text-[var(--text)]">Mark rented → ready</strong>{" "}
-                    directly — it will create the rental and save this knowledge in one step.
-                  </p>
-                )}
-              </div>
+              <KnowledgePanel
+                agentId={agentId}
+                knowledge={knowledge}
+                onKnowledgeChange={setKnowledge}
+                saving={saving}
+                onSaveDraft={() => void saveConfig(false)}
+                onMarkReady={() => void saveConfig(true)}
+                configMsg={configMsg}
+                showSelectedTip={state === "selected"}
+              />
             </>
           )}
 
