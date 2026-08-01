@@ -158,12 +158,26 @@ export async function runMarketplaceAssistantWorkflow(input: {
     };
   }
 
+  if (
+    /how long|how quick|how fast|time (does it|to)|takes? to (set|get|go)|minutes|hours/.test(
+      lower,
+    ) &&
+    /set ?up|setup|install|go live|rent|deploy|configure/.test(lower)
+  ) {
+    return {
+      handled: true,
+      toolCalls,
+      assistantMessage:
+        "Most teams have a first agent live on their website in about **15–30 minutes** — pick an agent, add your business details, go live, and drop the chat on your site. Connecting calendars or other tools, or polishing a fuller knowledge base, can take a bit longer depending on how much content you have. WhatsApp go-live usually needs a short handoff with our team. Want me to walk you through the steps, or recommend an agent for your use case?",
+    };
+  }
+
   if (/set up|setup|how do i (rent|configure|deploy)|get started/.test(lower)) {
     return {
       handled: true,
       toolCalls,
       assistantMessage:
-        "Setup path: **pick an agent** on / → **Rent / setup** in Studio → edit **knowledge** (and connectors if needed) → **Go Live** → **Install** Website, App (`/app/v1`), or WhatsApp (partnership). Token wallet must have balance. Want a recommendation for your use case?",
+        "It’s straightforward: pick an agent from the catalogue, open **Rent / setup**, add your business details (and connect tools if you need them), go **Live**, then install it on your **Website** or **App**. WhatsApp is available with a bit of help from our team. Many people finish a first website install in about 15–30 minutes. Want a recommendation for your use case?",
     };
   }
 

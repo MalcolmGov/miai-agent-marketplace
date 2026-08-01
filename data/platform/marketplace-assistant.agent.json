@@ -142,11 +142,10 @@
           "Rent",
           "Studio",
           "Install",
-          "embed",
           "Live",
-          "go live",
-          "agent.js",
-          "Website"
+          "Website",
+          "minutes",
+          "15"
         ]
       }
     },
@@ -351,6 +350,23 @@
           "agentes",
           "catálogo",
           "familias"
+        ]
+      }
+    },
+    {
+      "id": "setup-how-long",
+      "channel": "web",
+      "lang": "en",
+      "input": "how long does it take to set up an agent?",
+      "expect": {
+        "says_any": [
+          "15",
+          "30",
+          "minute"
+        ],
+        "says_none": [
+          "/app/v1",
+          "Token wallet"
         ]
       }
     }
