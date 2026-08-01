@@ -286,6 +286,11 @@ export function CatalogGrid() {
           {items.map((item, idx) => {
             const badge = statusBadge(item);
             const hasWorkflow = isWorkflowFamilyId(item.id);
+            const hrefMarket = market !== "all" && item.markets[market] ? market : null;
+            const href =
+              hrefMarket && item.markets[hrefMarket]
+                ? `/agents/${item.markets[hrefMarket]}`
+                : `/agents/${item.defaultAgentId}`;
 
             return (
               <article
@@ -331,19 +336,22 @@ export function CatalogGrid() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    className="mt-auto flex w-full items-center justify-between gap-3 border-t border-[var(--line)] pt-4 text-left text-sm font-semibold text-[var(--accent-bright)] transition group-hover:text-[var(--accent)]"
-                    onClick={() => setDetail(item)}
-                  >
-                    <span>Learn more</span>
-                    <span
-                      aria-hidden
-                      className="transition-transform duration-200 group-hover:translate-x-1"
+                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
+                    <button
+                      type="button"
+                      className="text-sm font-semibold text-[var(--muted)] transition hover:text-[var(--accent-bright)] hover:underline"
+                      onClick={() => setDetail(item)}
                     >
-                      →
-                    </span>
-                  </button>
+                      Learn more
+                    </button>
+                    <Link
+                      href={href}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
+                    >
+                      Rent / setup
+                      <span aria-hidden>→</span>
+                    </Link>
+                  </div>
                 </div>
               </article>
             );
