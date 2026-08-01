@@ -55,7 +55,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: `Thanks${name !== "there" ? `, ${name}` : ""} — I've logged your request${ref ? ` (${ref})` : ""}. A teammate will follow up${email ? ` at ${email}` : ""}. Meanwhile you can browse the demo shortlist at /demo or Trust at /trust.`,
+      assistantMessage: `Thanks${name !== "there" ? `, ${name}` : ""} — I've logged your request${ref ? ` (${ref})` : ""}. A teammate will follow up${email ? ` at ${email}` : ""}.`,
     };
   }
 
