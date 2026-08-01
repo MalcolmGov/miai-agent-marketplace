@@ -4,46 +4,46 @@ type IconTone = { bg: string; fg: string; ring: string };
 
 const TONES: Record<string, IconTone> = {
   teal: {
-    bg: "linear-gradient(145deg,#1a4a45 0%,#0d2a28 100%)",
-    fg: "#6aefe0",
-    ring: "rgba(61,214,198,0.45)",
+    bg: "linear-gradient(145deg,#d8f5f1 0%,#eafaf7 100%)",
+    fg: "#0d7a70",
+    ring: "rgba(20,150,138,0.35)",
   },
   mint: {
-    bg: "linear-gradient(145deg,#164a3a 0%,#0c261e 100%)",
-    fg: "#5eead4",
-    ring: "rgba(52,211,153,0.45)",
+    bg: "linear-gradient(145deg,#d5f5e8 0%,#eafaf3 100%)",
+    fg: "#0f766e",
+    ring: "rgba(16,185,129,0.35)",
   },
   sky: {
-    bg: "linear-gradient(145deg,#163a52 0%,#0c1e2c 100%)",
-    fg: "#7dd3fc",
-    ring: "rgba(56,189,248,0.45)",
+    bg: "linear-gradient(145deg,#d9ecf8 0%,#eef6fc 100%)",
+    fg: "#0369a1",
+    ring: "rgba(14,165,233,0.35)",
   },
   amber: {
-    bg: "linear-gradient(145deg,#4a3514 0%,#261a0a 100%)",
-    fg: "#fbbf24",
-    ring: "rgba(251,191,36,0.45)",
+    bg: "linear-gradient(145deg,#fef0d4 0%,#fff8eb 100%)",
+    fg: "#b45309",
+    ring: "rgba(217,119,6,0.35)",
   },
   coral: {
-    bg: "linear-gradient(145deg,#4a2418 0%,#26120c 100%)",
-    fg: "#fb923c",
-    ring: "rgba(251,146,60,0.45)",
+    bg: "linear-gradient(145deg,#ffe4d6 0%,#fff1e8 100%)",
+    fg: "#c2410c",
+    ring: "rgba(234,88,12,0.35)",
   },
   slate: {
-    bg: "linear-gradient(145deg,#2a3340 0%,#151a22 100%)",
-    fg: "#94a3b8",
-    ring: "rgba(148,163,184,0.4)",
+    bg: "linear-gradient(145deg,#e4e9f0 0%,#f1f4f8 100%)",
+    fg: "#475569",
+    ring: "rgba(100,116,139,0.35)",
   },
   rose: {
-    bg: "linear-gradient(145deg,#4a1e2e 0%,#261018 100%)",
-    fg: "#f9a8d4",
-    ring: "rgba(244,114,182,0.4)",
+    bg: "linear-gradient(145deg,#fce4ee 0%,#fdf2f7 100%)",
+    fg: "#be185d",
+    ring: "rgba(236,72,153,0.3)",
   },
   indigo: {
-    bg: "linear-gradient(145deg,#2a2a4a 0%,#161628 100%)",
-    fg: "#a5b4fc",
-    ring: "rgba(129,140,248,0.4)",
+    bg: "linear-gradient(145deg,#e0e4f8 0%,#eef0fb 100%)",
+    fg: "#4338ca",
+    ring: "rgba(99,102,241,0.3)",
   },
-};
+}
 
 type IconKind =
   | "tooth"

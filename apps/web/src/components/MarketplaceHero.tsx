@@ -22,7 +22,7 @@ export function MarketplaceHero({
         className="hero-sheen pointer-events-none absolute -left-1/4 top-0 h-full w-[150%] opacity-50"
         style={{
           background:
-            "radial-gradient(ellipse 50% 80% at 20% 30%, rgba(61,214,198,0.16), transparent 55%), radial-gradient(ellipse 40% 60% at 80% 10%, rgba(94,168,240,0.1), transparent 50%)",
+            "radial-gradient(ellipse 50% 80% at 20% 30%, rgba(20,150,138,0.14), transparent 55%), radial-gradient(ellipse 40% 60% at 80% 10%, rgba(56,120,190,0.1), transparent 50%)",
         }}
       />
 

@@ -171,7 +171,7 @@ export function LineTrendChart({
         x={last.x}
         y={last.y - 14}
         textAnchor="middle"
-        className="fill-white"
+        className="fill-[var(--text)]"
         style={{ fontSize: 14, fontWeight: 600 }}
       >
         {valueLabel ?? formatUsd(last.value)}

@@ -3,29 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --bg: #070b12;
-  --bg-elev: #0f1623;
-  --bg-panel: #121a28;
-  --bg-panel-hover: #172233;
-  --line: #243247;
-  --line-strong: #334863;
-  --text: #f2f6fc;
-  --muted: #9aabbf;
-  --muted-dim: #6d7f96;
-  /* Higher-contrast secondary copy for dense UI (cards) */
-  --card-body: #d0dae8;
-  --card-meta: #a8b6c9;
-  --accent: #3dd6c6;
-  --accent-bright: #6aefe0;
-  --accent-dim: #1f9e92;
-  --accent-ink: #041614;
-  --warn: #f0b429;
-  --danger: #f07178;
-  --live: #5eead4;
+  /* Cool mid-light — mist canvas, white cards, charcoal type, teal accent */
+  --bg: #e6edf5;
+  --bg-elev: #f3f7fb;
+  --bg-panel: #ffffff;
+  --bg-panel-hover: #f0f9f7;
+  --line: #d0dae8;
+  --line-strong: #b4c2d4;
+  --text: #0f1724;
+  --muted: #4a5d73;
+  --muted-dim: #6b7f96;
+  --card-body: #334155;
+  --card-meta: #5a6e85;
+  --accent: #14968a;
+  --accent-bright: #0d7a70;
+  --accent-dim: #2bb8a8;
+  --accent-ink: #03201c;
+  --warn: #c9870a;
+  --danger: #d64550;
+  --live: #14968a;
   --font-ui: var(--font-sans), "Segoe UI", sans-serif;
   --font-mono-stack: var(--font-mono), ui-monospace, monospace;
   --radius-panel: 16px;
-  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -28px rgba(0, 0, 0, 0.75);
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 14px 36px -22px rgba(15, 35, 60, 0.22);
 }
 
 html,
@@ -38,10 +38,10 @@ body {
   font-family: var(--font-ui);
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 900px 520px at 8% -8%, rgba(61, 214, 198, 0.16), transparent 55%),
-    radial-gradient(ellipse 720px 480px at 92% 0%, rgba(56, 110, 180, 0.14), transparent 50%),
-    radial-gradient(ellipse 600px 400px at 50% 100%, rgba(61, 214, 198, 0.05), transparent 55%),
-    linear-gradient(180deg, #0a101a 0%, var(--bg) 40%, #06090f 100%);
+    radial-gradient(ellipse 900px 520px at 8% -8%, rgba(20, 150, 138, 0.12), transparent 55%),
+    radial-gradient(ellipse 720px 480px at 92% 0%, rgba(56, 120, 190, 0.1), transparent 50%),
+    radial-gradient(ellipse 600px 400px at 50% 100%, rgba(20, 150, 138, 0.06), transparent 55%),
+    linear-gradient(180deg, #eef3f9 0%, var(--bg) 42%, #dde6f0 100%);
   background-attachment: fixed;
 }
 
@@ -51,10 +51,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.45;
   background-image:
-    linear-gradient(rgba(148, 170, 196, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 170, 196, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(90, 120, 155, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 120, 155, 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
 }
@@ -83,15 +83,15 @@ body::before {
 }
 
 .chip-internal {
-  color: #c5d0e0;
-  border-color: color-mix(in srgb, #94a3b8 45%, transparent);
-  background: color-mix(in srgb, #64748b 16%, transparent);
+  color: #475569;
+  border-color: color-mix(in srgb, #94a3b8 55%, transparent);
+  background: color-mix(in srgb, #94a3b8 12%, transparent);
 }
 
 .chip-solid {
   color: var(--accent-ink);
   border-color: transparent;
-  background: linear-gradient(180deg, var(--accent-bright), var(--accent));
+  background: linear-gradient(180deg, #5aebd9, #2bb8a8);
 }
 
 .btn {
@@ -125,9 +125,9 @@ body::before {
 .panel {
   background: linear-gradient(
     165deg,
-    color-mix(in srgb, var(--bg-panel) 96%, #fff 4%) 0%,
-    var(--bg-panel) 45%,
-    color-mix(in srgb, var(--bg-elev) 90%, transparent) 100%
+    #ffffff 0%,
+    var(--bg-panel) 55%,
+    color-mix(in srgb, var(--bg-elev) 70%, #fff) 100%
   );
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
@@ -150,23 +150,23 @@ body::before {
 }
 
 .panel-interactive:hover {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   background: linear-gradient(
     165deg,
-    var(--bg-panel-hover) 0%,
-    color-mix(in srgb, var(--bg-panel) 80%, #1a3040) 100%
+    #ffffff 0%,
+    var(--bg-panel-hover) 100%
   );
   transform: translateY(-3px);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05) inset,
-    0 22px 48px -28px rgba(0, 0, 0, 0.85),
-    0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 20px 40px -24px rgba(15, 50, 70, 0.2),
+    0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .input {
   @apply w-full px-3.5 py-2.5 text-sm outline-none transition;
   border-radius: 10px;
-  background: color-mix(in srgb, #060a10 88%, transparent);
+  background: #ffffff;
   border: 1px solid var(--line);
   color: var(--text);
   font-family: var(--font-ui);
@@ -287,7 +287,7 @@ body::before {
   inset: 0 auto 0 0;
   z-index: 50;
   width: 272px;
-  background: linear-gradient(180deg, #0c121c 0%, #090e16 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
   border-right: 1px solid var(--line);
   transform: translateX(-105%);
   transition: transform 0.25s ease;
@@ -295,14 +295,14 @@ body::before {
 
 .sidebar-open {
   transform: translateX(0);
-  box-shadow: 24px 0 48px -28px rgba(0, 0, 0, 0.8);
+  box-shadow: 24px 0 48px -28px rgba(15, 35, 60, 0.28);
 }
 
 .sidebar-backdrop {
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(3, 6, 12, 0.55);
+  background: rgba(15, 30, 50, 0.35);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -543,9 +543,9 @@ body::before {
   height: 3rem;
   border-radius: 999px;
   color: var(--accent-bright);
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  box-shadow: 0 0 24px -6px rgba(61, 214, 198, 0.55);
+  background: color-mix(in srgb, var(--accent) 12%, #fff);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  box-shadow: 0 8px 20px -10px rgba(20, 150, 138, 0.45);
 }
 
 .how-step-num {

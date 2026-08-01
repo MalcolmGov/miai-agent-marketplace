@@ -6,6 +6,14 @@ import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
 
+const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
+
+function packLabel(m: string) {
+  if (m === "africa") return "Africa";
+  if (m === "asia") return "Asia";
+  return m.toUpperCase();
+}
+
 interface FamilyItem {
   id: string;
   name: string;
@@ -102,6 +110,16 @@ export function CatalogGrid() {
   const [audience, setAudience] = useState("all");
   const [workflowsOnly, setWorkflowsOnly] = useState(false);
   const [pending, startTransition] = useTransition();
+  const [detail, setDetail] = useState<FamilyItem | null>(null);
+
+  useEffect(() => {
+    if (!detail) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setDetail(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [detail]);
 
   useEffect(() => {
     fetch("/api/catalog?view=families")
@@ -266,18 +284,12 @@ export function CatalogGrid() {
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {items.map((item, idx) => {
-            const hrefMarket = market !== "all" && item.markets[market] ? market : null;
-            const href =
-              hrefMarket && item.markets[hrefMarket]
-                ? `/agents/${item.markets[hrefMarket]}`
-                : `/agents/${item.defaultAgentId}`;
             const badge = statusBadge(item);
             const hasWorkflow = isWorkflowFamilyId(item.id);
 
             return (
-              <Link
+              <article
                 key={item.id}
-                href={href}
                 className="panel panel-interactive group rise flex flex-col p-0"
                 style={{ animationDelay: `${Math.min(idx, 15) * 28}ms` }}
               >
@@ -286,7 +298,7 @@ export function CatalogGrid() {
                   style={{ background: categoryAccent(item.marketplaceCategory) }}
                 />
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="mb-4 flex items-start gap-3.5">
+                  <div className="flex items-start gap-3.5">
                     <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
@@ -319,24 +331,32 @@ export function CatalogGrid() {
                     </div>
                   </div>
 
-                  <p className="agent-card-desc line-clamp-3 flex-1">
-                    {cleanCardSummary(item.summary, item.name)}
-                  </p>
-
-                  <div className="mt-5 flex items-center justify-between border-t border-[var(--line)] pt-3.5 text-sm font-semibold text-[var(--accent-bright)]">
-                    <span>Rent / setup</span>
+                  <button
+                    type="button"
+                    className="mt-auto flex w-full items-center justify-between gap-3 border-t border-[var(--line)] pt-4 text-left text-sm font-semibold text-[var(--accent-bright)] transition group-hover:text-[var(--accent)]"
+                    onClick={() => setDetail(item)}
+                  >
+                    <span>Learn more</span>
                     <span
                       aria-hidden
                       className="transition-transform duration-200 group-hover:translate-x-1"
                     >
                       →
                     </span>
-                  </div>
+                  </button>
                 </div>
-              </Link>
+              </article>
             );
           })}
         </div>
+
+        {detail ? (
+          <AgentDetailModal
+            item={detail}
+            market={market}
+            onClose={() => setDetail(null)}
+          />
+        ) : null}
 
         {!pending && items.length === 0 ? (
           <div className="panel px-6 py-12 text-center">
@@ -362,6 +382,150 @@ export function CatalogGrid() {
       </section>
 
       <MarketplaceCTA />
+    </div>
+  );
+}
+
+function AgentDetailModal({
+  item,
+  market,
+  onClose,
+}: {
+  item: FamilyItem;
+  market: string;
+  onClose: () => void;
+}) {
+  const badge = statusBadge(item);
+  const hasWorkflow = isWorkflowFamilyId(item.id);
+  const hrefMarket = market !== "all" && item.markets[market] ? market : null;
+  const href =
+    hrefMarket && item.markets[hrefMarket]
+      ? `/agents/${item.markets[hrefMarket]}`
+      : `/agents/${item.defaultAgentId}`;
+  const summary = cleanCardSummary(item.summary, item.name);
+  const packs = PACK_ORDER.filter((p) => item.packs.includes(p) || item.markets[p]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(15,30,50,0.4)] p-4 backdrop-blur-sm"
+      role="presentation"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="agent-detail-title"
+        className="panel relative w-full max-w-lg overflow-hidden p-0 shadow-2xl rise"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className="cat-rail"
+          style={{ background: categoryAccent(item.marketplaceCategory) }}
+        />
+        <div className="p-5 sm:p-6">
+          <div className="mb-5 flex items-start gap-3.5">
+            <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-start justify-between gap-2">
+                <h2
+                  id="agent-detail-title"
+                  className="display text-xl font-semibold leading-snug tracking-tight text-[var(--text)]"
+                >
+                  {item.name}
+                </h2>
+                <button
+                  type="button"
+                  className="btn btn-ghost shrink-0 px-2 py-1"
+                  onClick={onClose}
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
+                <span>{item.marketplaceCategory}</span>
+                <span className="text-[var(--muted-dim)]">·</span>
+                <span className="capitalize">{item.audience}</span>
+                {badge ? (
+                  <>
+                    <span className="text-[var(--muted-dim)]">·</span>
+                    <span
+                      className={`chip !px-2 !py-0.5 text-[10px] ${badge.tone === "live" ? "chip-live" : ""}`}
+                    >
+                      {badge.tone === "live" ? (
+                        <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                      ) : null}
+                      {badge.label}
+                    </span>
+                  </>
+                ) : null}
+                {hasWorkflow ? (
+                  <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
+                    Multi-step
+                  </span>
+                ) : null}
+              </p>
+            </div>
+          </div>
+
+          <p className="agent-card-desc text-[15px] leading-relaxed">{summary}</p>
+
+          {hasWorkflow ? (
+            <p className="mt-3 text-sm text-[var(--muted)]">
+              Plans the next step, confirms with you, then acts — instead of a single reply.
+            </p>
+          ) : null}
+
+          <dl className="mt-5 grid gap-3 border-t border-[var(--line)] pt-5 text-sm">
+            {item.channels.length > 0 ? (
+              <div>
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                  Channels
+                </dt>
+                <dd className="mt-1.5 flex flex-wrap gap-1.5">
+                  {item.channels.map((ch) => (
+                    <span key={ch} className="chip !px-2 !py-0.5 text-[11px] capitalize">
+                      {ch}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            ) : null}
+            {packs.length > 0 ? (
+              <div>
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                  Market packs
+                </dt>
+                <dd className="mt-1.5 flex flex-wrap gap-1.5">
+                  {packs.map((p) => (
+                    <span key={p} className="chip !px-2 !py-0.5 text-[11px]">
+                      {packLabel(p)}
+                    </span>
+                  ))}
+                  {item.hasZa ? (
+                    <span className="chip !px-2 !py-0.5 text-[11px]">ZA</span>
+                  ) : null}
+                </dd>
+              </div>
+            ) : null}
+            <div>
+              <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                Tier
+              </dt>
+              <dd className="mt-1 capitalize text-[var(--text)]">{item.tier}</dd>
+            </div>
+          </dl>
+
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Link href={href} className="btn btn-primary" onClick={onClose}>
+              Rent / setup
+            </Link>
+            <button type="button" className="btn btn-ghost" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
