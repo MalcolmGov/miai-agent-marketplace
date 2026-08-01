@@ -15,8 +15,11 @@ export type SmartCatalogQuery = {
 const MARKET_PATTERNS: { id: string; re: RegExp }[] = [
   { id: "africa", re: /\b(africa|african|za|south africa|nigeria|kenya)\b/i },
   { id: "asia", re: /\b(asia|asian|india|singapore|apac)\b/i },
-  { id: "eu", re: /\b(eu|europe|european|uk|britain)\b/i },
-  { id: "us", re: /\b(us|usa|u\.s\.|america|american)\b/i },
+  { id: "eu", re: /\b(eu|europe|european|uk|u\.k\.?|britain|united kingdom)\b/i },
+  {
+    id: "us",
+    re: /\b(us|usa|u\.s\.a?\.?|united states(?: of america)?|america|american)\b/i,
+  },
 ];
 
 const AUDIENCE_PATTERNS: { id: string; re: RegExp }[] = [
@@ -39,12 +42,27 @@ const CATEGORY_PATTERNS: { id: string; re: RegExp }[] = [
 
 const WORKFLOW_RE = /\b(workflow|workflows|multi[- ]?step|can act)\b/i;
 
+/** Voice / typed variants → tokens the market regexes can match. */
+function normalizeCatalogQuery(raw: string): string {
+  return raw
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    // "U.S", "U.S.", "U. S.", "U S", "U.S.A."
+    .replace(/\bu\s*\.?\s*s\s*\.?\s*a?\s*\.?\b/gi, " us ")
+    .replace(/\bunited\s+states(?:\s+of\s+america)?\b/gi, " us ")
+    // "E.U", "U.K."
+    .replace(/\be\s*\.?\s*u\s*\.?\b/gi, " eu ")
+    .replace(/\bu\s*\.?\s*k\s*\.?\b/gi, " uk ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function stripMatch(text: string, re: RegExp): string {
   return text.replace(re, " ").replace(/\s+/g, " ").trim();
 }
 
 export function parseSmartCatalogQuery(raw: string): SmartCatalogQuery {
-  let rest = raw.trim();
+  let rest = normalizeCatalogQuery(raw);
   const applied: string[] = [];
   let market = "all";
   let audience = "all";
@@ -86,7 +104,9 @@ export function parseSmartCatalogQuery(raw: string): SmartCatalogQuery {
 
   // Soft filler words (leave domain terms for text match)
   rest = rest
-    .replace(/\b(in|for|the|a|an|agents?|show|find|me|please|with|near)\b/gi, " ")
+    .replace(/\b(in|for|the|a|an|agents?|show|find|me|please|with|near|of)\b/gi, " ")
+    // Voice left-overs after "U.S." / "E.U." normalization
+    .replace(/^[.\s,;:]+|[.\s,;:]+$/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
