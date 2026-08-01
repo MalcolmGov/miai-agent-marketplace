@@ -32,8 +32,20 @@ import {
 } from "./workflows/dental-front-desk.js";
 import { isHotelGuest, runHotelGuestWorkflow } from "./workflows/hotel-guest.js";
 import { wf } from "./workflows/i18n.js";
+import {
+  applyTemplateVars,
+  buildTemplateVars,
+  materializePackage,
+  scrubLeakedPlaceholders,
+} from "./templates.js";
 
 export type { WorkflowPlan, WorkflowStep };
+export {
+  applyTemplateVars,
+  buildTemplateVars,
+  materializePackage,
+  scrubLeakedPlaceholders,
+} from "./templates.js";
 
 export type AgentState = "selected" | "configuring" | "rented" | "live" | "paused_no_tokens";
 
@@ -1547,6 +1559,17 @@ export async function runTurn(
   const onDelta = deps?.onDelta;
   const onToolStart = deps?.onToolStart;
 
+  // Fill {{business_name}} etc. so customers never see raw template tokens.
+  const templateVars = buildTemplateVars(req.pkg);
+  const pkg = materializePackage(req.pkg);
+  req = {
+    ...req,
+    pkg,
+    knowledgeOverride: req.knowledgeOverride
+      ? applyTemplateVars(req.knowledgeOverride, templateVars)
+      : req.knowledgeOverride,
+  };
+
   if (req.state === "paused_no_tokens") {
     return {
       assistantMessage: wf(req.replyLanguage, "paused_no_tokens"),
@@ -1646,9 +1669,10 @@ export async function runTurn(
       reason: "agent_turn",
       agentId: req.agentId,
     });
-    const assistantMessage = handled.assistantMessage
-      .replace(/<!--miai-workflow:[\s\S]*?-->/g, "")
-      .trim();
+    const assistantMessage = scrubLeakedPlaceholders(
+      handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
+      templateVars,
+    );
     if (onDelta && assistantMessage) {
       const parts = assistantMessage.split(/(\s+)/).filter(Boolean);
       let buf = "";
@@ -1970,8 +1994,13 @@ export async function runTurn(
   });
 
   const paused = !debit.ok || debit.paused;
+  const assistantMessage = scrubLeakedPlaceholders(completion.content, templateVars);
+  if (assistantMessage !== completion.content) {
+    const last = messages[messages.length - 1];
+    if (last?.role === "assistant") last.content = assistantMessage;
+  }
   return {
-    assistantMessage: completion.content,
+    assistantMessage,
     messages,
     toolCalls,
     tokensDebited: debit.ok ? tokens : 0,

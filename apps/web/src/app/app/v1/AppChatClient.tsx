@@ -65,7 +65,7 @@ export function AppChatClient({
   const sessionId = useRef(newSession());
   const msgsRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const greeted = useRef(false);
 
   const style = useMemo(
@@ -266,14 +266,6 @@ export function AppChatClient({
     }
   }
 
-  function onInputChange(v: string) {
-    setInput(v);
-    const el = inputRef.current;
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
-  }
-
   if (!embedKey) {
     return (
       <div className="mi-app" style={style} ref={rootRef}>
@@ -338,23 +330,21 @@ export function AppChatClient({
           void submit(input);
         }}
       >
-        <textarea
+        {/* Single-line input: Return/Go/Send submits the form in WKWebView / Android WebView
+            more reliably than textarea keydown handlers. */}
+        <input
           ref={inputRef}
           className="mi-app-input"
-          rows={1}
+          type="text"
+          inputMode="text"
+          enterKeyHint="send"
           value={input}
           placeholder="Message…"
-          enterKeyHint="send"
           autoComplete="off"
           autoCorrect="on"
+          autoCapitalize="sentences"
           disabled={busy}
-          onChange={(e) => onInputChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              void submit(input);
-            }
-          }}
+          onChange={(e) => setInput(e.target.value)}
           aria-label="Message"
         />
         <button className="mi-app-send" type="submit" disabled={busy || !input.trim()} aria-label="Send">

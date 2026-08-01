@@ -116,7 +116,7 @@ const SCRIPT = String.raw`
     '  <div id="miai-msgs"></div>' +
     '  <div id="miai-sugs"></div>' +
     '  <form id="miai-form">' +
-    '    <input id="miai-input" placeholder="Ask us anything…" autocomplete="off" aria-label="Message"/>' +
+    '    <input id="miai-input" type="text" enterkeyhint="send" placeholder="Ask us anything…" autocomplete="off" aria-label="Message"/>' +
     '    <button id="miai-send" type="submit" aria-label="Send">' + sendIcon + '</button>' +
     '  </form>' +
     '  <div id="miai-foot">Powered by MyInstantAI</div>' +
