@@ -8,6 +8,21 @@ interface Msg {
   content: string;
 }
 
+interface WorkflowStep {
+  id: string;
+  label: string;
+  tool?: string;
+  status: string;
+  resultSummary?: string;
+}
+
+interface WorkflowView {
+  id: string;
+  goal: string;
+  status: string;
+  steps: WorkflowStep[];
+}
+
 export function SandboxChat({
   agentId,
   mode = "sandbox",
@@ -21,8 +36,10 @@ export function SandboxChat({
   const [paused, setPaused] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
   const [lastTools, setLastTools] = useState<string[]>([]);
+  const [workflow, setWorkflow] = useState<WorkflowView | null>(null);
   const [topUp, setTopUp] = useState(false);
   const [chatMode, setChatMode] = useState<"sandbox" | "live">(mode);
+  const isEA = /executive-assistant/i.test(agentId);
 
   async function send() {
     const text = input.trim();
@@ -40,7 +57,11 @@ export function SandboxChat({
       setPaused(Boolean(data.paused));
       setBalance(data.balance ?? null);
       setLastTools((data.toolCalls ?? []).map((t: { name: string }) => t.name));
-      const reply = String(data.assistantMessage ?? "").replace(/\*\*(.*?)\*\*/g, "$1");
+      if (data.workflow) setWorkflow(data.workflow as WorkflowView);
+      const reply = String(data.assistantMessage ?? "")
+        .replace(/<!--miai-workflow:[\s\S]*?-->/g, "")
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .trim();
       setMessages((m) => [...m, { role: "assistant", content: reply }]);
     } finally {
       setBusy(false);
@@ -84,14 +105,15 @@ export function SandboxChat({
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
           <p className="text-sm text-[var(--muted)]">
-            Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” ·
-            “Speak to a human”
+            {isEA
+              ? "Try: “Schedule a 30-min budget review with Thabo tomorrow at 14:00, set a reminder, and notify the team.” · “Am I free Thursday afternoon?”"
+              : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
           </p>
         )}
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`max-w-[90%] rounded-lg px-3 py-2 text-sm ${
+            className={`max-w-[90%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm ${
               m.role === "user"
                 ? "ml-auto bg-[var(--accent-dim)]/30 text-[var(--text)]"
                 : "bg-[var(--bg-elev)] text-[var(--text)]"
@@ -100,6 +122,32 @@ export function SandboxChat({
             {m.content}
           </div>
         ))}
+        {workflow && (
+          <div className="rounded-lg border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-xs">
+            <div className="font-medium text-[var(--text)]">
+              Workflow · {workflow.status}
+            </div>
+            <div className="mt-0.5 text-[var(--muted)]">{workflow.goal}</div>
+            <ol className="mt-2 space-y-1">
+              {workflow.steps.map((s) => (
+                <li key={s.id} className="flex gap-2 text-[var(--text)]">
+                  <span className="w-16 shrink-0 uppercase tracking-wide text-[var(--muted)]">
+                    {s.status}
+                  </span>
+                  <span>
+                    {s.label}
+                    {s.tool ? (
+                      <span className="text-[var(--muted)]"> · {s.tool}</span>
+                    ) : null}
+                    {s.resultSummary ? (
+                      <span className="text-[var(--muted)]"> · {s.resultSummary}</span>
+                    ) : null}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
         {lastTools.length > 0 && (
           <div className="text-xs text-[var(--muted)]">Tools: {lastTools.join(", ")}</div>
         )}
@@ -108,7 +156,13 @@ export function SandboxChat({
         <input
           className="input"
           value={input}
-          placeholder={paused ? "Top up to continue…" : "Message the agent…"}
+          placeholder={
+            paused
+              ? "Top up to continue…"
+              : isEA && workflow?.status === "proposed"
+                ? "Yes — please set it up…"
+                : "Message the agent…"
+          }
           disabled={busy || paused}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {

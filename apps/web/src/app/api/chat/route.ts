@@ -96,6 +96,7 @@ export async function POST(req: Request) {
     balance: result.balance,
     paused: result.paused,
     state: nextState,
+    workflow: result.workflow ?? null,
     messages: result.messages.filter((m) => m.role !== "tool"),
   });
 }

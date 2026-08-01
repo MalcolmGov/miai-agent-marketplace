@@ -31,10 +31,14 @@ function bindingForTool(toolName, market) {
     t.includes("availability") ||
     t.includes("reschedule") ||
     t.includes("cancel") ||
-    t === "check_table_availability"
+    t === "check_table_availability" ||
+    t === "check_calendar" ||
+    t === "schedule_meeting" ||
+    t === "set_reminder"
   ) {
     return { tool: t, connector: calendar };
   }
+  if (t === "notify_team") return { tool: t, connector: handoff };
   if (t.includes("order") || t.includes("stock") || t === "get_order_status") {
     return { tool: t, connector: "shopify" };
   }

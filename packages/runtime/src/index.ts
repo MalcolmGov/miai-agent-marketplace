@@ -6,6 +6,14 @@ import {
   estimateTurnTokens,
   type WalletAdapter,
 } from "@miai/wallet-adapter";
+import {
+  isExecutiveAssistant,
+  runExecutiveAssistantWorkflow,
+  type WorkflowPlan,
+  type WorkflowStep,
+} from "./workflows/executive-assistant.js";
+
+export type { WorkflowPlan, WorkflowStep };
 
 export type AgentState = "selected" | "configuring" | "rented" | "live" | "paused_no_tokens";
 
@@ -38,6 +46,13 @@ export interface TurnResult {
   balance: number;
   state: AgentState;
   paused: boolean;
+  /** Multi-step workflow plan (Executive Assistant and similar). */
+  workflow?: {
+    id: string;
+    goal: string;
+    status: string;
+    steps: Array<{ id: string; label: string; tool?: string; status: string; resultSummary?: string }>;
+  };
 }
 
 export interface ModelAdapter {
@@ -1182,6 +1197,66 @@ export async function runTurn(
 
   const bindings = resolveBindings(req.pkg, req.bindings);
   const toolCalls: TurnResult["toolCalls"] = [];
+
+  // Executive Assistant multi-step workflow: goal → plan → confirm → execute → verify
+  if (isExecutiveAssistant(req.agentId)) {
+    const ea = await runExecutiveAssistantWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      executeTool: async (name, args) => {
+        const result = await executeConnector({
+          workspaceId: req.workspaceId,
+          agentId: req.agentId,
+          tool: name,
+          args,
+          binding: bindingFor(name, bindings),
+          mode: req.mode,
+        });
+        return { ok: result.ok, data: result.data };
+      },
+    });
+    if (ea.handled) {
+      toolCalls.push(...ea.toolCalls);
+      messages.push({ role: "assistant", content: ea.assistantMessage });
+      const tokens = estimateTurnTokens(
+        req.model,
+        system.length + req.userMessage.length,
+        ea.assistantMessage.length,
+      );
+      const debit = await wallet.debit({
+        workspaceId: req.workspaceId,
+        amount: tokens,
+        idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
+        reason: "agent_turn",
+        agentId: req.agentId,
+      });
+      return {
+        assistantMessage: ea.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
+        messages,
+        toolCalls,
+        tokensDebited: tokens,
+        balance: debit.balance,
+        state: req.state,
+        paused: false,
+        workflow: ea.plan
+          ? {
+              id: ea.plan.id,
+              goal: ea.plan.goal,
+              status: ea.plan.status,
+              steps: ea.plan.steps.map((s) => ({
+                id: s.id,
+                label: s.label,
+                tool: s.tool,
+                status: s.status,
+                resultSummary: s.resultSummary,
+              })),
+            }
+          : undefined,
+      };
+    }
+  }
 
   let completion = await model.complete({
     system,

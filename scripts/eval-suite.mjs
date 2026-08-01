@@ -214,6 +214,15 @@ async function runEvalCase(pkg, ev) {
   if (expect.tool && !toolsUsed.includes(expect.tool)) {
     failures.push(`missing_tool:${expect.tool} (got ${toolsUsed.join(",") || "none"})`);
   }
+  if (Array.isArray(expect.tool_any) && expect.tool_any.length) {
+    if (!expect.tool_any.some((t) => toolsUsed.includes(t))) {
+      failures.push(`missing_tool_any:${expect.tool_any.join("|")} (got ${toolsUsed.join(",") || "none"})`);
+    }
+  }
+  if (Array.isArray(expect.tool_none) && expect.tool_none.length) {
+    const hit = expect.tool_none.filter((t) => toolsUsed.includes(t));
+    if (hit.length) failures.push(`forbidden_tool:${hit.join(",")}`);
+  }
   if (Array.isArray(expect.says_any) && expect.says_any.length && !includesAny(reply, expect.says_any)) {
     failures.push(`missing_says_any:${expect.says_any.slice(0, 3).join("|")}`);
   }

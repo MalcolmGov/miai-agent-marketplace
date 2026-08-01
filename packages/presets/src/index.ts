@@ -19,6 +19,17 @@ const booking = (calendar: "google_calendar" | "m365_calendar" = "google_calenda
   { tool: "check_table_availability", connector: calendar },
 ];
 
+const executiveAssistant = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+  handoff: "slack" | "teams" = "slack",
+): ToolBinding[] => [
+  { tool: "check_calendar", connector: calendar },
+  { tool: "schedule_meeting", connector: calendar },
+  { tool: "set_reminder", connector: calendar },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_order_status", connector: "shopify" },
   { tool: "check_availability", connector: "shopify" },
@@ -110,6 +121,31 @@ const HAND_OVERRIDES: AgentPreset[] = [
       { tool: "handoff_to_human", connector: "slack" },
     ],
   },
+  // Multi-workflow Executive Assistant — calendar + Slack notify
+  {
+    agentId: "us-executive-assistant",
+    pilot: true,
+    phase: 1,
+    bindings: executiveAssistant("google_calendar", "slack"),
+  },
+  {
+    agentId: "executive-assistant",
+    pilot: true,
+    phase: 1,
+    bindings: executiveAssistant("google_calendar", "slack"),
+  },
+  {
+    agentId: "asia-executive-assistant",
+    pilot: true,
+    phase: 1,
+    bindings: executiveAssistant("google_calendar", "slack"),
+  },
+  {
+    agentId: "eu-executive-assistant",
+    pilot: true,
+    phase: 1,
+    bindings: executiveAssistant("m365_calendar", "teams"),
+  },
 ];
 
 function mergePresets(): AgentPreset[] {
@@ -137,8 +173,15 @@ export function pilotAgentIds(): string[] {
 export function defaultBindingsForTools(toolNames: string[]): ToolBinding[] {
   return toolNames.map((tool) => {
     if (tool === "handoff_to_human") return { tool, connector: "slack" as const };
-    if (tool.includes("book") || tool.includes("availability"))
+    if (
+      tool.includes("book") ||
+      tool.includes("availability") ||
+      tool.includes("check_calendar") ||
+      tool.includes("schedule_meeting") ||
+      tool.includes("set_reminder")
+    )
       return { tool, connector: "google_calendar" as const };
+    if (tool.includes("notify_team")) return { tool, connector: "slack" as const };
     if (tool.includes("order") || tool.includes("stock"))
       return { tool, connector: "shopify" as const };
     if (tool.includes("ticket") || tool.includes("lead") || tool.includes("capture"))

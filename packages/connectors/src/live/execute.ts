@@ -5,15 +5,57 @@ import { getToken } from "../oauth/tokens.js";
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
   if (n.includes("order")) return { status: "out_for_delivery", eta: "tomorrow", order_id: args.order_id ?? "4821" };
-  if (n.includes("availability") || n.includes("check_availability") || n.includes("check_calendar"))
+  if (
+    n.includes("availability") ||
+    n.includes("check_availability") ||
+    n.includes("check_calendar") ||
+    n === "check_calendar"
+  )
     return {
       ok: true,
       available: true,
+      date: String(args.date ?? args.datetime ?? "tomorrow").slice(0, 10),
+      events: [
+        { start: "09:00", end: "09:30", title: "Weekly team standup" },
+        { start: "12:30", end: "13:00", title: "Lunch block" },
+      ],
+      free_blocks: ["10:00–12:00", "14:00–16:00"],
       slots: [
         { datetime: "2026-08-07T10:00:00", label: "Thursday 10:00" },
         { datetime: "2026-08-07T14:30:00", label: "Thursday 14:30" },
       ],
       requested: args,
+      source: "sandbox_stub",
+    };
+  if (n.includes("schedule_meeting") || n === "schedule_meeting")
+    return {
+      scheduled: true,
+      booked: true,
+      status: "scheduled",
+      reference: "EVT-4821",
+      booking_ref: "EVT-4821",
+      event_id: "EVT-4821",
+      datetime: args.datetime,
+      title: args.title,
+      attendees: args.attendees,
+      source: "sandbox_stub",
+    };
+  if (n.includes("set_reminder") || n === "set_reminder")
+    return {
+      set: true,
+      reference: "REM-2201",
+      when: args.when,
+      text: args.text,
+      source: "sandbox_stub",
+    };
+  if (n.includes("notify_team") || n === "notify_team")
+    return {
+      ok: true,
+      routed: true,
+      channel: "slack",
+      reference: "SLACK-NOTIFY-1",
+      summary: args.summary,
+      source: "sandbox_stub",
     };
   if (n.includes("book")) return { booked: true, booking_ref: "BK-3391", ...args };
   if (n.includes("job_opening") || n.includes("list_jobs") || n.includes("open_role")) {
@@ -405,9 +447,24 @@ async function googleCalendar(
   tool: string,
   args: Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
-  if (tool.includes("availability") || tool.includes("check_availability")) {
-    const timeMin = String(args.start ?? args.date ?? new Date().toISOString());
+  const n = tool.toLowerCase();
+
+  // Read: freeBusy + optional events list for EA check_calendar
+  if (
+    n.includes("availability") ||
+    n.includes("check_availability") ||
+    n.includes("check_calendar") ||
+    n === "check_calendar"
+  ) {
+    const timeMin = String(args.start ?? args.datetime ?? args.date ?? new Date().toISOString());
     const start = new Date(timeMin);
+    if (Number.isNaN(start.getTime())) {
+      start.setTime(Date.now());
+    }
+    // Normalize date-only to start of day
+    if (/^\d{4}-\d{2}-\d{2}$/.test(timeMin)) {
+      start.setHours(0, 0, 0, 0);
+    }
     const timeMax = new Date(start.getTime() + 24 * 3600 * 1000).toISOString();
     const res = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
       method: "POST",
@@ -426,17 +483,64 @@ async function googleCalendar(
       error?: { message?: string };
     };
     if (!res.ok) throw new Error(json.error?.message ?? `Google ${res.status}`);
+    const busy = json.calendars?.primary?.busy ?? [];
     return {
-      available: (json.calendars?.primary?.busy?.length ?? 0) === 0,
-      busy: json.calendars?.primary?.busy ?? [],
+      ok: true,
+      date: start.toISOString().slice(0, 10),
+      available: busy.length === 0,
+      busy,
+      events: busy.map((b) => ({ start: b.start, end: b.end, title: "Busy" })),
+      free_blocks: busy.length === 0 ? ["Full day appears free on primary calendar"] : [],
       provider: "google_calendar",
       live: true,
     };
   }
 
+  // Reminder: create a timed event with reminder popup (Google has no standalone reminder API in Calendar v3 for all accounts)
+  if (n.includes("set_reminder") || n.includes("reminder")) {
+    const when = new Date(String(args.when ?? args.datetime ?? Date.now() + 3600000));
+    const end = new Date(when.getTime() + 15 * 60 * 1000);
+    const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        summary: `Reminder: ${String(args.text ?? args.summary ?? "Nudge")}`,
+        description: String(args.text ?? ""),
+        start: { dateTime: when.toISOString() },
+        end: { dateTime: end.toISOString() },
+        reminders: { useDefault: false, overrides: [{ method: "popup", minutes: 0 }] },
+      }),
+    });
+    const json = (await res.json()) as { id?: string; htmlLink?: string; error?: { message?: string } };
+    if (!res.ok) throw new Error(json.error?.message ?? `Google ${res.status}`);
+    return {
+      set: true,
+      reference: json.id,
+      when: when.toISOString(),
+      link: json.htmlLink,
+      provider: "google_calendar",
+      live: true,
+    };
+  }
+
+  // Write: schedule_meeting / book_*
   const start = String(args.datetime ?? args.date ?? new Date(Date.now() + 86400000).toISOString());
   const startDate = new Date(start);
-  const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+  const durationMin = Number(args.duration_minutes ?? 30);
+  const endDate = new Date(startDate.getTime() + durationMin * 60 * 1000);
+  const attendeesRaw = args.attendees;
+  const attendees = Array.isArray(attendeesRaw)
+    ? attendeesRaw.map((a) => {
+        const s = String(a);
+        return s.includes("@") ? { email: s } : { displayName: s, email: `${s.toLowerCase().replace(/\s+/g, ".")}@example.com` };
+      })
+    : args.contact
+      ? [{ email: String(args.contact) }]
+      : undefined;
+
   const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
     method: "POST",
     headers: {
@@ -444,19 +548,28 @@ async function googleCalendar(
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      summary: String(args.service ?? args.summary ?? "Appointment"),
+      summary: String(args.title ?? args.service ?? args.summary ?? "Meeting"),
       description: String(args.notes ?? args.name ?? ""),
       start: { dateTime: startDate.toISOString() },
       end: { dateTime: endDate.toISOString() },
-      attendees: args.contact ? [{ email: String(args.contact) }] : undefined,
+      attendees,
     }),
   });
-  const json = (await res.json()) as { id?: string; htmlLink?: string; error?: { message?: string } };
+  const json = (await res.json()) as {
+    id?: string;
+    htmlLink?: string;
+    error?: { message?: string };
+  };
   if (!res.ok) throw new Error(json.error?.message ?? `Google ${res.status}`);
   return {
+    scheduled: true,
     booked: true,
+    status: "scheduled",
     booking_ref: json.id,
+    reference: json.id,
+    event_id: json.id,
     link: json.htmlLink,
+    datetime: startDate.toISOString(),
     provider: "google_calendar",
     live: true,
   };
