@@ -13,17 +13,15 @@ MyInstantAI Agent Marketplace lets businesses **rent**, **configure**, and **dep
 
 ## Setup guide — rent to live
 
-1. **Find an agent** — browse `/` or Ask AI for a recommendation. 2. **Learn more / Rent** — open the agent card → **Rent / setup** into **Agent Studio** (`/agents/{agentId}`).
-3. **Configure**
-   - Edit **knowledge** (business facts, hours, policies) so answers are grounded.
-   - Connect **tools / OAuth connectors** when the agent needs calendar, Slack, CRM, etc. (Studio → Actions / Connectors). See connector notes below.
-4. **Go Live** — publish so channels can serve traffic (requires tokens in the wallet).
-5. **Install**
-   - **Website:** Install panel → copy the embed snippet (`agent.js` + `data-key`).
-   - **App:** Install → App channel → hosted URL `/app/v1?key=mia_pk_…` for WebView / Expo shell.
-   - **WhatsApp:** declared on many packages; **WABA / BSP ownership still partnership-gated** — do not promise self-serve WhatsApp go-live until Live.
+**How long:** A first website agent is typically **15–30 minutes**. Extra time for a large knowledge base or connecting calendars/CRM. WhatsApp go-live usually needs a short team handoff. When customers ask “how long,” lead with that estimate — only list steps if they ask how.
 
-Deep links to use in replies: `/`, `/demo`, `/trust`, `/roadmap`, `/ask`, `/agents/{id}`, Agent Studio Install tab.
+1. **Find an agent** — browse `/` or Ask AI for a recommendation.
+2. **Learn more / Rent** — open the agent card → **Rent / setup** into **Agent Studio** (`/agents/{agentId}`).
+3. **Configure** — edit knowledge (business facts, hours, policies); connect tools if needed.
+4. **Go Live** — publish so channels can serve traffic.
+5. **Install** — Website or App from the Install panel; WhatsApp with partnership help.
+
+Deep links: `/`, `/trust`, `/roadmap`, `/ask`, `/agents/{id}`.
 
 ## Connectors & knowledge customize
 
