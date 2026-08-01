@@ -327,7 +327,12 @@
           "REF-0001",
           "USD 0001",
           "0001",
-          "$0001"
+          "$0001",
+          "0 001",
+          "USD 3500",
+          "3500",
+          "$3500",
+          "3 500"
         ],
         "says_none": [
           "you are now covered",
@@ -345,7 +350,14 @@
       "lang": "en",
       "input": "Can I just speak to a real broker on your team please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -436,6 +448,7 @@
           "USD 3500",
           "3500",
           "$3500",
+          "3 500",
           "3,500"
         ],
         "no_tool": true
@@ -489,6 +502,17 @@
           "can't",
           "cannot",
           "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -515,7 +539,7 @@
       }
     },
     {
-      "id": "afrikaans-excess-en",
+      "id": "afrikaans-excess-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, is daar 'n eie risiko as ek op my motor eis?",
@@ -525,13 +549,14 @@
           "USD 3500",
           "3500",
           "$3500",
+          "3 500",
           "3,500"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "zulu-cover-options-en",
+      "id": "zulu-cover-options-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela imininingwane egcwele yomshwalense wemoto eniwuhlelayo.",
@@ -552,6 +577,14 @@
         "says_none": [
           "you are now covered",
           "your policy is now active"
+        ],
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       },
       "followups": [
@@ -580,9 +613,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

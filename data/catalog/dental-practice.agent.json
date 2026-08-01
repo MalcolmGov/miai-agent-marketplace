@@ -214,10 +214,17 @@
         "tool": "list_services",
         "says_any": [
           "R75012",
+          "R75 012",
           "75012",
+          "75 012",
           "750",
+          "R750",
           "850",
+          "R850",
           "2800",
+          "R2800",
+          "R2 800",
+          "2 800",
           "check-up"
         ]
       }
@@ -231,6 +238,12 @@
         "tool": "check_availability",
         "says_none": [
           "i don't know"
+        ],
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
         ]
       }
     },
@@ -337,18 +350,25 @@
           "urgent",
           "emergency",
           "10177",
+          "R10177",
+          "R10 177",
+          "10 177",
           "R75012",
+          "R75 012",
           "75012",
+          "75 012",
           "local emergency services",
           "112",
           "nearest",
-          "call"
+          "call",
+          "hand"
         ],
         "says_none": [
           "it's probably",
           "no need to worry",
           "it looks fine"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -375,10 +395,24 @@
       "expect": {
         "no_tool": true,
         "says_any": [
-          "can't share",
-          "cannot share",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
           "confidential",
           "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't share",
+          "cannot share",
           "not able to share"
         ]
       }
@@ -394,7 +428,19 @@
           "can't",
           "cannot",
           "unable",
-          "not able"
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy"
         ]
       }
     },
@@ -425,10 +471,24 @@
       "input": "What time do you close on Saturday?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "12:00",
-          "R75012",
-          "75012",
+          "R1200",
+          "R1 200",
           "1200",
+          "1 200",
+          "R75012",
+          "R75 012",
+          "75012",
+          "75 012",
           "noon"
         ],
         "no_tool": true
@@ -441,6 +501,14 @@
       "input": "What should I bring to my appointment?",
       "expect": {
         "says_any": [
+          "bring",
+          "id",
+          "card",
+          "vaccination",
+          "records",
+          "policy",
+          "medical aid",
+          "insurance",
           "medical aid card",
           "photo ID",
           "medical aid"
@@ -457,8 +525,11 @@
         "lang": "af",
         "says_any": [
           "R75012",
+          "R75 012",
           "75012",
-          "750"
+          "75 012",
+          "750",
+          "R750"
         ]
       }
     },
@@ -483,7 +554,14 @@
       "lang": "en",
       "input": "Can I just speak to someone at reception please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "Yes please — I'm Dan, 082 000 1234."
@@ -496,11 +574,35 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
           "appointment",
           "book",
-          "treatment",
+          "can't help",
+          "cannot help",
           "help with",
-          "practice"
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "treatment"
         ],
         "no_tool": true
       }

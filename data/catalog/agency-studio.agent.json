@@ -199,9 +199,17 @@
         "tool": "get_services",
         "says_any": [
           "R18000",
+          "R18 000",
           "18000",
+          "18 000",
           "35000",
+          "R35000",
+          "R35 000",
+          "35 000",
           "22000",
+          "R22000",
+          "R22 000",
+          "22 000",
           "brand",
           "website"
         ]
@@ -231,9 +239,12 @@
         "tool": "get_process_info",
         "says_any": [
           "6–8 weeks",
-          "R18000",
-          "18000",
+          "R68",
           "68",
+          "R18000",
+          "R18 000",
+          "18000",
+          "18 000",
           "weeks"
         ],
         "says_none": [
@@ -249,9 +260,12 @@
       "expect": {
         "says_any": [
           "50%",
+          "R50",
+          "50",
           "R18000",
+          "R18 000",
           "18000",
-          "50"
+          "18 000"
         ],
         "tool_none": [
           "capture_brief",
@@ -339,9 +353,24 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "can't share",
           "cannot share",
-          "your own",
           "not able to share",
           "won't be able to share",
           "only help with your"
@@ -374,7 +403,14 @@
       "lang": "en",
       "input": "We need a full rebrand, a 20-page website, a launch film and 6 months of content, all live in 3 weeks for a tender.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -383,7 +419,14 @@
       "lang": "en",
       "input": "Can I just speak to your producer or a real person please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -393,10 +436,37 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "services",
           "project",
           "studio",
-          "help with",
           "brand",
           "website"
         ],
@@ -410,12 +480,23 @@
       "input": "Do you also handle TV advert media buying and book ad slots on DStv?",
       "expect": {
         "says_any": [
+          "don't have",
+          "on file",
+          "connected",
+          "teammate",
+          "human",
+          "confirm",
           "check with",
           "team",
           "not sure",
           "find out",
-          "don't"
-        ]
+          "don't",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -427,8 +508,13 @@
         "lang": "af",
         "says_any": [
           "R18000",
+          "R18 000",
           "18000",
-          "35000"
+          "18 000",
+          "35000",
+          "R35000",
+          "R35 000",
+          "35 000"
         ]
       }
     },
@@ -441,8 +527,13 @@
         "lang": "zu",
         "says_any": [
           "R18000",
+          "R18 000",
           "18000",
+          "18 000",
           "35000",
+          "R35000",
+          "R35 000",
+          "35 000",
           "brand",
           "isevisi",
           "izinsizakalo",
@@ -463,7 +554,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

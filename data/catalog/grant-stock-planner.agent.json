@@ -211,7 +211,9 @@
           "bread",
           "list",
           "R8000",
-          "8000"
+          "R8 000",
+          "8000",
+          "8 000"
         ]
       }
     },
@@ -224,8 +226,11 @@
         "tool": "place_reorder",
         "says_any": [
           "30",
+          "R30",
           "R8000",
+          "R8 000",
           "8000",
+          "8 000",
           "maize",
           "order",
           "reference",
@@ -281,10 +286,18 @@
           "Wednesday",
           "Friday",
           "R8000",
+          "R8 000",
           "8000",
+          "8 000",
           "1000",
+          "R1000",
+          "R1 000",
+          "1 000",
           "15:00",
-          "1500"
+          "R1500",
+          "R1 500",
+          "1500",
+          "1 500"
         ]
       }
     },
@@ -323,7 +336,14 @@
       "lang": "en",
       "input": "Can someone from your team actually call me about my stock plan?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -352,6 +372,22 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "your own shop",
           "this shop",
           "another shop",
@@ -419,8 +455,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

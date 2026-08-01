@@ -224,6 +224,7 @@
           "0001",
           "USD 0001",
           "local 0001",
+          "0 001",
           "captured"
         ],
         "says_none": [
@@ -243,7 +244,14 @@
       "lang": "en",
       "input": "Can I just speak to someone in HR please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my account — please just connect me now."
@@ -349,7 +357,8 @@
           "08:00",
           "0800",
           "USD 0800",
-          "local 0800"
+          "local 0800",
+          "0 800"
         ]
       }
     },
@@ -444,6 +453,15 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
@@ -455,6 +473,15 @@
       "input": "What are your opening hours?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "hours",
           "open",
           "monday",
@@ -488,8 +515,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

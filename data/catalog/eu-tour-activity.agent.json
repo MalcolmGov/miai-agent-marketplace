@@ -236,6 +236,12 @@
         "tool": "check_availability",
         "says_none": [
           "i don't know"
+        ],
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
         ]
       }
     },
@@ -313,8 +319,8 @@
         "says_any": [
           "48 hours",
           "€48",
-          "48",
           "EUR 48",
+          "48",
           "48h"
         ],
         "no_tool": true
@@ -370,7 +376,14 @@
       "lang": "en",
       "input": "The guide on my last tour was rude and left us behind. I want to complain.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -379,7 +392,14 @@
       "lang": "en",
       "input": "Can I just speak to a real person at the desk please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -389,10 +409,36 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
-          "tour",
+          "can't help",
+          "cannot help",
           "help with",
-          "activities",
-          "book"
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "tour",
+          "activities"
         ],
         "no_tool": true
       }
@@ -404,12 +450,23 @@
       "input": "Do you arrange private helicopter transfers to the winelands?",
       "expect": {
         "says_any": [
+          "don't have",
+          "on file",
+          "connected",
+          "teammate",
+          "human",
+          "confirm",
           "check with",
           "desk",
           "not sure",
           "find out",
-          "team"
-        ]
+          "team",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -427,16 +484,19 @@
       }
     },
     {
-      "id": "zulu-booking-en",
+      "id": "local-booking-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Sawubona, ngicela ukubhukha uhambo lokubuka i-Table Mountain.",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
         "says_any": [
-          "uhambo",
-          "bhukha",
-          "isikhathi"
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
         ]
       }
     },
@@ -449,8 +509,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

@@ -75,6 +75,191 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       note: "Answer from the knowledge base policy sections for this topic.",
       topic: args.topic ?? args.name ?? "general",
     };
+  if (n.includes("payslip"))
+    return {
+      ok: true,
+      found: true,
+      period: "2026-07",
+      employee: args.employee_id ?? "EMP-2048",
+      gross: "24 000",
+      net: "18 060",
+      paye: "3 900",
+      deductions: { paye: "3 900", uif: "240", provident_fund: "1 800" },
+      pay_date: "25th",
+      source: "sandbox_stub",
+    };
+  if (n.includes("leave_balance") || (n.includes("leave") && n.includes("balance")))
+    return {
+      ok: true,
+      annual: "14.5",
+      sick: "12",
+      family: "3",
+      source: "sandbox_stub",
+    };
+  if (n.includes("levy"))
+    return {
+      ok: true,
+      due_day: "1st",
+      schedule: [
+        { unit_type: "1-bedroom", amount: "1450" },
+        { unit_type: "2-bedroom", amount: "1980" },
+        { unit_type: "3-bedroom", amount: "2650" },
+      ],
+      special_levy: "USD 500/month per unit until December 2026 (roof refurbishment)",
+      source: "sandbox_stub",
+    };
+  if (n.includes("access_rules") || n.endsWith("_access") || n === "get_access")
+    return {
+      ok: true,
+      visitor_bays: 6,
+      max_stay_hours: 24,
+      topics: ["visitor", "parking", "gate", "pets", "noise"],
+      source: "sandbox_stub",
+    };
+  if (n.includes("po_status") || n.includes("purchase_order"))
+    return {
+      ok: true,
+      po_number: args.po_number ?? args.order_id ?? "PO-10432",
+      supplier: "Bosveld Office Supplies",
+      amount: "18 450",
+      status: "approved, awaiting delivery",
+      expected_delivery: "2 Aug",
+      source: "sandbox_stub",
+    };
+  if (n.includes("treatment_info") || n.includes("get_treatment"))
+    return {
+      ok: true,
+      note: "Prefer treatment details and prices from the knowledge base.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("prep_instruction"))
+    return {
+      ok: true,
+      instructions: "Follow fasting rules; bring ID and medical aid card.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("amenity"))
+    return {
+      ok: true,
+      note: "Answer amenity/check-in/breakfast/parking from knowledge.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("list_courses") || n.includes("match_course"))
+    return {
+      ok: true,
+      courses: ["IT Systems", "Software Development", "Business Admin"],
+      source: "sandbox_stub",
+    };
+  if (n.includes("requirement"))
+    return {
+      ok: true,
+      note: "Relay requirements from knowledge / openings.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("deadline"))
+    return {
+      ok: true,
+      note: "Relay deadlines from knowledge.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("track") || n.includes("consignment") || n.includes("waybill"))
+    return {
+      ok: true,
+      status: "in_transit",
+      eta: "tomorrow",
+      waybill: args.waybill ?? args.tracking_number ?? "WB-1001",
+      source: "sandbox_stub",
+    };
+  if (n.includes("statement"))
+    return {
+      ok: true,
+      balance: "45210",
+      currency: "local",
+      source: "sandbox_stub",
+    };
+  if (n.includes("outage"))
+    return {
+      ok: true,
+      status: "known_outage",
+      eta_restore: "within 4 hours",
+      source: "sandbox_stub",
+    };
+  if (n.includes("stock") || n.includes("inventory"))
+    return {
+      ok: true,
+      in_stock: true,
+      qty: 12,
+      source: "sandbox_stub",
+    };
+  if (n.includes("product_info") || n.includes("get_product"))
+    return {
+      ok: true,
+      note: "Relay product details from knowledge.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("log_") || n.includes("maintenance") || n.includes("exception"))
+    return { ok: true, reference: "REF-1001", status: "logged", ...args };
+  if (n.includes("get_plans") || n.includes("list_plans") || n === "get_plans")
+    return {
+      ok: true,
+      plans: [
+        { name: "Basic", price: "399" },
+        { name: "Premium", price: "699" },
+        { name: "12-month", price: "499" },
+      ],
+      source: "sandbox_stub",
+    };
+  if (n.includes("class_schedule"))
+    return {
+      ok: true,
+      classes: ["Spin 06:30", "HIIT 18:00", "Yoga 19:00"],
+      source: "sandbox_stub",
+    };
+  if (n.includes("freeze") || n.includes("cancel"))
+    return { ok: true, reference: "REF-1001", status: "logged", ...args };
+  if (n.includes("onboarding") || n.includes("supplier"))
+    return { ok: true, reference: "ONB-1001", status: "started", case: "onboarding", ...args };
+  if (n.includes("procurement_policy"))
+    return {
+      ok: true,
+      note: "Answer quote thresholds and approval rules from knowledge.",
+      source: "sandbox_stub",
+    };
+  if (n.includes("catalogue") || n.includes("list_catalogue"))
+    return {
+      ok: true,
+      items: ["Airtime", "Data", "Gaming", "Gift cards"],
+      brands: ["MTN", "Vodacom", "Steam", "Google Play"],
+      source: "sandbox_stub",
+    };
+  if (n.includes("purchase_voucher") || n.includes("purchase"))
+    return { ok: true, reference: "VAS-1001", status: "purchased", delivery: "sms_email", ...args };
+  if (n.includes("check_price") || n.includes("get_price"))
+    return { ok: true, price: "25", currency: "local", item: args.item ?? args.query, source: "sandbox_stub" };
+  if (n.includes("record_sale"))
+    return { ok: true, reference: "SALE-1001", status: "recorded", ...args };
+  if (n.includes("credit_book") || n.includes("credit"))
+    return { ok: true, reference: "CR-1001", status: "logged", customer: "Sipho", amount: "50", ...args };
+  if (n.includes("reorder") || n.includes("place_reorder"))
+    return { ok: true, reference: "RO-1001", status: "logged", ...args };
+  if (n.includes("take_message"))
+    return { ok: true, reference: "MSG-1001", status: "taken", ...args };
+  if (n.includes("route_to_department") || n.includes("route"))
+    return { ok: true, department: args.department ?? "general", routed: true };
+  if (n.includes("tier") || n.includes("points_balance") || n.includes("loyalty"))
+    return {
+      ok: true,
+      points: 1200,
+      tier: "Silver",
+      expiry_months: 24,
+      source: "sandbox_stub",
+    };
+  if (n.includes("deadline"))
+    return { ok: true, note: "Relay deadlines from knowledge.", source: "sandbox_stub" };
+  if (n.includes("document"))
+    return { ok: true, note: "Relay required documents from knowledge.", source: "sandbox_stub" };
+  if (n.includes("callback"))
+    return { ok: true, reference: "CB-1001", status: "booked", ...args };
   return { ok: true, reference: "REF-0001", echo: args };
 }
 

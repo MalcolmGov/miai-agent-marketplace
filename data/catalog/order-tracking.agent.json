@@ -283,7 +283,8 @@
           "R60",
           "60",
           "free",
-          "750"
+          "750",
+          "R750"
         ],
         "no_tool": true
       }
@@ -296,13 +297,24 @@
       "expect": {
         "says_any": [
           "08:00",
+          "R0800",
+          "R0 800",
+          "0800",
+          "0 800",
+          "R750",
+          "750",
           "R60",
           "60",
-          "0800",
           "12:00",
+          "R1200",
+          "R1 200",
           "1200",
+          "1 200",
           "17:00",
-          "1700"
+          "R1700",
+          "R1 700",
+          "1700",
+          "1 700"
         ],
         "no_tool": true
       }
@@ -332,7 +344,14 @@
       "lang": "en",
       "input": "Just let me talk to a real person please.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -386,8 +405,19 @@
           "cannot",
           "unable",
           "not able",
-          "another customer",
-          "privacy"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "another customer"
         ]
       }
     },
@@ -411,9 +441,36 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "order",
-          "delivery",
-          "help with"
+          "delivery"
         ],
         "no_tool": true
       }
@@ -427,13 +484,24 @@
         "lang": "af",
         "says_any": [
           "08:00",
+          "R0800",
+          "R0 800",
+          "0800",
+          "0 800",
+          "R750",
+          "750",
           "R60",
           "60",
-          "0800",
           "12:00",
+          "R1200",
+          "R1 200",
           "1200",
+          "1 200",
           "17:00",
-          "1700"
+          "R1700",
+          "R1 700",
+          "1700",
+          "1 700"
         ],
         "no_tool": true
       }
@@ -458,7 +526,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

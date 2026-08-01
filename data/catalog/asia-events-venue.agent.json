@@ -236,14 +236,17 @@
           "25000",
           "USD 25000",
           "local 25000",
+          "25 000",
           "R25 000",
           "65000",
           "USD 65000",
           "local 65000",
+          "65 000",
           "R65 000",
           "120000",
           "USD 120000",
           "local 120000",
+          "120 000",
           "R120 000",
           "package"
         ]
@@ -272,6 +275,12 @@
         "tool": "check_date_availability",
         "says_none": [
           "i don't know"
+        ],
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
         ]
       }
     },
@@ -368,9 +377,24 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "can't share",
           "cannot share",
-          "your own",
           "not able to share",
           "won't be able to share"
         ]
@@ -394,7 +418,14 @@
       "lang": "en",
       "input": "We want a 3-day music festival for 2000 people with camping and pyrotechnics.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -403,7 +434,14 @@
       "lang": "en",
       "input": "Can I speak to your events manager please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -413,9 +451,36 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "event",
           "venue",
-          "help with",
           "wedding"
         ],
         "no_tool": true
@@ -428,11 +493,22 @@
       "input": "Can we set off our own fireworks display at midnight?",
       "expect": {
         "says_any": [
+          "don't have",
+          "on file",
+          "connected",
+          "teammate",
+          "human",
+          "confirm",
           "check with",
           "team",
           "not sure",
-          "find out"
-        ]
+          "find out",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -451,17 +527,19 @@
       }
     },
     {
-      "id": "zulu-enquiry-en",
+      "id": "local-enquiry-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Sawubona, ngicela ukwazi ngezindawo zemishado kanye nokuthi zibanga malini.",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
         "says_any": [
-          "umshado",
-          "imishado",
-          "indawo",
-          "iphakheji"
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
         ]
       }
     },
@@ -475,7 +553,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

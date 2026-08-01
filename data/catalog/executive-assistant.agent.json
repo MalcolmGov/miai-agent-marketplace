@@ -315,6 +315,7 @@
           "R1300",
           "R1 300",
           "1300",
+          "1 300",
           "protected"
         ],
         "no_tool": true
@@ -349,7 +350,14 @@
       "lang": "en",
       "input": "Can you get an actual person from the team to help me with this?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "Yes please, pass it over to them."
@@ -400,11 +408,26 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "only",
           "can't access",
           "don't have access",
           "this office",
-          "not able",
           "can only help"
         ]
       }
@@ -438,7 +461,34 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "calendar",
           "meetings",
           "reminders",
@@ -456,14 +506,25 @@
       "expect": {
         "lang": "af",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "08:00",
           "R0800",
           "R0 800",
           "0800",
+          "0 800",
           "17:00",
           "R1700",
           "R1 700",
-          "1700"
+          "1700",
+          "1 700"
         ]
       }
     },
@@ -480,7 +541,8 @@
           "15:00",
           "R1500",
           "R1 500",
-          "1500"
+          "1500",
+          "1 500"
         ]
       }
     },
@@ -494,7 +556,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

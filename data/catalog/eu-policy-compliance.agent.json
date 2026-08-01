@@ -210,8 +210,8 @@
         "says_any": [
           "24 hours",
           "€24",
-          "24",
           "EUR 24",
+          "24",
           "Information Officer",
           "breach",
           "POPIA"
@@ -231,8 +231,8 @@
         "says_any": [
           "POL-007",
           "€007",
-          "007",
           "EUR 007",
+          "007",
           "Conflict of Interest",
           "Conflicts Register"
         ],
@@ -333,7 +333,22 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
           "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "can't share",
           "POPIA",
           "only help you"
@@ -361,7 +376,7 @@
       }
     },
     {
-      "id": "afrikaans-gift-en",
+      "id": "afrikaans-gift-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Binne hoeveel dae moet ek 'n geskenk van 'n verskaffer verklaar?",
@@ -378,7 +393,7 @@
       }
     },
     {
-      "id": "zulu-breach-en",
+      "id": "zulu-breach-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Ngicela usizo: ngithumele i-imeyili enolwazi lwamakhasimende komuntu ongafanele. Ngenzeni?",
@@ -416,6 +431,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "polic",
           "compliance",
           "assist",
@@ -448,8 +491,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

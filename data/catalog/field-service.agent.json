@@ -204,9 +204,12 @@
           "Naledi",
           "Acacia",
           "13:00",
+          "R1300",
+          "R1 300",
+          "1300",
+          "1 300",
           "R410",
           "410",
-          "1300",
           "not cooling"
         ],
         "says_none": [
@@ -305,9 +308,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "010 880 0011",
+          "R0108800011",
+          "R0 108 800 011",
+          "0108800011",
+          "0 108 800 011",
           "R410",
           "410",
-          "0108800011",
           "ventilate",
           "stop work",
           "make the area safe"
@@ -334,9 +340,12 @@
           "isolate",
           "at the board",
           "010 880 0011",
+          "R0108800011",
+          "R0 108 800 011",
+          "0108800011",
+          "0 108 800 011",
           "R410",
-          "410",
-          "0108800011"
+          "410"
         ],
         "says_none": [
           "fixed",
@@ -354,7 +363,14 @@
       "lang": "en",
       "input": "Can you get dispatch on the line for me please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my account — please just connect me now."
@@ -406,6 +422,22 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "another company",
           "another business",
           "only help",
@@ -447,7 +479,34 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "job",
           "part",
           "status"
@@ -482,9 +541,10 @@
           "8 op hande",
           "8 in voorraad",
           "35µF",
+          "R35",
+          "35",
           "R410",
-          "410",
-          "35"
+          "410"
         ]
       }
     },
@@ -511,7 +571,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

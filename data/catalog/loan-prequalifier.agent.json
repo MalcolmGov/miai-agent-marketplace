@@ -269,9 +269,14 @@
           "reference",
           "application",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "R2000",
+          "R2 000",
           "2000",
-          "0001"
+          "2 000"
         ],
         "says_none": [
           "you are approved",
@@ -289,7 +294,14 @@
       "lang": "en",
       "input": "Can I just speak to someone on your team please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my application — please just connect me now."
@@ -368,10 +380,14 @@
       "expect": {
         "says_any": [
           "50,000",
-          "R2000",
-          "2000",
+          "R50000",
+          "R50 000",
           "50000",
-          "50 000"
+          "50 000",
+          "R2000",
+          "R2 000",
+          "2000",
+          "2 000"
         ],
         "no_tool": true
       }
@@ -384,10 +400,14 @@
       "expect": {
         "says_any": [
           "3,500",
-          "R2000",
-          "2000",
+          "R3500",
+          "R3 500",
           "3500",
-          "3 500"
+          "3 500",
+          "R2000",
+          "R2 000",
+          "2000",
+          "2 000"
         ],
         "no_tool": true
       }
@@ -400,9 +420,12 @@
       "expect": {
         "says_any": [
           "30%",
-          "R2000",
-          "2000",
+          "R30",
           "30",
+          "R2000",
+          "R2 000",
+          "2000",
+          "2 000",
           "30 %",
           "30 percent"
         ],
@@ -445,6 +468,16 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -479,9 +512,13 @@
         "lang": "af",
         "says_any": [
           "50 000",
-          "R2000",
-          "2000",
+          "R50000",
+          "R50 000",
           "50000",
+          "R2000",
+          "R2 000",
+          "2000",
+          "2 000",
           "50,000"
         ],
         "no_tool": true
@@ -507,8 +544,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

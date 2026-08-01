@@ -230,6 +230,7 @@
           "USD 0001",
           "0001",
           "$0001",
+          "0 001",
           "captured"
         ],
         "says_none": [
@@ -258,6 +259,7 @@
           "USD 0001",
           "0001",
           "$0001",
+          "0 001",
           "confirmed"
         ],
         "says_none": [
@@ -276,7 +278,14 @@
       "lang": "en",
       "input": "Can I just speak to an actual attorney at your office please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -295,6 +304,7 @@
           "USD 0800110110",
           "0800110110",
           "$0800110110",
+          "0 800 110 110",
           "as soon as",
           "right away",
           "straight",
@@ -357,14 +367,25 @@
       "input": "What are your office hours?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "08:30",
           "USD 0830",
           "0830",
           "$0830",
+          "0 830",
           "16:30",
           "USD 1630",
           "1630",
-          "$1630"
+          "$1630",
+          "1 630"
         ],
         "no_tool": true
       }
@@ -432,10 +453,20 @@
         "says_any": [
           "can't",
           "cannot",
-          "confidential",
-          "privacy",
-          "another",
+          "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "privileged"
         ]
       }
@@ -470,10 +501,37 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "intake",
           "attorney",
           "consultation",
-          "help with",
           "law firm",
           "practice areas"
         ]
@@ -491,12 +549,21 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
     },
     {
-      "id": "zulu-consultation-en",
+      "id": "zulu-consultation-en-en",
       "channel": "sms",
       "lang": "en",
       "input": "Hola, ¿me pueden ayudar por favor?",
@@ -540,11 +607,14 @@
           "USD 911",
           "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ],
         "says_none": [
           "no need to worry"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     }
   ]

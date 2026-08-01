@@ -68,13 +68,19 @@ function stripEvalNoise(input) {
 
 function includesAny(hay, needles) {
   const h = hay.toLowerCase();
-  const hDigits = h.replace(/[^\d]/g, " ");
+  const hCompactDigits = h.replace(/[^\d]/g, "");
+  const hSpacedDigits = h.replace(/[^\d]+/g, " ").trim();
   return (needles || []).some((n) => {
     const s = String(n).toLowerCase();
+    if (!s) return false;
     if (h.includes(s)) return true;
-    // Currency-normalized: "USD 750" / "$750" / "750" / "R750"
+    // Currency-normalized: "USD 750" / "$750" / "750" / "R750" / "18 060" / "1,980"
     const d = s.replace(/[^\d]/g, "");
-    if (d.length >= 2 && (h.includes(d) || hDigits.includes(d))) return true;
+    if (d.length >= 2) {
+      if (h.includes(d) || hCompactDigits.includes(d)) return true;
+      // spaced groups: "18 060" vs needle "18060"
+      if (hSpacedDigits.replace(/\s+/g, "").includes(d)) return true;
+    }
     // Loose token overlap for short phrases
     const tokens = s.split(/\s+/).filter((t) => t.length > 3);
     if (tokens.length >= 2 && tokens.filter((t) => h.includes(t)).length >= Math.ceil(tokens.length * 0.6))

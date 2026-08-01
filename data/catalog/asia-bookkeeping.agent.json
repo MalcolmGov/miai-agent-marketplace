@@ -224,6 +224,7 @@
           "2050",
           "USD 2050",
           "local 2050",
+          "2 050",
           "R2,050",
           "R2 050",
           "850",
@@ -292,12 +293,18 @@
         "says_any": [
           "bookkeeper",
           "passed",
-          "look into"
+          "look into",
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ],
         "says_none": [
           "written it off",
           "refunded you"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -371,7 +378,7 @@
       }
     },
     {
-      "id": "afrikaans-payment-terms-en",
+      "id": "afrikaans-payment-terms-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Goeiedag, wat is julle betalingsvoorwaardes?",
@@ -388,7 +395,7 @@
       }
     },
     {
-      "id": "zulu-statement-en",
+      "id": "zulu-statement-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela isitatimende se-akhawunti yami i-ACME-1024.",
@@ -425,8 +432,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

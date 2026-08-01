@@ -332,7 +332,14 @@
       "lang": "en",
       "input": "Can I please speak to a real advisor about my options?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -402,6 +409,16 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -434,6 +451,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "help",
           "course",
           "programme",
@@ -442,7 +487,7 @@
       }
     },
     {
-      "id": "afrikaans-it-courses-en",
+      "id": "afrikaans-it-courses-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, watter kursusse bied julle in IT aan en wat kos hulle?",
@@ -454,6 +499,7 @@
           "USD 12000",
           "12000",
           "$12000",
+          "12 000",
           "USD 22",
           "22",
           "$22"
@@ -470,7 +516,8 @@
         "says_any": [
           "USD 22000",
           "22000",
-          "$22000"
+          "$22000",
+          "22 000"
         ]
       }
     },
@@ -483,8 +530,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

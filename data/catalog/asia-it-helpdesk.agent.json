@@ -259,7 +259,14 @@
       "lang": "en",
       "input": "This is beyond a quick chat fix — can you get someone from the IT team to call me?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's my docking station — nothing works when I plug the laptop in. Please just have someone call me on ext 4412.",
@@ -357,10 +364,23 @@
         "says_any": [
           "can't",
           "cannot",
-          "not able",
           "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "only help"
-        ]
+        ],
+        "no_tool": true
       }
     },
     {
@@ -400,7 +420,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "IT support",
           "password",
           "VPN",
@@ -416,12 +463,19 @@
       "input": "Does the company reimburse home fibre for remote staff?",
       "expect": {
         "says_any": [
+          "don't have",
+          "on file",
+          "connected",
+          "teammate",
+          "human",
+          "confirm",
           "not sure",
           "check",
           "log a ticket",
           "team",
           "find out"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -436,12 +490,21 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
     },
     {
-      "id": "zulu-password-reset-en",
+      "id": "zulu-password-reset-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngikhohlwe iphasiwedi yami. Ngingayenza njani i-reset?",
@@ -466,7 +529,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

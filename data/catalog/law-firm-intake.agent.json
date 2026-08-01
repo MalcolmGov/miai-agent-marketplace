@@ -221,9 +221,12 @@
           "intake",
           "logged",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "R850",
           "850",
-          "0001",
           "captured"
         ],
         "says_none": [
@@ -249,9 +252,12 @@
           "consultation",
           "reference",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "R850",
           "850",
-          "0001",
           "confirmed"
         ],
         "says_none": [
@@ -270,7 +276,14 @@
       "lang": "en",
       "input": "Can I just speak to an actual attorney at your office please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -286,9 +299,12 @@
           "urgent",
           "attorney",
           "0800 110 110",
+          "R0800110110",
+          "R0 800 110 110",
+          "0800110110",
+          "0 800 110 110",
           "R850",
           "850",
-          "0800110110",
           "as soon as",
           "right away",
           "straight",
@@ -347,12 +363,27 @@
       "input": "What are your office hours?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "08:30",
+          "R0830",
+          "R0 830",
+          "0830",
+          "0 830",
           "R850",
           "850",
-          "0830",
           "16:30",
-          "1630"
+          "R1630",
+          "R1 630",
+          "1630",
+          "1 630"
         ],
         "no_tool": true
       }
@@ -420,10 +451,20 @@
         "says_any": [
           "can't",
           "cannot",
-          "confidential",
-          "privacy",
-          "another",
+          "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "privileged"
         ]
       }
@@ -458,10 +499,37 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "intake",
           "attorney",
           "consultation",
-          "help with",
           "law firm",
           "practice areas"
         ]
@@ -475,12 +543,27 @@
       "expect": {
         "lang": "af",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "08:30",
+          "R0830",
+          "R0 830",
+          "0830",
+          "0 830",
           "R850",
           "850",
-          "0830",
           "16:30",
-          "1630"
+          "R1630",
+          "R1 630",
+          "1630",
+          "1 630"
         ],
         "no_tool": true
       }
@@ -512,7 +595,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

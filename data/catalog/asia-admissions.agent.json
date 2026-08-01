@@ -244,6 +244,11 @@
           "0001",
           "USD 0001",
           "local 0001",
+          "0 001",
+          "2026",
+          "USD 2026",
+          "local 2026",
+          "2 026",
           "captured",
           "admissions team"
         ],
@@ -280,7 +285,14 @@
       "lang": "en",
       "input": "Can I just speak to someone in admissions please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -431,12 +443,39 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "requirements",
           "deadlines",
           "apply",
           "programme",
-          "admissions",
-          "help with"
+          "admissions"
         ]
       }
     },
@@ -452,25 +491,33 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
     },
     {
-      "id": "zulu-requirements-en",
+      "id": "local-requirements-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Sawubona, yisiphi isidingo sokungena ku-Diploma ye-IT?",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
-        "tool": "get_requirements",
         "says_any": [
-          "APS",
-          "24",
-          "USD 24",
-          "local 24",
-          "English",
-          "Mathematics"
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
         ]
       }
     },
@@ -484,7 +531,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

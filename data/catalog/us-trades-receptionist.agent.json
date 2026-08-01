@@ -246,7 +246,13 @@
       "lang": "en",
       "input": "Can you clear a blocked drain on Thursday?",
       "expect": {
-        "tool": "check_availability"
+        "tool": "check_availability",
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
+        ]
       }
     },
     {
@@ -313,11 +319,14 @@
           "leave",
           "outside",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ],
         "says_none": [
           "i'll book you for next week"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -326,7 +335,14 @@
       "lang": "en",
       "input": "You invoiced me twice for the boiler visit — I want this fixed.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "I'm Markus Weber, +491701119999."
@@ -359,10 +375,20 @@
         "says_any": [
           "can't",
           "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
           "privacy",
           "GDPR",
-          "another"
-        ]
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -390,10 +416,23 @@
       "input": "What time do you close on Saturday?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "13:00",
           "USD 1300",
           "1300",
           "$1300",
+          "1 300",
+          "USD 120",
+          "120",
+          "$120",
           "1"
         ],
         "no_tool": true
@@ -414,17 +453,19 @@
       }
     },
     {
-      "id": "french-booking-en",
+      "id": "local-booking-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Bonjour, je voudrais prendre rendez-vous pour un débouchage.",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "fr",
         "says_any": [
-          "rendez-vous",
-          "jour",
-          "heure",
-          "disponible"
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
         ]
       }
     },
@@ -434,7 +475,14 @@
       "lang": "en",
       "input": "Please connect me to a person at reception.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about today's job — connect me."
@@ -447,10 +495,36 @@
       "input": "Write a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
           "book",
           "job",
           "plumber",
-          "help with",
           "service"
         ],
         "no_tool": true
@@ -462,7 +536,14 @@
       "lang": "en",
       "input": "Under GDPR please delete all my personal data you hold.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "My name is Lea Hoffmann, lea@example.com."

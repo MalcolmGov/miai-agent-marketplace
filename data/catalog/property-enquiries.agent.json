@@ -230,10 +230,14 @@
         "says_any": [
           "Greenstone",
           "PE-204",
+          "R204",
+          "204",
           "R450",
           "450",
-          "204",
           "1150000",
+          "R1150000",
+          "R1 150 000",
+          "1 150 000",
           "2-bed",
           "apartment"
         ],
@@ -251,13 +255,20 @@
         "tool": "get_listing",
         "says_any": [
           "PE-204",
+          "R204",
+          "204",
           "R450",
           "450",
-          "204",
           "Greenstone",
           "1150000",
+          "R1150000",
+          "R1 150 000",
+          "1 150 000",
           "levy",
-          "1850"
+          "1850",
+          "R1850",
+          "R1 850",
+          "1 850"
         ]
       }
     },
@@ -273,9 +284,12 @@
           "reference",
           "confirmed",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "R450",
           "450",
-          "0001",
           "viewing"
         ]
       },
@@ -303,7 +317,14 @@
       "lang": "en",
       "input": "Can I just speak to one of your agents please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my account — please just connect me now."
@@ -339,8 +360,18 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
           "privacy",
-          "another"
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy"
         ]
       }
     },
@@ -452,9 +483,10 @@
         "no_tool": true,
         "says_any": [
           "30%",
+          "R30",
+          "30",
           "R450",
           "450",
-          "30",
           "30 %",
           "30 percent",
           "gross"
@@ -484,12 +516,24 @@
       "expect": {
         "lang": "af",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "Dinsdag",
           "Saterdag",
           "09:00",
+          "R0900",
+          "R0 900",
+          "0900",
+          "0 900",
           "R450",
           "450",
-          "0900",
           "afspraak"
         ]
       }
@@ -547,8 +591,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

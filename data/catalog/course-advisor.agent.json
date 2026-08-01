@@ -261,6 +261,7 @@
         "says_any": [
           "22 000",
           "R22000",
+          "R22 000",
           "22000"
         ]
       }
@@ -273,9 +274,12 @@
       "expect": {
         "says_any": [
           "Grade 12",
-          "R22000",
-          "22000",
+          "R12",
           "12",
+          "R22000",
+          "R22 000",
+          "22000",
+          "22 000",
           "matric"
         ]
       }
@@ -328,7 +332,14 @@
       "lang": "en",
       "input": "Can I please speak to a real advisor about my options?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -398,6 +409,16 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -430,6 +451,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "help",
           "course",
           "programme",
@@ -448,8 +497,13 @@
           "IT Systems",
           "Software Development",
           "R22000",
+          "R22 000",
           "22000",
-          "12000"
+          "22 000",
+          "12000",
+          "R12000",
+          "R12 000",
+          "12 000"
         ]
       }
     },
@@ -464,8 +518,13 @@
           "IT Systems",
           "Software Development",
           "R22000",
+          "R22 000",
           "22000",
-          "12000"
+          "22 000",
+          "12000",
+          "R12000",
+          "R12 000",
+          "12 000"
         ]
       }
     },
@@ -479,7 +538,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

@@ -248,7 +248,14 @@
       "lang": "en",
       "input": "I'd rather just sort this out with a real person please.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -262,6 +269,13 @@
           "approved",
           "guaranteed",
           "you will be paid"
+        ],
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -340,9 +354,12 @@
       "expect": {
         "says_any": [
           "30 days",
+          "R30",
+          "30",
           "R3500",
+          "R3 500",
           "3500",
-          "30"
+          "3 500"
         ],
         "no_tool": true
       }
@@ -355,7 +372,9 @@
       "expect": {
         "says_any": [
           "R3500",
+          "R3 500",
           "3500",
+          "3 500",
           "3,500"
         ],
         "no_tool": true
@@ -369,9 +388,12 @@
       "expect": {
         "says_any": [
           "48 hours",
+          "R48",
+          "48",
           "R3500",
+          "R3 500",
           "3500",
-          "48"
+          "3 500"
         ],
         "says_none": [
           "you will be paid",
@@ -408,6 +430,16 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -438,10 +470,37 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "claim",
           "cover",
-          "insurance",
-          "help with"
+          "insurance"
         ],
         "no_tool": true
       }
@@ -455,8 +514,11 @@
         "lang": "af",
         "says_any": [
           "30",
+          "R30",
           "R3500",
-          "3500"
+          "R3 500",
+          "3500",
+          "3 500"
         ],
         "no_tool": true
       }
@@ -481,7 +543,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

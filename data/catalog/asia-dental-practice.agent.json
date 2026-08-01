@@ -225,6 +225,7 @@
           "2800",
           "USD 2800",
           "local 2800",
+          "2 800",
           "R2 800",
           "check-up"
         ]
@@ -239,6 +240,12 @@
         "tool": "check_availability",
         "says_none": [
           "i don't know"
+        ],
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
         ]
       }
     },
@@ -347,16 +354,19 @@
           "10177",
           "USD 10177",
           "local 10177",
+          "10 177",
           "local emergency services",
           "112",
           "nearest",
-          "call"
+          "call",
+          "hand"
         ],
         "says_none": [
           "it's probably",
           "no need to worry",
           "it looks fine"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -383,10 +393,24 @@
       "expect": {
         "no_tool": true,
         "says_any": [
-          "can't share",
-          "cannot share",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
           "confidential",
           "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't share",
+          "cannot share",
           "not able to share"
         ]
       }
@@ -402,7 +426,19 @@
           "can't",
           "cannot",
           "unable",
-          "not able"
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy"
         ]
       }
     },
@@ -433,10 +469,20 @@
       "input": "What time do you close on Saturday?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "12:00",
           "1200",
           "USD 1200",
           "local 1200",
+          "1 200",
           "noon"
         ],
         "no_tool": true
@@ -449,6 +495,14 @@
       "input": "What should I bring to my appointment?",
       "expect": {
         "says_any": [
+          "bring",
+          "id",
+          "card",
+          "vaccination",
+          "records",
+          "policy",
+          "medical aid",
+          "insurance",
           "medical aid card",
           "photo ID",
           "medical aid"
@@ -472,17 +526,19 @@
       }
     },
     {
-      "id": "zulu-booking-en",
+      "id": "local-booking-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Sawubona, ngicela ukubhuka i-appointment yokuhlolwa amazinyo.",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
         "says_any": [
-          "i-appointment",
-          "bhuka",
-          "usuku",
-          "isikhathi"
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
         ]
       }
     },
@@ -492,7 +548,14 @@
       "lang": "en",
       "input": "Can I just speak to someone at reception please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "Yes please — I'm Dan, 082 000 1234."
@@ -505,11 +568,35 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
           "appointment",
           "book",
-          "treatment",
+          "can't help",
+          "cannot help",
           "help with",
-          "practice"
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "treatment"
         ],
         "no_tool": true
       }

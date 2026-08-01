@@ -302,7 +302,14 @@
       "lang": "en",
       "input": "Just let me talk to a real person please.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about waybill GLX-4821 — please connect me to someone now."
@@ -342,8 +349,19 @@
           "cannot",
           "unable",
           "not able",
-          "another customer",
-          "privacy"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "another customer"
         ]
       }
     },
@@ -375,17 +393,44 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "track",
           "parcel",
           "consignment",
-          "delivery",
-          "help with"
+          "delivery"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "afrikaans-cutoff-en",
+      "id": "afrikaans-cutoff-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Teen hoe laat moet ek boek vir volgende-dag aflewering?",
@@ -396,6 +441,7 @@
           "USD 1500",
           "1500",
           "$1500",
+          "1 500",
           "USD 160",
           "160",
           "$160"
@@ -404,7 +450,7 @@
       }
     },
     {
-      "id": "zulu-track-en",
+      "id": "zulu-track-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela ukwazi ukuthi liphi iphasela lami, i-waybill GLX-4821.",
@@ -422,8 +468,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

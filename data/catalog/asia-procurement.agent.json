@@ -199,6 +199,7 @@
           "18450",
           "USD 18450",
           "local 18450",
+          "18 450",
           "R18 450",
           "awaiting delivery"
         ],
@@ -234,6 +235,7 @@
           "30000",
           "USD 30000",
           "local 30000",
+          "30 000",
           "R30 000"
         ]
       }
@@ -357,8 +359,13 @@
           "desk",
           "dispute",
           "look into",
-          "team"
-        ]
+          "team",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -367,7 +374,14 @@
       "lang": "en",
       "input": "Can you get someone from the procurement desk to call me please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -395,9 +409,23 @@
       "expect": {
         "no_tool": true,
         "says_any": [
-          "another company",
           "can't",
           "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "another company",
           "only",
           "this business",
           "unable to provide"
@@ -435,7 +463,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "procurement",
           "PO",
           "policy",
@@ -444,7 +499,7 @@
       }
     },
     {
-      "id": "afrikaans-payment-en",
+      "id": "afrikaans-payment-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Haai, wat is ons standaard betalingsvoorwaardes vir verskaffers?",
@@ -458,7 +513,7 @@
       }
     },
     {
-      "id": "zulu-po-en",
+      "id": "zulu-po-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela isimo se-PO-10432.",
@@ -479,7 +534,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

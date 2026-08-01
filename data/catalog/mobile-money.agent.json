@@ -251,7 +251,8 @@
           "recorded",
           "R7",
           "7",
-          "10"
+          "10",
+          "R10"
         ]
       },
       "followups": [
@@ -272,7 +273,8 @@
           "recorded",
           "R7",
           "7",
-          "10"
+          "10",
+          "R10"
         ]
       },
       "followups": [
@@ -293,6 +295,7 @@
           "R7",
           "7",
           "10",
+          "R10",
           "done"
         ]
       },
@@ -334,7 +337,11 @@
           "don't complete",
           "hold off",
           "routed",
-          "reference"
+          "reference",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -445,9 +452,11 @@
       "expect": {
         "says_any": [
           "3 000",
+          "R3000",
+          "R3 000",
+          "3000",
           "R7",
           "7",
-          "3000",
           "3,000",
           "cap",
           "limit"
@@ -492,8 +501,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

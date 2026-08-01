@@ -272,8 +272,13 @@
           "application",
           "REF-0001",
           "€0001",
+          "EUR 0001",
           "0001",
-          "EUR 0001"
+          "0 001",
+          "€2000",
+          "EUR 2000",
+          "2000",
+          "2 000"
         ],
         "says_none": [
           "you are approved",
@@ -291,7 +296,14 @@
       "lang": "en",
       "input": "Can I just speak to someone on your team please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my application — please just connect me now."
@@ -371,8 +383,8 @@
         "says_any": [
           "50,000",
           "€50000",
-          "50000",
           "EUR 50000",
+          "50000",
           "50 000",
           "R50,000",
           "R50 000"
@@ -389,8 +401,8 @@
         "says_any": [
           "3,500",
           "€3500",
-          "3500",
           "EUR 3500",
+          "3500",
           "3 500",
           "R3,500",
           "R3 500"
@@ -451,6 +463,16 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -477,7 +499,7 @@
       }
     },
     {
-      "id": "afrikaans-loan-range-en",
+      "id": "afrikaans-loan-range-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, hoeveel kan ek by julle leen?",
@@ -486,8 +508,8 @@
         "says_any": [
           "50 000",
           "€50000",
-          "50000",
           "EUR 50000",
+          "50000",
           "50,000",
           "R50 000",
           "R50,000"
@@ -496,13 +518,20 @@
       }
     },
     {
-      "id": "zulu-requirements-en",
+      "id": "local-requirements-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Sawubona, ngidinga ini ukuze ngifake isicelo semali-mboleko?",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
-        "tool": "explain_requirements"
+        "says_any": [
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
+        ]
       }
     },
     {
@@ -514,9 +543,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

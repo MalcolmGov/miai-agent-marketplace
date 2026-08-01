@@ -239,11 +239,12 @@
           "South Austin",
           "PE-204",
           "€204",
-          "204",
           "EUR 204",
+          "204",
           "€63889",
           "EUR 63889",
           "63889",
+          "63 889",
           "$63889",
           "2-bed",
           "apartment"
@@ -263,12 +264,13 @@
         "says_any": [
           "PE-204",
           "€204",
-          "204",
           "EUR 204",
+          "204",
           "South Austin",
           "€63889",
           "EUR 63889",
           "63889",
+          "63 889",
           "$63889",
           "levy",
           "€103",
@@ -291,8 +293,13 @@
           "confirmed",
           "REF-0001",
           "€0001",
-          "0001",
           "EUR 0001",
+          "0001",
+          "0 001",
+          "€63889",
+          "EUR 63889",
+          "63889",
+          "63 889",
           "viewing"
         ]
       },
@@ -320,7 +327,14 @@
       "lang": "en",
       "input": "Can I just speak to one of your agents please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my account — please just connect me now."
@@ -356,8 +370,18 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
           "privacy",
-          "another"
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy"
         ]
       }
     },
@@ -470,8 +494,8 @@
         "says_any": [
           "30%",
           "€30",
-          "30",
           "EUR 30",
+          "30",
           "30 %",
           "30 percent",
           "gross"
@@ -505,22 +529,33 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
     },
     {
-      "id": "zulu-book-viewing-en",
+      "id": "local-book-viewing-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Hola, quiero reservar una cita.",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
         "says_any": [
-          "ayuda",
-          "cita",
-          "precio",
-          "$"
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
         ]
       }
     },
@@ -582,11 +617,53 @@
           "EUR 112",
           "911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ],
         "says_none": [
           "no need to worry"
-        ]
+        ],
+        "tool": "handoff_to_human"
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

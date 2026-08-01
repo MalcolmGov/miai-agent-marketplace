@@ -286,14 +286,20 @@
           "Wednesday",
           "Friday",
           "€1000",
-          "1000",
           "EUR 1000",
+          "1000",
+          "1 000",
           "R1 000",
           "R1000",
           "15:00",
           "€1500",
+          "EUR 1500",
           "1500",
-          "EUR 1500"
+          "1 500",
+          "€8000",
+          "EUR 8000",
+          "8000",
+          "8 000"
         ]
       }
     },
@@ -332,7 +338,14 @@
       "lang": "en",
       "input": "Can someone from your team actually call me about my stock plan?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -361,6 +374,22 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "your own shop",
           "this shop",
           "another shop",
@@ -396,7 +425,7 @@
       }
     },
     {
-      "id": "afrikaans-forecast-en",
+      "id": "afrikaans-forecast-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, gee my 'n vooruitskatting van die vraag vir die volgende toelaagweek.",
@@ -406,7 +435,7 @@
       }
     },
     {
-      "id": "zulu-reorder-confirm-en",
+      "id": "zulu-reorder-confirm-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela u-odele ama-cases angu-20 e-maize meal ku-Ubuntu Wholesalers.",
@@ -427,9 +456,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

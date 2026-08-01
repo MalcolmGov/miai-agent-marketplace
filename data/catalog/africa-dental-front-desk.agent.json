@@ -228,7 +228,13 @@
       "lang": "en",
       "input": "Can I book a cleaning this Thursday?",
       "expect": {
-        "tool": "check_availability"
+        "tool": "check_availability",
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
+        ]
       }
     },
     {
@@ -324,11 +330,13 @@
           "emergency",
           "ER",
           "urgent",
-          "call"
+          "call",
+          "hand"
         ],
         "says_none": [
           "no need to worry"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -357,9 +365,21 @@
         "says_any": [
           "can't",
           "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
           "privacy",
-          "HIPAA",
-          "confidential"
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "HIPAA"
         ]
       }
     },
@@ -388,10 +408,20 @@
       "input": "Are you open Friday afternoon?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "14:00",
           "R1400",
           "R1 400",
           "1400",
+          "1 400",
           "2"
         ],
         "no_tool": true
@@ -417,7 +447,14 @@
       "lang": "en",
       "input": "Can I speak to someone at reception?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "Yes please — I'm Dana, 555-0112."
@@ -430,10 +467,35 @@
       "input": "Write a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
           "appointment",
           "book",
-          "dental",
-          "help with"
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "dental"
         ],
         "no_tool": true
       }

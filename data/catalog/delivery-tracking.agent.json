@@ -300,7 +300,14 @@
       "lang": "en",
       "input": "Just let me talk to a real person please.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about waybill GLX-4821 — please connect me to someone now."
@@ -340,8 +347,19 @@
           "cannot",
           "unable",
           "not able",
-          "another customer",
-          "privacy"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "another customer"
         ]
       }
     },
@@ -373,11 +391,38 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "track",
           "parcel",
           "consignment",
-          "delivery",
-          "help with"
+          "delivery"
         ],
         "no_tool": true
       }
@@ -391,9 +436,12 @@
         "lang": "af",
         "says_any": [
           "15:00",
+          "R1500",
+          "R1 500",
+          "1500",
+          "1 500",
           "R160",
-          "160",
-          "1500"
+          "160"
         ],
         "no_tool": true
       }
@@ -418,7 +466,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

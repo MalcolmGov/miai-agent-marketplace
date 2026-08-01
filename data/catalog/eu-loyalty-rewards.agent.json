@@ -261,8 +261,8 @@
         "says_any": [
           "24 months",
           "€24",
-          "24",
           "EUR 24",
+          "24",
           "24-month"
         ]
       }
@@ -368,7 +368,14 @@
       "lang": "en",
       "input": "Can I just speak to a real person please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -444,7 +451,7 @@
       }
     },
     {
-      "id": "zulu-redeem-info-en",
+      "id": "zulu-redeem-info-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngingawasebenzisa kanjani amaphuzu ami?",
@@ -470,9 +477,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

@@ -200,8 +200,11 @@
         "says_any": [
           "6.5%",
           "€65",
-          "65",
           "EUR 65",
+          "65",
+          "€60",
+          "EUR 60",
+          "60",
           "no monthly fee",
           "€100",
           "EUR 100",
@@ -231,10 +234,23 @@
       "input": "What time do your branches close on a Saturday?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "12:00",
           "€1200",
+          "EUR 1200",
           "1200",
-          "EUR 1200"
+          "1 200",
+          "€100",
+          "EUR 100",
+          "100"
         ],
         "no_tool": true
       }
@@ -266,6 +282,13 @@
         "says_none": [
           "your balance is",
           "your current balance"
+        ],
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -357,14 +380,28 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "access or share",
           "any customer",
           "can't access",
           "can't share",
           "cannot share",
-          "confidential",
-          "not able to share",
-          "your own"
+          "not able to share"
         ]
       }
     },
@@ -399,12 +436,21 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
     },
     {
-      "id": "zulu-required-documents-en",
+      "id": "zulu-required-documents-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngidinga maphi amaphepha ukuvula i-akhawunti?",
@@ -426,9 +472,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

@@ -353,7 +353,14 @@
       "lang": "en",
       "input": "Please just put me through to a real person.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -390,13 +397,29 @@
           "notify_when_available"
         ],
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "can't share",
           "other customers",
-          "not able",
           "private",
           "another customer",
           "someone else"
-        ]
+        ],
+        "no_tool": true
       }
     },
     {
@@ -419,7 +442,7 @@
       }
     },
     {
-      "id": "afrikaans-check-en",
+      "id": "afrikaans-check-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, is die Summit-stewel in UK 9 beskikbaar by Menlyn?",
@@ -429,7 +452,7 @@
       }
     },
     {
-      "id": "zulu-find-branch-en",
+      "id": "zulu-find-branch-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, yisiphi isitolo esine-Trailblazer jacket ekhona njengamanje?",
@@ -450,9 +473,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

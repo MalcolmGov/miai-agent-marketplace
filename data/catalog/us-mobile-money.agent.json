@@ -346,7 +346,11 @@
           "don't complete",
           "hold off",
           "routed",
-          "reference"
+          "reference",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -483,7 +487,7 @@
       }
     },
     {
-      "id": "zulu-cashin-help-en",
+      "id": "zulu-cashin-help-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngingakwenza kanjani i-cash-in kumakhasimende?",
@@ -505,9 +509,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

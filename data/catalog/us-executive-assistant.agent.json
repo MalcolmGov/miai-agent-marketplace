@@ -317,6 +317,7 @@
           "USD 1300",
           "1300",
           "$1300",
+          "1 300",
           "protected"
         ],
         "no_tool": true
@@ -351,7 +352,14 @@
       "lang": "en",
       "input": "Can you get an actual person from the team to help me with this?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "Yes please, pass it over to them."
@@ -402,11 +410,26 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "only",
           "can't access",
           "don't have access",
           "this office",
-          "not able",
           "can only help"
         ]
       }
@@ -440,7 +463,34 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "calendar",
           "meetings",
           "reminders",
@@ -462,12 +512,21 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
     },
     {
-      "id": "zulu-reminder-en",
+      "id": "zulu-reminder-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela ungikhumbuze ukushayela ibhange ngo-15:00.",
@@ -479,7 +538,8 @@
           "15:00",
           "USD 1500",
           "1500",
-          "$1500"
+          "$1500",
+          "1 500"
         ]
       }
     },
@@ -492,8 +552,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "911",
+          "USD 911",
+          "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

@@ -202,6 +202,11 @@
           "0800",
           "USD 0800",
           "local 0800",
+          "0 800",
+          "2026",
+          "USD 2026",
+          "local 2026",
+          "2 026",
           "A204",
           "204",
           "USD 204",
@@ -225,10 +230,16 @@
           "0730",
           "USD 0730",
           "local 0730",
+          "0 730",
+          "2026",
+          "USD 2026",
+          "local 2026",
+          "2 026",
           "22:00",
           "2200",
           "USD 2200",
           "local 2200",
+          "2 200",
           "Ndlovu",
           "Central"
         ]
@@ -248,6 +259,11 @@
           "0001",
           "USD 0001",
           "local 0001",
+          "0 001",
+          "2026",
+          "USD 2026",
+          "local 2026",
+          "2 026",
           "request"
         ],
         "says_none": [
@@ -264,7 +280,14 @@
       "lang": "en",
       "input": "Can I just talk to a real person at the helpdesk please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about sorting out my class registration — you can reach me on 082 555 0000."
@@ -384,9 +407,21 @@
         "says_any": [
           "can't",
           "cannot",
-          "only",
+          "unable",
           "not able",
-          "another"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "only"
         ]
       }
     },
@@ -419,10 +454,37 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "timetable",
           "campus service",
-          "services",
-          "help with"
+          "services"
         ]
       }
     },
@@ -443,7 +505,7 @@
       }
     },
     {
-      "id": "afrikaans-library-en",
+      "id": "afrikaans-library-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, wat is die biblioteek se ure?",
@@ -454,18 +516,21 @@
           "0730",
           "USD 0730",
           "local 0730",
+          "0 730",
           "2026",
           "USD 2026",
           "local 2026",
+          "2 026",
           "22:00",
           "2200",
           "USD 2200",
-          "local 2200"
+          "local 2200",
+          "2 200"
         ]
       }
     },
     {
-      "id": "zulu-timetable-en",
+      "id": "zulu-timetable-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela ithayimthebula ye-BCom Accounting ngoMsombuluko.",
@@ -477,9 +542,11 @@
           "0800",
           "USD 0800",
           "local 0800",
+          "0 800",
           "2026",
           "USD 2026",
           "local 2026",
+          "2 026",
           "A204",
           "204",
           "USD 204",
@@ -498,7 +565,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

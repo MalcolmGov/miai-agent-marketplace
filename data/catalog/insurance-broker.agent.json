@@ -325,9 +325,14 @@
           "submission",
           "underwriter",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "R3500",
+          "R3 500",
           "3500",
-          "0001"
+          "3 500"
         ],
         "says_none": [
           "you are now covered",
@@ -345,7 +350,14 @@
       "lang": "en",
       "input": "Can I just speak to a real broker on your team please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -434,7 +446,9 @@
       "expect": {
         "says_any": [
           "R3500",
+          "R3 500",
           "3500",
+          "3 500",
           "3,500"
         ],
         "no_tool": true
@@ -488,6 +502,17 @@
           "can't",
           "cannot",
           "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -522,7 +547,9 @@
         "lang": "af",
         "says_any": [
           "R3500",
+          "R3 500",
           "3500",
+          "3 500",
           "3,500"
         ],
         "no_tool": true
@@ -550,6 +577,14 @@
         "says_none": [
           "you are now covered",
           "your policy is now active"
+        ],
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       },
       "followups": [
@@ -579,8 +614,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

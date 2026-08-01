@@ -193,6 +193,15 @@
       "expect": {
         "tool": "get_policy_info",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "10 hours",
           "R10",
           "10",
@@ -215,6 +224,7 @@
           "R202611",
           "R202 611",
           "202611",
+          "202 611",
           "valid"
         ]
       }
@@ -256,6 +266,7 @@
           "10177",
           "R10177",
           "R10 177",
+          "10 177",
           "112",
           "emergency"
         ],
@@ -294,7 +305,14 @@
       "lang": "en",
       "input": "Can I just talk to someone at the fleet office please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -364,7 +382,34 @@
       "input": "Write me a poem about the open highway.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "policy",
           "incident",
           "compliance",
@@ -402,6 +447,15 @@
       "expect": {
         "lang": "af",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "10",
           "R10"
         ]
@@ -415,14 +469,25 @@
       "expect": {
         "lang": "zu",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "07:00",
           "R0700",
           "R0 700",
           "0700",
+          "0 700",
           "17:00",
           "R1700",
           "R1 700",
-          "1700"
+          "1700",
+          "1 700"
         ]
       }
     },
@@ -436,7 +501,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

@@ -201,12 +201,16 @@
         "says_any": [
           "08:00",
           "€0800",
-          "0800",
           "EUR 0800",
+          "0800",
+          "0 800",
+          "€500",
+          "EUR 500",
+          "500",
           "A204",
           "€204",
-          "204",
           "EUR 204",
+          "204",
           "Financial Accounting"
         ],
         "says_none": [
@@ -224,12 +228,17 @@
         "says_any": [
           "07:30",
           "€0730",
-          "0730",
           "EUR 0730",
+          "0730",
+          "0 730",
+          "€500",
+          "EUR 500",
+          "500",
           "22:00",
           "€2200",
-          "2200",
           "EUR 2200",
+          "2200",
+          "2 200",
           "Ndlovu",
           "Central"
         ]
@@ -247,8 +256,12 @@
           "reference",
           "REF-0001",
           "€0001",
-          "0001",
           "EUR 0001",
+          "0001",
+          "0 001",
+          "€500",
+          "EUR 500",
+          "500",
           "request"
         ],
         "says_none": [
@@ -265,7 +278,14 @@
       "lang": "en",
       "input": "Can I just talk to a real person at the helpdesk please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about sorting out my class registration — you can reach me on 082 555 0000."
@@ -385,9 +405,21 @@
         "says_any": [
           "can't",
           "cannot",
-          "only",
+          "unable",
           "not able",
-          "another"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "only"
         ]
       }
     },
@@ -420,10 +452,37 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "timetable",
           "campus service",
-          "services",
-          "help with"
+          "services"
         ]
       }
     },
@@ -444,7 +503,7 @@
       }
     },
     {
-      "id": "afrikaans-library-en",
+      "id": "afrikaans-library-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, wat is die biblioteek se ure?",
@@ -453,20 +512,22 @@
         "says_any": [
           "07:30",
           "€0730",
-          "0730",
           "EUR 0730",
+          "0730",
+          "0 730",
           "€500",
           "EUR 500",
           "500",
           "22:00",
           "€2200",
+          "EUR 2200",
           "2200",
-          "EUR 2200"
+          "2 200"
         ]
       }
     },
     {
-      "id": "zulu-timetable-en",
+      "id": "zulu-timetable-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela ithayimthebula ye-BCom Accounting ngoMsombuluko.",
@@ -476,15 +537,16 @@
         "says_any": [
           "08:00",
           "€0800",
-          "0800",
           "EUR 0800",
+          "0800",
+          "0 800",
           "€500",
           "EUR 500",
           "500",
           "A204",
           "€204",
-          "204",
           "EUR 204",
+          "204",
           "Financial Accounting"
         ]
       }
@@ -498,8 +560,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

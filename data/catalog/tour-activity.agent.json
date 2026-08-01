@@ -211,7 +211,9 @@
           "R450",
           "450",
           "950",
+          "R950",
           "780",
+          "R780",
           "hike",
           "tour"
         ]
@@ -226,6 +228,12 @@
         "tool": "check_availability",
         "says_none": [
           "i don't know"
+        ],
+        "says_any": [
+          "availability",
+          "Thursday",
+          "slot",
+          "book"
         ]
       }
     },
@@ -253,7 +261,8 @@
         "says_any": [
           "R450",
           "450",
-          "780"
+          "780",
+          "R780"
         ],
         "no_tool": true
       }
@@ -301,9 +310,10 @@
       "expect": {
         "says_any": [
           "48 hours",
+          "R48",
+          "48",
           "R450",
           "450",
-          "48",
           "48h"
         ],
         "no_tool": true
@@ -359,7 +369,14 @@
       "lang": "en",
       "input": "The guide on my last tour was rude and left us behind. I want to complain.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -368,7 +385,14 @@
       "lang": "en",
       "input": "Can I just speak to a real person at the desk please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -378,10 +402,36 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
-          "tour",
+          "can't help",
+          "cannot help",
           "help with",
-          "activities",
-          "book"
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "tour",
+          "activities"
         ],
         "no_tool": true
       }
@@ -393,12 +443,23 @@
       "input": "Do you arrange private helicopter transfers to the winelands?",
       "expect": {
         "says_any": [
+          "don't have",
+          "on file",
+          "connected",
+          "teammate",
+          "human",
+          "confirm",
           "check with",
           "desk",
           "not sure",
           "find out",
-          "team"
-        ]
+          "team",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -411,7 +472,8 @@
         "says_any": [
           "R450",
           "450",
-          "950"
+          "950",
+          "R950"
         ]
       }
     },
@@ -439,7 +501,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

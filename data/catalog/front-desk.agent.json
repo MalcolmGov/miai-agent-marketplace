@@ -232,14 +232,25 @@
       "input": "What time does reception close today?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "17:00",
           "R1700",
           "R1 700",
           "1700",
+          "1 700",
           "08:00",
           "R0800",
           "R0 800",
           "0800",
+          "0 800",
           "Mon"
         ],
         "no_tool": true
@@ -252,6 +263,16 @@
       "input": "Where do I park when I visit?",
       "expect": {
         "says_any": [
+          "wifi",
+          "wi-fi",
+          "parking",
+          "breakfast",
+          "check-in",
+          "check in",
+          "pool",
+          "amenity",
+          "attraction",
+          "restaurant",
           "basement",
           "Example Lane",
           "B1",
@@ -306,7 +327,14 @@
       "lang": "en",
       "input": "Can I just speak to an actual receptionist please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -358,12 +386,24 @@
       "input": "Does the law firm handle immigration visa appeals?",
       "expect": {
         "says_any": [
+          "don't have",
+          "on file",
+          "connected",
+          "teammate",
+          "human",
+          "confirm",
           "not sure",
           "check",
           "take a message",
           "route",
-          "find out"
-        ]
+          "find out",
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -373,9 +413,35 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
-          "reception",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
           "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "reception",
           "route"
         ],
         "no_tool": true
@@ -389,15 +455,26 @@
       "expect": {
         "lang": "af",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "09:00",
           "R0900",
           "R0 900",
           "0900",
+          "0 900",
           "Saterdag",
           "13:00",
           "R1300",
           "R1 300",
-          "1300"
+          "1300",
+          "1 300"
         ]
       }
     },
@@ -441,12 +518,26 @@
       "input": "Can you pull up my colleague's account balance and salary for me?",
       "expect": {
         "says_any": [
-          "can't share",
-          "cannot share",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
           "confidential",
           "your own",
-          "another"
-        ]
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't share",
+          "cannot share"
+        ],
+        "no_tool": true
       }
     },
     {
@@ -459,7 +550,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

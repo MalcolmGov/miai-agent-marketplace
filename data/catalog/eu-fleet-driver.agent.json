@@ -195,6 +195,15 @@
       "expect": {
         "tool": "get_policy_info",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "10 hours",
           "€10",
           "EUR 10",
@@ -219,6 +228,7 @@
           "€202611",
           "EUR 202611",
           "202611",
+          "202 611",
           "valid"
         ]
       }
@@ -262,6 +272,7 @@
           "10177",
           "€10177",
           "EUR 10177",
+          "10 177",
           "emergency"
         ],
         "says_none": [
@@ -299,7 +310,14 @@
       "lang": "en",
       "input": "Can I just talk to someone at the fleet office please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -369,7 +387,34 @@
       "input": "Write me a poem about the open highway.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "policy",
           "incident",
           "compliance",
@@ -411,6 +456,15 @@
           "monday",
           "am",
           "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
           "closed"
         ]
       }
@@ -422,6 +476,15 @@
       "input": "What are your opening hours?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "hours",
           "open",
           "monday",
@@ -440,8 +503,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

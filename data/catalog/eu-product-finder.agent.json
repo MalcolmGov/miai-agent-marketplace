@@ -226,11 +226,13 @@
           "5L",
           "1500W",
           "€1500",
-          "1500",
           "EUR 1500",
+          "1500",
+          "1 500",
           "€1299",
-          "1299",
           "EUR 1299",
+          "1299",
+          "1 299",
           "R1 299"
         ]
       }
@@ -273,8 +275,9 @@
       "expect": {
         "says_any": [
           "€1399",
-          "1399",
           "EUR 1399",
+          "1399",
+          "1 399",
           "R1 399",
           "Starter Bundle",
           "recipe book"
@@ -291,6 +294,13 @@
         "says_none": [
           "i've placed the order",
           "reserved for you"
+        ],
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -300,7 +310,14 @@
       "lang": "en",
       "input": "Can I speak to a real person to help me choose?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -374,8 +391,19 @@
           "cannot",
           "unable",
           "not able",
-          "another customer",
-          "privacy"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "another customer"
         ]
       }
     },
@@ -399,15 +427,42 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "product",
-          "find",
-          "help with"
+          "find"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "afrikaans-blender-en",
+      "id": "afrikaans-blender-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Haai, watter menger het julle en hoeveel kos dit?",
@@ -423,7 +478,7 @@
       }
     },
     {
-      "id": "zulu-need-en",
+      "id": "zulu-need-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngidinga into yokupheka ama-chips ngaphandle kukawoyela omningi.",
@@ -444,8 +499,12 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
       }
     }

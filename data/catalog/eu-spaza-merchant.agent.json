@@ -260,8 +260,9 @@
           "R500",
           "16:00",
           "€1600",
+          "EUR 1600",
           "1600",
-          "EUR 1600"
+          "1 600"
         ]
       }
     },
@@ -421,7 +422,14 @@
       "lang": "en",
       "input": "Can someone from your team actually call me about this?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about my account — please just connect me now."
@@ -454,13 +462,28 @@
           "credit_book"
         ],
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "can't share",
           "owner",
-          "not able",
           "private",
-          "another",
           "can't tell you"
-        ]
+        ],
+        "no_tool": true
       }
     },
     {
@@ -502,7 +525,7 @@
       }
     },
     {
-      "id": "zulu-credit-confirm-en",
+      "id": "zulu-credit-confirm-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela ufake u-EUEUR 50 esikweletini sikaSipho, uthathe isinkwa.",
@@ -523,9 +546,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

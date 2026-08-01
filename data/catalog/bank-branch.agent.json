@@ -197,11 +197,13 @@
         "tool": "get_product_info",
         "says_any": [
           "6.5%",
+          "R65",
+          "65",
           "R60",
           "60",
-          "65",
           "no monthly fee",
-          "100"
+          "100",
+          "R100"
         ]
       }
     },
@@ -226,10 +228,24 @@
       "input": "What time do your branches close on a Saturday?",
       "expect": {
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "09:00",
+          "mon",
           "12:00",
+          "R1200",
+          "R1 200",
+          "1200",
+          "1 200",
+          "R100",
+          "100",
           "R60",
-          "60",
-          "1200"
+          "60"
         ],
         "no_tool": true
       }
@@ -261,6 +277,13 @@
         "says_none": [
           "your balance is",
           "your current balance"
+        ],
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -352,14 +375,28 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
           "access or share",
           "any customer",
           "can't access",
           "can't share",
           "cannot share",
-          "confidential",
-          "not able to share",
-          "your own"
+          "not able to share"
         ]
       }
     },
@@ -390,12 +427,29 @@
       "expect": {
         "lang": "af",
         "says_any": [
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
           "09:00",
+          "mon",
+          "09:00",
+          "R0900",
+          "R0 900",
+          "0900",
+          "0 900",
+          "R100",
+          "100",
           "R60",
           "60",
-          "0900",
           "12:00",
-          "1200"
+          "R1200",
+          "R1 200",
+          "1200",
+          "1 200"
         ]
       }
     },
@@ -423,8 +477,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

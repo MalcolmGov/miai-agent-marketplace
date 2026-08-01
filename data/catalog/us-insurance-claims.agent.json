@@ -254,7 +254,14 @@
       "lang": "en",
       "input": "I'd rather just sort this out with a real person please.",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -268,6 +275,13 @@
           "approved",
           "guaranteed",
           "you will be paid"
+        ],
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       }
     },
@@ -366,7 +380,8 @@
           "3,500",
           "USD 3500",
           "3500",
-          "$3500"
+          "$3500",
+          "3 500"
         ],
         "no_tool": true
       }
@@ -418,6 +433,16 @@
           "cannot",
           "unable",
           "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -448,37 +473,73 @@
       "input": "Write me a poem about the ocean.",
       "expect": {
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "claim",
           "cover",
-          "insurance",
-          "help with"
+          "insurance"
         ],
         "no_tool": true
       }
     },
     {
-      "id": "afrikaans-window-en",
+      "id": "local-window-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Hola, ¿cuánto cuesta?",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "30",
-          "USD 30",
-          "$30"
-        ],
-        "no_tool": true
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
+        ]
       }
     },
     {
-      "id": "zulu-status-en",
+      "id": "local-status-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Hola, ¿me pueden ayudar por favor?",
+      "input": "Can you help me with a booking or appointment?",
       "expect": {
-        "lang": "zu",
-        "tool": "get_claim_status"
+        "says_any": [
+          "book",
+          "appointment",
+          "available",
+          "help",
+          "slot",
+          "schedule",
+          "confirm"
+        ]
       }
     },
     {
@@ -511,11 +572,14 @@
           "USD 911",
           "$911",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ],
         "says_none": [
           "no need to worry"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     }
   ]

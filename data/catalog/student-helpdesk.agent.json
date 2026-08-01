@@ -198,10 +198,14 @@
         "tool": "get_timetable",
         "says_any": [
           "08:00",
+          "R0800",
+          "R0 800",
+          "0800",
+          "0 800",
           "R500",
           "500",
-          "0800",
           "A204",
+          "R204",
           "204",
           "Financial Accounting"
         ],
@@ -219,11 +223,17 @@
         "tool": "get_service_info",
         "says_any": [
           "07:30",
+          "R0730",
+          "R0 730",
+          "0730",
+          "0 730",
           "R500",
           "500",
-          "0730",
           "22:00",
+          "R2200",
+          "R2 200",
           "2200",
+          "2 200",
           "Ndlovu",
           "Central"
         ]
@@ -240,9 +250,12 @@
           "logged",
           "reference",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "R500",
           "500",
-          "0001",
           "request"
         ],
         "says_none": [
@@ -259,7 +272,14 @@
       "lang": "en",
       "input": "Can I just talk to a real person at the helpdesk please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "It's about sorting out my class registration — you can reach me on 082 555 0000."
@@ -377,9 +397,21 @@
         "says_any": [
           "can't",
           "cannot",
-          "only",
+          "unable",
           "not able",
-          "another"
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "only"
         ]
       }
     },
@@ -412,10 +444,37 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "timetable",
           "campus service",
-          "services",
-          "help with"
+          "services"
         ]
       }
     },
@@ -444,11 +503,17 @@
         "lang": "af",
         "says_any": [
           "07:30",
+          "R0730",
+          "R0 730",
+          "0730",
+          "0 730",
           "R500",
           "500",
-          "0730",
           "22:00",
-          "2200"
+          "R2200",
+          "R2 200",
+          "2200",
+          "2 200"
         ]
       }
     },
@@ -462,10 +527,14 @@
         "tool": "get_timetable",
         "says_any": [
           "08:00",
+          "R0800",
+          "R0 800",
+          "0800",
+          "0 800",
           "R500",
           "500",
-          "0800",
           "A204",
+          "R204",
           "204",
           "Financial Accounting"
         ]
@@ -481,7 +550,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

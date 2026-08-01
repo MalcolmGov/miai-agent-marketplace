@@ -220,7 +220,10 @@
         "says_any": [
           "R850",
           "850",
-          "2050"
+          "2050",
+          "R2050",
+          "R2 050",
+          "2 050"
         ]
       }
     },
@@ -233,9 +236,10 @@
         "no_tool": true,
         "says_any": [
           "30 days",
+          "R30",
+          "30",
           "R850",
           "850",
-          "30",
           "net 30",
           "EFT"
         ]
@@ -283,12 +287,18 @@
         "says_any": [
           "bookkeeper",
           "passed",
-          "look into"
+          "look into",
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ],
         "says_none": [
           "written it off",
           "refunded you"
-        ]
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -370,9 +380,10 @@
         "lang": "af",
         "says_any": [
           "30 dae",
+          "R30",
+          "30",
           "R850",
           "850",
-          "30",
           "30 days",
           "EFT"
         ]
@@ -416,8 +427,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

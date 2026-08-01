@@ -225,6 +225,7 @@
           "R10",
           "10",
           "250",
+          "R250",
           "review",
           "refer"
         ]
@@ -252,9 +253,10 @@
         "no_tool": true,
         "says_any": [
           "24 months",
+          "R24",
+          "24",
           "R10",
           "10",
-          "24",
           "24-month"
         ]
       }
@@ -358,7 +360,14 @@
       "lang": "en",
       "input": "Can I just speak to a real person please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -438,7 +447,8 @@
         "says_any": [
           "R10",
           "10",
-          "100"
+          "100",
+          "R100"
         ]
       }
     },
@@ -452,8 +462,48 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]

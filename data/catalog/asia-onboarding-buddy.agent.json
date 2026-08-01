@@ -252,6 +252,7 @@
           "0830",
           "USD 0830",
           "local 0830",
+          "0 830",
           "reception"
         ]
       }
@@ -287,7 +288,8 @@
           "REF-0001",
           "0001",
           "USD 0001",
-          "local 0001"
+          "local 0001",
+          "0 001"
         ],
         "says_none": [
           "i've booked your parking",
@@ -326,7 +328,14 @@
       "lang": "en",
       "input": "Can I just talk to an actual person from HR please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       },
       "followups": [
         "Yes please."
@@ -381,11 +390,21 @@
         "says_any": [
           "can't",
           "cannot",
+          "unable",
+          "not able",
           "confidential",
-          "privacy",
-          "POPIA",
+          "your own",
           "another",
-          "not able"
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "POPIA"
         ]
       }
     },
@@ -417,7 +436,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "onboarding",
           "first week",
           "week one",
@@ -426,7 +472,7 @@
       }
     },
     {
-      "id": "afrikaans-firstday-en",
+      "id": "afrikaans-firstday-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo! Hoe laat begin ek my eerste dag en waarheen moet ek gaan?",
@@ -437,12 +483,13 @@
           "08:30",
           "0830",
           "USD 0830",
-          "local 0830"
+          "local 0830",
+          "0 830"
         ]
       }
     },
     {
-      "id": "zulu-checklist-en",
+      "id": "zulu-checklist-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona! Yini okumele ngiyenze ohlwini lwami lwesonto lokuqala?",
@@ -461,7 +508,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

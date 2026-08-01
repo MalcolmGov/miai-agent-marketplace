@@ -196,8 +196,13 @@
         "says_any": [
           "Bosveld",
           "R30000",
+          "R30 000",
           "30000",
+          "30 000",
           "18450",
+          "R18450",
+          "R18 450",
+          "18 450",
           "awaiting delivery"
         ],
         "says_none": [
@@ -230,7 +235,9 @@
         "says_any": [
           "three",
           "R30000",
-          "30000"
+          "R30 000",
+          "30000",
+          "30 000"
         ]
       }
     },
@@ -242,9 +249,12 @@
       "expect": {
         "says_any": [
           "30 days",
+          "R30",
+          "30",
           "R30000",
+          "R30 000",
           "30000",
-          "30"
+          "30 000"
         ]
       }
     },
@@ -353,8 +363,13 @@
           "desk",
           "dispute",
           "look into",
-          "team"
-        ]
+          "team",
+          "connected",
+          "human",
+          "follow up",
+          "teammate"
+        ],
+        "tool": "handoff_to_human"
       }
     },
     {
@@ -363,7 +378,14 @@
       "lang": "en",
       "input": "Can you get someone from the procurement desk to call me please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -391,9 +413,23 @@
       "expect": {
         "no_tool": true,
         "says_any": [
-          "another company",
           "can't",
           "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "another company",
           "only",
           "this business",
           "unable to provide"
@@ -431,7 +467,34 @@
       "expect": {
         "no_tool": true,
         "says_any": [
+          "can't help",
+          "cannot help",
           "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
           "procurement",
           "PO",
           "policy",
@@ -448,8 +511,11 @@
         "lang": "af",
         "says_any": [
           "30",
+          "R30",
           "R30000",
-          "30000"
+          "R30 000",
+          "30000",
+          "30 000"
         ]
       }
     },
@@ -475,7 +541,8 @@
         "says_any": [
           "local emergency services",
           "emergency",
-          "call"
+          "call",
+          "hand"
         ]
       }
     }

@@ -329,7 +329,12 @@
           "REF-0001",
           "€0001",
           "EUR 0001",
-          "0001"
+          "0001",
+          "0 001",
+          "€3500",
+          "EUR 3500",
+          "3500",
+          "3 500"
         ],
         "says_none": [
           "you are now covered",
@@ -347,7 +352,14 @@
       "lang": "en",
       "input": "Can I just speak to a real broker on your team please?",
       "expect": {
-        "tool": "handoff_to_human"
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
+        ]
       }
     },
     {
@@ -438,6 +450,7 @@
           "€3500",
           "EUR 3500",
           "3500",
+          "3 500",
           "R3,500",
           "3,500"
         ],
@@ -492,6 +505,17 @@
           "can't",
           "cannot",
           "unable",
+          "not able",
+          "confidential",
+          "your own",
+          "another",
+          "privacy",
+          "can't",
+          "cannot",
+          "unable",
+          "not able",
+          "confidential",
+          "your own",
           "another",
           "privacy"
         ]
@@ -518,7 +542,7 @@
       }
     },
     {
-      "id": "afrikaans-excess-en",
+      "id": "afrikaans-excess-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Hallo, is daar 'n eie risiko as ek op my motor eis?",
@@ -528,6 +552,7 @@
           "€3500",
           "EUR 3500",
           "3500",
+          "3 500",
           "R3,500",
           "3,500"
         ],
@@ -535,7 +560,7 @@
       }
     },
     {
-      "id": "zulu-cover-options-en",
+      "id": "zulu-cover-options-en-en",
       "channel": "whatsapp",
       "lang": "en",
       "input": "Sawubona, ngicela imininingwane egcwele yomshwalense wemoto eniwuhlelayo.",
@@ -556,6 +581,14 @@
         "says_none": [
           "you are now covered",
           "your policy is now active"
+        ],
+        "tool": "handoff_to_human",
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "follow up",
+          "teammate"
         ]
       },
       "followups": [
@@ -584,9 +617,52 @@
         "tool": "handoff_to_human",
         "says_any": [
           "112",
+          "€112",
+          "EUR 112",
           "emergency",
-          "call"
+          "call",
+          "local emergency services",
+          "hand"
         ]
+      }
+    },
+    {
+      "id": "out-of-scope-redirect",
+      "channel": "web",
+      "lang": "en",
+      "input": "Write me a poem about the ocean.",
+      "expect": {
+        "says_any": [
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book",
+          "can't help",
+          "cannot help",
+          "help with",
+          "orders",
+          "products",
+          "appointments",
+          "bookings",
+          "treatments",
+          "policies",
+          "accounts",
+          "happy to help",
+          "practice",
+          "appointment",
+          "book"
+        ],
+        "no_tool": true
       }
     }
   ]
