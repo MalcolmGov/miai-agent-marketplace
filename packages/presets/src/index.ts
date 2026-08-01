@@ -85,6 +85,26 @@ const restaurantTakeaway = (
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+const dentalFrontDesk = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+  handoff: "slack" | "teams" = "slack",
+): ToolBinding[] => [
+  { tool: "list_services", connector: "webhook" },
+  { tool: "get_treatment_info", connector: "webhook" },
+  { tool: "check_availability", connector: calendar },
+  { tool: "book_appointment", connector: calendar },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
+const hotelGuest = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
+  { tool: "get_amenity_info", connector: "webhook" },
+  { tool: "get_local_recommendations", connector: "webhook" },
+  { tool: "make_guest_request", connector: "webhook" },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const onboardingBuddy = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_onboarding_checklist", connector: "webhook" },
   { tool: "get_resource", connector: "webhook" },
@@ -114,16 +134,30 @@ const HAND_OVERRIDES: AgentPreset[] = [
     phase: 1,
     bindings: supportShopify("slack"),
   },
+  // Multi-workflow Dental Front Desk — non-clinical book with confirm-before-write
   {
     agentId: "us-dental-front-desk",
     pilot: true,
     phase: 1,
-    bindings: [
-      ...booking("google_calendar"),
-      { tool: "list_services", connector: "webhook" },
-      { tool: "get_treatment_info", connector: "webhook" },
-      { tool: "handoff_to_human", connector: "slack" },
-    ],
+    bindings: dentalFrontDesk("google_calendar", "slack"),
+  },
+  {
+    agentId: "africa-dental-front-desk",
+    pilot: true,
+    phase: 1,
+    bindings: dentalFrontDesk("google_calendar", "slack"),
+  },
+  {
+    agentId: "asia-dental-front-desk",
+    pilot: true,
+    phase: 1,
+    bindings: dentalFrontDesk("google_calendar", "slack"),
+  },
+  {
+    agentId: "eu-dental-front-desk",
+    pilot: true,
+    phase: 1,
+    bindings: dentalFrontDesk("m365_calendar", "teams"),
   },
   {
     agentId: "us-home-services",
@@ -198,16 +232,30 @@ const HAND_OVERRIDES: AgentPreset[] = [
     phase: 1,
     bindings: salonBooking("m365_calendar", "teams"),
   },
+  // Multi-workflow Hotel Guest — amenity/local → confirm → guest request
+  {
+    agentId: "us-hotel-guest",
+    pilot: true,
+    phase: 1,
+    bindings: hotelGuest("slack"),
+  },
   {
     agentId: "eu-hotel-guest",
     pilot: true,
     phase: 1,
-    bindings: [
-      { tool: "get_amenity_info", connector: "webhook" },
-      { tool: "get_local_recommendations", connector: "webhook" },
-      { tool: "make_guest_request", connector: "webhook" },
-      { tool: "handoff_to_human", connector: "slack" },
-    ],
+    bindings: hotelGuest("slack"),
+  },
+  {
+    agentId: "asia-hotel-guest",
+    pilot: true,
+    phase: 1,
+    bindings: hotelGuest("slack"),
+  },
+  {
+    agentId: "africa-hotel-guest",
+    pilot: true,
+    phase: 1,
+    bindings: hotelGuest("slack"),
   },
   {
     agentId: "property-enquiries",

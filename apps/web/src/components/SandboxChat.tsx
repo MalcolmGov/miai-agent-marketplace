@@ -50,8 +50,18 @@ export function SandboxChat({
   const isSales = /sales-qualifier/i.test(agentId);
   const isRestaurant = /restaurant-takeaway/i.test(agentId);
   const isOnboarding = /onboarding-buddy/i.test(agentId);
+  const isDental = /dental-front-desk/i.test(agentId);
+  const isHotel = /hotel-guest/i.test(agentId);
   const hasWorkflowUi =
-    isEA || isIT || isBooking || isSales || isRestaurant || isOnboarding || isWorkflowAgent;
+    isEA ||
+    isIT ||
+    isBooking ||
+    isSales ||
+    isRestaurant ||
+    isOnboarding ||
+    isDental ||
+    isHotel ||
+    isWorkflowAgent;
 
   async function clearChat() {
     if (busy || clearing) return;
@@ -226,13 +236,15 @@ export function SandboxChat({
               : hasWorkflowUi && workflow?.status === "proposed"
                 ? isIT || isOnboarding
                   ? "Yes, go ahead."
-                  : isBooking
+                  : isBooking || isDental
                     ? "Yes, please book it."
                     : isSales
                       ? "Please book the call."
                       : isRestaurant
                         ? "Yes, that's right — please book it."
-                        : "Yes — please set it up…"
+                        : isHotel
+                          ? "Yes, please log it."
+                          : "Yes — please set it up…"
                 : "Message the agent…"
           }
           disabled={busy || paused}

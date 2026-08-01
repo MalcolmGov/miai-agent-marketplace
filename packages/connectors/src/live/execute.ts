@@ -219,7 +219,34 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
   if (n.includes("ticket") || n.includes("lead") || n.includes("capture") || n.includes("application"))
     return { ok: true, reference: "APP-4821", status: "captured", ...args };
   if (n.includes("handoff")) return { routed: true, queue: "human_desk" };
-  if (n.includes("guest")) return { request_ref: "GR-1001", status: "logged" };
+  if (n.includes("guest")) return { ok: true, request_ref: "GR-1001", status: "logged", ...args };
+  if (n.includes("amenity") || n.includes("get_amenity"))
+    return {
+      ok: true,
+      topic: args.topic ?? "general",
+      info:
+        "Check-in from 15:00 · Check-out by 11:00. Breakfast 07:00–10:30. Wi‑Fi network on your key sleeve. Pool & gym 06:30–22:00.",
+      hours: "See knowledge for amenity hours",
+      source: "sandbox_stub",
+    };
+  if (n.includes("local_recommend") || n.includes("get_local"))
+    return {
+      ok: true,
+      kind: args.kind ?? "restaurants",
+      items: [
+        { name: "Café Einstein", note: "Casual", distance: "10 min walk" },
+        { name: "Museum Island", note: "Attractions", distance: "15 min" },
+      ],
+      source: "sandbox_stub",
+    };
+  if (n.includes("treatment_info") || n.includes("get_treatment"))
+    return {
+      ok: true,
+      treatment: args.treatment ?? args.topic ?? "exam",
+      info:
+        "General overview only — exam & cleaning is typically one visit; fillings under local anesthetic. Whether you need a treatment is a clinical decision.",
+      source: "sandbox_stub",
+    };
   if (n.includes("estimate")) return { estimate_ref: "EST-2201", status: "logged" };
   if (
     n.includes("catalogue") ||

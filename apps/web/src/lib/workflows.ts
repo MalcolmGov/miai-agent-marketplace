@@ -8,10 +8,12 @@ export const WORKFLOW_FAMILY_IDS = [
   "sales-qualifier",
   "restaurant-takeaway",
   "onboarding-buddy",
+  "dental-front-desk",
+  "hotel-guest",
 ] as const;
 
 const WORKFLOW_RE =
-  /executive-assistant|it-helpdesk|salon-booking|trades-receptionist|home-services|sales-qualifier|restaurant-takeaway|onboarding-buddy/i;
+  /executive-assistant|it-helpdesk|salon-booking|trades-receptionist|home-services|sales-qualifier|restaurant-takeaway|onboarding-buddy|dental-front-desk|hotel-guest/i;
 
 export function isWorkflowFamilyId(familyOrAgentId: string): boolean {
   return WORKFLOW_RE.test(familyOrAgentId);
@@ -35,6 +37,12 @@ export function workflowDemoHint(agentId: string): string | null {
   }
   if (/onboarding-buddy/i.test(agentId)) {
     return "Walk day-1 checklist, then confirm before logging a People-team question; connect Slack for notify.";
+  }
+  if (/dental-front-desk/i.test(agentId)) {
+    return "Connect Calendar + Slack on Actions; book cleaning/exam with confirm-before-write — clinical/pain always hands off.";
+  }
+  if (/hotel-guest/i.test(agentId)) {
+    return "Ask amenities or log towels/late check-out with confirm; billing and complaints go to the front desk.";
   }
   return null;
 }
@@ -104,6 +112,26 @@ export function tryPromptsForAgent(agentId: string): { workflow: boolean; prompt
         "It’s my first day — what’s on my checklist?",
         "Where do I submit banking for payroll?",
         "Laptop won’t boot — I’m stuck.",
+      ],
+    };
+  }
+  if (/dental-front-desk/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "How much is a cleaning?",
+        "Can I get a cleaning this Thursday?",
+        "Book a cleaning Thursday 10:00 — Name’s Maya, 555-0142.",
+      ],
+    };
+  }
+  if (/hotel-guest/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "What time is check-in and what’s the Wi‑Fi?",
+        "Any restaurant recommendations nearby?",
+        "I need extra towels in room 412.",
       ],
     };
   }

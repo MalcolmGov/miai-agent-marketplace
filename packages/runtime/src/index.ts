@@ -26,6 +26,11 @@ import {
   isOnboardingBuddy,
   runOnboardingBuddyWorkflow,
 } from "./workflows/onboarding-buddy.js";
+import {
+  isDentalFrontDesk,
+  runDentalFrontDeskWorkflow,
+} from "./workflows/dental-front-desk.js";
+import { isHotelGuest, runHotelGuestWorkflow } from "./workflows/hotel-guest.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -1363,6 +1368,34 @@ export async function runTurn(
       executeTool,
     });
     const done = await finishWorkflow(ob);
+    if (done) return done;
+  }
+
+  // Dental Front Desk multi-step workflow (non-clinical booking)
+  if (isDentalFrontDesk(req.agentId)) {
+    const df = await runDentalFrontDeskWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(df);
+    if (done) return done;
+  }
+
+  // Hotel Guest Concierge multi-step workflow
+  if (isHotelGuest(req.agentId)) {
+    const hg = await runHotelGuestWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(hg);
     if (done) return done;
   }
 

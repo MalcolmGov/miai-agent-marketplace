@@ -66,7 +66,7 @@ const STEPS = [
 export function MarketplaceHero({
   familyCount,
   categoryCount,
-  workflowCount = 8,
+  workflowCount = 10,
 }: {
   familyCount: number;
   categoryCount: number;
@@ -74,7 +74,7 @@ export function MarketplaceHero({
 }) {
   const agentsLive = familyCount || 55;
   const categories = categoryCount || 10;
-  const workflows = workflowCount || 8;
+  const workflows = workflowCount || 10;
 
   return (
     <div className="space-y-8">
