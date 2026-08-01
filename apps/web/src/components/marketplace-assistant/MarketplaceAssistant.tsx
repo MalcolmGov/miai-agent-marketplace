@@ -84,12 +84,18 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
   const [showSugs, setShowSugs] = useState(true);
   const sessionId = useRef(newSession());
   const msgsRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const greeted = useRef(false);
 
   const scrollBottom = useCallback(() => {
     const el = msgsRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight;
+  }, []);
+
+  const focusInput = useCallback(() => {
+    // After React re-enables the field / remounts the panel.
+    requestAnimationFrame(() => inputRef.current?.focus());
   }, []);
 
   useLayoutEffect(() => {
@@ -102,8 +108,9 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
         greeted.current = true;
         setMessages([{ id: "greet", role: "assistant", text: GREETING }]);
       }
+      focusInput();
     }
-  }, [mode, open]);
+  }, [mode, open, focusInput]);
 
   function resetChat() {
     sessionId.current = newSession();
@@ -179,6 +186,7 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
     } finally {
       setBusy(false);
       setTyping(false);
+      focusInput();
     }
   }
 
@@ -241,13 +249,15 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
         }}
       >
         <input
+          ref={inputRef}
           className="miai-ask-input"
           type="text"
           enterKeyHint="send"
           value={input}
           placeholder="Ask anything..."
           autoComplete="off"
-          disabled={busy}
+          // Keep focusable while a reply streams — `disabled` steals the caret.
+          readOnly={busy}
           onChange={(e) => setInput(e.target.value)}
           aria-label="Message"
         />
@@ -269,7 +279,10 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
         type="button"
         className="miai-ask-fab"
         aria-label={open ? "Close My Instant AI assistant" : "Open My Instant AI assistant"}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          if (open) closeFloating();
+          else setOpen(true);
+        }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={AVATAR} alt="" />
