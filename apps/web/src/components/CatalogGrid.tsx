@@ -191,10 +191,9 @@ function categoryAccent(category: string) {
   return CATEGORY_ACCENT[category] ?? "linear-gradient(90deg,#3dd6c6,#2bb8a8)";
 }
 
+/** Only non-default status — Live/Ready on every catalogue card adds noise. */
 function statusBadge(item: FamilyItem) {
-  if (item.liveReady) return { label: "Live", tone: "live" as const };
   if (item.pilot) return { label: "Pilot", tone: "live" as const };
-  if (item.catalogueReady) return { label: "Ready", tone: "ready" as const };
   return null;
 }
 
@@ -676,19 +675,10 @@ export function CatalogGrid() {
                             <MarketBadge market={activePack} prominent />
                           ) : null}
                           {badge ? (
-                            <span
-                              className={`chip !px-2 !py-0.5 text-[10px] ${badge.tone === "live" ? "chip-live" : ""}`}
-                            >
-                              {badge.tone === "live" ? (
-                                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-                              ) : null}
+                            <span className="chip chip-live !px-2 !py-0.5 text-[10px]">
                               {badge.label}
                             </span>
-                          ) : (
-                            <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
-                              {item.tier}
-                            </span>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                       <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
@@ -844,12 +834,7 @@ function AgentDetailModal({
                 {badge ? (
                   <>
                     <span className="text-[var(--muted-dim)]">·</span>
-                    <span
-                      className={`chip !px-2 !py-0.5 text-[10px] ${badge.tone === "live" ? "chip-live" : ""}`}
-                    >
-                      {badge.tone === "live" ? (
-                        <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-                      ) : null}
+                    <span className="chip chip-live !px-2 !py-0.5 text-[10px]">
                       {badge.label}
                     </span>
                   </>
