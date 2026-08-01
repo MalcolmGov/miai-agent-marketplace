@@ -9,12 +9,11 @@ MyInstantAI Agent Marketplace lets businesses **rent**, **configure**, and **dep
 - **55 agent families × 4 market packs (US, EU, Africa, Asia) = 220 agents**
 - Built by Move Digital; integrates with MyInstantAI auth, wallet, and model gateway (adapters may be mock until cutover)
 - Staging: https://miaiweb-production.up.railway.app
-- In-product: catalogue home `/`, Demo `/demo`, Trust `/trust`, Roadmap `/roadmap`, Ask AI `/ask`, Admin `/admin`
+- In-product: catalogue home `/`, Trust `/trust`, Roadmap `/roadmap`, Ask AI `/ask`, Admin `/admin`
 
 ## Setup guide — rent to live
 
-1. **Find an agent** — browse `/` or Ask AI for a recommendation. Demo shortlist: `/demo`.
-2. **Learn more / Rent** — open the agent card → **Rent / setup** into **Agent Studio** (`/agents/{agentId}`).
+1. **Find an agent** — browse `/` or Ask AI for a recommendation. 2. **Learn more / Rent** — open the agent card → **Rent / setup** into **Agent Studio** (`/agents/{agentId}`).
 3. **Configure**
    - Edit **knowledge** (business facts, hours, policies) so answers are grounded.
    - Connect **tools / OAuth connectors** when the agent needs calendar, Slack, CRM, etc. (Studio → Actions / Connectors). See connector notes below.
@@ -84,16 +83,6 @@ Source of truth: Trust Center `/trust`. When customers ask about privacy or secu
 - **Tokens:** top-ups for usage beyond included capacity.
 - **Platform commercial (partners):** annual platform license covering the **full 220** catalogue is the proposed model; demo shortlist of 6 is for meeting depth only — not a limited SKU.
 - Exact enterprise / partnership numbers → **capture_lead** and say a human will follow up. Do not invent discounts or SLAs.
-
-## Demo shortlist (6)
-
-For demos see `/demo`:
-1. Executive Assistant — `us-executive-assistant`
-2. IT Helpdesk — `us-it-helpdesk`
-3. Dental Front Desk — `us-dental-front-desk`
-4. Hotel Guest — `us-hotel-guest`
-5. Sales Qualifier — `us-sales-qualifier`
-6. Home Services — `us-home-services`
 
 ## FAQs
 

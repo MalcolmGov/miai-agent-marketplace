@@ -21,7 +21,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
   const toolCalls: Array<{ name: string; args: Record<string, unknown>; result: unknown }> = [];
 
   const leadMatch =
-    /(?:demo|sales|enterprise|partnership|security questionnaire|quote)/i.test(lower) &&
+    /(?:sales|enterprise|partnership|security questionnaire|quote|purchase|buy)/i.test(lower) &&
     (/@/.test(text) || /[\d]{7,}/.test(text) || /i am |i'm |my name/i.test(text));
 
   if (leadMatch) {
@@ -38,12 +38,12 @@ export async function runMarketplaceAssistantWorkflow(input: {
       email,
       company,
       interest: /whatsapp/i.test(lower)
-        ? "WhatsApp / demo"
+        ? "WhatsApp go-live"
         : /security/i.test(lower)
           ? "security review"
-          : /enterprise|quote|pricing/i.test(lower)
+          : /enterprise|quote|pricing|purchase|buy/i.test(lower)
             ? "enterprise pricing"
-            : "product demo",
+            : "talk to sales",
       notes: text.slice(0, 400),
     };
     const result = await input.executeTool("capture_lead", args);
@@ -73,7 +73,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "The marketplace has **55 agent families × 4 market packs (US, EU, Africa, Asia) = 220 agents**. Browse them on / or see the demo shortlist of 6 at /demo.",
+        "The marketplace has **55 agent families × 4 market packs (US, EU, Africa, Asia) = 220 agents**. Browse the full catalogue on / — tell me your use case and I’ll recommend a fit.",
     };
   }
 
@@ -118,16 +118,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "For a dental clinic front desk that books visits, start with **Dental Front Desk** — `/agents/us-dental-front-desk` (also on the /demo shortlist). Rent → configure your fees/hours in knowledge → Live → Install.",
-    };
-  }
-
-  if (/demo shortlist|monday demo|pilot 6|demo 6/.test(lower)) {
-    return {
-      handled: true,
-      toolCalls,
-      assistantMessage:
-        "The demo shortlist (6 of 220) on /demo is: Executive Assistant, IT Helpdesk, Dental Front Desk, Hotel Guest, Sales Qualifier, and Home Services. The commercial license still covers the full catalogue.",
+        "For a dental clinic front desk that books visits, start with **Dental Front Desk** — `/agents/us-dental-front-desk`. Rent → configure your fees/hours in knowledge → Go Live → Install.",
     };
   }
 
@@ -154,7 +145,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "Connect tools from Agent Studio → Actions / Connectors (OAuth PKCE, callback `/api/oauth/callback`). Connect before expecting live calendar/Slack/CRM actions; sandbox chat can stub tools for demos.",
+        "Connect tools from Agent Studio → Actions / Connectors (OAuth PKCE, callback `/api/oauth/callback`). Connect before expecting live calendar/Slack/CRM actions; you can try tools safely in Studio first.",
     };
   }
 

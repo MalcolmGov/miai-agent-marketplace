@@ -11,13 +11,13 @@ type Msg = { id: string; role: "user" | "assistant"; text: string };
 const AVATAR = "/brand/miai-assistant-avatar.png";
 
 const GREETING =
-  "Hi — I can help you pick an agent, walk through rent → configure → Install (Website, App, WhatsApp), explain trust & guardrails, pricing bands, or the demo shortlist. What would you like to know?";
+  "Hi — I can help you pick an agent, walk through rent → configure → Install (Website, App, WhatsApp), explain privacy & security, pricing, or connect you with our team. What would you like to know?";
 
 const SUGGESTIONS = [
   "How do I set up an agent?",
   "Recommend an agent for bookings",
   "Privacy & security",
-  "What's on the demo shortlist?",
+  "How do tokens work?",
   "Talk to sales",
 ];
 
