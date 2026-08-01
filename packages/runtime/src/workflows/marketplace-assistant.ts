@@ -20,6 +20,20 @@ export async function runMarketplaceAssistantWorkflow(input: {
   const lower = text.toLowerCase();
   const toolCalls: Array<{ name: string; args: Record<string, unknown>; result: unknown }> = [];
 
+  if (
+    /who (is|are)|what is myinstant|about myinstant|what('s| is) this (product|platform|marketplace)/i.test(
+      lower,
+    ) ||
+    /myinstantai\??$/.test(lower.trim())
+  ) {
+    return {
+      handled: true,
+      toolCalls,
+      assistantMessage:
+        "MyInstantAI is the platform behind prepaid AI access and this Agent Marketplace — where businesses rent, configure, and deploy ready-made AI agents on their website, app, and WhatsApp. Browse the catalogue on / anytime, or tell me what you need an agent to do and I’ll recommend a fit.",
+    };
+  }
+
   const leadMatch =
     /(?:sales|enterprise|partnership|security questionnaire|quote|purchase|buy)/i.test(lower) &&
     (/@/.test(text) || /[\d]{7,}/.test(text) || /i am |i'm |my name/i.test(text));

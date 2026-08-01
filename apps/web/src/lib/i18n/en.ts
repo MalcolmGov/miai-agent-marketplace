@@ -131,7 +131,7 @@ export const en = {
 
   "request.receivedTitle": "Request received",
   "request.receivedBody":
-    "We logged {id} into the operator pipeline. Move Digital + MyInstantAI will scope it against the catalogue and your tenancy.",
+    "We logged {id} into the operator pipeline. The MyInstantAI team will scope it against the catalogue and your tenancy.",
   "request.submitAnother": "Submit another",
   "request.openAdmin": "Open Agent Admin",
   "request.backCatalogue": "Back to catalogue",

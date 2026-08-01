@@ -131,7 +131,7 @@ export const zh: Dictionary = {
 
   "request.receivedTitle": "请求已收到",
   "request.receivedBody":
-    "我们已将 {id} 记录到运营流程。Move Digital + MyInstantAI 将根据目录和您的租户进行范围评估。",
+    "我们已将 {id} 记录到运营流程。MyInstantAI 将根据目录和您的租户进行范围评估。",
   "request.submitAnother": "再提交一个",
   "request.openAdmin": "打开智能体管理",
   "request.backCatalogue": "返回目录",

@@ -133,7 +133,7 @@ export const hi: Dictionary = {
 
   "request.receivedTitle": "अनुरोध प्राप्त",
   "request.receivedBody":
-    "हमने {id} को ऑपरेटर पाइपलाइन में दर्ज किया। Move Digital + MyInstantAI इसे कैटलॉग और आपकी tenancy के अनुसार स्कोप करेंगे।",
+    "हमने {id} को ऑपरेटर पाइपलाइन में दर्ज किया। MyInstantAI इसे कैटलॉग और आपकी tenancy के अनुसार स्कोप करेंगे।",
   "request.submitAnother": "एक और जमा करें",
   "request.openAdmin": "एजेंट एडमिन खोलें",
   "request.backCatalogue": "कैटलॉग पर वापस",

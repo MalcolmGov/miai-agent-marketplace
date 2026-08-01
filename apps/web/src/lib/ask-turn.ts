@@ -139,7 +139,10 @@ export async function runAskTurn(input: {
     },
   });
 
-  let reply = result.assistantMessage;
+  let reply = result.assistantMessage
+    // White-label: never surface delivery partners or personal names in customer chat.
+    .replace(/\bMove\s*Digital\b/gi, "MyInstantAI")
+    .replace(/\bZara\b/g, "our team");
   if (leadIds[0]) {
     reply = reply
       .replace(/LEAD-\d+/g, leadIds[0])

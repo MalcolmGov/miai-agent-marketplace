@@ -133,7 +133,7 @@ export const it: Dictionary = {
 
   "request.receivedTitle": "Richiesta ricevuta",
   "request.receivedBody":
-    "Abbiamo registrato {id} nel pipeline operatori. Move Digital + MyInstantAI lo valuteranno rispetto al catalogo e alla tua tenancy.",
+    "Abbiamo registrato {id} nel pipeline operatori. MyInstantAI lo valuteranno rispetto al catalogo e alla tua tenancy.",
   "request.submitAnother": "Invia un'altra",
   "request.openAdmin": "Apri Admin agenti",
   "request.backCatalogue": "Torna al catalogo",
