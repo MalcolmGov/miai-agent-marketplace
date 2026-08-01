@@ -77,6 +77,8 @@ export async function POST(req: Request) {
     }
 
     const mode = body.mode ?? (rental.state === "live" ? "live" : "sandbox");
+    /** Free try-before-buy: sandbox while not yet rented. */
+    const freeTry = mode === "sandbox" && rental.state === "selected";
     const knowledgeOverride = await getComposedKnowledge(
       workspaceId,
       body.agentId,
@@ -101,7 +103,7 @@ export async function POST(req: Request) {
         systemAppend: replyLanguageSystemAppend(replyLanguage),
         replyLanguage,
       },
-      { wallet: createWalletAdapter() },
+      { wallet: createWalletAdapter(), skipDebit: freeTry },
     );
 
     const nextState = result.paused
@@ -132,7 +134,11 @@ export async function POST(req: Request) {
       mode,
       replyLanguage,
       auditType: result.paused ? "paused_no_tokens" : "agent_turn",
-      extraDetail: { balance: result.balance, durationMs: Date.now() - started },
+      extraDetail: {
+        balance: result.balance,
+        durationMs: Date.now() - started,
+        freeTry,
+      },
     });
 
     trackEvent("miai.chat.turn", {
@@ -141,6 +147,7 @@ export async function POST(req: Request) {
       replyLanguage,
       paused: result.paused,
       tokensDebited: result.tokensDebited,
+      freeTry,
       toolCount: result.toolCalls.length,
       durationMs: Date.now() - started,
       correlationId,
@@ -158,6 +165,7 @@ export async function POST(req: Request) {
       messages: result.messages.filter((m) => m.role !== "tool"),
       correlationId,
       sessionId,
+      freeTry,
     });
   } catch (err) {
     trackException(err, { route: "api/chat", durationMs: Date.now() - started });

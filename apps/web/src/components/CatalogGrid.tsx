@@ -700,13 +700,15 @@ export function CatalogGrid() {
                     >
                       {t("catalog.learnMore")}
                     </button>
-                    <Link
-                      href={href}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
-                    >
-                      {t("catalog.rentSetup")}
-                      <span aria-hidden>→</span>
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href={`${href}?try=1`}
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
+                      >
+                        {t("catalog.trySandbox")}
+                        <span aria-hidden>→</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </article>
@@ -871,7 +873,10 @@ function AgentDetailModal({
           </dl>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href={href} className="btn btn-primary" onClick={onClose}>
+            <Link href={`${href}?try=1`} className="btn btn-primary" onClick={onClose}>
+              {t("catalog.trySandbox")}
+            </Link>
+            <Link href={href} className="btn btn-ghost" onClick={onClose}>
               {t("catalog.rentSetup")}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={onClose}>

@@ -15,3 +15,4 @@ data/turn-transcripts.json
 # Branded PDF previews / QA screenshots
 docs/branded-pdfs/output/preview-*.png
 docs/branded-pdfs/output/qa-*.png
+data/workspace-members.json

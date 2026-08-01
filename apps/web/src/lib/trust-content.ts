@@ -102,9 +102,9 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "Role-based access",
-        body: "Owner · admin · agent · read-only enforced on rent, wallet, configure, knowledge, OAuth, DSAR.",
+        body: "Owner · admin · agent · read-only enforced on rent, wallet, configure, knowledge, OAuth, DSAR. Workspace page manages members and roles.",
         truth: "live",
-        caveat: "UI role picker still follows IdP / x-roles header — no in-app invite matrix yet.",
+        caveat: "OIDC still trusts IdP roles until SCIM; in-app invites are token-based (no email send yet).",
       },
       {
         title: "Scoped embed keys",
@@ -237,7 +237,7 @@ export const ROADMAP_SECURITY: Array<{ when: string; item: string; status: Statu
   },
   {
     when: "Next",
-    item: "Key Vault wrapping, CSP nonce tightening, in-app role invites, anomaly alerts",
+    item: "Key Vault wrapping, CSP nonce tightening, invite email delivery / SCIM, anomaly alerts",
     status: "in_progress",
   },
   {

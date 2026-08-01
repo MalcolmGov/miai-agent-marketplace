@@ -64,10 +64,10 @@ export function SetupGuide({
   const connectDone = toolsConnected || skippedConnect;
   const steps: Step[] = [
     {
-      id: "rent",
-      title: "Rent this agent",
-      detail: "Create your workspace entitlement so you can configure and chat.",
-      done: rented,
+      id: "try",
+      title: "Try in sandbox",
+      detail: "Free while not rented — send a message with your real scenario. No tokens charged.",
+      done: triedChat,
     },
     {
       id: "knowledge",
@@ -84,10 +84,12 @@ export function SetupGuide({
       done: connectDone,
     },
     {
-      id: "try",
-      title: "Try a prompt",
-      detail: "Send a message in chat — workflow agents will propose a plan first.",
-      done: triedChat,
+      id: "rent",
+      title: rented ? "Entitlement ready" : "Rent to go live",
+      detail: rented
+        ? "Workspace entitlement is active — continue to Install for website or app."
+        : "Create your entitlement so you can embed on your website or app.",
+      done: rented,
     },
     {
       id: "install",

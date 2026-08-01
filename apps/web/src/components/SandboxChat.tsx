@@ -40,10 +40,16 @@ interface WorkflowView {
 export function SandboxChat({
   agentId,
   mode = "sandbox",
+  freeTry = false,
+  highlightTry = false,
   onFirstMessage,
 }: {
   agentId: string;
   mode?: "sandbox" | "live";
+  /** Agent not yet rented — turns are free. */
+  freeTry?: boolean;
+  /** Came from catalogue Try CTA. */
+  highlightTry?: boolean;
   onFirstMessage?: () => void;
 }) {
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -172,6 +178,11 @@ export function SandboxChat({
                   Multi-step agent
                 </span>
               ) : null}
+              {freeTry ? (
+                <span className="chip" title="No wallet debit until you rent">
+                  Free try
+                </span>
+              ) : null}
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--muted)]">
               <button
@@ -236,6 +247,12 @@ export function SandboxChat({
             )}
           </div>
         </div>
+        {(freeTry || highlightTry) && (
+          <p className="mt-2 rounded-lg border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-3 py-2 text-xs text-[var(--text)]">
+            Free sandbox try — rent to go live on your website or app. No tokens charged until you
+            rent.
+          </p>
+        )}
         {capabilityChips.length > 0 ? (
           <div
             className="mt-2.5 flex flex-wrap gap-1.5"
@@ -375,6 +392,7 @@ export function SandboxChat({
       </div>
       <div className="flex gap-2 border-t border-[var(--line)] p-3">
         <input
+          id="sandbox-chat-input"
           className="input"
           value={input}
           placeholder={

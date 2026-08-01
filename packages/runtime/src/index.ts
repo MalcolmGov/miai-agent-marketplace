@@ -1556,12 +1556,15 @@ export async function runTurn(
     onDelta?: (text: string) => void;
     /** Fired when a tool round starts so UIs can reset a partial streamed bubble. */
     onToolStart?: () => void;
+    /** Skip wallet debit (e.g. free sandbox try before rent). Still estimates tokens for metering=0. */
+    skipDebit?: boolean;
   },
 ): Promise<TurnResult> {
   const wallet = deps?.wallet ?? createWalletAdapter();
   const model = deps?.model ?? createModelAdapter();
   const onDelta = deps?.onDelta;
   const onToolStart = deps?.onToolStart;
+  const skipDebit = Boolean(deps?.skipDebit);
 
   // Fill {{business_name}} etc. so customers never see raw template tokens.
   const templateVars = buildTemplateVars(req.pkg);
@@ -1612,7 +1615,7 @@ export async function runTurn(
   ];
 
   const bal = await wallet.getBalance(req.workspaceId);
-  if (bal.tokens <= 0) {
+  if (!skipDebit && bal.tokens <= 0) {
     return {
       assistantMessage: wf(req.replyLanguage, "paused_no_tokens"),
       messages,
@@ -1666,13 +1669,15 @@ export async function runTurn(
       system.length + req.userMessage.length,
       handled.assistantMessage.length,
     );
-    const debit = await wallet.debit({
-      workspaceId: req.workspaceId,
-      amount: tokens,
-      idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
-      reason: "agent_turn",
-      agentId: req.agentId,
-    });
+    const debit = skipDebit
+      ? { ok: true as const, balance: bal.tokens, paused: false }
+      : await wallet.debit({
+          workspaceId: req.workspaceId,
+          amount: tokens,
+          idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
+          reason: "agent_turn",
+          agentId: req.agentId,
+        });
     const assistantMessage = scrubLeakedPlaceholders(
       handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
       templateVars,
@@ -1693,7 +1698,7 @@ export async function runTurn(
       assistantMessage,
       messages,
       toolCalls,
-      tokensDebited: tokens,
+      tokensDebited: skipDebit ? 0 : tokens,
       balance: debit.balance,
       state: req.state,
       paused: false,
@@ -2001,15 +2006,17 @@ export async function runTurn(
     system.length + req.userMessage.length,
     completion.content.length,
   );
-  const debit = await wallet.debit({
-    workspaceId: req.workspaceId,
-    amount: tokens,
-    idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
-    reason: "agent_turn",
-    agentId: req.agentId,
-  });
+  const debit = skipDebit
+    ? { ok: true as const, balance: bal.tokens, paused: false }
+    : await wallet.debit({
+        workspaceId: req.workspaceId,
+        amount: tokens,
+        idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
+        reason: "agent_turn",
+        agentId: req.agentId,
+      });
 
-  const paused = !debit.ok || debit.paused;
+  const paused = !skipDebit && (!debit.ok || debit.paused);
   const assistantMessage = scrubLeakedPlaceholders(completion.content, templateVars);
   if (assistantMessage !== completion.content) {
     const last = messages[messages.length - 1];
@@ -2019,7 +2026,7 @@ export async function runTurn(
     assistantMessage,
     messages,
     toolCalls,
-    tokensDebited: debit.ok ? tokens : 0,
+    tokensDebited: skipDebit ? 0 : debit.ok ? tokens : 0,
     balance: debit.balance,
     state: paused ? "paused_no_tokens" : req.state === "rented" ? "live" : req.state,
     paused,

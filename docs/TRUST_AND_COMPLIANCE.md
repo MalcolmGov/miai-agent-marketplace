@@ -31,10 +31,13 @@ Single source of truth for security and multi-region compliance claims. The in-a
 8. Enforcing CSP + security headers (`apps/web/next.config.ts`)
 9. Runtime erasure / injection defenses + Agent Studio **Test the guardrails** probes
 10. **Audit + traceability** — workspace audit events with correlation ids; full chat turn transcripts (Studio / Website / App / Ask AI) in History (`/history`); optional App Insights `miai.audit.*`
+11. **Workspace members** — invite + role management at `/workspace` (mock + demo); OIDC production still trusts IdP `roles` until SCIM
+12. **Try before rent** — free Studio sandbox while agent is `selected`; rent required for embed/app go-live
+13. **Insights economics** — tokens, display spend, and estimated savings (deflection × assumed ticket cost) on `/insights`
 
 ## Honest language
 
-**Say:** market-pack guardrails; deploy-time Azure region; human DSAR; HMAC-sealed tokens; SOC 2 planned.
+**Say:** market-pack guardrails; deploy-time Azure region; human DSAR; HMAC-sealed tokens; SOC 2 planned; estimated savings (not invoice truth).
 
 **Do not say:** SOC 2 certified; GDPR-compliant platform; EU residency guaranteed today; automated right-to-be-forgotten in chat.
 

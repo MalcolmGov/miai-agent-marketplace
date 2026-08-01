@@ -15,8 +15,11 @@ type InsightsPayload = {
     avgFirstResponseSec: number | null;
     tokensUsed: number;
     spendUsd: number;
+    estSavingsUsd: number;
+    assumedCostPerDeflectionUsd: number;
   };
   conversationSeries: Array<{ day: string; count: number }>;
+  tokenSeries: Array<{ day: string; tokens: number }>;
   channels: Array<{ id: string; label: string; pct: number }>;
   topQuestions: Array<{ q: string; count: number }>;
   byAgent: Array<{
@@ -89,13 +92,22 @@ export default function InsightsPage() {
           ) : (
             <span className="chip">Awaiting volume</span>
           )}
+          <Link href="/history" className="btn btn-ghost">
+            History
+          </Link>
+          <Link href="/ops" className="btn btn-ghost">
+            Live Ops
+          </Link>
+          <Link href="/workspace" className="btn btn-ghost">
+            Workspace
+          </Link>
           <Link href="/my-agents" className="btn btn-ghost">
             My Agents
           </Link>
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {[
           {
             label: "Conversations",
@@ -114,19 +126,20 @@ export default function InsightsPage() {
             sub: "flagged in turn audit",
           },
           {
-            label: "Avg. first response",
-            value: k.avgFirstResponseSec == null ? "—" : `${k.avgFirstResponseSec}s`,
-            sub: k.avgFirstResponseSec == null ? "not metered yet" : "24/7, no queue",
-          },
-          {
             label: "Tokens used",
             value: tokensLabel,
-            sub: "this month · audit debits",
+            sub: "this month · audit + transcripts",
           },
           {
             label: "Spend on tokens",
             value: formatUsd(k.spendUsd),
-            sub: "this month",
+            sub: "display economics · not invoice",
+          },
+          {
+            label: "Est. savings",
+            value: formatUsd(k.estSavingsUsd ?? 0),
+            sub: `estimate · $${k.assumedCostPerDeflectionUsd ?? 8}/deflection`,
+            glow: true,
           },
         ].map((card) => (
           <div
@@ -153,8 +166,8 @@ export default function InsightsPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="panel p-5 lg:col-span-2">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="panel p-5">
           <div className="mb-3 flex items-baseline justify-between gap-2">
             <h2 className="text-sm font-semibold">Conversations</h2>
             <span className="text-xs text-[var(--muted)]">last 14 days</span>
@@ -166,10 +179,24 @@ export default function InsightsPage() {
           </div>
         </div>
         <div className="panel p-5">
+          <div className="mb-3 flex items-baseline justify-between gap-2">
+            <h2 className="text-sm font-semibold">Tokens</h2>
+            <span className="text-xs text-[var(--muted)]">last 14 days</span>
+          </div>
+          <div className="h-[220px]">
+            <AreaChart
+              points={(data.tokenSeries ?? []).map((s) => ({ value: s.tokens, label: s.day }))}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="panel p-5">
           <div className="mb-4 flex items-baseline justify-between gap-2">
             <h2 className="text-sm font-semibold">Where conversations happen</h2>
           </div>
-          <p className="mb-4 text-xs text-[var(--muted)]">by agent channel, this month</p>
+          <p className="mb-4 text-xs text-[var(--muted)]">by turn channel, this month</p>
           {data.channels.length === 0 ? (
             <p className="text-sm text-[var(--muted)]">
               Channel mix appears once agents have conversation volume.
@@ -178,16 +205,16 @@ export default function InsightsPage() {
             <HBarChart rows={data.channels.map((c) => ({ label: c.label, pct: c.pct }))} />
           )}
         </div>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-5">
         <div className="panel p-5 lg:col-span-2">
           <h2 className="text-sm font-semibold">Top questions</h2>
           <p className="mb-4 mt-1 text-xs text-[var(--muted)]">what customers ask most</p>
           {data.topQuestions.length === 0 ? (
             <p className="text-sm text-[var(--muted)]">
-              Topic clustering is on the roadmap. Until then, use Live Ops audit and studio chat
-              history.
+              Topic clustering is on the roadmap. Until then, use{" "}
+              <Link href="/history" className="text-[var(--accent-bright)] hover:underline">
+                History
+              </Link>{" "}
+              and Live Ops audit.
             </p>
           ) : (
             <ul className="space-y-3">
@@ -208,8 +235,9 @@ export default function InsightsPage() {
             </ul>
           )}
         </div>
+      </div>
 
-        <div className="panel overflow-hidden lg:col-span-3">
+      <div className="panel overflow-hidden">
           <div className="flex items-baseline justify-between gap-2 border-b border-[var(--line)] px-5 py-4">
             <div>
               <h2 className="text-sm font-semibold">By agent</h2>
@@ -254,7 +282,6 @@ export default function InsightsPage() {
               </table>
             </div>
           )}
-        </div>
       </div>
     </div>
   );

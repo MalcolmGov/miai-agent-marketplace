@@ -83,6 +83,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [triedChat, setTriedChat] = useState(false);
   const [visitedInstall, setVisitedInstall] = useState(false);
   const [skippedConnect, setSkippedConnect] = useState(false);
+  const [tryMode, setTryMode] = useState(false);
 
   const hasWorkflow = isWorkflowFamilyId(agentId);
 
@@ -103,9 +104,17 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     const params = new URLSearchParams(window.location.search);
     const t = params.get("tab");
     if (t === "actions" || t === "install" || t === "configure") setTab(t);
+    const wantTry = params.get("try") === "1";
+    setTryMode(wantTry);
     setTriedChat(readSetupFlag(agentId, "tried"));
     setVisitedInstall(readSetupFlag(agentId, "install"));
     setSkippedConnect(readSetupFlag(agentId, "skip-connect"));
+    if (wantTry) {
+      window.setTimeout(() => {
+        document.getElementById("agent-chat")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("sandbox-chat-input")?.focus();
+      }, 400);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reload when agent route changes
   }, [agentId]);
 
@@ -453,7 +462,13 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           </details>
         </div>
 
-        <SandboxChat agentId={agentId} mode="sandbox" onFirstMessage={markTried} />
+        <SandboxChat
+          agentId={agentId}
+          mode="sandbox"
+          freeTry={state === "selected"}
+          highlightTry={tryMode}
+          onFirstMessage={markTried}
+        />
       </div>
     </div>
   );

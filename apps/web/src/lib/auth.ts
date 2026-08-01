@@ -32,8 +32,9 @@ function getJwks() {
 
 /**
  * Resolve workspace/user from the request.
- * - mock: body/query/header workspaceId, else demo-workspace
- * - oidc: Bearer JWT verified against MIAI_OIDC_ISSUER JWKS
+ * - mock: body/query/header workspaceId, else demo-workspace; roles from header/env,
+ *   overridden by workspace member store when an active member matches userId
+ * - oidc: Bearer JWT verified against MIAI_OIDC_ISSUER JWKS (IdP roles until SCIM)
  */
 export async function resolveAuth(req: Request): Promise<AuthContext> {
   const mode = authMode();
@@ -43,15 +44,32 @@ export async function resolveAuth(req: Request): Promise<AuthContext> {
     const headerUser = req.headers.get("x-user-id");
     const headerRoles = req.headers.get("x-roles");
     const envRoles = env("MIAI_MOCK_ROLES");
-    const roles = headerRoles
+    let roles = headerRoles
       ? headerRoles.split(",").map((r) => r.trim()).filter(Boolean)
       : envRoles
         ? envRoles.split(",").map((r) => r.trim()).filter(Boolean)
         : ["owner", "operator"];
+    const workspaceId = headerWs || url.searchParams.get("workspaceId") || WORKSPACE_ID;
+    const userId = headerUser || url.searchParams.get("userId") || "demo-user";
+
+    try {
+      const { roleFromMembers } = await import("@/lib/workspace-members");
+      const memberRole = await roleFromMembers(workspaceId, userId);
+      if (memberRole) {
+        // Keep platform operator if already present; replace workspace role from store
+        const platform = roles.filter((r) =>
+          ["operator", "platform_admin", "miai_admin"].includes(r.toLowerCase()),
+        );
+        roles = [memberRole, ...platform];
+      }
+    } catch {
+      /* member store optional at boot */
+    }
+
     return {
       mode: "mock",
-      workspaceId: headerWs || url.searchParams.get("workspaceId") || WORKSPACE_ID,
-      userId: headerUser || url.searchParams.get("userId") || "demo-user",
+      workspaceId,
+      userId,
       roles,
     };
   }

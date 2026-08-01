@@ -159,6 +159,7 @@ const GROUPS: NavGroup[] = [
       { id: "ask", href: "/ask", labelKey: "nav.askAi", icon: <IconSpark /> },
       { id: "search", href: "/#catalogue", labelKey: "nav.search", icon: <IconSearch /> },
       { id: "history", href: "/history", labelKey: "nav.history", icon: <IconHistory /> },
+      { id: "workspace", href: "/workspace", labelKey: "nav.workspace", icon: <IconAdmin /> },
     ],
   },
   {
