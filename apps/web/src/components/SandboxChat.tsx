@@ -43,6 +43,7 @@ export function SandboxChat({
   const isEA = /executive-assistant/i.test(agentId);
   const isIT = /it-helpdesk/i.test(agentId);
   const isBooking = /salon-booking|trades-receptionist|home-services/i.test(agentId);
+  const isSales = /sales-qualifier/i.test(agentId);
 
   async function clearChat() {
     if (busy || clearing) return;
@@ -146,7 +147,9 @@ export function SandboxChat({
                   ? /salon/i.test(agentId)
                     ? "Try: “Can I get a men’s cut this Saturday?” · “Book the 10am skin fade with Riaan — Name’s Sipho, 555-0100.”"
                     : "Try: “Can I get an AC diagnostic this Thursday?” · “Book drain clearing Thursday 10:00 for Lea, +491701112233, Invalidenstr. 12 Berlin.”"
-                  : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
+                  : isSales
+                    ? "Try: “What does your Growth plan include and roughly what does it cost?” · “Call me Thursday afternoon on 555-0100 about Growth.” · “I’m Thabo from Nkosi Trading…”"
+                    : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
           </p>
         )}
         {messages.map((m, i) => (
@@ -198,12 +201,14 @@ export function SandboxChat({
           placeholder={
             paused
               ? "Top up to continue…"
-              : (isEA || isIT || isBooking) && workflow?.status === "proposed"
+              : (isEA || isIT || isBooking || isSales) && workflow?.status === "proposed"
                 ? isIT
                   ? "Yes, go ahead."
                   : isBooking
                     ? "Yes, please book it."
-                    : "Yes — please set it up…"
+                    : isSales
+                      ? "Please book the call."
+                      : "Yes — please set it up…"
                 : "Message the agent…"
           }
           disabled={busy || paused}

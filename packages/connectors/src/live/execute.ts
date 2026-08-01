@@ -150,6 +150,26 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       source: "sandbox_stub",
     };
   }
+  if (n.includes("send_info") || n === "send_info") {
+    return {
+      ok: true,
+      topic: args.topic ?? args.plan ?? "plans",
+      blurb:
+        "Approved plan info on file — Growth is the mid-tier for growing teams with cash-flow dashboards and standard integrations. Share published ranges from knowledge; not an exact quote.",
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("capture_lead") || n === "capture_lead") {
+    return {
+      ok: true,
+      reference: "LEAD-4821",
+      status: "captured",
+      name: args.name,
+      email: args.email,
+      company: args.company,
+      source: "sandbox_stub",
+    };
+  }
   if (n.includes("ticket") || n.includes("lead") || n.includes("capture") || n.includes("application"))
     return { ok: true, reference: "APP-4821", status: "captured", ...args };
   if (n.includes("handoff")) return { routed: true, queue: "human_desk" };
@@ -357,8 +377,18 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
     return { ok: true, note: "Relay deadlines from knowledge.", source: "sandbox_stub" };
   if (n.includes("document"))
     return { ok: true, note: "Relay required documents from knowledge.", source: "sandbox_stub" };
-  if (n.includes("callback"))
-    return { ok: true, reference: "CB-1001", status: "booked", ...args };
+  if (n.includes("callback") || n === "book_callback")
+    return {
+      ok: true,
+      booked: true,
+      reference: "CB-1001",
+      booking_ref: "CB-1001",
+      status: "booked",
+      datetime: args.datetime ?? "Thursday afternoon",
+      phone: args.phone,
+      source: "sandbox_stub",
+      ...args,
+    };
   return { ok: true, reference: "REF-0001", echo: args };
 }
 

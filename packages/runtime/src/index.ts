@@ -17,6 +17,7 @@ import {
   isBookingFrontDesk,
   runBookingFrontDeskWorkflow,
 } from "./workflows/booking-front-desk.js";
+import { isSalesQualifier, runSalesQualifierWorkflow } from "./workflows/sales-qualifier.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -1312,6 +1313,20 @@ export async function runTurn(
       executeTool,
     });
     const done = await finishWorkflow(bk);
+    if (done) return done;
+  }
+
+  // Sales Qualifier multi-step workflow
+  if (isSalesQualifier(req.agentId)) {
+    const sq = await runSalesQualifierWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(sq);
     if (done) return done;
   }
 

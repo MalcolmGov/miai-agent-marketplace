@@ -1,103 +1,39 @@
 {
-  "generatedAt": "2026-08-01T04:36:34.821Z",
+  "generatedAt": "2026-08-01T04:40:49.989Z",
   "mode": "static+mock-runtime",
   "tokenCost": 0,
   "agents": [
     {
-      "id": "africa-home-services",
-      "family": "home-services",
-      "market": "africa",
-      "category": "vertical",
-      "evalCount": 18,
-      "staticIssues": [],
-      "driftCount": 0,
-      "runtimeFailed": 0,
-      "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": []
-    },
-    {
-      "id": "asia-home-services",
-      "family": "home-services",
+      "id": "asia-sales-qualifier",
+      "family": "sales-qualifier",
       "market": "asia",
-      "category": "vertical",
-      "evalCount": 18,
+      "category": "sales",
+      "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
       "runtimeFailed": 0,
-      "runtimeTotal": 18,
+      "runtimeTotal": 21,
       "failedCaseIds": [],
       "sampleFailures": []
     },
     {
-      "id": "eu-home-services",
-      "family": "home-services",
+      "id": "eu-sales-qualifier",
+      "family": "sales-qualifier",
       "market": "eu",
-      "category": "vertical",
-      "evalCount": 18,
+      "category": "sales",
+      "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
       "runtimeFailed": 0,
-      "runtimeTotal": 18,
+      "runtimeTotal": 21,
       "failedCaseIds": [],
       "sampleFailures": []
     },
     {
-      "id": "eu-trades-receptionist",
-      "family": "trades-receptionist",
-      "market": "eu",
-      "category": "vertical",
-      "evalCount": 18,
-      "staticIssues": [
-        {
-          "severity": "high",
-          "kind": "knowledge_eval_drift",
-          "detail": "french-booking: none of says_any found in knowledge (rendez-vous | jour | heure)"
-        }
-      ],
-      "driftCount": 1,
-      "runtimeFailed": 0,
-      "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": []
-    },
-    {
-      "id": "salon-booking",
-      "family": "salon-booking",
+      "id": "sales-qualifier",
+      "family": "sales-qualifier",
       "market": "africa",
-      "category": "vertical",
-      "evalCount": 19,
-      "staticIssues": [
-        {
-          "severity": "high",
-          "kind": "knowledge_eval_drift",
-          "detail": "zulu-booking: none of says_any found in knowledge (ukugundwa | isikhathi | bhukha)"
-        }
-      ],
-      "driftCount": 1,
-      "runtimeFailed": 0,
-      "runtimeTotal": 19,
-      "failedCaseIds": [],
-      "sampleFailures": []
-    },
-    {
-      "id": "us-home-services",
-      "family": "home-services",
-      "market": "us",
-      "category": "vertical",
-      "evalCount": 18,
-      "staticIssues": [],
-      "driftCount": 0,
-      "runtimeFailed": 0,
-      "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": []
-    },
-    {
-      "id": "us-salon-booking",
-      "family": "salon-booking",
-      "market": "us",
-      "category": "vertical",
+      "category": "sales",
       "evalCount": 20,
       "staticIssues": [],
       "driftCount": 0,
@@ -105,36 +41,33 @@
       "runtimeTotal": 20,
       "failedCaseIds": [],
       "sampleFailures": []
+    },
+    {
+      "id": "us-sales-qualifier",
+      "family": "sales-qualifier",
+      "market": "us",
+      "category": "sales",
+      "evalCount": 21,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 21,
+      "failedCaseIds": [],
+      "sampleFailures": []
     }
   ],
-  "totalEvalsRun": 129,
-  "runtimePass": 129,
+  "totalEvalsRun": 83,
+  "runtimePass": 83,
   "runtimeFail": 0,
-  "staticHighIssues": 2,
+  "staticHighIssues": 0,
   "passRate": 100,
   "topFamilies": [
     {
-      "family": "trades-receptionist",
-      "agents": 1,
-      "drift": 1,
-      "runtimeFail": 0,
-      "runtimeTotal": 18,
-      "staticHigh": 1
-    },
-    {
-      "family": "salon-booking",
-      "agents": 2,
-      "drift": 1,
-      "runtimeFail": 0,
-      "runtimeTotal": 39,
-      "staticHigh": 1
-    },
-    {
-      "family": "home-services",
+      "family": "sales-qualifier",
       "agents": 4,
       "drift": 0,
       "runtimeFail": 0,
-      "runtimeTotal": 72,
+      "runtimeTotal": 83,
       "staticHigh": 0
     }
   ]

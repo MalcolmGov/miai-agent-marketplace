@@ -62,6 +62,17 @@ const tradesBooking = (
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+const salesQualifier = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+  handoff: "slack" | "teams" = "slack",
+): ToolBinding[] => [
+  { tool: "send_info", connector: "webhook" },
+  { tool: "capture_lead", connector: "hubspot" },
+  { tool: "book_callback", connector: calendar },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_order_status", connector: "shopify" },
   { tool: "check_availability", connector: "shopify" },
@@ -253,6 +264,31 @@ const HAND_OVERRIDES: AgentPreset[] = [
     pilot: true,
     phase: 1,
     bindings: itHelpdesk("teams"),
+  },
+  // Multi-workflow Sales Qualifier — HubSpot lead + calendar callback + Slack notify
+  {
+    agentId: "us-sales-qualifier",
+    pilot: true,
+    phase: 1,
+    bindings: salesQualifier("google_calendar", "slack"),
+  },
+  {
+    agentId: "sales-qualifier",
+    pilot: true,
+    phase: 1,
+    bindings: salesQualifier("google_calendar", "slack"),
+  },
+  {
+    agentId: "asia-sales-qualifier",
+    pilot: true,
+    phase: 1,
+    bindings: salesQualifier("google_calendar", "slack"),
+  },
+  {
+    agentId: "eu-sales-qualifier",
+    pilot: true,
+    phase: 1,
+    bindings: salesQualifier("m365_calendar", "teams"),
   },
 ];
 
