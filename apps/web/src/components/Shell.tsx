@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { MarketplaceAssistant } from "./marketplace-assistant/MarketplaceAssistant";
 import { Sidebar } from "./Sidebar";
 import { ThemeToggle } from "./ThemeToggle";
 import { TopUpModal } from "./TopUpModal";
@@ -30,6 +31,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const isHome = pathname === "/";
   /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
   const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
+  /** Full-page Ask AI — skip floating FAB duplicate. */
+  const isAskPage = pathname === "/ask" || pathname.startsWith("/ask/");
 
   if (isAppChannel) {
     return <>{children}</>;
@@ -95,6 +98,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
           setTopUpOpen(false);
         }}
       />
+
+      {!isAskPage && <MarketplaceAssistant mode="floating" />}
     </div>
   );
 }

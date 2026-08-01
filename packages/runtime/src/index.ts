@@ -31,6 +31,10 @@ import {
   runDentalFrontDeskWorkflow,
 } from "./workflows/dental-front-desk.js";
 import { isHotelGuest, runHotelGuestWorkflow } from "./workflows/hotel-guest.js";
+import {
+  isMarketplaceAssistant,
+  runMarketplaceAssistantWorkflow,
+} from "./workflows/marketplace-assistant.js";
 import { wf } from "./workflows/i18n.js";
 import {
   applyTemplateVars,
@@ -1709,6 +1713,18 @@ export async function runTurn(
         : undefined,
     };
   };
+
+  // First-party marketplace Ask AI (product guide + leads)
+  if (isMarketplaceAssistant(req.agentId)) {
+    const handled = await finishWorkflow(
+      await runMarketplaceAssistantWorkflow({
+        userMessage: req.userMessage,
+        executeTool,
+        replyLanguage: req.replyLanguage,
+      }),
+    );
+    if (handled) return handled;
+  }
 
   // Executive Assistant multi-step workflow
   if (isExecutiveAssistant(req.agentId)) {

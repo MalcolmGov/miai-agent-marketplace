@@ -28,6 +28,7 @@
     "test:wallet": "pnpm --filter @miai/wallet-adapter test",
     "validate:azure": "bash scripts/validate-azure.sh",
     "smoke:cutover": "node scripts/cutover-smoke.mjs",
-    "demo:app": "pnpm --dir apps/mobile-shell start"
+    "demo:app": "pnpm --dir apps/mobile-shell start",
+    "generate:ask-digest": "node scripts/generate-marketplace-digest.mjs"
   }
 }

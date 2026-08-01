@@ -1,0 +1,323 @@
+.miai-ask {
+  --ask-bg: #121212;
+  --ask-panel: #161616;
+  --ask-bubble: #1e1e1e;
+  --ask-accent: #4fd1c5;
+  --ask-accent-dim: #2bb8a8;
+  --ask-text: #f5f5f5;
+  --ask-muted: #9e9e9e;
+  --ask-border: rgba(255, 255, 255, 0.08);
+  color: var(--ask-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.miai-ask-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 80;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(79, 209, 197, 0.35);
+  display: grid;
+  place-items: center;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.miai-ask-fab:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(79, 209, 197, 0.55);
+}
+
+.miai-ask-fab img {
+  width: 2.15rem;
+  height: 2.15rem;
+  object-fit: contain;
+}
+
+.miai-ask-dock {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 5.25rem;
+  z-index: 80;
+  width: min(380px, calc(100vw - 1.5rem));
+  height: min(560px, calc(100vh - 7rem));
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ask-bg);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  animation: miai-ask-in 0.22s ease;
+}
+
+@keyframes miai-ask-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.miai-ask-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
+  max-width: 720px;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ask-bg);
+  box-shadow: 0 0 0 1px var(--ask-border);
+}
+
+.miai-ask-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: #0e0e0e;
+  border-bottom: 1px solid var(--ask-border);
+  flex-shrink: 0;
+}
+
+.miai-ask-ava {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: #000;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.miai-ask-ava img {
+  width: 1.85rem;
+  height: 1.85rem;
+  object-fit: contain;
+}
+
+.miai-ask-ttl {
+  flex: 1;
+  min-width: 0;
+}
+
+.miai-ask-ttl b {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ask-text);
+}
+
+.miai-ask-ttl span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ask-muted);
+  margin-top: 0.1rem;
+}
+
+.miai-ask-x {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--ask-text);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.35rem;
+  opacity: 0.75;
+}
+
+.miai-ask-x:hover {
+  opacity: 1;
+}
+
+.miai-ask-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--ask-panel);
+}
+
+.miai-ask-m {
+  max-width: 92%;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.miai-ask-a {
+  align-self: flex-start;
+  background: var(--ask-bubble);
+  color: var(--ask-text);
+}
+
+.miai-ask-u {
+  align-self: flex-end;
+  background: rgba(79, 209, 197, 0.16);
+  color: var(--ask-text);
+  border: 1px solid rgba(79, 209, 197, 0.28);
+}
+
+.miai-ask-m a {
+  color: var(--ask-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.miai-ask-typing {
+  align-self: flex-start;
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--ask-bubble);
+  border-radius: 14px;
+}
+
+.miai-ask-typing i {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--ask-muted);
+  display: block;
+  animation: miai-ask-dot 1s infinite ease-in-out;
+}
+
+.miai-ask-typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.miai-ask-typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes miai-ask-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+.miai-ask-err {
+  margin: 0 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(220, 80, 80, 0.15);
+  color: #ffb4b4;
+  font-size: 0.8rem;
+}
+
+.miai-ask-sugs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 1rem 0.65rem;
+  background: var(--ask-panel);
+}
+
+.miai-ask-chip {
+  appearance: none;
+  border: 1px solid rgba(79, 209, 197, 0.35);
+  background: rgba(79, 209, 197, 0.08);
+  color: var(--ask-text);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.miai-ask-chip:hover:not(:disabled) {
+  background: rgba(79, 209, 197, 0.16);
+}
+
+.miai-ask-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.miai-ask-composer {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1rem 1rem;
+  background: #0e0e0e;
+  border-top: 1px solid var(--ask-border);
+  flex-shrink: 0;
+}
+
+.miai-ask-input {
+  flex: 1;
+  height: 2.75rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--ask-accent);
+  background: #0a0a0a;
+  color: var(--ask-text);
+  padding: 0 0.9rem;
+  font-size: 16px;
+  outline: none;
+  font-family: inherit;
+}
+
+.miai-ask-input::placeholder {
+  color: var(--ask-muted);
+}
+
+.miai-ask-input:disabled {
+  opacity: 0.6;
+}
+
+.miai-ask-send {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--ask-accent);
+  color: #102a27;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.miai-ask-send:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.miai-ask-send svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  stroke: #102a27;
+  fill: #102a27;
+  stroke-width: 1.5;
+}
+
+@media (max-width: 640px) {
+  .miai-ask-dock {
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    bottom: 5rem;
+  }
+}
