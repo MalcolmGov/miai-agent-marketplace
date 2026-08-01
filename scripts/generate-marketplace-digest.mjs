@@ -25,19 +25,10 @@ const lines = [
   "",
   `Total families: ${families.length}. Each ships in US / EU / Africa / Asia packs (220 agents).`,
   "",
-  "## Demo shortlist (6 of 220)",
-  "",
-  "Used on `/demo` for meeting depth. License still covers the full catalogue.",
+  // Skip demo shortlist — customer-facing Ask AI should not surface internal shortlists.
+  "## All families",
   "",
 ];
-
-for (const f of families.filter((x) => DEMO.has(x.id))) {
-  const agentId = f.markets?.us || Object.values(f.markets || {})[0] || f.id;
-  lines.push(
-    `- **${f.name}** (\`${f.id}\`) — ${f.summary} Channels: ${(f.channels || []).join(", ")}. Open: /agents/${agentId}`,
-  );
-}
-lines.push("", "## All families", "");
 for (const f of [...families].sort((a, b) => a.name.localeCompare(b.name))) {
   const markets = Object.keys(f.markets || {}).join(", ");
   const agentId = f.markets?.us || Object.values(f.markets || {})[0] || f.id;

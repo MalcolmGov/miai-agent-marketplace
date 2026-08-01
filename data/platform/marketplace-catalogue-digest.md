@@ -2,17 +2,6 @@
 
 Total families: 55. Each ships in US / EU / Africa / Asia packs (220 agents).
 
-## Demo shortlist (6 of 220)
-
-Used on `/demo` for meeting depth. License still covers the full catalogue.
-
-- **Dental Front Desk** (`dental-front-desk`) — Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across… Channels: whatsapp, web, app, sms. Open: /agents/us-dental-front-desk
-- **Executive Assistant** (`executive-assistant`) — Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when… Channels: whatsapp, web, app. Open: /agents/us-executive-assistant
-- **Home Services Front Desk** (`home-services`) — Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap… Channels: whatsapp, web, app, sms. Open: /agents/us-home-services
-- **Hotel Guest Concierge** (`hotel-guest`) — Africa Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, … Channels: whatsapp, web, app, sms. Open: /agents/us-hotel-guest
-- **IT Helpdesk** (`it-helpdesk`) — Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a… Channels: whatsapp, web, app. Open: /agents/us-it-helpdesk
-- **Sales Qualifier** (`sales-qualifier`) — Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge. Channels: whatsapp, web, app. Open: /agents/us-sales-qualifier
-
 ## All families
 
 ### Accounting Practice
