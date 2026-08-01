@@ -3,11 +3,14 @@ import { saveToken, type ConnectorId } from "@miai/connectors";
 import { getPreset } from "@miai/presets";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 /** Store API-key / webhook / MCP credentials (non-OAuth connectors). */
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "admin");
+  if (forbidden) return forbidden;
 
   const body = (await req.json()) as {
     agentId: string;

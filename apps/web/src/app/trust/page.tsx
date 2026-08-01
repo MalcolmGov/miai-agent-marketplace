@@ -87,6 +87,8 @@ function PillarIcon({ pillar }: { pillar: Pillar }) {
 
 export default function TrustPage() {
   const [events, setEvents] = useState<AuditEvent[] | null>(null);
+  const [dsarBusy, setDsarBusy] = useState(false);
+  const [dsarError, setDsarError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/audit?limit=6")
@@ -94,6 +96,29 @@ export default function TrustPage() {
       .then((d) => setEvents(d.events ?? []))
       .catch(() => setEvents([]));
   }, []);
+
+  async function downloadDsar() {
+    setDsarBusy(true);
+    setDsarError(null);
+    try {
+      const res = await fetch("/api/dsar/export");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error ?? `Export failed (${res.status})`);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `miai-dsar-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setDsarError(e instanceof Error ? e.message : "Export failed");
+    } finally {
+      setDsarBusy(false);
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -197,9 +222,9 @@ export default function TrustPage() {
           <div>
             <p className="text-sm font-semibold">See it live</p>
             <p className="mt-1 max-w-2xl text-sm text-[var(--muted)]">
-              Open any agent&apos;s studio chat and try a prompt-injection or “delete all my data”
-              request — watch it refuse cross-tenant leakage, stay grounded, and escalate erasure to a
-              human.
+              Open any agent&apos;s studio chat and tap <strong>Test the guardrails</strong> — watch it
+              block a prompt-injection attack, refuse cross-tenant data, and escalate an erasure
+              request to a human, in real time.
             </p>
           </div>
         </div>
@@ -239,8 +264,25 @@ export default function TrustPage() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="panel p-5">
-          <h2 className="text-sm font-semibold uppercase tracking-wider">Workspace audit (live)</h2>
-          <p className="mt-1 text-xs text-[var(--muted)]">This workspace only — never cross-tenant.</p>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider">
+                Workspace audit &amp; DSAR
+              </h2>
+              <p className="mt-1 text-xs text-[var(--muted)]">
+                This workspace only — never cross-tenant. Owners/admins can export a DSAR JSON pack.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn-ghost text-xs"
+              disabled={dsarBusy}
+              onClick={() => void downloadDsar()}
+            >
+              {dsarBusy ? "Exporting…" : "Download DSAR export"}
+            </button>
+          </div>
+          {dsarError ? <p className="mt-2 text-xs text-[var(--warn,#fb923c)]">{dsarError}</p> : null}
           {events == null ? (
             <p className="mt-4 text-sm text-[var(--muted)]">Loading…</p>
           ) : events.length === 0 ? (

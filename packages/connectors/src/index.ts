@@ -38,8 +38,10 @@ export {
   getToken,
   deleteToken,
   listConnected,
+  listTokenMeta,
   updateTokenFields,
   type StoredToken,
+  type TokenMeta,
 } from "./oauth/tokens.js";
 
 export { executeLive, stubFor } from "./live/execute.js";

@@ -3,12 +3,15 @@ import { addKnowledgeSource } from "@/lib/knowledge";
 import { fileToText } from "@/lib/ingest";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "agent");
+  if (forbidden) return forbidden;
 
   const form = await req.formData();
   const agentId = String(form.get("agentId") ?? "");

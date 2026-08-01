@@ -2,12 +2,15 @@ import { NextResponse } from "next/server";
 import { createWalletAdapter, type TopUpRequest } from "@miai/wallet-adapter";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "readonly");
+  if (forbidden) return forbidden;
   const q = new URL(req.url).searchParams.get("workspaceId");
   const workspaceId = auth.mode === "oidc" ? auth.workspaceId : (q ?? auth.workspaceId);
   const bal = await createWalletAdapter().getBalance(workspaceId);
@@ -17,6 +20,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "admin");
+  if (forbidden) return forbidden;
 
   const body = (await req.json()) as {
     workspaceId?: string;

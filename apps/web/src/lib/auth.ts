@@ -42,9 +42,12 @@ export async function resolveAuth(req: Request): Promise<AuthContext> {
     const headerWs = req.headers.get("x-workspace-id");
     const headerUser = req.headers.get("x-user-id");
     const headerRoles = req.headers.get("x-roles");
+    const envRoles = env("MIAI_MOCK_ROLES");
     const roles = headerRoles
       ? headerRoles.split(",").map((r) => r.trim()).filter(Boolean)
-      : ["admin"];
+      : envRoles
+        ? envRoles.split(",").map((r) => r.trim()).filter(Boolean)
+        : ["owner", "operator"];
     return {
       mode: "mock",
       workspaceId: headerWs || url.searchParams.get("workspaceId") || WORKSPACE_ID,

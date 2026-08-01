@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { deleteToken, isOAuthConnector } from "@miai/connectors";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export async function POST(
   req: Request,
@@ -9,6 +10,8 @@ export async function POST(
 ) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "admin");
+  if (forbidden) return forbidden;
 
   const { connector } = await ctx.params;
   const body = (await req.json().catch(() => ({}))) as {

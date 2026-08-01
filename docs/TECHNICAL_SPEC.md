@@ -388,7 +388,7 @@ Examples: `us-customer-support.agent.json`, `africa-dental-front-desk.agent.json
 | Store | Mechanism |
 |---|---|
 | Rentals + audit | Postgres (`miai_rentals`, `miai_audit`) or `rentals.json` (audit cap 5k) |
-| OAuth tokens | **HMAC-sealed** blobs in `oauth-tokens.json` (integrity + encoding — **not** AES encryption; AES-GCM planned) |
+| OAuth tokens | **AES-256-GCM** (`v2.`) in `oauth-tokens.json`; legacy `v1.` HMAC seals still readable and re-encrypted on persist |
 | Knowledge sources | File store under `KNOWLEDGE_STORE_PATH` |
 | OAuth state | Self-contained HMAC signature (no server session required) |
 | Embed keys | Deterministic HMAC (`mia_pk_…`) — embed chat requires live/rented agent + rate limit |
@@ -396,9 +396,9 @@ Examples: `us-customer-support.agent.json`, `africa-dental-front-desk.agent.json
 
 Auth middleware: Bearer required on `/api/*` when `MIAI_AUTH_MODE=oidc` (public: health, catalog, oauth callback, embed).
 
-RBAC: `/api/admin` requires `admin` / `operator` roles. `/api/audit` is always workspace-scoped (no cross-tenant dump).
+RBAC: workspace roles `owner|admin|agent|readonly` on mutating APIs; `/api/admin` requires platform `operator` (mock owners allowed for demos). `/api/audit` and `/api/dsar/export` are workspace-scoped.
 
-Security headers: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, CSP Report-Only (`apps/web/next.config.ts`).
+Security headers: enforcing `Content-Security-Policy` plus nosniff / referrer / frame / permissions (`apps/web/next.config.ts`).
 
 Trust Center: `/trust` + `docs/TRUST_AND_COMPLIANCE.md` — market-pack compliance vs platform certification claims.
 

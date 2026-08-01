@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { deleteKnowledgeSource } from "@/lib/knowledge";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export async function DELETE(
   req: Request,
@@ -9,6 +10,8 @@ export async function DELETE(
 ) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "agent");
+  if (forbidden) return forbidden;
 
   const { id } = await ctx.params;
   const url = new URL(req.url);

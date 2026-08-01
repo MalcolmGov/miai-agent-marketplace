@@ -19,7 +19,7 @@ export const HERO_BADGES: Array<{ label: string; truth: Truth; note: string }> =
   {
     label: "GDPR-ready",
     truth: "live",
-    note: "EU packs + erasure language → human handoff (not automated deletion)",
+    note: "EU packs + erasure language → human handoff; DSAR JSON export for owners/admins",
   },
   {
     label: "PCI-DSS (via provider)",
@@ -37,14 +37,13 @@ export type PillarItem = {
   title: string;
   body: string;
   truth: Truth;
-  /** Short honest caveat shown under the claim */
   caveat?: string;
 };
 
 export type Pillar = {
   id: string;
   title: string;
-  accent: string; // CSS color
+  accent: string;
   accentSoft: string;
   icon: "lock" | "key" | "shield" | "building";
   items: PillarItem[];
@@ -65,21 +64,21 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "Encryption in transit & at rest",
-        body: "TLS on the host edge · OAuth tokens HMAC-sealed server-side.",
-        truth: "partial",
-        caveat: "AES-256-GCM at rest + Key Vault land on the Azure cutover — not claiming full AES-256 everywhere today.",
+        body: "TLS on the host edge · OAuth tokens encrypted with AES-256-GCM at rest (v2 envelopes).",
+        truth: "live",
+        caveat: "Legacy v1 HMAC seals still open for migration; Azure Key Vault wrapping is next.",
       },
       {
         title: "PII minimisation",
-        body: "Agents are instructed to collect only what the task needs; connector secrets never enter prompts.",
+        body: "Agents collect only what the task needs; connector secrets never enter prompts.",
         truth: "partial",
-        caveat: "No automated PII redaction pipeline yet — guardrails + prompt policy, not a scrubber.",
+        caveat: "No automated PII redaction scrubber yet — guardrails + prompt policy.",
       },
       {
         title: "Retention & erasure",
-        body: "GDPR/CCPA/POPIA erasure language is detected and escalated to a human.",
-        truth: "partial",
-        caveat: "Not one-click automated deletion yet — human DSAR path is live; self-serve export is planned.",
+        body: "DSAR JSON export for owners/admins · erasure language escalates to a human.",
+        truth: "live",
+        caveat: "Destructive wipe remains a human-approved offboarding step — not one-click delete in chat.",
       },
     ],
   },
@@ -103,13 +102,13 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "Role-based access",
-        body: "Operator surfaces (Agent Admin) require admin / operator roles.",
-        truth: "partial",
-        caveat: "Full Owner · admin · agent · read-only matrix is the next RBAC pass.",
+        body: "Owner · admin · agent · read-only enforced on rent, wallet, configure, knowledge, OAuth, DSAR.",
+        truth: "live",
+        caveat: "UI role picker still follows IdP / x-roles header — no in-app invite matrix yet.",
       },
       {
         title: "Scoped embed keys",
-        body: "Per workspace + agent, HMAC-bound, revocable by going offline — never used as browser secrets for connectors.",
+        body: "Per workspace + agent, HMAC-bound, rate-limited — only live/rented agents serve chat.",
         truth: "live",
       },
     ],
@@ -128,7 +127,7 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "Prompt-injection defense",
-        body: "Guardrail docs + runtime checks ignore malicious “ignore your instructions” style attacks.",
+        body: "Guardrail docs + runtime checks · “Test the guardrails” probes in Agent Studio.",
         truth: "live",
       },
       {
@@ -153,15 +152,15 @@ export const PILLARS: Pillar[] = [
     items: [
       {
         title: "Secrets stay server-side",
-        body: "Connector credentials and API keys never ship to the browser — proven in this build.",
+        body: "Connector credentials encrypted at rest and never shipped to the browser.",
         truth: "live",
-        caveat: "Azure Key Vault is on the deploy path; staging uses env / sealed file store.",
+        caveat: "Azure Key Vault is on the deploy path; staging uses env + encrypted file store.",
       },
       {
         title: "Full audit trail",
-        body: "Rent, chat, embed, OAuth, knowledge, and wallet events recorded per workspace.",
+        body: "Rent, chat, embed, OAuth, knowledge, wallet, and DSAR export events per workspace.",
         truth: "live",
-        caveat: "Operational trail today — immutable / tamper-evident export planned with SOC 2 evidence.",
+        caveat: "Operational trail today — immutable export planned with SOC 2 evidence.",
       },
       {
         title: "Rate limits & spend caps",
@@ -170,10 +169,9 @@ export const PILLARS: Pillar[] = [
         caveat: "Richer per-tenant quota UI and anomaly alerts are next.",
       },
       {
-        title: "Anomaly detection",
-        body: "Unusual usage flagged for operators in real time.",
-        truth: "planned",
-        caveat: "Not live yet — Live Ops + audit give the raw signal today.",
+        title: "Security headers + CSP",
+        body: "Enforcing Content-Security-Policy plus nosniff, frame, referrer, and permissions policies.",
+        truth: "live",
       },
     ],
   },
@@ -206,7 +204,7 @@ export const REGION_PACKS: Array<{
     emergency: "112",
     channels: ["SMS", "Web", "App"],
     agentLayer:
-      "EU packs minimise personal data and hand access/erasure requests to a human — never auto-delete in chat.",
+      "EU packs minimise personal data and hand access/erasure requests to a human — DSAR export for portability.",
     platformNote: "EU-only Postgres pin is on the Azure roadmap. Today: deploy region = chosen cloud region.",
   },
   {
@@ -234,12 +232,12 @@ export const REGION_PACKS: Array<{
 export const ROADMAP_SECURITY: Array<{ when: string; item: string; status: Status }> = [
   {
     when: "Now",
-    item: "OIDC adapter, Admin RBAC, embed entitlement + rate limits, security headers, Trust Center",
+    item: "RBAC matrix, AES-GCM tokens, DSAR export, CSP enforce, Test the guardrails demo",
     status: "shipped",
   },
   {
     when: "Next",
-    item: "AES-GCM token encryption, Key Vault secrets, CSP enforce, DSAR export, fuller RBAC matrix",
+    item: "Key Vault wrapping, CSP nonce tightening, in-app role invites, anomaly alerts",
     status: "in_progress",
   },
   {
@@ -249,7 +247,7 @@ export const ROADMAP_SECURITY: Array<{ when: string; item: string; status: Statu
   },
   {
     when: "Post-GA",
-    item: "SOC 2 Type II, DPA + subprocessor schedule, anomaly detection, breach SLA",
+    item: "SOC 2 Type II, DPA + subprocessor schedule, breach SLA",
     status: "planned",
   },
 ];

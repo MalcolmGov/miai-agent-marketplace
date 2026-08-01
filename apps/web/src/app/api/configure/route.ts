@@ -2,10 +2,13 @@ import { NextResponse } from "next/server";
 import type { ToolBinding } from "@miai/connectors";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "agent");
+  if (forbidden) return forbidden;
 
   const body = (await req.json()) as {
     agentId: string;

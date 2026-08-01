@@ -1,17 +1,81 @@
 import { NextResponse } from "next/server";
 import type { AuthContext } from "@/lib/auth";
 
-const OPERATOR_ROLES = new Set(["admin", "operator", "platform_admin", "miai_admin"]);
+/** Canonical workspace roles (least → most privileged). */
+export const WORKSPACE_ROLES = ["readonly", "agent", "admin", "owner"] as const;
+export type WorkspaceRole = (typeof WORKSPACE_ROLES)[number];
 
-export function isOperator(auth: AuthContext): boolean {
-  return auth.roles.some((r) => OPERATOR_ROLES.has(r.toLowerCase()));
+const WORKSPACE_RANK: Record<WorkspaceRole, number> = {
+  readonly: 1,
+  agent: 2,
+  admin: 3,
+  owner: 4,
+};
+
+/** Platform / MyInstantAI operator roles (Agent Admin across tenants). */
+const PLATFORM_ROLES = new Set(["operator", "platform_admin", "miai_admin"]);
+
+const ALIASES: Record<string, WorkspaceRole | "operator"> = {
+  owner: "owner",
+  admin: "admin",
+  agent: "agent",
+  readonly: "readonly",
+  "read-only": "readonly",
+  reader: "readonly",
+  viewer: "readonly",
+  operator: "operator",
+  platform_admin: "operator",
+  miai_admin: "operator",
+};
+
+export function normalizeRoles(roles: string[]): string[] {
+  const out = new Set<string>();
+  for (const raw of roles) {
+    const key = raw.trim().toLowerCase();
+    const mapped = ALIASES[key];
+    if (mapped) out.add(mapped);
+    else if (key) out.add(key);
+  }
+  return [...out];
 }
 
-/** Gate MyInstantAI operator surfaces (Agent Admin). */
+function bestWorkspaceRank(auth: AuthContext): number {
+  let best = 0;
+  for (const r of normalizeRoles(auth.roles)) {
+    if (r in WORKSPACE_RANK) best = Math.max(best, WORKSPACE_RANK[r as WorkspaceRole]);
+    // Legacy: bare "admin" already mapped; platform operators get admin-equivalent on their home ws
+    if (PLATFORM_ROLES.has(r) || r === "operator") best = Math.max(best, WORKSPACE_RANK.admin);
+  }
+  return best;
+}
+
+export function hasMinRole(auth: AuthContext, min: WorkspaceRole): boolean {
+  return bestWorkspaceRank(auth) >= WORKSPACE_RANK[min];
+}
+
+export function isOperator(auth: AuthContext): boolean {
+  return normalizeRoles(auth.roles).some(
+    (r) => r === "operator" || PLATFORM_ROLES.has(r) || r === "admin" || r === "owner",
+  );
+}
+
+/** Gate MyInstantAI operator surfaces (Agent Admin marketplace view). */
 export function requireOperator(auth: AuthContext): NextResponse | null {
-  if (isOperator(auth)) return null;
+  const roles = normalizeRoles(auth.roles);
+  const platform = roles.some((r) => r === "operator" || PLATFORM_ROLES.has(r));
+  // Demo: mock owners can open the operator view without a separate IdP role
+  if (platform || (auth.mode === "mock" && hasMinRole(auth, "owner"))) return null;
   return NextResponse.json(
-    { error: "Forbidden — operator role required (admin / operator)" },
+    { error: "Forbidden — platform operator role required" },
+    { status: 403 },
+  );
+}
+
+/** Require at least this workspace role. */
+export function requireRole(auth: AuthContext, min: WorkspaceRole): NextResponse | null {
+  if (hasMinRole(auth, min)) return null;
+  return NextResponse.json(
+    { error: `Forbidden — requires ${min} role or higher`, roles: auth.roles },
     { status: 403 },
   );
 }

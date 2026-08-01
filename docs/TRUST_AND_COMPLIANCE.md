@@ -22,12 +22,14 @@ Single source of truth for security and multi-region compliance claims. The in-a
 ## Shipped controls (this repo)
 
 1. OIDC Bearer verification (`MIAI_AUTH_MODE=oidc`) with `workspace_id` / `roles`
-2. Operator RBAC on `/api/admin` (`admin` / `operator` roles)
-3. Workspace-scoped `/api/audit` (no cross-tenant leakage in mock or OIDC)
-4. HMAC embed keys; embed chat requires live/rented agent; 30 req/min rate limit
-5. OAuth PKCE + HMAC state; tokens HMAC-sealed at rest; never in LLM prompts
-6. Security headers + CSP Report-Only (`apps/web/next.config.ts`)
-7. Runtime detection of GDPR/CCPA erasure language → human handoff
+2. Workspace RBAC: `owner` · `admin` · `agent` · `readonly` on rent, wallet, configure, knowledge, OAuth, chat, DSAR
+3. Platform operator gate on `/api/admin`
+4. Workspace-scoped `/api/audit` (no cross-tenant leakage)
+5. HMAC embed keys; embed chat requires live/rented agent; 30 req/min rate limit
+6. OAuth PKCE + HMAC state; tokens **AES-256-GCM** at rest (`v2.` envelopes; `v1.` migrated on write)
+7. `GET /api/dsar/export` — owner/admin JSON pack (no OAuth secrets)
+8. Enforcing CSP + security headers (`apps/web/next.config.ts`)
+9. Runtime erasure / injection defenses + Agent Studio **Test the guardrails** probes
 
 ## Honest language
 

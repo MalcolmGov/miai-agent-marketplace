@@ -6,6 +6,7 @@ import {
   tryPromptsForAgent,
   workflowCapabilityChips,
 } from "@/lib/workflows";
+import { GUARDRAIL_PROBES } from "@/lib/guardrails";
 import { TopUpModal } from "./TopUpModal";
 
 interface Msg {
@@ -155,6 +156,15 @@ export function SandboxChat({
             <button
               type="button"
               className="btn btn-ghost text-xs"
+              disabled={busy || paused}
+              onClick={() => void send(GUARDRAIL_PROBES[0].prompt)}
+              title="Send a prompt-injection probe — watch the agent refuse"
+            >
+              Test the guardrails
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost text-xs"
               disabled={busy || clearing || (messages.length === 0 && !workflow)}
               onClick={clearChat}
               title="Clear chat history and reset workflow state"
@@ -202,28 +212,55 @@ export function SandboxChat({
       )}
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
-          <div className="space-y-2 text-sm text-[var(--muted)]">
-            {hasWorkflowUi ? (
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
-                Multi-step workflow — try:
+          <div className="space-y-4 text-sm text-[var(--muted)]">
+            <div className="space-y-2">
+              {hasWorkflowUi ? (
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
+                  Multi-step workflow — try:
+                </p>
+              ) : (
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+                  Try a prompt:
+                </p>
+              )}
+              <div className="flex flex-col gap-2">
+                {prompts.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    disabled={busy || paused}
+                    onClick={() => void send(p)}
+                    className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-left text-sm text-[var(--text)] transition hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)] hover:text-[var(--accent-bright)] disabled:opacity-50"
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-2 border-t border-[var(--line)] pt-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--warn,#fb923c)]">
+                Test the guardrails
               </p>
-            ) : (
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
-                Try a prompt:
+              <p className="text-xs">
+                Watch the agent block injection, refuse cross-tenant data, and escalate erasure to a
+                human.
               </p>
-            )}
-            <div className="flex flex-col gap-2">
-              {prompts.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  disabled={busy || paused}
-                  onClick={() => void send(p)}
-                  className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-left text-sm text-[var(--text)] transition hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)] hover:text-[var(--accent-bright)] disabled:opacity-50"
-                >
-                  {p}
-                </button>
-              ))}
+              <div className="flex flex-col gap-2">
+                {GUARDRAIL_PROBES.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    disabled={busy || paused}
+                    onClick={() => void send(p.prompt)}
+                    className="rounded-lg border border-[color-mix(in_srgb,#fb923c_35%,var(--line))] bg-[color-mix(in_srgb,#fb923c_8%,var(--bg-elev))] px-3 py-2 text-left text-sm text-[var(--text)] transition hover:border-[#fb923c] disabled:opacity-50"
+                  >
+                    <span className="font-medium text-[#fb923c]">{p.label}</span>
+                    <span className="mt-0.5 block text-xs text-[var(--muted)] line-clamp-2">
+                      {p.prompt}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}

@@ -6,6 +6,7 @@ import {
 } from "@miai/connectors";
 import { getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export async function GET(
   req: Request,
@@ -13,6 +14,8 @@ export async function GET(
 ) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "agent");
+  if (forbidden) return forbidden;
 
   const { connector } = await ctx.params;
   if (!isOAuthConnector(connector)) {

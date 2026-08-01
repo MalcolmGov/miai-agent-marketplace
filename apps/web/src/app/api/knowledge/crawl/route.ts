@@ -3,6 +3,7 @@ import { addKnowledgeSource, updateKnowledgeSource } from "@/lib/knowledge";
 import { crawlSite } from "@/lib/ingest";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -10,6 +11,8 @@ export const maxDuration = 60;
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "agent");
+  if (forbidden) return forbidden;
 
   const body = (await req.json()) as {
     agentId?: string;
