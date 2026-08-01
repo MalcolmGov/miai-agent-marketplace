@@ -338,8 +338,8 @@ body::before {
 
 .shell-content {
   width: 100%;
-  max-width: 72rem;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   padding: 1.5rem 1rem 3rem;
 }
 
@@ -378,10 +378,19 @@ body::before {
   .shell-content {
     padding-top: 1.75rem;
     padding-bottom: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .shell-content-home {
     padding-top: 1.25rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .shell-content {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
   }
 }
 
