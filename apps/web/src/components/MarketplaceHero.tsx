@@ -66,12 +66,15 @@ const STEPS = [
 export function MarketplaceHero({
   familyCount,
   categoryCount,
+  workflowCount = 8,
 }: {
   familyCount: number;
   categoryCount: number;
+  workflowCount?: number;
 }) {
   const agentsLive = familyCount || 55;
   const categories = categoryCount || 10;
+  const workflows = workflowCount || 8;
 
   return (
     <div className="space-y-8">
@@ -106,8 +109,9 @@ export function MarketplaceHero({
           </h1>
 
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--muted)] sm:text-base">
-            Ready-made agents that work on WhatsApp, your website or inside your app. Rent one, put
-            it live in minutes, and it runs on your MyInstantAI tokens.
+            Ready-made agents for WhatsApp, your website, or your app — including multi-step
+            workflows that propose a plan, wait for your confirm, then run Calendar, Slack, and more
+            on your MyInstantAI tokens.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -151,9 +155,9 @@ export function MarketplaceHero({
 
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Marketplace highlights">
         <StatCard text={`${agentsLive} agents live in the runtime today`} />
+        <StatCard text={`${workflows} multi-step workflow agents`} />
         <StatCard text={`${categories} industry categories`} />
-        <StatCard text="3 channels, one agent brain" />
-        <StatCard text="24/7 always on — answers in seconds" />
+        <StatCard text="Confirm-before-write · Calendar + Slack" />
       </section>
     </div>
   );

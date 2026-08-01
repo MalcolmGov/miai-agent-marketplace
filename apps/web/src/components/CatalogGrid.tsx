@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
 
 interface FamilyItem {
@@ -87,6 +88,7 @@ export function CatalogGrid() {
   const [market, setMarket] = useState("all");
   const [category, setCategory] = useState("all");
   const [audience, setAudience] = useState("all");
+  const [workflowsOnly, setWorkflowsOnly] = useState(false);
   const [pending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -115,6 +117,7 @@ export function CatalogGrid() {
     if (market !== "all") params.set("market", market);
     if (category !== "all") params.set("category", category);
     if (audience !== "all") params.set("audience", audience);
+    if (workflowsOnly) params.set("workflow", "1");
     startTransition(() => {
       fetch(`/api/catalog?${params}`)
         .then((r) => r.json())
@@ -124,7 +127,7 @@ export function CatalogGrid() {
           setFamilyCount(d.familyCount ?? d.count ?? 0);
         });
     });
-  }, [q, market, category, audience]);
+  }, [q, market, category, audience, workflowsOnly]);
 
   const categories = useMemo(() => allCategories, [allCategories]);
 
@@ -135,6 +138,7 @@ export function CatalogGrid() {
       <MarketplaceHero
         familyCount={totalFamilies || familyCount || 55}
         categoryCount={industryCategoryCount}
+        workflowCount={WORKFLOW_FAMILY_IDS.length}
       />
 
       {/* Catalogue controls */}
@@ -142,8 +146,10 @@ export function CatalogGrid() {
         <div className="flex items-start gap-2.5 text-sm text-[var(--muted)]">
           <span className="pulse-dot mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
           <p>
-            Every agent here is live on the production runtime — rent one and it answers today. No
-            build queue.
+            Every agent here is live on the production runtime — rent one and it answers today.{" "}
+            <span className="text-[var(--text)]">
+              Workflow agents propose a plan, wait for your confirm, then run tools.
+            </span>
           </p>
         </div>
 
@@ -193,6 +199,15 @@ export function CatalogGrid() {
               {a.label}
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() => setWorkflowsOnly((v) => !v)}
+            className={`chip ${workflowsOnly ? "filter-active chip-live" : ""}`}
+            title="Multi-step agents: goal → plan → confirm → execute"
+          >
+            Workflows
+            <span className="cat-count">{WORKFLOW_FAMILY_IDS.length}</span>
+          </button>
         </div>
 
         <div className="flex flex-wrap gap-2" role="group" aria-label="Category">
@@ -221,6 +236,7 @@ export function CatalogGrid() {
                 : `/agents/${item.defaultAgentId}`;
             const available = PACK_ORDER.filter((m) => item.markets[m]);
             const badge = statusBadge(item);
+            const hasWorkflow = isWorkflowFamilyId(item.id);
 
             return (
               <Link
@@ -258,6 +274,14 @@ export function CatalogGrid() {
                   </p>
 
                   <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                    {hasWorkflow ? (
+                      <span
+                        className="chip chip-live"
+                        title="Goal → plan → confirm → execute → verify"
+                      >
+                        Workflow
+                      </span>
+                    ) : null}
                     <span
                       className={`chip ${
                         item.audience === "internal" ? "chip-internal" : "chip-live"

@@ -5,6 +5,7 @@ import { ActionsPanel } from "./ActionsPanel";
 import { SandboxChat } from "./SandboxChat";
 import { MODELS } from "@/lib/models";
 import { TIER_PRICES } from "@/lib/constants";
+import { isWorkflowFamilyId, workflowDemoHint } from "@/lib/workflows";
 import { useEffect, useMemo, useState } from "react";
 
 interface AgentPayload {
@@ -163,12 +164,19 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   }
 
   const m = data.package.manifest;
+  const hasWorkflow = isWorkflowFamilyId(agentId);
+  const demoHint = workflowDemoHint(agentId);
 
   return (
     <div className="space-y-6">
       <div className="rise flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <div className="mb-2 flex flex-wrap gap-2">
+            {hasWorkflow && (
+              <span className="chip chip-live" title="Goal → plan → confirm → execute → verify">
+                Workflow
+              </span>
+            )}
             {data.pilot && <span className="chip chip-live">Pilot</span>}
             <span className="chip">{m.tier}</span>
             <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
@@ -176,6 +184,12 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">{m.name}</h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">{m.summary}</p>
+          {hasWorkflow ? (
+            <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
+              Multi-step workflow: proposes a plan, waits for your confirm, then runs tools.{" "}
+              {demoHint ?? "Connect Calendar / Slack on Actions, then try a prompt in chat."}
+            </p>
+          ) : null}
         </div>
         <div className="panel flex flex-col gap-2 p-4 sm:min-w-[240px]">
           <div className="text-xs uppercase tracking-wide text-[var(--muted)]">Rent</div>

@@ -140,23 +140,30 @@ export function SandboxChat({
       )}
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
-          <p className="text-sm text-[var(--muted)]">
-            {isEA
-              ? "Try: “Schedule a 30-min budget review with Thabo tomorrow at 14:00, set a reminder, and notify the team.” · “Am I free Thursday afternoon?”"
-              : isIT
-                ? "Try: “How do I connect to the office VPN?” · “Laptop won’t power on — log a ticket for Thandi, ext 4412.” · “I clicked a phishing link.”"
-                : isBooking
-                  ? /salon/i.test(agentId)
-                    ? "Try: “Can I get a men’s cut this Saturday?” · “Book the 10am skin fade with Riaan — Name’s Sipho, 555-0100.”"
-                    : "Try: “Can I get an AC diagnostic this Thursday?” · “Book drain clearing Thursday 10:00 for Lea, +491701112233, Invalidenstr. 12 Berlin.”"
-                  : isSales
-                    ? "Try: “What does your Growth plan include and roughly what does it cost?” · “Call me Thursday afternoon on 555-0100 about Growth.” · “I’m Thabo from Nkosi Trading…”"
-                    : isRestaurant
-                      ? "Try: “What pizzas do you have and how much?” · “Order a Margherita and fries for collection — 555-0100.” · “Book a table for 2 on 2026-08-08 at 19:00.”"
-                      : isOnboarding
-                        ? "Try: “It’s my first day — what’s on my checklist?” · “Where do I submit banking for payroll?” · “Laptop won’t boot — I’m stuck.”"
-                        : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
-          </p>
+          <div className="space-y-1.5 text-sm text-[var(--muted)]">
+            {(isEA || isIT || isBooking || isSales || isRestaurant || isOnboarding) && (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
+                Multi-step workflow — try:
+              </p>
+            )}
+            <p>
+              {isEA
+                ? "“Schedule a 30-min budget review with Thabo tomorrow at 14:00, set a reminder, and notify the team.” · “Am I free Thursday afternoon?”"
+                : isIT
+                  ? "“How do I connect to the office VPN?” · “Laptop won’t power on — log a ticket for Thandi, ext 4412.” · “I clicked a phishing link.”"
+                  : isBooking
+                    ? /salon/i.test(agentId)
+                      ? "“Can I get a men’s cut this Saturday?” · “Book the 10am skin fade with Riaan — Name’s Sipho, 555-0100.”"
+                      : "“Can I get an AC diagnostic this Thursday?” · “Book drain clearing Thursday 10:00 for Lea, +491701112233, Invalidenstr. 12 Berlin.”"
+                    : isSales
+                      ? "“What does your Growth plan include and roughly what does it cost?” · “Call me Thursday afternoon on 555-0100 about Growth.” · “I’m Thabo from Nkosi Trading…”"
+                      : isRestaurant
+                        ? "“What pizzas do you have and how much?” · “Order a Margherita and fries for collection — 555-0100.” · “Book a table for 2 on 2026-08-08 at 19:00.”"
+                        : isOnboarding
+                          ? "“It’s my first day — what’s on my checklist?” · “Where do I submit banking for payroll?” · “Laptop won’t boot — I’m stuck.”"
+                          : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
+            </p>
+          </div>
         )}
         {messages.map((m, i) => (
           <div

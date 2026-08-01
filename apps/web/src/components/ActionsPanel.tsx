@@ -503,11 +503,13 @@ export function ActionsPanel({
         </div>
       )}
       <div className="panel p-4">
-        <h2 className="text-sm font-semibold">Connector Hub — Phase 1</h2>
+        <h2 className="text-sm font-semibold">Actions — connect tools for live workflows</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">
-          OAuth connectors open the provider consent screen. Tokens are sealed server-side and never
-          sent to the model. Use <strong className="text-[var(--text)]">live</strong> chat after
-          Connect. For Slack, pick a handoff channel after connecting.
+          OAuth opens the provider consent screen. Tokens stay sealed server-side and never reach the
+          model. For workflow demos: connect <strong className="text-[var(--text)]">Google Calendar</strong>{" "}
+          and <strong className="text-[var(--text)]">Slack</strong>, then use{" "}
+          <strong className="text-[var(--text)]">live</strong> chat — the agent proposes a plan and
+          waits for your confirm before writing. For Slack, pick a handoff channel after connecting.
         </p>
         {callbackUrl ? (
           <div className="mt-3 rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-xs">
