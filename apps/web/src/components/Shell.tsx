@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Sidebar } from "./Sidebar";
+import { ThemeToggle } from "./ThemeToggle";
 import { TopUpModal } from "./TopUpModal";
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -57,6 +58,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
           <div className="flex items-center gap-2">
+            <div className="w-[8.5rem] shrink-0 lg:hidden">
+              <ThemeToggle />
+            </div>
             <button
               type="button"
               onClick={() => setTopUpOpen(true)}

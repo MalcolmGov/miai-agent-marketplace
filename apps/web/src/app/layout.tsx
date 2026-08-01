@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Manrope, JetBrains_Mono } from "next/font/google";
 import { Shell } from "@/components/Shell";
+import { ThemeProvider } from "@/lib/theme";
+import { THEME_BOOT_SCRIPT } from "@/lib/theme-boot";
 import "./globals.css";
 
 const sans = Manrope({
@@ -22,10 +24,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body className={`${sans.variable} ${mono.variable} antialiased`}>
         <div id="app-root">
-          <Shell>{children}</Shell>
+          <ThemeProvider>
+            <Shell>{children}</Shell>
+          </ThemeProvider>
         </div>
       </body>
     </html>

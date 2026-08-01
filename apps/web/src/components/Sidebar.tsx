@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 type NavBadge = { label: string; tone: "new" | "live" };
 
@@ -306,7 +307,8 @@ export function Sidebar({
             ))}
           </nav>
 
-          <div className="border-t border-[var(--line)] px-4 py-3">
+          <div className="space-y-2 border-t border-[var(--line)] px-4 py-3">
+            <ThemeToggle />
             <Link href="/install" onClick={onClose} className="nav-item text-[var(--muted)]">
               <span className="nav-item-icon">
                 <IconPlus />

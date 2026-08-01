@@ -1,8 +1,55 @@
+"use client";
+
+import { useTheme } from "@/lib/theme";
+
 /** Colored visual icons for catalogue cards — keyed by family id, with category fallback. */
 
 type IconTone = { bg: string; fg: string; ring: string };
 
-const TONES: Record<string, IconTone> = {
+const TONES_DARK: Record<string, IconTone> = {
+  teal: {
+    bg: "linear-gradient(145deg,#1a4a45 0%,#0d2a28 100%)",
+    fg: "#6aefe0",
+    ring: "rgba(61,214,198,0.45)",
+  },
+  mint: {
+    bg: "linear-gradient(145deg,#164a3a 0%,#0c261e 100%)",
+    fg: "#5eead4",
+    ring: "rgba(52,211,153,0.45)",
+  },
+  sky: {
+    bg: "linear-gradient(145deg,#163a52 0%,#0c1e2c 100%)",
+    fg: "#7dd3fc",
+    ring: "rgba(56,189,248,0.45)",
+  },
+  amber: {
+    bg: "linear-gradient(145deg,#4a3514 0%,#261a0a 100%)",
+    fg: "#fbbf24",
+    ring: "rgba(251,191,36,0.45)",
+  },
+  coral: {
+    bg: "linear-gradient(145deg,#4a2418 0%,#26120c 100%)",
+    fg: "#fb923c",
+    ring: "rgba(251,146,60,0.45)",
+  },
+  slate: {
+    bg: "linear-gradient(145deg,#2a3340 0%,#151a22 100%)",
+    fg: "#94a3b8",
+    ring: "rgba(148,163,184,0.4)",
+  },
+  rose: {
+    bg: "linear-gradient(145deg,#4a1e2e 0%,#261018 100%)",
+    fg: "#f9a8d4",
+    ring: "rgba(244,114,182,0.4)",
+  },
+  indigo: {
+    bg: "linear-gradient(145deg,#2a2a4a 0%,#161628 100%)",
+    fg: "#a5b4fc",
+    ring: "rgba(129,140,248,0.4)",
+  },
+};
+
+const TONES_LIGHT: Record<string, IconTone> = {
   teal: {
     bg: "linear-gradient(145deg,#d8f5f1 0%,#eafaf7 100%)",
     fg: "#0d7a70",
@@ -43,7 +90,7 @@ const TONES: Record<string, IconTone> = {
     fg: "#4338ca",
     ring: "rgba(99,102,241,0.3)",
   },
-}
+};
 
 type IconKind =
   | "tooth"
@@ -328,8 +375,10 @@ export function AgentIcon({
   category: string;
   className?: string;
 }) {
+  const { theme } = useTheme();
   const { kind, tone } = resolveIcon(familyId, category);
-  const t = TONES[tone];
+  const tones = theme === "light" ? TONES_LIGHT : TONES_DARK;
+  const t = tones[tone];
 
   return (
     <span
