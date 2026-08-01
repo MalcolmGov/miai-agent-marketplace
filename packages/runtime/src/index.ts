@@ -77,13 +77,83 @@ export interface TurnResult {
   };
 }
 
+export type ModelCompleteInput = {
+  system: string;
+  messages: ChatMessage[];
+  tools: AgentPackage["tools"];
+  model: string;
+};
+
+export type ModelCompleteResult = {
+  content: string;
+  toolCall?: { name: string; args: Record<string, unknown> };
+};
+
+/** Incremental token/text from the model (OpenAI-style streaming). */
+export type StreamChunk =
+  | { type: "delta"; text: string }
+  | { type: "done"; content: string; toolCall?: ModelCompleteResult["toolCall"] };
+
 export interface ModelAdapter {
-  complete(input: {
-    system: string;
-    messages: ChatMessage[];
-    tools: AgentPackage["tools"];
-    model: string;
-  }): Promise<{ content: string; toolCall?: { name: string; args: Record<string, unknown> } }>;
+  complete(input: ModelCompleteInput): Promise<ModelCompleteResult>;
+  /** When present, yields true token deltas for openai/gateway (mock paces after generate). */
+  streamComplete?(input: ModelCompleteInput): AsyncIterable<StreamChunk>;
+}
+
+async function* streamFromComplete(
+  model: ModelAdapter,
+  input: ModelCompleteInput,
+): AsyncIterable<StreamChunk> {
+  const result = await model.complete(input);
+  if (result.content) {
+    const parts = result.content.split(/(\s+)/).filter(Boolean);
+    let buf = "";
+    for (const p of parts) {
+      buf += p;
+      if (buf.length >= 8 || /\n$/.test(buf)) {
+        yield { type: "delta", text: buf };
+        buf = "";
+      }
+    }
+    if (buf) yield { type: "delta", text: buf };
+  }
+  yield { type: "done", content: result.content, toolCall: result.toolCall };
+}
+
+async function* iterateModelStream(
+  model: ModelAdapter,
+  input: ModelCompleteInput,
+): AsyncIterable<StreamChunk> {
+  if (model.streamComplete) {
+    yield* model.streamComplete(input);
+    return;
+  }
+  yield* streamFromComplete(model, input);
+}
+
+/** Run a model call, optionally forwarding live text deltas (true stream when adapter supports it). */
+async function modelAnswer(
+  model: ModelAdapter,
+  input: ModelCompleteInput,
+  onDelta?: (text: string) => void,
+): Promise<ModelCompleteResult> {
+  let content = "";
+  let toolCall: ModelCompleteResult["toolCall"];
+  let sawDone = false;
+  for await (const chunk of iterateModelStream(model, input)) {
+    if (chunk.type === "delta") {
+      content += chunk.text;
+      onDelta?.(chunk.text);
+    } else {
+      sawDone = true;
+      content = chunk.content || content;
+      toolCall = chunk.toolCall;
+    }
+  }
+  if (!sawDone) {
+    return { content: content || "…", toolCall };
+  }
+  return { content: content || "…", toolCall };
 }
 
 const META_CHUNK =
@@ -388,12 +458,11 @@ function emergencyNumber(system: string): string {
 
 /** Deterministic mock model — good for local demo / zero-cost eval suite. */
 export class MockModelAdapter implements ModelAdapter {
-  async complete(input: {
-    system: string;
-    messages: ChatMessage[];
-    tools: AgentPackage["tools"];
-    model: string;
-  }) {
+  async *streamComplete(input: ModelCompleteInput): AsyncIterable<StreamChunk> {
+    yield* streamFromComplete(this, input);
+  }
+
+  async complete(input: ModelCompleteInput) {
     const last = [...input.messages].reverse().find((m) => m.role === "user")?.content ?? "";
     const lower = last.toLowerCase().replace(/##[\s\S]*$/g, " ");
     const toolNote = [...input.messages].reverse().find((m) => m.role === "tool");
@@ -1216,17 +1285,38 @@ const OPENAI_MODEL_MAP: Record<string, string> = {
   "claude-opus": "gpt-4o",
 };
 
+function openAiMessagesPayload(input: ModelCompleteInput) {
+  return [
+    { role: "system" as const, content: input.system },
+    ...input.messages.map((m) =>
+      m.role === "tool"
+        ? {
+            role: "assistant" as const,
+            content: `[${m.toolName ?? "tool"} result] ${m.content}`,
+          }
+        : { role: m.role, content: m.content },
+    ),
+  ];
+}
+
+function openAiToolsPayload(tools: AgentPackage["tools"]) {
+  if (!tools.length) return undefined;
+  return tools.map((t) => ({
+    type: "function" as const,
+    function: {
+      name: t.name,
+      description: t.description,
+      parameters: t.parameters ?? { type: "object", properties: {} },
+    },
+  }));
+}
+
 async function openAiCompatibleComplete(
   baseUrl: string,
   apiKey: string,
-  input: {
-    system: string;
-    messages: ChatMessage[];
-    tools: AgentPackage["tools"];
-    model: string;
-  },
+  input: ModelCompleteInput,
   modelId: string,
-): Promise<{ content: string; toolCall?: { name: string; args: Record<string, unknown> } }> {
+): Promise<ModelCompleteResult> {
   const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
   try {
     const res = await fetch(endpoint, {
@@ -1239,27 +1329,8 @@ async function openAiCompatibleComplete(
         model: modelId,
         temperature: 0.4,
         max_tokens: 500,
-        messages: [
-          { role: "system", content: input.system },
-          ...input.messages.map((m) =>
-            m.role === "tool"
-              ? {
-                  role: "assistant" as const,
-                  content: `[${m.toolName ?? "tool"} result] ${m.content}`,
-                }
-              : { role: m.role, content: m.content },
-          ),
-        ],
-        tools: input.tools.length
-          ? input.tools.map((t) => ({
-              type: "function",
-              function: {
-                name: t.name,
-                description: t.description,
-                parameters: t.parameters ?? { type: "object", properties: {} },
-              },
-            }))
-          : undefined,
+        messages: openAiMessagesPayload(input),
+        tools: openAiToolsPayload(input.tools),
       }),
     });
     const json = (await res.json()) as {
@@ -1292,36 +1363,144 @@ async function openAiCompatibleComplete(
   }
 }
 
+/** True OpenAI-compatible SSE stream (`stream: true`). */
+async function* openAiCompatibleStream(
+  baseUrl: string,
+  apiKey: string,
+  input: ModelCompleteInput,
+  modelId: string,
+): AsyncIterable<StreamChunk> {
+  const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
+  let res: Response;
+  try {
+    res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${apiKey}`,
+        "content-type": "application/json",
+        accept: "text/event-stream",
+      },
+      body: JSON.stringify({
+        model: modelId,
+        temperature: 0.4,
+        max_tokens: 500,
+        stream: true,
+        messages: openAiMessagesPayload(input),
+        tools: openAiToolsPayload(input.tools),
+      }),
+    });
+  } catch {
+    yield {
+      type: "done",
+      content:
+        "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.",
+    };
+    return;
+  }
+
+  if (!res.ok || !res.body) {
+    // Fall back to non-streaming so tool calls / errors still work.
+    const fallback = await openAiCompatibleComplete(baseUrl, apiKey, input, modelId);
+    if (fallback.content && !fallback.toolCall) {
+      yield { type: "delta", text: fallback.content };
+    }
+    yield { type: "done", content: fallback.content, toolCall: fallback.toolCall };
+    return;
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  let content = "";
+  let toolName = "";
+  let toolArgs = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const lines = buf.split("\n");
+    buf = lines.pop() ?? "";
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith("data:")) continue;
+      const data = trimmed.slice(5).trim();
+      if (!data || data === "[DONE]") continue;
+      try {
+        const json = JSON.parse(data) as {
+          choices?: Array<{
+            delta?: {
+              content?: string | null;
+              tool_calls?: Array<{
+                index?: number;
+                function?: { name?: string; arguments?: string };
+              }>;
+            };
+          }>;
+        };
+        const delta = json.choices?.[0]?.delta;
+        if (!delta) continue;
+        if (typeof delta.content === "string" && delta.content) {
+          content += delta.content;
+          yield { type: "delta", text: delta.content };
+        }
+        const tc = delta.tool_calls?.[0];
+        if (tc?.function?.name) toolName = tc.function.name;
+        if (tc?.function?.arguments) toolArgs += tc.function.arguments;
+      } catch {
+        /* skip malformed SSE lines */
+      }
+    }
+  }
+
+  if (toolName) {
+    let args: Record<string, unknown> = {};
+    try {
+      args = JSON.parse(toolArgs || "{}") as Record<string, unknown>;
+    } catch {
+      /* tolerate partial args */
+    }
+    yield { type: "done", content: content.trim(), toolCall: { name: toolName, args } };
+    return;
+  }
+  yield { type: "done", content: content.trim() || "…" };
+}
+
 /** Live OpenAI adapter (MIAI_MODEL_MODE=openai + OPENAI_API_KEY). */
 export class OpenAIModelAdapter implements ModelAdapter {
-  async complete(input: {
-    system: string;
-    messages: ChatMessage[];
-    tools: AgentPackage["tools"];
-    model: string;
-  }) {
+  private modelId(input: ModelCompleteInput) {
+    return OPENAI_MODEL_MAP[input.model] ?? env("OPENAI_MODEL_DEFAULT") ?? "gpt-4o-mini";
+  }
+
+  async complete(input: ModelCompleteInput) {
     const apiKey = env("OPENAI_API_KEY") ?? "";
-    const model = OPENAI_MODEL_MAP[input.model] ?? env("OPENAI_MODEL_DEFAULT") ?? "gpt-4o-mini";
-    return openAiCompatibleComplete("https://api.openai.com/v1", apiKey, input, model);
+    return openAiCompatibleComplete("https://api.openai.com/v1", apiKey, input, this.modelId(input));
+  }
+
+  async *streamComplete(input: ModelCompleteInput): AsyncIterable<StreamChunk> {
+    const apiKey = env("OPENAI_API_KEY") ?? "";
+    yield* openAiCompatibleStream("https://api.openai.com/v1", apiKey, input, this.modelId(input));
   }
 }
 
 /** MyInstantAI model gateway (OpenAI-compatible). MIAI_MODEL_MODE=gateway. */
 export class GatewayModelAdapter implements ModelAdapter {
-  async complete(input: {
-    system: string;
-    messages: ChatMessage[];
-    tools: AgentPackage["tools"];
-    model: string;
-  }) {
+  private modelId(input: ModelCompleteInput) {
+    return env("MIAI_MODEL_PASSTHROUGH") === "1"
+      ? input.model
+      : (OPENAI_MODEL_MAP[input.model] ?? input.model);
+  }
+
+  async complete(input: ModelCompleteInput) {
     const base = env("MIAI_MODEL_GATEWAY_URL") ?? "";
     const apiKey = env("MIAI_MODEL_GATEWAY_KEY") ?? env("MIAI_MODEL_API_KEY") ?? "";
-    // Gateway may accept catalogue aliases directly; fall back to OpenAI map.
-    const model =
-      env("MIAI_MODEL_PASSTHROUGH") === "1"
-        ? input.model
-        : (OPENAI_MODEL_MAP[input.model] ?? input.model);
-    return openAiCompatibleComplete(base, apiKey, input, model);
+    return openAiCompatibleComplete(base, apiKey, input, this.modelId(input));
+  }
+
+  async *streamComplete(input: ModelCompleteInput): AsyncIterable<StreamChunk> {
+    const base = env("MIAI_MODEL_GATEWAY_URL") ?? "";
+    const apiKey = env("MIAI_MODEL_GATEWAY_KEY") ?? env("MIAI_MODEL_API_KEY") ?? "";
+    yield* openAiCompatibleStream(base, apiKey, input, this.modelId(input));
   }
 }
 
@@ -1354,10 +1533,19 @@ function bindingFor(tool: string, bindings: ToolBinding[]): ToolBinding {
 
 export async function runTurn(
   req: TurnRequest,
-  deps?: { wallet?: WalletAdapter; model?: ModelAdapter },
+  deps?: {
+    wallet?: WalletAdapter;
+    model?: ModelAdapter;
+    /** Live token/text deltas from the model (true stream for openai/gateway). */
+    onDelta?: (text: string) => void;
+    /** Fired when a tool round starts so UIs can reset a partial streamed bubble. */
+    onToolStart?: () => void;
+  },
 ): Promise<TurnResult> {
   const wallet = deps?.wallet ?? createWalletAdapter();
   const model = deps?.model ?? createModelAdapter();
+  const onDelta = deps?.onDelta;
+  const onToolStart = deps?.onToolStart;
 
   if (req.state === "paused_no_tokens") {
     return {
@@ -1458,8 +1646,23 @@ export async function runTurn(
       reason: "agent_turn",
       agentId: req.agentId,
     });
+    const assistantMessage = handled.assistantMessage
+      .replace(/<!--miai-workflow:[\s\S]*?-->/g, "")
+      .trim();
+    if (onDelta && assistantMessage) {
+      const parts = assistantMessage.split(/(\s+)/).filter(Boolean);
+      let buf = "";
+      for (const p of parts) {
+        buf += p;
+        if (buf.length >= 8 || /\n$/.test(buf)) {
+          onDelta(buf);
+          buf = "";
+        }
+      }
+      if (buf) onDelta(buf);
+    }
     return {
-      assistantMessage: handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
+      assistantMessage,
       messages,
       toolCalls,
       tokensDebited: tokens,
@@ -1602,14 +1805,21 @@ export async function runTurn(
     if (done) return done;
   }
 
-  let completion = await model.complete({
-    system,
-    messages,
-    tools: req.pkg.tools,
-    model: req.model,
-  });
+  // Live-stream the first model pass (true SSE for openai/gateway). If a tool is chosen,
+  // follow-up / templated replies stream below instead.
+  let completion = await modelAnswer(
+    model,
+    {
+      system,
+      messages,
+      tools: req.pkg.tools,
+      model: req.model,
+    },
+    onDelta,
+  );
 
   if (completion.toolCall) {
+    onToolStart?.();
     const { name, args } = completion.toolCall;
     const result = await executeConnector({
       workspaceId: req.workspaceId,
@@ -1630,98 +1840,117 @@ export async function runTurn(
       /^(get_|list_|lookup_|check_)/i.test(name) ||
       /job_opening|policy|catalogue|menu|availability/i.test(name);
 
+    const emitStatic = (text: string) => {
+      completion = { content: text };
+      if (onDelta && text) {
+        const parts = text.split(/(\s+)/).filter(Boolean);
+        let buf = "";
+        for (const p of parts) {
+          buf += p;
+          if (buf.length >= 8 || /\n$/.test(buf)) {
+            onDelta(buf);
+            buf = "";
+          }
+        }
+        if (buf) onDelta(buf);
+      }
+    };
+
     if (!result.ok && isReadTool) {
-      // Live ATS/HRIS not connected — still answer from uploaded knowledge.
-      const follow = await model.complete({
-        system,
-        messages: [
-          ...messages,
-          {
-            role: "user",
-            content:
-              `The ${name} system was unreachable. Answer my last question from the knowledge base only ` +
-              `(open roles, requirements, policies). Do not mention JSON or connection errors unless you truly have no info.`,
-          },
-        ],
-        tools: [],
-        model: req.model,
-      });
+      const follow = await modelAnswer(
+        model,
+        {
+          system,
+          messages: [
+            ...messages,
+            {
+              role: "user",
+              content:
+                `The ${name} system was unreachable. Answer my last question from the knowledge base only ` +
+                `(open roles, requirements, policies). Do not mention JSON or connection errors unless you truly have no info.`,
+            },
+          ],
+          tools: [],
+          model: req.model,
+        },
+        onDelta,
+      );
       completion = {
         content:
           follow.content.trim() ||
           knowledgeHit(system, req.userMessage) ||
           "I couldn't reach the connected HR system, and I don't have that role list in knowledge yet. Upload open roles to Knowledge, or try again shortly.",
       };
+      if (onDelta && completion.content && !follow.content.trim()) {
+        emitStatic(completion.content);
+      }
     } else if (!result.ok) {
-      completion = {
-        content:
-          "I couldn't reach the connected system just now. I can hand this to a teammate, or we can retry shortly.",
-      };
+      emitStatic(
+        "I couldn't reach the connected system just now. I can hand this to a teammate, or we can retry shortly.",
+      );
     } else if (name === "handoff_to_human") {
       const reason = String(args.reason ?? "");
       const prior = (completion.content || "").trim();
       if (reason === "emergency" || /emergency|life-threatening|call \*\*/i.test(prior)) {
-        completion = {
-          content:
-            prior ||
+        emitStatic(
+          prior ||
             `If this is an emergency, call **${emergencyNumber(system)}** / local emergency services now. I've also connected you to a human teammate urgently.`,
-        };
+        );
       } else if (reason === "gdpr_erasure" || /erasur|gdpr|delete/i.test(prior)) {
-        completion = {
-          content:
-            prior ||
+        emitStatic(
+          prior ||
             "I've connected you to the team for your data erasure / GDPR request — they'll follow up shortly.",
-        };
+        );
       } else if (prior.length > 40 && !/^let me check/i.test(prior)) {
-        completion = { content: prior };
+        emitStatic(prior);
       } else {
-        completion = {
-          content:
-            "I've connected you to the team with the context from this chat — they'll follow up shortly.",
-        };
+        emitStatic(
+          "I've connected you to the team with the context from this chat — they'll follow up shortly.",
+        );
       }
     } else if (name === "get_order_status") {
       const status = String((result.data as { status?: string }).status ?? "processing");
-      completion = {
-        content: `Your order is currently **${status.replace(/_/g, " ")}**. ${(result.data as { eta?: string }).eta ? `ETA: ${(result.data as { eta?: string }).eta}.` : ""}`,
-      };
+      emitStatic(
+        `Your order is currently **${status.replace(/_/g, " ")}**. ${(result.data as { eta?: string }).eta ? `ETA: ${(result.data as { eta?: string }).eta}.` : ""}`,
+      );
     } else if (name.includes("book")) {
       const ref = (result.data as { booking_ref?: string }).booking_ref ?? "BK-3391";
-      completion = {
-        content: `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`,
-      };
+      emitStatic(
+        `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`,
+      );
     } else if (name.includes("capture_application") || name.includes("application")) {
-      const ref =
-        String((result.data as { reference?: string }).reference ?? "APP-4821");
-      completion = {
-        content: `Thanks — your application is captured under reference **${ref}**. The hiring team will follow up; this is not a hiring decision.`,
-      };
+      const ref = String((result.data as { reference?: string }).reference ?? "APP-4821");
+      emitStatic(
+        `Thanks — your application is captured under reference **${ref}**. The hiring team will follow up; this is not a hiring decision.`,
+      );
     } else {
-      // Second model pass: turn tool JSON + knowledge into a natural answer
-      // (avoids dumping stub payloads like get_policy echo).
-      const follow = await model.complete({
-        system,
-        messages: [
-          ...messages,
-          {
-            role: "user",
-            content:
-              `Using the ${name} tool result above and the knowledge base, answer my last question in clear natural language. ` +
-              `Do not show JSON. If the tool only echoed args or is a sandbox stub, answer fully from the knowledge base open roles / policies.`,
-          },
-        ],
-        tools: [],
-        model: req.model,
-      });
+      const follow = await modelAnswer(
+        model,
+        {
+          system,
+          messages: [
+            ...messages,
+            {
+              role: "user",
+              content:
+                `Using the ${name} tool result above and the knowledge base, answer my last question in clear natural language. ` +
+                `Do not show JSON. If the tool only echoed args or is a sandbox stub, answer fully from the knowledge base open roles / policies.`,
+            },
+          ],
+          tools: [],
+          model: req.model,
+        },
+        onDelta,
+      );
       const text = follow.content.trim();
       const looksLikeJson = text.startsWith("{") || /Done — I used/.test(text);
-      completion = {
-        content:
-          text && !looksLikeJson
-            ? text
-            : knowledgeHit(system, req.userMessage) ??
-              "I've checked our records. Please ask about a specific policy detail (PTO days, benefits start date, office address) and I'll answer from the knowledge base.",
-      };
+      const finalText =
+        text && !looksLikeJson
+          ? text
+          : knowledgeHit(system, req.userMessage) ??
+            "I've checked our records. Please ask about a specific policy detail (PTO days, benefits start date, office address) and I'll answer from the knowledge base.";
+      completion = { content: finalText };
+      if (onDelta && (!text || looksLikeJson)) emitStatic(finalText);
     }
   }
 

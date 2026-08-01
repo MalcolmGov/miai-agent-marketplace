@@ -83,7 +83,7 @@ function sessionsFor(channel: ChannelKind): SessionBag {
 const MAX_SESSIONS = 500;
 const MAX_TURNS_KEPT = 24;
 
-export async function runChannelTurn(input: {
+type ChannelTurnInput = {
   channel: ChannelKind;
   key: string;
   message: string;
@@ -91,7 +91,21 @@ export async function runChannelTurn(input: {
   replyLanguage?: string;
   rateLimitOk: boolean;
   rateLimitRetryAfterSec?: number;
-}): Promise<ChannelTurnResult> {
+  onDelta?: (text: string) => void;
+  onToolStart?: () => void;
+};
+
+async function prepareChannelTurn(input: ChannelTurnInput): Promise<
+  | ChannelTurnErr
+  | {
+      ok: true;
+      workspaceId: string;
+      agentId: string;
+      sessionKey: string;
+      store: SessionBag;
+      turnInput: Parameters<typeof runTurn>[0];
+    }
+> {
   if (!input.key || !input.message.trim()) {
     return { ok: false, status: 400, error: "Invalid request" };
   }
@@ -141,8 +155,13 @@ export async function runChannelTurn(input: {
     .filter(Boolean)
     .join("\n\n");
 
-  const result = await runTurn(
-    {
+  return {
+    ok: true,
+    workspaceId,
+    agentId,
+    sessionKey,
+    store,
+    turnInput: {
       workspaceId,
       agentId,
       pkg,
@@ -156,34 +175,51 @@ export async function runChannelTurn(input: {
       systemAppend,
       replyLanguage,
     },
-    { wallet: createWalletAdapter() },
+  };
+}
+
+async function finalizeChannelTurn(
+  input: ChannelTurnInput,
+  prepared: {
+    workspaceId: string;
+    agentId: string;
+    sessionKey: string;
+    store: SessionBag;
+  },
+  result: Awaited<ReturnType<typeof runTurn>>,
+): Promise<ChannelTurnOk> {
+  if (!prepared.store.has(prepared.sessionKey) && prepared.store.size >= MAX_SESSIONS) {
+    const oldest = prepared.store.keys().next().value;
+    if (oldest) prepared.store.delete(oldest);
+  }
+  prepared.store.set(
+    prepared.sessionKey,
+    (result.messages as ChannelMessage[]).slice(-MAX_TURNS_KEPT),
   );
 
-  if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
-    const oldest = store.keys().next().value;
-    if (oldest) store.delete(oldest);
-  }
-  store.set(sessionKey, (result.messages as ChannelMessage[]).slice(-MAX_TURNS_KEPT));
-
   if (result.paused) {
-    await upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "paused_no_tokens" });
+    await upsertWorkspaceAgent(prepared.workspaceId, prepared.agentId, {
+      agentId: prepared.agentId,
+      state: "paused_no_tokens",
+    });
   }
 
   await appendAudit({
-    workspaceId,
-    agentId,
+    workspaceId: prepared.workspaceId,
+    agentId: prepared.agentId,
     type: input.channel === "app" ? "app_turn" : "embed_turn",
     detail: {
       channel: input.channel,
       tokensDebited: result.tokensDebited,
       paused: result.paused,
+      streamed: Boolean(input.onDelta),
     },
   });
 
   return {
     ok: true,
-    workspaceId,
-    agentId,
+    workspaceId: prepared.workspaceId,
+    agentId: prepared.agentId,
     assistantMessage: result.assistantMessage,
     paused: result.paused,
     balance: result.balance,
@@ -192,7 +228,28 @@ export async function runChannelTurn(input: {
   };
 }
 
-/** Split reply into paced chunks for SSE streaming UX (v1 — post-runTurn). */
+export async function runChannelTurn(input: ChannelTurnInput): Promise<ChannelTurnResult> {
+  const prepared = await prepareChannelTurn(input);
+  if (!prepared.ok) return prepared;
+
+  const result = await runTurn(prepared.turnInput, { wallet: createWalletAdapter() });
+  return finalizeChannelTurn(input, prepared, result);
+}
+
+/** Same as runChannelTurn but forwards live model token deltas (and tool-start resets). */
+export async function runChannelTurnStream(input: ChannelTurnInput): Promise<ChannelTurnResult> {
+  const prepared = await prepareChannelTurn(input);
+  if (!prepared.ok) return prepared;
+
+  const result = await runTurn(prepared.turnInput, {
+    wallet: createWalletAdapter(),
+    onDelta: input.onDelta,
+    onToolStart: input.onToolStart,
+  });
+  return finalizeChannelTurn(input, prepared, result);
+}
+
+/** Split reply into paced chunks (fallback / non-stream adapters). */
 export function chunkReplyForStream(text: string): string[] {
   if (!text) return [""];
   const parts: string[] = [];

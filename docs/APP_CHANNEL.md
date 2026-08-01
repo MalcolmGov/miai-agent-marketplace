@@ -37,12 +37,13 @@ Page strips marketplace chrome (no sidebar / topbar). Designed for **zero browse
 { "key": "mia_pk_…", "message": "Hello", "sessionId": "app_…", "replyLanguage": "en" }
 ```
 
-Default: `text/event-stream`
+Default: `text/event-stream` with **live model token deltas** (`MIAI_MODEL_MODE=openai|gateway`). Mock mode paces after generate.
 
 | Event | Payload |
 |---|---|
-| `meta` | `{ channel, paused, balance }` |
-| `delta` | `{ text }` — paced chunks (v1 streams after `runTurn`) |
+| `meta` | `{ channel, streaming }` |
+| `delta` | `{ text }` — tokens as the model produces them |
+| `status` | `{ phase: "tool" }` — reset partial bubble; tool round started |
 | `paused` | wallet empty |
 | `done` | `{ reply, paused, balance }` |
 | `error` | `{ error, detail, status }` |

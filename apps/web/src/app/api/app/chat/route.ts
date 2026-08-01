@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { chunkReplyForStream, runChannelTurn } from "@/lib/channel-turn";
+import { runChannelTurn, runChannelTurnStream } from "@/lib/channel-turn";
 import { embedCorsHeaders } from "@/lib/embed-cors";
 import { rateLimit } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
 /** In-app channel chat. Same embed key + publish gate as website widget.
- *  Default response is SSE (delta stream). Pass Accept: application/json for one-shot. */
+ *  Default response is SSE with live model token deltas. Pass Accept: application/json for one-shot. */
 
 export function OPTIONS(req: Request) {
   return new NextResponse(null, { status: 204, headers: embedCorsHeaders(req) });
@@ -30,56 +30,28 @@ export async function POST(req: Request) {
     windowMs: 60_000,
   });
 
-  const result = await runChannelTurn({
-    channel: "app",
-    key: body.key,
-    message: typeof body.message === "string" ? body.message : "",
-    sessionId: body.sessionId,
-    replyLanguage: body.replyLanguage,
-    rateLimitOk: limited.ok,
-    rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
-  });
-
   const wantJson =
     (req.headers.get("accept") || "").includes("application/json") &&
     !(req.headers.get("accept") || "").includes("text/event-stream");
 
-  if (!result.ok) {
-    const headers: Record<string, string> = { ...cors };
-    if (result.retryAfterSec != null) headers["retry-after"] = String(result.retryAfterSec);
-    if (wantJson) {
+  if (wantJson) {
+    const result = await runChannelTurn({
+      channel: "app",
+      key: body.key,
+      message: typeof body.message === "string" ? body.message : "",
+      sessionId: body.sessionId,
+      replyLanguage: body.replyLanguage,
+      rateLimitOk: limited.ok,
+      rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
+    });
+    if (!result.ok) {
+      const headers: Record<string, string> = { ...cors };
+      if (result.retryAfterSec != null) headers["retry-after"] = String(result.retryAfterSec);
       return NextResponse.json(
         { error: result.error, detail: result.detail, retryAfterSec: result.retryAfterSec },
         { status: result.status, headers },
       );
     }
-    const stream = new ReadableStream({
-      start(controller) {
-        const enc = new TextEncoder();
-        controller.enqueue(
-          enc.encode(
-            sseLine("error", {
-              error: result.error,
-              detail: result.detail,
-              status: result.status,
-            }),
-          ),
-        );
-        controller.close();
-      },
-    });
-    return new Response(stream, {
-      status: result.status >= 400 ? result.status : 200,
-      headers: {
-        ...headers,
-        "content-type": "text/event-stream; charset=utf-8",
-        "cache-control": "no-cache, no-transform",
-        connection: "keep-alive",
-      },
-    });
-  }
-
-  if (wantJson) {
     return NextResponse.json(
       {
         reply: result.assistantMessage,
@@ -91,53 +63,56 @@ export async function POST(req: Request) {
     );
   }
 
-  const chunks = chunkReplyForStream(result.assistantMessage);
   const stream = new ReadableStream({
     async start(controller) {
       const enc = new TextEncoder();
-      controller.enqueue(
-        enc.encode(
-          sseLine("meta", {
-            channel: "app",
-            paused: result.paused,
-            balance: result.balance,
-          }),
-        ),
-      );
-      if (result.paused) {
-        controller.enqueue(
-          enc.encode(
-            sseLine("paused", {
-              reply: result.assistantMessage,
-              balance: result.balance,
-            }),
-          ),
-        );
-        controller.enqueue(
-          enc.encode(
-            sseLine("done", {
-              reply: result.assistantMessage,
-              paused: true,
-              balance: result.balance,
-            }),
-          ),
-        );
-        controller.close();
-        return;
-      }
-      for (const delta of chunks) {
-        controller.enqueue(enc.encode(sseLine("delta", { text: delta })));
-        await new Promise((r) => setTimeout(r, 18));
-      }
-      controller.enqueue(
-        enc.encode(
-          sseLine("done", {
+      const send = (event: string, data: unknown) => {
+        controller.enqueue(enc.encode(sseLine(event, data)));
+      };
+
+      send("meta", { channel: "app", streaming: true });
+
+      try {
+        const result = await runChannelTurnStream({
+          channel: "app",
+          key: body.key,
+          message: typeof body.message === "string" ? body.message : "",
+          sessionId: body.sessionId,
+          replyLanguage: body.replyLanguage,
+          rateLimitOk: limited.ok,
+          rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
+          onDelta: (text) => send("delta", { text }),
+          onToolStart: () => send("status", { phase: "tool" }),
+        });
+
+        if (!result.ok) {
+          send("error", {
+            error: result.error,
+            detail: result.detail,
+            status: result.status,
+          });
+          controller.close();
+          return;
+        }
+
+        if (result.paused) {
+          send("paused", {
             reply: result.assistantMessage,
-            paused: false,
             balance: result.balance,
-          }),
-        ),
-      );
+          });
+        }
+        send("done", {
+          reply: result.assistantMessage,
+          paused: result.paused,
+          balance: result.balance,
+        });
+      } catch (err) {
+        send("error", {
+          error: "Chat failed",
+          detail: err instanceof Error ? err.message : "Unknown error",
+          status: 500,
+        });
+      }
       controller.close();
     },
   });

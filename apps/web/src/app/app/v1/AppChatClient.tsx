@@ -198,6 +198,14 @@ export function AppChatClient({
           if (ev.event === "error") {
             throw new Error(String(data.detail || data.error || "Chat failed"));
           }
+          if (ev.event === "status" && data.phase === "tool") {
+            // Model chose a tool — clear any partial streamed preface, show typing again.
+            started = false;
+            full = "";
+            setTyping(true);
+            setMessages((m) => m.filter((msg) => msg.id !== asstId));
+            continue;
+          }
           if (ev.event === "delta" && typeof data.text === "string") {
             if (!started) {
               started = true;
