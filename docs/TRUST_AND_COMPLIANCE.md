@@ -1,6 +1,6 @@
 # Trust & Compliance — MyInstantAI Agents Marketplace
 
-Single source of truth for security and multi-region compliance claims. The in-app Trust Center (`/trust`) mirrors this document. **Prefer under-claiming over over-claiming in partner meetings.**
+Single source of truth for security and multi-region compliance claims. The in-app Trust Center (`/trust`) mirrors this document with a four-pillar UI and **Live / Partial / Via provider / Planned** tags on every claim. **Prefer under-claiming over over-claiming in partner meetings.**
 
 ## Scope
 

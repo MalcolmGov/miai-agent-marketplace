@@ -1,56 +1,181 @@
-/** Meeting-ready Trust Center copy — keep claims honest and region-specific. */
+/** Trust Center — visual pillars + truth labels for partner meetings. */
 
+export type Truth = "live" | "partial" | "via_provider" | "planned";
 export type Status = "shipped" | "in_progress" | "planned";
 
-export const SECURITY_CONTROLS: Array<{
+export function truthLabel(t: Truth): string {
+  if (t === "live") return "Live";
+  if (t === "partial") return "Partial";
+  if (t === "via_provider") return "Via provider";
+  return "Planned";
+}
+
+export const HERO_BADGES: Array<{ label: string; truth: Truth; note: string }> = [
+  {
+    label: "POPIA-aligned",
+    truth: "live",
+    note: "Africa market packs (incl. ZA) encode POPIA-style minimisation and human handoff",
+  },
+  {
+    label: "GDPR-ready",
+    truth: "live",
+    note: "EU packs + erasure language → human handoff (not automated deletion)",
+  },
+  {
+    label: "PCI-DSS (via provider)",
+    truth: "via_provider",
+    note: "Card data never touches agents — payments stay with Stripe / wallet provider",
+  },
+  {
+    label: "SOC 2 (in progress)",
+    truth: "planned",
+    note: "Evidence collection planned against Azure / MyInstantAI control plane post-cutover",
+  },
+];
+
+export type PillarItem = {
   title: string;
-  status: Status;
   body: string;
-}> = [
+  truth: Truth;
+  /** Short honest caveat shown under the claim */
+  caveat?: string;
+};
+
+export type Pillar = {
+  id: string;
+  title: string;
+  accent: string; // CSS color
+  accentSoft: string;
+  icon: "lock" | "key" | "shield" | "building";
+  items: PillarItem[];
+};
+
+export const PILLARS: Pillar[] = [
   {
-    title: "Workspace identity (OIDC)",
-    status: "shipped",
-    body: "Bearer JWT verification against MyInstantAI JWKS when MIAI_AUTH_MODE=oidc. Workspace and user claims drive tenancy. Mock mode is for demos only.",
+    id: "privacy",
+    title: "Data & privacy",
+    accent: "#34d399",
+    accentSoft: "rgba(52, 211, 153, 0.14)",
+    icon: "lock",
+    items: [
+      {
+        title: "Tenant data isolation",
+        body: "Every business is workspace-partitioned — audit and APIs never return cross-tenant rows.",
+        truth: "live",
+      },
+      {
+        title: "Encryption in transit & at rest",
+        body: "TLS on the host edge · OAuth tokens HMAC-sealed server-side.",
+        truth: "partial",
+        caveat: "AES-256-GCM at rest + Key Vault land on the Azure cutover — not claiming full AES-256 everywhere today.",
+      },
+      {
+        title: "PII minimisation",
+        body: "Agents are instructed to collect only what the task needs; connector secrets never enter prompts.",
+        truth: "partial",
+        caveat: "No automated PII redaction pipeline yet — guardrails + prompt policy, not a scrubber.",
+      },
+      {
+        title: "Retention & erasure",
+        body: "GDPR/CCPA/POPIA erasure language is detected and escalated to a human.",
+        truth: "partial",
+        caveat: "Not one-click automated deletion yet — human DSAR path is live; self-serve export is planned.",
+      },
+    ],
   },
   {
-    title: "Operator RBAC",
-    status: "shipped",
-    body: "Agent Admin requires an admin / operator role on the token. Workspace APIs stay scoped to the caller’s workspace_id.",
+    id: "identity",
+    title: "Identity & access",
+    accent: "#60a5fa",
+    accentSoft: "rgba(96, 165, 250, 0.14)",
+    icon: "key",
+    items: [
+      {
+        title: "OAuth 2.0 + PKCE",
+        body: "Live in this build — every connector authorises with PKCE and HMAC-signed state.",
+        truth: "live",
+      },
+      {
+        title: "SSO / OIDC",
+        body: "OIDC Bearer adapter ready for MyInstantAI identity (`workspace_id`, `roles`).",
+        truth: "partial",
+        caveat: "SAML via your IdP once MIAI SSO is wired — mock auth is for demos only.",
+      },
+      {
+        title: "Role-based access",
+        body: "Operator surfaces (Agent Admin) require admin / operator roles.",
+        truth: "partial",
+        caveat: "Full Owner · admin · agent · read-only matrix is the next RBAC pass.",
+      },
+      {
+        title: "Scoped embed keys",
+        body: "Per workspace + agent, HMAC-bound, revocable by going offline — never used as browser secrets for connectors.",
+        truth: "live",
+      },
+    ],
   },
   {
-    title: "HMAC embed keys",
-    status: "shipped",
-    body: "Website widgets authenticate with deterministic public keys (mia_pk_…) HMAC-bound to workspace + agent. Keys alone cannot mint a live agent.",
+    id: "safety",
+    title: "AI safety & guardrails",
+    accent: "#fb923c",
+    accentSoft: "rgba(251, 146, 60, 0.14)",
+    icon: "shield",
+    items: [
+      {
+        title: "Grounded answers",
+        body: "Fenced to knowledge + tools — agents must not invent policy, prices, or records.",
+        truth: "live",
+      },
+      {
+        title: "Prompt-injection defense",
+        body: "Guardrail docs + runtime checks ignore malicious “ignore your instructions” style attacks.",
+        truth: "live",
+      },
+      {
+        title: "Human-in-the-loop",
+        body: "Sensitive, disputed, or high-value actions hand off to a person — including erasure requests.",
+        truth: "live",
+      },
+      {
+        title: "Output moderation",
+        body: "Off-scope and unsafe replies are blocked or rephrased by pack guardrails before send.",
+        truth: "partial",
+        caveat: "Policy-layer moderation in runtime packs — not a separate third-party moderator yet.",
+      },
+    ],
   },
   {
-    title: "Embed entitlement + rate limits",
-    status: "shipped",
-    body: "Embed chat only serves agents already rented and live (or paused for tokens). Per-key rate limit: 30 requests / minute.",
-  },
-  {
-    title: "OAuth connector hygiene",
-    status: "shipped",
-    body: "PKCE + HMAC-signed state (15 min TTL). Access tokens are HMAC-sealed at rest and never injected into LLM prompts. Disconnect revokes the binding.",
-  },
-  {
-    title: "Workspace audit trail",
-    status: "shipped",
-    body: "Rent, configure, chat, embed, knowledge, OAuth, and wallet events are recorded with workspaceId, agentId, timestamp, and detail — queryable via /api/audit.",
-  },
-  {
-    title: "Security response headers",
-    status: "shipped",
-    body: "X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy, and CSP Report-Only on all app responses.",
-  },
-  {
-    title: "AES token encryption at rest",
-    status: "planned",
-    body: "Upgrade from HMAC seal to AES-256-GCM in Azure Key Vault–backed storage before production cutover.",
-  },
-  {
-    title: "SOC 2 Type II",
-    status: "planned",
-    body: "Evidence collection against MyInstantAI / Azure control plane once production traffic and DPA pack are live.",
+    id: "infra",
+    title: "Infrastructure & ops",
+    accent: "#2dd4bf",
+    accentSoft: "rgba(45, 212, 191, 0.14)",
+    icon: "building",
+    items: [
+      {
+        title: "Secrets stay server-side",
+        body: "Connector credentials and API keys never ship to the browser — proven in this build.",
+        truth: "live",
+        caveat: "Azure Key Vault is on the deploy path; staging uses env / sealed file store.",
+      },
+      {
+        title: "Full audit trail",
+        body: "Rent, chat, embed, OAuth, knowledge, and wallet events recorded per workspace.",
+        truth: "live",
+        caveat: "Operational trail today — immutable / tamper-evident export planned with SOC 2 evidence.",
+      },
+      {
+        title: "Rate limits & spend caps",
+        body: "Embed: 30 req/min per key · wallet pause when tokens run out.",
+        truth: "partial",
+        caveat: "Richer per-tenant quota UI and anomaly alerts are next.",
+      },
+      {
+        title: "Anomaly detection",
+        body: "Unusual usage flagged for operators in real time.",
+        truth: "planned",
+        caveat: "Not live yet — Live Ops + audit give the raw signal today.",
+      },
+    ],
   },
 ];
 
@@ -66,13 +191,13 @@ export const REGION_PACKS: Array<{
   {
     id: "us",
     label: "United States",
-    frameworks: ["CCPA", "TCPA", "HIPAA (health agents — BAA required)"],
+    frameworks: ["CCPA", "TCPA", "HIPAA (health — BAA required)"],
     emergency: "911",
     channels: ["SMS", "Web", "App"],
     agentLayer:
-      "US market packs bake TCPA (no cold outreach, honor STOP), CCPA minimisation, and health-agent HIPAA caution into prompts and guardrails.",
+      "US packs bake TCPA (no cold outreach, honor STOP), CCPA minimisation, and health-agent HIPAA caution into prompts and guardrails.",
     platformNote:
-      "Platform stores workspace data in the deployed Azure/Railway region. HIPAA workloads require a signed BAA and health-family agents only.",
+      "Platform stores workspace data in the deployed region. HIPAA workloads need a signed BAA.",
   },
   {
     id: "eu",
@@ -81,75 +206,52 @@ export const REGION_PACKS: Array<{
     emergency: "112",
     channels: ["SMS", "Web", "App"],
     agentLayer:
-      "EU packs minimise personal data, refuse cross-customer disclosure, and hand GDPR access/erasure requests to a human — never auto-delete in chat.",
-    platformNote:
-      "EU data residency pinning (EU-only Postgres + region lock) is on the Azure roadmap. Today: deploy region = chosen cloud region.",
+      "EU packs minimise personal data and hand access/erasure requests to a human — never auto-delete in chat.",
+    platformNote: "EU-only Postgres pin is on the Azure roadmap. Today: deploy region = chosen cloud region.",
   },
   {
     id: "africa",
     label: "Africa (incl. South Africa)",
-    frameworks: ["POPIA-style", "Regional privacy norms"],
+    frameworks: ["POPIA-style", "Regional privacy"],
     emergency: "Local emergency services",
     channels: ["WhatsApp", "Web", "App", "SMS"],
     agentLayer:
-      "Africa packs follow POPIA-style collection limits, WhatsApp-first flows, and escalate sensitive HR/payroll/medical matters to a person.",
-    platformNote:
-      "ZA customers are covered under the Africa market pack. Country-specific residency can be selected at Azure deploy time.",
+      "Africa packs follow POPIA-style collection limits and escalate sensitive HR/payroll/medical matters to a person.",
+    platformNote: "ZA is covered under the Africa pack. Country residency selectable at Azure deploy time.",
   },
   {
     id: "asia",
     label: "Asia-Pacific",
-    frameworks: ["PDPA-style", "Regional privacy norms"],
+    frameworks: ["PDPA-style", "Regional privacy"],
     emergency: "Local emergency services",
     channels: ["Web", "App", "SMS"],
     agentLayer:
       "Asia packs apply PDPA-style minimisation, opt-out via human handoff, and no cold marketing messages.",
-    platformNote:
-      "APAC residency follows the customer’s Azure region choice. Cross-border transfer terms land with the DPA pack.",
+    platformNote: "APAC residency follows the customer’s Azure region choice.",
   },
-];
-
-export const DATA_CLASSES: Array<{ name: string; examples: string; retention: string }> = [
-  {
-    name: "Workspace rentals & config",
-    examples: "Agent id, tier, state, model, connector bindings, public embed key",
-    retention: "For the life of the tenancy; deleted on workspace offboarding",
-  },
-  {
-    name: "Conversation & audit events",
-    examples: "Turn timestamps, tokens debited, tool errors, rent/configure/OAuth events",
-    retention: "Operational trail (capped store today); immutable export planned with SOC2 evidence",
-  },
-  {
-    name: "Knowledge sources",
-    examples: "Pastes, uploads, crawled pages attached to an agent",
-    retention: "Until the partner deletes the source or the agent is removed",
-  },
-  {
-    name: "OAuth connector tokens",
-    examples: "Google, Microsoft, Slack, Shopify, HubSpot, etc.",
-    retention: "Until disconnect; sealed at rest; never sent to the model",
-  },
-  {
-    name: "Wallet / token metering",
-    examples: "Balances, top-ups, per-turn debits",
-    retention: "Billing period + statutory retention once MIAI wallet is authoritative",
-  },
-];
-
-export const SUBPROCESSORS: Array<{ name: string; role: string; region: string }> = [
-  { name: "MyInstantAI", role: "Identity (OIDC), wallet, model gateway (production)", region: "Customer Azure tenancy" },
-  { name: "Microsoft Azure", role: "Container Apps, Postgres, Key Vault, App Insights (target)", region: "Deploy-time region" },
-  { name: "Railway", role: "Staging host (pre-Azure cutover)", region: "US (staging)" },
-  { name: "LLM providers via MIAI gateway", role: "Model inference (no connector secrets in prompts)", region: "Per gateway policy" },
-  { name: "OAuth vendors (Google, Microsoft, Slack, …)", role: "Connector authorisation", region: "Vendor regions" },
 ];
 
 export const ROADMAP_SECURITY: Array<{ when: string; item: string; status: Status }> = [
-  { when: "Now", item: "OIDC adapter, RBAC on Admin, embed entitlement, rate limits, security headers, Trust Center", status: "shipped" },
-  { when: "Next", item: "AES-GCM token encryption, Key Vault secrets, CSP enforce mode, DSAR export API", status: "in_progress" },
-  { when: "Azure cutover", item: "Per-tenant region pin, EU/ZA/APAC residency options, App Insights SIEM hooks", status: "planned" },
-  { when: "Post-GA", item: "SOC 2 Type II, DPA + subprocessor schedule, breach playbook SLA", status: "planned" },
+  {
+    when: "Now",
+    item: "OIDC adapter, Admin RBAC, embed entitlement + rate limits, security headers, Trust Center",
+    status: "shipped",
+  },
+  {
+    when: "Next",
+    item: "AES-GCM token encryption, Key Vault secrets, CSP enforce, DSAR export, fuller RBAC matrix",
+    status: "in_progress",
+  },
+  {
+    when: "Azure cutover",
+    item: "Per-tenant region pin, EU/ZA/APAC residency options, App Insights SIEM hooks",
+    status: "planned",
+  },
+  {
+    when: "Post-GA",
+    item: "SOC 2 Type II, DPA + subprocessor schedule, anomaly detection, breach SLA",
+    status: "planned",
+  },
 ];
 
 export function statusLabel(s: Status): string {
