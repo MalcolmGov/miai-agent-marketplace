@@ -62,6 +62,34 @@ function statusBadge(item: FamilyItem) {
   return null;
 }
 
+/**
+ * Pack summaries often stack market + family name repeats
+ * ("Asia Executive Assistant — Executive Assistant — …"). Strip that noise for cards.
+ */
+function cleanCardSummary(summary: string, name: string): string {
+  let s = summary.replace(/\s+/g, " ").trim();
+  // Drop trailing multi-step marketing clause (shown as a chip already)
+  s = s.replace(/\s*Multi-step workflows?:.*$/i, "").trim();
+  // Remove leading market labels
+  s = s.replace(/^(US|EU|Asia|Africa|ZA)\s*[—–-]\s*/i, "");
+  s = s.replace(/^(US|EU|Asia|Africa)\s+/i, "");
+  // Collapse "Name — Name — Name — body" → body
+  const nameEsc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const repeat = new RegExp(
+    `^(?:${nameEsc}\\s*[—–-]\\s*)+(?:${nameEsc}\\s*[—–-]\\s*)?`,
+    "i",
+  );
+  s = s.replace(repeat, "");
+  // Generic "Label — Label — rest"
+  s = s.replace(/^(?:[\w &/]+?\s*[—–-]\s*){2,}(?=[A-Za-z])/u, "");
+  // If we still start with the card title, peel it once
+  s = s.replace(new RegExp(`^${nameEsc}\\s*[—–-]\\s*`, "i"), "");
+  s = s.replace(/^[\s—–-]+/, "").trim();
+  // Capitalize first letter
+  if (s.length) s = s.charAt(0).toUpperCase() + s.slice(1);
+  return s || summary;
+}
+
 export function CatalogGrid() {
   const [items, setItems] = useState<FamilyItem[]>([]);
   const [familyCount, setFamilyCount] = useState(0);
@@ -257,17 +285,17 @@ export function CatalogGrid() {
                   className="cat-rail"
                   style={{ background: categoryAccent(item.marketplaceCategory) }}
                 />
-                <div className="flex flex-1 flex-col p-5">
-                  <div className="mb-3 flex items-start gap-3">
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <div className="mb-4 flex items-start gap-3.5">
                     <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="display text-[0.98rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
+                        <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                           {item.name}
                         </h3>
                         {badge ? (
                           <span
-                            className={`chip shrink-0 ${badge.tone === "live" ? "chip-live" : ""}`}
+                            className={`chip shrink-0 !px-2 !py-0.5 text-[10px] ${badge.tone === "live" ? "chip-live" : ""}`}
                           >
                             {badge.tone === "live" ? (
                               <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
@@ -280,22 +308,22 @@ export function CatalogGrid() {
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--muted)]">
-                        {item.marketplaceCategory}
+                      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] font-medium text-[var(--card-meta)]">
+                        <span>{item.marketplaceCategory}</span>
                         {hasWorkflow ? (
-                          <span className="ml-2 normal-case tracking-normal text-[var(--accent)]">
-                            · Multi-step
+                          <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
+                            Multi-step
                           </span>
                         ) : null}
                       </p>
                     </div>
                   </div>
 
-                  <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-[var(--muted)]">
-                    {item.summary}
+                  <p className="agent-card-desc line-clamp-3 flex-1">
+                    {cleanCardSummary(item.summary, item.name)}
                   </p>
 
-                  <div className="mt-4 flex items-center justify-between border-t border-[var(--line)] pt-3 text-sm font-semibold text-[var(--accent-bright)]">
+                  <div className="mt-5 flex items-center justify-between border-t border-[var(--line)] pt-3.5 text-sm font-semibold text-[var(--accent-bright)]">
                     <span>Rent / setup</span>
                     <span
                       aria-hidden

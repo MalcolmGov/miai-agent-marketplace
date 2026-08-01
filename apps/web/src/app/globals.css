@@ -12,6 +12,9 @@
   --text: #f2f6fc;
   --muted: #9aabbf;
   --muted-dim: #6d7f96;
+  /* Higher-contrast secondary copy for dense UI (cards) */
+  --card-body: #d0dae8;
+  --card-meta: #a8b6c9;
   --accent: #3dd6c6;
   --accent-bright: #6aefe0;
   --accent-dim: #1f9e92;
@@ -129,6 +132,13 @@ body::before {
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-panel);
+}
+
+.agent-card-desc {
+  color: var(--card-body);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
 }
 
 .panel-interactive {
