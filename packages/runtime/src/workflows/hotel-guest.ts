@@ -5,6 +5,8 @@
  * Billing, reservation changes, complaints, other-guest privacy → handoff.
  */
 
+import { wf } from "./i18n.js";
+
 export type HotelStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface HotelWorkflowStep {
@@ -105,9 +107,9 @@ function requestKind(text: string): string {
 function amenityTopic(text: string): string {
   if (/check-?in|check in/i.test(text)) return "check_in";
   if (/check-?out|check out/i.test(text)) return "check_out";
-  if (/breakfast/i.test(text)) return "breakfast";
+  if (/breakfast|frühstück|petit[- ]déjeuner/i.test(text)) return "breakfast";
   if (/wi-?fi|wifi|internet/i.test(text)) return "wifi";
-  if (/pool/i.test(text)) return "pool";
+  if (/pool|piscine/i.test(text)) return "pool";
   if (/gym|fitness/i.test(text)) return "gym";
   if (/spa/i.test(text)) return "spa";
   if (/park(ing)?/i.test(text)) return "parking";
@@ -121,6 +123,7 @@ export async function runHotelGuestWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<HotelWorkflowTurnResult> {
   if (!isHotelGuest(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -132,6 +135,7 @@ export async function runHotelGuestWorkflow(input: {
   const toolCalls: HotelWorkflowTurnResult["toolCalls"] = [];
   const has = (n: string) => input.toolNames.includes(n);
   const emerg = emergencyNumber(input.agentId, input.knowledge);
+  const lang = input.replyLanguage;
 
   // Emergency
   if (/life-?threatening|medical emergency|chest pain|can't breathe/.test(lower)) {
@@ -143,7 +147,7 @@ export async function runHotelGuestWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: `If this is life-threatening, call **${emerg}** now. I'm also alerting the front desk urgently.`,
+      assistantMessage: wf(lang, "emergency", { emerg }),
     };
   }
 
@@ -152,8 +156,7 @@ export async function runHotelGuestWorkflow(input: {
     return {
       handled: true,
       toolCalls: [],
-      assistantMessage:
-        "I can't share another guest's room number or whether someone is staying here — guest details are confidential.",
+      assistantMessage: wf(lang, "privacy_other_guest"),
     };
   }
 
@@ -162,8 +165,7 @@ export async function runHotelGuestWorkflow(input: {
     return {
       handled: true,
       toolCalls: [],
-      assistantMessage:
-        "I can't take card details in chat — please settle at the front desk or via a secure link.",
+      assistantMessage: wf(lang, "card_refuse"),
     };
   }
 
@@ -194,7 +196,9 @@ export async function runHotelGuestWorkflow(input: {
 
   // Billing / reservation change / complaint → handoff (not a guest_request log)
   if (
-    /billing|charged wrong|dispute (the )?charge|invoice|folio/.test(lower) ||
+    /billing|charged wrong|dispute (the )?charge|invoice|folio|charge on my (bill|folio)|don'?t (recognise|recognize)|unrecognised charge|unrecognized charge|\bbill\b.*\bcharge|\bcharge\b.*\bbill\b/.test(
+      lower,
+    ) ||
     /change (my )?(dates?|reservation|rate)|cancel (my )?reservation|extend (my )?stay by/.test(lower) ||
     /complaint|filthy|unacceptable|manager|furious|ruined (my )?stay/.test(lower)
   ) {
@@ -213,8 +217,7 @@ export async function runHotelGuestWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "I'm connecting you to a human at the front desk for that — they handle billing, reservation changes, and complaints. You're connected.",
+      assistantMessage: wf(lang, "handoff_front_desk_billing"),
     };
   }
 
@@ -228,7 +231,7 @@ export async function runHotelGuestWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: "I'm connecting you to the front desk — they'll follow up shortly.",
+      assistantMessage: wf(lang, "handoff_front_desk"),
     };
   }
 
@@ -239,7 +242,7 @@ export async function runHotelGuestWorkflow(input: {
       handled: true,
       plan: cancelled,
       toolCalls: [],
-      assistantMessage: embed("Okay — I've cancelled that request plan. Nothing was logged.", cancelled),
+      assistantMessage: embed(wf(lang, "plan_cancelled_request"), cancelled),
     };
   }
 
@@ -278,7 +281,7 @@ export async function runHotelGuestWorkflow(input: {
     const reqStep = plan.steps.find((s) => s.id === "request" && s.status === "done");
     const msg = [
       reqStep
-        ? `Request logged — reference **${reqStep.resultSummary}**. The team will follow up; times aren't guaranteed unless policy says so.`
+        ? `Request logged — reference **${reqStep.resultSummary}**. The team will follow up; this is a request only — the desk must confirm any late check-out time.`
         : "Workflow finished.",
       "",
       "## Workflow results",
@@ -288,9 +291,11 @@ export async function runHotelGuestWorkflow(input: {
     return { handled: true, plan, toolCalls, assistantMessage: embed(msg, plan) };
   }
 
+  // Late check-out is a guest request (must run before amenity FAQ)
   // Amenity / policy questions
   if (
-    /check-?in|check-?out|breakfast|wi-?fi|wifi|pool|gym|spa|parking|what time|password|hours/.test(
+    !/late check-?out/.test(lower) &&
+    /check-?in|check-?out|breakfast|wi-?fi|wifi|pool|gym|spa|parking|what time|password|hours|frühstück|piscine|petit[- ]déjeuner/.test(
       lower,
     )
   ) {
@@ -318,7 +323,11 @@ export async function runHotelGuestWorkflow(input: {
   }
 
   // Local recommendations
-  if (/restaurant|where (to )?eat|attractions?|things to do|museum|transport|uber|u-?bahn|nearby/.test(lower)) {
+  if (
+    /restaurant|where (to )?eat|attractions?|things to do|museum|transport|uber|u-?bahn|nearby|worth seeing|near the hotel|local tip|what'?s (nearby|around)/.test(
+      lower,
+    )
+  ) {
     const kind = /transport|uber|taxi|u-?bahn|airport/i.test(lower)
       ? "transport"
       : /museum|attraction|park|gate|things to do/i.test(lower)

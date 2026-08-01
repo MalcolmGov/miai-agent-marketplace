@@ -6,10 +6,10 @@ import { SandboxChat } from "./SandboxChat";
 import {
   SetupGuide,
   readSetupFlag,
-  rentalStatusLabel,
   writeSetupFlag,
   type StudioTab,
 } from "./SetupGuide";
+import { useT } from "@/lib/locale";
 import { MODELS } from "@/lib/models";
 import { TIER_PRICES } from "@/lib/constants";
 import {
@@ -52,7 +52,15 @@ interface AgentPayload {
   }>;
 }
 
+function rentalStatusKey(state: string): "studio.statusNotRented" | "studio.statusDraft" | "studio.statusReady" {
+  if (state === "selected") return "studio.statusNotRented";
+  if (state === "configuring") return "studio.statusDraft";
+  if (state === "rented" || state === "live" || state === "paused") return "studio.statusReady";
+  return "studio.statusNotRented";
+}
+
 export function AgentStudio({ agentId }: { agentId: string }) {
+  const t = useT();
   const [data, setData] = useState<AgentPayload | null>(null);
   const [model, setModel] = useState("claude-sonnet");
   const [knowledge, setKnowledge] = useState("");
@@ -63,6 +71,13 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [saving, setSaving] = useState(false);
   const [configMsg, setConfigMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedApp, setCopiedApp] = useState(false);
+  const [appTitle, setAppTitle] = useState("Assistant");
+  const [appAccent, setAppAccent] = useState("#2bb8a8");
+  const [appAccent2, setAppAccent2] = useState("#157f8d");
+  const [appGreeting, setAppGreeting] = useState(
+    "Hi! I'm your AI assistant. Ask me anything, or say you'd like a human.",
+  );
   const [tab, setTab] = useState<StudioTab>("configure");
   const [triedChat, setTriedChat] = useState(false);
   const [visitedInstall, setVisitedInstall] = useState(false);
@@ -100,10 +115,28 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     }
   }, [tab, agentId]);
 
+  const [origin, setOrigin] = useState("");
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
   const snippet = useMemo(() => {
     const key = publicKey || `mia_pk_${agentId}_demo`;
-    return `<script src="${typeof window !== "undefined" ? window.location.origin : ""}/agents/v1/agent.js" data-key="${key}" async></script>`;
-  }, [publicKey, agentId]);
+    const base = origin || "";
+    return `<script src="${base}/agents/v1/agent.js" data-key="${key}" async></script>`;
+  }, [publicKey, agentId, origin]);
+
+  const appUrl = useMemo(() => {
+    const key = publicKey || `mia_pk_${agentId}_demo`;
+    const q = new URLSearchParams({
+      key,
+      title: appTitle,
+      accent: appAccent,
+      accent2: appAccent2,
+      greeting: appGreeting,
+    });
+    return `${origin || ""}/app/v1?${q.toString()}`;
+  }, [publicKey, agentId, origin, appTitle, appAccent, appAccent2, appGreeting]);
 
   async function copySnippet() {
     try {
@@ -113,7 +146,19 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       setVisitedInstall(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      setConfigMsg({ kind: "err", text: "Could not copy — select the snippet and copy manually." });
+      setConfigMsg({ kind: "err", text: t("studio.errorCopy") });
+    }
+  }
+
+  async function copyAppUrl() {
+    try {
+      await navigator.clipboard.writeText(appUrl);
+      setCopiedApp(true);
+      writeSetupFlag(agentId, "install");
+      setVisitedInstall(true);
+      window.setTimeout(() => setCopiedApp(false), 2000);
+    } catch {
+      setConfigMsg({ kind: "err", text: t("studio.errorCopy") });
     }
   }
 
@@ -127,7 +172,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     });
     const json = await res.json();
     if (!res.ok) {
-      setConfigMsg({ kind: "err", text: json.error ?? "Could not create rental" });
+      setConfigMsg({ kind: "err", text: json.error ?? t("studio.errorRental") });
       return false;
     }
     setPublicKey(json.rental.publicKey);
@@ -144,7 +189,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       setTab("configure");
       setConfigMsg({
         kind: "ok",
-        text: "Rented — next: review knowledge, then Save & continue.",
+        text: t("studio.okRented"),
       });
       await load();
     } finally {
@@ -171,7 +216,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       });
       const json = await res.json();
       if (!res.ok) {
-        setConfigMsg({ kind: "err", text: json.error ?? "Save failed" });
+        setConfigMsg({ kind: "err", text: json.error ?? t("studio.errorSave") });
         return;
       }
       if (json.rental) {
@@ -182,9 +227,9 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         kind: "ok",
         text: markRented
           ? hasWorkflow
-            ? "Saved — next: connect Calendar and Slack (or skip for sandbox)."
-            : "Saved — next: try the agent in chat."
-          : "Draft saved.",
+            ? t("studio.okSavedWorkflow")
+            : t("studio.okSavedChat")
+          : t("studio.okDraft"),
       });
       if (markRented) setTab("actions");
     } finally {
@@ -212,7 +257,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   }
 
   if (!data) {
-    return <div className="text-[var(--muted)]">Loading agent…</div>;
+    return <div className="text-[var(--muted)]">{t("studio.loading")}</div>;
   }
 
   const m = data.package.manifest;
@@ -230,23 +275,25 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         <div>
           <div className="mb-2 flex flex-wrap gap-2">
             {hasWorkflow && (
-              <span className="chip chip-live" title="Goal → plan → confirm → execute → verify">
-                Multi-step agent
+              <span className="chip chip-live" title={t("studio.multiStepTitle")}>
+                {t("studio.multiStepAgent")}
               </span>
             )}
             <span className="chip">{m.tier}</span>
             <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
-            <span className={`chip ${rented ? "chip-live" : ""}`}>{rentalStatusLabel(state)}</span>
+            <span className={`chip ${rented ? "chip-live" : ""}`}>
+              {t(rentalStatusKey(state))}
+            </span>
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">{m.name}</h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">{m.summary}</p>
           {hasWorkflow ? (
             <>
               <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
-                Multi-step workflow: proposes a plan, waits for your confirm, then runs tools.{" "}
+                {t("studio.multiStepWorkflow")}{" "}
                 {demoHint ?? "Connect Calendar / Slack on Actions, then try a prompt in chat."}
               </p>
-              <div className="mt-3 flex flex-wrap gap-1.5" aria-label="What this agent can do">
+              <div className="mt-3 flex flex-wrap gap-1.5" aria-label={t("studio.capabilitiesAria")}>
                 {capabilityChips.map((label) => (
                   <span
                     key={label}
@@ -266,7 +313,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           ) : null}
         </div>
         <div className="panel flex flex-col gap-2 p-4 sm:min-w-[240px]">
-          <div className="text-xs uppercase tracking-wide text-[var(--muted)]">Rent</div>
+          <div className="text-xs uppercase tracking-wide text-[var(--muted)]">{t("studio.rent")}</div>
           <div className="flex gap-2">
             {(Object.keys(TIER_PRICES) as Array<keyof typeof TIER_PRICES>).map((t) => (
               <button
@@ -280,7 +327,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             ))}
           </div>
           <button type="button" className="btn btn-primary mt-1" disabled={saving} onClick={rent}>
-            {state === "selected" ? "Rent & configure" : "Update plan"}
+            {state === "selected" ? t("studio.rentConfigure") : t("studio.updatePlan")}
           </button>
         </div>
       </div>
@@ -303,18 +350,18 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       <div className="flex flex-wrap gap-2 border-b border-[var(--line)] pb-2">
         {(
           [
-            ["configure", "Configure"],
-            ["actions", "Actions"],
-            ["install", "Install"],
+            ["configure", "studio.tabConfigure"],
+            ["actions", "studio.tabActions"],
+            ["install", "studio.tabInstall"],
           ] as const
-        ).map(([id, label]) => (
+        ).map(([id, labelKey]) => (
           <button
             key={id}
             type="button"
             className={`btn ${tab === id ? "btn-primary" : "btn-ghost"}`}
             onClick={() => goTab(id)}
           >
-            {label}
+            {t(labelKey)}
           </button>
         ))}
       </div>
@@ -324,7 +371,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           {tab === "configure" && (
             <>
               <div className="panel p-4">
-                <h2 className="mb-3 text-sm font-semibold">Model</h2>
+                <h2 className="mb-3 text-sm font-semibold">{t("studio.model")}</h2>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {MODELS.map((mod) => (
                     <button
@@ -339,7 +386,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
                     >
                       <div className="font-medium">{mod.label}</div>
                       <div className="text-xs text-[var(--muted)]">
-                        {mod.blurb} · burn {mod.burn}
+                        {mod.blurb} · {t("studio.modelBurn", { burn: mod.burn })}
                       </div>
                     </button>
                   ))}
@@ -368,50 +415,132 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           )}
 
           {tab === "install" && (
-            <div className="panel space-y-4 p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-sm font-semibold">Web embed</h2>
-                  <p className="mt-1 text-xs text-[var(--muted)]">
-                    Paste before <code>&lt;/body&gt;</code>. Key:{" "}
-                    <code className="text-[var(--accent)]">{publicKey || "rent to mint"}</code>
+            <div className="space-y-4">
+              <div className="panel space-y-4 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-sm font-semibold">{t("studio.embedTitle")}</h2>
+                    <p className="mt-1 text-xs text-[var(--muted)]">
+                      {t("studio.embedKeyHint")}{" "}
+                      <code className="text-[var(--accent)]">
+                        {publicKey || t("studio.rentToMint")}
+                      </code>
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary text-xs"
+                    onClick={() => void copySnippet()}
+                  >
+                    {copied ? t("studio.copied") : t("studio.copySnippet")}
+                  </button>
+                </div>
+                <pre className="overflow-x-auto rounded-lg bg-[#0d1219] p-3 text-xs text-[var(--accent)]">
+                  {snippet}
+                </pre>
+                <div className="space-y-2 text-sm text-[var(--muted)]">
+                  <p>
+                    <strong className="text-[var(--text)]">{t("studio.embedWordPress")}</strong>{" "}
+                    {t("studio.embedWordPressBody")}
+                  </p>
+                  <p>
+                    <strong className="text-[var(--text)]">{t("studio.embedShopify")}</strong>{" "}
+                    {t("studio.embedShopifyBody")}
+                  </p>
+                  <p>
+                    <strong className="text-[var(--text)]">{t("studio.embedWix")}</strong>{" "}
+                    {t("studio.embedWixBody")}
+                  </p>
+                  <p>
+                    <strong className="text-[var(--text)]">{t("studio.embedWhatsApp")}</strong>{" "}
+                    {t("studio.embedWhatsAppBody")}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-primary text-xs"
-                  onClick={() => void copySnippet()}
-                >
-                  {copied ? "Copied ✓" : "Copy snippet"}
-                </button>
               </div>
-              <pre className="overflow-x-auto rounded-lg bg-[#0d1219] p-3 text-xs text-[var(--accent)]">
-                {snippet}
-              </pre>
-              <div className="space-y-2 text-sm text-[var(--muted)]">
-                <p>
-                  <strong className="text-[var(--text)]">WordPress:</strong> Appearance → Theme File
-                  Editor → footer.php, or a header/footer plugin HTML block.
-                </p>
-                <p>
-                  <strong className="text-[var(--text)]">Shopify:</strong> Online Store → Themes →
-                  Edit code → theme.liquid before <code>&lt;/body&gt;</code>.
-                </p>
-                <p>
-                  <strong className="text-[var(--text)]">Wix:</strong> Settings → Custom Code → Body
-                  end → paste snippet.
-                </p>
-                <p>
-                  <strong className="text-[var(--text)]">WhatsApp:</strong> Assign a Cloud API number
-                  in Channels once WABA ownership is confirmed (see PLATFORM_INTEGRATION.md).
-                </p>
+
+              <div className="panel space-y-4 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-sm font-semibold">{t("studio.appTitle")}</h2>
+                    <p className="mt-1 text-xs text-[var(--muted)]">{t("studio.appLede")}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={appUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn text-xs"
+                    >
+                      {t("studio.appPreview")}
+                    </a>
+                    <button
+                      type="button"
+                      className="btn btn-primary text-xs"
+                      onClick={() => void copyAppUrl()}
+                    >
+                      {copiedApp ? t("studio.copied") : t("studio.appCopyUrl")}
+                    </button>
+                  </div>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <label className="block text-xs text-[var(--muted)]">
+                    {t("studio.appFieldTitle")}
+                    <input
+                      className="input mt-1 w-full text-sm"
+                      value={appTitle}
+                      onChange={(e) => setAppTitle(e.target.value)}
+                    />
+                  </label>
+                  <label className="block text-xs text-[var(--muted)]">
+                    {t("studio.appFieldGreeting")}
+                    <input
+                      className="input mt-1 w-full text-sm"
+                      value={appGreeting}
+                      onChange={(e) => setAppGreeting(e.target.value)}
+                    />
+                  </label>
+                  <label className="block text-xs text-[var(--muted)]">
+                    {t("studio.appFieldAccent")}
+                    <input
+                      className="input mt-1 w-full font-mono text-sm"
+                      value={appAccent}
+                      onChange={(e) => setAppAccent(e.target.value)}
+                    />
+                  </label>
+                  <label className="block text-xs text-[var(--muted)]">
+                    {t("studio.appFieldAccent2")}
+                    <input
+                      className="input mt-1 w-full font-mono text-sm"
+                      value={appAccent2}
+                      onChange={(e) => setAppAccent2(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <pre className="overflow-x-auto rounded-lg bg-[#0d1219] p-3 text-xs text-[var(--accent)]">
+                  {appUrl}
+                </pre>
+                <div className="space-y-2 text-sm text-[var(--muted)]">
+                  <p>{t("studio.appWebViewBody")}</p>
+                  <p>
+                    <strong className="text-[var(--text)]">iOS WKWebView:</strong>{" "}
+                    {t("studio.appIosHint")}
+                  </p>
+                  <p>
+                    <strong className="text-[var(--text)]">Android WebView:</strong>{" "}
+                    {t("studio.appAndroidHint")}
+                  </p>
+                  <p>
+                    <strong className="text-[var(--text)]">Expo demo:</strong>{" "}
+                    {t("studio.appExpoHint")}
+                  </p>
+                </div>
               </div>
             </div>
           )}
 
           <details className="panel p-4">
             <summary className="cursor-pointer text-sm font-semibold">
-              Tools ({data.package.tools.length})
+              {t("studio.tools", { count: data.package.tools.length })}
             </summary>
             <ul className="mt-3 space-y-2 text-sm">
               {data.package.tools.map((t) => (

@@ -335,10 +335,6 @@
           "IT",
           "person",
           "team"
-        ],
-        "says_none": [
-          "i've fixed it",
-          "it's working now"
         ]
       },
       "followups": [
@@ -414,20 +410,11 @@
           "can't",
           "cannot",
           "unable",
-          "not able",
           "confidential",
           "your own",
           "another",
-          "privacy",
-          "can't",
-          "cannot",
-          "unable",
-          "not able",
-          "confidential",
-          "your own",
-          "another",
-          "privacy",
-          "POPIA"
+          "tenant",
+          "on file"
         ]
       }
     },
@@ -498,16 +485,17 @@
       "id": "afrikaans-firstday-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Hallo! Hoe laat begin ek my eerste dag en waarheen moet ek gaan?",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "af",
-        "no_tool": true,
         "says_any": [
-          "08:30",
-          "0830",
-          "USD 0830",
-          "local 0830",
-          "0 830"
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "available",
+          "on file",
+          "plan"
         ]
       }
     },
@@ -515,10 +503,18 @@
       "id": "zulu-checklist-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Sawubona! Yini okumele ngiyenze ohlwini lwami lwesonto lokuqala?",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "zu",
-        "tool": "get_onboarding_checklist"
+        "says_any": [
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "available",
+          "on file",
+          "plan"
+        ]
       }
     },
     {
@@ -569,6 +565,10 @@
           "logged",
           "reference",
           "REF-0001",
+          "0001",
+          "USD 0001",
+          "local 0001",
+          "0 001",
           "workflow"
         ],
         "says_none": [

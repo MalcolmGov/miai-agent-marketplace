@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/locale";
 
 interface SourceRow {
   id: string;
@@ -34,6 +35,7 @@ export function KnowledgePanel({
   configMsg: { kind: "ok" | "err"; text: string } | null;
   showSelectedTip: boolean;
 }) {
+  const t = useT();
   const [sources, setSources] = useState<SourceRow[]>([]);
   const [composedChars, setComposedChars] = useState(0);
   const [websiteUrl, setWebsiteUrl] = useState("");
@@ -67,11 +69,14 @@ export function KnowledgePanel({
       });
       const data = await res.json();
       if (!res.ok) {
-        setMsg({ kind: "err", text: data.error ?? "Paste failed" });
+        setMsg({ kind: "err", text: data.error ?? t("knowledge.errorPaste") });
         return;
       }
       setPasteExtra("");
-      setMsg({ kind: "ok", text: `Added paste source (${data.source.chars.toLocaleString()} chars)` });
+      setMsg({
+        kind: "ok",
+        text: t("knowledge.okPaste", { chars: data.source.chars.toLocaleString() }),
+      });
       await refresh();
     } finally {
       setBusy(null);
@@ -88,12 +93,15 @@ export function KnowledgePanel({
       const res = await fetch("/api/knowledge/upload", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) {
-        setMsg({ kind: "err", text: data.error ?? "Upload failed" });
+        setMsg({ kind: "err", text: data.error ?? t("knowledge.errorUpload") });
         return;
       }
       setMsg({
         kind: "ok",
-        text: `Ingested ${file.name} (${Number(data.source?.chars ?? 0).toLocaleString()} chars)`,
+        text: t("knowledge.okUpload", {
+          filename: file.name,
+          chars: Number(data.source?.chars ?? 0).toLocaleString(),
+        }),
       });
       await refresh();
     } finally {
@@ -114,13 +122,17 @@ export function KnowledgePanel({
       });
       const data = await res.json();
       if (!res.ok) {
-        setMsg({ kind: "err", text: data.error ?? "Crawl failed" });
+        setMsg({ kind: "err", text: data.error ?? t("knowledge.errorCrawl") });
         await refresh();
         return;
       }
       setMsg({
         kind: "ok",
-        text: `Read ${data.source.pages} page(s) from ${data.source.title || websiteUrl} (${Number(data.source.chars).toLocaleString()} chars)`,
+        text: t("knowledge.okCrawl", {
+          pages: data.source.pages,
+          title: data.source.title || websiteUrl,
+          chars: Number(data.source.chars).toLocaleString(),
+        }),
       });
       await refresh();
     } finally {
@@ -143,15 +155,11 @@ export function KnowledgePanel({
   return (
     <div className="panel space-y-4 p-4">
       <div>
-        <h2 className="mb-1 text-sm font-semibold">Knowledge</h2>
+        <h2 className="mb-1 text-sm font-semibold">{t("knowledge.title")}</h2>
         <p className="text-xs text-[var(--muted)]">
-          Paste FAQs, upload files, or crawl your website. Sources are merged into the agent prompt
-          for sandbox and live chat.
+          {t("knowledge.lede")}
           {composedChars > 0 && (
-            <>
-              {" "}
-              · composed ~{composedChars.toLocaleString()} chars
-            </>
+            <> {t("knowledge.composed", { count: composedChars.toLocaleString() })}</>
           )}
         </p>
       </div>
@@ -160,16 +168,13 @@ export function KnowledgePanel({
         className="input min-h-[140px] font-mono text-xs"
         value={knowledge}
         onChange={(e) => onKnowledgeChange(e.target.value)}
-        placeholder="Core business knowledge — hours, products, policies…"
+        placeholder={t("knowledge.placeholder")}
       />
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="rounded-lg border border-[var(--line)] p-3">
-          <div className="mb-2 text-xs font-medium">Add file</div>
-          <p className="mb-2 text-[11px] text-[var(--muted)]">
-            Accepted: .txt, .md, .csv, .json, .html (PDF best-effort). Word .docx is not supported
-            yet — export or convert to .md/.txt (4MB max).
-          </p>
+          <div className="mb-2 text-xs font-medium">{t("knowledge.addFile")}</div>
+          <p className="mb-2 text-[11px] text-[var(--muted)]">{t("knowledge.fileHint")}</p>
           <input
             ref={fileRef}
             type="file"
@@ -184,14 +189,12 @@ export function KnowledgePanel({
         </div>
 
         <div className="rounded-lg border border-[var(--line)] p-3">
-          <div className="mb-2 text-xs font-medium">Read my website</div>
-          <p className="mb-2 text-[11px] text-[var(--muted)]">
-            Crawls up to 5 same-site pages (about, FAQ, pricing…)
-          </p>
+          <div className="mb-2 text-xs font-medium">{t("knowledge.readWebsite")}</div>
+          <p className="mb-2 text-[11px] text-[var(--muted)]">{t("knowledge.crawlHint")}</p>
           <div className="flex flex-col gap-2">
             <input
               className="input text-xs"
-              placeholder="https://www.gaslite.co.za"
+              placeholder={t("knowledge.urlPlaceholder")}
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
               onKeyDown={(e) => {
@@ -204,17 +207,17 @@ export function KnowledgePanel({
               disabled={busy === "crawl" || !websiteUrl.trim()}
               onClick={() => void crawlWebsite()}
             >
-              {busy === "crawl" ? "Reading site…" : "Crawl website"}
+              {busy === "crawl" ? t("knowledge.readingSite") : t("knowledge.crawlWebsite")}
             </button>
           </div>
         </div>
       </div>
 
       <div className="rounded-lg border border-[var(--line)] p-3">
-        <div className="mb-2 text-xs font-medium">Add pasted FAQs</div>
+        <div className="mb-2 text-xs font-medium">{t("knowledge.addFaqs")}</div>
         <textarea
           className="input min-h-[80px] font-mono text-xs"
-          placeholder="Extra Q&As to append as a separate source…"
+          placeholder={t("knowledge.pastePlaceholder")}
           value={pasteExtra}
           onChange={(e) => setPasteExtra(e.target.value)}
         />
@@ -224,13 +227,13 @@ export function KnowledgePanel({
           disabled={busy === "paste" || pasteExtra.trim().length < 10}
           onClick={() => void addPaste()}
         >
-          {busy === "paste" ? "Adding…" : "Add as knowledge source"}
+          {busy === "paste" ? t("knowledge.adding") : t("knowledge.addSource")}
         </button>
       </div>
 
       {sources.length > 0 && (
         <div>
-          <div className="mb-2 text-xs font-medium">Ingested sources</div>
+          <div className="mb-2 text-xs font-medium">{t("knowledge.ingestedSources")}</div>
           <ul className="space-y-2">
             {sources.map((s) => (
               <li
@@ -242,13 +245,17 @@ export function KnowledgePanel({
                     <span className="chip">{s.type}</span>
                     {s.status !== "ready" && (
                       <span className={`chip ${s.status === "error" ? "" : "chip-live"}`}>
-                        {s.status}
+                        {s.status === "processing"
+                          ? t("knowledge.statusProcessing")
+                          : s.status === "error"
+                            ? t("knowledge.statusError")
+                            : s.status}
                       </span>
                     )}
                     <span className="truncate font-medium">{s.title}</span>
                   </div>
                   <div className="mt-1 text-[var(--muted)]">
-                    {s.chars.toLocaleString()} chars
+                    {s.chars.toLocaleString()} {t("knowledge.chars")}
                     {s.url ? (
                       <>
                         {" "}
@@ -275,7 +282,7 @@ export function KnowledgePanel({
                   disabled={busy === `del-${s.id}`}
                   onClick={() => void removeSource(s.id)}
                 >
-                  Remove
+                  {t("knowledge.remove")}
                 </button>
               </li>
             ))}
@@ -300,7 +307,7 @@ export function KnowledgePanel({
           disabled={saving}
           onClick={onSaveDraft}
         >
-          Save draft
+          {t("knowledge.saveDraft")}
         </button>
         <button
           type="button"
@@ -308,14 +315,11 @@ export function KnowledgePanel({
           disabled={saving}
           onClick={onMarkReady}
         >
-          {saving ? "Saving…" : "Save & continue"}
+          {saving ? t("knowledge.saving") : t("knowledge.saveContinue")}
         </button>
       </div>
       {showSelectedTip && (
-        <p className="text-xs text-[var(--muted)]">
-          Tip: <strong className="text-[var(--text)]">Save & continue</strong> creates the rental
-          and saves this knowledge in one step, then moves you to Actions.
-        </p>
+        <p className="text-xs text-[var(--muted)]">{t("knowledge.selectedTip")}</p>
       )}
     </div>
   );

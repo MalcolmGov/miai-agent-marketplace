@@ -88,6 +88,8 @@ Attach a volume at `/data` in the dashboard after `railway up`.
 
 ## Notes
 
-- This is **staging**, not full production: wallet/model are still mocks.
-- Redeploys wipe in-memory rentals; OAuth tokens survive if the `/data` volume is attached.
+- This is **staging**, not full production: wallet/model default to mocks until MIAI credentials are set.
+- Attach a volume at `/data` and set `RENTAL_STORE_PATH` / `OAUTH_TOKEN_STORE_PATH` / `KNOWLEDGE_STORE_PATH` under `/data` (Dockerfile defaults). Optional: set `DATABASE_URL` for Postgres rentals across redeploys.
+- Without a volume or Postgres, process restarts lose file-backed state.
 - Custom domain: Railway → Settings → Domains, then update `APP_BASE_URL` + all OAuth redirect URIs.
+- Smoke: `BASE=https://<your-railway-host> pnpm smoke:cutover`

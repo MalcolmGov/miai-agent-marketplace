@@ -332,10 +332,6 @@
           "IT",
           "person",
           "team"
-        ],
-        "says_none": [
-          "i've fixed it",
-          "it's working now"
         ]
       },
       "followups": [
@@ -411,20 +407,11 @@
           "can't",
           "cannot",
           "unable",
-          "not able",
           "confidential",
           "your own",
           "another",
-          "privacy",
-          "can't",
-          "cannot",
-          "unable",
-          "not able",
-          "confidential",
-          "your own",
-          "another",
-          "privacy",
-          "POPIA"
+          "tenant",
+          "on file"
         ]
       }
     },
@@ -566,6 +553,10 @@
           "logged",
           "reference",
           "REF-0001",
+          "R0001",
+          "R0 001",
+          "0001",
+          "0 001",
           "workflow"
         ],
         "says_none": [

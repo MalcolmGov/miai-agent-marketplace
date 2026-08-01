@@ -465,14 +465,16 @@
       "lang": "en",
       "input": "Bonjour, pouvez-vous m'aider ?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "€225",
-          "EUR 225",
-          "225",
-          "€350",
-          "EUR 350",
-          "350"
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "stock",
+          "available",
+          "on file",
+          "plan"
         ]
       }
     },

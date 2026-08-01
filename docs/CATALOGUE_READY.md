@@ -14,16 +14,17 @@ That means every variant:
 
 ## What this is not
 
-Catalogue-ready is **not** the same as full MyInstantAI platform production:
+Catalogue-ready is **not** the same as full MyInstantAI platform production. Platform rails are **adapter-ready** in-repo; live credentials are the remaining gate:
 
-| Still platform integration | Status |
-|---|---|
-| Live MIAI wallet API | Adapter-mocked in staging |
-| Auth / SSO | Not wired |
-| Postgres rental persistence | In-memory today |
-| Key Vault | Not yet |
+| Platform rail | Move Digital status | Blocked on MyInstantAI |
+|---|---|---|
+| Auth / SSO | OIDC adapter + middleware (`MIAI_AUTH_MODE=oidc`) | Issuer, audience, sample JWT |
+| Wallet | HTTP adapter + pause-on-402 (`MIAI_WALLET_MODE=http`) | Base URL, API key, debit contract |
+| Model gateway | Gateway adapter (`MIAI_MODEL_MODE=gateway`) | URL, key, alias map |
+| Postgres rentals | Wired via `DATABASE_URL` (file fallback) | Azure Postgres from Bicep deploy |
+| Key Vault / Azure | Bicep: CA, Postgres, KV, Files, App Insights | Subscription + who runs `az deployment` |
 
-Those do **not** block selling the catalogue SKU list; they are integration work on the MIAI rails.
+Those do **not** block selling the catalogue SKU list; they are Week-1 integration once staging credentials land. See `MIGRATION_P0.md` / `MIGRATION_RUNBOOK.md`.
 
 ## How to verify
 
@@ -33,10 +34,13 @@ pnpm generate:presets
 pnpm build:packages
 pnpm catalog:ready    # must report 271/271 and 55/55
 pnpm eval:smoke
+pnpm eval:suite       # full catalogue — expect 100% runtime (3848/3848)
+pnpm test:wallet
+pnpm validate:azure   # requires az or bicep CLI
+# App channel: Studio → Install → App, or open /app/v1?key=… (see docs/APP_CHANNEL.md)
 ```
 
 ## Badges in UI
 
 - **Catalogue ready** — family passes the gate across its pack variants
-- **Pilot** — explicit Phase-1 demo agents
-- **LIVE** — pilot or phase-1 preset path promoted for live demo
+- Staging UI no longer surfaces Pilot/Live noise on cards; Demo 6 is a filter for UAT only

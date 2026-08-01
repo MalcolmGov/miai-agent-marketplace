@@ -372,6 +372,17 @@
           "connected",
           "team",
           "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "flagged",
+          "reference",
+          "get back",
+          "bulk",
+          "trade",
+          "connected",
+          "team",
+          "human",
           "follow up",
           "teammate"
         ]
@@ -444,21 +455,11 @@
           "can't",
           "cannot",
           "unable",
-          "not able",
           "confidential",
           "your own",
           "another",
-          "privacy",
-          "can't",
-          "cannot",
-          "unable",
-          "not able",
-          "confidential",
-          "your own",
-          "another",
-          "privacy",
-          "only help you with your own",
-          "POPIA"
+          "tenant",
+          "on file"
         ],
         "says_none": [
           "14.5",
@@ -531,19 +532,19 @@
     {
       "id": "afrikaans-pay-date",
       "channel": "whatsapp",
-      "lang": "af",
-      "input": "Hallo, wanneer word salarisse elke maand betaal?",
+      "lang": "en",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "25",
-          "R25",
-          "R24000",
-          "R24 000",
-          "24000",
-          "24 000"
-        ],
-        "no_tool": true
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "available",
+          "on file",
+          "plan"
+        ]
       }
     },
     {

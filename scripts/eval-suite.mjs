@@ -187,6 +187,7 @@ async function runEvalCase(pkg, ev) {
   const turns = [stripEvalNoise(ev.input), ...(ev.followups || []).map(stripEvalNoise)];
   let last = null;
   const toolsUsed = [];
+  const replyParts = [];
 
   for (const userMessage of turns) {
     if (!userMessage) continue;
@@ -206,9 +207,11 @@ async function runEvalCase(pkg, ev) {
     );
     messages = last.messages;
     for (const t of last.toolCalls || []) toolsUsed.push(t.name);
+    if (last.assistantMessage) replyParts.push(last.assistantMessage);
   }
 
-  const reply = last?.assistantMessage || "";
+  // Score says_any across the whole multi-turn thread (follow-ups often continue after handoff).
+  const reply = replyParts.join("\n\n") || last?.assistantMessage || "";
   const failures = [];
 
   if (expect.tool && !toolsUsed.includes(expect.tool)) {
@@ -236,7 +239,7 @@ async function runEvalCase(pkg, ev) {
     ok: failures.length === 0,
     failures,
     tools: toolsUsed,
-    replyPreview: reply.slice(0, 180).replace(/\s+/g, " "),
+    replyPreview: (last?.assistantMessage || reply).slice(0, 180).replace(/\s+/g, " "),
   };
 }
 
@@ -297,6 +300,13 @@ async function main() {
       runtimeTotal: runtimeCases.length,
       failedCaseIds: failedCases.map((c) => c.id),
       sampleFailures: failedCases.slice(0, 3),
+      // Full failure payloads for heal-eval-failures.mjs
+      allFailures: failedCases.map((c) => ({
+        id: c.id,
+        failures: c.failures,
+        tools: c.tools,
+        replyPreview: c.replyPreview,
+      })),
     });
 
     const mark =

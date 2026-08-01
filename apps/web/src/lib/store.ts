@@ -236,6 +236,44 @@ async function persistToPostgres(shape: PersistShape): Promise<void> {
   }
 }
 
+/** Lightweight readiness probe for /api/health — does not hydrate rentals. */
+export async function pingStore(): Promise<{
+  backend: "postgres" | "file";
+  ok: boolean;
+  error?: string;
+}> {
+  const url = databaseUrl();
+  if (url) {
+    try {
+      const pgMod = await import("pg");
+      const Client = pgMod.default?.Client ?? pgMod.Client;
+      const client = new Client({ connectionString: url, ssl: sslFor(url) });
+      await client.connect();
+      await client.query("SELECT 1");
+      await client.end();
+      return { backend: "postgres", ok: true };
+    } catch (err) {
+      return {
+        backend: "postgres",
+        ok: false,
+        error: err instanceof Error ? err.message : "postgres ping failed",
+      };
+    }
+  }
+  try {
+    const file = rentalStorePath();
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.access(path.dirname(file));
+    return { backend: "file", ok: true };
+  } catch (err) {
+    return {
+      backend: "file",
+      ok: false,
+      error: err instanceof Error ? err.message : "file store not writable",
+    };
+  }
+}
+
 export async function ensureStoreHydrated(): Promise<void> {
   const s = store();
   if (s.hydrated) return;

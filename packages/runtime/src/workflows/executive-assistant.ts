@@ -6,6 +6,8 @@
  * <!--miai-workflow:{...json}-->
  */
 
+import { wf } from "./i18n.js";
+
 export type WorkflowStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface WorkflowStep {
@@ -275,6 +277,7 @@ export async function runExecutiveAssistantWorkflow(input: {
   messages: Array<{ role: string; content: string }>;
   toolNames: string[];
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<WorkflowTurnResult> {
   if (!isExecutiveAssistant(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -319,10 +322,7 @@ export async function runExecutiveAssistantWorkflow(input: {
       handled: true,
       plan: cancelled,
       toolCalls: [],
-      assistantMessage: embedWorkflow(
-        "Understood — I cancelled that workflow plan. Nothing was written to the calendar. What would you like instead?",
-        cancelled,
-      ),
+      assistantMessage: embedWorkflow(wf(input.replyLanguage, "plan_cancelled"), cancelled),
     };
   }
 

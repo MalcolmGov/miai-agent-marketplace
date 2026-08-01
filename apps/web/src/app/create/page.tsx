@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useT } from "@/lib/locale";
 
 export default function CreatePage() {
+  const t = useT();
   const [business, setBusiness] = useState("");
   const [need, setNeed] = useState("");
   const [busy, setBusy] = useState(false);
@@ -25,10 +27,10 @@ export default function CreatePage() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Could not save");
+      if (!res.ok) throw new Error(data.error ?? t("create.errorSave"));
       setDoneId(data.request.id);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save");
+      setError(err instanceof Error ? err.message : t("create.errorSave"));
     } finally {
       setBusy(false);
     }
@@ -37,28 +39,22 @@ export default function CreatePage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Build an agent instantly</h1>
-        <p className="mt-2 text-sm text-[var(--muted)]">
-          Describe the job in plain language. We&apos;ll log it into the custom-agent pipeline so the
-          team can scaffold from catalogue patterns — channels, tools, and guardrails included.
-        </p>
+        <h1 className="text-3xl font-semibold tracking-tight">{t("create.title")}</h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">{t("create.lede")}</p>
       </div>
 
       {doneId ? (
         <div className="panel space-y-3 p-5">
-          <p className="text-sm">
-            Logged as <code className="text-[var(--accent-bright)]">{doneId}</code>. Operators will
-            see it under Custom agent requests.
-          </p>
+          <p className="text-sm">{t("create.loggedAs", { id: doneId })}</p>
           <div className="flex flex-wrap gap-2">
             <Link href="/admin" className="btn btn-primary">
-              View in Agent Admin
+              {t("create.viewAdmin")}
             </Link>
             <Link href="/request" className="btn btn-ghost">
-              Add more detail
+              {t("create.addDetail")}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={() => setDoneId(null)}>
-              Describe another
+              {t("create.describeAnother")}
             </button>
           </div>
         </div>
@@ -66,34 +62,34 @@ export default function CreatePage() {
         <form onSubmit={submit} className="panel space-y-4 p-5">
           <label className="block space-y-1.5">
             <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-              Business (optional)
+              {t("create.businessOptional")}
             </span>
             <input
               className="input"
               value={business}
               onChange={(e) => setBusiness(e.target.value)}
-              placeholder="Your company name"
+              placeholder={t("create.businessPlaceholder")}
             />
           </label>
           <label className="block space-y-1.5">
             <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-              Job description
+              {t("create.jobDescription")}
             </span>
             <textarea
               className="input min-h-[140px]"
               required
               value={need}
               onChange={(e) => setNeed(e.target.value)}
-              placeholder="e.g. Qualify inbound WhatsApp leads for our clinic, book appointments, and hand complex cases to a nurse…"
+              placeholder={t("create.jobPlaceholder")}
             />
           </label>
           {error ? <p className="text-sm text-[var(--warn,#fb923c)]">{error}</p> : null}
           <div className="flex flex-wrap gap-2">
             <button type="submit" className="btn btn-primary" disabled={busy}>
-              {busy ? "Saving…" : "Send to pipeline"}
+              {busy ? t("create.saving") : t("create.sendPipeline")}
             </button>
             <Link href="/request" className="btn btn-ghost">
-              Full request form
+              {t("create.fullForm")}
             </Link>
           </div>
         </form>

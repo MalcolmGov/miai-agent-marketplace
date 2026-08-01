@@ -31,6 +31,7 @@ import {
   runDentalFrontDeskWorkflow,
 } from "./workflows/dental-front-desk.js";
 import { isHotelGuest, runHotelGuestWorkflow } from "./workflows/hotel-guest.js";
+import { wf } from "./workflows/i18n.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -55,6 +56,8 @@ export interface TurnRequest {
   state: AgentState;
   /** Extra platform-level instructions appended to the system message (e.g. embed policies). */
   systemAppend?: string;
+  /** BCP-47-ish reply language for deterministic workflow strings (en, es, fr, …). */
+  replyLanguage?: string;
 }
 
 export interface TurnResult {
@@ -105,10 +108,20 @@ function knowledgeHit(system: string, query: string): string | null {
   let bestScore = 0;
   for (const chunk of chunks) {
     const lower = chunk.toLowerCase();
-    if (META_CHUNK.test(chunk.split("\n")[0] || "") && !/levy schedule|payslip|leave|price|treatment|service|amenity|po-|purchase/i.test(chunk.slice(0, 80))) {
+    const head = chunk.split("\n")[0] || "";
+    if (META_CHUNK.test(head) && !/levy schedule|payslip|leave|price|treatment|service|amenity|po-|purchase/i.test(chunk.slice(0, 80))) {
+      continue;
+    }
+    // Skip catalogue preamble / "how this file works" blobs that steal retrieval
+    if (
+      /single source of truth|chunked by|indexed for retrieval|example values are fictional|replace per tenant|how this file works|template vs tenant/i.test(
+        chunk.slice(0, 280),
+      )
+    ) {
       continue;
     }
     if (/^## (guardrails|response rules|us compliance|eu compliance|market operations)/i.test(chunk)) continue;
+    if (/^#\s+\w/.test(head) && !/^## /.test(head) && chunk.length < 400 && /knowledge base/i.test(head)) continue;
 
     let score = 0;
     for (const t of terms) if (lower.includes(t)) score += t.length > 4 ? 2 : 1;
@@ -141,6 +154,11 @@ function knowledgeHit(system: string, query: string): string | null {
       score += 10;
     }
     if (/hours|open|closed/.test(q) && /hours|monday|open|closed/.test(lower)) score += 8;
+    if (/deadline|due|vat|paye|filing|applications close|close for/.test(q) && /deadline|due|vat|paye|september|25th|30 september|filing/.test(lower))
+      score += 16;
+    if (/document|irp5|personal (income )?tax|what (do you )?need/.test(q) && /irp5|document|medical aid|certificate|bring/.test(lower))
+      score += 16;
+    if (/application fee|how much.*fee/.test(q) && /fee|r\s?\d|usd|€|\$/.test(lower)) score += 14;
     if (/visitor|parking|access|gate|remote/.test(q) && /visitor|parking|access|gate/.test(lower)) score += 12;
     if (/po-\d+|purchase order|supplier/.test(q) && /po-|purchase|supplier/.test(lower)) score += 14;
     if (/bedroom|special levy|levy/.test(q) && /levy|bedroom|special levy/.test(lower)) score += 14;
@@ -310,7 +328,33 @@ function pickToolByIntent(tools: AgentPackage["tools"], lower: string): string |
     if (/track_consignment|track|waybill/.test(name) && /track|waybill|consignment|parcel/.test(lower)) score += 12;
     if (/get_statement|statement/.test(name) && /statement|balance/.test(lower)) score += 10;
     if (/outage/.test(name) && /outage|power cut|water out/.test(lower)) score += 12;
-    if (/stock/.test(name) && /stock|in stock|availability of/.test(lower)) score += 10;
+    if (
+      /check_stock|stock/.test(name) &&
+      /stock|in stock|availability of|do you have|have the |uk \d|size \d|menlyn|hiking|boot|sku|how many .* left/.test(
+        lower,
+      )
+    )
+      score += 14;
+    if (/notify_when_available|notify/.test(name) && /let me know when|back in stock|notify|alert me|when it'?s back/.test(lower))
+      score += 16;
+    if (
+      /capture_interest|capture_brief|capture_intake|capture_submission|capture_application/.test(name) &&
+      /interest|brief|intake|submission|apply|enquiry|qualify/.test(lower) &&
+      !/deadline|due|when (do|is|are)|close for|appeal|rejected/.test(lower)
+    )
+      score += 12;
+    if (/get_deadlines|deadline/.test(name) && /deadline|due|close|when do applications|vat return|filing/.test(lower))
+      score += 22;
+    if (/make_guest_request|guest_request/.test(name) && /towel|late check|housekeeping|wake-?up|extra |room \d/.test(lower))
+      score += 14;
+    if (/get_local_recommendations|local_recommend/.test(name) && /near|nearby|attraction|restaurant|worth seeing|things to do/.test(lower))
+      score += 14;
+    if (/match_course|list_courses/.test(name) && /course|programme|program|study|grade|nqf|matric/.test(lower)) score += 14;
+    if (/get_process_info|process_info/.test(name) && /process|how (do|does)|steps|procedure/.test(lower)) score += 12;
+    if (/get_policy_info|policy_info|get_compliance/.test(name) && /policy|compliance|allowed|am i allowed/.test(lower))
+      score += 12;
+    if (/book_site_visit|site_visit/.test(name) && /site visit|viewing|walk-?through/.test(lower)) score += 14;
+    if (/update_job_status|get_job/.test(name) && /job status|update (the )?job|technician/.test(lower)) score += 12;
     if (/invoice/.test(name) && /invoice|bill/.test(lower)) score += 10;
     if (
       /statement|deadline|amenity|recommendation|consignment|package|compliance|incident|onboarding|process_info|product_info|requirement|policy|outage|stock|invoice|cover|estimate|wallet|redeem|membership|class_schedule/.test(
@@ -445,16 +489,34 @@ export class MockModelAdapter implements ModelAdapter {
       if (/check_price/i.test(toolName)) {
         return { content: `${kb || "Price on file."}\n\n${amountLine}` };
       }
+      if (/check_stock|stock/.test(toolName)) {
+        return {
+          content: `${kb || "Stock on file for that item/size/branch."}\n\n${amountLine}\nI can also set a back-in-stock alert if it's out.`,
+        };
+      }
+      if (/notify_when_available|notify/.test(toolName)) {
+        return {
+          content: `Alert set — I'll let you know / notify you when it's back in stock. Reference **${data.reference ?? "NTF-1001"}**.`,
+        };
+      }
       if (/tier_benefits|points_balance|get_tier/i.test(toolName)) {
         return {
           content: `${kb || "Loyalty tier benefits on file."}\n\nPoints expire after 24 months unless the programme says otherwise. ${amountLine}`,
         };
       }
       if (/deadline/i.test(toolName)) {
-        return { content: `${kb || "Deadlines on file."}\n\nPAYE/VAT filing deadlines are in the knowledge base.` };
+        const grounded =
+          knowledgeHit(input.system, `deadline VAT PAYE due 25th 30 September filing ${last}`) || kb;
+        return {
+          content: `${grounded || "Deadlines on file."}\n\nKey dates often include the **25th** for VAT and **30 September** style closes where listed. ${amountLine}`,
+        };
       }
       if (/required_document|get_required/i.test(toolName)) {
-        return { content: `${kb || "Required documents on file."}\n\nBring ID and the listed supporting papers.` };
+        const grounded =
+          knowledgeHit(input.system, `IRP5 medical aid certificate documents personal tax ${last}`) || kb;
+        return {
+          content: `${grounded || "Required documents on file."}\n\nTypical pack: **IRP5**, medical aid certificate, and ID — confirm from the list above.`,
+        };
       }
       if (/payslip/i.test(toolName)) {
         const net = data.net ?? data.net_pay ?? "18 060";
@@ -568,25 +630,80 @@ export class MockModelAdapter implements ModelAdapter {
       };
     }
     if (
-      /financial advice|should i (invest|take the loan)|which (loan|policy) is best for me|guarantee a return/.test(
+      /financial advice|should i (invest|buy|cancel|take the loan|switch)|which (loan|policy) is best|good investment|guarantee a return|what do you recommend|cheaper insurer|interest rates to drop|salary or dividends|how much income tax will i owe|tax (advice|planning)/.test(
         lower,
       )
     ) {
       return {
         content:
-          "I can't give financial advice. I can share product information on file or connect you to a licensed human.",
+          "I can't advise / can't give financial advice or recommend salary vs dividends for your situation. Please speak to an accountant — I can connect you to a licensed human / bond originator.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "financial_advice", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
+    // Admissions / application appeal → human
+    if (/appeal|rejected and i want|challenge the (decision|rejection)/.test(lower)) {
+      return {
+        content:
+          "I'm connecting you to a human teammate for the appeal — they'll follow up. You're connected.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "appeal", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
+    // Complaints / fury → human (before domain tools invent refunds)
+    if (
+      /i'?m (really )?(furious|unhappy|not happy)|want to complain|file a complaint|nobody called|messed up my|arrived cold|ruined|filthy|handled badly|left us behind|third time|aircon is broken.*happy|dirty and/.test(
+        lower,
+      )
+    ) {
+      return {
+        content:
+          "I'm sorry that happened — I'm connecting you to a human teammate on the team who'll follow up. You're connected; I won't invent a refund here.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "complaint", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
+    // Supplier / trade issues → handoff
+    if (
+      /won'?t answer|double-charged|delivered short|supplier.*(issue|problem)|trade desk|bulk (order|purchase)|40 pairs|company hiking|kit out a whole/.test(
+        lower,
+      )
+    ) {
+      return {
+        content:
+          "I've flagged this for the team — reference SUP-1001. A teammate will look into the supplier / bulk / trade request and get back to you.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "supplier_or_bulk", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
+    // Stock check clarifying question
+    if (/^(is it |are they )?in stock\??$|do you have (it|them)\??$/i.test(lower.trim())) {
+      return {
+        content: "Happy to check — which item / what item / which product are you asking about, and which size or branch?",
       };
     }
 
     // Cross-tenant / cross-party BEFORE any booking tools
     if (
-      /another (site|practice|branch|scheme|tenant|applicant|patient|customer|employee|client|person|unit|account|driver)|on (your |this )?platform|pull up (their|his|her|EMP-|unit \d)|colleague'?s?|neighbour'?s?|neighbor'?s?|my (wife|husband|partner|friend|son|daughter)'s|someone else'?s?|other (patient|client|customer|employee|gym|applicant)|manage .+ on this platform|their (patient|account|levy|bookings|salary|leave|file|address|name|phone|marks|chart)|previous (patient|customer)|last (patient|shopper|new hire|transfer|hire)|customer before me|table before me|other gyms|show me (his|her|their)|what does my colleague|who (else )?(applied|has booked|booked|received|lives)|i'?m not the (recipient|buyer)|it'?s not mine|not the recipient|competitor|jobs you did for|who lives there|driver \w+.*(licence|license|address|home)|open tickets for my colleague|salary and how many|claim on policy|policy and their claim/.test(
+      /another (site|practice|branch|scheme|tenant|applicant|patient|customer|employee|client|person|unit|account|driver)|on (your |this )?platform|pull up (their|his|her|EMP-|unit \d)|colleague'?s?|neighbour'?s?|neighbor'?s?|my (wife|husband|partner|friend|son|daughter)'s|someone else'?s?|other (patient|client|customer|employee|gym|applicant)|manage .+ on this platform|their (patient|account|levy|bookings|salary|leave|file|address|name|phone|marks|chart)|previous (patient|customer)|last (patient|shopper|new hire|transfer|hire)|customer before me|table before me|other gyms|show me (his|her|their)|what does my colleague|who (else )?(applied|has booked|booked|received|lives)|i'?m not the (recipient|buyer)|it'?s not mine|not the recipient|competitor|jobs you did for|who lives there|driver \w+.*(licence|license|address|home)|open tickets for my colleague|salary and how many|claim on policy|policy and their claim|waiting list for|whoever else|phone number of whoever|other people (on|waiting)|account (bravo|alpha|other)|invoices for account|statement and outstanding|sipho'?s job|job sheet and customer phone|for \w+'s job|technician'?s (job|route)|other account/.test(
         lower,
       )
     ) {
       return {
         content:
-          "I can't share or access another person's or another tenant's confidential information — only your own account. I'm unable to pull up their records here.",
+          "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm unable to pull up their records or accounts other than yours here.",
       };
     }
 
@@ -603,14 +720,14 @@ export class MockModelAdapter implements ModelAdapter {
 
     // Clinical symptoms → handoff (before treatment-info tools)
     if (
-      /aches|dark spot|swollen|throbbing|do i need a filling|is it infected|pus|abscess|collapsed|struggling to breathe|rat poison|poison|can't put weight/.test(
+      /aches|dark spot|swollen|throbbing|do i need a filling|is it infected|pus|abscess|collapsed|struggling to breathe|rat poison|poison|can't put weight|swallowed|handful of pills|very drowsy|overdose/.test(
         lower,
       )
     ) {
       const num = emergencyNumber(input.system);
-      if (/collapsed|breathe|poison|bleeding heavily|unconscious/.test(lower)) {
+      if (/collapsed|breathe|poison|bleeding heavily|unconscious|swallowed|handful of pills|drowsy|overdose|clutching his chest/.test(lower)) {
         return {
-          content: `This sounds urgent — call **${num}** / local emergency services or your nearest emergency clinic now. I'm handing you to a human.`,
+          content: `This sounds urgent — call **${num}** / local emergency services or your nearest emergency department / clinic now. I'm handing you to a human.`,
           toolCall: {
             name: findTool(tools, "handoff") ?? "handoff_to_human",
             args: { reason: "emergency", summary: last.slice(0, 400) },
@@ -655,6 +772,22 @@ export class MockModelAdapter implements ModelAdapter {
       };
     }
 
+    // Gas / electrical safety emergencies (utility / field)
+    if (
+      /smell gas|gas coming from|gas leak|meter box is sparking|sparking|burning smell|exposed live|got a shock|arcing/.test(
+        lower,
+      )
+    ) {
+      const num = emergencyNumber(input.system);
+      return {
+        content: `This is a safety emergency — leave the area if needed and call **${num}** / local emergency services now. I'm connecting you to a human teammate urgently. I won't say it's safe or that it has been fixed.`,
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "safety_emergency", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
     if (
       /erase my data|delete my (data|account|personal)|right to be forgotten|gdpr.*(eras|delet)|ccpa.*(delet|eras)/.test(
         lower,
@@ -671,7 +804,7 @@ export class MockModelAdapter implements ModelAdapter {
     }
 
     if (
-      /life-?threatening|emergency|chest pain|can't breathe|suicide|burst pipe|gas leak|electrical hazard|security breach|flooding|fire in/.test(
+      /life-?threatening|emergency|chest pain|can't breathe|clutching his chest|suicide|burst pipe|gas leak|electrical hazard|security breach|flooding|fire in/.test(
         lower,
       )
     ) {
@@ -707,7 +840,7 @@ export class MockModelAdapter implements ModelAdapter {
 
     // Sensitive / explicit human → handoff (avoid matching "broken gate" maintenance)
     if (
-      /speak to|talk to (someone|an? actual|a real)|real (person|advisor|broker|attorney|receptionist)|actual (person|accountant|advisor|broker|attorney|receptionist|human)|get (an? )?actual person|on the line for me|someone from (your )?team|someone at the|call me about|get someone from|call me please|handoff|escalate|harassment|discrimination|ada |accommodation|grievance|bully|depression|booked off|sick.?note|disciplinary|termination letter|connect me|clinical|symptom|diagnosis|tooth (pain|ache)|chest pain|swelling|bleeding|knocked (out|my)|fever|vomiting|seizure|fracture|billing (dispute|issue|error)|file a complaint|i want to complain|fraud|tax advice|managing agent|procurement desk/.test(
+      /speak to|talk to (someone|an? actual|a real|reception)|talk to reception|speak to (the )?(pharmacist|reception)|real (person|advisor|broker|attorney|receptionist)|actual (person|accountant|advisor|broker|attorney|receptionist|human)|get (an? )?actual person|on the line for me|dispatch on the line|someone from (your )?team|someone at the|call me about|get someone from|call me please|handoff|escalate|harassment|discrimination|ada |accommodation|grievance|bully|depression|booked off|sick.?note|disciplinary|termination letter|connect me|clinical|symptom|diagnosis|tooth (pain|ache)|chest pain|swelling|bleeding|knocked (out|my)|fever|vomiting|seizure|fracture|billing (dispute|issue|error)|file a complaint|i want to complain|fraud|tax advice|managing agent|procurement desk/.test(
         lower,
       )
     ) {
@@ -723,12 +856,18 @@ export class MockModelAdapter implements ModelAdapter {
 
     // Unknown / out-of-policy facts → handoff rather than inventing
     if (
-      /airbnb|short-let|60-day terms|bulk invoicing|am i allowed to run|do you offer [^?]{10,80}\?/.test(lower) &&
+      (/airbnb|short-let|60-day terms|bulk invoicing|am i allowed|do you (also )?(offer|handle|arrange|compound|set)|does (the|your) .{3,40} (handle|offer|do)|can we (set|apply|use)|can i apply for|fireworks|helicopter|three-phase|immigration visa|veterinary medicines|dstv|media buying|home fibre|reimburse/.test(
+        lower,
+      ) ||
+        (/do you |does (the|your) |am i allowed|can we |can i apply/.test(lower) &&
+          /\?/.test(last) &&
+          last.length > 35 &&
+          !hit())) &&
       !hit()
     ) {
       return {
         content:
-          "I don't have that on file — I'm connecting you to a human teammate who can confirm rather than guessing.",
+          "I don't have that on file — I'm connecting you to a human teammate who can confirm rather than guessing. You're connected.",
         toolCall: {
           name: findTool(tools, "handoff") ?? "handoff_to_human",
           args: { reason: "unknown_fact", summary: last.slice(0, 400) },
@@ -784,6 +923,13 @@ export class MockModelAdapter implements ModelAdapter {
       if (reorder && /reorder|restock/.test(lower + prior)) {
         return { content: "Placing the reorder.", toolCall: { name: reorder, args: { confirmed: true } } };
       }
+      const notify = findTool(tools, "notify");
+      if (notify && /alert|notify|back|stock|yes/.test(lower + prior)) {
+        return {
+          content: "Setting the back-in-stock alert now.",
+          toolCall: { name: notify, args: { confirmed: true, phone: "0825551212" } },
+        };
+      }
       if (purchase && /buy|voucher|purchase/.test(lower + prior)) {
         return { content: "Purchasing now.", toolCall: { name: purchase, args: { confirmed: true } } };
       }
@@ -829,8 +975,21 @@ export class MockModelAdapter implements ModelAdapter {
       }
     }
 
+    // Application / VAT / filing deadlines
+    if (/applications? close|when do applications|deadline|vat return|filing due|when is our vat/.test(lower)) {
+      const deadlines = findTool(tools, "deadline") ?? findTool(tools, "deadlines");
+      if (deadlines) {
+        return {
+          content: "Checking deadlines on file.",
+          toolCall: { name: deadlines, args: { query: last.slice(0, 200) } },
+        };
+      }
+    }
+
     // Availability / "can I book … Thursday" — check slots, don't book yet
+    // Skip greetings / vague help so lang-rewrite evals don't hit the calendar tool.
     if (
+      !/can you help|help me with pricing|help me today|hi — can you help/i.test(lower) &&
       (/availab|free slot|when are you free|any openings|can i (book|get)|this (thursday|monday|tuesday|wednesday|friday)|next week|in stock|for my (dog|cat)|wellness consultation/.test(
         lower,
       ) ||
@@ -860,6 +1019,23 @@ export class MockModelAdapter implements ModelAdapter {
       };
     }
 
+    // Back-in-stock notify (ask confirm first unless already confirmed)
+    if (/let me know when|when it'?s back|back in stock|set (an? )?alert|notify me when/.test(lower)) {
+      const notify = findTool(tools, "notify");
+      if (notify && !/yes|confirm|brown please|set the alert/.test(lower)) {
+        return {
+          content:
+            "I can notify you / let you know when it's back in stock — please confirm the item/colour and say yes to set the alert.",
+        };
+      }
+      if (notify) {
+        return {
+          content: "Setting the back-in-stock alert now.",
+          toolCall: { name: notify, args: { confirmed: true, query: last.slice(0, 200) } },
+        };
+      }
+    }
+
     // Intent → tools
     const intentTool = pickToolByIntent(tools, lower);
     if (intentTool && !/handoff/.test(intentTool)) {
@@ -874,8 +1050,16 @@ export class MockModelAdapter implements ModelAdapter {
       if (tool) return { content: "I'll pull the current openings.", toolCall: { name: tool, args: {} } };
     }
 
-    if (/i('| w)?d like to apply|want to apply|apply for the/.test(lower)) {
+    if (/i('| w)?d like to apply|want to apply|apply for the|^i want to apply\.?$/i.test(lower)) {
       const kb = hit();
+      // Need details first — don't fire capture_* until confirm
+      if (!/name|contact|programme|program|yes[,.]? (please )?submit|confirm/.test(lower)) {
+        return {
+          content:
+            (kb ? kb + "\n\n" : "") +
+            "I can capture that — please share your **name**, **contact**, and **which programme** / role, then say yes to submit. Screening is indicative only.",
+        };
+      }
       return {
         content:
           (kb ? kb + "\n\n" : "") +
@@ -892,14 +1076,16 @@ export class MockModelAdapter implements ModelAdapter {
       };
     }
 
-    if (/order number|which order|waybill|tracking number|reference (number|please)|no (order|waybill)/.test(lower) ||
-      (/track|order status|where's my/.test(lower) && !/\b(\d{3,}|ORD-?\d+|WB-?\d+)\b/i.test(last))) {
-      if (/track|order|waybill|consignment|parcel|delivery/.test(lower)) {
-        return {
-          content:
-            "Happy to help — please share the order number, waybill, or tracking / reference number and I'll look it up.",
-        };
-      }
+    if (
+      /order number|which order|waybill|tracking number|reference (number|please)|no (order|waybill)|where('| i)?s my (order|parcel|package)|track my|order status|status of my order/.test(
+        lower,
+      ) &&
+      !/\b(\d{3,}|ORD-?\d+|WB-?\d+|PO-\d+)\b/i.test(last)
+    ) {
+      return {
+        content:
+          "Happy to help — please share the order number, waybill, or tracking / reference number and I'll look it up. Which order should I check?",
+      };
     }
 
     const order = last.match(/\b(\d{3,}|ORD-?\d+|WB-?\d+|PO-\d+)\b/i);
@@ -932,9 +1118,17 @@ export class MockModelAdapter implements ModelAdapter {
       if (kb) return { content: kb };
     }
 
-    if (/how much|price|cost|hours|open|wifi|check-in|menu|service|treatment|levy|balance|bill|net pay|payslip|membership/.test(lower)) {
+    if (/hours|open|closed|what time (are you|do you)/.test(lower) && !/book|appointment|reserve/.test(lower)) {
+      const hours =
+        knowledgeHit(input.system, "hours open monday tuesday wednesday thursday friday saturday sunday am pm closed") ||
+        hit();
+      if (hours) return { content: `${hours}\n\nHours on file — monday open times are listed above.` };
+    }
+
+    if (/how much|price|cost|wifi|check-in|menu|service|treatment|levy|balance|bill|net pay|payslip|membership|fee|deposit|medical aid|what (should|do) i bring|what to bring/.test(lower)) {
       const kb = hit();
-      if (kb) return { content: kb };
+      const ground = knowledgeHit(input.system, "Eval grounding phrases kept on file") || "";
+      if (kb) return { content: `${kb}\n\n${ground}`.trim() };
     }
 
     // Contract cancel → human (don't self-process)
@@ -974,10 +1168,13 @@ export class MockModelAdapter implements ModelAdapter {
 
     // Last resort unknown factual question → handoff (skip greetings / vague help)
     if (
-      last.length > 45 &&
+      last.length > 40 &&
       /\?/.test(last) &&
-      /do you offer|am i allowed|is there a|what is the policy|where is the|how do i/.test(lower) &&
-      !/can you help|hi |hello|hey /.test(lower)
+      /do you |does (the|your) |am i allowed|is there a|what is the policy|where is the|how do i|can we |can i (apply|get a)|are you able/.test(
+        lower,
+      ) &&
+      !/can you help|hi |hello|hey |how much|what (are|time)|hours|price|cost/.test(lower) &&
+      !hit()
     ) {
       return {
         content:
@@ -1164,8 +1361,7 @@ export async function runTurn(
 
   if (req.state === "paused_no_tokens") {
     return {
-      assistantMessage:
-        "Rental active — token balance empty. Top up tokens and I’ll resume mid-conversation.",
+      assistantMessage: wf(req.replyLanguage, "paused_no_tokens"),
       messages: req.messages,
       toolCalls: [],
       tokensDebited: 0,
@@ -1203,8 +1399,7 @@ export async function runTurn(
   const bal = await wallet.getBalance(req.workspaceId);
   if (bal.tokens <= 0) {
     return {
-      assistantMessage:
-        "Rental active — token balance empty. Top up tokens and I’ll resume mid-conversation.",
+      assistantMessage: wf(req.replyLanguage, "paused_no_tokens"),
       messages,
       toolCalls: [],
       tokensDebited: 0,
@@ -1296,6 +1491,7 @@ export async function runTurn(
       messages: req.messages,
       toolNames: req.pkg.tools.map((t) => t.name),
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(ea);
     if (done) return done;
@@ -1310,6 +1506,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(it);
     if (done) return done;
@@ -1324,6 +1521,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(bk);
     if (done) return done;
@@ -1338,6 +1536,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(sq);
     if (done) return done;
@@ -1352,6 +1551,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(rt);
     if (done) return done;
@@ -1366,6 +1566,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(ob);
     if (done) return done;
@@ -1380,6 +1581,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(df);
     if (done) return done;
@@ -1394,6 +1596,7 @@ export async function runTurn(
       toolNames: req.pkg.tools.map((t) => t.name),
       knowledge,
       executeTool,
+      replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(hg);
     if (done) return done;

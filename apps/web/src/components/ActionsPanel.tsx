@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { isWorkflowFamilyId } from "@/lib/workflows";
+import { useT } from "@/lib/locale";
 
 interface Connector {
   id: string;
@@ -35,6 +36,7 @@ export function ActionsPanel({
   connected: string[];
   onConnected: (ids: string[]) => void;
 }) {
+  const t = useT();
   const [busy, setBusy] = useState<string | null>(null);
   const [status, setStatus] = useState<OauthStatus[]>([]);
   const [callbackUrl, setCallbackUrl] = useState("");
@@ -92,7 +94,7 @@ export function ActionsPanel({
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Could not save the channel");
+        setError(data.error ?? t("actions.errorSaveChannel"));
         return;
       }
       setSlackSavedChannel(data.channel);
@@ -119,7 +121,7 @@ export function ActionsPanel({
     void refreshStatus();
     const params = new URLSearchParams(window.location.search);
     if (params.get("oauth") === "error") {
-      setError(params.get("message") ?? "OAuth failed");
+      setError(params.get("message") ?? t("actions.errorOAuth"));
     } else if (params.get("oauth") && params.get("oauth") !== "error") {
       void refreshStatus();
     }
@@ -131,8 +133,12 @@ export function ActionsPanel({
     if (oauth && !oauth.configured) {
       setError(
         showAdvanced
-          ? `${oauth.name} needs Railway / .env credentials: ${(oauth.missingEnv ?? []).join(", ")}. Register redirect URI ${callbackUrl || "/api/oauth/callback"} in the provider console.`
-          : `${oauth.name} isn’t available on this environment yet — you can still demo in sandbox. Open Advanced for operator setup.`,
+          ? t("actions.errorNeedsCredentials", {
+              name: oauth.name,
+              env: (oauth.missingEnv ?? []).join(", "),
+              uri: callbackUrl || "/api/oauth/callback",
+            })
+          : t("actions.errorUnavailableAdvanced", { name: oauth.name }),
       );
       return;
     }
@@ -147,14 +153,14 @@ export function ActionsPanel({
       });
       if (connectorId === "shopify") {
         if (!shop.trim()) {
-          setError("Enter your Shopify store domain first (e.g. my-store.myshopify.com)");
+          setError(t("actions.errorShopifyDomain"));
           return;
         }
         qs.set("shop", shop.trim());
       }
       if (connectorId === "zendesk") {
         if (!zendeskSub.trim()) {
-          setError("Enter your Zendesk subdomain first");
+          setError(t("actions.errorZendeskSub"));
           return;
         }
         qs.set("subdomain", zendeskSub.trim());
@@ -168,8 +174,8 @@ export function ActionsPanel({
           data.error +
             (data.missingEnv?.length
               ? showAdvanced
-                ? ` — set ${data.missingEnv.join(", ")} on Railway or in apps/web/.env.local`
-                : " — not available here yet; try sandbox or open Advanced"
+                ? t("actions.errorSetEnv", { env: data.missingEnv.join(", ") })
+                : t("actions.errorNotAvailable")
               : ""),
         );
         return;
@@ -211,7 +217,7 @@ export function ActionsPanel({
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Failed to save credentials");
+        setError(data.error ?? t("actions.errorSaveCredentials"));
         return;
       }
       if (data.rental) onConnected(data.rental.connectedConnectors);
@@ -252,24 +258,26 @@ export function ActionsPanel({
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-medium">{c.name}</span>
               {(c.recommended || recommendedIds.has(c.id)) && (
-                <span className="chip chip-live">Recommended</span>
+                <span className="chip chip-live">{t("actions.recommended")}</span>
               )}
-              {on && <span className="chip chip-live">Connected</span>}
-              {isOauth && configured && !on && <span className="chip chip-live">Ready</span>}
+              {on && <span className="chip chip-live">{t("actions.connected")}</span>}
+              {isOauth && configured && !on && <span className="chip chip-live">{t("actions.ready")}</span>}
               {isOauth && !configured && (
-                <span className="chip">{operatorDetail ? "Env missing" : "Unavailable"}</span>
+                <span className="chip">
+                  {operatorDetail ? t("actions.envMissing") : t("actions.unavailable")}
+                </span>
               )}
-              {isOauth && <span className="chip">OAuth</span>}
+              {isOauth && <span className="chip">{t("actions.oauth")}</span>}
             </div>
             <p className="text-xs text-[var(--muted)]">{c.description}</p>
             {isOauth && !configured ? (
               operatorDetail && oauth?.missingEnv?.length ? (
                 <p className="mt-1 font-mono text-[11px] text-[var(--warn)]">
-                  Set {oauth.missingEnv.join(" + ")}
+                  {t("actions.setEnv", { env: oauth.missingEnv.join(" + ") })}
                 </p>
               ) : (
                 <p className="mt-1 text-[11px] text-[var(--muted)]">
-                  Not available on this environment yet — you can still demo in sandbox.
+                  {t("actions.unavailableSandbox")}
                 </p>
               )
             ) : null}
@@ -284,19 +292,21 @@ export function ActionsPanel({
                   title={
                     !configured
                       ? operatorDetail
-                        ? `Configure ${(oauth?.missingEnv ?? []).join(", ")} first`
-                        : "Not available here — try sandbox"
+                        ? t("actions.configureEnvFirst", {
+                            env: (oauth?.missingEnv ?? []).join(", "),
+                          })
+                        : t("actions.notAvailableSandbox")
                       : undefined
                   }
                   onClick={() => startOAuth(c.id)}
                 >
                   {!configured
                     ? operatorDetail
-                      ? "Add credentials first"
-                      : "Unavailable"
+                      ? t("actions.addCredentials")
+                      : t("actions.unavailable")
                     : on
-                      ? "Reconnect"
-                      : "Connect with OAuth"}
+                      ? t("actions.reconnect")
+                      : t("actions.connectOAuth")}
                 </button>
                 {on && (
                   <button
@@ -305,7 +315,7 @@ export function ActionsPanel({
                     disabled={busy === c.id}
                     onClick={() => disconnect(c.id)}
                   >
-                    Disconnect
+                    {t("actions.disconnect")}
                   </button>
                 )}
               </>
@@ -337,10 +347,12 @@ export function ActionsPanel({
                 value={slackChannel}
                 onChange={(e) => setSlackChannel(e.target.value)}
               >
-                {slackChannels.length === 0 && <option value="">Loading channels…</option>}
+                {slackChannels.length === 0 && (
+                  <option value="">{t("actions.loadingChannels")}</option>
+                )}
                 {slackChannels.map((ch) => (
                   <option key={ch.id} value={ch.id}>
-                    {ch.is_private ? "private · " : "#"}
+                    {ch.is_private ? t("actions.slackPrivate") : "#"}
                     {ch.name}
                   </option>
                 ))}
@@ -351,22 +363,17 @@ export function ActionsPanel({
                 disabled={busy === "slack-channel" || !slackChannel}
                 onClick={() => void saveSlackChannel()}
               >
-                {slackSavedChannel === slackChannel ? "Saved" : "Set handoff channel"}
+                {slackSavedChannel === slackChannel ? t("actions.saved") : t("actions.setHandoff")}
               </button>
             </div>
             {slackSavedChannel && (
               <p className="text-xs text-[var(--muted)]">
-                Handoffs go to{" "}
+                {t("actions.handoffsGoTo")}{" "}
                 <code>
                   {slackChannels.find((ch) => ch.id === slackSavedChannel)?.name ??
                     slackSavedChannel}
                 </code>
-                {slackNeedsInvite && (
-                  <>
-                    {" "}
-                    — private channel: run <code>/invite @YourBot</code> in Slack once.
-                  </>
-                )}
+                {slackNeedsInvite && <> {t("actions.slackInviteHint")}</>}
               </p>
             )}
           </div>
@@ -411,7 +418,7 @@ export function ActionsPanel({
                 })
               }
             >
-              Save webhook
+              {t("actions.saveWebhook")}
             </button>
           </div>
         )}
@@ -438,7 +445,7 @@ export function ActionsPanel({
                 saveCredentials("mcp", { endpoint: mcpEndpoint, token: mcpToken })
               }
             >
-              Save MCP
+              {t("actions.saveMcp")}
             </button>
           </div>
         )}
@@ -468,7 +475,7 @@ export function ActionsPanel({
                 })
               }
             >
-              Save WhatsApp credentials
+              {t("actions.saveWhatsApp")}
             </button>
           </div>
         )}
@@ -487,7 +494,7 @@ export function ActionsPanel({
               disabled={busy === "stripe"}
               onClick={() => saveCredentials("stripe", { api_key: stripeKey })}
             >
-              Save Stripe
+              {t("actions.saveStripe")}
             </button>
           </div>
         )}
@@ -524,7 +531,7 @@ export function ActionsPanel({
                 })
               }
             >
-              Save Woo
+              {t("actions.saveWoo")}
             </button>
           </div>
         )}
@@ -540,16 +547,19 @@ export function ActionsPanel({
         </div>
       )}
       <div className="panel p-4">
-        <h2 className="text-sm font-semibold">Recommended for this agent</h2>
+        <h2 className="text-sm font-semibold">{t("actions.recommendedHeading")}</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">
-          Connect the tools you need for live workflows. Tokens stay sealed server-side. Use{" "}
-          <strong className="text-[var(--text)]">sandbox</strong> chat anytime —{" "}
-          <strong className="text-[var(--text)]">live</strong> chat uses these OAuth connections.
+          {t("actions.recommendedLede", {
+            sandbox: t("actions.sandbox"),
+            live: t("actions.live"),
+          })}
           {isWorkflow ? (
             <>
               {" "}
-              For demos: connect <strong className="text-[var(--text)]">Google Calendar</strong> and{" "}
-              <strong className="text-[var(--text)]">Slack</strong>, then confirm before the agent writes.
+              {t("actions.workflowDemoHint", {
+                calendar: t("actions.googleCalendar"),
+                slack: t("actions.slack"),
+              })}
             </>
           ) : null}
         </p>
@@ -567,34 +577,35 @@ export function ActionsPanel({
           onClick={() => setShowAdvanced((v) => !v)}
         >
           <span>
-            <span className="text-sm font-semibold">Advanced / operator setup</span>
+            <span className="text-sm font-semibold">{t("actions.advancedTitle")}</span>
             <span className="mt-0.5 block text-xs text-[var(--muted)]">
-              Redirect URI, env credentials, Phase 2 connectors
-              {missingCount > 0 ? ` · ${missingCount} missing env` : ""}
+              {t("actions.advancedSub")}
+              {missingCount > 0 ? t("actions.missingEnv", { count: missingCount }) : ""}
             </span>
           </span>
-          <span className="text-xs text-[var(--muted)]">{showAdvanced ? "Hide" : "Show"}</span>
+          <span className="text-xs text-[var(--muted)]">
+            {showAdvanced ? t("actions.hide") : t("actions.show")}
+          </span>
         </button>
         {showAdvanced ? (
           <div className="mt-4 space-y-4">
             {callbackUrl ? (
               <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-xs">
-                <p className="font-medium text-[var(--text)]">Shared redirect URI (all providers)</p>
+                <p className="font-medium text-[var(--text)]">{t("actions.redirectUri")}</p>
                 <code className="mt-1 block break-all text-[var(--accent-bright)]">{callbackUrl}</code>
                 {missingCount > 0 ? (
                   <p className="mt-2 text-[var(--muted)]">
-                    {missingCount} connector{missingCount === 1 ? "" : "s"} still need client id/secret
-                    on Railway. See <code>docs/CONNECTOR_OAUTH.md</code>.
+                    {t("actions.connectorsNeedCreds", { count: missingCount })}
                   </p>
                 ) : (
-                  <p className="mt-2 text-[var(--accent)]">All OAuth apps have credentials configured.</p>
+                  <p className="mt-2 text-[var(--accent)]">{t("actions.allOAuthConfigured")}</p>
                 )}
               </div>
             ) : null}
             {otherPhase1.length > 0 ? (
               <div>
                 <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                  More Phase 1
+                  {t("actions.morePhase1")}
                 </h3>
                 <div className="grid gap-2">
                   {otherPhase1.map((c) => row(c, { operatorDetail: true }))}
@@ -604,7 +615,7 @@ export function ActionsPanel({
             {phase2.length > 0 ? (
               <div>
                 <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                  Phase 2 connectors
+                  {t("actions.phase2")}
                 </h3>
                 <div className="grid gap-2">
                   {phase2.map((c) => row(c, { operatorDetail: true }))}

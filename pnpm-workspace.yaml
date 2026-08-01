@@ -1,3 +1,5 @@
 packages:
   - "apps/*"
   - "packages/*"
+  # Expo / RN stays self-contained — install inside apps/mobile-shell only
+  - "!apps/mobile-shell"

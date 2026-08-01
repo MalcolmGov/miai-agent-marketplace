@@ -5,6 +5,8 @@
  * Blockers and HR/salary issues escalate; never collects banking/card in chat.
  */
 
+import { wf } from "./i18n.js";
+
 export type ObStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface ObWorkflowStep {
@@ -114,6 +116,7 @@ export async function runOnboardingBuddyWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<ObWorkflowTurnResult> {
   if (!isOnboardingBuddy(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -126,6 +129,7 @@ export async function runOnboardingBuddyWorkflow(input: {
   const has = (n: string) => input.toolNames.includes(n);
   const prior = input.messages.map((m) => m.content).join(" ").toLowerCase();
   const emerg = emergencyNumber(input.agentId, input.knowledge);
+  const lang = input.replyLanguage;
 
   // Emergency
   if (/life-?threatening|emergency — what|emergency right now/.test(lower)) {
@@ -137,7 +141,7 @@ export async function runOnboardingBuddyWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: `If this is life-threatening, call **${emerg}** / local emergency services now. I'm also handing you to a human urgently.`,
+      assistantMessage: wf(lang, "emergency_local", { emerg }),
     };
   }
 

@@ -28,6 +28,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
   }, [pathname]);
 
   const isHome = pathname === "/";
+  /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
+  const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
+
+  if (isAppChannel) {
+    return <>{children}</>;
+  }
 
   return (
     <div className="shell">

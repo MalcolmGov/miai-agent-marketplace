@@ -5,6 +5,8 @@
  * Large groups, complaints, and allergens escalate; never invents "usual" orders.
  */
 
+import { wf } from "./i18n.js";
+
 export type RtStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface RtWorkflowStep {
@@ -128,6 +130,7 @@ export async function runRestaurantTakeawayWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<RtWorkflowTurnResult> {
   if (!isRestaurantTakeaway(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -140,6 +143,7 @@ export async function runRestaurantTakeawayWorkflow(input: {
   const has = (n: string) => input.toolNames.includes(n);
   const prior = input.messages.map((m) => m.content).join(" ").toLowerCase();
   const emerg = emergencyNumber(input.agentId, input.knowledge);
+  const lang = input.replyLanguage;
   const menu = menuBlob(input.knowledge);
 
   // Emergency
@@ -152,7 +156,7 @@ export async function runRestaurantTakeawayWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: `If this is life-threatening, call **${emerg}** / local emergency services now. I'm also handing you to a human urgently.`,
+      assistantMessage: wf(lang, "emergency_local", { emerg }),
     };
   }
 
@@ -234,8 +238,7 @@ export async function runRestaurantTakeawayWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "I'm connecting you to a human teammate at the restaurant — they'll follow up. You're connected.",
+      assistantMessage: wf(lang, "handoff_teammate"),
     };
   }
 

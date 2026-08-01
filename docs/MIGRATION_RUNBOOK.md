@@ -49,20 +49,24 @@ Point DNS / Front Door at `containerAppFqdn` (or custom domain binding on Contai
 ## Staging smoke (before DNS cutover)
 
 ```bash
-BASE=https://<containerAppFqdn>
+# Automated (health + catalog; add TOKEN for wallet/rent/agent)
+BASE=https://<containerAppFqdn> pnpm smoke:cutover
+BASE=https://<containerAppFqdn> TOKEN="$TOKEN" pnpm smoke:cutover
 
+# Manual cross-check
 curl -sf "$BASE/api/health" | jq .
-# expect status=ok, database=configured, telemetry=appinsights|console
+# expect storePing=ok, database=configured, telemetry=appinsights|console
 
 # With a real Bearer token:
 curl -sf -H "Authorization: Bearer $TOKEN" "$BASE/api/wallet"
 curl -sf -H "Authorization: Bearer $TOKEN" -H 'content-type: application/json' \
   -d '{"agentId":"us-customer-support"}' "$BASE/api/rent"
-# Restart revision / scale to 0 then 1 — rental must still exist
+# Restart revision / scale to 0 then 1 — rental must still exist (Postgres)
 curl -sf -H "Authorization: Bearer $TOKEN" "$BASE/api/agents/us-customer-support"
 ```
 
-Also: OAuth start (JSON) → provider consent → callback → connector shows connected; embed chat with public key.
+Also: OAuth start (JSON) → provider consent → callback → connector shows connected; embed chat with public key.  
+OAuth tokens / knowledge persist on the Azure Files mount at `/data`.
 
 ## Cutover
 
@@ -99,7 +103,8 @@ Rollback RTO target: **DNS TTL + 15 minutes** ops. Keep TTL ≤ 300s during cuto
 - [ ] Rotate any secrets that were shared with Railway
 - [ ] Confirm audit events appear in App Insights (`miai.audit.*`)
 - [ ] Update commercial/demo links to Azure host
-- [ ] Schedule P2: embed CSP/CORS hardening, load test
+- [ ] Set `EMBED_ALLOWED_ORIGINS` to production hostnames (leave `*` only on staging)
+- [ ] Schedule P2: KV-only secret refs, load test
 
 ## Env flip reference
 

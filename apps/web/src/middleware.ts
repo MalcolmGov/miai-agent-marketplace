@@ -16,6 +16,7 @@ export function middleware(req: NextRequest) {
     "/api/catalog",
     "/api/oauth/callback",
     "/api/embed/",
+    "/api/app/",
     "/agents/v1/",
   ];
   if (publicPaths.some((p) => pathname === p || pathname.startsWith(p))) {

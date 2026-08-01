@@ -5,6 +5,8 @@
  * Also covers estimate requests, reschedule/cancel, and safety escalations.
  */
 
+import { wf } from "./i18n.js";
+
 export type BookingStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface BookingWorkflowStep {
@@ -158,6 +160,7 @@ export async function runBookingFrontDeskWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<BookingWorkflowTurnResult> {
   if (!isBookingFrontDesk(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -170,6 +173,7 @@ export async function runBookingFrontDeskWorkflow(input: {
   const toolCalls: BookingWorkflowTurnResult["toolCalls"] = [];
   const has = (n: string) => input.toolNames.includes(n);
   const emerg = emergencyNumber(input.agentId, input.knowledge);
+  const lang = input.replyLanguage;
 
   // Gas / life-threatening emergency → immediate handoff
   if (
@@ -187,7 +191,7 @@ export async function runBookingFrontDeskWorkflow(input: {
       toolCalls,
       assistantMessage: [
         `This is an emergency — leave the building if you smell gas, stay outside, and call **${emerg}** / the gas utility emergency line now.`,
-        "I'm connecting you to a human teammate urgently — I won't book a routine visit for this.",
+        wf(lang, "handoff_teammate"),
       ].join("\n\n"),
     };
   }
@@ -201,7 +205,7 @@ export async function runBookingFrontDeskWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: `If this is life-threatening, call **${emerg}** / local emergency services now. I'm also handing you to a human teammate urgently.`,
+      assistantMessage: wf(lang, "emergency_local", { emerg }),
     };
   }
 
@@ -220,8 +224,7 @@ export async function runBookingFrontDeskWorkflow(input: {
     return {
       handled: true,
       toolCalls: [],
-      assistantMessage:
-        "I can't take card details in chat — please pay via the secure link or in person / on-site. Never share full card numbers here.",
+      assistantMessage: wf(lang, "card_refuse"),
     };
   }
 
@@ -239,8 +242,7 @@ export async function runBookingFrontDeskWorkflow(input: {
       return {
         handled: true,
         toolCalls,
-        assistantMessage:
-          "I can't share another customer's jobs or details — that's confidential under privacy / GDPR rules. I'm connecting you to a human teammate for your own account only.",
+        assistantMessage: wf(lang, "privacy_other_customer"),
       };
     }
     return {
@@ -309,8 +311,7 @@ export async function runBookingFrontDeskWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "I'm connecting you to a human teammate — they'll follow up. I won't settle billing disputes or complaints only in chat.",
+      assistantMessage: wf(lang, "handoff_human"),
     };
   }
 

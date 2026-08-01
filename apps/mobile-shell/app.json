@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "MIAI Agent Shell",
+    "slug": "miai-mobile-shell",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0a0f16"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.myinstantai.agentshell"
+    },
+    "android": {
+      "package": "com.myinstantai.agentshell",
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0f16"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

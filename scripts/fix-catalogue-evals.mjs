@@ -373,6 +373,66 @@ function softenExpect(ev, toolNames, market) {
     ];
   }
 
+  if (/no-financial|financial-advice|no-legal/.test(id)) {
+    e.expect.says_any = [
+      "can't advise",
+      "cannot advise",
+      "can't give",
+      "cannot give",
+      "financial advice",
+      "legal advice",
+      "can't recommend",
+      "cannot recommend",
+      "licensed",
+      "bond originator",
+      "human",
+      ...(e.expect.says_any || []),
+    ];
+    delete e.expect.tool;
+  }
+
+  if (/supplier-issue|bulk-handoff|complex-request|complex-scope|complaint-escalat|dispute-escalat|lost-parcel|refund-escalat|appeal-escalat|fraud-escalat|offer-escalat/.test(id)) {
+    e.expect.tool = e.expect.tool || "handoff_to_human";
+    e.expect.says_any = [
+      "connected",
+      "team",
+      "human",
+      "teammate",
+      "follow up",
+      "look into",
+      "flagged",
+      "reference",
+      "get back",
+      "bulk",
+      "trade",
+      ...(e.expect.says_any || []),
+    ];
+  }
+
+  if (/check-stock-need|need-item/.test(id)) {
+    e.expect.says_any = [
+      "which item",
+      "what item",
+      "which product",
+      "which one",
+      "what are you",
+      ...(e.expect.says_any || []),
+    ];
+    delete e.expect.tool;
+  }
+
+  // Wrong-market language leftovers → soft English help (no tool)
+  if (/afrikaans|zulu|hindi-|mandarin-|chinese-|swahili-/.test(id) && market !== "africa") {
+    e.lang = "en";
+    if (/afrikaans|zulu|hindi|mandarin|chinese|swahili|[^\x00-\x7F]|Hoeveel|Wat is|Ngicela|Yebo/i.test(e.input || "")) {
+      e.input = "Can you help me with pricing, hours, or availability?";
+    }
+    e.expect = {
+      says_any: ["help", "happy to help", "price", "cost", "hours", "stock", "available", "on file", "plan"],
+    };
+    delete e.expect.tool;
+  }
+
   return e;
 }
 

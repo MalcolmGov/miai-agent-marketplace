@@ -9,9 +9,13 @@ Completed after P0 so cutover week is runbook-driven, not ad hoc.
 | Runbook | [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md) — deploy, smoke, cutover, rollback |
 | Telemetry | [`apps/web/src/lib/telemetry.ts`](../apps/web/src/lib/telemetry.ts) — console JSON + App Insights custom events |
 | Audit sink | `appendAudit` emits `miai.audit.<type>` (best-effort) |
-| Health | `/api/health` reports `telemetry=appinsights\|console` |
-| Azure | App Insights + KV secret mirrors + Container App MI → Key Vault Secrets User |
+| Health | `/api/health` — store ping + hydrate + config completeness flags |
+| Smoke | `pnpm smoke:cutover` (`scripts/cutover-smoke.mjs`) |
+| Azure | App Insights + KV secret mirrors + Azure Files `/data` + Postgres AllowAzureServices + OIDC/embed secrets |
+| Validate | `pnpm validate:azure` (`scripts/validate-azure.sh`) |
 | Params | [`infra/azure/parameters.example.json`](../infra/azure/parameters.example.json) |
+| Wallet | HttpWallet 402/409 → `{ ok:false, paused:true }`; `pnpm test:wallet` |
+| Embed CORS | `EMBED_ALLOWED_ORIGINS` allowlist (`*` default) |
 
 ## Still blocked on MyInstantAI
 
@@ -21,6 +25,14 @@ Completed after P0 so cutover week is runbook-driven, not ad hoc.
 
 ## P2 (later)
 
-- Embed CSP / CORS for `myinstantai.com`  
-- Load/smoke checklist automation on Azure staging  
-- Switch Container App secrets to `keyVaultUrl` only  
+- Persist OAuth/knowledge in Postgres (Files share is cutover-safe interim)  
+
+## Polish completed (post-P1)
+
+| Area | Status |
+|---|---|
+| KV-only CA secrets | UAMI + `keyVaultUrl` in `main.bicep` |
+| App Insights depth | `trackException` / `trackDependency` + chat/oauth hooks |
+| Workflow reply language | `wf()` + `replyLanguage` through runTurn / embed |
+| Studio UI i18n | create / request / studio / knowledge / actions |
+| Full catalogue evals | **100%** runtime (`pnpm eval:suite` — 3848/3848); `pnpm eval:smoke` green; heal via `pnpm heal:evals` |

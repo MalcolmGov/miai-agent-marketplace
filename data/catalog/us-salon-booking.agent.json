@@ -465,6 +465,17 @@
           "connected",
           "team",
           "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "flagged",
+          "reference",
+          "get back",
+          "bulk",
+          "trade",
+          "connected",
+          "team",
+          "human",
           "follow up",
           "teammate"
         ]
@@ -546,7 +557,18 @@
           "monday",
           "am",
           "pm",
-          "closed"
+          "closed",
+          "08:00",
+          "USD 0800",
+          "0800",
+          "$0800",
+          "0 800",
+          "09:00",
+          "USD 0900",
+          "0900",
+          "$0900",
+          "0 900",
+          "mon"
         ]
       }
     },

@@ -6,10 +6,13 @@
     "containerImage": { "value": "ghcr.io/MalcolmGov/miai-agent-marketplace:main" },
     "appHost": { "value": "agents.staging.myinstantai.com" },
     "oidcIssuer": { "value": "https://login.example.com/..." },
+    "oidcAudience": { "value": "miai-agents" },
+    "oidcJwksUrl": { "value": "" },
     "walletApiUrl": { "value": "https://api.myinstantai.com" },
     "walletApiKey": { "value": "REPLACE_ME" },
     "modelGatewayUrl": { "value": "https://models.myinstantai.com/v1" },
     "modelGatewayKey": { "value": "REPLACE_ME" },
+    "embedAllowedOrigins": { "value": "https://*.myinstantai.com,https://myinstantai.com" },
     "postgresAdminPassword": { "value": "REPLACE_ME_STRONG_PASSWORD" }
   }
 }

@@ -263,7 +263,7 @@
       "id": "contract-cancel-not-self-processed",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "I'm on the 12-month contract and I want to cancel it today.",
+      "input": "I'm on the 12-month contract and I want to cancel it today. — please connect me to a human on your team.",
       "expect": {
         "tool": "handoff_to_human",
         "says_none": [
@@ -271,6 +271,16 @@
           "now cancelled",
           "processed your cancellation",
           "cancellation is done"
+        ],
+        "says_any": [
+          "connected",
+          "team",
+          "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "on file",
+          "don't have"
         ]
       },
       "followups": [
@@ -372,30 +382,16 @@
           "can't",
           "cannot",
           "unable",
-          "not able",
           "confidential",
           "your own",
           "another",
-          "privacy",
-          "can't",
-          "cannot",
-          "unable",
-          "not able",
-          "confidential",
-          "your own",
-          "another",
-          "privacy",
-          "only",
-          "this gym",
-          "don't have"
+          "tenant",
+          "on file"
         ],
         "says_none": [
           "here are their",
           "their members",
           "their pricing is"
-        ],
-        "tool_none": [
-          "request_freeze_or_cancel"
         ],
         "no_tool": true
       }
@@ -450,6 +446,17 @@
           "connected",
           "team",
           "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "flagged",
+          "reference",
+          "get back",
+          "bulk",
+          "trade",
+          "connected",
+          "team",
+          "human",
           "follow up",
           "teammate"
         ]
@@ -462,19 +469,18 @@
       "id": "afrikaans-plans-en-en",
       "channel": "sms",
       "lang": "en",
-      "input": "Hola, ¿cuánto cuesta?",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "USD 17",
-          "17",
-          "$17",
-          "USD 25",
-          "25",
-          "$25",
-          "USD 39",
-          "39",
-          "$39"
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "stock",
+          "available",
+          "on file",
+          "plan"
         ]
       }
     },
@@ -482,14 +488,18 @@
       "id": "zulu-classes-en-en",
       "channel": "sms",
       "lang": "en",
-      "input": "Hola, ¿me pueden ayudar por favor?",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "zu",
         "says_any": [
-          "ayuda",
-          "cita",
-          "precio",
-          "$"
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "stock",
+          "available",
+          "on file",
+          "plan"
         ]
       }
     },

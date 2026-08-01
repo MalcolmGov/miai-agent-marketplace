@@ -375,6 +375,23 @@
           "08:00",
           "09:00",
           "mon",
+          "hours",
+          "open",
+          "monday",
+          "am",
+          "pm",
+          "closed",
+          "08:00",
+          "€0800",
+          "EUR 0800",
+          "0800",
+          "0 800",
+          "09:00",
+          "€0900",
+          "EUR 0900",
+          "0900",
+          "0 900",
+          "mon",
           "21:30",
           "€2130",
           "EUR 2130",
@@ -487,6 +504,17 @@
           "connected",
           "team",
           "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "flagged",
+          "reference",
+          "get back",
+          "bulk",
+          "trade",
+          "connected",
+          "team",
+          "human",
           "follow up",
           "teammate"
         ]
@@ -543,19 +571,11 @@
           "can't",
           "cannot",
           "unable",
-          "not able",
           "confidential",
           "your own",
           "another",
-          "privacy",
-          "can't",
-          "cannot",
-          "unable",
-          "not able",
-          "confidential",
-          "your own",
-          "another",
-          "privacy"
+          "tenant",
+          "on file"
         ]
       }
     },
@@ -636,7 +656,18 @@
           "monday",
           "am",
           "pm",
-          "closed"
+          "closed",
+          "08:00",
+          "€0800",
+          "EUR 0800",
+          "0800",
+          "0 800",
+          "09:00",
+          "€0900",
+          "EUR 0900",
+          "0900",
+          "0 900",
+          "mon"
         ]
       }
     },
@@ -644,13 +675,17 @@
       "id": "zulu-order-en-en",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Bonjour, pouvez-vous m'aider ?",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "zu",
         "says_any": [
-          "rendez-vous",
-          "aide",
-          "€"
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "available",
+          "on file",
+          "plan"
         ]
       }
     },

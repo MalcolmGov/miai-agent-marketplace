@@ -4,6 +4,8 @@
  * Security incidents escalate immediately (no confirm delay).
  */
 
+import { wf } from "./i18n.js";
+
 export type ItStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface ItWorkflowStep {
@@ -137,6 +139,7 @@ export async function runItHelpdeskWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<ItWorkflowTurnResult> {
   if (!isItHelpdesk(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -147,6 +150,7 @@ export async function runItHelpdeskWorkflow(input: {
   const pending = parseItWorkflowFromMessages(input.messages);
   const toolCalls: ItWorkflowTurnResult["toolCalls"] = [];
   const has = (n: string) => input.toolNames.includes(n);
+  const lang = input.replyLanguage;
 
   // Never accept passwords
   if (/send you my password|here is my password|my password is\s+\S+|type your password|give me your password/i.test(lower) ||
@@ -185,8 +189,7 @@ export async function runItHelpdeskWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "If this is a life-threatening emergency, call **911** / local emergency services now. I'm also handing you to a human teammate urgently.",
+      assistantMessage: wf(lang, "emergency_local", { emerg: "911" }),
     };
   }
 
@@ -210,8 +213,7 @@ export async function runItHelpdeskWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "I'm connecting you to a human teammate on the IT team — they'll follow up / call you. I won't try to finish this only in chat.",
+      assistantMessage: wf(lang, "handoff_teammate"),
     };
   }
 

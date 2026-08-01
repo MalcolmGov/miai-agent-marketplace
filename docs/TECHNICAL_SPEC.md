@@ -182,6 +182,7 @@ Base path relative to app origin.
 | POST | `/api/knowledge/crawl` | Mock/OIDC | Website crawl |
 | DELETE | `/api/knowledge/[id]` | Mock/OIDC | Delete source |
 | POST | `/api/embed/chat` | Embed key | Public widget chat |
+| POST | `/api/app/chat` | Embed key | App channel chat (SSE or JSON) |
 
 ### UI routes
 
@@ -192,6 +193,7 @@ Base path relative to app origin.
 | `/ops` | Live ops dashboard |
 | `/install` | Embed install instructions |
 | `/agents/v1/agent.js` | Embeddable widget script |
+| `/app/v1` | Hosted App-channel messenger (WebView) |
 
 ---
 
@@ -479,6 +481,7 @@ Telemetry: structured console + optional App Insights custom events (`miai.audit
 ## 15. Related docs
 
 - [PLATFORM_INTEGRATION.md](./PLATFORM_INTEGRATION.md) — MIAI API contract  
+- [APP_CHANNEL.md](./APP_CHANNEL.md) — Hosted App channel + Expo WebView shell  
 - [CONNECTOR_OAUTH.md](./CONNECTOR_OAUTH.md) — OAuth setup  
 - [MARKET_PACKS.md](./MARKET_PACKS.md) — Family / pack model  
 - [CATALOGUE_READY.md](./CATALOGUE_READY.md) — Readiness gate  

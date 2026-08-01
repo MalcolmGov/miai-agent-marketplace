@@ -5,6 +5,8 @@
  * Never invents discounts or locked final quotes; hot leads and enterprise escalate.
  */
 
+import { wf } from "./i18n.js";
+
 export type SqStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface SqWorkflowStep {
@@ -121,6 +123,7 @@ export async function runSalesQualifierWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<SqWorkflowTurnResult> {
   if (!isSalesQualifier(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -133,6 +136,7 @@ export async function runSalesQualifierWorkflow(input: {
   const has = (n: string) => input.toolNames.includes(n);
   const prior = input.messages.map((m) => m.content).join(" ").toLowerCase();
   const emerg = emergencyNumber(input.agentId, input.knowledge);
+  const lang = input.replyLanguage;
   const plans = plansSection(input.knowledge);
 
   // Emergencies
@@ -145,7 +149,7 @@ export async function runSalesQualifierWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: `If this is life-threatening, call **${emerg}** / local emergency services now. I'm also handing you to a human urgently.`,
+      assistantMessage: wf(lang, "emergency_local", { emerg }),
     };
   }
 
@@ -223,8 +227,7 @@ export async function runSalesQualifierWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "I'm connecting you to a human teammate on the sales team — they'll follow up. You're connected.",
+      assistantMessage: wf(lang, "handoff_teammate"),
     };
   }
 

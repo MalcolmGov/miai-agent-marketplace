@@ -8,6 +8,7 @@ import {
 import { getPreset } from "@miai/presets";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { publicAppBase } from "@miai/connectors";
+import { trackDependency, trackEvent, trackException } from "@/lib/telemetry";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -19,24 +20,37 @@ export async function GET(req: Request) {
   const base = publicAppBase();
 
   if (err) {
+    trackEvent("miai.oauth.callback", { success: false, error: err });
     return NextResponse.redirect(
       `${base}/install?oauth=error&message=${encodeURIComponent(err)}`,
     );
   }
   if (!code || !state) {
+    trackEvent("miai.oauth.callback", { success: false, error: "missing_code" });
     return NextResponse.redirect(`${base}/install?oauth=error&message=missing_code`);
   }
 
   const payload = consumeState(state);
   if (!payload || !isOAuthConnector(payload.connectorId)) {
+    trackEvent("miai.oauth.callback", { success: false, error: "invalid_state" });
     return NextResponse.redirect(`${base}/install?oauth=error&message=invalid_state`);
   }
 
+  const exchangeStarted = Date.now();
   try {
     const token = await exchangeCode({
       connectorId: payload.connectorId as OAuthConnectorId,
       code,
       statePayload: payload,
+    });
+    trackDependency({
+      name: "oauth.exchangeCode",
+      type: "HTTP",
+      target: payload.connectorId,
+      durationMs: Date.now() - exchangeStarted,
+      success: true,
+      resultCode: 200,
+      properties: { agentId: payload.agentId },
     });
 
     if (realmId) {
@@ -81,11 +95,31 @@ export async function GET(req: Request) {
       },
     });
 
+    trackEvent("miai.oauth.callback", {
+      success: true,
+      connectorId: payload.connectorId,
+      agentId: payload.agentId,
+    });
+
     const dest =
       payload.returnTo ??
       `/agents/${payload.agentId}?tab=actions&oauth=${payload.connectorId}`;
     return NextResponse.redirect(`${base}${dest.startsWith("/") ? dest : `/${dest}`}`);
   } catch (e) {
+    trackDependency({
+      name: "oauth.exchangeCode",
+      type: "HTTP",
+      target: payload.connectorId,
+      durationMs: Date.now() - exchangeStarted,
+      success: false,
+      resultCode: 500,
+      properties: { agentId: payload.agentId },
+    });
+    trackException(e, {
+      route: "api/oauth/callback",
+      connectorId: payload.connectorId,
+      agentId: payload.agentId,
+    });
     const message = e instanceof Error ? e.message : "oauth_failed";
     return NextResponse.redirect(
       `${base}/agents/${payload.agentId}?tab=actions&oauth=error&message=${encodeURIComponent(message)}`,

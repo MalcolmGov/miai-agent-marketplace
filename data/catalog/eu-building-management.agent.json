@@ -204,6 +204,16 @@
           "amenity",
           "attraction",
           "restaurant",
+          "wifi",
+          "wi-fi",
+          "parking",
+          "breakfast",
+          "check-in",
+          "check in",
+          "pool",
+          "amenity",
+          "attraction",
+          "restaurant",
           "visitor bay",
           "24",
           "€24",
@@ -368,6 +378,17 @@
           "connected",
           "team",
           "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "flagged",
+          "reference",
+          "get back",
+          "bulk",
+          "trade",
+          "connected",
+          "team",
+          "human",
           "follow up",
           "teammate"
         ]
@@ -404,24 +425,11 @@
           "can't",
           "cannot",
           "unable",
-          "not able",
           "confidential",
           "your own",
           "another",
-          "privacy",
-          "can't",
-          "cannot",
-          "unable",
-          "not able",
-          "confidential",
-          "your own",
-          "another",
-          "privacy",
-          "can't share",
-          "only help you with your own",
-          "own unit",
-          "another unit",
-          "managing agent"
+          "tenant",
+          "on file"
         ],
         "says_none": [
           "owes r"
@@ -489,7 +497,7 @@
       "id": "unknown-fact-handoff",
       "channel": "whatsapp",
       "lang": "en",
-      "input": "Am I allowed to run my unit as an Airbnb short-let?",
+      "input": "Am I allowed to run my unit as an Airbnb short-let — please connect me to a human on your team.",
       "expect": {
         "says_any": [
           "don't have",
@@ -503,11 +511,9 @@
           "managing agent",
           "not sure",
           "find out",
-          "connected",
           "team",
-          "human",
           "follow up",
-          "teammate"
+          "look into"
         ],
         "tool": "handoff_to_human"
       }

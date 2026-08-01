@@ -5,6 +5,8 @@
  * Pain, clinical questions, emergencies, and PHI cross-patient → immediate handoff.
  */
 
+import { wf } from "./i18n.js";
+
 export type DentalStepStatus = "pending" | "done" | "skipped" | "failed";
 
 export interface DentalWorkflowStep {
@@ -147,6 +149,7 @@ export async function runDentalFrontDeskWorkflow(input: {
   toolNames: string[];
   knowledge?: string;
   executeTool: ExecuteToolFn;
+  replyLanguage?: string;
 }): Promise<DentalWorkflowTurnResult> {
   if (!isDentalFrontDesk(input.agentId)) {
     return { handled: false, assistantMessage: "", toolCalls: [] };
@@ -158,6 +161,7 @@ export async function runDentalFrontDeskWorkflow(input: {
   const toolCalls: DentalWorkflowTurnResult["toolCalls"] = [];
   const has = (n: string) => input.toolNames.includes(n);
   const emerg = emergencyNumber(input.agentId, input.knowledge);
+  const lang = input.replyLanguage;
 
   // Life-threatening / dental emergency
   if (
@@ -216,8 +220,7 @@ export async function runDentalFrontDeskWorkflow(input: {
     return {
       handled: true,
       toolCalls: [],
-      assistantMessage:
-        "I can't take card details in chat — please pay at the practice or via a secure link. Never share full card numbers here.",
+      assistantMessage: wf(lang, "card_refuse"),
     };
   }
 
@@ -246,8 +249,12 @@ export async function runDentalFrontDeskWorkflow(input: {
     };
   }
 
-  // Explicit human / billing
-  if (/talk to (a )?human|speak to someone|billing dispute|charge.*wrong|connect me to (a )?person/.test(lower)) {
+  // Explicit human / billing / reception
+  if (
+    /talk to (a )?human|speak to someone|speak to (the )?reception|someone at reception|billing dispute|charge.*wrong|connect me to (a )?person/.test(
+      lower,
+    )
+  ) {
     if (has("handoff_to_human")) {
       const args = {
         reason: /billing|charge|dispute/.test(lower) ? "billing_dispute" : "explicit_request",
@@ -259,7 +266,7 @@ export async function runDentalFrontDeskWorkflow(input: {
     return {
       handled: true,
       toolCalls,
-      assistantMessage: "I'm connecting you to a human at the practice — they'll follow up.",
+      assistantMessage: wf(lang, "handoff_practice"),
     };
   }
 
@@ -270,7 +277,7 @@ export async function runDentalFrontDeskWorkflow(input: {
       handled: true,
       plan: cancelled,
       toolCalls: [],
-      assistantMessage: embed("Okay — I've cancelled that booking plan. Nothing was booked.", cancelled),
+      assistantMessage: embed(wf(lang, "plan_cancelled"), cancelled),
     };
   }
 

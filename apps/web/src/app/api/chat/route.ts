@@ -11,131 +11,149 @@ import { getComposedKnowledge } from "@/lib/knowledge";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { trackEvent, trackException } from "@/lib/telemetry";
 
 export async function POST(req: Request) {
+  const started = Date.now();
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as {
-    agentId: string;
-    message?: string;
-    workspaceId?: string;
-    mode?: "sandbox" | "live";
-    clear?: boolean;
-    /** BCP-47-ish chat reply language (en, es, fr, de, it, zh, hi, sw). */
-    replyLanguage?: string;
-  };
-  const workspaceId =
-    auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
-  const pkg = await getAgentPackage(body.agentId);
-  if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
+  try {
+    const body = (await req.json()) as {
+      agentId: string;
+      message?: string;
+      workspaceId?: string;
+      mode?: "sandbox" | "live";
+      clear?: boolean;
+      /** BCP-47-ish chat reply language (en, es, fr, de, it, zh, hi, sw). */
+      replyLanguage?: string;
+    };
+    const workspaceId =
+      auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
+    const pkg = await getAgentPackage(body.agentId);
+    if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
 
-  // Reset conversation history (UI + server-persisted turns / pending workflows).
-  if (body.clear) {
-    const rental = await getWorkspaceAgent(workspaceId, body.agentId);
-    if (rental) {
-      await upsertWorkspaceAgent(workspaceId, body.agentId, {
-        agentId: body.agentId,
-        messages: [],
-      });
-    }
-    await appendAudit({
-      workspaceId,
-      agentId: body.agentId,
-      type: "agent_turn",
-      detail: { action: "clear_chat" },
-    });
-    return NextResponse.json({ ok: true, cleared: true, messages: [] });
-  }
-
-  if (!body.message?.trim()) {
-    return NextResponse.json({ error: "message required" }, { status: 400 });
-  }
-
-  let rental = await getWorkspaceAgent(workspaceId, body.agentId);
-  if (!rental) {
-    rental = await upsertWorkspaceAgent(workspaceId, body.agentId, {
-      agentId: body.agentId,
-      state: "selected",
-      knowledge: pkg.knowledge,
-      model: pkg.manifest.model.primary,
-    });
-  }
-
-  const mode = body.mode ?? (rental.state === "live" ? "live" : "sandbox");
-  const knowledgeOverride = await getComposedKnowledge(
-    workspaceId,
-    body.agentId,
-    rental.knowledge || pkg.knowledge,
-  );
-  const replyLanguage: ChatLanguageCode = isChatLanguage(body.replyLanguage)
-    ? body.replyLanguage
-    : "en";
-
-  const result = await runTurn(
-    {
-      workspaceId,
-      agentId: body.agentId,
-      pkg,
-      messages: rental.messages,
-      userMessage: body.message.trim(),
-      model: rental.model,
-      mode,
-      knowledgeOverride,
-      bindings: rental.bindings,
-      state: rental.state as AgentState,
-      systemAppend: replyLanguageSystemAppend(replyLanguage),
-    },
-    { wallet: createWalletAdapter() },
-  );
-
-  const nextState = result.paused
-    ? "paused_no_tokens"
-    : rental.state === "rented" || rental.state === "live"
-      ? "live"
-      : rental.state;
-
-  await upsertWorkspaceAgent(workspaceId, body.agentId, {
-    agentId: body.agentId,
-    messages: result.messages,
-    state: nextState as AgentState,
-  });
-
-  await appendAudit({
-    workspaceId,
-    agentId: body.agentId,
-    type: result.paused ? "paused_no_tokens" : "agent_turn",
-    detail: {
-      tokensDebited: result.tokensDebited,
-      balance: result.balance,
-      tools: result.toolCalls.map((t) => t.name),
-      mode,
-      replyLanguage,
-    },
-  });
-
-  for (const tc of result.toolCalls) {
-    if ((tc.result as { error?: string })?.error) {
+    // Reset conversation history (UI + server-persisted turns / pending workflows).
+    if (body.clear) {
+      const rental = await getWorkspaceAgent(workspaceId, body.agentId);
+      if (rental) {
+        await upsertWorkspaceAgent(workspaceId, body.agentId, {
+          agentId: body.agentId,
+          messages: [],
+        });
+      }
       await appendAudit({
         workspaceId,
         agentId: body.agentId,
-        type: "tool_error",
-        detail: { tool: tc.name, result: tc.result },
+        type: "agent_turn",
+        detail: { action: "clear_chat" },
+      });
+      return NextResponse.json({ ok: true, cleared: true, messages: [] });
+    }
+
+    if (!body.message?.trim()) {
+      return NextResponse.json({ error: "message required" }, { status: 400 });
+    }
+
+    let rental = await getWorkspaceAgent(workspaceId, body.agentId);
+    if (!rental) {
+      rental = await upsertWorkspaceAgent(workspaceId, body.agentId, {
+        agentId: body.agentId,
+        state: "selected",
+        knowledge: pkg.knowledge,
+        model: pkg.manifest.model.primary,
       });
     }
-  }
 
-  return NextResponse.json({
-    assistantMessage: result.assistantMessage,
-    toolCalls: result.toolCalls,
-    tokensDebited: result.tokensDebited,
-    balance: result.balance,
-    paused: result.paused,
-    state: nextState,
-    workflow: result.workflow ?? null,
-    replyLanguage,
-    messages: result.messages.filter((m) => m.role !== "tool"),
-  });
+    const mode = body.mode ?? (rental.state === "live" ? "live" : "sandbox");
+    const knowledgeOverride = await getComposedKnowledge(
+      workspaceId,
+      body.agentId,
+      rental.knowledge || pkg.knowledge,
+    );
+    const replyLanguage: ChatLanguageCode = isChatLanguage(body.replyLanguage)
+      ? body.replyLanguage
+      : "en";
+
+    const result = await runTurn(
+      {
+        workspaceId,
+        agentId: body.agentId,
+        pkg,
+        messages: rental.messages,
+        userMessage: body.message.trim(),
+        model: rental.model,
+        mode,
+        knowledgeOverride,
+        bindings: rental.bindings,
+        state: rental.state as AgentState,
+        systemAppend: replyLanguageSystemAppend(replyLanguage),
+        replyLanguage,
+      },
+      { wallet: createWalletAdapter() },
+    );
+
+    const nextState = result.paused
+      ? "paused_no_tokens"
+      : rental.state === "rented" || rental.state === "live"
+        ? "live"
+        : rental.state;
+
+    await upsertWorkspaceAgent(workspaceId, body.agentId, {
+      agentId: body.agentId,
+      messages: result.messages,
+      state: nextState as AgentState,
+    });
+
+    await appendAudit({
+      workspaceId,
+      agentId: body.agentId,
+      type: result.paused ? "paused_no_tokens" : "agent_turn",
+      detail: {
+        tokensDebited: result.tokensDebited,
+        balance: result.balance,
+        tools: result.toolCalls.map((t) => t.name),
+        mode,
+        replyLanguage,
+      },
+    });
+
+    for (const tc of result.toolCalls) {
+      if ((tc.result as { error?: string })?.error) {
+        await appendAudit({
+          workspaceId,
+          agentId: body.agentId,
+          type: "tool_error",
+          detail: { tool: tc.name, result: tc.result },
+        });
+      }
+    }
+
+    trackEvent("miai.chat.turn", {
+      agentId: body.agentId,
+      mode,
+      replyLanguage,
+      paused: result.paused,
+      tokensDebited: result.tokensDebited,
+      toolCount: result.toolCalls.length,
+      durationMs: Date.now() - started,
+    });
+
+    return NextResponse.json({
+      assistantMessage: result.assistantMessage,
+      toolCalls: result.toolCalls,
+      tokensDebited: result.tokensDebited,
+      balance: result.balance,
+      paused: result.paused,
+      state: nextState,
+      workflow: result.workflow ?? null,
+      replyLanguage,
+      messages: result.messages.filter((m) => m.role !== "tool"),
+    });
+  } catch (err) {
+    trackException(err, { route: "api/chat", durationMs: Date.now() - started });
+    throw err;
+  }
 }

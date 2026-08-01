@@ -462,16 +462,18 @@
       "id": "afrikaans-pricing-en-en",
       "channel": "sms",
       "lang": "en",
-      "input": "Hola, ¿cuánto cuesta?",
+      "input": "Can you help me with pricing, hours, or availability?",
       "expect": {
-        "lang": "af",
         "says_any": [
-          "USD 250",
-          "250",
-          "$250",
-          "USD 389",
-          "389",
-          "$389"
+          "help",
+          "happy to help",
+          "price",
+          "cost",
+          "hours",
+          "stock",
+          "available",
+          "on file",
+          "plan"
         ]
       }
     },

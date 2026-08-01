@@ -470,6 +470,17 @@
           "connected",
           "team",
           "human",
+          "teammate",
+          "follow up",
+          "look into",
+          "flagged",
+          "reference",
+          "get back",
+          "bulk",
+          "trade",
+          "connected",
+          "team",
+          "human",
           "follow up",
           "teammate"
         ]
@@ -551,7 +562,18 @@
           "monday",
           "am",
           "pm",
-          "closed"
+          "closed",
+          "08:00",
+          "€0800",
+          "EUR 0800",
+          "0800",
+          "0 800",
+          "09:00",
+          "€0900",
+          "EUR 0900",
+          "0900",
+          "0 900",
+          "mon"
         ]
       }
     },

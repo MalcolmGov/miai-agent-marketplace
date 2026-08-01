@@ -90,17 +90,29 @@ export class HttpWalletAdapter implements WalletAdapter {
   constructor(
     private baseUrl: string,
     private apiKey: string,
+    private fetchImpl: typeof fetch = fetch,
   ) {}
 
+  private async request(path: string, init?: RequestInit): Promise<Response> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15_000);
+    try {
+      return await this.fetchImpl(`${this.baseUrl}${path}`, {
+        ...init,
+        signal: controller.signal,
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${this.apiKey}`,
+          ...(init?.headers ?? {}),
+        },
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   private async json<T>(path: string, init?: RequestInit): Promise<T> {
-    const res = await fetch(`${this.baseUrl}${path}`, {
-      ...init,
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${this.apiKey}`,
-        ...(init?.headers ?? {}),
-      },
-    });
+    const res = await this.request(path, init);
     if (!res.ok) throw new Error(`Wallet API ${res.status}`);
     return res.json() as Promise<T>;
   }
@@ -109,11 +121,29 @@ export class HttpWalletAdapter implements WalletAdapter {
     return this.json<WalletBalance>(`/v1/wallets/${workspaceId}`);
   }
 
-  debit(req: DebitRequest) {
-    return this.json<DebitResult>(`/v1/wallets/${req.workspaceId}/debit`, {
+  async debit(req: DebitRequest): Promise<DebitResult> {
+    const res = await this.request(`/v1/wallets/${req.workspaceId}/debit`, {
       method: "POST",
+      headers: { "idempotency-key": req.idempotencyKey },
       body: JSON.stringify(req),
     });
+
+    // Insufficient funds / pause-on-zero — do not throw; mirror MockWalletAdapter.
+    if (res.status === 402 || res.status === 409) {
+      let balance = 0;
+      let error = `Wallet API ${res.status}`;
+      try {
+        const body = (await res.json()) as Partial<DebitResult> & { message?: string };
+        if (typeof body.balance === "number") balance = body.balance;
+        error = body.error ?? body.message ?? error;
+      } catch {
+        /* ignore body parse */
+      }
+      return { ok: false, balance, paused: true, error };
+    }
+
+    if (!res.ok) throw new Error(`Wallet API ${res.status}`);
+    return res.json() as Promise<DebitResult>;
   }
 
   topUp(req: TopUpRequest) {
