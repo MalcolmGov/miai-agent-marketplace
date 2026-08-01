@@ -105,6 +105,22 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
     }
   }, [mode, open]);
 
+  function resetChat() {
+    sessionId.current = newSession();
+    greeted.current = false;
+    setMessages([]);
+    setInput("");
+    setBusy(false);
+    setTyping(false);
+    setError(null);
+    setShowSugs(true);
+  }
+
+  function closeFloating() {
+    resetChat();
+    setOpen(false);
+  }
+
   async function submit(raw: string) {
     const text = raw.trim();
     if (!text || busy) return;
@@ -178,7 +194,7 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
           <span>Ask anything about the product</span>
         </div>
         {mode === "floating" && (
-          <button type="button" className="miai-ask-x" aria-label="Close" onClick={() => setOpen(false)}>
+          <button type="button" className="miai-ask-x" aria-label="Close and clear chat" onClick={closeFloating}>
             ×
           </button>
         )}
