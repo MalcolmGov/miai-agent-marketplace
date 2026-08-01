@@ -31,12 +31,10 @@ const MARKETS = [
 ] as const;
 
 const AUDIENCES = [
-  { id: "all", label: "All audiences" },
-  { id: "customer", label: "Customer-facing" },
+  { id: "all", label: "All" },
+  { id: "customer", label: "Customer" },
   { id: "internal", label: "Internal" },
 ] as const;
-
-const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
 
 /** Soft category accent for card rails — teal family, not purple. */
 const CATEGORY_ACCENT: Record<string, string> = {
@@ -56,16 +54,10 @@ function categoryAccent(category: string) {
   return CATEGORY_ACCENT[category] ?? "linear-gradient(90deg,#3dd6c6,#2bb8a8)";
 }
 
-function packLabel(m: string) {
-  if (m === "africa") return "Africa";
-  if (m === "asia") return "Asia";
-  return m.toUpperCase();
-}
-
 function statusBadge(item: FamilyItem) {
   if (item.liveReady) return { label: "Live", tone: "live" as const };
   if (item.pilot) return { label: "Pilot", tone: "live" as const };
-  if (item.catalogueReady) return { label: "Catalogue ready", tone: "ready" as const };
+  if (item.catalogueReady) return { label: "Ready", tone: "ready" as const };
   return null;
 }
 
@@ -130,35 +122,26 @@ export function CatalogGrid() {
   }, [q, market, category, audience, workflowsOnly]);
 
   const categories = useMemo(() => allCategories, [allCategories]);
-
   const industryCategoryCount = Math.max(0, allCategories.length - 1);
+  const activeFilterCount =
+    (market !== "all" ? 1 : 0) +
+    (category !== "all" ? 1 : 0) +
+    (audience !== "all" ? 1 : 0) +
+    (workflowsOnly ? 1 : 0) +
+    (q ? 1 : 0);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       <MarketplaceHero
         familyCount={totalFamilies || familyCount || 55}
         categoryCount={industryCategoryCount}
         workflowCount={WORKFLOW_FAMILY_IDS.length}
       />
 
-      {/* Catalogue controls */}
-      <section id="catalogue" className="scroll-mt-24 space-y-5">
-        <div className="flex items-start gap-2.5 text-sm text-[var(--muted)]">
-          <span className="pulse-dot mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
-          <p>
-            Every agent here is live on the production runtime — rent one and it answers today.{" "}
-            <span className="text-[var(--text)]">
-              Workflow agents propose a plan, wait for your confirm, then run tools.
-            </span>
-          </p>
-        </div>
-        <p className="text-sm text-[var(--muted)]">
-          New here? Filter <strong className="text-[var(--text)]">Workflows</strong>, open an agent,
-          then follow the setup guide.
-        </p>
-
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="relative max-w-xl flex-1">
+      <section id="catalogue" className="scroll-mt-24 space-y-4">
+        {/* One control strip — search + primary facets */}
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+          <div className="relative min-w-0 flex-1">
             <svg
               aria-hidden
               className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted-dim)]"
@@ -172,73 +155,102 @@ export function CatalogGrid() {
             </svg>
             <input
               className="input pl-10"
-              placeholder="Search agents — try 'booking', 'claims', 'stock'…"
+              placeholder="Search agents — booking, claims, stock…"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               aria-label="Search agent families"
             />
           </div>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Market pack">
-            {MARKETS.map((m) => (
+
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Audience">
+              {AUDIENCES.map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  onClick={() => setAudience(a.id)}
+                  className={`chip ${audience === a.id ? "filter-active" : ""}`}
+                >
+                  {a.label}
+                </button>
+              ))}
               <button
-                key={m.id}
                 type="button"
-                onClick={() => setMarket(m.id)}
-                className={`chip ${market === m.id ? "filter-active" : ""}`}
+                onClick={() => setWorkflowsOnly((v) => !v)}
+                className={`chip ${workflowsOnly ? "filter-active chip-live" : ""}`}
+                title="Multi-step agents that plan, confirm, then act"
               >
-                {m.label}
+                Workflows
+                <span className="cat-count">{WORKFLOW_FAMILY_IDS.length}</span>
               </button>
-            ))}
+            </div>
+
+            <label className="sr-only" htmlFor="market-filter">
+              Market
+            </label>
+            <select
+              id="market-filter"
+              className="input !w-auto !py-2 text-xs font-semibold uppercase tracking-wide"
+              value={market}
+              onChange={(e) => setMarket(e.target.value)}
+            >
+              {MARKETS.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+
+            <label className="sr-only" htmlFor="category-filter">
+              Industry
+            </label>
+            <select
+              id="category-filter"
+              className="input !w-auto max-w-[220px] !py-2 text-xs font-semibold"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              {categories.map((c) => {
+                const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
+                return (
+                  <option key={c} value={c}>
+                    {c === "all" ? `All industries (${count})` : `${c} (${count})`}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Audience">
-          {AUDIENCES.map((a) => (
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--muted)]">
+          <p>
+            <span className="font-semibold text-[var(--text)]">{familyCount}</span> agents
+            {pending ? " · updating…" : null}
+          </p>
+          {activeFilterCount > 0 ? (
             <button
-              key={a.id}
               type="button"
-              onClick={() => setAudience(a.id)}
-              className={`chip ${audience === a.id ? "filter-active" : ""}`}
+              className="text-[var(--accent-bright)] hover:underline"
+              onClick={() => {
+                setQ("");
+                setMarket("all");
+                setCategory("all");
+                setAudience("all");
+                setWorkflowsOnly(false);
+              }}
             >
-              {a.label}
+              Clear filters
             </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => setWorkflowsOnly((v) => !v)}
-            className={`chip ${workflowsOnly ? "filter-active chip-live" : ""}`}
-            title="Multi-step agents: goal → plan → confirm → execute"
-          >
-            Workflows
-            <span className="cat-count">{WORKFLOW_FAMILY_IDS.length}</span>
-          </button>
+          ) : null}
         </div>
 
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Category">
-          {categories.map((c) => {
-            const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
-            return (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setCategory(c)}
-                className={`chip ${category === c ? "filter-active" : ""}`}
-              >
-                {c === "all" ? "All agents" : c}
-                <span className="cat-count">{count}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {items.map((item, idx) => {
             const hrefMarket = market !== "all" && item.markets[market] ? market : null;
             const href =
               hrefMarket && item.markets[hrefMarket]
                 ? `/agents/${item.markets[hrefMarket]}`
                 : `/agents/${item.defaultAgentId}`;
-            const available = PACK_ORDER.filter((m) => item.markets[m]);
             const badge = statusBadge(item);
             const hasWorkflow = isWorkflowFamilyId(item.id);
 
@@ -249,12 +261,15 @@ export function CatalogGrid() {
                 className="panel panel-interactive group rise flex flex-col p-0"
                 style={{ animationDelay: `${Math.min(idx, 15) * 28}ms` }}
               >
-                <div className="cat-rail" style={{ background: categoryAccent(item.marketplaceCategory) }} />
+                <div
+                  className="cat-rail"
+                  style={{ background: categoryAccent(item.marketplaceCategory) }}
+                />
                 <div className="flex flex-1 flex-col p-5">
-                  <div className="mb-4 flex items-start gap-3">
+                  <div className="mb-3 flex items-start gap-3">
                     <span
                       aria-hidden
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_8%,var(--bg-elev))] text-sm font-semibold text-[var(--accent-bright)]"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_8%,var(--bg-elev))] text-sm font-semibold text-[var(--accent-bright)]"
                     >
                       {initials(item.name)}
                     </span>
@@ -263,94 +278,37 @@ export function CatalogGrid() {
                         <h3 className="display text-[0.98rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                           {item.name}
                         </h3>
-                        <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
-                          {item.tier}
-                        </span>
+                        {badge ? (
+                          <span
+                            className={`chip shrink-0 ${badge.tone === "live" ? "chip-live" : ""}`}
+                          >
+                            {badge.tone === "live" ? (
+                              <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                            ) : null}
+                            {badge.label}
+                          </span>
+                        ) : (
+                          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                            {item.tier}
+                          </span>
+                        )}
                       </div>
                       <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--muted)]">
                         {item.marketplaceCategory}
+                        {hasWorkflow ? (
+                          <span className="ml-2 normal-case tracking-normal text-[var(--accent)]">
+                            · Multi-step
+                          </span>
+                        ) : null}
                       </p>
                     </div>
                   </div>
 
-                  <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-[var(--muted)]">
+                  <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-[var(--muted)]">
                     {item.summary}
                   </p>
 
-                  <div className="mt-4 flex flex-wrap items-center gap-1.5">
-                    {hasWorkflow ? (
-                      <>
-                        <span
-                          className="chip chip-live"
-                          title="Goal → plan → confirm → execute → verify"
-                        >
-                          Multi-step
-                        </span>
-                        <span
-                          className="chip chip-live"
-                          title="Runs tools — books, tickets, notifies — not FAQ-only"
-                        >
-                          Can act
-                        </span>
-                      </>
-                    ) : null}
-                    <span
-                      className={`chip ${
-                        item.audience === "internal" ? "chip-internal" : "chip-live"
-                      }`}
-                      title={
-                        item.audience === "internal"
-                          ? "Built for employees / internal ops"
-                          : "Built for end customers / guests / clients"
-                      }
-                    >
-                      {item.audience === "internal" ? "Internal" : "Customer-facing"}
-                    </span>
-                    {badge ? (
-                      <span className={`chip ${badge.tone === "live" ? "chip-live" : ""}`}>
-                        {badge.tone === "live" ? (
-                          <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-                        ) : null}
-                        {badge.label}
-                      </span>
-                    ) : null}
-                    {item.channels.slice(0, 3).map((c) => (
-                      <span key={c} className="chip normal-case tracking-normal">
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 border-t border-[var(--line)] pt-4">
-                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-dim)]">
-                      Market packs
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {PACK_ORDER.map((m) => {
-                        const on = available.includes(m);
-                        const selected =
-                          on &&
-                          (hrefMarket === m ||
-                            (!hrefMarket && item.defaultAgentId === item.markets[m]));
-                        return (
-                          <span
-                            key={m}
-                            className={`inline-flex min-w-[3.25rem] items-center justify-center rounded-md px-2 py-1 text-[11px] font-semibold uppercase tracking-wide ${
-                              on
-                                ? selected
-                                  ? "bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] text-[var(--accent-bright)] ring-1 ring-[color-mix(in_srgb,var(--accent)_45%,transparent)]"
-                                  : "bg-[var(--bg-elev)] text-[var(--text)] ring-1 ring-[var(--line-strong)]"
-                                : "text-[var(--muted-dim)] ring-1 ring-[var(--line)] opacity-40"
-                            }`}
-                          >
-                            {packLabel(m)}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex items-center justify-between text-sm font-semibold text-[var(--accent-bright)]">
+                  <div className="mt-4 flex items-center justify-between border-t border-[var(--line)] pt-3 text-sm font-semibold text-[var(--accent-bright)]">
                     <span>Rent / setup</span>
                     <span
                       aria-hidden
@@ -367,9 +325,9 @@ export function CatalogGrid() {
 
         {!pending && items.length === 0 ? (
           <div className="panel px-6 py-12 text-center">
-            <p className="display text-xl font-semibold">No families match</p>
+            <p className="display text-xl font-semibold">No agents match</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              Clear search or switch market / category to see the full catalogue.
+              Clear search or filters to see the full catalogue.
             </p>
             <button
               type="button"
@@ -379,6 +337,7 @@ export function CatalogGrid() {
                 setMarket("all");
                 setCategory("all");
                 setAudience("all");
+                setWorkflowsOnly(false);
               }}
             >
               Reset filters
