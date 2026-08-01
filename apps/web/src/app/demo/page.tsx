@@ -1,9 +1,5 @@
 import Link from "next/link";
-import {
-  DEMO_SCRIPT_STEPS,
-  MONDAY_PILOT_CARDS,
-  MONDAY_PILOT_FAMILY_IDS,
-} from "@/lib/monday-pilot";
+import { DEMO_SCRIPT_STEPS, MONDAY_PILOT_CARDS } from "@/lib/monday-pilot";
 
 export const metadata = {
   title: "Monday demo — MyInstantAI Agents",
