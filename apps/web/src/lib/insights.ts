@@ -1,10 +1,7 @@
 import { TIER_PRICES } from "@/lib/constants";
 import { getAgentPackage } from "@/lib/catalog";
-import {
-  listAudit,
-  listWorkspaceAgents,
-  type WorkspaceAgent,
-} from "@/lib/store";
+import { listAudit, listWorkspaceAgents } from "@/lib/store";
+import { listCustomRequests, type CustomRequest } from "@/lib/custom-requests";
 
 /** Rough USD per 1k tokens for display economics (demo / partner reporting). */
 export const TOKEN_USD_PER_1K = 0.05;
@@ -36,127 +33,137 @@ function dayKey(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** Build partner Insights payload for a workspace. Uses audit when present; fills demo-shaped gaps for empty workspaces. */
-export async function buildInsights(workspaceId: string, walletTokens: number) {
+/**
+ * Partner Insights — live workspace metering only.
+ * No demo KPI injection. Empty workspaces return zeros + empty tables.
+ */
+export async function buildInsights(workspaceId: string, _walletTokens: number) {
+  void _walletTokens;
   const agents = await listWorkspaceAgents(workspaceId);
-  const audit = (await listAudit(500)).filter((a) => a.workspaceId === workspaceId);
-  const turns = audit.filter((a) => a.type === "agent_turn" || a.type === "chat");
-  const hasLiveSignal = agents.length > 0 || turns.length > 0;
+  const audit = (await listAudit(5000)).filter((a) => a.workspaceId === workspaceId);
+  const turns = audit.filter(
+    (a) =>
+      (a.type === "agent_turn" || a.type === "chat" || a.type === "embed_turn") &&
+      a.detail?.action !== "clear_chat",
+  );
 
-  // 14-day conversation series
-  const series: Array<{ day: string; count: number }> = [];
   const now = new Date();
+  const thisMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+  const lastMonthDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1));
+  const lastMonth = `${lastMonthDate.getUTCFullYear()}-${String(lastMonthDate.getUTCMonth() + 1).padStart(2, "0")}`;
+
+  const turnsThisMonth = turns.filter((t) => t.at.slice(0, 7) === thisMonth);
+  const turnsLastMonth = turns.filter((t) => t.at.slice(0, 7) === lastMonth);
+
+  const series: Array<{ day: string; count: number }> = [];
   for (let i = 13; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
     const key = dayKey(d);
-    const count = turns.filter((t) => t.at.slice(0, 10) === key).length;
-    series.push({ day: key, count });
+    series.push({ day: key, count: turns.filter((t) => t.at.slice(0, 10) === key).length });
   }
 
-  const liveTurns = turns.length;
-  const demoConversations = 1534;
-  const conversations = hasLiveSignal ? Math.max(liveTurns, agents.reduce((n, a) => n + a.messages.filter((m) => m.role === "user").length, 0)) : demoConversations;
+  const studioUserMsgs = agents.reduce(
+    (n, a) => n + (a.messages?.filter((m) => m.role === "user").length ?? 0),
+    0,
+  );
+  const conversations = Math.max(turnsThisMonth.length, studioUserMsgs);
+  const conversationsDeltaPct =
+    turnsLastMonth.length > 0
+      ? Math.round(
+          ((turnsThisMonth.length - turnsLastMonth.length) / turnsLastMonth.length) * 100,
+        )
+      : null;
 
-  // Scale demo series if no audit density
-  const seriesMax = Math.max(...series.map((s) => s.count), 0);
-  const conversationSeries =
-    seriesMax > 0
-      ? series
-      : series.map((s, idx) => ({
-          day: s.day,
-          count: Math.round(40 + idx * 6 + Math.sin(idx) * 8),
-        }));
-
-  const tokensUsed = hasLiveSignal
-    ? Math.max(0, 1_000_000 - walletTokens) || Math.round(conversations * 850)
-    : 7_700_000;
+  let tokensUsed = 0;
+  for (const t of turnsThisMonth) {
+    const v = t.detail?.tokensDebited;
+    if (typeof v === "number" && Number.isFinite(v)) tokensUsed += v;
+  }
   const spend = Number(((tokensUsed / 1000) * TOKEN_USD_PER_1K).toFixed(2));
 
+  const handoffs = turnsThisMonth.filter((t) =>
+    /handoff/i.test(JSON.stringify(t.detail ?? {})),
+  ).length;
+  const autoResolvedPct =
+    turnsThisMonth.length > 0
+      ? Math.round(((turnsThisMonth.length - handoffs) / turnsThisMonth.length) * 100)
+      : null;
+
   const byAgent = await Promise.all(
-    (agents.length
-      ? agents
-      : ([
-          { agentId: "us-sales-qualifier", state: "live", tier: "pro", messages: [], connectedConnectors: [] },
-          { agentId: "us-customer-support", state: "live", tier: "standard", messages: [], connectedConnectors: [] },
-          { agentId: "us-vas-concierge", state: "live", tier: "standard", messages: [], connectedConnectors: [] },
-        ] as unknown as WorkspaceAgent[])
-    ).map(async (a) => {
-      const pkg = await getAgentPackage(a.agentId);
-      const userMsgs = a.messages?.filter((m) => m.role === "user").length ?? 0;
-      const convos =
-        userMsgs ||
-        turns.filter((t) => t.agentId === a.agentId).length ||
-        ({
-          "us-sales-qualifier": 615,
-          "us-customer-support": 752,
-          "us-vas-concierge": 167,
-        }[a.agentId] ?? 120);
-      const tokens =
-        Math.round(convos * (pkg?.manifest.usage_profile?.avg_tokens_per_msg ?? 800)) ||
-        ({
-          "us-sales-qualifier": 4_111_000,
-          "us-customer-support": 2_743_000,
-          "us-vas-concierge": 850_000,
-        }[a.agentId] ?? 400_000);
-      const leads = Math.round(convos * 0.12);
-      const resolvedPct = 87 + (a.agentId.length % 3);
-      return {
-        agentId: a.agentId,
-        name: pkg?.manifest.name ?? displayNameFromAgentId(a.agentId),
-        state: a.state === "selected" ? "configuring" : a.state,
-        status: statusLabel(a.state === "selected" ? "configuring" : a.state),
-        conversations: convos,
-        resolvedPct,
-        leads,
-        tokens,
-        spend: Number(((tokens / 1000) * TOKEN_USD_PER_1K).toFixed(2)),
-      };
-    }),
+    agents
+      .filter((a) => a.state !== "selected")
+      .map(async (a) => {
+        const pkg = await getAgentPackage(a.agentId);
+        const agentTurns = turnsThisMonth.filter((t) => t.agentId === a.agentId);
+        const userMsgs = a.messages?.filter((m) => m.role === "user").length ?? 0;
+        const convos = Math.max(agentTurns.length, userMsgs);
+        let tokens = 0;
+        for (const t of agentTurns) {
+          const v = t.detail?.tokensDebited;
+          if (typeof v === "number") tokens += v;
+        }
+        const leads = agentTurns.filter((t) => {
+          const s = JSON.stringify(t.detail ?? {});
+          return /lead|qualify|handoff_to_human/i.test(s);
+        }).length;
+        return {
+          agentId: a.agentId,
+          name: pkg?.manifest.name ?? displayNameFromAgentId(a.agentId),
+          state: a.state,
+          status: statusLabel(a.state),
+          conversations: convos,
+          resolvedPct:
+            agentTurns.length > 0
+              ? Math.round(((agentTurns.length - Math.min(leads, agentTurns.length)) / agentTurns.length) * 100)
+              : null,
+          leads,
+          tokens,
+          spend: Number(((tokens / 1000) * TOKEN_USD_PER_1K).toFixed(2)),
+          channel: channelForAgent(pkg?.manifest.channels),
+        };
+      }),
   );
 
-  const channels = [
-    { id: "web", label: "Website", pct: 60 },
-    { id: "whatsapp", label: "WhatsApp", pct: 40 },
-  ];
+  // Channel mix from agents that actually have turns this month
+  const channelCounts = new Map<string, number>();
+  for (const a of byAgent) {
+    if (a.conversations <= 0) continue;
+    channelCounts.set(a.channel, (channelCounts.get(a.channel) ?? 0) + a.conversations);
+  }
+  const channelTotal = [...channelCounts.values()].reduce((n, v) => n + v, 0);
+  const channels =
+    channelTotal > 0
+      ? [...channelCounts.entries()]
+          .map(([label, count]) => ({
+            id: label.toLowerCase(),
+            label,
+            pct: Math.round((count / channelTotal) * 100),
+          }))
+          .sort((a, b) => b.pct - a.pct)
+      : [];
 
-  const topQuestions = [
-    { q: "Opening hours & location", count: 337 },
-    { q: "Pricing & quotes", count: 291 },
-    { q: "Booking / appointment", count: 261 },
-    { q: "Order / delivery status", count: 215 },
-    { q: "Returns & refunds", count: 138 },
-  ];
-
-  const leadsCaptured = byAgent.reduce((n, a) => n + a.leads, 0) || 132;
+  const leadsCaptured = byAgent.reduce((n, a) => n + a.leads, 0);
 
   return {
     workspaceId,
     period: "this month",
     kpis: {
       conversations,
-      conversationsDeltaPct: 14,
-      autoResolvedPct: 87,
+      conversationsDeltaPct,
+      autoResolvedPct,
       leadsCaptured,
-      avgFirstResponseSec: 4,
+      avgFirstResponseSec: null as number | null,
       tokensUsed,
       spendUsd: spend,
     },
-    conversationSeries,
+    conversationSeries: series,
     channels,
-    topQuestions,
+    topQuestions: [] as Array<{ q: string; count: number }>,
     byAgent: byAgent.sort((a, b) => b.conversations - a.conversations),
-    source: hasLiveSignal ? "live+enriched" : "demo",
+    source: agents.length || turns.length ? ("live" as const) : ("empty" as const),
   };
 }
-
-export type CustomRequest = {
-  id: string;
-  business: string;
-  need: string;
-  source: "Dashboard" | "Marketing page";
-  status: "new" | "reviewing" | "scoped";
-};
 
 /** Platform revenue split — product rule, not demo data. */
 const MIAI_SHARE = 0.85;
@@ -192,6 +199,7 @@ function tokensToUsd(tokens: number): number {
 
 /** Pitch-deck narrative numbers — only when explicitly requested. */
 function narrativeAdminOverview() {
+  const now = new Date().toISOString();
   const customRequests: CustomRequest[] = [
     {
       id: "req-kagiso",
@@ -199,6 +207,8 @@ function narrativeAdminOverview() {
       need: "Quote deliveries & book drivers from WhatsApp",
       source: "Dashboard",
       status: "new",
+      createdAt: now,
+      updatedAt: now,
     },
     {
       id: "req-bright",
@@ -206,6 +216,8 @@ function narrativeAdminOverview() {
       need: "Recall reminders + appointment booking",
       source: "Marketing page",
       status: "reviewing",
+      createdAt: now,
+      updatedAt: now,
     },
     {
       id: "req-fresh",
@@ -213,6 +225,8 @@ function narrativeAdminOverview() {
       need: "Stock-count agent across 3 shops",
       source: "Marketing page",
       status: "scoped",
+      createdAt: now,
+      updatedAt: now,
     },
   ];
   const rentals = [
@@ -393,7 +407,8 @@ export async function buildAdminOverview(opts: AdminOverviewOptions = {}) {
 
   for (const ev of audit) {
     const key = ev.at.slice(0, 7);
-    if (ev.type === "agent_turn" || ev.type === "chat") {
+    if (ev.type === "agent_turn" || ev.type === "chat" || ev.type === "embed_turn") {
+      if (ev.detail?.action === "clear_chat") continue;
       const debited = numDetail(ev.detail, "tokensDebited");
       if (tokensByMonth.has(key)) {
         tokensByMonth.set(key, (tokensByMonth.get(key) ?? 0) + debited);
@@ -432,6 +447,11 @@ export async function buildAdminOverview(opts: AdminOverviewOptions = {}) {
     value: tokensToUsd(tokens),
   }));
 
+  const customRequests = await listCustomRequests();
+  const openRequests = customRequests.filter((r) =>
+    r.status === "new" || r.status === "reviewing" || r.status === "scoped",
+  );
+
   return {
     operator: true as const,
     kpis: {
@@ -442,8 +462,8 @@ export async function buildAdminOverview(opts: AdminOverviewOptions = {}) {
       tokensConsumed: tokensThisMonth,
       prepaidCollectedUsd: prepaidThisMonth,
       conversationsThisMonth,
-      customRequests: 0,
-      customRequestsNew: 0,
+      customRequests: openRequests.length,
+      customRequestsNew: customRequests.filter((r) => r.status === "new").length,
     },
     economics: {
       tokenRevenueMonth,
@@ -460,7 +480,9 @@ export async function buildAdminOverview(opts: AdminOverviewOptions = {}) {
       tokenTrendUnit: "usd" as const,
     },
     rentals: rentedRows,
-    customRequests: [] as CustomRequest[],
-    source: rentedRows.length || tokensThisMonth || prepaidThisMonth ? ("live" as const) : ("empty" as const),
+    customRequests: openRequests,
+    source: rentedRows.length || tokensThisMonth || prepaidThisMonth || openRequests.length
+      ? ("live" as const)
+      : ("empty" as const),
   };
 }

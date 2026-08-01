@@ -18,9 +18,9 @@ const PRODUCT: Array<{ when: string; item: string; status: Status }> = [
     status: "in_progress",
   },
   {
-    when: "Next",
+    when: "Shipped",
     item: "Custom agent request pipeline + DSAR export for workspace data",
-    status: "planned",
+    status: "shipped",
   },
   {
     when: "Scale",

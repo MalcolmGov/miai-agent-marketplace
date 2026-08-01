@@ -6,13 +6,13 @@ import { AreaChart, HBarChart, formatCompact, formatUsd } from "@/components/das
 
 type InsightsPayload = {
   period: string;
-  source: string;
+  source: "live" | "empty";
   kpis: {
     conversations: number;
-    conversationsDeltaPct: number;
-    autoResolvedPct: number;
+    conversationsDeltaPct: number | null;
+    autoResolvedPct: number | null;
     leadsCaptured: number;
-    avgFirstResponseSec: number;
+    avgFirstResponseSec: number | null;
     tokensUsed: number;
     spendUsd: number;
   };
@@ -24,7 +24,7 @@ type InsightsPayload = {
     name: string;
     status: { label: string; tone: "live" | "warn" | "muted" };
     conversations: number;
-    resolvedPct: number;
+    resolvedPct: number | null;
     leads: number;
     tokens: number;
     spend: number;
@@ -63,6 +63,16 @@ export default function InsightsPage() {
       ? `${(k.tokensUsed / 1_000_000).toFixed(2)}M`
       : formatCompact(k.tokensUsed);
 
+  const deltaSub =
+    k.conversationsDeltaPct == null ? (
+      "this month · from live turns"
+    ) : (
+      <span className="text-[var(--accent-bright)]">
+        {k.conversationsDeltaPct >= 0 ? "+" : ""}
+        {k.conversationsDeltaPct}% vs last month
+      </span>
+    );
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -70,12 +80,19 @@ export default function InsightsPage() {
           <h1 className="text-3xl font-semibold tracking-tight">Insights</h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">
             How your live agents are performing this month — conversations, resolutions, leads and
-            cost.
+            cost. Metered from this workspace only.
           </p>
         </div>
-        <Link href="/my-agents" className="btn btn-ghost">
-          My Agents
-        </Link>
+        <div className="flex items-center gap-2">
+          {data.source === "live" ? (
+            <span className="chip chip-live">Live data</span>
+          ) : (
+            <span className="chip">Awaiting volume</span>
+          )}
+          <Link href="/my-agents" className="btn btn-ghost">
+            My Agents
+          </Link>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
@@ -83,32 +100,28 @@ export default function InsightsPage() {
           {
             label: "Conversations",
             value: k.conversations.toLocaleString(),
-            sub: (
-              <span className="text-[var(--accent-bright)]">
-                +{k.conversationsDeltaPct}% vs last month
-              </span>
-            ),
+            sub: deltaSub,
             glow: true,
           },
           {
             label: "Auto-resolved",
-            value: `${k.autoResolvedPct}%`,
-            sub: "no human needed",
+            value: k.autoResolvedPct == null ? "—" : `${k.autoResolvedPct}%`,
+            sub: k.autoResolvedPct == null ? "needs conversation volume" : "no human handoff",
           },
           {
-            label: "Leads captured",
+            label: "Leads / handoffs",
             value: String(k.leadsCaptured),
-            sub: "sent to your team",
+            sub: "flagged in turn audit",
           },
           {
             label: "Avg. first response",
-            value: `${k.avgFirstResponseSec}s`,
-            sub: "24/7, no queue",
+            value: k.avgFirstResponseSec == null ? "—" : `${k.avgFirstResponseSec}s`,
+            sub: k.avgFirstResponseSec == null ? "not metered yet" : "24/7, no queue",
           },
           {
             label: "Tokens used",
             value: tokensLabel,
-            sub: "this month",
+            sub: "this month · audit debits",
           },
           {
             label: "Spend on tokens",
@@ -156,8 +169,14 @@ export default function InsightsPage() {
           <div className="mb-4 flex items-baseline justify-between gap-2">
             <h2 className="text-sm font-semibold">Where conversations happen</h2>
           </div>
-          <p className="mb-4 text-xs text-[var(--muted)]">by channel, this month</p>
-          <HBarChart rows={data.channels.map((c) => ({ label: c.label, pct: c.pct }))} />
+          <p className="mb-4 text-xs text-[var(--muted)]">by agent channel, this month</p>
+          {data.channels.length === 0 ? (
+            <p className="text-sm text-[var(--muted)]">
+              Channel mix appears once agents have conversation volume.
+            </p>
+          ) : (
+            <HBarChart rows={data.channels.map((c) => ({ label: c.label, pct: c.pct }))} />
+          )}
         </div>
       </div>
 
@@ -165,22 +184,29 @@ export default function InsightsPage() {
         <div className="panel p-5 lg:col-span-2">
           <h2 className="text-sm font-semibold">Top questions</h2>
           <p className="mb-4 mt-1 text-xs text-[var(--muted)]">what customers ask most</p>
-          <ul className="space-y-3">
-            {data.topQuestions.map((q) => (
-              <li key={q.q}>
-                <div className="mb-1 flex items-center justify-between gap-2 text-sm">
-                  <span>{q.q}</span>
-                  <span className="shrink-0 text-[var(--muted)]">{q.count}</span>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[var(--bg-elev)]">
-                  <div
-                    className="h-full rounded-full bg-[var(--accent)]"
-                    style={{ width: `${(q.count / maxQ) * 100}%` }}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
+          {data.topQuestions.length === 0 ? (
+            <p className="text-sm text-[var(--muted)]">
+              Topic clustering is on the roadmap. Until then, use Live Ops audit and studio chat
+              history.
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {data.topQuestions.map((q) => (
+                <li key={q.q}>
+                  <div className="mb-1 flex items-center justify-between gap-2 text-sm">
+                    <span>{q.q}</span>
+                    <span className="shrink-0 text-[var(--muted)]">{q.count}</span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-[var(--bg-elev)]">
+                    <div
+                      className="h-full rounded-full bg-[var(--accent)]"
+                      style={{ width: `${(q.count / maxQ) * 100}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className="panel overflow-hidden lg:col-span-3">
@@ -190,44 +216,46 @@ export default function InsightsPage() {
               <p className="mt-0.5 text-xs text-[var(--muted)]">this month</p>
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] text-left text-sm">
-              <thead>
-                <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
-                  <th className="px-5 py-3 font-medium">Agent</th>
-                  <th className="px-3 py-3 font-medium">Status</th>
-                  <th className="px-3 py-3 font-medium">Convos</th>
-                  <th className="px-3 py-3 font-medium">Resolved</th>
-                  <th className="px-3 py-3 font-medium">Leads</th>
-                  <th className="px-3 py-3 font-medium">Tokens</th>
-                  <th className="px-5 py-3 font-medium">Spend</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.byAgent.map((a) => (
-                  <tr key={a.agentId} className="border-t border-[var(--line)]">
-                    <td className="px-5 py-3 font-medium">{a.name}</td>
-                    <td className="px-3 py-3">{statusChip(a.status.tone, a.status.label)}</td>
-                    <td className="px-3 py-3 tabular-nums">{a.conversations.toLocaleString()}</td>
-                    <td className="px-3 py-3 tabular-nums">{a.resolvedPct}%</td>
-                    <td className="px-3 py-3 tabular-nums">{a.leads}</td>
-                    <td className="px-3 py-3 tabular-nums text-[var(--muted)]">
-                      {a.tokens >= 1000 ? `${Math.round(a.tokens / 1000)}k` : a.tokens}
-                    </td>
-                    <td className="px-5 py-3 tabular-nums">{formatUsd(a.spend)}</td>
+          {data.byAgent.length === 0 ? (
+            <p className="px-5 py-8 text-sm text-[var(--muted)]">
+              Rent an agent and run conversations to see per-agent metrics.
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[560px] text-left text-sm">
+                <thead>
+                  <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
+                    <th className="px-5 py-3 font-medium">Agent</th>
+                    <th className="px-3 py-3 font-medium">Status</th>
+                    <th className="px-3 py-3 font-medium">Convos</th>
+                    <th className="px-3 py-3 font-medium">Resolved</th>
+                    <th className="px-3 py-3 font-medium">Leads</th>
+                    <th className="px-3 py-3 font-medium">Tokens</th>
+                    <th className="px-5 py-3 font-medium">Spend</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {data.byAgent.map((a) => (
+                    <tr key={a.agentId} className="border-t border-[var(--line)]">
+                      <td className="px-5 py-3 font-medium">{a.name}</td>
+                      <td className="px-3 py-3">{statusChip(a.status.tone, a.status.label)}</td>
+                      <td className="px-3 py-3 tabular-nums">{a.conversations.toLocaleString()}</td>
+                      <td className="px-3 py-3 tabular-nums">
+                        {a.resolvedPct == null ? "—" : `${a.resolvedPct}%`}
+                      </td>
+                      <td className="px-3 py-3 tabular-nums">{a.leads}</td>
+                      <td className="px-3 py-3 tabular-nums text-[var(--muted)]">
+                        {a.tokens >= 1000 ? `${Math.round(a.tokens / 1000)}k` : a.tokens}
+                      </td>
+                      <td className="px-5 py-3 tabular-nums">{formatUsd(a.spend)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
-
-      {data.source === "demo" && (
-        <p className="text-xs text-[var(--muted)]">
-          Showing illustrative partner metrics until this workspace has live conversation volume.
-        </p>
-      )}
     </div>
   );
 }

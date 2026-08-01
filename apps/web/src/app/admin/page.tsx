@@ -45,7 +45,7 @@ type AdminPayload = {
     business: string;
     need: string;
     source: string;
-    status: "new" | "reviewing" | "scoped";
+    status: "new" | "reviewing" | "scoped" | "done" | "declined";
   }>;
 };
 
@@ -74,7 +74,7 @@ function statusText(tone: "live" | "warn" | "muted", label: string) {
   return <span style={{ color }}>● {label}</span>;
 }
 
-function requestStatus(status: "new" | "reviewing" | "scoped") {
+function requestStatus(status: string) {
   if (status === "new")
     return (
       <span className="chip" style={{ color: "#f0b429", borderColor: "rgba(240,180,41,0.45)" }}>
@@ -82,22 +82,41 @@ function requestStatus(status: "new" | "reviewing" | "scoped") {
       </span>
     );
   if (status === "scoped") return <span className="chip chip-live">● Scoped</span>;
+  if (status === "done") return <span className="chip chip-live">● Done</span>;
+  if (status === "declined") return <span className="chip">● Declined</span>;
   return <span className="chip">● Reviewing</span>;
 }
 
 export default function AdminPage() {
   const [data, setData] = useState<AdminPayload | null>(null);
+  const [statusBusy, setStatusBusy] = useState<string | null>(null);
+
+  function load() {
+    return fetch("/api/admin")
+      .then((r) => r.json())
+      .then(setData)
+      .catch(() => setData(null));
+  }
 
   useEffect(() => {
-    const load = () =>
-      fetch("/api/admin")
-        .then((r) => r.json())
-        .then(setData)
-        .catch(() => setData(null));
     load();
     const t = setInterval(load, 15_000);
     return () => clearInterval(t);
   }, []);
+
+  async function setRequestStatus(id: string, status: string) {
+    setStatusBusy(id);
+    try {
+      await fetch(`/api/custom-requests/${id}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      await load();
+    } finally {
+      setStatusBusy(null);
+    }
+  }
 
   if (!data) {
     return <div className="text-[var(--muted)]">Loading Agent Admin…</div>;
@@ -321,37 +340,65 @@ export default function AdminPage() {
       </section>
 
       <section className="panel overflow-hidden">
-        <div className="border-b border-[var(--line)] px-5 py-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider">Custom agent requests</h2>
-          <p className="mt-1 text-xs text-[var(--muted)]">
-            Bespoke agents businesses asked for — from the dashboard and the marketing page. Scope,
-            build, publish to the catalogue.
-          </p>
+        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--line)] px-5 py-4">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wider">Custom agent requests</h2>
+            <p className="mt-1 text-xs text-[var(--muted)]">
+              From Create and Request in the dashboard. Advance New → Reviewing → Scoped, then
+              publish to the catalogue.
+            </p>
+          </div>
+          <a href="/request" className="btn btn-ghost text-xs">
+            + New request
+          </a>
         </div>
         {data.customRequests.length === 0 ? (
           <p className="px-5 py-8 text-sm text-[var(--muted)]">
-            No custom requests in the pipeline yet.
+            No open requests. Partners submit via{" "}
+            <a href="/create" className="text-[var(--accent-bright)] hover:underline">
+              Create
+            </a>{" "}
+            or{" "}
+            <a href="/request" className="text-[var(--accent-bright)] hover:underline">
+              Request
+            </a>
+            .
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] text-left text-sm">
+            <table className="w-full min-w-[720px] text-left text-sm">
               <thead>
                 <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
                   <th className="px-5 py-3 font-medium">Business</th>
                   <th className="px-3 py-3 font-medium">What they need</th>
                   <th className="px-3 py-3 font-medium">Source</th>
-                  <th className="px-5 py-3 font-medium">Status</th>
+                  <th className="px-3 py-3 font-medium">Status</th>
+                  <th className="px-5 py-3 font-medium">Advance</th>
                 </tr>
               </thead>
               <tbody>
                 {data.customRequests.map((req) => (
                   <tr key={req.id} className="border-t border-[var(--line)]">
                     <td className="px-5 py-3 font-medium">{req.business}</td>
-                    <td className="px-3 py-3 text-[var(--muted)]">{req.need}</td>
+                    <td className="max-w-xs px-3 py-3 text-[var(--muted)]">{req.need}</td>
                     <td className="px-3 py-3">
                       <span className="chip">{req.source}</span>
                     </td>
-                    <td className="px-5 py-3">{requestStatus(req.status)}</td>
+                    <td className="px-3 py-3">{requestStatus(req.status)}</td>
+                    <td className="px-5 py-3">
+                      <select
+                        className="input py-1.5 text-xs"
+                        disabled={statusBusy === req.id}
+                        value={req.status}
+                        onChange={(e) => void setRequestStatus(req.id, e.target.value)}
+                      >
+                        <option value="new">New</option>
+                        <option value="reviewing">Reviewing</option>
+                        <option value="scoped">Scoped</option>
+                        <option value="done">Done</option>
+                        <option value="declined">Declined</option>
+                      </select>
+                    </td>
                   </tr>
                 ))}
               </tbody>
