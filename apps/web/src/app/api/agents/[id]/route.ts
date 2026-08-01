@@ -24,7 +24,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
     marketplaceCategory: marketplaceCategory(pkg.manifest),
     rentUsd: RENT_USD[pkg.manifest.tier] ?? 349,
     preset: preset ?? null,
-    pilot: Boolean(preset?.pilot),
+    pilot: false,
     connectors: listConnectors().map((c) => ({
       id: c.id,
       name: c.name,

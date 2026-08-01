@@ -234,7 +234,6 @@ export function AgentStudio({ agentId }: { agentId: string }) {
                 Multi-step agent
               </span>
             )}
-            {data.pilot && <span className="chip chip-live">Pilot</span>}
             <span className="chip">{m.tier}</span>
             <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
             <span className={`chip ${rented ? "chip-live" : ""}`}>{rentalStatusLabel(state)}</span>

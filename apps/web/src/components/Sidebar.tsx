@@ -3,19 +3,23 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import type { MessageKey } from "@/lib/i18n";
+import { useT } from "@/lib/locale";
+import { LanguageSelect } from "./LanguageSelect";
 import { ThemeToggle } from "./ThemeToggle";
 
-type NavBadge = { label: string; tone: "new" | "live" };
+type NavBadge = { labelKey: MessageKey; tone: "new" | "live" };
 
 type NavItem = {
   href: string;
-  label: string;
+  id: string;
+  labelKey: MessageKey;
   icon: ReactNode;
   badge?: NavBadge;
   exact?: boolean;
 };
 
-type NavGroup = { title: string; items: NavItem[] };
+type NavGroup = { titleKey: MessageKey; id: string; items: NavItem[] };
 
 function IconHome() {
   return (
@@ -148,61 +152,63 @@ function IconPlus() {
 
 const GROUPS: NavGroup[] = [
   {
-    title: "Core",
+    id: "core",
+    titleKey: "nav.core",
     items: [
-      { href: "/", label: "Home", icon: <IconHome />, exact: true },
-      { href: "/ask", label: "Ask AI", icon: <IconSpark /> },
-      { href: "/#catalogue", label: "Search", icon: <IconSearch /> },
-      { href: "/history", label: "History", icon: <IconHistory /> },
+      { id: "home", href: "/", labelKey: "nav.home", icon: <IconHome />, exact: true },
+      { id: "ask", href: "/ask", labelKey: "nav.askAi", icon: <IconSpark /> },
+      { id: "search", href: "/#catalogue", labelKey: "nav.search", icon: <IconSearch /> },
+      { id: "history", href: "/history", labelKey: "nav.history", icon: <IconHistory /> },
     ],
   },
   {
-    title: "Agents",
+    id: "agents",
+    titleKey: "nav.agents",
     items: [
       {
+        id: "ai-agents",
         href: "/",
-        label: "AI Agents",
+        labelKey: "nav.aiAgents",
         icon: <IconAgents />,
-        badge: { label: "New", tone: "new" },
+        badge: { labelKey: "nav.badgeNew", tone: "new" },
         exact: true,
       },
-      { href: "/my-agents", label: "My Agents", icon: <IconGrid /> },
+      { id: "my-agents", href: "/my-agents", labelKey: "nav.myAgents", icon: <IconGrid /> },
       {
+        id: "live-ops",
         href: "/ops",
-        label: "Live Ops",
+        labelKey: "nav.liveOps",
         icon: <IconOps />,
-        badge: { label: "Live", tone: "live" },
+        badge: { labelKey: "nav.badgeLive", tone: "live" },
       },
-      { href: "/insights", label: "Insights", icon: <IconChart /> },
-      { href: "/support", label: "Support Desk", icon: <IconSupport /> },
-      { href: "/admin", label: "Agent Admin", icon: <IconAdmin /> },
-      { href: "/trust", label: "Trust & Security", icon: <IconShield /> },
+      { id: "insights", href: "/insights", labelKey: "nav.insights", icon: <IconChart /> },
+      { id: "support", href: "/support", labelKey: "nav.supportDesk", icon: <IconSupport /> },
+      { id: "admin", href: "/admin", labelKey: "nav.agentAdmin", icon: <IconAdmin /> },
+      { id: "trust", href: "/trust", labelKey: "nav.trust", icon: <IconShield /> },
+      { id: "roadmap", href: "/roadmap", labelKey: "nav.roadmap", icon: <IconRoadmap /> },
       {
-        href: "/roadmap",
-        label: "Roadmap",
-        icon: <IconRoadmap />,
-      },
-      {
+        id: "demo",
         href: "/demo",
-        label: "Monday demo",
+        labelKey: "nav.mondayDemo",
         icon: <IconRoadmap />,
-        badge: { label: "New", tone: "new" },
+        badge: { labelKey: "nav.badgeNew", tone: "new" },
       },
     ],
   },
   {
-    title: "Growth",
+    id: "growth",
+    titleKey: "nav.growth",
     items: [
-      { href: "/learn", label: "Learn & Earn", icon: <IconLearn /> },
-      { href: "/create", label: "Create", icon: <IconPlus /> },
+      { id: "learn", href: "/learn", labelKey: "nav.learnEarn", icon: <IconLearn /> },
+      { id: "create", href: "/create", labelKey: "nav.create", icon: <IconPlus /> },
     ],
   },
 ];
 
-function resolveActive(pathname: string, item: NavItem, groupTitle: string) {
+function resolveActive(pathname: string, item: NavItem, groupId: string) {
   if (item.href.includes("#")) return false;
   if (pathname === "/" && item.href === "/") {
-    return groupTitle === "Agents" && item.label === "AI Agents";
+    return groupId === "agents" && item.id === "ai-agents";
   }
   if (item.exact) return pathname === item.href;
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -220,6 +226,7 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const t = useT();
   const [mode, setMode] = useState<"consumer" | "workspaces">("consumer");
 
   return (
@@ -242,55 +249,55 @@ export function Sidebar({
               </span>
             </Link>
 
-            <div className="mode-toggle mt-4" role="group" aria-label="Account mode">
+            <div className="mode-toggle mt-4" role="group" aria-label={t("sidebar.accountMode")}>
               <button
                 type="button"
                 className={mode === "consumer" ? "mode-active" : ""}
                 onClick={() => setMode("consumer")}
               >
-                Consumer
+                {t("sidebar.consumer")}
               </button>
               <button
                 type="button"
                 className={mode === "workspaces" ? "mode-active" : ""}
                 onClick={() => setMode("workspaces")}
               >
-                Workspaces
+                {t("sidebar.workspaces")}
               </button>
             </div>
 
             <button type="button" onClick={onTopUp} className="token-card mt-4 w-full text-left">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Token balance
+                  {t("sidebar.tokenBalance")}
                 </span>
-                <span className="chip chip-live !py-0.5 !text-[9px]">Prepaid</span>
+                <span className="chip chip-live !py-0.5 !text-[9px]">{t("sidebar.prepaid")}</span>
               </div>
               <p className="mt-2 font-mono text-2xl font-semibold tracking-tight tabular-nums text-[var(--text)]">
                 {tokens === null ? "…" : tokens.toLocaleString()}
               </p>
-              <p className="mt-1 text-[11px] text-[var(--muted-dim)]">Tap to top up</p>
+              <p className="mt-1 text-[11px] text-[var(--muted-dim)]">{t("sidebar.tapToTopUp")}</p>
             </button>
           </div>
 
           <nav className="flex-1 overflow-y-auto px-3 py-4">
             {GROUPS.map((group) => (
-              <div key={group.title} className="mb-5">
+              <div key={group.id} className="mb-5">
                 <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-dim)]">
-                  {group.title}
+                  {t(group.titleKey)}
                 </p>
                 <ul className="space-y-0.5">
                   {group.items.map((item) => {
-                    const active = resolveActive(pathname, item, group.title);
+                    const active = resolveActive(pathname, item, group.id);
                     return (
-                      <li key={`${group.title}-${item.label}`}>
+                      <li key={`${group.id}-${item.id}`}>
                         <Link
                           href={item.href}
                           onClick={onClose}
                           className={`nav-item ${active ? "nav-item-active" : ""}`}
                         >
                           <span className="nav-item-icon">{item.icon}</span>
-                          <span className="flex-1 truncate">{item.label}</span>
+                          <span className="flex-1 truncate">{t(item.labelKey)}</span>
                           {item.badge ? (
                             <span
                               className={`nav-badge ${
@@ -300,7 +307,7 @@ export function Sidebar({
                               {item.badge.tone === "live" ? (
                                 <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
                               ) : null}
-                              {item.badge.label}
+                              {t(item.badge.labelKey)}
                             </span>
                           ) : null}
                         </Link>
@@ -313,12 +320,13 @@ export function Sidebar({
           </nav>
 
           <div className="space-y-2 border-t border-[var(--line)] px-4 py-3">
+            <LanguageSelect />
             <ThemeToggle />
             <Link href="/install" onClick={onClose} className="nav-item text-[var(--muted)]">
               <span className="nav-item-icon">
                 <IconPlus />
               </span>
-              <span>Install embed</span>
+              <span>{t("sidebar.installEmbed")}</span>
             </Link>
           </div>
         </div>

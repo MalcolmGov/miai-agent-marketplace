@@ -7,7 +7,6 @@ import {
   type AgentAudience,
   type AgentPackage,
 } from "@miai/agent-protocol";
-import { getPreset, pilotAgentIds } from "@miai/presets";
 
 export interface CatalogEntry {
   id: string;
@@ -86,9 +85,7 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
     evals: number;
     readiness?: string;
   }>;
-  const pilots = new Set(pilotAgentIds());
   return index.map((e) => {
-    const preset = getPreset(e.id);
     const catalogueReady = e.readiness === "catalogue-ready";
     return {
       id: e.id,
@@ -113,8 +110,9 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
         model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
       }),
       audience: agentAudience(e.category),
-      pilot: pilots.has(e.id) || Boolean(preset?.pilot),
-      liveReady: Boolean(preset?.pilot) || (catalogueReady && preset?.phase === 1),
+      // Catalogue-ready packages are production marketplace SKUs (no pilot badge).
+      pilot: false,
+      liveReady: catalogueReady,
       catalogueReady,
       familyId: familyIdFromAgentId(e.id),
     };

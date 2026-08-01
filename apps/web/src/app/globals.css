@@ -24,7 +24,8 @@ html[data-theme="dark"] {
   --warn: #f0b429;
   --danger: #f07178;
   --live: #5eead4;
-  --font-ui: var(--font-sans), "Segoe UI", sans-serif;
+  --font-ui: var(--font-sans), "Segoe UI", "PingFang SC", "Noto Sans SC", "Noto Sans Devanagari",
+    "Hiragino Sans", sans-serif;
   --font-mono-stack: var(--font-mono), ui-monospace, monospace;
   --radius-panel: 16px;
   --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -28px rgba(0, 0, 0, 0.75);

@@ -1,9 +1,11 @@
 "use client";
 
+import { useT } from "@/lib/locale";
 import { useTheme } from "@/lib/theme";
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const t = useT();
   const isLight = theme === "light";
 
   return (
@@ -11,7 +13,7 @@ export function ThemeToggle() {
       type="button"
       role="switch"
       aria-checked={isLight}
-      aria-label={isLight ? "Switch to dark mode" : "Switch to light mode"}
+      aria-label={isLight ? t("theme.toDark") : t("theme.toLight")}
       className="theme-toggle"
       onClick={toggleTheme}
     >
@@ -32,7 +34,7 @@ export function ThemeToggle() {
             />
           </svg>
         )}
-        <span className="truncate">{isLight ? "Light" : "Dark"}</span>
+        <span className="truncate">{isLight ? t("theme.light") : t("theme.dark")}</span>
       </span>
       <span className="theme-toggle-track" aria-hidden>
         <span className="theme-toggle-thumb" />

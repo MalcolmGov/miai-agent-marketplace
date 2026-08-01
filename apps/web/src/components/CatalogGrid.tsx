@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useT } from "@/lib/locale";
 import { MONDAY_PILOT_FAMILY_IDS } from "@/lib/monday-pilot";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
@@ -160,7 +161,7 @@ function familyPacks(item: FamilyItem): PackId[] {
 }
 
 const MARKETS = [
-  { id: "all", label: "All markets" },
+  { id: "all", labelKey: "catalog.allMarkets" as const },
   { id: "us", label: "US" },
   { id: "eu", label: "EU" },
   { id: "africa", label: "Africa" },
@@ -168,9 +169,9 @@ const MARKETS = [
 ] as const;
 
 const AUDIENCES = [
-  { id: "all", label: "All" },
-  { id: "customer", label: "Customer" },
-  { id: "internal", label: "Internal" },
+  { id: "all", labelKey: "catalog.all" as const },
+  { id: "customer", labelKey: "catalog.customer" as const },
+  { id: "internal", labelKey: "catalog.internal" as const },
 ] as const;
 
 /** Soft category accent for card rails — teal family, not purple. */
@@ -189,12 +190,6 @@ const CATEGORY_ACCENT: Record<string, string> = {
 
 function categoryAccent(category: string) {
   return CATEGORY_ACCENT[category] ?? "linear-gradient(90deg,#3dd6c6,#2bb8a8)";
-}
-
-/** Only non-default status — Live/Ready on every catalogue card adds noise. */
-function statusBadge(item: FamilyItem) {
-  if (item.pilot) return { label: "Pilot", tone: "live" as const };
-  return null;
 }
 
 /**
@@ -226,6 +221,7 @@ function cleanCardSummary(summary: string, name: string): string {
 }
 
 export function CatalogGrid() {
+  const t = useT();
   const searchParams = useSearchParams();
   const [items, setItems] = useState<FamilyItem[]>([]);
   const [familyCount, setFamilyCount] = useState(0);
@@ -414,10 +410,10 @@ export function CatalogGrid() {
             </svg>
             <input
               className="input !pl-11 !pr-[10.5rem] sm:!pr-[12.25rem]"
-              placeholder="Search agents — booking, claims, stock…"
+              placeholder={t("catalog.searchPlaceholder")}
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              aria-label="Search agent families"
+              aria-label={t("catalog.searchPlaceholder")}
             />
             <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-1">
               <button
@@ -428,10 +424,10 @@ export function CatalogGrid() {
                     : "text-[var(--muted-dim)] hover:text-[var(--text)]"
                 }`}
                 aria-pressed={smartFilter}
-                title="Smart filter — understand market, industry, and workflow phrases"
+                title={t("catalog.smartTitle")}
                 onClick={() => setSmartFilter((v) => !v)}
               >
-                Smart
+                {t("catalog.smart")}
               </button>
               <button
                 type="button"
@@ -442,15 +438,15 @@ export function CatalogGrid() {
                       ? "text-[var(--accent-ink)] bg-gradient-to-b from-[var(--accent-bright)] to-[var(--accent)] shadow-[0_6px_16px_-8px_color-mix(in_srgb,var(--accent)_80%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--accent-bright)_55%,transparent)] hover:brightness-110 hover:shadow-[0_8px_22px_-8px_color-mix(in_srgb,var(--accent)_90%,transparent)] active:scale-[0.98]"
                       : "cursor-not-allowed text-[var(--muted-dim)] bg-[var(--bg-panel)] opacity-50 ring-1 ring-[var(--line)]"
                 }`}
-                aria-label={listening ? "Stop voice search" : "Voice search"}
+                aria-label={listening ? t("catalog.voiceStop") : t("catalog.voiceTitle")}
                 aria-pressed={listening}
                 disabled={!speechSupported}
                 title={
                   speechSupported
                     ? listening
-                      ? "Listening… click to stop"
-                      : "Search by voice"
-                    : "Voice search not supported in this browser"
+                      ? t("catalog.voiceStop")
+                      : t("catalog.voiceTitle")
+                    : t("catalog.voiceUnsupported")
                 }
                 onClick={toggleVoiceSearch}
               >
@@ -475,14 +471,14 @@ export function CatalogGrid() {
                   <path d="M5 11a7 7 0 0 0 14 0M12 18v3" strokeLinecap="round" />
                 </svg>
                 <span className="relative hidden sm:inline">
-                  {listening ? "Listening" : "Voice"}
+                  {listening ? t("catalog.listening") : t("catalog.voice")}
                 </span>
               </button>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Audience">
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label={t("catalog.audience")}>
               {AUDIENCES.map((a) => (
                 <button
                   key={a.id}
@@ -493,7 +489,7 @@ export function CatalogGrid() {
                   }}
                   className={`chip ${audience === a.id ? "filter-active" : ""}`}
                 >
-                  {a.label}
+                  {t(a.labelKey)}
                 </button>
               ))}
               <button
@@ -511,9 +507,9 @@ export function CatalogGrid() {
                   });
                 }}
                 className={`chip ${workflowsOnly ? "filter-active chip-live" : ""}`}
-                title="Multi-step agents that plan, confirm, then act"
+                title={t("catalog.workflowHint")}
               >
-                Workflows
+                {t("catalog.workflows")}
                 <span className="cat-count">
                   {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
                 </span>
@@ -533,9 +529,9 @@ export function CatalogGrid() {
                   });
                 }}
                 className={`chip ${pilotOnly ? "filter-active chip-live" : ""}`}
-                title="Demo / UAT shortlist — six of 220 (license covers full catalogue)"
+                title={t("demo.shortlistSub")}
               >
-                Demo 6
+                {t("catalog.demo6")}
                 <span className="cat-count">
                   {pilotOnly ? familyCount : MONDAY_PILOT_FAMILY_IDS.length}
                 </span>
@@ -543,7 +539,7 @@ export function CatalogGrid() {
             </div>
 
             <label className="sr-only" htmlFor="market-filter">
-              Market
+              {t("catalog.market")}
             </label>
             <select
               id="market-filter"
@@ -556,13 +552,13 @@ export function CatalogGrid() {
             >
               {MARKETS.map((m) => (
                 <option key={m.id} value={m.id}>
-                  {m.label}
+                  {"labelKey" in m ? t(m.labelKey) : m.label}
                 </option>
               ))}
             </select>
 
             <label className="sr-only" htmlFor="category-filter">
-              Industry
+              {t("catalog.industry")}
             </label>
             <select
               id="category-filter"
@@ -577,7 +573,7 @@ export function CatalogGrid() {
                 const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
                 return (
                   <option key={c} value={c}>
-                    {c === "all" ? `All industries (${count})` : `${c} (${count})`}
+                    {c === "all" ? `${t("catalog.allIndustries")} (${count})` : `${c} (${count})`}
                   </option>
                 );
               })}
@@ -591,30 +587,28 @@ export function CatalogGrid() {
               <>
                 <span className="font-semibold text-[var(--text)]">{familyCount}</span>
                 {familyCount < WORKFLOW_FAMILY_IDS.length ? (
-                  <>
-                    {" "}
-                    of {WORKFLOW_FAMILY_IDS.length} workflows
-                    {audience !== "all" ? ` · ${audience}` : null}
-                    {category !== "all" ? " · industry filter" : null}
-                  </>
+                  <> {t("catalog.workflowsOf", { total: WORKFLOW_FAMILY_IDS.length })}</>
                 ) : (
-                  <> workflows</>
+                  <> {t("catalog.workflowsLabel")}</>
                 )}
               </>
             ) : (
               <>
-                <span className="font-semibold text-[var(--text)]">{familyCount}</span> agents
+                <span className="font-semibold text-[var(--text)]">{familyCount}</span>{" "}
+                {t("catalog.agents")}
               </>
             )}
             {smartFilter && smartApplied.length > 0 ? (
               <span className="text-[var(--muted-dim)]">
                 {" "}
-                · Smart: {smartApplied.join(" · ")}
+                · {t("catalog.smartApplied")}: {smartApplied.join(" · ")}
               </span>
             ) : null}
-            {listening ? <span className="text-[var(--accent-bright)]"> · Listening…</span> : null}
+            {listening ? (
+              <span className="text-[var(--accent-bright)]"> · {t("catalog.listeningStatus")}</span>
+            ) : null}
             {speechHint ? <span className="text-[var(--warn)]"> · {speechHint}</span> : null}
-            {pending ? " · updating…" : null}
+            {pending ? ` · ${t("catalog.updating")}` : null}
           </p>
           {activeFilterCount > 0 ? (
             <button
@@ -630,14 +624,13 @@ export function CatalogGrid() {
                 setSmartApplied([]);
               }}
             >
-              Clear filters
+              {t("catalog.clearFilters")}
             </button>
           ) : null}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {items.map((item, idx) => {
-            const badge = statusBadge(item);
             const hasWorkflow = isWorkflowFamilyId(item.id);
             const hrefMarket = market !== "all" && item.markets[market] ? market : null;
             const href =
@@ -670,27 +663,20 @@ export function CatalogGrid() {
                         <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                           {item.name}
                         </h3>
-                        <div className="flex shrink-0 flex-col items-end gap-1">
-                          {activePack && packs.includes(activePack) ? (
-                            <MarketBadge market={activePack} prominent />
-                          ) : null}
-                          {badge ? (
-                            <span className="chip chip-live !px-2 !py-0.5 text-[10px]">
-                              {badge.label}
-                            </span>
-                          ) : null}
-                        </div>
+                        {activePack && packs.includes(activePack) ? (
+                          <MarketBadge market={activePack} prominent />
+                        ) : null}
                       </div>
                       <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                         <span>{item.marketplaceCategory}</span>
                         {hasWorkflow ? (
                           <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
-                            Multi-step
+                            {t("catalog.multiStep")}
                           </span>
                         ) : null}
                       </p>
                       {!activePack && showPacks.length > 0 ? (
-                        <div className="mt-2 flex flex-wrap items-center gap-1" aria-label="Market packs">
+                        <div className="mt-2 flex flex-wrap items-center gap-1" aria-label={t("catalog.marketPacks")}>
                           {showPacks.map((p) => (
                             <span
                               key={p}
@@ -712,13 +698,13 @@ export function CatalogGrid() {
                       className="text-sm font-semibold text-[var(--muted)] transition hover:text-[var(--accent-bright)] hover:underline"
                       onClick={() => setDetail(item)}
                     >
-                      Learn more
+                      {t("catalog.learnMore")}
                     </button>
                     <Link
                       href={href}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
                     >
-                      Rent / setup
+                      {t("catalog.rentSetup")}
                       <span aria-hidden>→</span>
                     </Link>
                   </div>
@@ -738,10 +724,8 @@ export function CatalogGrid() {
 
         {!pending && items.length === 0 ? (
           <div className="panel px-6 py-12 text-center">
-            <p className="display text-xl font-semibold">No agents match</p>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              Clear search or filters to see the full catalogue.
-            </p>
+            <p className="display text-xl font-semibold">{t("catalog.emptyTitle")}</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">{t("catalog.emptyBody")}</p>
             <button
               type="button"
               className="btn btn-ghost mt-5"
@@ -754,7 +738,7 @@ export function CatalogGrid() {
                 setPilotOnly(false);
               }}
             >
-              Reset filters
+              {t("catalog.resetFilters")}
             </button>
           </div>
         ) : null}
@@ -774,7 +758,7 @@ function AgentDetailModal({
   market: string;
   onClose: () => void;
 }) {
-  const badge = statusBadge(item);
+  const t = useT();
   const hasWorkflow = isWorkflowFamilyId(item.id);
   const hrefMarket = market !== "all" && item.markets[market] ? market : null;
   const href =
@@ -821,7 +805,7 @@ function AgentDetailModal({
                     type="button"
                     className="btn btn-ghost px-2 py-1"
                     onClick={onClose}
-                    aria-label="Close"
+                    aria-label={t("catalog.close")}
                   >
                     ✕
                   </button>
@@ -830,18 +814,12 @@ function AgentDetailModal({
               <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                 <span>{item.marketplaceCategory}</span>
                 <span className="text-[var(--muted-dim)]">·</span>
-                <span className="capitalize">{item.audience}</span>
-                {badge ? (
-                  <>
-                    <span className="text-[var(--muted-dim)]">·</span>
-                    <span className="chip chip-live !px-2 !py-0.5 text-[10px]">
-                      {badge.label}
-                    </span>
-                  </>
-                ) : null}
+                <span className="capitalize">
+                  {item.audience === "internal" ? t("catalog.internal") : t("catalog.customer")}
+                </span>
                 {hasWorkflow ? (
                   <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
-                    Multi-step
+                    {t("catalog.multiStep")}
                   </span>
                 ) : null}
               </p>
@@ -851,16 +829,14 @@ function AgentDetailModal({
           <p className="agent-card-desc text-[15px] leading-relaxed">{summary}</p>
 
           {hasWorkflow ? (
-            <p className="mt-3 text-sm text-[var(--muted)]">
-              Plans the next step, confirms with you, then acts — instead of a single reply.
-            </p>
+            <p className="mt-3 text-sm text-[var(--muted)]">{t("catalog.workflowHint")}</p>
           ) : null}
 
           <dl className="mt-5 grid gap-3 border-t border-[var(--line)] pt-5 text-sm">
             {item.channels.length > 0 ? (
               <div>
                 <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
-                  Channels
+                  {t("catalog.channels")}
                 </dt>
                 <dd className="mt-1.5 flex flex-wrap gap-1.5">
                   {item.channels.map((ch) => (
@@ -874,7 +850,7 @@ function AgentDetailModal({
             {packs.length > 0 ? (
               <div>
                 <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
-                  Market packs
+                  {t("catalog.marketPacks")}
                 </dt>
                 <dd className="mt-1.5 flex flex-wrap gap-1.5">
                   {packs.map((p) => (
@@ -888,7 +864,7 @@ function AgentDetailModal({
             ) : null}
             <div>
               <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
-                Tier
+                {t("catalog.tier")}
               </dt>
               <dd className="mt-1 capitalize text-[var(--text)]">{item.tier}</dd>
             </div>
@@ -896,10 +872,10 @@ function AgentDetailModal({
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link href={href} className="btn btn-primary" onClick={onClose}>
-              Rent / setup
+              {t("catalog.rentSetup")}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={onClose}>
-              Close
+              {t("catalog.close")}
             </button>
           </div>
         </div>
