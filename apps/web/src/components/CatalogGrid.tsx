@@ -330,18 +330,18 @@ export function CatalogGrid() {
               <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
             </svg>
             <input
-              className="input !pl-11 !pr-[7.25rem]"
+              className="input !pl-11 !pr-[10.5rem] sm:!pr-[12.25rem]"
               placeholder="Search agents — booking, claims, stock…"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               aria-label="Search agent families"
             />
-            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
+            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-1">
               <button
                 type="button"
-                className={`inline-flex h-8 items-center gap-1 rounded-md px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition ${
+                className={`inline-flex h-8 items-center gap-1 rounded-lg px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition ${
                   smartFilter
-                    ? "text-[var(--accent-bright)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)]"
+                    ? "text-[var(--accent-bright)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--accent)_28%,transparent)]"
                     : "text-[var(--muted-dim)] hover:text-[var(--text)]"
                 }`}
                 aria-pressed={smartFilter}
@@ -352,12 +352,12 @@ export function CatalogGrid() {
               </button>
               <button
                 type="button"
-                className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition ${
+                className={`group relative inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-2.5 sm:px-3 text-[11px] font-semibold uppercase tracking-[0.07em] transition duration-200 ${
                   listening
-                    ? "text-[var(--accent-ink)] bg-[var(--accent)]"
+                    ? "text-[var(--accent-ink)] bg-[var(--accent-bright)] shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_35%,transparent),0_8px_20px_-8px_color-mix(in_srgb,var(--accent)_70%,transparent)]"
                     : speechSupported
-                      ? "text-[var(--muted)] hover:text-[var(--accent-bright)] hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)]"
-                      : "cursor-not-allowed text-[var(--muted-dim)] opacity-50"
+                      ? "text-[var(--accent-ink)] bg-gradient-to-b from-[var(--accent-bright)] to-[var(--accent)] shadow-[0_6px_16px_-8px_color-mix(in_srgb,var(--accent)_80%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--accent-bright)_55%,transparent)] hover:brightness-110 hover:shadow-[0_8px_22px_-8px_color-mix(in_srgb,var(--accent)_90%,transparent)] active:scale-[0.98]"
+                      : "cursor-not-allowed text-[var(--muted-dim)] bg-[var(--bg-panel)] opacity-50 ring-1 ring-[var(--line)]"
                 }`}
                 aria-label={listening ? "Stop voice search" : "Voice search"}
                 aria-pressed={listening}
@@ -366,17 +366,23 @@ export function CatalogGrid() {
                   speechSupported
                     ? listening
                       ? "Listening… click to stop"
-                      : "Voice search"
+                      : "Search by voice"
                     : "Voice search not supported in this browser"
                 }
                 onClick={toggleVoiceSearch}
               >
+                {listening ? (
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-lg animate-ping bg-[color-mix(in_srgb,var(--accent)_28%,transparent)] opacity-60"
+                  />
+                ) : null}
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.75"
-                  className={`h-4 w-4 ${listening ? "animate-pulse" : ""}`}
+                  strokeWidth="2"
+                  className={`relative h-[15px] w-[15px] ${listening ? "animate-pulse" : ""}`}
                   aria-hidden
                 >
                   <path
@@ -385,6 +391,9 @@ export function CatalogGrid() {
                   />
                   <path d="M5 11a7 7 0 0 0 14 0M12 18v3" strokeLinecap="round" />
                 </svg>
+                <span className="relative hidden sm:inline">
+                  {listening ? "Listening" : "Voice"}
+                </span>
               </button>
             </div>
           </div>
