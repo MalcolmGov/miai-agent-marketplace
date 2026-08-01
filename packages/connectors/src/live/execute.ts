@@ -4,6 +4,52 @@ import { getToken } from "../oauth/tokens.js";
 
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
+  if (n.includes("place_order") || n === "place_order") {
+    return {
+      ok: true,
+      status: "placed",
+      reference: "ORD-3391",
+      order_ref: "ORD-3391",
+      fulfilment: args.fulfilment ?? "collection",
+      items: args.items,
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("get_menu") || n === "get_menu" || n.includes("list_menu")) {
+    return {
+      ok: true,
+      category: args.category ?? "all",
+      items: [
+        { name: "Margherita", vegetarian: true },
+        { name: "Pepperoni" },
+        { name: "flame-grilled beef burger" },
+        { name: "skin-on fries" },
+      ],
+      note: "Sandbox stub — prefer prices from knowledge base menu sections.",
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("check_table_availability") || n === "check_table_availability") {
+    return {
+      ok: true,
+      available: true,
+      party_size: args.party_size ?? 2,
+      datetime: args.datetime ?? "Friday 19:00",
+      slots: [{ label: "Friday 19:00" }, { label: "Friday 19:30" }],
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("book_table") || n === "book_table") {
+    return {
+      ok: true,
+      booked: true,
+      reference: "TBL-4821",
+      booking_ref: "TBL-4821",
+      status: "confirmed",
+      ...args,
+      source: "sandbox_stub",
+    };
+  }
   if (n.includes("order")) return { status: "out_for_delivery", eta: "tomorrow", order_id: args.order_id ?? "4821" };
   if (
     n.includes("availability") ||

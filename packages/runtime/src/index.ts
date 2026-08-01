@@ -18,6 +18,10 @@ import {
   runBookingFrontDeskWorkflow,
 } from "./workflows/booking-front-desk.js";
 import { isSalesQualifier, runSalesQualifierWorkflow } from "./workflows/sales-qualifier.js";
+import {
+  isRestaurantTakeaway,
+  runRestaurantTakeawayWorkflow,
+} from "./workflows/restaurant-takeaway.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -1327,6 +1331,20 @@ export async function runTurn(
       executeTool,
     });
     const done = await finishWorkflow(sq);
+    if (done) return done;
+  }
+
+  // Restaurant & Takeaway multi-step workflow
+  if (isRestaurantTakeaway(req.agentId)) {
+    const rt = await runRestaurantTakeawayWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(rt);
     if (done) return done;
   }
 

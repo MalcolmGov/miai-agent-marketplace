@@ -73,6 +73,18 @@ const salesQualifier = (
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+const restaurantTakeaway = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+  handoff: "slack" | "teams" = "slack",
+): ToolBinding[] => [
+  { tool: "get_menu", connector: "webhook" },
+  { tool: "check_table_availability", connector: calendar },
+  { tool: "book_table", connector: calendar },
+  { tool: "place_order", connector: "webhook" },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_order_status", connector: "shopify" },
   { tool: "check_availability", connector: "shopify" },
@@ -289,6 +301,31 @@ const HAND_OVERRIDES: AgentPreset[] = [
     pilot: true,
     phase: 1,
     bindings: salesQualifier("m365_calendar", "teams"),
+  },
+  // Multi-workflow Restaurant & Takeaway — menu → confirm → table/order → notify
+  {
+    agentId: "us-restaurant-takeaway",
+    pilot: true,
+    phase: 1,
+    bindings: restaurantTakeaway("google_calendar", "slack"),
+  },
+  {
+    agentId: "restaurant-takeaway",
+    pilot: true,
+    phase: 1,
+    bindings: restaurantTakeaway("google_calendar", "slack"),
+  },
+  {
+    agentId: "asia-restaurant-takeaway",
+    pilot: true,
+    phase: 1,
+    bindings: restaurantTakeaway("google_calendar", "slack"),
+  },
+  {
+    agentId: "eu-restaurant-takeaway",
+    pilot: true,
+    phase: 1,
+    bindings: restaurantTakeaway("m365_calendar", "teams"),
   },
 ];
 
