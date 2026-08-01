@@ -1,6 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  CHAT_LANGUAGES,
+  chatLangStorageKey,
+  defaultChatLanguage,
+  isChatLanguage,
+  suggestedLanguagesForAgent,
+  type ChatLanguageCode,
+} from "@/lib/chat-languages";
 import {
   toolChipLabel,
   tryPromptsForAgent,
@@ -48,7 +56,33 @@ export function SandboxChat({
   const [topUp, setTopUp] = useState(false);
   const [chatMode, setChatMode] = useState<"sandbox" | "live">(mode);
   const [clearing, setClearing] = useState(false);
+  const [replyLanguage, setReplyLanguage] = useState<ChatLanguageCode>(() =>
+    defaultChatLanguage(agentId),
+  );
+  const suggestedLangs = suggestedLanguagesForAgent(agentId);
   const { workflow: isWorkflowAgent, prompts } = tryPromptsForAgent(agentId);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(chatLangStorageKey(agentId));
+      if (isChatLanguage(saved)) {
+        setReplyLanguage(saved);
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
+    setReplyLanguage(defaultChatLanguage(agentId));
+  }, [agentId]);
+
+  function changeReplyLanguage(next: ChatLanguageCode) {
+    setReplyLanguage(next);
+    try {
+      window.localStorage.setItem(chatLangStorageKey(agentId), next);
+    } catch {
+      /* ignore */
+    }
+  }
   const capabilityChips = workflowCapabilityChips(agentId);
   const isEA = /executive-assistant/i.test(agentId);
   const isIT = /it-helpdesk/i.test(agentId);
@@ -101,7 +135,12 @@ export function SandboxChat({
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ agentId, message: text, mode: chatMode }),
+        body: JSON.stringify({
+          agentId,
+          message: text,
+          mode: chatMode,
+          replyLanguage,
+        }),
       });
       const data = await res.json();
       setPaused(Boolean(data.paused));
@@ -149,6 +188,25 @@ export function SandboxChat({
               >
                 live (OAuth APIs)
               </button>
+              <label className="inline-flex items-center gap-1.5 rounded-md border border-[var(--line)] bg-[var(--bg-elev)] px-2 py-1">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--muted-dim)]">
+                  Reply in
+                </span>
+                <select
+                  className="max-w-[9.5rem] bg-transparent text-xs font-semibold text-[var(--text)] outline-none"
+                  value={replyLanguage}
+                  aria-label="Agent reply language"
+                  title="Language the agent should reply in"
+                  onChange={(e) => changeReplyLanguage(e.target.value as ChatLanguageCode)}
+                >
+                  {CHAT_LANGUAGES.map((lang) => (
+                    <option key={lang.code} value={lang.code}>
+                      {lang.native}
+                      {suggestedLangs.includes(lang.code) ? " · pack" : ""}
+                    </option>
+                  ))}
+                </select>
+              </label>
               {balance !== null ? ` · ${balance.toLocaleString()} tokens` : ""}
             </div>
           </div>

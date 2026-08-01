@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { runTurn, type AgentState } from "@miai/runtime";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
+import {
+  isChatLanguage,
+  replyLanguageSystemAppend,
+  type ChatLanguageCode,
+} from "@/lib/chat-languages";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
@@ -19,6 +24,8 @@ export async function POST(req: Request) {
     workspaceId?: string;
     mode?: "sandbox" | "live";
     clear?: boolean;
+    /** BCP-47-ish chat reply language (en, es, fr, de, it, zh, hi, sw). */
+    replyLanguage?: string;
   };
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
@@ -63,6 +70,9 @@ export async function POST(req: Request) {
     body.agentId,
     rental.knowledge || pkg.knowledge,
   );
+  const replyLanguage: ChatLanguageCode = isChatLanguage(body.replyLanguage)
+    ? body.replyLanguage
+    : "en";
 
   const result = await runTurn(
     {
@@ -76,6 +86,7 @@ export async function POST(req: Request) {
       knowledgeOverride,
       bindings: rental.bindings,
       state: rental.state as AgentState,
+      systemAppend: replyLanguageSystemAppend(replyLanguage),
     },
     { wallet: createWalletAdapter() },
   );
@@ -101,6 +112,7 @@ export async function POST(req: Request) {
       balance: result.balance,
       tools: result.toolCalls.map((t) => t.name),
       mode,
+      replyLanguage,
     },
   });
 
@@ -123,6 +135,7 @@ export async function POST(req: Request) {
     paused: result.paused,
     state: nextState,
     workflow: result.workflow ?? null,
+    replyLanguage,
     messages: result.messages.filter((m) => m.role !== "tool"),
   });
 }
