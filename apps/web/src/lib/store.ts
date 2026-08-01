@@ -58,6 +58,9 @@ interface PersistShape {
   audit: AuditEvent[];
 }
 
+/** Keep enough audit history for operator metering (tokens, top-ups, rentals). */
+const AUDIT_CAP = 5000;
+
 const g = globalThis as typeof globalThis & {
   __miaiStore?: {
     workspaces: Map<string, WorkspaceRecord>;
@@ -128,7 +131,7 @@ async function hydrateFromPostgres(): Promise<PersistShape | null> {
       agent_id: string | null;
       type: string;
       detail: Record<string, unknown>;
-    }>("SELECT id, at, workspace_id, agent_id, type, detail FROM miai_audit ORDER BY at DESC LIMIT 500");
+    }>("SELECT id, at, workspace_id, agent_id, type, detail FROM miai_audit ORDER BY at DESC LIMIT 5000");
     await client.end();
 
     const shape: PersistShape = {
@@ -184,7 +187,7 @@ function toShape(): PersistShape {
       embedKeys: Object.fromEntries(rec.embedKeys),
     };
   }
-  return { workspaces, audit: s.audit.slice(0, 500) };
+  return { workspaces, audit: s.audit.slice(0, AUDIT_CAP) };
 }
 
 async function persistToFile(shape: PersistShape): Promise<void> {
@@ -352,7 +355,7 @@ export async function appendAudit(event: Omit<AuditEvent, "id" | "at">): Promise
   };
   const s = store();
   s.audit.unshift(row);
-  if (s.audit.length > 500) s.audit.length = 500;
+  if (s.audit.length > AUDIT_CAP) s.audit.length = AUDIT_CAP;
   await persist();
   try {
     const { trackAudit } = await import("@/lib/telemetry");

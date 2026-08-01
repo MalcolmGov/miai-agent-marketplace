@@ -95,6 +95,14 @@ export function HBarChart({
   );
 }
 
+function niceAxisMax(raw: number): number {
+  if (raw <= 0) return 10;
+  const exp = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / exp;
+  const nice = n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10;
+  return nice * exp;
+}
+
 export function LineTrendChart({
   points,
   valueLabel,
@@ -104,8 +112,8 @@ export function LineTrendChart({
 }) {
   const w = 720;
   const h = 220;
-  const pad = { t: 36, r: 24, b: 32, l: 48 };
-  const max = 600;
+  const pad = { t: 36, r: 24, b: 32, l: 56 };
+  const max = niceAxisMax(Math.max(...points.map((p) => p.value), 0));
   const innerW = w - pad.l - pad.r;
   const innerH = h - pad.t - pad.b;
   const coords = points.map((p, i) => {
@@ -115,7 +123,7 @@ export function LineTrendChart({
   });
   const line = coords.map((c, i) => `${i === 0 ? "M" : "L"}${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(" ");
   const last = coords[coords.length - 1]!;
-  const yTicks = [0, 200, 400, 600];
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((f) => max * f);
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="h-full w-full" role="img" aria-label="Token revenue trend">
@@ -134,7 +142,7 @@ export function LineTrendChart({
           <g key={t}>
             <line x1={pad.l} x2={w - pad.r} y1={y} y2={y} stroke="var(--line)" strokeWidth="1" />
             <text x={pad.l - 8} y={y + 4} textAnchor="end" className="fill-[var(--muted)]" style={{ fontSize: 11 }}>
-              ${t === 0 ? "0" : `${t}K`}
+              {formatUsdAxis(t)}
             </text>
           </g>
         );
@@ -166,7 +174,7 @@ export function LineTrendChart({
         className="fill-white"
         style={{ fontSize: 14, fontWeight: 600 }}
       >
-        {valueLabel ?? `$${last.value}K`}
+        {valueLabel ?? formatUsd(last.value)}
       </text>
       {coords.map((c) => (
         <text
@@ -184,22 +192,35 @@ export function LineTrendChart({
   );
 }
 
+function formatUsdAxis(n: number): string {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `$${Math.round(n / 1000)}K`;
+  if (n === 0) return "$0";
+  return `$${Math.round(n)}`;
+}
+
 export function formatCompact(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n >= 10_000_000 ? 1 : 2)}M`.replace(/\.00M$/, "M");
-  if (n >= 1_000) return `${(n / 1_000).toFixed(n >= 100_000 ? 0 : 0)}k`.replace(/\.0k$/, "k");
+  if (n >= 1_000_000) {
+    const s = (n / 1_000_000).toFixed(2).replace(/\.?0+$/, "");
+    return `${s}M`;
+  }
+  if (n >= 1_000) {
+    const s = (n / 1_000).toFixed(n >= 10_000 ? 0 : 1).replace(/\.0$/, "");
+    return `${s}k`;
+  }
   return n.toLocaleString();
 }
 
 export function formatUsd(n: number, opts?: { compact?: boolean }): string {
-  if (opts?.compact && n >= 1_000_000) {
+  if (opts?.compact && Math.abs(n) >= 1_000_000) {
     return `$${(n / 1_000_000).toFixed(1)}M`;
   }
-  if (opts?.compact && n >= 1_000) {
+  if (opts?.compact && Math.abs(n) >= 10_000) {
     return `$${Math.round(n / 1000)}K`;
   }
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: n >= 100 ? 0 : 2,
+    maximumFractionDigits: Math.abs(n) >= 100 ? 0 : 2,
   }).format(n);
 }

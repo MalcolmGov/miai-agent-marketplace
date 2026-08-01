@@ -158,38 +158,171 @@ export type CustomRequest = {
   status: "new" | "reviewing" | "scoped";
 };
 
-const CUSTOM_REQUESTS: CustomRequest[] = [
-  {
-    id: "req-kagiso",
-    business: "Kagiso Logistics",
-    need: "Quote deliveries & book drivers from WhatsApp",
-    source: "Dashboard",
-    status: "new",
-  },
-  {
-    id: "req-bright",
-    business: "Bright Dental",
-    need: "Recall reminders + appointment booking",
-    source: "Marketing page",
-    status: "reviewing",
-  },
-  {
-    id: "req-fresh",
-    business: "FreshMart",
-    need: "Stock-count agent across 3 shops",
-    source: "Marketing page",
-    status: "scoped",
-  },
-];
+/** Platform revenue split — product rule, not demo data. */
+const MIAI_SHARE = 0.85;
+const PARTNER_SHARE = 0.15;
 
-export function listCustomRequests(): CustomRequest[] {
-  return CUSTOM_REQUESTS;
+function customerLabel(workspaceId: string): string {
+  if (workspaceId === "demo-workspace") return "Demo Workspace";
+  return workspaceId
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** Operator / MyInstantAI admin view across the partner base. */
-export async function buildAdminOverview() {
-  const { listAllWorkspaces } = await import("@/lib/store");
+function monthKey(d: Date): string {
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+function monthLabel(key: string): string {
+  const [y, m] = key.split("-").map(Number);
+  return new Date(Date.UTC(y!, m! - 1, 1)).toLocaleString("en-US", {
+    month: "short",
+    timeZone: "UTC",
+  });
+}
+
+function numDetail(detail: Record<string, unknown>, key: string): number {
+  const v = detail[key];
+  return typeof v === "number" && Number.isFinite(v) ? v : 0;
+}
+
+function tokensToUsd(tokens: number): number {
+  return Number(((tokens / 1000) * TOKEN_USD_PER_1K).toFixed(2));
+}
+
+/** Pitch-deck narrative numbers — only when explicitly requested. */
+function narrativeAdminOverview() {
+  const customRequests: CustomRequest[] = [
+    {
+      id: "req-kagiso",
+      business: "Kagiso Logistics",
+      need: "Quote deliveries & book drivers from WhatsApp",
+      source: "Dashboard",
+      status: "new",
+    },
+    {
+      id: "req-bright",
+      business: "Bright Dental",
+      need: "Recall reminders + appointment booking",
+      source: "Marketing page",
+      status: "reviewing",
+    },
+    {
+      id: "req-fresh",
+      business: "FreshMart",
+      need: "Stock-count agent across 3 shops",
+      source: "Marketing page",
+      status: "scoped",
+    },
+  ];
+  const rentals = [
+    {
+      workspaceId: "naledi-beauty",
+      customer: "Naledi's Beauty Bar",
+      agentId: "salon-booking",
+      agentName: "Salon & Barber Booking",
+      tier: "standard",
+      channel: "WhatsApp",
+      state: "live",
+      status: statusLabel("live"),
+      rentalUsd: 349,
+      rentedAt: undefined as string | undefined,
+    },
+    {
+      workspaceId: "spaza-plus",
+      customer: "Spaza Plus",
+      agentId: "africa-spaza-merchant",
+      agentName: "Spaza & Merchant",
+      tier: "enterprise",
+      channel: "WhatsApp",
+      state: "live",
+      status: statusLabel("live"),
+      rentalUsd: 1199,
+      rentedAt: undefined as string | undefined,
+    },
+    {
+      workspaceId: "zenande-retail",
+      customer: "Zenande Retail",
+      agentId: "customer-support",
+      agentName: "Customer Support",
+      tier: "standard",
+      channel: "App",
+      state: "paused_no_tokens",
+      status: statusLabel("paused_no_tokens"),
+      rentalUsd: null,
+      rentedAt: undefined as string | undefined,
+    },
+    {
+      workspaceId: "lindiwe-travel",
+      customer: "Lindiwe Travel",
+      agentId: "travel-desk",
+      agentName: "Travel Desk",
+      tier: "pro",
+      channel: "Web",
+      state: "configuring",
+      status: statusLabel("configuring"),
+      rentalUsd: null,
+      rentedAt: undefined as string | undefined,
+    },
+  ];
+  const rentalMrr = rentals.reduce((n, r) => n + (r.rentalUsd ?? 0), 0);
+  return {
+    operator: true as const,
+    kpis: {
+      liveAgents: 2,
+      customers: 4,
+      monthlyRentalRevenue: rentalMrr,
+      monthlyRentalRevenueDisplay: 3595,
+      tokensConsumed: 3_100_000,
+      prepaidCollectedUsd: 0,
+      conversationsThisMonth: 0,
+      customRequests: customRequests.length,
+      customRequestsNew: customRequests.filter((r) => r.status === "new").length,
+    },
+    economics: {
+      tokenRevenueMonth: 486_000,
+      tokenRevenueDeltaPct: 18 as number | null,
+      prepaidCollectedUsd: 0,
+      rentalMrr: 742_000,
+      activeBusinesses: 3240,
+      blendedPerBusiness: 379,
+      miaiPct: Math.round(MIAI_SHARE * 100),
+      partnerPct: Math.round(PARTNER_SHARE * 100),
+      miaiKeepMonth: Math.round((486_000 + 742_000) * MIAI_SHARE),
+      projectedArr: 14_700_000,
+      tokenTrend: [
+        { month: "Feb", value: 210_000 },
+        { month: "Mar", value: 268_000 },
+        { month: "Apr", value: 312_000 },
+        { month: "May", value: 365_000 },
+        { month: "Jun", value: 420_000 },
+        { month: "Jul", value: 486_000 },
+      ],
+      tokenTrendUnit: "usd" as const,
+    },
+    rentals,
+    customRequests,
+    source: "narrative" as const,
+  };
+}
+
+export type AdminOverviewOptions = {
+  /** Pitch-deck scale figures — never the default operator view. */
+  narrative?: boolean;
+};
+
+/**
+ * Operator / MyInstantAI admin view across the live marketplace store:
+ * rentals, list-price MRR, audit token debits, and prepaid top-ups.
+ */
+export async function buildAdminOverview(opts: AdminOverviewOptions = {}) {
+  if (opts.narrative || process.env.ADMIN_NARRATIVE_ECONOMICS === "1") {
+    return narrativeAdminOverview();
+  }
+
+  const { listAllWorkspaces, listAudit } = await import("@/lib/store");
   const all = await listAllWorkspaces();
+  const audit = await listAudit(5000);
 
   const rentedRows: Array<{
     workspaceId: string;
@@ -201,11 +334,12 @@ export async function buildAdminOverview() {
     state: string;
     status: ReturnType<typeof statusLabel>;
     rentalUsd: number | null;
+    rentedAt?: string;
   }> = [];
 
   let rentalMrr = 0;
-  let tokensConsumed = 0;
   const businessSet = new Set<string>();
+  const liveBusinessSet = new Set<string>();
 
   for (const { workspaceId, agents } of all) {
     for (const a of agents) {
@@ -215,11 +349,13 @@ export async function buildAdminOverview() {
       const tier = a.tier as keyof typeof TIER_PRICES;
       const price = TIER_PRICES[tier] ?? TIER_PRICES.standard;
       const live = a.state === "live" || a.state === "rented";
-      if (live) rentalMrr += price;
-      tokensConsumed += a.messages.length * 800;
+      if (live) {
+        rentalMrr += price;
+        liveBusinessSet.add(workspaceId);
+      }
       rentedRows.push({
         workspaceId,
-        customer: workspaceId === "demo-workspace" ? "Demo Workspace" : workspaceId.replace(/[-_]/g, " "),
+        customer: customerLabel(workspaceId),
         agentId: a.agentId,
         agentName: pkg?.manifest.name ?? displayNameFromAgentId(a.agentId),
         tier: a.tier,
@@ -227,127 +363,104 @@ export async function buildAdminOverview() {
         state: a.state,
         status: statusLabel(a.state),
         rentalUsd: live ? price : null,
+        rentedAt: a.rentedAt,
       });
     }
   }
 
-  // Demo partner economics when the store is thin (Monday narrative / empty staging)
-  const useDemoEconomics = rentedRows.length < 3;
-  if (useDemoEconomics) {
-    const demoRentals = [
-      {
-        workspaceId: "naledi-beauty",
-        customer: "Naledi's Beauty Bar",
-        agentId: "salon-booking",
-        agentName: "Salon & Barber Booking",
-        tier: "standard",
-        channel: "WhatsApp",
-        state: "live",
-        status: statusLabel("live"),
-        rentalUsd: 349,
-      },
-      {
-        workspaceId: "spaza-plus",
-        customer: "Spaza Plus",
-        agentId: "africa-spaza-merchant",
-        agentName: "Spaza & Merchant",
-        tier: "enterprise",
-        channel: "WhatsApp",
-        state: "live",
-        status: statusLabel("live"),
-        rentalUsd: 1499,
-      },
-      {
-        workspaceId: "zenande-retail",
-        customer: "Zenande Retail",
-        agentId: "customer-support",
-        agentName: "Customer Support",
-        tier: "standard",
-        channel: "App",
-        state: "paused_no_tokens",
-        status: statusLabel("paused_no_tokens"),
-        rentalUsd: null,
-      },
-      {
-        workspaceId: "lindiwe-travel",
-        customer: "Lindiwe Travel",
-        agentId: "travel-desk",
-        agentName: "Travel Desk",
-        tier: "pro",
-        channel: "Web",
-        state: "configuring",
-        status: statusLabel("configuring"),
-        rentalUsd: null,
-      },
-      {
-        workspaceId: "demo-workspace",
-        customer: "Demo Workspace",
-        agentId: "us-executive-assistant",
-        agentName: "US Executive Assistant",
-        tier: "pro",
-        channel: "Web",
-        state: "live",
-        status: statusLabel("live"),
-        rentalUsd: 699,
-      },
-    ];
-    for (const row of demoRentals) {
-      if (!rentedRows.some((r) => r.customer === row.customer && r.agentId === row.agentId)) {
-        rentedRows.push(row);
-      }
-    }
-    rentalMrr = rentedRows.reduce((n, r) => n + (r.rentalUsd ?? 0), 0);
-    tokensConsumed = 3_100_000;
+  rentedRows.sort((a, b) => {
+    const liveRank = (s: string) => (s === "live" || s === "rented" ? 0 : s === "paused_no_tokens" ? 1 : 2);
+    const d = liveRank(a.state) - liveRank(b.state);
+    if (d !== 0) return d;
+    return a.customer.localeCompare(b.customer) || a.agentName.localeCompare(b.agentName);
+  });
+
+  const now = new Date();
+  const thisMonth = monthKey(now);
+  const lastMonthDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1));
+  const lastMonth = monthKey(lastMonthDate);
+
+  let tokensThisMonth = 0;
+  let tokensLastMonth = 0;
+  let prepaidThisMonth = 0;
+  let conversationsThisMonth = 0;
+  const tokensByMonth = new Map<string, number>();
+
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
+    tokensByMonth.set(monthKey(d), 0);
   }
 
-  const liveAgents = rentedRows.filter((r) => r.state === "live" || r.state === "rented").length;
-  const customers = new Set(rentedRows.map((r) => r.customer)).size;
+  for (const ev of audit) {
+    const key = ev.at.slice(0, 7);
+    if (ev.type === "agent_turn" || ev.type === "chat") {
+      const debited = numDetail(ev.detail, "tokensDebited");
+      if (tokensByMonth.has(key)) {
+        tokensByMonth.set(key, (tokensByMonth.get(key) ?? 0) + debited);
+      }
+      if (key === thisMonth) {
+        tokensThisMonth += debited;
+        conversationsThisMonth += 1;
+      } else if (key === lastMonth) {
+        tokensLastMonth += debited;
+      }
+    }
+    if (ev.type === "wallet_topup") {
+      const usd = numDetail(ev.detail, "usd");
+      if (key === thisMonth) prepaidThisMonth += usd;
+    }
+  }
 
-  const tokenRevenueMonth = useDemoEconomics ? 486_000 : Number(((tokensConsumed / 1000) * TOKEN_USD_PER_1K).toFixed(0));
-  const rentalMrrDisplay = useDemoEconomics ? Math.max(rentalMrr, 742_000) : rentalMrr;
-  const activeBusinesses = useDemoEconomics ? 3240 : Math.max(customers, businessSet.size);
-  const blended = activeBusinesses
-    ? Math.round((tokenRevenueMonth + rentalMrrDisplay) / activeBusinesses)
-    : 0;
-  const miaiShare = 0.85;
-  const zaraShare = 0.15;
-  const combined = tokenRevenueMonth + rentalMrrDisplay;
+  // Usage economics from metered debits; prepaid is actual top-up cash collected.
+  const usageRevenueMonth = tokensToUsd(tokensThisMonth);
+  const usageRevenueLastMonth = tokensToUsd(tokensLastMonth);
+  const tokenRevenueMonth = prepaidThisMonth > 0 ? prepaidThisMonth : usageRevenueMonth;
+  const tokenRevenueDeltaPct =
+    usageRevenueLastMonth > 0
+      ? Math.round(((usageRevenueMonth - usageRevenueLastMonth) / usageRevenueLastMonth) * 100)
+      : null;
+
+  const liveAgents = rentedRows.filter((r) => r.state === "live" || r.state === "rented").length;
+  const customers = businessSet.size;
+  const activeBusinesses = liveBusinessSet.size || customers;
+  const combined = tokenRevenueMonth + rentalMrr;
+  const blended = activeBusinesses ? Math.round(combined / activeBusinesses) : 0;
   const projectedArr = Math.round(combined * 12);
 
-  const tokenTrend = [
-    { month: "Feb", value: 210 },
-    { month: "Mar", value: 268 },
-    { month: "Apr", value: 312 },
-    { month: "May", value: 365 },
-    { month: "Jun", value: 420 },
-    { month: "Jul", value: 486 },
-  ];
+  const tokenTrend = [...tokensByMonth.entries()].map(([key, tokens]) => ({
+    month: monthLabel(key),
+    value: tokensToUsd(tokens),
+  }));
 
   return {
-    operator: true,
+    operator: true as const,
     kpis: {
       liveAgents,
       customers,
-      monthlyRentalRevenue: useDemoEconomics ? rentalMrr : rentalMrr,
-      monthlyRentalRevenueDisplay: useDemoEconomics ? 3595 : rentalMrr,
-      tokensConsumed: useDemoEconomics ? 3_100_000 : tokensConsumed,
-      customRequests: CUSTOM_REQUESTS.length,
-      customRequestsNew: CUSTOM_REQUESTS.filter((r) => r.status === "new").length,
+      monthlyRentalRevenue: rentalMrr,
+      monthlyRentalRevenueDisplay: rentalMrr,
+      tokensConsumed: tokensThisMonth,
+      prepaidCollectedUsd: prepaidThisMonth,
+      conversationsThisMonth,
+      customRequests: 0,
+      customRequestsNew: 0,
     },
     economics: {
       tokenRevenueMonth,
-      tokenRevenueDeltaPct: 18,
-      rentalMrr: rentalMrrDisplay,
+      tokenRevenueDeltaPct,
+      prepaidCollectedUsd: prepaidThisMonth,
+      rentalMrr,
       activeBusinesses,
-      blendedPerBusiness: useDemoEconomics ? 379 : blended,
-      miaiPct: Math.round(miaiShare * 100),
-      partnerPct: Math.round(zaraShare * 100),
-      miaiKeepMonth: Math.round(combined * miaiShare),
-      projectedArr: useDemoEconomics ? 14_700_000 : projectedArr,
+      blendedPerBusiness: blended,
+      miaiPct: Math.round(MIAI_SHARE * 100),
+      partnerPct: Math.round(PARTNER_SHARE * 100),
+      miaiKeepMonth: Number((combined * MIAI_SHARE).toFixed(2)),
+      projectedArr,
       tokenTrend,
+      tokenTrendUnit: "usd" as const,
     },
     rentals: rentedRows,
-    customRequests: CUSTOM_REQUESTS,
-    source: useDemoEconomics ? "demo+live" : "live",
+    customRequests: [] as CustomRequest[],
+    source: rentedRows.length || tokensThisMonth || prepaidThisMonth ? ("live" as const) : ("empty" as const),
   };
 }
