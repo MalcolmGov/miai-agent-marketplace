@@ -12,14 +12,37 @@ export async function POST(req: Request) {
 
   const body = (await req.json()) as {
     agentId: string;
-    message: string;
+    message?: string;
     workspaceId?: string;
     mode?: "sandbox" | "live";
+    clear?: boolean;
   };
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const pkg = await getAgentPackage(body.agentId);
   if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
+
+  // Reset conversation history (UI + server-persisted turns / pending workflows).
+  if (body.clear) {
+    const rental = await getWorkspaceAgent(workspaceId, body.agentId);
+    if (rental) {
+      await upsertWorkspaceAgent(workspaceId, body.agentId, {
+        agentId: body.agentId,
+        messages: [],
+      });
+    }
+    await appendAudit({
+      workspaceId,
+      agentId: body.agentId,
+      type: "agent_turn",
+      detail: { action: "clear_chat" },
+    });
+    return NextResponse.json({ ok: true, cleared: true, messages: [] });
+  }
+
+  if (!body.message?.trim()) {
+    return NextResponse.json({ error: "message required" }, { status: 400 });
+  }
 
   let rental = await getWorkspaceAgent(workspaceId, body.agentId);
   if (!rental) {
@@ -44,7 +67,7 @@ export async function POST(req: Request) {
       agentId: body.agentId,
       pkg,
       messages: rental.messages,
-      userMessage: body.message,
+      userMessage: body.message.trim(),
       model: rental.model,
       mode,
       knowledgeOverride,

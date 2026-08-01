@@ -39,7 +39,27 @@ export function SandboxChat({
   const [workflow, setWorkflow] = useState<WorkflowView | null>(null);
   const [topUp, setTopUp] = useState(false);
   const [chatMode, setChatMode] = useState<"sandbox" | "live">(mode);
+  const [clearing, setClearing] = useState(false);
   const isEA = /executive-assistant/i.test(agentId);
+
+  async function clearChat() {
+    if (busy || clearing) return;
+    if (messages.length === 0 && !workflow && lastTools.length === 0) return;
+    setClearing(true);
+    try {
+      await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ agentId, clear: true }),
+      });
+      setMessages([]);
+      setInput("");
+      setLastTools([]);
+      setWorkflow(null);
+    } finally {
+      setClearing(false);
+    }
+  }
 
   async function send() {
     const text = input.trim();
@@ -91,11 +111,22 @@ export function SandboxChat({
             {balance !== null ? ` · ${balance.toLocaleString()} tokens` : ""}
           </div>
         </div>
-        {paused && (
-          <button type="button" className="btn btn-primary text-xs" onClick={() => setTopUp(true)}>
-            Top up to resume
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="btn btn-ghost text-xs"
+            disabled={busy || clearing || (messages.length === 0 && !workflow)}
+            onClick={clearChat}
+            title="Clear chat history and reset workflow state"
+          >
+            {clearing ? "Clearing…" : "Clear chat"}
           </button>
-        )}
+          {paused && (
+            <button type="button" className="btn btn-primary text-xs" onClick={() => setTopUp(true)}>
+              Top up to resume
+            </button>
+          )}
+        </div>
       </div>
       {paused && (
         <div className="border-b border-[var(--warn)]/30 bg-[color-mix(in_srgb,var(--warn)_12%,transparent)] px-4 py-2 text-sm text-[var(--warn)]">
