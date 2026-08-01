@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
+import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
 
 interface FamilyItem {
@@ -59,15 +60,6 @@ function statusBadge(item: FamilyItem) {
   if (item.pilot) return { label: "Pilot", tone: "live" as const };
   if (item.catalogueReady) return { label: "Ready", tone: "ready" as const };
   return null;
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
 }
 
 export function CatalogGrid() {
@@ -267,12 +259,7 @@ export function CatalogGrid() {
                 />
                 <div className="flex flex-1 flex-col p-5">
                   <div className="mb-3 flex items-start gap-3">
-                    <span
-                      aria-hidden
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_8%,var(--bg-elev))] text-sm font-semibold text-[var(--accent-bright)]"
-                    >
-                      {initials(item.name)}
-                    </span>
+                    <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <h3 className="display text-[0.98rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
