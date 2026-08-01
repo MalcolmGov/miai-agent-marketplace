@@ -38,6 +38,30 @@ const itHelpdesk = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+const salonBooking = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+  handoff: "slack" | "teams" = "slack",
+): ToolBinding[] => [
+  { tool: "list_services", connector: "webhook" },
+  { tool: "check_availability", connector: calendar },
+  { tool: "book_appointment", connector: calendar },
+  { tool: "reschedule_or_cancel", connector: calendar },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
+const tradesBooking = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+  handoff: "slack" | "teams" = "slack",
+): ToolBinding[] => [
+  { tool: "list_services", connector: "webhook" },
+  { tool: "check_availability", connector: calendar },
+  { tool: "book_appointment", connector: calendar },
+  { tool: "request_estimate", connector: "hubspot" },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_order_status", connector: "shopify" },
   { tool: "check_availability", connector: "shopify" },
@@ -74,23 +98,74 @@ const HAND_OVERRIDES: AgentPreset[] = [
     agentId: "us-home-services",
     pilot: true,
     phase: 1,
-    bindings: [
-      ...booking("google_calendar"),
-      { tool: "list_services", connector: "webhook" },
-      { tool: "request_estimate", connector: "hubspot" },
-      { tool: "handoff_to_human", connector: "slack" },
-    ],
+    bindings: tradesBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "eu-home-services",
+    pilot: true,
+    phase: 1,
+    bindings: tradesBooking("m365_calendar", "teams"),
+  },
+  {
+    agentId: "asia-home-services",
+    pilot: true,
+    phase: 1,
+    bindings: tradesBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "africa-home-services",
+    pilot: true,
+    phase: 1,
+    bindings: tradesBooking("google_calendar", "slack"),
   },
   {
     agentId: "eu-trades-receptionist",
     pilot: true,
     phase: 1,
-    bindings: [
-      ...booking("m365_calendar"),
-      { tool: "list_services", connector: "webhook" },
-      { tool: "request_estimate", connector: "hubspot" },
-      { tool: "handoff_to_human", connector: "teams" },
-    ],
+    bindings: tradesBooking("m365_calendar", "teams"),
+  },
+  {
+    agentId: "us-trades-receptionist",
+    pilot: true,
+    phase: 1,
+    bindings: tradesBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "asia-trades-receptionist",
+    pilot: true,
+    phase: 1,
+    bindings: tradesBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "africa-trades-receptionist",
+    pilot: true,
+    phase: 1,
+    bindings: tradesBooking("google_calendar", "slack"),
+  },
+  // Multi-workflow Salon & Barber
+  {
+    agentId: "us-salon-booking",
+    pilot: true,
+    phase: 1,
+    bindings: salonBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "salon-booking",
+    pilot: true,
+    phase: 1,
+    bindings: salonBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "asia-salon-booking",
+    pilot: true,
+    phase: 1,
+    bindings: salonBooking("google_calendar", "slack"),
+  },
+  {
+    agentId: "eu-salon-booking",
+    pilot: true,
+    phase: 1,
+    bindings: salonBooking("m365_calendar", "teams"),
   },
   {
     agentId: "eu-hotel-guest",

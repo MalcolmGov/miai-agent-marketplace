@@ -57,7 +57,18 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       summary: args.summary,
       source: "sandbox_stub",
     };
-  if (n.includes("book")) return { booked: true, booking_ref: "BK-3391", ...args };
+  if (n.includes("reschedule_or_cancel") || n === "reschedule_or_cancel") {
+    const action = String(args.action ?? (/cancel/i.test(String(args.notes ?? "")) ? "cancel" : "reschedule"));
+    return {
+      ok: true,
+      status: action === "cancel" ? "cancelled" : "rescheduled",
+      booking_ref: args.booking_ref ?? args.reference ?? "BK-7Q3F",
+      reference: args.booking_ref ?? args.reference ?? "BK-7Q3F",
+      new_datetime: args.new_datetime,
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("book")) return { booked: true, booking_ref: "BK-3391", reference: "BK-3391", ...args };
   if (n.includes("job_opening") || n.includes("list_jobs") || n.includes("open_role")) {
     return {
       ok: true,

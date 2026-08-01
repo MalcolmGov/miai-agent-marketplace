@@ -13,6 +13,10 @@ import {
   type WorkflowStep,
 } from "./workflows/executive-assistant.js";
 import { isItHelpdesk, runItHelpdeskWorkflow } from "./workflows/it-helpdesk.js";
+import {
+  isBookingFrontDesk,
+  runBookingFrontDeskWorkflow,
+} from "./workflows/booking-front-desk.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -1294,6 +1298,20 @@ export async function runTurn(
       executeTool,
     });
     const done = await finishWorkflow(it);
+    if (done) return done;
+  }
+
+  // Salon / Trades / Home-services booking workflow
+  if (isBookingFrontDesk(req.agentId)) {
+    const bk = await runBookingFrontDeskWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(bk);
     if (done) return done;
   }
 
