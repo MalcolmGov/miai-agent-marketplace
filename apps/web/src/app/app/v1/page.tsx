@@ -12,9 +12,9 @@ function one(v: string | string[] | undefined, fallback: string): string {
 export default async function AppChannelPage({
   searchParams,
 }: {
-  searchParams: Promise<Search> | Search;
+  searchParams: Promise<Search>;
 }) {
-  const sp = await Promise.resolve(searchParams);
+  const sp = await searchParams;
   const key = one(sp.key, "");
   const title = one(sp.title, "Assistant");
   const accent = one(sp.accent, "#2bb8a8");
