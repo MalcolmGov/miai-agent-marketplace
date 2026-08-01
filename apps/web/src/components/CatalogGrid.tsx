@@ -1,10 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
+
+type SpeechRecognitionLike = {
+  lang: string;
+  interimResults: boolean;
+  continuous: boolean;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onerror: (() => void) | null;
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
+  if (typeof window === "undefined") return null;
+  const w = window as Window & {
+    SpeechRecognition?: new () => SpeechRecognitionLike;
+    webkitSpeechRecognition?: new () => SpeechRecognitionLike;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
 
 const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
 
@@ -109,8 +131,35 @@ export function CatalogGrid() {
   const [category, setCategory] = useState("all");
   const [audience, setAudience] = useState("all");
   const [workflowsOnly, setWorkflowsOnly] = useState(false);
+  const [smartFilter, setSmartFilter] = useState(true);
+  const [smartApplied, setSmartApplied] = useState<string[]>([]);
+  const [listening, setListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
   const [pending, startTransition] = useTransition();
   const [detail, setDetail] = useState<FamilyItem | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+
+  const smartParsed = useMemo(
+    () => (smartFilter && q.trim() ? parseSmartCatalogQuery(q) : null),
+    [smartFilter, q],
+  );
+  const searchQ = smartParsed ? smartParsed.q : q;
+
+  useEffect(() => {
+    setSpeechSupported(Boolean(getSpeechRecognitionCtor()));
+  }, []);
+
+  useEffect(() => {
+    if (!smartParsed) {
+      setSmartApplied([]);
+      return;
+    }
+    setMarket(smartParsed.market);
+    setAudience(smartParsed.audience);
+    setCategory(smartParsed.category);
+    setWorkflowsOnly(smartParsed.workflowsOnly);
+    setSmartApplied(smartParsed.applied);
+  }, [smartParsed]);
 
   useEffect(() => {
     if (!detail) return;
@@ -143,7 +192,7 @@ export function CatalogGrid() {
   useEffect(() => {
     const params = new URLSearchParams();
     params.set("view", "families");
-    if (q) params.set("q", q);
+    if (searchQ) params.set("q", searchQ);
     if (market !== "all") params.set("market", market);
     if (category !== "all") params.set("category", category);
     if (audience !== "all") params.set("audience", audience);
@@ -157,7 +206,36 @@ export function CatalogGrid() {
           setFamilyCount(d.familyCount ?? d.count ?? 0);
         });
     });
-  }, [q, market, category, audience, workflowsOnly]);
+  }, [searchQ, market, category, audience, workflowsOnly]);
+
+  function toggleVoiceSearch() {
+    const Ctor = getSpeechRecognitionCtor();
+    if (!Ctor) return;
+
+    if (listening && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setListening(false);
+      return;
+    }
+
+    const recognition = new Ctor();
+    recognitionRef.current = recognition;
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+    recognition.onstart = () => setListening(true);
+    recognition.onend = () => setListening(false);
+    recognition.onerror = () => setListening(false);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0]?.[0]?.transcript?.trim();
+      if (transcript) setQ(transcript);
+    };
+    try {
+      recognition.start();
+    } catch {
+      setListening(false);
+    }
+  }
 
   const categories = useMemo(() => allCategories, [allCategories]);
   const industryCategoryCount = Math.max(0, allCategories.length - 1);
@@ -182,7 +260,7 @@ export function CatalogGrid() {
           <div className="relative min-w-0 flex-1">
             <svg
               aria-hidden
-              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted-dim)]"
+              className="pointer-events-none absolute left-3.5 top-1/2 z-[1] h-4 w-4 -translate-y-1/2 text-[var(--muted-dim)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -192,12 +270,63 @@ export function CatalogGrid() {
               <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
             </svg>
             <input
-              className="input pl-10"
+              className="input !pl-11 !pr-[7.25rem]"
               placeholder="Search agents — booking, claims, stock…"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               aria-label="Search agent families"
             />
+            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
+              <button
+                type="button"
+                className={`inline-flex h-8 items-center gap-1 rounded-md px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition ${
+                  smartFilter
+                    ? "text-[var(--accent-bright)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)]"
+                    : "text-[var(--muted-dim)] hover:text-[var(--text)]"
+                }`}
+                aria-pressed={smartFilter}
+                title="Smart filter — understand market, industry, and workflow phrases"
+                onClick={() => setSmartFilter((v) => !v)}
+              >
+                Smart
+              </button>
+              <button
+                type="button"
+                className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition ${
+                  listening
+                    ? "text-[var(--accent-ink)] bg-[var(--accent)]"
+                    : speechSupported
+                      ? "text-[var(--muted)] hover:text-[var(--accent-bright)] hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)]"
+                      : "cursor-not-allowed text-[var(--muted-dim)] opacity-50"
+                }`}
+                aria-label={listening ? "Stop voice search" : "Voice search"}
+                aria-pressed={listening}
+                disabled={!speechSupported}
+                title={
+                  speechSupported
+                    ? listening
+                      ? "Listening… click to stop"
+                      : "Voice search"
+                    : "Voice search not supported in this browser"
+                }
+                onClick={toggleVoiceSearch}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  className={`h-4 w-4 ${listening ? "animate-pulse" : ""}`}
+                  aria-hidden
+                >
+                  <path
+                    d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M5 11a7 7 0 0 0 14 0M12 18v3" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
@@ -206,7 +335,10 @@ export function CatalogGrid() {
                 <button
                   key={a.id}
                   type="button"
-                  onClick={() => setAudience(a.id)}
+                  onClick={() => {
+                    setSmartFilter(false);
+                    setAudience(a.id);
+                  }}
                   className={`chip ${audience === a.id ? "filter-active" : ""}`}
                 >
                   {a.label}
@@ -215,6 +347,7 @@ export function CatalogGrid() {
               <button
                 type="button"
                 onClick={() => {
+                  setSmartFilter(false);
                   setWorkflowsOnly((v) => {
                     const next = !v;
                     // Show the full workflow set when enabling — don't keep a stacked audience filter.
@@ -239,7 +372,10 @@ export function CatalogGrid() {
               id="market-filter"
               className="input !w-auto !py-2 text-xs font-semibold uppercase tracking-wide"
               value={market}
-              onChange={(e) => setMarket(e.target.value)}
+              onChange={(e) => {
+                setSmartFilter(false);
+                setMarket(e.target.value);
+              }}
             >
               {MARKETS.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -255,7 +391,10 @@ export function CatalogGrid() {
               id="category-filter"
               className="input !w-auto max-w-[220px] !py-2 text-xs font-semibold"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setSmartFilter(false);
+                setCategory(e.target.value);
+              }}
             >
               {categories.map((c) => {
                 const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
@@ -270,7 +409,7 @@ export function CatalogGrid() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--muted)]">
-          <p>
+          <p className="min-w-0">
             {workflowsOnly ? (
               <>
                 <span className="font-semibold text-[var(--text)]">{familyCount}</span>
@@ -290,6 +429,13 @@ export function CatalogGrid() {
                 <span className="font-semibold text-[var(--text)]">{familyCount}</span> agents
               </>
             )}
+            {smartFilter && smartApplied.length > 0 ? (
+              <span className="text-[var(--muted-dim)]">
+                {" "}
+                · Smart: {smartApplied.join(" · ")}
+              </span>
+            ) : null}
+            {listening ? <span className="text-[var(--accent-bright)]"> · Listening…</span> : null}
             {pending ? " · updating…" : null}
           </p>
           {activeFilterCount > 0 ? (
@@ -302,6 +448,7 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
+                setSmartApplied([]);
               }}
             >
               Clear filters
