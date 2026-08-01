@@ -64,7 +64,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "We're not SOC 2 certified today — Type II is on the roadmap. What you can review now is the Trust Center at /trust (Live / Partial / Planned tags; we prefer under-claiming). For a security questionnaire, share your name and email and I'll capture a lead.",
+        "Security is a first-class part of the product — workspace isolation, encrypted connector tokens, sealed embed keys, and audit logs are already in place, and you can review them in the Trust Center at /trust. Formal SOC 2 Type II is on our roadmap; if your team needs a questionnaire or security review in the meantime, share your name and work email and I’ll connect you with security@myinstantai.com.",
     };
   }
 
@@ -136,7 +136,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "Guardrails are the rules each agent follows — grounded answers only, no inventing facts, privacy boundaries, and human handoff for clinical/legal/PHI. Market packs add CCPA/TCPA, GDPR, POPIA-style, or PDPA-style cues. In Studio you can run **Test the guardrails**. More at /trust.",
+        "Every agent is built with guardrails so customers get safe, accurate help: answers stay grounded in your knowledge, private data isn’t shared across tenants, and sensitive topics (clinical, legal, payments) go to a human. You can try **Test the guardrails** in Agent Studio, and see the broader trust picture at /trust.",
     };
   }
 
@@ -145,7 +145,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "Privacy & security live in the Trust Center at /trust — RBAC, HMAC embed keys, encrypted OAuth tokens, audit, DSAR export, and market-pack guardrails. We under-claim: no blanket “GDPR certified” or SOC 2 today. Security contact: security@myinstantai.com.",
+        "You’re in good hands — each workspace is isolated, access is role-based, connector tokens are encrypted, embed keys are sealed, and activity is audited. Agents also follow regional privacy guardrails for your market pack, and hand sensitive requests to people when needed. Explore the Trust Center anytime at /trust, or share your name and email if you’d like our security team to follow up (security@myinstantai.com).",
     };
   }
 
