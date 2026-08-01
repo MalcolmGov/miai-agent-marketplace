@@ -72,7 +72,8 @@ async function persist(): Promise<void> {
   await fs.writeFile(file, JSON.stringify(mem().data, null, 2), "utf8");
 }
 
-function seedOwner(workspaceId: string): WorkspaceMember {
+function seedOwner(_workspaceId: string): WorkspaceMember {
+  void _workspaceId;
   return {
     userId: "demo-user",
     email: "owner@demo.myinstantai.com",
