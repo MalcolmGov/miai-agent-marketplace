@@ -2,6 +2,7 @@
 
 import { KnowledgePanel } from "./KnowledgePanel";
 import { ActionsPanel } from "./ActionsPanel";
+import { InstallPanel } from "./InstallPanel";
 import { SandboxChat } from "./SandboxChat";
 import {
   SetupGuide,
@@ -415,127 +416,25 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           )}
 
           {tab === "install" && (
-            <div className="space-y-4">
-              <div className="panel space-y-4 p-4">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <h2 className="text-sm font-semibold">{t("studio.embedTitle")}</h2>
-                    <p className="mt-1 text-xs text-[var(--muted)]">
-                      {t("studio.embedKeyHint")}{" "}
-                      <code className="text-[var(--accent)]">
-                        {publicKey || t("studio.rentToMint")}
-                      </code>
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary text-xs"
-                    onClick={() => void copySnippet()}
-                  >
-                    {copied ? t("studio.copied") : t("studio.copySnippet")}
-                  </button>
-                </div>
-                <pre className="overflow-x-auto rounded-lg bg-[#0d1219] p-3 text-xs text-[var(--accent)]">
-                  {snippet}
-                </pre>
-                <div className="space-y-2 text-sm text-[var(--muted)]">
-                  <p>
-                    <strong className="text-[var(--text)]">{t("studio.embedWordPress")}</strong>{" "}
-                    {t("studio.embedWordPressBody")}
-                  </p>
-                  <p>
-                    <strong className="text-[var(--text)]">{t("studio.embedShopify")}</strong>{" "}
-                    {t("studio.embedShopifyBody")}
-                  </p>
-                  <p>
-                    <strong className="text-[var(--text)]">{t("studio.embedWix")}</strong>{" "}
-                    {t("studio.embedWixBody")}
-                  </p>
-                  <p>
-                    <strong className="text-[var(--text)]">{t("studio.embedWhatsApp")}</strong>{" "}
-                    {t("studio.embedWhatsAppBody")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="panel space-y-4 p-4">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <h2 className="text-sm font-semibold">{t("studio.appTitle")}</h2>
-                    <p className="mt-1 text-xs text-[var(--muted)]">{t("studio.appLede")}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <a
-                      href={appUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn text-xs"
-                    >
-                      {t("studio.appPreview")}
-                    </a>
-                    <button
-                      type="button"
-                      className="btn btn-primary text-xs"
-                      onClick={() => void copyAppUrl()}
-                    >
-                      {copiedApp ? t("studio.copied") : t("studio.appCopyUrl")}
-                    </button>
-                  </div>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <label className="block text-xs text-[var(--muted)]">
-                    {t("studio.appFieldTitle")}
-                    <input
-                      className="input mt-1 w-full text-sm"
-                      value={appTitle}
-                      onChange={(e) => setAppTitle(e.target.value)}
-                    />
-                  </label>
-                  <label className="block text-xs text-[var(--muted)]">
-                    {t("studio.appFieldGreeting")}
-                    <input
-                      className="input mt-1 w-full text-sm"
-                      value={appGreeting}
-                      onChange={(e) => setAppGreeting(e.target.value)}
-                    />
-                  </label>
-                  <label className="block text-xs text-[var(--muted)]">
-                    {t("studio.appFieldAccent")}
-                    <input
-                      className="input mt-1 w-full font-mono text-sm"
-                      value={appAccent}
-                      onChange={(e) => setAppAccent(e.target.value)}
-                    />
-                  </label>
-                  <label className="block text-xs text-[var(--muted)]">
-                    {t("studio.appFieldAccent2")}
-                    <input
-                      className="input mt-1 w-full font-mono text-sm"
-                      value={appAccent2}
-                      onChange={(e) => setAppAccent2(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <pre className="overflow-x-auto rounded-lg bg-[#0d1219] p-3 text-xs text-[var(--accent)]">
-                  {appUrl}
-                </pre>
-                <div className="space-y-2 text-sm text-[var(--muted)]">
-                  <p>{t("studio.appWebViewBody")}</p>
-                  <p>
-                    <strong className="text-[var(--text)]">iOS WKWebView:</strong>{" "}
-                    {t("studio.appIosHint")}
-                  </p>
-                  <p>
-                    <strong className="text-[var(--text)]">Android WebView:</strong>{" "}
-                    {t("studio.appAndroidHint")}
-                  </p>
-                  <p>
-                    <strong className="text-[var(--text)]">Expo demo:</strong>{" "}
-                    {t("studio.appExpoHint")}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <InstallPanel
+              ready={Boolean(publicKey) && state !== "selected"}
+              publicKey={publicKey}
+              snippet={snippet}
+              appUrl={appUrl}
+              appTitle={appTitle}
+              appGreeting={appGreeting}
+              appAccent={appAccent}
+              appAccent2={appAccent2}
+              onAppTitle={setAppTitle}
+              onAppGreeting={setAppGreeting}
+              onAppAccent={setAppAccent}
+              onAppAccent2={setAppAccent2}
+              copied={copied}
+              copiedApp={copiedApp}
+              onCopySnippet={() => void copySnippet()}
+              onCopyAppUrl={() => void copyAppUrl()}
+              onRent={() => void rent()}
+            />
           )}
 
           <details className="panel p-4">

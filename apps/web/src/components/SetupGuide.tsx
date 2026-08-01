@@ -91,8 +91,8 @@ export function SetupGuide({
     },
     {
       id: "install",
-      title: "Install on your site",
-      detail: "Copy the embed snippet when you’re ready to go live.",
+      title: "Go live",
+      detail: "Website code or App link — copy once, you’re running.",
       done: visitedInstall,
     },
   ];
@@ -200,7 +200,7 @@ export function SetupGuide({
         </div>
       ) : (
         <p className="text-xs text-[var(--accent)]">
-          Setup complete. Use live chat for OAuth tools, or install the embed on your site.
+          Setup complete. Open Install to put the agent on your website or mobile app.
         </p>
       )}
     </div>
