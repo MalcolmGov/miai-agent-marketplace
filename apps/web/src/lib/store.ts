@@ -285,6 +285,16 @@ export async function listWorkspaceAgents(workspaceId: string): Promise<Workspac
   return [...ws(workspaceId).agents.values()];
 }
 
+export async function listAllWorkspaces(): Promise<
+  Array<{ workspaceId: string; agents: WorkspaceAgent[] }>
+> {
+  await ensureStoreHydrated();
+  return [...store().workspaces.entries()].map(([workspaceId, rec]) => ({
+    workspaceId,
+    agents: [...rec.agents.values()],
+  }));
+}
+
 export async function upsertWorkspaceAgent(
   workspaceId: string,
   agentId: string,
