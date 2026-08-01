@@ -115,14 +115,15 @@ export function MarketplaceHero({
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Link href="/personalize" className="btn btn-primary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
-                <path
-                  d="M12 3l1.2 3.8L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.2L12 3ZM18 14l.7 2.1L21 17l-2.3.7L18 20l-.7-2.3L15 17l2.3-.9L18 14Z"
-                  strokeLinejoin="round"
-                />
+            <a href="#catalogue" className="btn btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="M20 20l-3.2-3.2" strokeLinecap="round" />
               </svg>
-              Personalize for my business
+              Browse agents
+            </a>
+            <Link href="/agents/us-executive-assistant" className="btn btn-ghost">
+              Try Executive Assistant
             </Link>
             <Link href="/my-agents" className="btn btn-ghost">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">

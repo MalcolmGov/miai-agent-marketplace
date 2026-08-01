@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { tryPromptsForAgent } from "@/lib/workflows";
 import { TopUpModal } from "./TopUpModal";
 
 interface Msg {
@@ -26,9 +27,11 @@ interface WorkflowView {
 export function SandboxChat({
   agentId,
   mode = "sandbox",
+  onFirstMessage,
 }: {
   agentId: string;
   mode?: "sandbox" | "live";
+  onFirstMessage?: () => void;
 }) {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -40,12 +43,15 @@ export function SandboxChat({
   const [topUp, setTopUp] = useState(false);
   const [chatMode, setChatMode] = useState<"sandbox" | "live">(mode);
   const [clearing, setClearing] = useState(false);
+  const { workflow: isWorkflowAgent, prompts } = tryPromptsForAgent(agentId);
   const isEA = /executive-assistant/i.test(agentId);
   const isIT = /it-helpdesk/i.test(agentId);
   const isBooking = /salon-booking|trades-receptionist|home-services/i.test(agentId);
   const isSales = /sales-qualifier/i.test(agentId);
   const isRestaurant = /restaurant-takeaway/i.test(agentId);
   const isOnboarding = /onboarding-buddy/i.test(agentId);
+  const hasWorkflowUi =
+    isEA || isIT || isBooking || isSales || isRestaurant || isOnboarding || isWorkflowAgent;
 
   async function clearChat() {
     if (busy || clearing) return;
@@ -66,11 +72,14 @@ export function SandboxChat({
     }
   }
 
-  async function send() {
-    const text = input.trim();
+  async function send(textOverride?: string) {
+    const text = (textOverride ?? input).trim();
     if (!text || busy) return;
-    setInput("");
+    if (!textOverride) setInput("");
+    else setInput("");
+    const wasEmpty = messages.length === 0;
     setMessages((m) => [...m, { role: "user", content: text }]);
+    if (wasEmpty) onFirstMessage?.();
     setBusy(true);
     try {
       const res = await fetch("/api/chat", {
@@ -94,7 +103,7 @@ export function SandboxChat({
   }
 
   return (
-    <div className="panel flex h-[520px] flex-col overflow-hidden">
+    <div id="agent-chat" className="panel flex h-[520px] flex-col overflow-hidden scroll-mt-24">
       <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
         <div>
           <div className="text-sm font-medium">Agent chat</div>
@@ -140,29 +149,29 @@ export function SandboxChat({
       )}
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
-          <div className="space-y-1.5 text-sm text-[var(--muted)]">
-            {(isEA || isIT || isBooking || isSales || isRestaurant || isOnboarding) && (
+          <div className="space-y-2 text-sm text-[var(--muted)]">
+            {hasWorkflowUi ? (
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
                 Multi-step workflow — try:
               </p>
+            ) : (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+                Try a prompt:
+              </p>
             )}
-            <p>
-              {isEA
-                ? "“Schedule a 30-min budget review with Thabo tomorrow at 14:00, set a reminder, and notify the team.” · “Am I free Thursday afternoon?”"
-                : isIT
-                  ? "“How do I connect to the office VPN?” · “Laptop won’t power on — log a ticket for Thandi, ext 4412.” · “I clicked a phishing link.”"
-                  : isBooking
-                    ? /salon/i.test(agentId)
-                      ? "“Can I get a men’s cut this Saturday?” · “Book the 10am skin fade with Riaan — Name’s Sipho, 555-0100.”"
-                      : "“Can I get an AC diagnostic this Thursday?” · “Book drain clearing Thursday 10:00 for Lea, +491701112233, Invalidenstr. 12 Berlin.”"
-                    : isSales
-                      ? "“What does your Growth plan include and roughly what does it cost?” · “Call me Thursday afternoon on 555-0100 about Growth.” · “I’m Thabo from Nkosi Trading…”"
-                      : isRestaurant
-                        ? "“What pizzas do you have and how much?” · “Order a Margherita and fries for collection — 555-0100.” · “Book a table for 2 on 2026-08-08 at 19:00.”"
-                        : isOnboarding
-                          ? "“It’s my first day — what’s on my checklist?” · “Where do I submit banking for payroll?” · “Laptop won’t boot — I’m stuck.”"
-                          : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
-            </p>
+            <div className="flex flex-col gap-2">
+              {prompts.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  disabled={busy || paused}
+                  onClick={() => void send(p)}
+                  className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-left text-sm text-[var(--text)] transition hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)] hover:text-[var(--accent-bright)] disabled:opacity-50"
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
           </div>
         )}
         {messages.map((m, i) => (
@@ -214,8 +223,7 @@ export function SandboxChat({
           placeholder={
             paused
               ? "Top up to continue…"
-              : (isEA || isIT || isBooking || isSales || isRestaurant || isOnboarding) &&
-                  workflow?.status === "proposed"
+              : hasWorkflowUi && workflow?.status === "proposed"
                 ? isIT || isOnboarding
                   ? "Yes, go ahead."
                   : isBooking
@@ -230,10 +238,15 @@ export function SandboxChat({
           disabled={busy || paused}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") send();
+            if (e.key === "Enter") void send();
           }}
         />
-        <button type="button" className="btn btn-primary" disabled={busy || paused} onClick={send}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={busy || paused}
+          onClick={() => void send()}
+        >
           Send
         </button>
       </div>

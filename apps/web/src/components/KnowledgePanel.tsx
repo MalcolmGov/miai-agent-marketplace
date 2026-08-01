@@ -308,13 +308,13 @@ export function KnowledgePanel({
           disabled={saving}
           onClick={onMarkReady}
         >
-          {saving ? "Saving…" : "Mark rented → ready"}
+          {saving ? "Saving…" : "Save & continue"}
         </button>
       </div>
       {showSelectedTip && (
         <p className="text-xs text-[var(--muted)]">
-          Tip: <strong className="text-[var(--text)]">Mark rented → ready</strong> creates the
-          rental and saves this knowledge in one step.
+          Tip: <strong className="text-[var(--text)]">Save & continue</strong> creates the rental
+          and saves this knowledge in one step, then moves you to Actions.
         </p>
       )}
     </div>

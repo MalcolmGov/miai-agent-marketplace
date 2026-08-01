@@ -38,3 +38,81 @@ export function workflowDemoHint(agentId: string): string | null {
   }
   return null;
 }
+
+/** Short clickable sandbox prompts for the empty chat state. */
+export function tryPromptsForAgent(agentId: string): { workflow: boolean; prompts: string[] } {
+  if (/executive-assistant/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "Schedule a 30-min budget review with Thabo tomorrow at 14:00, set a reminder, and notify the team.",
+        "Am I free Thursday afternoon?",
+      ],
+    };
+  }
+  if (/it-helpdesk/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "How do I connect to the office VPN?",
+        "Laptop won’t power on — log a ticket for Thandi, ext 4412.",
+        "I clicked a phishing link.",
+      ],
+    };
+  }
+  if (/salon-booking/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "Can I get a men’s cut this Saturday?",
+        "Book the 10am skin fade with Riaan — Name’s Sipho, 555-0100.",
+      ],
+    };
+  }
+  if (/trades-receptionist|home-services/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "Can I get an AC diagnostic this Thursday?",
+        "Book drain clearing Thursday 10:00 for Lea, +491701112233, Invalidenstr. 12 Berlin.",
+      ],
+    };
+  }
+  if (/sales-qualifier/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "What does your Growth plan include and roughly what does it cost?",
+        "Call me Thursday afternoon on 555-0100 about Growth.",
+      ],
+    };
+  }
+  if (/restaurant-takeaway/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "What pizzas do you have and how much?",
+        "Order a Margherita and fries for collection — 555-0100.",
+        "Book a table for 2 on 2026-08-08 at 19:00.",
+      ],
+    };
+  }
+  if (/onboarding-buddy/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "It’s my first day — what’s on my checklist?",
+        "Where do I submit banking for payroll?",
+        "Laptop won’t boot — I’m stuck.",
+      ],
+    };
+  }
+  return {
+    workflow: false,
+    prompts: [
+      "Where is the Austin office?",
+      "How many PTO days do full-time employees get?",
+      "Speak to a human",
+    ],
+  };
+}

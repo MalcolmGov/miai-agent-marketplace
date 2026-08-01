@@ -3,6 +3,13 @@
 import { KnowledgePanel } from "./KnowledgePanel";
 import { ActionsPanel } from "./ActionsPanel";
 import { SandboxChat } from "./SandboxChat";
+import {
+  SetupGuide,
+  readSetupFlag,
+  rentalStatusLabel,
+  writeSetupFlag,
+  type StudioTab,
+} from "./SetupGuide";
 import { MODELS } from "@/lib/models";
 import { TIER_PRICES } from "@/lib/constants";
 import { isWorkflowFamilyId, workflowDemoHint } from "@/lib/workflows";
@@ -52,7 +59,12 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [saving, setSaving] = useState(false);
   const [configMsg, setConfigMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState<"configure" | "actions" | "install">("configure");
+  const [tab, setTab] = useState<StudioTab>("configure");
+  const [triedChat, setTriedChat] = useState(false);
+  const [visitedInstall, setVisitedInstall] = useState(false);
+  const [skippedConnect, setSkippedConnect] = useState(false);
+
+  const hasWorkflow = isWorkflowFamilyId(agentId);
 
   async function load() {
     const res = await fetch(`/api/agents/${agentId}`);
@@ -71,8 +83,18 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     const params = new URLSearchParams(window.location.search);
     const t = params.get("tab");
     if (t === "actions" || t === "install" || t === "configure") setTab(t);
+    setTriedChat(readSetupFlag(agentId, "tried"));
+    setVisitedInstall(readSetupFlag(agentId, "install"));
+    setSkippedConnect(readSetupFlag(agentId, "skip-connect"));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reload when agent route changes
   }, [agentId]);
+
+  useEffect(() => {
+    if (tab === "install") {
+      writeSetupFlag(agentId, "install");
+      setVisitedInstall(true);
+    }
+  }, [tab, agentId]);
 
   const snippet = useMemo(() => {
     const key = publicKey || `mia_pk_${agentId}_demo`;
@@ -83,6 +105,8 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     try {
       await navigator.clipboard.writeText(snippet);
       setCopied(true);
+      writeSetupFlag(agentId, "install");
+      setVisitedInstall(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setConfigMsg({ kind: "err", text: "Could not copy — select the snippet and copy manually." });
@@ -99,7 +123,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     });
     const json = await res.json();
     if (!res.ok) {
-      setConfigMsg({ kind: "err", text: json.error ?? "Could not create rental entitlement" });
+      setConfigMsg({ kind: "err", text: json.error ?? "Could not create rental" });
       return false;
     }
     setPublicKey(json.rental.publicKey);
@@ -114,7 +138,10 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       const ok = await ensureRented();
       if (!ok) return;
       setTab("configure");
-      setConfigMsg({ kind: "ok", text: "Rented — configure knowledge, then Mark rented → ready." });
+      setConfigMsg({
+        kind: "ok",
+        text: "Rented — next: review knowledge, then Save & continue.",
+      });
       await load();
     } finally {
       setSaving(false);
@@ -150,7 +177,9 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       setConfigMsg({
         kind: "ok",
         text: markRented
-          ? "Ready — agent is rented. Connect Actions, then use live chat."
+          ? hasWorkflow
+            ? "Saved — next: connect Calendar and Slack (or skip for sandbox)."
+            : "Saved — next: try the agent in chat."
           : "Draft saved.",
       });
       if (markRented) setTab("actions");
@@ -159,13 +188,36 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     }
   }
 
+  function goTab(next: StudioTab) {
+    setTab(next);
+  }
+
+  function focusChat() {
+    document.getElementById("agent-chat")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function markTried() {
+    writeSetupFlag(agentId, "tried");
+    setTriedChat(true);
+  }
+
+  function skipConnect() {
+    writeSetupFlag(agentId, "skip-connect");
+    setSkippedConnect(true);
+    focusChat();
+  }
+
   if (!data) {
     return <div className="text-[var(--muted)]">Loading agent…</div>;
   }
 
   const m = data.package.manifest;
-  const hasWorkflow = isWorkflowFamilyId(agentId);
   const demoHint = workflowDemoHint(agentId);
+  const rented = state !== "selected";
+  const hasKnowledge = knowledge.trim().length > 0;
+  const toolsConnected = hasWorkflow
+    ? connected.some((id) => id === "google_calendar" || id === "slack" || id === "calendar")
+    : connected.length > 0 || data.connectors.some((c) => c.recommended && connected.includes(c.id));
 
   return (
     <div className="space-y-6">
@@ -180,7 +232,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             {data.pilot && <span className="chip chip-live">Pilot</span>}
             <span className="chip">{m.tier}</span>
             <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
-            <span className="chip">state: {state}</span>
+            <span className={`chip ${rented ? "chip-live" : ""}`}>{rentalStatusLabel(state)}</span>
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">{m.name}</h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">{m.summary}</p>
@@ -206,10 +258,25 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             ))}
           </div>
           <button type="button" className="btn btn-primary mt-1" disabled={saving} onClick={rent}>
-            {state === "selected" ? "Rent & configure" : "Update entitlement"}
+            {state === "selected" ? "Rent & configure" : "Update plan"}
           </button>
         </div>
       </div>
+
+      <SetupGuide
+        agentId={agentId}
+        isWorkflow={hasWorkflow}
+        rented={rented}
+        hasKnowledge={hasKnowledge}
+        toolsConnected={toolsConnected}
+        triedChat={triedChat}
+        visitedInstall={visitedInstall}
+        skippedConnect={skippedConnect}
+        onGoTab={goTab}
+        onFocusChat={focusChat}
+        onSkipConnect={skipConnect}
+        onRent={() => void rent()}
+      />
 
       <div className="flex flex-wrap gap-2 border-b border-[var(--line)] pb-2">
         {(
@@ -223,7 +290,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             key={id}
             type="button"
             className={`btn ${tab === id ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => setTab(id)}
+            onClick={() => goTab(id)}
           >
             {label}
           </button>
@@ -320,27 +387,23 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             </div>
           )}
 
-          <div className="panel p-4">
-            <h2 className="mb-2 text-sm font-semibold">Tools ({data.package.tools.length})</h2>
-            <ul className="space-y-2 text-sm">
+          <details className="panel p-4">
+            <summary className="cursor-pointer text-sm font-semibold">
+              Tools ({data.package.tools.length})
+            </summary>
+            <ul className="mt-3 space-y-2 text-sm">
               {data.package.tools.map((t) => (
                 <li key={t.name} className="border-b border-[var(--line)] pb-2 last:border-0">
                   <code className="text-[var(--accent)]">{t.name}</code>
-                  {t.side_effects && (
-                    <span className="chip ml-2">{t.side_effects}</span>
-                  )}
+                  {t.side_effects && <span className="chip ml-2">{t.side_effects}</span>}
                   <p className="text-xs text-[var(--muted)]">{t.description}</p>
                 </li>
               ))}
             </ul>
-          </div>
+          </details>
         </div>
 
-        <SandboxChat
-          agentId={agentId}
-          // Keep sandbox as the default for safe testing; Live is opt-in via the chat toggle.
-          mode="sandbox"
-        />
+        <SandboxChat agentId={agentId} mode="sandbox" onFirstMessage={markTried} />
       </div>
     </div>
   );

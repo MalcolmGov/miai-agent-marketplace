@@ -152,6 +152,10 @@ export function CatalogGrid() {
             </span>
           </p>
         </div>
+        <p className="text-sm text-[var(--muted)]">
+          New here? Filter <strong className="text-[var(--text)]">Workflows</strong>, open an agent,
+          then follow the setup guide.
+        </p>
 
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <div className="relative max-w-xl flex-1">

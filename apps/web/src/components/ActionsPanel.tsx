@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { isWorkflowFamilyId } from "@/lib/workflows";
 
 interface Connector {
   id: string;
@@ -57,10 +58,12 @@ export function ActionsPanel({
   const [slackChannel, setSlackChannel] = useState("");
   const [slackSavedChannel, setSlackSavedChannel] = useState<string | null>(null);
   const [slackNeedsInvite, setSlackNeedsInvite] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const byId = useMemo(() => new Map(status.map((s) => [s.id, s])), [status]);
   const slackConnected = Boolean(byId.get("slack")?.connected) || connected.includes("slack");
   const missingCount = status.filter((s) => !s.configured).length;
+  const isWorkflow = isWorkflowFamilyId(agentId);
 
   async function loadSlackChannels() {
     const res = await fetch("/api/slack/channels");
@@ -127,7 +130,9 @@ export function ActionsPanel({
     const oauth = byId.get(connectorId);
     if (oauth && !oauth.configured) {
       setError(
-        `${oauth.name} needs Railway / .env credentials: ${(oauth.missingEnv ?? []).join(", ")}. Register redirect URI ${callbackUrl || "/api/oauth/callback"} in the provider console.`,
+        showAdvanced
+          ? `${oauth.name} needs Railway / .env credentials: ${(oauth.missingEnv ?? []).join(", ")}. Register redirect URI ${callbackUrl || "/api/oauth/callback"} in the provider console.`
+          : `${oauth.name} isn’t available on this environment yet — you can still demo in sandbox. Open Advanced for operator setup.`,
       );
       return;
     }
@@ -162,7 +167,9 @@ export function ActionsPanel({
         setError(
           data.error +
             (data.missingEnv?.length
-              ? ` — set ${data.missingEnv.join(", ")} on Railway or in apps/web/.env.local`
+              ? showAdvanced
+                ? ` — set ${data.missingEnv.join(", ")} on Railway or in apps/web/.env.local`
+                : " — not available here yet; try sandbox or open Advanced"
               : ""),
         );
         return;
@@ -214,10 +221,22 @@ export function ActionsPanel({
     }
   }
 
-  const phase1 = connectors.filter((c) => c.phase === 1);
+  const recommendedIds = (() => {
+    if (isWorkflow) return new Set(["google_calendar", "slack"]);
+    const flagged = connectors.filter((c) => c.recommended).map((c) => c.id);
+    if (flagged.length) return new Set(flagged);
+    return new Set(
+      ["slack", "google_calendar", "email", "calendly"].filter((id) =>
+        connectors.some((c) => c.id === id),
+      ),
+    );
+  })();
+  const primaryConnectors = connectors.filter((c) => recommendedIds.has(c.id));
+  const otherPhase1 = connectors.filter((c) => c.phase === 1 && !recommendedIds.has(c.id));
   const phase2 = connectors.filter((c) => c.phase === 2);
 
-  function row(c: Connector) {
+  function row(c: Connector, opts?: { operatorDetail?: boolean }) {
+    const operatorDetail = Boolean(opts?.operatorDetail);
     const oauth = byId.get(c.id);
     const isOauth = Boolean(oauth) || c.auth === "oauth";
     const on = connected.includes(c.id) || Boolean(oauth?.connected);
@@ -232,17 +251,27 @@ export function ActionsPanel({
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-medium">{c.name}</span>
-              {c.recommended && <span className="chip chip-live">Recommended</span>}
+              {(c.recommended || recommendedIds.has(c.id)) && (
+                <span className="chip chip-live">Recommended</span>
+              )}
               {on && <span className="chip chip-live">Connected</span>}
               {isOauth && configured && !on && <span className="chip chip-live">Ready</span>}
-              {isOauth && !configured && <span className="chip">Env missing</span>}
+              {isOauth && !configured && (
+                <span className="chip">{operatorDetail ? "Env missing" : "Unavailable"}</span>
+              )}
               {isOauth && <span className="chip">OAuth</span>}
             </div>
             <p className="text-xs text-[var(--muted)]">{c.description}</p>
-            {isOauth && !configured && oauth?.missingEnv?.length ? (
-              <p className="mt-1 font-mono text-[11px] text-[var(--warn)]">
-                Set {oauth.missingEnv.join(" + ")}
-              </p>
+            {isOauth && !configured ? (
+              operatorDetail && oauth?.missingEnv?.length ? (
+                <p className="mt-1 font-mono text-[11px] text-[var(--warn)]">
+                  Set {oauth.missingEnv.join(" + ")}
+                </p>
+              ) : (
+                <p className="mt-1 text-[11px] text-[var(--muted)]">
+                  Not available on this environment yet — you can still demo in sandbox.
+                </p>
+              )
             ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
@@ -254,12 +283,20 @@ export function ActionsPanel({
                   disabled={busy === c.id || !configured}
                   title={
                     !configured
-                      ? `Configure ${(oauth?.missingEnv ?? []).join(", ")} first`
+                      ? operatorDetail
+                        ? `Configure ${(oauth?.missingEnv ?? []).join(", ")} first`
+                        : "Not available here — try sandbox"
                       : undefined
                   }
                   onClick={() => startOAuth(c.id)}
                 >
-                  {!configured ? "Add credentials first" : on ? "Reconnect" : "Connect with OAuth"}
+                  {!configured
+                    ? operatorDetail
+                      ? "Add credentials first"
+                      : "Unavailable"
+                    : on
+                      ? "Reconnect"
+                      : "Connect with OAuth"}
                 </button>
                 {on && (
                   <button
@@ -503,35 +540,79 @@ export function ActionsPanel({
         </div>
       )}
       <div className="panel p-4">
-        <h2 className="text-sm font-semibold">Actions — connect tools for live workflows</h2>
+        <h2 className="text-sm font-semibold">Recommended for this agent</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">
-          OAuth opens the provider consent screen. Tokens stay sealed server-side and never reach the
-          model. For workflow demos: connect <strong className="text-[var(--text)]">Google Calendar</strong>{" "}
-          and <strong className="text-[var(--text)]">Slack</strong>, then use{" "}
-          <strong className="text-[var(--text)]">live</strong> chat — the agent proposes a plan and
-          waits for your confirm before writing. For Slack, pick a handoff channel after connecting.
+          Connect the tools you need for live workflows. Tokens stay sealed server-side. Use{" "}
+          <strong className="text-[var(--text)]">sandbox</strong> chat anytime —{" "}
+          <strong className="text-[var(--text)]">live</strong> chat uses these OAuth connections.
+          {isWorkflow ? (
+            <>
+              {" "}
+              For demos: connect <strong className="text-[var(--text)]">Google Calendar</strong> and{" "}
+              <strong className="text-[var(--text)]">Slack</strong>, then confirm before the agent writes.
+            </>
+          ) : null}
         </p>
-        {callbackUrl ? (
-          <div className="mt-3 rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-xs">
-            <p className="font-medium text-[var(--text)]">Shared redirect URI (all providers)</p>
-            <code className="mt-1 block break-all text-[var(--accent-bright)]">{callbackUrl}</code>
-            {missingCount > 0 ? (
-              <p className="mt-2 text-[var(--muted)]">
-                {missingCount} connector{missingCount === 1 ? "" : "s"} still need client id/secret
-                on Railway (same pattern as Slack). See{" "}
-                <code>docs/CONNECTOR_OAUTH.md</code>.
-              </p>
-            ) : (
-              <p className="mt-2 text-[var(--accent)]">All OAuth apps have credentials configured.</p>
-            )}
-          </div>
-        ) : null}
-        <div className="mt-4 grid gap-2">{phase1.map(row)}</div>
+        <div className="mt-4 grid gap-2">
+          {(primaryConnectors.length ? primaryConnectors : connectors.filter((c) => c.phase === 1).slice(0, 4)).map(
+            (c) => row(c),
+          )}
+        </div>
       </div>
 
       <div className="panel p-4">
-        <h2 className="text-sm font-semibold">Phase 2 connectors</h2>
-        <div className="mt-3 grid gap-2">{phase2.map(row)}</div>
+        <button
+          type="button"
+          className="flex w-full items-center justify-between text-left"
+          onClick={() => setShowAdvanced((v) => !v)}
+        >
+          <span>
+            <span className="text-sm font-semibold">Advanced / operator setup</span>
+            <span className="mt-0.5 block text-xs text-[var(--muted)]">
+              Redirect URI, env credentials, Phase 2 connectors
+              {missingCount > 0 ? ` · ${missingCount} missing env` : ""}
+            </span>
+          </span>
+          <span className="text-xs text-[var(--muted)]">{showAdvanced ? "Hide" : "Show"}</span>
+        </button>
+        {showAdvanced ? (
+          <div className="mt-4 space-y-4">
+            {callbackUrl ? (
+              <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-xs">
+                <p className="font-medium text-[var(--text)]">Shared redirect URI (all providers)</p>
+                <code className="mt-1 block break-all text-[var(--accent-bright)]">{callbackUrl}</code>
+                {missingCount > 0 ? (
+                  <p className="mt-2 text-[var(--muted)]">
+                    {missingCount} connector{missingCount === 1 ? "" : "s"} still need client id/secret
+                    on Railway. See <code>docs/CONNECTOR_OAUTH.md</code>.
+                  </p>
+                ) : (
+                  <p className="mt-2 text-[var(--accent)]">All OAuth apps have credentials configured.</p>
+                )}
+              </div>
+            ) : null}
+            {otherPhase1.length > 0 ? (
+              <div>
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+                  More Phase 1
+                </h3>
+                <div className="grid gap-2">
+                  {otherPhase1.map((c) => row(c, { operatorDetail: true }))}
+                </div>
+              </div>
+            ) : null}
+            {phase2.length > 0 ? (
+              <div>
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+                  Phase 2 connectors
+                </h3>
+                <div className="grid gap-2">
+                  {phase2.map((c) => row(c, { operatorDetail: true }))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </div>
   );
