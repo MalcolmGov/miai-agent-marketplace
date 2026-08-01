@@ -45,6 +45,7 @@ export function SandboxChat({
   const isBooking = /salon-booking|trades-receptionist|home-services/i.test(agentId);
   const isSales = /sales-qualifier/i.test(agentId);
   const isRestaurant = /restaurant-takeaway/i.test(agentId);
+  const isOnboarding = /onboarding-buddy/i.test(agentId);
 
   async function clearChat() {
     if (busy || clearing) return;
@@ -152,7 +153,9 @@ export function SandboxChat({
                     ? "Try: “What does your Growth plan include and roughly what does it cost?” · “Call me Thursday afternoon on 555-0100 about Growth.” · “I’m Thabo from Nkosi Trading…”"
                     : isRestaurant
                       ? "Try: “What pizzas do you have and how much?” · “Order a Margherita and fries for collection — 555-0100.” · “Book a table for 2 on 2026-08-08 at 19:00.”"
-                      : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
+                      : isOnboarding
+                        ? "Try: “It’s my first day — what’s on my checklist?” · “Where do I submit banking for payroll?” · “Laptop won’t boot — I’m stuck.”"
+                        : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
           </p>
         )}
         {messages.map((m, i) => (
@@ -204,9 +207,9 @@ export function SandboxChat({
           placeholder={
             paused
               ? "Top up to continue…"
-              : (isEA || isIT || isBooking || isSales || isRestaurant) &&
+              : (isEA || isIT || isBooking || isSales || isRestaurant || isOnboarding) &&
                   workflow?.status === "proposed"
-                ? isIT
+                ? isIT || isOnboarding
                   ? "Yes, go ahead."
                   : isBooking
                     ? "Yes, please book it."

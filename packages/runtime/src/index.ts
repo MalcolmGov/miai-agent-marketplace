@@ -22,6 +22,10 @@ import {
   isRestaurantTakeaway,
   runRestaurantTakeawayWorkflow,
 } from "./workflows/restaurant-takeaway.js";
+import {
+  isOnboardingBuddy,
+  runOnboardingBuddyWorkflow,
+} from "./workflows/onboarding-buddy.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -1345,6 +1349,20 @@ export async function runTurn(
       executeTool,
     });
     const done = await finishWorkflow(rt);
+    if (done) return done;
+  }
+
+  // Onboarding Buddy multi-step workflow
+  if (isOnboardingBuddy(req.agentId)) {
+    const ob = await runOnboardingBuddyWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(ob);
     if (done) return done;
   }
 

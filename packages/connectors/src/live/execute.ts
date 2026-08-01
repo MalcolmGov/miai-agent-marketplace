@@ -382,6 +382,41 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
     };
   if (n.includes("freeze") || n.includes("cancel"))
     return { ok: true, reference: "REF-1001", status: "logged", ...args };
+  if (n.includes("get_onboarding_checklist") || n === "get_onboarding_checklist") {
+    return {
+      ok: true,
+      role: args.role ?? "new joiner",
+      day: args.day ?? "1",
+      items: [
+        "Collect access card from reception",
+        "Set up laptop and enable MFA",
+        "Meet onboarding buddy and manager",
+        "Day 1 orientation / training",
+        "Schedule 1:1 with manager",
+      ],
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("get_resource") || n === "get_resource") {
+    return {
+      ok: true,
+      topic: args.topic ?? "general",
+      title: args.topic === "payroll" ? "Self-Service portal — payroll" : "Onboarding resource",
+      url: "https://portal.example.com/self-service",
+      note: "Prefer knowledge base for exact portal wording.",
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("log_question") || n === "log_question") {
+    return {
+      ok: true,
+      reference: "REF-0001",
+      status: "logged",
+      topic: args.topic,
+      question: args.question,
+      source: "sandbox_stub",
+    };
+  }
   if (n.includes("onboarding") || n.includes("supplier"))
     return { ok: true, reference: "ONB-1001", status: "started", case: "onboarding", ...args };
   if (n.includes("procurement_policy"))

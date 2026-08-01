@@ -85,6 +85,14 @@ const restaurantTakeaway = (
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+const onboardingBuddy = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
+  { tool: "get_onboarding_checklist", connector: "webhook" },
+  { tool: "get_resource", connector: "webhook" },
+  { tool: "log_question", connector: "hubspot" },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_order_status", connector: "shopify" },
   { tool: "check_availability", connector: "shopify" },
@@ -326,6 +334,31 @@ const HAND_OVERRIDES: AgentPreset[] = [
     pilot: true,
     phase: 1,
     bindings: restaurantTakeaway("m365_calendar", "teams"),
+  },
+  // Multi-workflow Onboarding Buddy — checklist → log → Slack/People
+  {
+    agentId: "us-onboarding-buddy",
+    pilot: true,
+    phase: 1,
+    bindings: onboardingBuddy("slack"),
+  },
+  {
+    agentId: "onboarding-buddy",
+    pilot: true,
+    phase: 1,
+    bindings: onboardingBuddy("slack"),
+  },
+  {
+    agentId: "asia-onboarding-buddy",
+    pilot: true,
+    phase: 1,
+    bindings: onboardingBuddy("slack"),
+  },
+  {
+    agentId: "eu-onboarding-buddy",
+    pilot: true,
+    phase: 1,
+    bindings: onboardingBuddy("teams"),
   },
 ];
 
