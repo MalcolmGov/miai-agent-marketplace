@@ -51,11 +51,91 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
 }
 
 const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
+type PackId = (typeof PACK_ORDER)[number];
 
 function packLabel(m: string) {
   if (m === "africa") return "Africa";
   if (m === "asia") return "Asia";
   return m.toUpperCase();
+}
+
+function isPackId(m: string): m is PackId {
+  return (PACK_ORDER as readonly string[]).includes(m);
+}
+
+/** Compact SVG market flags — readable at chip size without emoji inconsistency. */
+function MarketFlagIcon({ market, className = "h-3 w-[18px]" }: { market: PackId; className?: string }) {
+  if (market === "us") {
+    return (
+      <svg viewBox="0 0 19 13" className={`${className} rounded-[2px] shadow-sm`} aria-hidden>
+        <rect width="19" height="13" fill="#B22234" rx="1" />
+        <path
+          fill="#fff"
+          d="M0 1.5h19v1.4H0zm0 2.8h19v1.4H0zm0 2.8h19v1.4H0zm0 2.8h19v1.4H0z"
+        />
+        <rect width="8" height="7" fill="#3C3B6E" rx="1" />
+        <path
+          fill="#fff"
+          d="M1.2 1.3h.7l.2.6.2-.6h.7l-.55.4.2.65L1.9 2l-.55.4.2-.65zm2.6 0h.7l.2.6.2-.6h.7l-.55.4.2.65L4.5 2l-.55.4.2-.65zm2.6 0h.7l.2.6.2-.6h.7l-.55.4.2.65L7.1 2l-.55.4.2-.65zM1.2 3.5h.7l.2.6.2-.6h.7l-.55.4.2.65L1.9 4.2l-.55.4.2-.65zm2.6 0h.7l.2.6.2-.6h.7l-.55.4.2.65L4.5 4.2l-.55.4.2-.65zm2.6 0h.7l.2.6.2-.6h.7l-.55.4.2.65L7.1 4.2l-.55.4.2-.65zM1.2 5.7h.7l.2.6.2-.6h.7l-.55.4.2.65L1.9 6.4l-.55.4.2-.65zm2.6 0h.7l.2.6.2-.6h.7l-.55.4.2.65L4.5 6.4l-.55.4.2-.65zm2.6 0h.7l.2.6.2-.6h.7l-.55.4.2.65L7.1 6.4l-.55.4.2-.65z"
+        />
+      </svg>
+    );
+  }
+  if (market === "eu") {
+    return (
+      <svg viewBox="0 0 19 13" className={`${className} rounded-[2px] shadow-sm`} aria-hidden>
+        <rect width="19" height="13" fill="#003399" rx="1" />
+        <g fill="#FFCC00">
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = ((i * 30 - 90) * Math.PI) / 180;
+            const cx = 9.5 + Math.cos(a) * 3.6;
+            const cy = 6.5 + Math.sin(a) * 3.2;
+            return <circle key={i} cx={cx} cy={cy} r="0.55" />;
+          })}
+        </g>
+      </svg>
+    );
+  }
+  if (market === "africa") {
+    return (
+      <svg viewBox="0 0 19 13" className={`${className} rounded-[2px] shadow-sm`} aria-hidden>
+        <rect width="19" height="13" fill="#007A3D" rx="1" />
+        <rect y="4.3" width="19" height="4.4" fill="#FCD116" />
+        <rect y="8.7" width="19" height="4.3" fill="#CE1126" />
+        <circle cx="9.5" cy="6.5" r="2.1" fill="#000" />
+      </svg>
+    );
+  }
+  // Asia — stylized navy / gold (APAC cue)
+  return (
+    <svg viewBox="0 0 19 13" className={`${className} rounded-[2px] shadow-sm`} aria-hidden>
+      <rect width="19" height="13" fill="#1B3A6B" rx="1" />
+      <circle cx="9.5" cy="6.5" r="3.2" fill="#F5C518" />
+      <circle cx="10.4" cy="5.8" r="2.5" fill="#1B3A6B" />
+    </svg>
+  );
+}
+
+function MarketBadge({
+  market,
+  prominent = false,
+}: {
+  market: PackId;
+  prominent?: boolean;
+}) {
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center gap-1 rounded-md font-semibold uppercase tracking-[0.06em] ${
+        prominent
+          ? "bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] px-1.5 py-0.5 text-[10px] text-[var(--accent-bright)] ring-1 ring-[color-mix(in_srgb,var(--accent)_30%,transparent)]"
+          : "bg-[var(--bg-elev)] px-1 py-0.5 text-[10px] text-[var(--card-meta)] ring-1 ring-[var(--line)]"
+      }`}
+      title={`${packLabel(market)} market pack`}
+    >
+      <MarketFlagIcon market={market} />
+      <span>{packLabel(market)}</span>
+    </span>
+  );
 }
 
 interface FamilyItem {
@@ -73,6 +153,10 @@ interface FamilyItem {
   liveReady: boolean;
   catalogueReady: boolean;
   defaultAgentId: string;
+}
+
+function familyPacks(item: FamilyItem): PackId[] {
+  return PACK_ORDER.filter((p) => item.packs.includes(p) || Boolean(item.markets[p]));
 }
 
 const MARKETS = [
@@ -561,6 +645,13 @@ export function CatalogGrid() {
               hrefMarket && item.markets[hrefMarket]
                 ? `/agents/${item.markets[hrefMarket]}`
                 : `/agents/${item.defaultAgentId}`;
+            const packs = familyPacks(item);
+            const activePack = isPackId(market) ? market : null;
+            const showPacks = activePack
+              ? packs.includes(activePack)
+                ? [activePack]
+                : []
+              : packs;
 
             return (
               <article
@@ -580,22 +671,27 @@ export function CatalogGrid() {
                         <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                           {item.name}
                         </h3>
-                        {badge ? (
-                          <span
-                            className={`chip shrink-0 !px-2 !py-0.5 text-[10px] ${badge.tone === "live" ? "chip-live" : ""}`}
-                          >
-                            {badge.tone === "live" ? (
-                              <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-                            ) : null}
-                            {badge.label}
-                          </span>
-                        ) : (
-                          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
-                            {item.tier}
-                          </span>
-                        )}
+                        <div className="flex shrink-0 flex-col items-end gap-1">
+                          {activePack && packs.includes(activePack) ? (
+                            <MarketBadge market={activePack} prominent />
+                          ) : null}
+                          {badge ? (
+                            <span
+                              className={`chip !px-2 !py-0.5 text-[10px] ${badge.tone === "live" ? "chip-live" : ""}`}
+                            >
+                              {badge.tone === "live" ? (
+                                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                              ) : null}
+                              {badge.label}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                              {item.tier}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] font-medium text-[var(--card-meta)]">
+                      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                         <span>{item.marketplaceCategory}</span>
                         {hasWorkflow ? (
                           <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
@@ -603,6 +699,20 @@ export function CatalogGrid() {
                           </span>
                         ) : null}
                       </p>
+                      {!activePack && showPacks.length > 0 ? (
+                        <div className="mt-2 flex flex-wrap items-center gap-1" aria-label="Market packs">
+                          {showPacks.map((p) => (
+                            <span
+                              key={p}
+                              className="inline-flex items-center rounded-[4px] ring-1 ring-[var(--line)]"
+                              title={`${packLabel(p)} pack`}
+                            >
+                              <MarketFlagIcon market={p} className="h-2.5 w-[15px]" />
+                              <span className="sr-only">{packLabel(p)}</span>
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
 
@@ -682,7 +792,8 @@ function AgentDetailModal({
       ? `/agents/${item.markets[hrefMarket]}`
       : `/agents/${item.defaultAgentId}`;
   const summary = cleanCardSummary(item.summary, item.name);
-  const packs = PACK_ORDER.filter((p) => item.packs.includes(p) || item.markets[p]);
+  const packs = familyPacks(item);
+  const activePack = isPackId(market) ? market : null;
 
   return (
     <div
@@ -712,14 +823,19 @@ function AgentDetailModal({
                 >
                   {item.name}
                 </h2>
-                <button
-                  type="button"
-                  className="btn btn-ghost shrink-0 px-2 py-1"
-                  onClick={onClose}
-                  aria-label="Close"
-                >
-                  ✕
-                </button>
+                <div className="flex shrink-0 items-center gap-2">
+                  {activePack && packs.includes(activePack) ? (
+                    <MarketBadge market={activePack} prominent />
+                  ) : null}
+                  <button
+                    type="button"
+                    className="btn btn-ghost px-2 py-1"
+                    onClick={onClose}
+                    aria-label="Close"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
               <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                 <span>{item.marketplaceCategory}</span>
@@ -777,9 +893,7 @@ function AgentDetailModal({
                 </dt>
                 <dd className="mt-1.5 flex flex-wrap gap-1.5">
                   {packs.map((p) => (
-                    <span key={p} className="chip !px-2 !py-0.5 text-[11px]">
-                      {packLabel(p)}
-                    </span>
+                    <MarketBadge key={p} market={p} prominent={p === activePack} />
                   ))}
                   {item.hasZa ? (
                     <span className="chip !px-2 !py-0.5 text-[11px]">ZA</span>
