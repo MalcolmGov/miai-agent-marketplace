@@ -214,12 +214,21 @@ export function CatalogGrid() {
               ))}
               <button
                 type="button"
-                onClick={() => setWorkflowsOnly((v) => !v)}
+                onClick={() => {
+                  setWorkflowsOnly((v) => {
+                    const next = !v;
+                    // Show the full workflow set when enabling — don't keep a stacked audience filter.
+                    if (next) setAudience("all");
+                    return next;
+                  });
+                }}
                 className={`chip ${workflowsOnly ? "filter-active chip-live" : ""}`}
                 title="Multi-step agents that plan, confirm, then act"
               >
                 Workflows
-                <span className="cat-count">{WORKFLOW_FAMILY_IDS.length}</span>
+                <span className="cat-count">
+                  {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
+                </span>
               </button>
             </div>
 
@@ -262,7 +271,25 @@ export function CatalogGrid() {
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--muted)]">
           <p>
-            <span className="font-semibold text-[var(--text)]">{familyCount}</span> agents
+            {workflowsOnly ? (
+              <>
+                <span className="font-semibold text-[var(--text)]">{familyCount}</span>
+                {familyCount < WORKFLOW_FAMILY_IDS.length ? (
+                  <>
+                    {" "}
+                    of {WORKFLOW_FAMILY_IDS.length} workflows
+                    {audience !== "all" ? ` · ${audience}` : null}
+                    {category !== "all" ? " · industry filter" : null}
+                  </>
+                ) : (
+                  <> workflows</>
+                )}
+              </>
+            ) : (
+              <>
+                <span className="font-semibold text-[var(--text)]">{familyCount}</span> agents
+              </>
+            )}
             {pending ? " · updating…" : null}
           </p>
           {activeFilterCount > 0 ? (
