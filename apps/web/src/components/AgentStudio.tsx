@@ -12,7 +12,11 @@ import {
 } from "./SetupGuide";
 import { MODELS } from "@/lib/models";
 import { TIER_PRICES } from "@/lib/constants";
-import { isWorkflowFamilyId, workflowDemoHint } from "@/lib/workflows";
+import {
+  isWorkflowFamilyId,
+  workflowCapabilityChips,
+  workflowDemoHint,
+} from "@/lib/workflows";
 import { useEffect, useMemo, useState } from "react";
 
 interface AgentPayload {
@@ -213,6 +217,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
 
   const m = data.package.manifest;
   const demoHint = workflowDemoHint(agentId);
+  const capabilityChips = workflowCapabilityChips(agentId);
   const rented = state !== "selected";
   const hasKnowledge = knowledge.trim().length > 0;
   const toolsConnected = hasWorkflow
@@ -226,7 +231,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           <div className="mb-2 flex flex-wrap gap-2">
             {hasWorkflow && (
               <span className="chip chip-live" title="Goal → plan → confirm → execute → verify">
-                Workflow
+                Multi-step agent
               </span>
             )}
             {data.pilot && <span className="chip chip-live">Pilot</span>}
@@ -237,10 +242,28 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           <h1 className="text-3xl font-semibold tracking-tight">{m.name}</h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">{m.summary}</p>
           {hasWorkflow ? (
-            <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
-              Multi-step workflow: proposes a plan, waits for your confirm, then runs tools.{" "}
-              {demoHint ?? "Connect Calendar / Slack on Actions, then try a prompt in chat."}
-            </p>
+            <>
+              <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
+                Multi-step workflow: proposes a plan, waits for your confirm, then runs tools.{" "}
+                {demoHint ?? "Connect Calendar / Slack on Actions, then try a prompt in chat."}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-1.5" aria-label="What this agent can do">
+                {capabilityChips.map((label) => (
+                  <span
+                    key={label}
+                    className={`chip normal-case tracking-normal ${
+                      label === "Can act" ||
+                      label === "Multi-step" ||
+                      label === "Confirm before write"
+                        ? "chip-live"
+                        : ""
+                    }`}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </>
           ) : null}
         </div>
         <div className="panel flex flex-col gap-2 p-4 sm:min-w-[240px]">

@@ -19,6 +19,68 @@ export function isWorkflowFamilyId(familyOrAgentId: string): boolean {
   return WORKFLOW_RE.test(familyOrAgentId);
 }
 
+/** Chips shown in chat / studio so buyers see these agents act, not only answer. */
+export function workflowCapabilityChips(agentId: string): string[] {
+  if (!isWorkflowFamilyId(agentId)) return [];
+
+  const base = ["Multi-step", "Can act", "Confirm before write"];
+
+  if (/executive-assistant/i.test(agentId)) {
+    return [...base, "Calendar", "Reminders", "Slack notify"];
+  }
+  if (/it-helpdesk/i.test(agentId)) {
+    return [...base, "KB how-tos", "Create ticket", "Escalate"];
+  }
+  if (/salon-booking/i.test(agentId)) {
+    return [...base, "Check availability", "Book", "Notify desk"];
+  }
+  if (/trades-receptionist|home-services/i.test(agentId)) {
+    return [...base, "Check availability", "Book job", "Notify dispatch"];
+  }
+  if (/sales-qualifier/i.test(agentId)) {
+    return [...base, "Qualify", "Capture lead", "Book callback"];
+  }
+  if (/restaurant-takeaway/i.test(agentId)) {
+    return [...base, "Menu", "Book table", "Place order"];
+  }
+  if (/onboarding-buddy/i.test(agentId)) {
+    return [...base, "Checklist", "Log question", "Escalate"];
+  }
+  if (/dental-front-desk/i.test(agentId)) {
+    return [...base, "Fees & treatments", "Book visit", "Clinical handoff"];
+  }
+  if (/hotel-guest/i.test(agentId)) {
+    return [...base, "Amenities", "Local tips", "Log request"];
+  }
+  return base;
+}
+
+/** Friendly label for a tool name shown after a turn. */
+export function toolChipLabel(toolName: string): string {
+  const map: Record<string, string> = {
+    check_availability: "Checked availability",
+    book_appointment: "Booked appointment",
+    notify_team: "Notified team",
+    handoff_to_human: "Handed off",
+    check_calendar: "Checked calendar",
+    schedule_meeting: "Scheduled meeting",
+    set_reminder: "Set reminder",
+    search_kb: "Searched knowledge",
+    create_ticket: "Created ticket",
+    get_menu: "Fetched menu",
+    book_table: "Booked table",
+    place_order: "Placed order",
+    capture_lead: "Captured lead",
+    book_callback: "Booked callback",
+    make_guest_request: "Logged guest request",
+    get_amenity_info: "Amenity info",
+    get_local_recommendations: "Local tips",
+    list_services: "Listed services",
+    get_treatment_info: "Treatment info",
+  };
+  return map[toolName] ?? toolName.replace(/_/g, " ");
+}
+
 export function workflowDemoHint(agentId: string): string | null {
   if (/executive-assistant/i.test(agentId)) {
     return "Connect Google Calendar + Slack on Actions, then try the suggested prompt — confirm the plan to write to the calendar.";

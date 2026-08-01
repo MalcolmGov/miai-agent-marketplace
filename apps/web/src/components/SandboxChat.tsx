@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { tryPromptsForAgent } from "@/lib/workflows";
+import {
+  toolChipLabel,
+  tryPromptsForAgent,
+  workflowCapabilityChips,
+} from "@/lib/workflows";
 import { TopUpModal } from "./TopUpModal";
 
 interface Msg {
@@ -44,6 +48,7 @@ export function SandboxChat({
   const [chatMode, setChatMode] = useState<"sandbox" | "live">(mode);
   const [clearing, setClearing] = useState(false);
   const { workflow: isWorkflowAgent, prompts } = tryPromptsForAgent(agentId);
+  const capabilityChips = workflowCapabilityChips(agentId);
   const isEA = /executive-assistant/i.test(agentId);
   const isIT = /it-helpdesk/i.test(agentId);
   const isBooking = /salon-booking|trades-receptionist|home-services/i.test(agentId);
@@ -114,43 +119,81 @@ export function SandboxChat({
 
   return (
     <div id="agent-chat" className="panel flex h-[520px] flex-col overflow-hidden scroll-mt-24">
-      <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
-        <div>
-          <div className="text-sm font-medium">Agent chat</div>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--muted)]">
+      <div className="border-b border-[var(--line)] px-4 py-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-medium">Agent chat</span>
+              {capabilityChips.length > 0 ? (
+                <span
+                  className="chip chip-live"
+                  title="Goal → plan → confirm → execute → verify"
+                >
+                  Multi-step agent
+                </span>
+              ) : null}
+            </div>
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--muted)]">
+              <button
+                type="button"
+                className={`chip ${chatMode === "sandbox" ? "chip-live" : ""}`}
+                onClick={() => setChatMode("sandbox")}
+              >
+                sandbox
+              </button>
+              <button
+                type="button"
+                className={`chip ${chatMode === "live" ? "chip-live" : ""}`}
+                onClick={() => setChatMode("live")}
+              >
+                live (OAuth APIs)
+              </button>
+              {balance !== null ? ` · ${balance.toLocaleString()} tokens` : ""}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              className={`chip ${chatMode === "sandbox" ? "chip-live" : ""}`}
-              onClick={() => setChatMode("sandbox")}
+              className="btn btn-ghost text-xs"
+              disabled={busy || clearing || (messages.length === 0 && !workflow)}
+              onClick={clearChat}
+              title="Clear chat history and reset workflow state"
             >
-              sandbox
+              {clearing ? "Clearing…" : "Clear chat"}
             </button>
-            <button
-              type="button"
-              className={`chip ${chatMode === "live" ? "chip-live" : ""}`}
-              onClick={() => setChatMode("live")}
-            >
-              live (OAuth APIs)
-            </button>
-            {balance !== null ? ` · ${balance.toLocaleString()} tokens` : ""}
+            {paused && (
+              <button type="button" className="btn btn-primary text-xs" onClick={() => setTopUp(true)}>
+                Top up to resume
+              </button>
+            )}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="btn btn-ghost text-xs"
-            disabled={busy || clearing || (messages.length === 0 && !workflow)}
-            onClick={clearChat}
-            title="Clear chat history and reset workflow state"
+        {capabilityChips.length > 0 ? (
+          <div
+            className="mt-2.5 flex flex-wrap gap-1.5"
+            aria-label="What this agent can do"
           >
-            {clearing ? "Clearing…" : "Clear chat"}
-          </button>
-          {paused && (
-            <button type="button" className="btn btn-primary text-xs" onClick={() => setTopUp(true)}>
-              Top up to resume
-            </button>
-          )}
-        </div>
+            {capabilityChips.map((label) => (
+              <span
+                key={label}
+                className={`chip normal-case tracking-normal ${
+                  label === "Can act" || label === "Multi-step" || label === "Confirm before write"
+                    ? "chip-live"
+                    : ""
+                }`}
+                title={
+                  label === "Confirm before write"
+                    ? "Proposes a plan and waits for your yes before writing"
+                    : label === "Can act"
+                      ? "Runs tools — books, tickets, notifies — not FAQ-only"
+                      : undefined
+                }
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
       {paused && (
         <div className="border-b border-[var(--warn)]/30 bg-[color-mix(in_srgb,var(--warn)_12%,transparent)] px-4 py-2 text-sm text-[var(--warn)]">
@@ -223,7 +266,16 @@ export function SandboxChat({
           </div>
         )}
         {lastTools.length > 0 && (
-          <div className="text-xs text-[var(--muted)]">Tools: {lastTools.join(", ")}</div>
+          <div className="flex flex-wrap items-center gap-1.5" aria-label="Actions just taken">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted-dim)]">
+              Acted
+            </span>
+            {lastTools.map((t) => (
+              <span key={t} className="chip chip-live normal-case tracking-normal">
+                {toolChipLabel(t)}
+              </span>
+            ))}
+          </div>
         )}
       </div>
       <div className="flex gap-2 border-t border-[var(--line)] p-3">

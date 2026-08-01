@@ -279,12 +279,20 @@ export function CatalogGrid() {
 
                   <div className="mt-4 flex flex-wrap items-center gap-1.5">
                     {hasWorkflow ? (
-                      <span
-                        className="chip chip-live"
-                        title="Goal → plan → confirm → execute → verify"
-                      >
-                        Workflow
-                      </span>
+                      <>
+                        <span
+                          className="chip chip-live"
+                          title="Goal → plan → confirm → execute → verify"
+                        >
+                          Multi-step
+                        </span>
+                        <span
+                          className="chip chip-live"
+                          title="Runs tools — books, tickets, notifies — not FAQ-only"
+                        >
+                          Can act
+                        </span>
+                      </>
                     ) : null}
                     <span
                       className={`chip ${
