@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 /**
  * When MIAI_AUTH_MODE=oidc, require Bearer token on protected API routes.
  * Full JWT verification happens in route handlers via resolveAuth().
+ * Security response headers are set in next.config.ts for all routes.
  */
 export function middleware(req: NextRequest) {
   if (process.env.MIAI_AUTH_MODE !== "oidc") {

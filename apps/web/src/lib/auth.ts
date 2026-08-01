@@ -41,11 +41,15 @@ export async function resolveAuth(req: Request): Promise<AuthContext> {
     const url = new URL(req.url);
     const headerWs = req.headers.get("x-workspace-id");
     const headerUser = req.headers.get("x-user-id");
+    const headerRoles = req.headers.get("x-roles");
+    const roles = headerRoles
+      ? headerRoles.split(",").map((r) => r.trim()).filter(Boolean)
+      : ["admin"];
     return {
       mode: "mock",
       workspaceId: headerWs || url.searchParams.get("workspaceId") || WORKSPACE_ID,
       userId: headerUser || url.searchParams.get("userId") || "demo-user",
-      roles: ["admin"],
+      roles,
     };
   }
 

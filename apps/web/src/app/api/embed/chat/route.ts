@@ -4,6 +4,7 @@ import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { appendAudit, getWorkspaceAgent, resolveEmbedKey, upsertWorkspaceAgent } from "@/lib/store";
+import { rateLimit } from "@/lib/security";
 
 /** The widget runs on customers' websites, so this endpoint must answer cross-origin.
  *  The embed key identifies (and is scoped to) the tenant agent; it is public by design. */
@@ -31,6 +32,8 @@ function sessions(): Map<string, EmbedMessage[]> {
 const MAX_SESSIONS = 500;
 const MAX_TURNS_KEPT = 24;
 
+const LIVE_STATES = new Set(["live", "rented", "paused_no_tokens"]);
+
 const EMBED_HANDOFF_POLICY = [
   "## Handoff contact policy (website chat)",
   "When a visitor wants a human (or you decide to hand off), you MUST first collect their",
@@ -46,24 +49,39 @@ export async function POST(req: Request) {
     message: string;
     sessionId?: string;
   };
+  if (!body.key || typeof body.message !== "string" || !body.message.trim()) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400, headers: CORS_HEADERS });
+  }
+
   const resolved = resolveEmbedKey(body.key);
   if (!resolved)
     return NextResponse.json({ error: "Invalid key" }, { status: 401, headers: CORS_HEADERS });
+
+  const limited = rateLimit(`embed:${body.key.slice(0, 48)}`, { limit: 30, windowMs: 60_000 });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded", retryAfterSec: limited.retryAfterSec },
+      {
+        status: 429,
+        headers: { ...CORS_HEADERS, "retry-after": String(limited.retryAfterSec) },
+      },
+    );
+  }
 
   const { workspaceId, agentId } = resolved;
   const pkg = await getAgentPackage(agentId);
   if (!pkg)
     return NextResponse.json({ error: "Agent missing" }, { status: 404, headers: CORS_HEADERS });
 
-  let rental = await getWorkspaceAgent(workspaceId, agentId);
-  if (!rental) {
-    rental = await upsertWorkspaceAgent(workspaceId, agentId, {
-      agentId,
-      state: "live",
-      publicKey: body.key,
-      knowledge: pkg.knowledge,
-      model: pkg.manifest.model.primary,
-    });
+  const rental = await getWorkspaceAgent(workspaceId, agentId);
+  if (!rental || !LIVE_STATES.has(rental.state)) {
+    return NextResponse.json(
+      {
+        error: "Agent not published for embed",
+        detail: "Rent and go live from Agent Studio before installing the website widget.",
+      },
+      { status: 403, headers: CORS_HEADERS },
+    );
   }
 
   const knowledgeOverride = await getComposedKnowledge(
@@ -84,7 +102,7 @@ export async function POST(req: Request) {
       messages: history,
       userMessage: body.message,
       model: rental.model,
-      mode: rental.state === "selected" || rental.state === "configuring" ? "sandbox" : "live",
+      mode: "live",
       knowledgeOverride,
       bindings: rental.bindings,
       state: rental.state,
@@ -93,7 +111,6 @@ export async function POST(req: Request) {
     { wallet: createWalletAdapter() },
   );
 
-  // Persist this visitor's thread (trimmed) and cap the session table.
   const store = sessions();
   if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
     const oldest = store.keys().next().value;

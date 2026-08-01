@@ -387,14 +387,20 @@ Examples: `us-customer-support.agent.json`, `africa-dental-front-desk.agent.json
 
 | Store | Mechanism |
 |---|---|
-| Rentals + audit | Postgres (`miai_rentals`, `miai_audit`) or `rentals.json` |
-| OAuth tokens | Sealed HMAC blobs in `oauth-tokens.json` (or path override) |
+| Rentals + audit | Postgres (`miai_rentals`, `miai_audit`) or `rentals.json` (audit cap 5k) |
+| OAuth tokens | **HMAC-sealed** blobs in `oauth-tokens.json` (integrity + encoding — **not** AES encryption; AES-GCM planned) |
 | Knowledge sources | File store under `KNOWLEDGE_STORE_PATH` |
 | OAuth state | Self-contained HMAC signature (no server session required) |
-| Embed keys | Deterministic HMAC (`mia_pk_…`) — no DB lookup required |
-| Secrets | Env / Railway / Azure Key Vault (bicep mirrors) |
+| Embed keys | Deterministic HMAC (`mia_pk_…`) — embed chat requires live/rented agent + rate limit |
+| Secrets | Env / Railway / Azure Key Vault (bicep mirrors); set `OAUTH_TOKEN_SECRET`, `OAUTH_STATE_SECRET`, `EMBED_KEY_SECRET` |
 
 Auth middleware: Bearer required on `/api/*` when `MIAI_AUTH_MODE=oidc` (public: health, catalog, oauth callback, embed).
+
+RBAC: `/api/admin` requires `admin` / `operator` roles. `/api/audit` is always workspace-scoped (no cross-tenant dump).
+
+Security headers: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, CSP Report-Only (`apps/web/next.config.ts`).
+
+Trust Center: `/trust` + `docs/TRUST_AND_COMPLIANCE.md` — market-pack compliance vs platform certification claims.
 
 Telemetry: structured console + optional App Insights custom events (`miai.audit.*`).
 

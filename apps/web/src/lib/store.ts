@@ -217,9 +217,9 @@ async function persistToPostgres(shape: PersistShape): Promise<void> {
         );
       }
     }
-    // Keep last 500 audit rows
+    // Keep last AUDIT_CAP audit rows for operator metering / compliance trail
     await client.query("DELETE FROM miai_audit");
-    for (const row of shape.audit.slice(0, 500)) {
+    for (const row of shape.audit.slice(0, AUDIT_CAP)) {
       await client.query(
         `INSERT INTO miai_audit (id, at, workspace_id, agent_id, type, detail)
          VALUES ($1, $2, $3, $4, $5, $6::jsonb)
