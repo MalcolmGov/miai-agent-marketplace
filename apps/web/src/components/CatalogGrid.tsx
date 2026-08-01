@@ -3,12 +3,18 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { TIER_PRICES } from "@/lib/constants";
 import { useT } from "@/lib/locale";
 import { MONDAY_PILOT_FAMILY_IDS } from "@/lib/monday-pilot";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
+
+function rentPriceUsd(tier: string): number {
+  const key = tier.toLowerCase() as keyof typeof TIER_PRICES;
+  return TIER_PRICES[key] ?? TIER_PRICES.standard;
+}
 
 type SpeechRecognitionLike = {
   lang: string;
@@ -663,9 +669,19 @@ export function CatalogGrid() {
                         <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                           {item.name}
                         </h3>
-                        {activePack && packs.includes(activePack) ? (
-                          <MarketBadge market={activePack} prominent />
-                        ) : null}
+                        <div className="flex shrink-0 flex-col items-end gap-1.5">
+                          <span
+                            className="inline-flex items-baseline gap-0.5 rounded-full bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] px-2.5 py-1 text-[12px] font-semibold tabular-nums text-[var(--accent-bright)] ring-1 ring-[color-mix(in_srgb,var(--accent)_32%,transparent)]"
+                            title={`${item.tier} plan`}
+                          >
+                            <span className="text-[10px] font-bold opacity-80">$</span>
+                            {rentPriceUsd(item.tier)}
+                            <span className="ml-0.5 text-[10px] font-medium opacity-75">/mo</span>
+                          </span>
+                          {activePack && packs.includes(activePack) ? (
+                            <MarketBadge market={activePack} prominent />
+                          ) : null}
+                        </div>
                       </div>
                       <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                         <span>{item.marketplaceCategory}</span>
@@ -700,15 +716,13 @@ export function CatalogGrid() {
                     >
                       {t("catalog.learnMore")}
                     </button>
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href={`${href}?try=1`}
-                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
-                      >
-                        {t("catalog.trySandbox")}
-                        <span aria-hidden>→</span>
-                      </Link>
-                    </div>
+                    <Link
+                      href={href}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
+                    >
+                      {t("catalog.rentSetup")}
+                      <span aria-hidden>→</span>
+                    </Link>
                   </div>
                 </div>
               </article>
@@ -800,6 +814,14 @@ function AgentDetailModal({
                   {item.name}
                 </h2>
                 <div className="flex shrink-0 items-center gap-2">
+                  <span
+                    className="inline-flex items-baseline gap-0.5 rounded-full bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] px-2.5 py-1 text-[13px] font-semibold tabular-nums text-[var(--accent-bright)] ring-1 ring-[color-mix(in_srgb,var(--accent)_32%,transparent)]"
+                    title={`${item.tier} plan`}
+                  >
+                    <span className="text-[10px] font-bold opacity-80">$</span>
+                    {rentPriceUsd(item.tier)}
+                    <span className="ml-0.5 text-[10px] font-medium opacity-75">/mo</span>
+                  </span>
                   {activePack && packs.includes(activePack) ? (
                     <MarketBadge market={activePack} prominent />
                   ) : null}
@@ -868,15 +890,14 @@ function AgentDetailModal({
               <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
                 {t("catalog.tier")}
               </dt>
-              <dd className="mt-1 capitalize text-[var(--text)]">{item.tier}</dd>
+              <dd className="mt-1 capitalize text-[var(--text)]">
+                {item.tier} · ${rentPriceUsd(item.tier)}/mo
+              </dd>
             </div>
           </dl>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href={`${href}?try=1`} className="btn btn-primary" onClick={onClose}>
-              {t("catalog.trySandbox")}
-            </Link>
-            <Link href={href} className="btn btn-ghost" onClick={onClose}>
+            <Link href={href} className="btn btn-primary" onClick={onClose}>
               {t("catalog.rentSetup")}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={onClose}>
