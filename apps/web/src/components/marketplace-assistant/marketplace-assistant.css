@@ -35,8 +35,8 @@
 }
 
 .miai-ask-fab img {
-  width: 2.15rem;
-  height: 2.15rem;
+  width: 78%;
+  height: 78%;
   object-fit: contain;
 }
 
@@ -93,7 +93,8 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 999px;
-  background: #000;
+  background: transparent;
+  border: 1px solid rgba(79, 209, 197, 0.35);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -101,8 +102,8 @@
 }
 
 .miai-ask-ava img {
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 82%;
+  height: 82%;
   object-fit: contain;
 }
 
