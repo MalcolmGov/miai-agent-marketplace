@@ -115,7 +115,9 @@ type IconKind =
   | "users"
   | "default";
 
-const FAMILY_ICONS: Record<string, { kind: IconKind; tone: keyof typeof TONES }> = {
+type ToneName = keyof typeof TONES_DARK;
+
+const FAMILY_ICONS: Record<string, { kind: IconKind; tone: ToneName }> = {
   "dental-front-desk": { kind: "tooth", tone: "mint" },
   "dental-practice": { kind: "tooth", tone: "mint" },
   "clinic-front-desk": { kind: "heart", tone: "rose" },
@@ -173,7 +175,7 @@ const FAMILY_ICONS: Record<string, { kind: IconKind; tone: keyof typeof TONES }>
   "tour-activity": { kind: "calendar", tone: "coral" },
 };
 
-const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: keyof typeof TONES }> = {
+const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: ToneName }> = {
   "Health & wellness": { kind: "heart", tone: "mint" },
   "Internal & back office": { kind: "briefcase", tone: "slate" },
   "Logistics & field ops": { kind: "truck", tone: "sky" },
