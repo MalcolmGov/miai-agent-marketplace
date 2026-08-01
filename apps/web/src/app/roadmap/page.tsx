@@ -23,6 +23,11 @@ const PRODUCT: Array<{ when: string; item: string; status: Status }> = [
     status: "shipped",
   },
   {
+    when: "Shipped",
+    item: "Monday demo pack — platform annual license framing (220) + demo shortlist",
+    status: "shipped",
+  },
+  {
     when: "Scale",
     item: "Per-tenant data residency pins and multi-region active-active",
     status: "planned",
@@ -49,6 +54,10 @@ export default function RoadmapPage() {
           Product and security milestones for the partnership — aligned with the{" "}
           <Link href="/trust" className="text-[var(--accent-bright)] hover:underline">
             Trust Center
+          </Link>
+          . For Monday:{" "}
+          <Link href="/demo" className="text-[var(--accent-bright)] hover:underline">
+            demo pack
           </Link>
           .
         </p>

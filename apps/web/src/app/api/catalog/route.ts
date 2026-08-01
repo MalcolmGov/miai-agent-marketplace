@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { listCatalog, listFamilies, listMarketPacks } from "@/lib/catalog";
+import { isMondayPilotFamilyId } from "@/lib/monday-pilot";
 import { isWorkflowFamilyId } from "@/lib/workflows";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,7 @@ export async function GET(req: Request) {
   const category = searchParams.get("category");
   const audience = searchParams.get("audience");
   const workflow = searchParams.get("workflow");
+  const pilot = searchParams.get("pilot");
   const view = searchParams.get("view") ?? "families";
   const packs = await listMarketPacks();
   const allAgents = await listCatalog();
@@ -43,6 +45,9 @@ export async function GET(req: Request) {
     }
     if (workflow === "1" || workflow === "true") {
       items = items.filter((i) => isWorkflowFamilyId(i.familyId) || isWorkflowFamilyId(i.id));
+    }
+    if (pilot === "1" || pilot === "true") {
+      items = items.filter((i) => isMondayPilotFamilyId(i.familyId) || isMondayPilotFamilyId(i.id));
     }
     if (q) {
       items = items.filter(
@@ -77,6 +82,9 @@ export async function GET(req: Request) {
   }
   if (workflow === "1" || workflow === "true") {
     items = items.filter((i) => isWorkflowFamilyId(i.id));
+  }
+  if (pilot === "1" || pilot === "true") {
+    items = items.filter((i) => isMondayPilotFamilyId(i.id));
   }
   if (q) {
     items = items.filter(

@@ -43,8 +43,8 @@ export function MarketplaceHero({
           <a href="#catalogue" className="btn btn-primary">
             Browse agents
           </a>
-          <Link href="/agents/us-executive-assistant" className="btn btn-ghost">
-            Try a workflow agent
+          <Link href="/demo" className="btn btn-ghost">
+            Monday demo pack
           </Link>
         </div>
 

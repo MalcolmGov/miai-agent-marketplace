@@ -7,7 +7,8 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), payment=()",
+    // microphone=(self) — catalogue voice search (Web Speech API)
+    value: "camera=(), microphone=(self), geolocation=(), payment=()",
   },
   {
     // Enforcing CSP — Next.js still needs unsafe-inline/eval in this app shell.

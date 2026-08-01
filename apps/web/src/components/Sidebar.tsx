@@ -181,6 +181,11 @@ const GROUPS: NavGroup[] = [
         href: "/roadmap",
         label: "Roadmap",
         icon: <IconRoadmap />,
+      },
+      {
+        href: "/demo",
+        label: "Monday demo",
+        icon: <IconRoadmap />,
         badge: { label: "New", tone: "new" },
       },
     ],

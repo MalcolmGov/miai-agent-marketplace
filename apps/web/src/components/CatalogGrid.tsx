@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { MONDAY_PILOT_FAMILY_IDS } from "@/lib/monday-pilot";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
@@ -13,11 +15,31 @@ type SpeechRecognitionLike = {
   continuous: boolean;
   onstart: (() => void) | null;
   onend: (() => void) | null;
-  onerror: (() => void) | null;
-  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onerror: ((event: { error?: string }) => void) | null;
+  onresult: ((event: {
+    results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal?: boolean }>;
+  }) => void) | null;
   start: () => void;
   stop: () => void;
 };
+
+function speechErrorMessage(code?: string): string {
+  switch (code) {
+    case "not-allowed":
+    case "service-not-allowed":
+      return "Microphone blocked — allow mic for this site in the browser, then try again.";
+    case "no-speech":
+      return "No speech heard — try again.";
+    case "audio-capture":
+      return "No microphone found.";
+    case "network":
+      return "Voice search needs network (browser speech service).";
+    case "aborted":
+      return "";
+    default:
+      return code ? `Voice search failed (${code}).` : "Voice search failed.";
+  }
+}
 
 function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
   if (typeof window === "undefined") return null;
@@ -121,6 +143,7 @@ function cleanCardSummary(summary: string, name: string): string {
 }
 
 export function CatalogGrid() {
+  const searchParams = useSearchParams();
   const [items, setItems] = useState<FamilyItem[]>([]);
   const [familyCount, setFamilyCount] = useState(0);
   const [totalFamilies, setTotalFamilies] = useState(0);
@@ -131,10 +154,12 @@ export function CatalogGrid() {
   const [category, setCategory] = useState("all");
   const [audience, setAudience] = useState("all");
   const [workflowsOnly, setWorkflowsOnly] = useState(false);
+  const [pilotOnly, setPilotOnly] = useState(false);
   const [smartFilter, setSmartFilter] = useState(true);
   const [smartApplied, setSmartApplied] = useState<string[]>([]);
   const [listening, setListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [speechHint, setSpeechHint] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [detail, setDetail] = useState<FamilyItem | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -148,6 +173,15 @@ export function CatalogGrid() {
   useEffect(() => {
     setSpeechSupported(Boolean(getSpeechRecognitionCtor()));
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("pilot") === "1") {
+      setPilotOnly(true);
+      setSmartFilter(false);
+      setAudience("all");
+      setWorkflowsOnly(false);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!smartParsed) {
@@ -197,6 +231,7 @@ export function CatalogGrid() {
     if (category !== "all") params.set("category", category);
     if (audience !== "all") params.set("audience", audience);
     if (workflowsOnly) params.set("workflow", "1");
+    if (pilotOnly) params.set("pilot", "1");
     startTransition(() => {
       fetch(`/api/catalog?${params}`)
         .then((r) => r.json())
@@ -206,11 +241,18 @@ export function CatalogGrid() {
           setFamilyCount(d.familyCount ?? d.count ?? 0);
         });
     });
-  }, [searchQ, market, category, audience, workflowsOnly]);
+  }, [searchQ, market, category, audience, workflowsOnly, pilotOnly]);
 
   function toggleVoiceSearch() {
     const Ctor = getSpeechRecognitionCtor();
-    if (!Ctor) return;
+    if (!Ctor) {
+      setSpeechHint("Voice search needs Chrome or Edge.");
+      return;
+    }
+    if (typeof window !== "undefined" && !window.isSecureContext) {
+      setSpeechHint("Voice search needs HTTPS (or localhost).");
+      return;
+    }
 
     if (listening && recognitionRef.current) {
       recognitionRef.current.stop();
@@ -218,22 +260,39 @@ export function CatalogGrid() {
       return;
     }
 
+    setSpeechHint(null);
     const recognition = new Ctor();
     recognitionRef.current = recognition;
     recognition.lang = "en-US";
-    recognition.interimResults = false;
+    recognition.interimResults = true;
     recognition.continuous = false;
     recognition.onstart = () => setListening(true);
-    recognition.onend = () => setListening(false);
-    recognition.onerror = () => setListening(false);
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+    };
+    recognition.onerror = (event) => {
+      setListening(false);
+      const msg = speechErrorMessage(event.error);
+      if (msg) setSpeechHint(msg);
+    };
     recognition.onresult = (event) => {
-      const transcript = event.results[0]?.[0]?.transcript?.trim();
-      if (transcript) setQ(transcript);
+      const parts: string[] = [];
+      for (let i = 0; i < event.results.length; i++) {
+        const piece = event.results[i]?.[0]?.transcript?.trim();
+        if (piece) parts.push(piece);
+      }
+      const transcript = parts.join(" ").trim();
+      if (transcript) {
+        setQ(transcript);
+        setSpeechHint(null);
+      }
     };
     try {
       recognition.start();
     } catch {
       setListening(false);
+      setSpeechHint("Could not start voice search — wait a moment and try again.");
     }
   }
 
@@ -244,6 +303,7 @@ export function CatalogGrid() {
     (category !== "all" ? 1 : 0) +
     (audience !== "all" ? 1 : 0) +
     (workflowsOnly ? 1 : 0) +
+    (pilotOnly ? 1 : 0) +
     (q ? 1 : 0);
 
   return (
@@ -351,7 +411,10 @@ export function CatalogGrid() {
                   setWorkflowsOnly((v) => {
                     const next = !v;
                     // Show the full workflow set when enabling — don't keep a stacked audience filter.
-                    if (next) setAudience("all");
+                    if (next) {
+                      setAudience("all");
+                      setPilotOnly(false);
+                    }
                     return next;
                   });
                 }}
@@ -361,6 +424,28 @@ export function CatalogGrid() {
                 Workflows
                 <span className="cat-count">
                   {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSmartFilter(false);
+                  setPilotOnly((v) => {
+                    const next = !v;
+                    if (next) {
+                      setAudience("all");
+                      setWorkflowsOnly(false);
+                      setCategory("all");
+                    }
+                    return next;
+                  });
+                }}
+                className={`chip ${pilotOnly ? "filter-active chip-live" : ""}`}
+                title="Demo / UAT shortlist — six of 220 (license covers full catalogue)"
+              >
+                Demo 6
+                <span className="cat-count">
+                  {pilotOnly ? familyCount : MONDAY_PILOT_FAMILY_IDS.length}
                 </span>
               </button>
             </div>
@@ -436,6 +521,7 @@ export function CatalogGrid() {
               </span>
             ) : null}
             {listening ? <span className="text-[var(--accent-bright)]"> · Listening…</span> : null}
+            {speechHint ? <span className="text-[var(--warn)]"> · {speechHint}</span> : null}
             {pending ? " · updating…" : null}
           </p>
           {activeFilterCount > 0 ? (
@@ -448,6 +534,7 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
+                setPilotOnly(false);
                 setSmartApplied([]);
               }}
             >
@@ -555,6 +642,7 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
+                setPilotOnly(false);
               }}
             >
               Reset filters

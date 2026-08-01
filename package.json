@@ -21,6 +21,7 @@
     "eval:suite": "pnpm build:packages && node scripts/eval-suite.mjs",
     "eval:suite:static": "pnpm build:packages && node scripts/eval-suite.mjs --static-only",
     "fix:evals": "node scripts/fix-catalogue-evals.mjs",
-    "demo:phase1": "node scripts/phase1-demo.mjs"
+    "demo:phase1": "node scripts/phase1-demo.mjs",
+    "pdf:branded": "node docs/branded-pdfs/generate.mjs"
   }
 }

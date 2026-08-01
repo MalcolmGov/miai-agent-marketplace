@@ -9,3 +9,7 @@ dist
 .pnpm-store
 data/oauth-tokens.json
 data/knowledge-sources.json
+
+# Branded PDF previews / QA screenshots
+docs/branded-pdfs/output/preview-*.png
+docs/branded-pdfs/output/qa-*.png
