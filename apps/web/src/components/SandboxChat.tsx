@@ -41,6 +41,7 @@ export function SandboxChat({
   const [chatMode, setChatMode] = useState<"sandbox" | "live">(mode);
   const [clearing, setClearing] = useState(false);
   const isEA = /executive-assistant/i.test(agentId);
+  const isIT = /it-helpdesk/i.test(agentId);
 
   async function clearChat() {
     if (busy || clearing) return;
@@ -138,7 +139,9 @@ export function SandboxChat({
           <p className="text-sm text-[var(--muted)]">
             {isEA
               ? "Try: “Schedule a 30-min budget review with Thabo tomorrow at 14:00, set a reminder, and notify the team.” · “Am I free Thursday afternoon?”"
-              : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
+              : isIT
+                ? "Try: “How do I connect to the office VPN?” · “Laptop won’t power on — log a ticket for Thandi, ext 4412.” · “I clicked a phishing link.”"
+                : "Try: “Where is the Austin office?” · “How many PTO days do full-time employees get?” · “Speak to a human”"}
           </p>
         )}
         {messages.map((m, i) => (
@@ -190,8 +193,10 @@ export function SandboxChat({
           placeholder={
             paused
               ? "Top up to continue…"
-              : isEA && workflow?.status === "proposed"
-                ? "Yes — please set it up…"
+              : (isEA || isIT) && workflow?.status === "proposed"
+                ? isIT
+                  ? "Yes, go ahead."
+                  : "Yes — please set it up…"
                 : "Message the agent…"
           }
           disabled={busy || paused}

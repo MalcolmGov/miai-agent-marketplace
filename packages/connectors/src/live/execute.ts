@@ -93,6 +93,52 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       filter: args,
     };
   }
+  if (n.includes("search_kb") || n === "search_kb") {
+    const q = String(args.query ?? args.topic ?? "").toLowerCase();
+    if (/vpn|globalprotect/.test(q)) {
+      return {
+        ok: true,
+        topic: "vpn",
+        article:
+          "VPN client: GlobalProtect — install from portal.ubuntu-systems.co.za. Gateway: vpn.ubuntu-systems.co.za. Sign in with SSO + Microsoft Authenticator.",
+        source: "sandbox_stub",
+      };
+    }
+    if (/password|lock|reset/.test(q)) {
+      return {
+        ok: true,
+        topic: "password",
+        article:
+          "Never share passwords in chat. Self-service reset: reset.ubuntu-systems.co.za with Microsoft Authenticator.",
+        source: "sandbox_stub",
+      };
+    }
+    return {
+      ok: true,
+      topic: args.topic ?? "general",
+      article: "See the IT knowledge base article for this topic. Escalate security incidents immediately.",
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("get_ticket_status") || n === "get_ticket_status") {
+    return {
+      ok: true,
+      ticket_id: args.ticket_id ?? args.reference ?? "TKT-4821",
+      status: "in_progress",
+      assignee: "IT L2",
+      note: "Sandbox stub status.",
+      source: "sandbox_stub",
+    };
+  }
+  if (n.includes("create_ticket") || n === "create_ticket") {
+    return {
+      ok: true,
+      reference: "TKT-9102",
+      status: "logged",
+      subject: args.subject,
+      source: "sandbox_stub",
+    };
+  }
   if (n.includes("ticket") || n.includes("lead") || n.includes("capture") || n.includes("application"))
     return { ok: true, reference: "APP-4821", status: "captured", ...args };
   if (n.includes("handoff")) return { routed: true, queue: "human_desk" };

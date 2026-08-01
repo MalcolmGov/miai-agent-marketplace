@@ -12,6 +12,7 @@ import {
   type WorkflowPlan,
   type WorkflowStep,
 } from "./workflows/executive-assistant.js";
+import { isItHelpdesk, runItHelpdeskWorkflow } from "./workflows/it-helpdesk.js";
 
 export type { WorkflowPlan, WorkflowStep };
 
@@ -1198,64 +1199,102 @@ export async function runTurn(
   const bindings = resolveBindings(req.pkg, req.bindings);
   const toolCalls: TurnResult["toolCalls"] = [];
 
-  // Executive Assistant multi-step workflow: goal → plan → confirm → execute → verify
+  const executeTool = async (name: string, args: Record<string, unknown>) => {
+    const result = await executeConnector({
+      workspaceId: req.workspaceId,
+      agentId: req.agentId,
+      tool: name,
+      args,
+      binding: bindingFor(name, bindings),
+      mode: req.mode,
+    });
+    return { ok: result.ok, data: result.data };
+  };
+
+  const finishWorkflow = async (
+    handled: {
+      handled: boolean;
+      assistantMessage: string;
+      toolCalls: TurnResult["toolCalls"];
+      plan?: {
+        id: string;
+        goal: string;
+        status: string;
+        steps: Array<{
+          id: string;
+          label: string;
+          tool?: string;
+          status: string;
+          resultSummary?: string;
+        }>;
+      };
+    },
+  ): Promise<TurnResult | null> => {
+    if (!handled.handled) return null;
+    toolCalls.push(...handled.toolCalls);
+    messages.push({ role: "assistant", content: handled.assistantMessage });
+    const tokens = estimateTurnTokens(
+      req.model,
+      system.length + req.userMessage.length,
+      handled.assistantMessage.length,
+    );
+    const debit = await wallet.debit({
+      workspaceId: req.workspaceId,
+      amount: tokens,
+      idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
+      reason: "agent_turn",
+      agentId: req.agentId,
+    });
+    return {
+      assistantMessage: handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
+      messages,
+      toolCalls,
+      tokensDebited: tokens,
+      balance: debit.balance,
+      state: req.state,
+      paused: false,
+      workflow: handled.plan
+        ? {
+            id: handled.plan.id,
+            goal: handled.plan.goal,
+            status: handled.plan.status,
+            steps: handled.plan.steps.map((s) => ({
+              id: s.id,
+              label: s.label,
+              tool: s.tool,
+              status: s.status,
+              resultSummary: s.resultSummary,
+            })),
+          }
+        : undefined,
+    };
+  };
+
+  // Executive Assistant multi-step workflow
   if (isExecutiveAssistant(req.agentId)) {
     const ea = await runExecutiveAssistantWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
       messages: req.messages,
       toolNames: req.pkg.tools.map((t) => t.name),
-      executeTool: async (name, args) => {
-        const result = await executeConnector({
-          workspaceId: req.workspaceId,
-          agentId: req.agentId,
-          tool: name,
-          args,
-          binding: bindingFor(name, bindings),
-          mode: req.mode,
-        });
-        return { ok: result.ok, data: result.data };
-      },
+      executeTool,
     });
-    if (ea.handled) {
-      toolCalls.push(...ea.toolCalls);
-      messages.push({ role: "assistant", content: ea.assistantMessage });
-      const tokens = estimateTurnTokens(
-        req.model,
-        system.length + req.userMessage.length,
-        ea.assistantMessage.length,
-      );
-      const debit = await wallet.debit({
-        workspaceId: req.workspaceId,
-        amount: tokens,
-        idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
-        reason: "agent_turn",
-        agentId: req.agentId,
-      });
-      return {
-        assistantMessage: ea.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
-        messages,
-        toolCalls,
-        tokensDebited: tokens,
-        balance: debit.balance,
-        state: req.state,
-        paused: false,
-        workflow: ea.plan
-          ? {
-              id: ea.plan.id,
-              goal: ea.plan.goal,
-              status: ea.plan.status,
-              steps: ea.plan.steps.map((s) => ({
-                id: s.id,
-                label: s.label,
-                tool: s.tool,
-                status: s.status,
-                resultSummary: s.resultSummary,
-              })),
-            }
-          : undefined,
-      };
-    }
+    const done = await finishWorkflow(ea);
+    if (done) return done;
+  }
+
+  // IT Helpdesk multi-step workflow
+  if (isItHelpdesk(req.agentId)) {
+    const it = await runItHelpdeskWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+    });
+    const done = await finishWorkflow(it);
+    if (done) return done;
   }
 
   let completion = await model.complete({

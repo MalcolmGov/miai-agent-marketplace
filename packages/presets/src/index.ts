@@ -30,6 +30,14 @@ const executiveAssistant = (
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+const itHelpdesk = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
+  { tool: "search_kb", connector: "webhook" },
+  { tool: "get_ticket_status", connector: "webhook" },
+  { tool: "create_ticket", connector: "hubspot" },
+  { tool: "notify_team", connector: handoff },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
   { tool: "get_order_status", connector: "shopify" },
   { tool: "check_availability", connector: "shopify" },
@@ -145,6 +153,31 @@ const HAND_OVERRIDES: AgentPreset[] = [
     pilot: true,
     phase: 1,
     bindings: executiveAssistant("m365_calendar", "teams"),
+  },
+  // Multi-workflow IT Helpdesk — KB → ticket → Slack
+  {
+    agentId: "us-it-helpdesk",
+    pilot: true,
+    phase: 1,
+    bindings: itHelpdesk("slack"),
+  },
+  {
+    agentId: "it-helpdesk",
+    pilot: true,
+    phase: 1,
+    bindings: itHelpdesk("slack"),
+  },
+  {
+    agentId: "asia-it-helpdesk",
+    pilot: true,
+    phase: 1,
+    bindings: itHelpdesk("slack"),
+  },
+  {
+    agentId: "eu-it-helpdesk",
+    pilot: true,
+    phase: 1,
+    bindings: itHelpdesk("teams"),
   },
 ];
 
