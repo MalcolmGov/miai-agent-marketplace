@@ -27,9 +27,10 @@ Single source of truth for security and multi-region compliance claims. The in-a
 4. Workspace-scoped `/api/audit` (no cross-tenant leakage)
 5. HMAC embed keys; embed chat requires live/rented agent; 30 req/min rate limit
 6. OAuth PKCE + HMAC state; tokens **AES-256-GCM** at rest (`v2.` envelopes; `v1.` migrated on write)
-7. `GET /api/dsar/export` — owner/admin JSON pack (no OAuth secrets)
+7. `GET /api/dsar/export` — owner/admin JSON pack (no OAuth secrets), including conversation turn transcripts
 8. Enforcing CSP + security headers (`apps/web/next.config.ts`)
 9. Runtime erasure / injection defenses + Agent Studio **Test the guardrails** probes
+10. **Audit + traceability** — workspace audit events with correlation ids; full chat turn transcripts (Studio / Website / App / Ask AI) in History (`/history`); optional App Insights `miai.audit.*`
 
 ## Honest language
 

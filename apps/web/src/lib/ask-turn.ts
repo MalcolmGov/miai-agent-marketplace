@@ -11,7 +11,7 @@ import {
   marketplaceAssistantId,
   marketplaceWorkspaceId,
 } from "@/lib/marketplace-assistant";
-import { appendAudit } from "@/lib/store";
+import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 type SessionMap = Map<string, ChatMessage[]>;
 
@@ -34,6 +34,7 @@ export type AskTurnOk = {
   balance: number;
   tokensDebited: number;
   leadIds: string[];
+  correlationId: string;
 };
 
 export type AskTurnErr = {
@@ -47,6 +48,7 @@ export async function runAskTurn(input: {
   message: string;
   sessionId?: string;
   replyLanguage?: string;
+  correlationId?: string;
   rateLimitOk: boolean;
   rateLimitRetryAfterSec?: number;
 }): Promise<AskTurnOk | AskTurnErr> {
@@ -128,17 +130,6 @@ export async function runAskTurn(input: {
     }
   }
 
-  await appendAudit({
-    workspaceId: marketplaceWorkspaceId(),
-    agentId: marketplaceAssistantId(),
-    type: "ask_turn",
-    detail: {
-      tokensDebited: result.tokensDebited,
-      paused: result.paused,
-      leads: leadIds,
-    },
-  });
-
   let reply = result.assistantMessage
     // White-label: never surface delivery partners or personal names in customer chat.
     .replace(/\bMove\s*Digital\b/gi, "MyInstantAI")
@@ -149,6 +140,26 @@ export async function runAskTurn(input: {
       .replace(/\blead_[a-f0-9]+\b/gi, leadIds[0]);
   }
 
+  const correlationId = input.correlationId?.trim() || newCorrelationId();
+  const sessionId = input.sessionId ?? "anon";
+  await recordChatTurn({
+    correlationId,
+    workspaceId: marketplaceWorkspaceId(),
+    agentId: marketplaceAssistantId(),
+    channel: "ask",
+    sessionId,
+    userMessage: input.message.trim(),
+    assistantMessage: reply,
+    toolCalls: result.toolCalls,
+    tokensDebited: result.tokensDebited,
+    paused: Boolean(result.paused),
+    model: pkg.manifest.model.primary,
+    mode: "live",
+    replyLanguage,
+    auditType: "ask_turn",
+    extraDetail: { leads: leadIds },
+  });
+
   return {
     ok: true,
     reply,
@@ -156,5 +167,6 @@ export async function runAskTurn(input: {
     balance: result.balance,
     tokensDebited: result.tokensDebited,
     leadIds,
+    correlationId,
   };
 }

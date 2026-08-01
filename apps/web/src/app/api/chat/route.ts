@@ -12,6 +12,7 @@ import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/stor
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
 import { trackEvent, trackException } from "@/lib/telemetry";
+import { correlationFromRequest, recordChatTurn } from "@/lib/traceability";
 
 export async function POST(req: Request) {
   const started = Date.now();
@@ -29,7 +30,11 @@ export async function POST(req: Request) {
       clear?: boolean;
       /** BCP-47-ish chat reply language (en, es, fr, de, it, zh, hi, sw). */
       replyLanguage?: string;
+      correlationId?: string;
+      sessionId?: string;
     };
+    const correlationId = correlationFromRequest(req, body.correlationId);
+    const sessionId = body.sessionId?.trim() || `studio_${auth.userId}_${body.agentId}`;
     const workspaceId =
       auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
     const pkg = await getAgentPackage(body.agentId);
@@ -48,9 +53,13 @@ export async function POST(req: Request) {
         workspaceId,
         agentId: body.agentId,
         type: "agent_turn",
-        detail: { action: "clear_chat" },
+        correlationId,
+        userId: auth.userId,
+        sessionId,
+        channel: "studio",
+        detail: { action: "clear_chat", correlationId, sessionId, userId: auth.userId },
       });
-      return NextResponse.json({ ok: true, cleared: true, messages: [] });
+      return NextResponse.json({ ok: true, cleared: true, messages: [], correlationId });
     }
 
     if (!body.message?.trim()) {
@@ -107,29 +116,24 @@ export async function POST(req: Request) {
       state: nextState as AgentState,
     });
 
-    await appendAudit({
+    await recordChatTurn({
+      correlationId,
       workspaceId,
       agentId: body.agentId,
-      type: result.paused ? "paused_no_tokens" : "agent_turn",
-      detail: {
-        tokensDebited: result.tokensDebited,
-        balance: result.balance,
-        tools: result.toolCalls.map((t) => t.name),
-        mode,
-        replyLanguage,
-      },
+      channel: "studio",
+      sessionId,
+      userId: auth.userId,
+      userMessage: body.message.trim(),
+      assistantMessage: result.assistantMessage,
+      toolCalls: result.toolCalls,
+      tokensDebited: result.tokensDebited,
+      paused: result.paused,
+      model: rental.model,
+      mode,
+      replyLanguage,
+      auditType: result.paused ? "paused_no_tokens" : "agent_turn",
+      extraDetail: { balance: result.balance, durationMs: Date.now() - started },
     });
-
-    for (const tc of result.toolCalls) {
-      if ((tc.result as { error?: string })?.error) {
-        await appendAudit({
-          workspaceId,
-          agentId: body.agentId,
-          type: "tool_error",
-          detail: { tool: tc.name, result: tc.result },
-        });
-      }
-    }
 
     trackEvent("miai.chat.turn", {
       agentId: body.agentId,
@@ -139,6 +143,7 @@ export async function POST(req: Request) {
       tokensDebited: result.tokensDebited,
       toolCount: result.toolCalls.length,
       durationMs: Date.now() - started,
+      correlationId,
     });
 
     return NextResponse.json({
@@ -151,6 +156,8 @@ export async function POST(req: Request) {
       workflow: result.workflow ?? null,
       replyLanguage,
       messages: result.messages.filter((m) => m.role !== "tool"),
+      correlationId,
+      sessionId,
     });
   } catch (err) {
     trackException(err, { route: "api/chat", durationMs: Date.now() - started });

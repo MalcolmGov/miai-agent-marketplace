@@ -1,15 +1,18 @@
 import { NextResponse } from "next/server";
 import { runAskTurn } from "@/lib/ask-turn";
 import { rateLimit } from "@/lib/security";
+import { correlationFromRequest } from "@/lib/traceability";
 
 export async function POST(req: Request) {
   const body = (await req.json()) as {
     message?: string;
     sessionId?: string;
     replyLanguage?: string;
+    correlationId?: string;
   };
 
   const sessionId = typeof body.sessionId === "string" ? body.sessionId : "anon";
+  const correlationId = correlationFromRequest(req, body.correlationId);
   const limited = rateLimit(`ask:${sessionId.slice(0, 48)}`, {
     limit: 40,
     windowMs: 60_000,
@@ -19,6 +22,7 @@ export async function POST(req: Request) {
     message: typeof body.message === "string" ? body.message : "",
     sessionId,
     replyLanguage: body.replyLanguage,
+    correlationId,
     rateLimitOk: limited.ok,
     rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
   });
@@ -37,5 +41,6 @@ export async function POST(req: Request) {
     paused: result.paused,
     balance: result.balance,
     leadIds: result.leadIds,
+    correlationId: result.correlationId,
   });
 }

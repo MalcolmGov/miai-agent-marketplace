@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
-import { listAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireOperator, requireRole } from "@/lib/security";
+import { listTurnTranscripts } from "@/lib/traceability";
 
 export const dynamic = "force-dynamic";
 
-/**
- * Workspace-scoped audit trail. Always filtered to the caller's workspace —
- * never returns cross-tenant events (including mock mode), unless operator + all=1.
- */
+/** Conversation turn transcripts for History / traceability. */
 export async function GET(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
@@ -16,29 +13,32 @@ export async function GET(req: Request) {
   if (forbidden) return forbidden;
 
   const url = new URL(req.url);
-  const limit = Math.min(500, Math.max(1, Number(url.searchParams.get("limit") ?? "50")));
-  const type = url.searchParams.get("type") ?? undefined;
+  const limit = Math.min(200, Math.max(1, Number(url.searchParams.get("limit") ?? "50") || 50));
   const agentId = url.searchParams.get("agentId") ?? undefined;
+  const channel = url.searchParams.get("channel") ?? undefined;
+  const sessionId = url.searchParams.get("sessionId") ?? undefined;
   const correlationId = url.searchParams.get("correlationId") ?? undefined;
   const allWorkspaces = url.searchParams.get("all") === "1";
 
-  let workspaceId: string | undefined = auth.workspaceId;
+  let workspaceId = auth.workspaceId;
   if (allWorkspaces) {
     const opForbidden = requireOperator(auth);
     if (opForbidden) return opForbidden;
-    workspaceId = url.searchParams.get("workspaceId") ?? undefined;
+    workspaceId = url.searchParams.get("workspaceId") ?? "";
   }
 
-  const events = await listAudit(limit, {
-    workspaceId,
-    type,
+  const turns = await listTurnTranscripts({
+    workspaceId: workspaceId || undefined,
     agentId,
+    channel,
+    sessionId,
     correlationId,
+    limit,
   });
 
   return NextResponse.json({
-    workspaceId: workspaceId ?? null,
-    count: events.length,
-    events,
+    workspaceId: workspaceId || null,
+    count: turns.length,
+    turns,
   });
 }

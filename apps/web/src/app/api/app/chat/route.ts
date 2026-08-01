@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { runChannelTurn, runChannelTurnStream } from "@/lib/channel-turn";
 import { embedCorsHeaders } from "@/lib/embed-cors";
 import { rateLimit } from "@/lib/security";
+import { correlationFromRequest } from "@/lib/traceability";
 
 export const dynamic = "force-dynamic";
 
@@ -23,8 +24,10 @@ export async function POST(req: Request) {
     message: string;
     sessionId?: string;
     replyLanguage?: string;
+    correlationId?: string;
   };
 
+  const correlationId = correlationFromRequest(req, body.correlationId);
   const limited = rateLimit(`app:${(body.key || "").slice(0, 48)}`, {
     limit: 30,
     windowMs: 60_000,
@@ -41,6 +44,7 @@ export async function POST(req: Request) {
       message: typeof body.message === "string" ? body.message : "",
       sessionId: body.sessionId,
       replyLanguage: body.replyLanguage,
+      correlationId,
       rateLimitOk: limited.ok,
       rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
     });
@@ -58,6 +62,7 @@ export async function POST(req: Request) {
         paused: result.paused,
         balance: result.balance,
         channel: "app",
+        correlationId: result.correlationId,
       },
       { headers: cors },
     );
@@ -79,6 +84,7 @@ export async function POST(req: Request) {
           message: typeof body.message === "string" ? body.message : "",
           sessionId: body.sessionId,
           replyLanguage: body.replyLanguage,
+          correlationId,
           rateLimitOk: limited.ok,
           rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
           onDelta: (text) => send("delta", { text }),
@@ -105,6 +111,7 @@ export async function POST(req: Request) {
           reply: result.assistantMessage,
           paused: result.paused,
           balance: result.balance,
+          correlationId: result.correlationId,
         });
       } catch (err) {
         send("error", {

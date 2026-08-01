@@ -205,6 +205,10 @@ export function trackAudit(event: {
     at: event.at,
     workspaceId: event.workspaceId,
     agentId: event.agentId,
+    correlationId:
+      (event as { correlationId?: string }).correlationId ??
+      (event.detail?.correlationId as string | undefined),
+    channel: (event.detail?.channel as string | undefined) ?? undefined,
     detailKeys: event.detail ? Object.keys(event.detail).join(",") : "",
   });
 }

@@ -40,6 +40,11 @@ export interface AuditEvent {
   agentId?: string;
   type: string;
   detail: Record<string, unknown>;
+  /** End-to-end request/trace id shared across audit + turn transcripts. */
+  correlationId?: string;
+  userId?: string;
+  sessionId?: string;
+  channel?: string;
 }
 
 interface WorkspaceRecord {
@@ -58,8 +63,8 @@ interface PersistShape {
   audit: AuditEvent[];
 }
 
-/** Keep enough audit history for operator metering (tokens, top-ups, rentals). */
-const AUDIT_CAP = 5000;
+/** Keep enough audit history for operator metering + compliance trail. */
+const AUDIT_CAP = 20_000;
 
 const g = globalThis as typeof globalThis & {
   __miaiStore?: {
@@ -136,14 +141,22 @@ async function hydrateFromPostgres(): Promise<PersistShape | null> {
 
     const shape: PersistShape = {
       workspaces: {},
-      audit: audit.rows.map((r) => ({
-        id: r.id,
-        at: r.at instanceof Date ? r.at.toISOString() : String(r.at),
-        workspaceId: r.workspace_id,
-        agentId: r.agent_id ?? undefined,
-        type: r.type,
-        detail: r.detail ?? {},
-      })),
+      audit: audit.rows.map((r) => {
+        const detail = r.detail ?? {};
+        return {
+          id: r.id,
+          at: r.at instanceof Date ? r.at.toISOString() : String(r.at),
+          workspaceId: r.workspace_id,
+          agentId: r.agent_id ?? undefined,
+          type: r.type,
+          detail,
+          correlationId:
+            typeof detail.correlationId === "string" ? detail.correlationId : undefined,
+          userId: typeof detail.userId === "string" ? detail.userId : undefined,
+          sessionId: typeof detail.sessionId === "string" ? detail.sessionId : undefined,
+          channel: typeof detail.channel === "string" ? detail.channel : undefined,
+        };
+      }),
     };
     for (const row of rentals.rows) {
       if (!shape.workspaces[row.workspace_id]) {
@@ -386,10 +399,24 @@ export function resolveEmbedKey(publicKey: string): { workspaceId: string; agent
 
 export async function appendAudit(event: Omit<AuditEvent, "id" | "at">): Promise<AuditEvent> {
   await ensureStoreHydrated();
+  const detail = {
+    ...(event.detail ?? {}),
+    ...(event.correlationId ? { correlationId: event.correlationId } : {}),
+    ...(event.userId ? { userId: event.userId } : {}),
+    ...(event.sessionId ? { sessionId: event.sessionId } : {}),
+    ...(event.channel ? { channel: event.channel } : {}),
+  };
   const row: AuditEvent = {
     id: `aud_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     at: new Date().toISOString(),
-    ...event,
+    workspaceId: event.workspaceId,
+    agentId: event.agentId,
+    type: event.type,
+    detail,
+    correlationId: event.correlationId ?? (detail.correlationId as string | undefined),
+    userId: event.userId ?? (detail.userId as string | undefined),
+    sessionId: event.sessionId ?? (detail.sessionId as string | undefined),
+    channel: event.channel ?? (detail.channel as string | undefined),
   };
   const s = store();
   s.audit.unshift(row);
@@ -404,9 +431,23 @@ export async function appendAudit(event: Omit<AuditEvent, "id" | "at">): Promise
   return row;
 }
 
-export async function listAudit(limit = 50): Promise<AuditEvent[]> {
+export async function listAudit(
+  limit = 50,
+  opts?: { workspaceId?: string; type?: string; correlationId?: string; agentId?: string },
+): Promise<AuditEvent[]> {
   await ensureStoreHydrated();
-  return store().audit.slice(0, limit);
+  let rows = store().audit;
+  if (opts?.workspaceId) rows = rows.filter((a) => a.workspaceId === opts.workspaceId);
+  if (opts?.type) rows = rows.filter((a) => a.type === opts.type);
+  if (opts?.agentId) rows = rows.filter((a) => a.agentId === opts.agentId);
+  if (opts?.correlationId) {
+    rows = rows.filter(
+      (a) =>
+        a.correlationId === opts.correlationId ||
+        a.detail?.correlationId === opts.correlationId,
+    );
+  }
+  return rows.slice(0, limit);
 }
 
 export async function opsSummary(workspaceId: string) {

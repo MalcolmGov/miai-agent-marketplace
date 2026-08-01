@@ -5,6 +5,7 @@ import { listKnowledgeSources } from "@/lib/knowledge";
 import { listAudit, listWorkspaceAgents } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { listTurnTranscripts } from "@/lib/traceability";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,8 @@ export async function GET(req: Request) {
 
   const workspaceId = auth.workspaceId;
   const agents = await listWorkspaceAgents(workspaceId);
-  const audit = (await listAudit(5000)).filter((e) => e.workspaceId === workspaceId);
+  const audit = await listAudit(5000, { workspaceId });
+  const turns = await listTurnTranscripts({ workspaceId, limit: 500 });
   const connectors = await listTokenMeta(workspaceId);
   const wallet = await createWalletAdapter().getBalance(workspaceId);
 
@@ -74,7 +76,23 @@ export async function GET(req: Request) {
       at: e.at,
       type: e.type,
       agentId: e.agentId,
+      correlationId: e.correlationId,
+      sessionId: e.sessionId,
+      channel: e.channel,
+      userId: e.userId,
       detail: redactAuditDetail(e.detail),
+    })),
+    conversationTurns: turns.map((t) => ({
+      id: t.id,
+      at: t.at,
+      correlationId: t.correlationId,
+      agentId: t.agentId,
+      channel: t.channel,
+      sessionId: t.sessionId,
+      userMessage: t.userMessage.slice(0, 4000),
+      assistantMessage: t.assistantMessage.slice(0, 4000),
+      tools: t.toolCalls.map((x) => x.name),
+      tokensDebited: t.tokensDebited,
     })),
   };
 

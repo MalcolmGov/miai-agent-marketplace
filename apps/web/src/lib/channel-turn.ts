@@ -7,12 +7,8 @@ import {
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
 import { getComposedKnowledge } from "@/lib/knowledge";
-import {
-  appendAudit,
-  getWorkspaceAgent,
-  resolveEmbedKey,
-  upsertWorkspaceAgent,
-} from "@/lib/store";
+import { getWorkspaceAgent, resolveEmbedKey, upsertWorkspaceAgent } from "@/lib/store";
+import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 export type ChannelKind = "embed" | "app";
 
@@ -52,6 +48,7 @@ export type ChannelTurnOk = {
   balance: number;
   tokensDebited: number;
   messages: ChannelMessage[];
+  correlationId: string;
 };
 
 export type ChannelTurnErr = {
@@ -89,6 +86,7 @@ type ChannelTurnInput = {
   message: string;
   sessionId?: string;
   replyLanguage?: string;
+  correlationId?: string;
   rateLimitOk: boolean;
   rateLimitRetryAfterSec?: number;
   onDelta?: (text: string) => void;
@@ -185,6 +183,7 @@ async function finalizeChannelTurn(
     agentId: string;
     sessionKey: string;
     store: SessionBag;
+    turnInput: Parameters<typeof runTurn>[0];
   },
   result: Awaited<ReturnType<typeof runTurn>>,
 ): Promise<ChannelTurnOk> {
@@ -204,16 +203,24 @@ async function finalizeChannelTurn(
     });
   }
 
-  await appendAudit({
+  const correlationId = input.correlationId?.trim() || newCorrelationId();
+  const sessionId = input.sessionId ?? "anon";
+  await recordChatTurn({
+    correlationId,
     workspaceId: prepared.workspaceId,
     agentId: prepared.agentId,
-    type: input.channel === "app" ? "app_turn" : "embed_turn",
-    detail: {
-      channel: input.channel,
-      tokensDebited: result.tokensDebited,
-      paused: result.paused,
-      streamed: Boolean(input.onDelta),
-    },
+    channel: input.channel,
+    sessionId,
+    userMessage: input.message.trim(),
+    assistantMessage: result.assistantMessage,
+    toolCalls: result.toolCalls,
+    tokensDebited: result.tokensDebited,
+    paused: result.paused,
+    model: prepared.turnInput.model,
+    mode: "live",
+    replyLanguage: prepared.turnInput.replyLanguage,
+    auditType: input.channel === "app" ? "app_turn" : "embed_turn",
+    extraDetail: { streamed: Boolean(input.onDelta), balance: result.balance },
   });
 
   return {
@@ -225,6 +232,7 @@ async function finalizeChannelTurn(
     balance: result.balance,
     tokensDebited: result.tokensDebited,
     messages: result.messages as ChannelMessage[],
+    correlationId,
   };
 }
 

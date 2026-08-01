@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { runChannelTurn } from "@/lib/channel-turn";
 import { embedCorsHeaders } from "@/lib/embed-cors";
 import { rateLimit } from "@/lib/security";
+import { correlationFromRequest } from "@/lib/traceability";
 
 /** The widget runs on customers' websites, so this endpoint must answer cross-origin.
  *  The embed key identifies (and is scoped to) the tenant agent; it is public by design.
@@ -18,8 +19,10 @@ export async function POST(req: Request) {
     message: string;
     sessionId?: string;
     replyLanguage?: string;
+    correlationId?: string;
   };
 
+  const correlationId = correlationFromRequest(req, body.correlationId);
   const limited = rateLimit(`embed:${(body.key || "").slice(0, 48)}`, {
     limit: 30,
     windowMs: 60_000,
@@ -31,6 +34,7 @@ export async function POST(req: Request) {
     message: typeof body.message === "string" ? body.message : "",
     sessionId: body.sessionId,
     replyLanguage: body.replyLanguage,
+    correlationId,
     rateLimitOk: limited.ok,
     rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
   });
@@ -49,6 +53,7 @@ export async function POST(req: Request) {
       reply: result.assistantMessage,
       paused: result.paused,
       balance: result.balance,
+      correlationId: result.correlationId,
     },
     { headers: cors },
   );
