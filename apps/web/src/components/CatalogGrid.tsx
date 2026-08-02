@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { TIER_PRICES } from "@/lib/constants";
 import { useT } from "@/lib/locale";
-import { MONDAY_PILOT_FAMILY_IDS } from "@/lib/monday-pilot";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
@@ -239,7 +238,6 @@ export function CatalogGrid() {
   const [category, setCategory] = useState("all");
   const [audience, setAudience] = useState("all");
   const [workflowsOnly, setWorkflowsOnly] = useState(false);
-  const [pilotOnly, setPilotOnly] = useState(false);
   const [smartFilter, setSmartFilter] = useState(true);
   const [smartApplied, setSmartApplied] = useState<string[]>([]);
   const [listening, setListening] = useState(false);
@@ -258,15 +256,6 @@ export function CatalogGrid() {
   useEffect(() => {
     setSpeechSupported(Boolean(getSpeechRecognitionCtor()));
   }, []);
-
-  useEffect(() => {
-    if (searchParams.get("pilot") === "1") {
-      setPilotOnly(true);
-      setSmartFilter(false);
-      setAudience("all");
-      setWorkflowsOnly(false);
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     if (!smartParsed) {
@@ -316,7 +305,6 @@ export function CatalogGrid() {
     if (category !== "all") params.set("category", category);
     if (audience !== "all") params.set("audience", audience);
     if (workflowsOnly) params.set("workflow", "1");
-    if (pilotOnly) params.set("pilot", "1");
     startTransition(() => {
       fetch(`/api/catalog?${params}`)
         .then((r) => r.json())
@@ -326,7 +314,7 @@ export function CatalogGrid() {
           setFamilyCount(d.familyCount ?? d.count ?? 0);
         });
     });
-  }, [searchQ, market, category, audience, workflowsOnly, pilotOnly]);
+  }, [searchQ, market, category, audience, workflowsOnly]);
 
   function toggleVoiceSearch() {
     const Ctor = getSpeechRecognitionCtor();
@@ -388,7 +376,6 @@ export function CatalogGrid() {
     (category !== "all" ? 1 : 0) +
     (audience !== "all" ? 1 : 0) +
     (workflowsOnly ? 1 : 0) +
-    (pilotOnly ? 1 : 0) +
     (q ? 1 : 0);
 
   return (
@@ -507,7 +494,6 @@ export function CatalogGrid() {
                     // Show the full workflow set when enabling — don't keep a stacked audience filter.
                     if (next) {
                       setAudience("all");
-                      setPilotOnly(false);
                     }
                     return next;
                   });
@@ -518,28 +504,6 @@ export function CatalogGrid() {
                 {t("catalog.workflows")}
                 <span className="cat-count">
                   {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setSmartFilter(false);
-                  setPilotOnly((v) => {
-                    const next = !v;
-                    if (next) {
-                      setAudience("all");
-                      setWorkflowsOnly(false);
-                      setCategory("all");
-                    }
-                    return next;
-                  });
-                }}
-                className={`chip ${pilotOnly ? "filter-active chip-live" : ""}`}
-                title={t("demo.shortlistSub")}
-              >
-                {t("catalog.demo6")}
-                <span className="cat-count">
-                  {pilotOnly ? familyCount : MONDAY_PILOT_FAMILY_IDS.length}
                 </span>
               </button>
             </div>
@@ -626,7 +590,6 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
-                setPilotOnly(false);
                 setSmartApplied([]);
               }}
             >
@@ -751,7 +714,6 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
-                setPilotOnly(false);
               }}
             >
               {t("catalog.resetFilters")}
