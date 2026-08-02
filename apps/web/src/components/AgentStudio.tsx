@@ -8,7 +8,9 @@ import {
   SetupGuide,
   readSetupFlag,
   writeSetupFlag,
-  type StudioTab,
+  isSetupStepId,
+  resolveSetupStep,
+  type SetupStepId,
 } from "./SetupGuide";
 import { useT } from "@/lib/locale";
 import { MODELS } from "@/lib/models";
@@ -60,6 +62,18 @@ function rentalStatusKey(state: string): "studio.statusNotRented" | "studio.stat
   return "studio.statusNotRented";
 }
 
+function stepFromUrl(): SetupStepId | null {
+  const params = new URLSearchParams(window.location.search);
+  const step = params.get("step");
+  if (isSetupStepId(step)) return step;
+  const tab = params.get("tab");
+  if (tab === "actions") return "connect";
+  if (tab === "install") return "install";
+  if (tab === "configure") return "knowledge";
+  if (params.get("try") === "1") return "try";
+  return null;
+}
+
 export function AgentStudio({ agentId }: { agentId: string }) {
   const t = useT();
   const [data, setData] = useState<AgentPayload | null>(null);
@@ -79,11 +93,13 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [appGreeting, setAppGreeting] = useState(
     "Hi! I'm your AI assistant. Ask me anything, or say you'd like a human.",
   );
-  const [tab, setTab] = useState<StudioTab>("configure");
+  const [activeStep, setActiveStep] = useState<SetupStepId>("knowledge");
   const [triedChat, setTriedChat] = useState(false);
   const [visitedInstall, setVisitedInstall] = useState(false);
   const [skippedConnect, setSkippedConnect] = useState(false);
   const [tryMode, setTryMode] = useState(false);
+  const [flagsReady, setFlagsReady] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   const hasWorkflow = isWorkflowFamilyId(agentId);
 
@@ -101,29 +117,66 @@ export function AgentStudio({ agentId }: { agentId: string }) {
 
   useEffect(() => {
     void load();
-    const params = new URLSearchParams(window.location.search);
-    const t = params.get("tab");
-    if (t === "actions" || t === "install" || t === "configure") setTab(t);
-    const wantTry = params.get("try") === "1";
+    const wantTry = new URLSearchParams(window.location.search).get("try") === "1";
     setTryMode(wantTry);
     setTriedChat(readSetupFlag(agentId, "tried"));
     setVisitedInstall(readSetupFlag(agentId, "install"));
     setSkippedConnect(readSetupFlag(agentId, "skip-connect"));
-    if (wantTry) {
-      window.setTimeout(() => {
-        document.getElementById("agent-chat")?.scrollIntoView({ behavior: "smooth", block: "start" });
-        document.getElementById("sandbox-chat-input")?.focus();
-      }, 400);
+    setFlagsReady(true);
+    const fromUrl = stepFromUrl();
+    if (fromUrl) {
+      setActiveStep(fromUrl);
+      setHydrated(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reload when agent route changes
   }, [agentId]);
 
+  // Resolve first incomplete step once agent + flags are loaded (unless URL forced a step)
   useEffect(() => {
-    if (tab === "install") {
+    if (!data || !flagsReady || hydrated) return;
+    if (stepFromUrl()) {
+      setHydrated(true);
+      return;
+    }
+    const rentedNow = (data.rental?.state ?? "selected") !== "selected";
+    const knowledgeNow = (data.rental?.knowledge ?? data.package.knowledge).trim().length > 0;
+    const connectedNow = data.rental?.connectedConnectors ?? [];
+    const toolsOk = hasWorkflow
+      ? connectedNow.some((id) => id === "google_calendar" || id === "slack" || id === "calendar")
+      : connectedNow.length > 0;
+    setActiveStep(
+      resolveSetupStep({
+        hasKnowledge: knowledgeNow,
+        connectDone: toolsOk || readSetupFlag(agentId, "skip-connect"),
+        rented: rentedNow,
+        triedChat: readSetupFlag(agentId, "tried"),
+        visitedInstall: readSetupFlag(agentId, "install"),
+      }),
+    );
+    setHydrated(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.package.manifest.id, flagsReady, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    if (activeStep === "install") {
       writeSetupFlag(agentId, "install");
       setVisitedInstall(true);
     }
-  }, [tab, agentId]);
+    const url = new URL(window.location.href);
+    url.searchParams.set("step", activeStep);
+    url.searchParams.delete("tab");
+    if (activeStep !== "try") url.searchParams.delete("try");
+    window.history.replaceState({}, "", url.toString());
+  }, [activeStep, agentId, hydrated]);
+
+  useEffect(() => {
+    if (activeStep === "try") {
+      window.setTimeout(() => {
+        document.getElementById("sandbox-chat-input")?.focus();
+      }, 200);
+    }
+  }, [activeStep]);
 
   const [origin, setOrigin] = useState("");
   useEffect(() => {
@@ -172,7 +225,6 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     }
   }
 
-  /** Ensure workspace entitlement exists (survives “selected” and post-redeploy memory wipe). */
   async function ensureRented(): Promise<boolean> {
     if (state !== "selected" && publicKey) return true;
     const res = await fetch("/api/rent", {
@@ -196,12 +248,9 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     try {
       const ok = await ensureRented();
       if (!ok) return;
-      setTab("configure");
-      setConfigMsg({
-        kind: "ok",
-        text: t("studio.okRented"),
-      });
+      setConfigMsg({ kind: "ok", text: t("studio.okRented") });
       await load();
+      setActiveStep("try");
     } finally {
       setSaving(false);
     }
@@ -241,18 +290,10 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             : t("studio.okSavedChat")
           : t("studio.okDraft"),
       });
-      if (markRented) setTab("actions");
+      if (markRented) setActiveStep("connect");
     } finally {
       setSaving(false);
     }
-  }
-
-  function goTab(next: StudioTab) {
-    setTab(next);
-  }
-
-  function focusChat() {
-    document.getElementById("agent-chat")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function markTried() {
@@ -263,7 +304,11 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   function skipConnect() {
     writeSetupFlag(agentId, "skip-connect");
     setSkippedConnect(true);
-    focusChat();
+    setActiveStep("try");
+  }
+
+  function goStep(step: SetupStepId) {
+    setActiveStep(step);
   }
 
   if (!data) {
@@ -281,65 +326,45 @@ export function AgentStudio({ agentId }: { agentId: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="rise flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <div className="mb-2 flex flex-wrap gap-2">
-            {hasWorkflow && (
-              <span className="chip chip-live" title={t("studio.multiStepTitle")}>
-                {t("studio.multiStepAgent")}
-              </span>
-            )}
-            <span className="chip">{m.tier}</span>
-            <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
-            <span className={`chip ${rented ? "chip-live" : ""}`}>
-              {t(rentalStatusKey(state))}
+      <div className="rise">
+        <div className="mb-2 flex flex-wrap gap-2">
+          {hasWorkflow && (
+            <span className="chip chip-live" title={t("studio.multiStepTitle")}>
+              {t("studio.multiStepAgent")}
             </span>
-          </div>
-          <h1 className="text-3xl font-semibold tracking-tight">{m.name}</h1>
-          <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">{m.summary}</p>
-          {hasWorkflow ? (
-            <>
-              <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
-                {t("studio.multiStepWorkflow")}{" "}
-                {demoHint ?? "Connect Calendar / Slack on Actions, then try a prompt in chat."}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-1.5" aria-label={t("studio.capabilitiesAria")}>
-                {capabilityChips.map((label) => (
-                  <span
-                    key={label}
-                    className={`chip normal-case tracking-normal ${
-                      label === "Can act" ||
-                      label === "Multi-step" ||
-                      label === "Confirm before write"
-                        ? "chip-live"
-                        : ""
-                    }`}
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </>
-          ) : null}
+          )}
+          <span className="chip">{m.tier}</span>
+          <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
+          <span className={`chip ${rented ? "chip-live" : ""}`}>
+            {t(rentalStatusKey(state))}
+          </span>
         </div>
-        <div className="panel flex flex-col gap-2 p-4 sm:min-w-[240px]">
-          <div className="text-xs uppercase tracking-wide text-[var(--muted)]">{t("studio.rent")}</div>
-          <div className="flex gap-2">
-            {(Object.keys(TIER_PRICES) as Array<keyof typeof TIER_PRICES>).map((t) => (
-              <button
-                key={t}
-                type="button"
-                className={`chip ${tier === t ? "chip-live" : ""}`}
-                onClick={() => setTier(t)}
-              >
-                {t} ${TIER_PRICES[t]}
-              </button>
-            ))}
-          </div>
-          <button type="button" className="btn btn-primary mt-1" disabled={saving} onClick={rent}>
-            {state === "selected" ? t("studio.rentConfigure") : t("studio.updatePlan")}
-          </button>
-        </div>
+        <h1 className="text-3xl font-semibold tracking-tight">{m.name}</h1>
+        <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">{m.summary}</p>
+        {hasWorkflow ? (
+          <>
+            <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
+              {t("studio.multiStepWorkflow")}{" "}
+              {demoHint ?? "Connect Calendar / Slack, then try a prompt in sandbox."}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-1.5" aria-label={t("studio.capabilitiesAria")}>
+              {capabilityChips.map((label) => (
+                <span
+                  key={label}
+                  className={`chip normal-case tracking-normal ${
+                    label === "Can act" ||
+                    label === "Multi-step" ||
+                    label === "Confirm before write"
+                      ? "chip-live"
+                      : ""
+                  }`}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
 
       <SetupGuide
@@ -351,82 +376,122 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         triedChat={triedChat}
         visitedInstall={visitedInstall}
         skippedConnect={skippedConnect}
-        onGoTab={goTab}
-        onFocusChat={focusChat}
+        activeStep={activeStep}
+        onStepChange={goStep}
         onSkipConnect={skipConnect}
         onRent={() => void rent()}
       />
 
-      <div className="flex flex-wrap gap-2 border-b border-[var(--line)] pb-2">
-        {(
-          [
-            ["configure", "studio.tabConfigure"],
-            ["actions", "studio.tabActions"],
-            ["install", "studio.tabInstall"],
-          ] as const
-        ).map(([id, labelKey]) => (
-          <button
-            key={id}
-            type="button"
-            className={`btn ${tab === id ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => goTab(id)}
-          >
-            {t(labelKey)}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="space-y-4">
-          {tab === "configure" && (
-            <>
-              <div id="studio-model" className="panel p-4">
-                <h2 className="mb-3 text-sm font-semibold">{t("studio.model")}</h2>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {MODELS.map((mod) => (
-                    <button
-                      key={mod.id}
-                      type="button"
-                      onClick={() => setModel(mod.id)}
-                      className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
-                        model === mod.id
-                          ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)]"
-                          : "border-[var(--line)]"
-                      }`}
-                    >
-                      <div className="font-medium">{mod.label}</div>
-                      <div className="text-xs text-[var(--muted)]">
-                        {mod.blurb} · {t("studio.modelBurn", { burn: mod.burn })}
-                      </div>
-                    </button>
-                  ))}
-                </div>
+      <div className="space-y-4">
+        {activeStep === "knowledge" ? (
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div id="studio-model" className="panel p-4">
+              <h2 className="mb-1 text-sm font-semibold">{t("studio.model")}</h2>
+              <p className="mb-3 text-xs text-[var(--muted)]">
+                Required — Sonnet is the default. Change only if you need faster or stronger replies.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {MODELS.map((mod) => (
+                  <button
+                    key={mod.id}
+                    type="button"
+                    onClick={() => setModel(mod.id)}
+                    className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
+                      model === mod.id
+                        ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)]"
+                        : "border-[var(--line)]"
+                    }`}
+                  >
+                    <div className="font-medium">{mod.label}</div>
+                    <div className="text-xs text-[var(--muted)]">
+                      {mod.blurb} · {t("studio.modelBurn", { burn: mod.burn })}
+                    </div>
+                  </button>
+                ))}
               </div>
-              <div id="studio-knowledge">
-                <KnowledgePanel
-                  agentId={agentId}
-                  knowledge={knowledge}
-                  onKnowledgeChange={setKnowledge}
-                  saving={saving}
-                  onSaveDraft={() => void saveConfig(false)}
-                  onMarkReady={() => void saveConfig(true)}
-                  configMsg={configMsg}
-                  showSelectedTip={state === "selected"}
-                />
-              </div>
-            </>
-          )}
+            </div>
+            <div id="studio-knowledge">
+              <KnowledgePanel
+                agentId={agentId}
+                knowledge={knowledge}
+                onKnowledgeChange={setKnowledge}
+                saving={saving}
+                onSaveDraft={() => void saveConfig(false)}
+                onMarkReady={() => void saveConfig(true)}
+                configMsg={configMsg}
+                showSelectedTip={state === "selected"}
+              />
+            </div>
+          </div>
+        ) : null}
 
-          {tab === "actions" && (
-            <ActionsPanel
+        {activeStep === "connect" ? (
+          <ActionsPanel
+            agentId={agentId}
+            connectors={data.connectors}
+            connected={connected}
+            onConnected={(ids) => setConnected(ids)}
+          />
+        ) : null}
+
+        {activeStep === "rent" ? (
+          <div className="panel mx-auto max-w-lg space-y-4 p-5">
+            <div>
+              <h2 className="text-sm font-semibold">{t("studio.rent")}</h2>
+              <p className="mt-1 text-xs text-[var(--muted)]">
+                Required to go live. Pick a plan to create workspace entitlement, then try sandbox and
+                Install.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(Object.keys(TIER_PRICES) as Array<keyof typeof TIER_PRICES>).map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`chip ${tier === id ? "chip-live" : ""}`}
+                  onClick={() => setTier(id)}
+                >
+                  {id} ${TIER_PRICES[id]}
+                </button>
+              ))}
+            </div>
+            {configMsg ? (
+              <p
+                className={`text-xs ${configMsg.kind === "ok" ? "text-[var(--accent)]" : "text-red-400"}`}
+              >
+                {configMsg.text}
+              </p>
+            ) : null}
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={saving}
+              onClick={() => void rent()}
+            >
+              {state === "selected" ? t("studio.rentConfigure") : t("studio.updatePlan")}
+            </button>
+            {rented ? (
+              <button type="button" className="btn btn-ghost text-xs" onClick={() => goStep("try")}>
+                Continue to sandbox
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+
+        {activeStep === "try" ? (
+          <div className="mx-auto max-w-3xl">
+            <SandboxChat
               agentId={agentId}
-              connectors={data.connectors}
-              connected={connected}
-              onConnected={(ids) => setConnected(ids)}
+              mode="sandbox"
+              freeTry={state === "selected"}
+              highlightTry={tryMode || activeStep === "try"}
+              onFirstMessage={markTried}
             />
-          )}
+          </div>
+        ) : null}
 
-          {tab === "install" && (
+        {activeStep === "install" ? (
+          <div className="mx-auto max-w-3xl">
             <InstallPanel
               ready={Boolean(publicKey) && state !== "selected"}
               publicKey={publicKey}
@@ -446,31 +511,25 @@ export function AgentStudio({ agentId }: { agentId: string }) {
               onCopyAppUrl={() => void copyAppUrl()}
               onRent={() => void rent()}
             />
-          )}
+          </div>
+        ) : null}
 
+        {activeStep === "knowledge" || activeStep === "connect" ? (
           <details className="panel p-4">
             <summary className="cursor-pointer text-sm font-semibold">
               {t("studio.tools", { count: data.package.tools.length })}
             </summary>
             <ul className="mt-3 space-y-2 text-sm">
-              {data.package.tools.map((t) => (
-                <li key={t.name} className="border-b border-[var(--line)] pb-2 last:border-0">
-                  <code className="text-[var(--accent)]">{t.name}</code>
-                  {t.side_effects && <span className="chip ml-2">{t.side_effects}</span>}
-                  <p className="text-xs text-[var(--muted)]">{t.description}</p>
+              {data.package.tools.map((tool) => (
+                <li key={tool.name} className="border-b border-[var(--line)] pb-2 last:border-0">
+                  <code className="text-[var(--accent)]">{tool.name}</code>
+                  {tool.side_effects && <span className="chip ml-2">{tool.side_effects}</span>}
+                  <p className="text-xs text-[var(--muted)]">{tool.description}</p>
                 </li>
               ))}
             </ul>
           </details>
-        </div>
-
-        <SandboxChat
-          agentId={agentId}
-          mode="sandbox"
-          freeTry={state === "selected"}
-          highlightTry={tryMode}
-          onFirstMessage={markTried}
-        />
+        ) : null}
       </div>
     </div>
   );

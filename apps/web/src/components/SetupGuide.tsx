@@ -1,8 +1,14 @@
 "use client";
 
-export type StudioTab = "configure" | "actions" | "install";
-
 export type SetupStepId = "knowledge" | "connect" | "rent" | "try" | "install";
+
+export const SETUP_STEPS: SetupStepId[] = [
+  "knowledge",
+  "connect",
+  "rent",
+  "try",
+  "install",
+];
 
 type Requirement = "required" | "optional" | "recommended" | "live-required";
 
@@ -36,6 +42,30 @@ export function writeSetupFlag(agentId: string, suffix: string) {
   }
 }
 
+export function isSetupStepId(v: string | null | undefined): v is SetupStepId {
+  return Boolean(v && (SETUP_STEPS as string[]).includes(v));
+}
+
+/** First incomplete step, or install when all done. */
+export function resolveSetupStep(flags: {
+  hasKnowledge: boolean;
+  connectDone: boolean;
+  rented: boolean;
+  triedChat: boolean;
+  visitedInstall: boolean;
+}): SetupStepId {
+  // First visit: land on Knowledge even when starter pack already counts as done
+  if (!flags.connectDone && !flags.rented && !flags.triedChat && !flags.visitedInstall) {
+    return "knowledge";
+  }
+  if (!flags.hasKnowledge) return "knowledge";
+  if (!flags.connectDone) return "connect";
+  if (!flags.rented) return "rent";
+  if (!flags.triedChat) return "try";
+  if (!(flags.visitedInstall && flags.rented)) return "install";
+  return "install";
+}
+
 function requirementClass(r: Requirement): string {
   if (r === "required") {
     return "border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] text-[var(--accent-bright)]";
@@ -49,6 +79,12 @@ function requirementClass(r: Requirement): string {
   return "border-[var(--line)] bg-transparent text-[var(--muted)]";
 }
 
+function nextAfter(id: SetupStepId): SetupStepId | null {
+  const i = SETUP_STEPS.indexOf(id);
+  if (i < 0 || i >= SETUP_STEPS.length - 1) return null;
+  return SETUP_STEPS[i + 1]!;
+}
+
 export function SetupGuide({
   agentId,
   isWorkflow,
@@ -58,8 +94,8 @@ export function SetupGuide({
   triedChat,
   visitedInstall,
   skippedConnect,
-  onGoTab,
-  onFocusChat,
+  activeStep,
+  onStepChange,
   onSkipConnect,
   onRent,
 }: {
@@ -71,8 +107,8 @@ export function SetupGuide({
   triedChat: boolean;
   visitedInstall: boolean;
   skippedConnect: boolean;
-  onGoTab: (tab: StudioTab) => void;
-  onFocusChat: () => void;
+  activeStep: SetupStepId;
+  onStepChange: (step: SetupStepId) => void;
   onSkipConnect: () => void;
   onRent: () => void;
 }) {
@@ -133,38 +169,36 @@ export function SetupGuide({
   ];
 
   const doneCount = steps.filter((s) => s.done).length;
-  const current = steps.find((s) => !s.done) ?? steps[steps.length - 1]!;
+  const current = steps.find((s) => s.id === activeStep) ?? steps[0]!;
   const pct = Math.round((doneCount / steps.length) * 100);
   const minReady = hasKnowledge;
   const liveReady = rented && (!isWorkflow || toolsConnected);
+  const nxt = nextAfter(activeStep);
 
-  function continueStep(id: SetupStepId) {
-    if (id === "knowledge") {
-      onGoTab("configure");
-      window.setTimeout(() => {
-        document.getElementById("studio-knowledge")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 50);
-      return;
-    }
-    if (id === "connect") {
-      onGoTab("actions");
-      return;
-    }
-    if (id === "rent") {
-      if (!rented) onRent();
-      onGoTab("configure");
-      return;
-    }
-    if (id === "try") {
-      onGoTab("configure");
-      onFocusChat();
-      return;
-    }
-    if (!rented) {
+  function primaryAction() {
+    if (activeStep === "rent" && !rented) {
       onRent();
+      return;
     }
-    onGoTab("install");
+    if (activeStep === "install" && !rented) {
+      onRent();
+      return;
+    }
+    if (nxt) onStepChange(nxt);
   }
+
+  const primaryLabel =
+    activeStep === "rent" && !rented
+      ? "Activate plan"
+      : activeStep === "install" && !rented
+        ? "Activate & go live"
+        : activeStep === "try"
+          ? "Continue to Go live"
+          : activeStep === "install"
+            ? "Setup complete"
+            : nxt
+              ? `Continue — ${steps.find((s) => s.id === nxt)?.title}`
+              : "Done";
 
   return (
     <div className="panel space-y-4 p-4">
@@ -172,9 +206,8 @@ export function SetupGuide({
         <div>
           <h2 className="text-sm font-semibold text-[var(--text)]">Setup</h2>
           <p className="mt-0.5 max-w-xl text-xs text-[var(--muted)]">
-            Minimum to try: starter knowledge. Minimum to go live: activate plan
-            {isWorkflow ? " + Calendar / Slack" : " + any tools you need"}. Sandbox is the last check
-            before Install.
+            One step at a time. Minimum to try: starter knowledge. Minimum to go live: activate plan
+            {isWorkflow ? " + Calendar / Slack" : ""}. Sandbox is the last check before Install.
           </p>
         </div>
         <div className="text-right">
@@ -200,19 +233,18 @@ export function SetupGuide({
         />
       </div>
 
-      {/* Horizontal stepper */}
       <ol className="relative grid grid-cols-5 gap-1 sm:gap-2">
         <div
           aria-hidden
           className="pointer-events-none absolute left-[10%] right-[10%] top-4 z-0 hidden h-px bg-[var(--line)] sm:block"
         />
         {steps.map((step, idx) => {
-          const active = step.id === current.id;
+          const active = step.id === activeStep;
           return (
             <li key={step.id} className="relative z-10">
               <button
                 type="button"
-                onClick={() => continueStep(step.id)}
+                onClick={() => onStepChange(step.id)}
                 className="flex w-full flex-col items-center gap-1.5 px-0.5 text-center sm:gap-2 sm:px-1"
                 aria-current={active ? "step" : undefined}
               >
@@ -251,17 +283,16 @@ export function SetupGuide({
         })}
       </ol>
 
-      {/* Active step detail */}
       <div
         className={`rounded-xl border px-4 py-3 ${
-          current.done
+          current.done && activeStep !== current.id
             ? "border-[var(--line)]"
             : "border-[color-mix(in_srgb,var(--accent)_40%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)]"
         }`}
       >
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-semibold text-[var(--text)]">
-            Step {steps.findIndex((s) => s.id === current.id) + 1}: {current.title}
+            Step {SETUP_STEPS.indexOf(activeStep) + 1}: {current.title}
           </span>
           <span
             className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${requirementClass(current.requirement)}`}
@@ -272,42 +303,44 @@ export function SetupGuide({
         <p className="mt-1.5 text-xs leading-relaxed text-[var(--muted)]">{current.detail}</p>
 
         <div className="mt-3 flex flex-wrap gap-2">
-          {doneCount < steps.length ? (
+          {activeStep === "install" && visitedInstall && rented ? (
+            <p className="text-xs text-[var(--accent)]">
+              Setup complete. Use the embed or App link below anytime.
+            </p>
+          ) : (
             <>
               <button
                 type="button"
                 className="btn btn-primary text-xs"
-                onClick={() => continueStep(current.id)}
+                onClick={primaryAction}
+                disabled={activeStep === "install" && rented && visitedInstall}
               >
-                {current.id === "try"
-                  ? "Open sandbox"
-                  : current.id === "rent" && !rented
-                    ? "Activate plan"
-                    : current.id === "install"
-                      ? rented
-                        ? "Open Install"
-                        : "Activate & go live"
-                      : `Continue — ${current.title}`}
+                {primaryLabel}
               </button>
-              {current.id === "connect" && !toolsConnected ? (
+              {activeStep === "connect" && !toolsConnected ? (
                 <button type="button" className="btn btn-ghost text-xs" onClick={onSkipConnect}>
                   Skip for now — try sandbox
                 </button>
               ) : null}
-              {current.id === "knowledge" ? (
+              {activeStep === "knowledge" ? (
                 <button
                   type="button"
                   className="btn btn-ghost text-xs"
-                  onClick={() => continueStep("connect")}
+                  onClick={() => onStepChange("connect")}
                 >
                   Keep starter pack — next
                 </button>
               ) : null}
+              {activeStep === "rent" && rented && nxt ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost text-xs"
+                  onClick={() => onStepChange(nxt)}
+                >
+                  Continue — {steps.find((s) => s.id === nxt)?.title}
+                </button>
+              ) : null}
             </>
-          ) : (
-            <p className="text-xs text-[var(--accent)]">
-              Setup complete. Open Install anytime to put the agent on your website or app.
-            </p>
           )}
         </div>
       </div>
@@ -326,6 +359,9 @@ export function SetupGuide({
     </div>
   );
 }
+
+/** @deprecated Use Studio setup steps; kept for any leftover imports */
+export type StudioTab = "configure" | "actions" | "install";
 
 export function rentalStatusLabel(state: string): string {
   if (state === "selected") return "Not rented";
