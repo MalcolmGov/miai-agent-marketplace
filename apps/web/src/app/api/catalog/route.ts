@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
-import { listCatalog, listFamilies, listMarketPacks } from "@/lib/catalog";
+import {
+  countIndexedMarketSkus,
+  INDEXED_AGENT_COUNT,
+  listCatalog,
+  listFamilies,
+  listMarketPacks,
+} from "@/lib/catalog";
 import { isMondayPilotFamilyId } from "@/lib/monday-pilot";
 import { isWorkflowFamilyId } from "@/lib/workflows";
 
@@ -30,7 +36,8 @@ export async function GET(req: Request) {
   const view = searchParams.get("view") ?? "families";
   const packs = await listMarketPacks();
   const allAgents = await listCatalog();
-  const totalAgents = allAgents.length;
+  // Indexed commercial SKUs = 100 × 5; on-disk ZA aliases are not a 6th market.
+  const totalAgents = INDEXED_AGENT_COUNT;
 
   if (view === "agents") {
     let items = allAgents;
@@ -97,10 +104,9 @@ export async function GET(req: Request) {
 
   items = sortWorkflowFirst(items);
 
-  const agentCount = items.reduce((n, f) => {
-    if (preferred) return n + (f.markets[preferred] ? 1 : 0);
-    return n + Object.keys(f.markets).length;
-  }, 0);
+  const agentCount = preferred
+    ? items.length
+    : items.reduce((n, f) => n + countIndexedMarketSkus(f.markets ?? {}), 0);
 
   return NextResponse.json({
     view: "families",

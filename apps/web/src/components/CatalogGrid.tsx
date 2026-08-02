@@ -331,6 +331,7 @@ export function CatalogGrid({
     <div className="space-y-8">
       <MarketplaceHero
         familyCount={totalFamilies || familyCount || 100}
+        agentCount={500}
         categoryCount={industryCategoryCount}
         workflowCount={WORKFLOW_FAMILY_IDS.length}
       />
@@ -944,9 +945,6 @@ function AgentDetailModal({
                   {packs.map((p) => (
                     <MarketBadge key={p} market={p} prominent={p === activePack} />
                   ))}
-                  {item.hasZa ? (
-                    <span className="chip !px-2 !py-0.5 text-[11px]">ZA</span>
-                  ) : null}
                 </dd>
               </div>
             ) : null}

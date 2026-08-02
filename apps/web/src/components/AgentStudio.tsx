@@ -362,7 +362,9 @@ export function AgentStudio({
             </span>
           )}
           <span className="chip">{m.tier}</span>
-          <span className="chip">{(m.market ?? "za").toUpperCase()}</span>
+          <span className="chip">
+            {(m.market === "za" ? "africa" : m.market ?? "africa").toUpperCase()}
+          </span>
           <span className={`chip ${rented ? "chip-live" : ""}`}>
             {t(rentalStatusKey(state))}
           </span>

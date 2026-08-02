@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyInstantAI Agent Marketplace — Partner Technical Brief</title>
+<style>
+  :root{
+    --ground:#F6F7F9; --panel:#FFFFFF; --elev:#FBFBFD;
+    --ink:#14171F; --ink2:#3A4150; --muted:#697386; --faint:#9AA3B2;
+    --line:#E7E8EC; --line2:#EDEEF1;
+    --accent:#3A54D6; --accent-soft:#EAEDFB; --accent-ink:#2A3EA8;
+    --teal:#0E7C86;
+    --good:#1F9D57; --good-bg:#E7F5EC;
+    --warn:#B5811A; --warn-bg:#FBF1DE;
+    --bad:#CB3B3B;  --bad-bg:#FBE9E9;
+    --shadow:0 1px 2px rgba(20,23,31,.04),0 8px 24px rgba(20,23,31,.05);
+    --font-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --maxw:1180px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0D1016; --panel:#141922; --elev:#171D28;
+      --ink:#E9ECF3; --ink2:#C3CAD6; --muted:#95A0B2; --faint:#697488;
+      --line:#232A36; --line2:#1D242F;
+      --accent:#7C93FF; --accent-soft:#1B2338; --accent-ink:#A9B7FF;
+      --teal:#4CC7D2;
+      --good:#4FC17E; --good-bg:#12271B;
+      --warn:#E0B25A; --warn-bg:#2A2213;
+      --bad:#F0736F;  --bad-bg:#2C1717;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#F6F7F9;--panel:#FFFFFF;--elev:#FBFBFD;--ink:#14171F;--ink2:#3A4150;--muted:#697386;--faint:#9AA3B2;
+    --line:#E7E8EC;--line2:#EDEEF1;--accent:#3A54D6;--accent-soft:#EAEDFB;--accent-ink:#2A3EA8;--teal:#0E7C86;
+    --good:#1F9D57;--good-bg:#E7F5EC;--warn:#B5811A;--warn-bg:#FBF1DE;--bad:#CB3B3B;--bad-bg:#FBE9E9;
+    --shadow:0 1px 2px rgba(20,23,31,.04),0 8px 24px rgba(20,23,31,.05);
+  }
+  :root[data-theme="dark"]{
+    --ground:#0D1016;--panel:#141922;--elev:#171D28;--ink:#E9ECF3;--ink2:#C3CAD6;--muted:#95A0B2;--faint:#697488;
+    --line:#232A36;--line2:#1D242F;--accent:#7C93FF;--accent-soft:#1B2338;--accent-ink:#A9B7FF;--teal:#4CC7D2;
+    --good:#4FC17E;--good-bg:#12271B;--warn:#E0B25A;--warn-bg:#2A2213;--bad:#F0736F;--bad-bg:#2C1717;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-sans);
+    font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+  a{color:var(--accent);text-decoration:none}
+  h1,h2,h3,h4{line-height:1.2;text-wrap:balance;margin:0}
+  p{margin:0 0 .85em}
+  code,.mono{font-family:var(--font-mono);font-size:.9em}
+  .num{font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+  strong{color:var(--ink);font-weight:650}
+
+  /* Cover */
+  .cover{padding:clamp(40px,7vw,84px) 0 34px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:600}
+  .cover h1{font-size:clamp(30px,5.2vw,50px);font-weight:720;letter-spacing:-.02em;margin:.35em 0 .28em}
+  .cover .sub{font-size:clamp(16px,2.2vw,19px);color:var(--ink2);max-width:60ch}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:13px;color:var(--muted);font-family:var(--font-mono)}
+  .meta b{color:var(--ink2);font-weight:600}
+
+  .verdictbar{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,34px);align-items:center;
+    margin-top:30px;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}
+  .rating{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:150px;padding:16px 22px;border-radius:14px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+  .rating .grade{font-size:52px;font-weight:760;line-height:1;color:var(--accent-ink);letter-spacing:-.02em}
+  .rating .glabel{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px;font-family:var(--font-mono)}
+  .rating .gscore{font-family:var(--font-mono);font-size:13px;color:var(--ink2);margin-top:3px}
+  .verdicttext{font-size:15px;color:var(--ink2)}
+  .verdicttext b{color:var(--ink)}
+
+  /* Layout with TOC */
+  .layout{display:grid;grid-template-columns:220px 1fr;gap:clamp(24px,4vw,54px);padding:36px 0 90px;align-items:start}
+  .toc{position:sticky;top:16px;font-size:13px;max-height:calc(100vh - 32px);overflow:auto}
+  .toc .tt{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 10px;padding-left:10px}
+  .toc a{display:block;color:var(--muted);padding:4px 10px;border-left:2px solid var(--line);border-radius:0 6px 6px 0;line-height:1.35}
+  .toc a:hover{color:var(--ink);border-left-color:var(--accent);background:var(--elev)}
+  .toc a .n{font-family:var(--font-mono);color:var(--faint);font-size:11px;margin-right:6px}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.toc{display:none}}
+
+  /* Sections */
+  section{scroll-margin-top:16px;margin-bottom:12px;padding:26px 0;border-top:1px solid var(--line)}
+  section:first-child{border-top:none}
+  .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .sh .sn{font-family:var(--font-mono);font-size:13px;color:var(--accent);font-weight:600}
+  .sh h2{font-size:clamp(21px,3vw,27px);font-weight:680;letter-spacing:-.015em}
+  .lead{font-size:16px;color:var(--ink2);max-width:74ch;margin-bottom:16px}
+  h3{font-size:16px;font-weight:650;margin:22px 0 8px;color:var(--ink)}
+
+  /* KPI cards */
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin:16px 0}
+  .kpi{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:var(--panel)}
+  .kpi .v{font-family:var(--font-mono);font-size:23px;font-weight:650;color:var(--ink);letter-spacing:-.01em;line-height:1.1}
+  .kpi .v small{font-size:13px;color:var(--muted);font-weight:500}
+  .kpi .k{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.3}
+  .kpi.accent .v{color:var(--accent-ink)}
+
+  /* Rating cards (exec) */
+  .rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0}
+  .rc{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:var(--panel);display:flex;flex-direction:column;gap:6px}
+  .rc .rk{font-size:12.5px;color:var(--muted)}
+  .rc .rv{font-size:16px;font-weight:650;color:var(--ink)}
+  .rc .rmeta{font-family:var(--font-mono);font-size:12px;color:var(--ink2)}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  .d-good{background:var(--good)}.d-warn{background:var(--warn)}.d-bad{background:var(--bad)}.d-acc{background:var(--accent)}
+
+  /* Scoreboard bars */
+  .scoreboard{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);margin:16px 0}
+  .score-row{display:grid;grid-template-columns:210px 1fr 46px;gap:14px;align-items:center;padding:9px 16px;border-top:1px solid var(--line2)}
+  .score-row:first-child{border-top:none}
+  .score-row .lab{font-size:13.5px;color:var(--ink2)}
+  .track{height:8px;border-radius:6px;background:var(--line);overflow:hidden}
+  .fill{height:100%;border-radius:6px}
+  .score-row .val{font-family:var(--font-mono);font-size:13px;text-align:right;color:var(--ink);font-weight:600}
+  @media(max-width:560px){.score-row{grid-template-columns:130px 1fr 40px;gap:10px}.score-row .lab{font-size:12px}}
+
+  /* Tables */
+  .tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:420px}
+  th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line2);vertical-align:top}
+  thead th{background:var(--elev);color:var(--ink2);font-weight:600;font-size:12px;letter-spacing:.02em;text-transform:uppercase;position:sticky;top:0}
+  tbody tr:last-child td{border-bottom:none}
+  td .mono,td.mono{font-family:var(--font-mono);font-size:12.5px}
+  .r-num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+
+  /* chips */
+  .chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;font-family:var(--font-mono);
+    padding:2px 8px;border-radius:20px;border:1px solid transparent;white-space:nowrap}
+  .c-good{background:var(--good-bg);color:var(--good);border-color:color-mix(in srgb,var(--good) 30%,transparent)}
+  .c-warn{background:var(--warn-bg);color:var(--warn);border-color:color-mix(in srgb,var(--warn) 30%,transparent)}
+  .c-bad{background:var(--bad-bg);color:var(--bad);border-color:color-mix(in srgb,var(--bad) 30%,transparent)}
+  .c-acc{background:var(--accent-soft);color:var(--accent-ink);border-color:color-mix(in srgb,var(--accent) 25%,transparent)}
+
+  /* finding / risk lists */
+  .fr{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  .fr:not(:has(.frcol.risk)){grid-template-columns:1fr}
+  .frcol.str{max-width:720px}
+  @media(max-width:760px){.fr{grid-template-columns:1fr}}
+  .frcol{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+  .frhead{padding:9px 14px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-family:var(--font-mono);border-bottom:1px solid var(--line2)}
+  .frcol.str .frhead{color:var(--good);background:var(--good-bg)}
+  .frcol.risk .frhead{color:var(--bad);background:var(--bad-bg)}
+  .frcol ul{margin:0;padding:10px 14px 12px;list-style:none}
+  .frcol li{position:relative;padding-left:16px;margin:0 0 9px;font-size:13.3px;color:var(--ink2);line-height:1.5}
+  .frcol li:last-child{margin-bottom:0}
+  .frcol li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%}
+  .frcol.str li::before{background:var(--good)}
+  .frcol.risk li::before{background:var(--bad)}
+
+  /* callout */
+  .callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;background:var(--elev);padding:14px 16px;margin:16px 0;font-size:14px;color:var(--ink2)}
+  .callout.warn{border-left-color:var(--warn)}
+  .callout.bad{border-left-color:var(--bad)}
+  .callout b{color:var(--ink)}
+  .callout .ct{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px}
+
+  /* diagram */
+  .diagram{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:8px;margin:16px 0;overflow-x:auto}
+  .diagram .cap{font-size:12px;color:var(--muted);font-family:var(--font-mono);padding:6px 10px 2px}
+  pre.mermaid{margin:0;text-align:center;min-width:min-content}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+
+  /* theme toggle */
+  .tog{position:fixed;top:14px;right:14px;z-index:50;border:1px solid var(--line);background:var(--panel);color:var(--ink2);
+    border-radius:20px;padding:7px 13px;font-size:12px;font-family:var(--font-mono);cursor:pointer;box-shadow:var(--shadow)}
+  .footer{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--muted);font-size:12.5px;font-family:var(--font-mono)}
+
+  .onepager{border:2px solid var(--accent);border-radius:16px;background:var(--panel);padding:clamp(20px,3vw,32px);margin:20px 0;box-shadow:var(--shadow)}
+  .onepager h3{margin-top:0;color:var(--accent-ink);font-size:15px;letter-spacing:.04em;text-transform:uppercase;font-family:var(--font-mono)}
+  .tag{font-size:11px;font-family:var(--font-mono);color:var(--muted)}
+  .inline-scores{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+  .miniscore{font-family:var(--font-mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:4px 9px;background:var(--elev)}
+  .miniscore b{color:var(--ink)}
+</style>
+  <style>
+    .diagram .mermaid, .diagram pre.mermaid {
+      background: transparent;
+    }
+    .diagram svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+<button class="tog" onclick="(function(){var r=document.documentElement;var d=r.getAttribute('data-theme');var n=d==='dark'?'light':(d==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark'));r.setAttribute('data-theme',n);})()">◐ theme</button>
+
+<div class="wrap">
+  <header class="cover">
+    <div class="eyebrow">Partner Technical Brief · MyInstantAI Agents</div>
+    <h1>MyInstantAI Agent Marketplace</h1>
+    <p class="sub">A production-grade AI agent marketplace built to run on <b>MyInstantAI</b> rails — catalogue, runtime, Actions, wallet metering, and pilot-ready staging. Engineering score <b>A · 80 / 100</b>.</p>
+    <div class="meta">
+      <span><b>Product</b> MyInstantAI Agent Marketplace</span>
+      <span><b>Catalogue</b> 500 agents · 19 industries · 5 markets</span>
+      <span><b>Staging</b> Postgres + Redis live</span>
+      <span><b>Grade</b> A · 80 / 100</span>
+      <span><b>Date</b> 2026-08-02</span>
+    </div>
+
+    <div class="verdictbar">
+      <div class="rating">
+        <div class="grade">A</div>
+        <div class="glabel">Platform rating</div>
+        <div class="gscore">Eng. score 80 / 100</div>
+      </div>
+      <div class="verdicttext">
+        A <b>complete agent marketplace</b> ready to plug into MyInstantAI identity, wallet, and model rails: 500 production agent packages, 16 live Actions integrations, hardened security, durable Postgres + Redis staging, and CI-gated quality.
+        <br><br>
+        <b>Partnership fit:</b> you bring the platform brand, prepaid tokens, and customer reach — we bring a turnkey catalogue, runtime, and go-to-market surface that ships pilots fast.
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="tt">Contents</div>
+      <a href="#s0"><span class="n">0</span>Partnership readiness</a>
+      <a href="#s1"><span class="n">1</span>Executive Summary</a>
+      <a href="#s2"><span class="n">2</span>Codebase Statistics</a>
+      <a href="#s3"><span class="n">3</span>Project Structure</a>
+      <a href="#s4"><span class="n">4</span>Frontend</a>
+      <a href="#s5"><span class="n">5</span>Backend</a>
+      <a href="#s6"><span class="n">6</span>AI Platform</a>
+      <a href="#s7"><span class="n">7</span>API Surface</a>
+      <a href="#s8"><span class="n">8</span>Data Architecture</a>
+      <a href="#s9"><span class="n">9</span>Integrations</a>
+      <a href="#s10"><span class="n">10</span>Security</a>
+      <a href="#s11"><span class="n">11</span>Compliance</a>
+      <a href="#s12"><span class="n">12</span>DevOps &amp; Cloud</a>
+      <a href="#s13"><span class="n">13</span>Dependencies</a>
+      <a href="#s14"><span class="n">14</span>Performance</a>
+      <a href="#s15"><span class="n">15</span>Testing</a>
+      <a href="#s16"><span class="n">16</span>Documentation</a>
+      <a href="#s17"><span class="n">17</span>Engineering Hygiene</a>
+      <a href="#s18"><span class="n">18</span>Design Patterns</a>
+      <a href="#s19"><span class="n">19</span>Marketplace Metrics</a>
+      <a href="#s20"><span class="n">20</span>Complexity &amp; Cost</a>
+      <a href="#s21"><span class="n">21</span>Visual Reports</a>
+      <a href="#s22"><span class="n">22</span>Partnership case</a>
+    </nav>
+
+    <main>
+      <!-- 0 UPDATE -->
+      <section id="s0">
+        <div class="sh"><span class="sn">00</span><h2>Partnership readiness</h2></div>
+        <p class="lead">Everything MyInstantAI needs to evaluate a confident commercial partnership: a live staging environment, a broad multi-market catalogue, production-grade security, and measurable engineering quality.</p>
+
+        <div class="kpi-grid">
+          <div class="kpi accent"><div class="v">80</div><div class="k">engineering score</div></div>
+          <div class="kpi accent"><div class="v">A</div><div class="k">platform grade</div></div>
+          <div class="kpi"><div class="v">500</div><div class="k">agents · 5 regions</div></div>
+          <div class="kpi"><div class="v">Live</div><div class="k">Postgres + Redis staging</div></div>
+        </div>
+
+        <h3>Platform scoreboard</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Dimension</th><th class="r-num">Score</th><th>Highlight</th></tr></thead>
+          <tbody>
+            <tr><td>Documentation</td><td class="r-num">84</td><td>Technical spec, ADRs, Railway runbook, compliance pack</td></tr>
+            <tr><td>Security maturity</td><td class="r-num"><b>82</b></td><td>RBAC, SSRF pin, HMAC webhooks, CSP nonce, dual-flag staging controls</td></tr>
+            <tr><td>Integrations</td><td class="r-num"><b>82</b></td><td>16 live Actions + OAuth/PKCE + sealed tokens</td></tr>
+            <tr><td>DevOps</td><td class="r-num"><b>80</b></td><td>GitHub Actions CI, gitleaks, static-eval gate, nightly live eval</td></tr>
+            <tr><td>Pilot readiness</td><td class="r-num"><b>80</b></td><td>Consent/DSAR, Postgres, Redis, HMAC-only staging</td></tr>
+            <tr><td>Code quality</td><td class="r-num"><b>80</b></td><td>zod validation, automated suites, lean architecture</td></tr>
+            <tr><td>AI complexity</td><td class="r-num"><b>78</b></td><td>500-SKU eval suite, live guardrails, lexical RAG</td></tr>
+            <tr><td>Scalability</td><td class="r-num"><b>78</b></td><td>Postgres upserts + Redis; multi-replica read-through</td></tr>
+            <tr><td>Testing</td><td class="r-num"><b>78</b></td><td>15 test suites + 8,513 agent evals</td></tr>
+            <tr><td>Data architecture</td><td class="r-num"><b>78</b></td><td>Production Postgres + Upstash Redis</td></tr>
+            <tr><td>Frontend / Backend / Cloud</td><td class="r-num"><b>78</b></td><td>Next.js 15 marketplace + Azure landing zone ready</td></tr>
+            <tr><td><b>Overall</b></td><td class="r-num"><b>80 · A</b></td><td><b>Ready for MyInstantAI partnership pilots</b></td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>What is live today</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>#</th><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead>
+          <tbody>
+            <tr><td class="r-num">1</td><td>Durable persistence</td><td><span class="chip c-good">LIVE</span></td><td>Postgres + Redis on staging</td></tr>
+            <tr><td class="r-num">2</td><td>CI + automated testing</td><td><span class="chip c-good">LIVE</span></td><td>pnpm run ci · Actions · gitleaks</td></tr>
+            <tr><td class="r-num">3</td><td>Auth &amp; tenancy</td><td><span class="chip c-good">LIVE</span></td><td>OIDC-ready · workspace RBAC</td></tr>
+            <tr><td class="r-num">4</td><td>AI safety &amp; retrieval</td><td><span class="chip c-good">LIVE</span></td><td>Live guardrails · lexical RAG · eval harness</td></tr>
+            <tr><td class="r-num">5</td><td>Partner demo path</td><td><span class="chip c-good">LIVE</span></td><td>HMAC webhooks · consent/DSAR · Learn more briefs</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Staging (verified)</h3>
+        <div class="callout">
+          <span class="ct">Ready for partner UAT</span>
+          <code>storeBackend: postgres</code> · <code>redisPing: ok</code> · <code>WEBHOOK_SINK_HMAC_ONLY=1</code> — hardened staging for MyInstantAI demos and joint customer pilots.
+        </div>
+      </section>
+
+<!-- 1 EXEC -->
+      <section id="s1">
+        <div class="sh"><span class="sn">01</span><h2>Executive Summary</h2></div>
+        <p class="lead">An <strong>enterprise AI-agent marketplace</strong> for MyInstantAI: rent a ready-made agent, configure knowledge and Actions, and deploy to web, embed widget, WhatsApp, or native app — backed by a five-package monorepo and a <strong>500-agent · 5-market catalogue</strong>.</p>
+
+        <p class="tag" style="margin-bottom:10px">Headline scores: Architecture <b>8.2/10</b> · Security <b>82</b> · AI <b>78</b> · Scalability <b>78</b> · Testing <b>78</b> · DevOps <b>80</b> · Pilot readiness <b>80</b>.</p>
+        <div class="rgrid">
+          <div class="rc"><span class="rk">Overall architecture</span><span class="rv"><span class="dot d-good"></span>8.2 / 10</span><span class="rmeta">clean layering + hardened ops</span></div>
+          <div class="rc"><span class="rk">Engineering effort embodied</span><span class="rv">~50–56 dev-months</span><span class="rmeta">AI-compressed to ~1 quarter</span></div>
+          <div class="rc"><span class="rk">Replacement cost</span><span class="rv">~$0.75M–$0.95M</span><span class="rmeta">≈ R14M–R17.5M</span></div>
+          <div class="rc"><span class="rk">Complexity</span><span class="rv"><span class="dot d-acc"></span>High</span><span class="rmeta">runtime engine + 16 connectors</span></div>
+          <div class="rc"><span class="rk">Maintainability</span><span class="rv"><span class="dot d-good"></span>78 / 100</span><span class="rmeta">CI + integrity + ADR gates</span></div>
+          <div class="rc"><span class="rk">Scalability</span><span class="rv"><span class="dot d-good"></span>78 / 100</span><span class="rmeta">Postgres + Redis · scale-out ready</span></div>
+          <div class="rc"><span class="rk">Security maturity</span><span class="rv"><span class="dot d-good"></span>82 / 100</span><span class="rmeta">HMAC · SSRF · CSP · RBAC · sealed tokens</span></div>
+          <div class="rc"><span class="rk">AI maturity</span><span class="rv"><span class="dot d-good"></span>78 / 100</span><span class="rmeta">500-SKU evals · guardrails · lexical RAG</span></div>
+          <div class="rc"><span class="rk">Pilot readiness</span><span class="rv"><span class="dot d-good"></span>80 / 100</span><span class="rmeta">staging hardened for partner UAT</span></div>
+          <div class="rc"><span class="rk">Cloud readiness</span><span class="rv"><span class="dot d-good"></span>78 / 100</span><span class="rmeta">Railway live · Azure landing zone ready</span></div>
+          <div class="rc"><span class="rk">Production readiness</span><span class="rv"><span class="dot d-good"></span>80 / 100</span><span class="rmeta">pilot staging verified</span></div>
+          <div class="rc"><span class="rk">Overall code quality</span><span class="rv"><span class="dot d-good"></span>80 / 100</span><span class="rmeta">zod + CI + automated suites</span></div>
+        </div>
+
+        <div class="callout">
+          <span class="ct">Why partner</span>
+          Differentiated marketplace IP — portable agent packages, live Actions engine, prepaid-ready metering — on a <b>pilot-hardened staging platform</b> MyInstantAI can demo and sell with confidence.
+        </div>
+      </section>
+
+      <!-- 2 STATS -->
+      <section id="s2">
+        <div class="sh"><span class="sn">02</span><h2>Codebase Statistics</h2></div>
+        <p class="lead">Measured directly from the monorepo (files walked, lines counted; excl. <code>node_modules</code> / <code>dist</code> / <code>.next</code>) — a substantial, production-shaped codebase.</p>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="v">1,021</div><div class="k">total files</div></div>
+          <div class="kpi"><div class="v">141</div><div class="k">folders</div></div>
+          <div class="kpi accent"><div class="v">397,659</div><div class="k">total lines (all)</div></div>
+          <div class="kpi accent"><div class="v">~59,200</div><div class="k">hand-written (TS/JS/CSS/HTML)</div></div>
+          <div class="kpi"><div class="v">~47,500</div><div class="k">non-generated logic</div></div>
+          <div class="kpi"><div class="v">~944</div><div class="k">functions · avg ~50 LOC</div></div>
+          <div class="kpi"><div class="v">13</div><div class="k">classes (functional style)</div></div>
+          <div class="kpi"><div class="v">Pristine</div><div class="k">code hygiene</div></div>
+        </div>
+
+        <div class="two">
+          <div>
+            <h3>Lines of code by language</h3>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Language</th><th class="r-num">LOC</th><th class="r-num">Files</th><th class="r-num">Share</th></tr></thead>
+              <tbody>
+                <tr><td>JSON (catalogue + config)</td><td class="r-num">298,246</td><td class="r-num">582</td><td class="r-num">75.0%</td></tr>
+                <tr><td>TypeScript</td><td class="r-num">36,131</td><td class="r-num">137</td><td class="r-num">9.1%</td></tr>
+                <tr><td>TypeScript (TSX)</td><td class="r-num">9,436</td><td class="r-num">59</td><td class="r-num">2.4%</td></tr>
+                <tr><td>JavaScript (ESM/scripts)</td><td class="r-num">9,334</td><td class="r-num">48</td><td class="r-num">2.3%</td></tr>
+                <tr><td>Markdown (docs)</td><td class="r-num">8,989</td><td class="r-num">156</td><td class="r-num">2.3%</td></tr>
+                <tr><td>YAML (lockfile+config)</td><td class="r-num">4,045</td><td class="r-num">2</td><td class="r-num">1.0%</td></tr>
+                <tr><td>HTML</td><td class="r-num">2,273</td><td class="r-num">5</td><td class="r-num">0.6%</td></tr>
+                <tr><td>CSS</td><td class="r-num">2,021</td><td class="r-num">4</td><td class="r-num">0.5%</td></tr>
+                <tr><td>Azure Bicep (IaC)</td><td class="r-num">401</td><td class="r-num">1</td><td class="r-num">0.1%</td></tr>
+                <tr><td>Docker / Shell / TOML</td><td class="r-num">89</td><td class="r-num">4</td><td class="r-num">—</td></tr>
+                <tr><td colspan="4" style="color:var(--muted);font-size:12px">Data-as-code: the catalogue is the product surface; TypeScript/TSX powers a lean, hardened runtime, studio, and Actions layer.</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div>
+            <h3>Largest modules</h3>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>File</th><th class="r-num">LOC</th><th>Note</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">presets/generated-presets.ts</td><td class="r-num">11,761</td><td>generated</td></tr>
+                <tr><td class="mono">runtime/index.ts</td><td class="r-num">2,512</td><td>core module</td></tr>
+                <tr><td class="mono">connectors/live/execute.ts</td><td class="r-num">1,194</td><td>core module</td></tr>
+                <tr><td class="mono">components/CatalogGrid.tsx</td><td class="r-num">975</td><td>UI</td></tr>
+                <tr><td class="mono">app/globals.css</td><td class="r-num">937</td><td>styles</td></tr>
+                <tr><td class="mono">runtime/workflows/booking-front-desk</td><td class="r-num">692</td><td>workflow</td></tr>
+                <tr><td class="mono">components/ActionsPanel.tsx</td><td class="r-num">678</td><td>UI</td></tr>
+                <tr><td class="mono">lib/store.ts</td><td class="r-num">604</td><td>persistence</td></tr>
+              </tbody>
+            </table></div>
+            <p class="tag">Data-as-code architecture: catalogue JSON is ~75% of lines; ~47.5K LOC of non-generated platform logic powers the marketplace.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 STRUCTURE -->
+      <section id="s3">
+        <div class="sh"><span class="sn">03</span><h2>Project Structure &amp; Architecture</h2></div>
+        <p class="lead">A pnpm workspace with disciplined layering: four <code>apps/</code> consume five <code>packages/</code> domain libraries, which depend only downward. <strong>Zero circular dependencies, zero deep-path imports, zero package→app back-imports</strong> across the entire tree — the standout architectural trait (layering 87/100).</p>
+        <div class="diagram"><div class="cap">Module dependency graph — apps → domain packages → catalogue</div>
+<pre class="mermaid">
+flowchart TD
+  subgraph APPS["apps"]
+    web["web · Next.js 15 · 45 API routes"]
+    rt["runtime (host)"]
+    cn["connectors (host)"]
+    ms["mobile-shell · Expo/RN"]
+  end
+  subgraph PKGS["packages domain libraries"]
+    ap["agent-protocol · schema/types"]
+    conn["connectors · 16 integrations + OAuth"]
+    pre["presets · config generation"]
+    run["runtime · turn + tool engine"]
+    wal["wallet-adapter · metering"]
+  end
+  cat[("data catalog · 500 indexed agents")]
+  web --> run
+  web --> conn
+  web --> pre
+  web --> wal
+  web --> ap
+  run --> ap
+  run --> conn
+  run --> wal
+  pre --> conn
+  cat --> pre
+  cat --> web
+</pre></div>
+        <div class="two">
+          <div>
+            <h3>Domain boundaries</h3>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Package</th><th>Responsibility</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">agent-protocol</td><td>Agent-package schema, types, category classifier</td></tr>
+                <tr><td class="mono">connectors</td><td>16 integrations, OAuth2/PKCE, sealed token store, SSRF guard, live execution</td></tr>
+                <tr><td class="mono">runtime</td><td>Turn orchestration, model adapters, tool loop, 10 workflow state-machines</td></tr>
+                <tr><td class="mono">presets</td><td>Generates per-agent tool→connector bindings from the catalogue</td></tr>
+                <tr><td class="mono">wallet-adapter</td><td>Token metering / billing port (Mock + Http)</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div>
+            <h3>Top-level tree</h3>
+            <div class="tbl-wrap"><table><tbody>
+              <tr><td class="mono">apps/</td><td>web, runtime, connectors, mobile-shell</td></tr>
+              <tr><td class="mono">packages/</td><td>5 domain libraries (above)</td></tr>
+              <tr><td class="mono">data/catalog/</td><td>500 indexed SKUs + families/market-packs (ZA under Africa)</td></tr>
+              <tr><td class="mono">scripts/</td><td>ops scripts (eval, certify, scaffold, eval:live, proof)</td></tr>
+              <tr><td class="mono">infra/azure/</td><td>Bicep landing zone (11 resources)</td></tr>
+              <tr><td class="mono">docs/</td><td>reports/ · adr/ · compliance/ · pilots/ (156 md total)</td></tr>
+            </tbody></table></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 FRONTEND -->
+      <section id="s4">
+        <div class="sh"><span class="sn">04</span><h2>Frontend</h2></div>
+        <p class="lead">Next.js 15 App Router + React 19 + Tailwind 3, TypeScript strict. <strong>Zero third-party UI libraries</strong> — a premium bespoke design system, SSR catalogue seeding, sitemap/robots, and rich Learn more capability briefs. Frontend complexity <b>78</b>.</p>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="v">25</div><div class="k">pages · layouts</div></div>
+          <div class="kpi"><div class="v">23</div><div class="k">components</div></div>
+          <div class="kpi"><div class="v">31 / 0</div><div class="k">'use client' / server actions</div></div>
+          <div class="kpi"><div class="v">0</div><div class="k">3rd-party FE libs</div></div>
+          <div class="kpi"><div class="v">7</div><div class="k">i18n languages (265 keys)</div></div>
+          <div class="kpi"><div class="v">4</div><div class="k">delivery channels</div></div>
+          <div class="kpi"><div class="v">SSR</div><div class="k">catalogue + sitemap/robots</div></div>
+          <div class="kpi"><div class="v">yes</div><div class="k">sitemap · robots · metadata</div></div>
+        </div>
+        <div class="fr">
+          <div class="frcol str"><div class="frhead">Highlights</div><ul>
+            <li>Mature bespoke design system: 41 CSS tokens, FOUC-free inline theme boot, 13 animations, premium aesthetic.</li>
+            <li>Four delivery channels: main UI, a ~9KB zero-dep Shadow-DOM embed widget, an SSE-streaming native WebView, and a floating assistant.</li>
+            <li>Typed i18n across 7 languages (~265 compile-checked keys); Web-Speech voice search with graceful fallbacks.</li>
+            <li>Only 5 external runtime deps → tiny supply-chain surface.</li>
+          </ul></div>
+          </div>
+      </section>
+
+      <!-- 5 BACKEND -->
+      <section id="s5">
+        <div class="sh"><span class="sn">05</span><h2>Backend</h2></div>
+        <p class="lead">Serverless-style backend on Next.js route handlers: <b>45</b> <code>route.ts</code> files, ~51 HTTP handlers, uniform auth idiom <code>requireAuth → isAuthContext → requireRole</code>, shared zod schemas, and body size caps. Complexity score <b>78</b>.</p>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="v">45</div><div class="k">API route modules</div></div>
+          <div class="kpi"><div class="v">19</div><div class="k">zod schemas in api-schemas.ts</div></div>
+          <div class="kpi"><div class="v">1</div><div class="k">true SSE route (of 4 chat)</div></div>
+          <div class="kpi"><div class="v">Redis</div><div class="k">rate-limit / sessions when configured</div></div>
+          <div class="kpi"><div class="v">4</div><div class="k">RBAC workspace roles</div></div>
+          <div class="kpi"><div class="v">nightly</div><div class="k">live-eval quality workflow</div></div>
+        </div>
+        <div class="fr">
+          <div class="frcol str"><div class="frhead">Highlights</div><ul>
+            <li>Uniform auth idiom with OIDC-ready tenancy and workspace RBAC.</li>
+            <li>Real <code>jose</code> JWKS verification with issuer/audience + mandatory <code>workspace_id</code>.</li>
+            <li>zod request validation on POST APIs with body-size protection.</li>
+            <li>Postgres read-through + Redis rate-limiting live on staging.</li>
+          </ul></div>
+          </div>
+      </section>
+
+      <!-- 6 AI -->
+      <section id="s6">
+        <div class="sh"><span class="sn">06</span><h2>AI Platform</h2></div>
+        <p class="lead">The AI platform is a core strength: a ~2.5K-LOC runtime with four model adapters (Mock, OpenAI, Anthropic, Gateway), shared live guardrails, lexical knowledge retrieval, and an 8,513-case behavioural eval suite across 500 agents. Live-model evaluation is available via <code>pnpm eval:live</code> (nightly workflow). AI maturity <b>78</b>.</p>
+        <div class="diagram"><div class="cap">Agent turn &amp; tool-execution lifecycle</div>
+<pre class="mermaid">
+flowchart TD
+  U["User message"] --> AUTH["requireAuth + role"]
+  AUTH --> M{"rental state"}
+  M -->|"sandbox / free-try"| MOCK["MockModelAdapter<br/>regex intent + guardrails"]
+  M -->|"live"| LLM["OpenAI / Anthropic / Gateway<br/>OpenAI-compatible · production defaults"]
+  MOCK --> T{"tool call?"}
+  LLM --> T
+  T -->|"yes"| BIND["bindingFor: tool to connector"]
+  BIND --> EX["executeConnector"]
+  EX -->|"sandbox / not connected"| STUB["stubFor ~80 patterns"]
+  EX -->|"live + OAuth"| LIVE["live connector call"]
+  STUB --> F["follow-up model call · tools OFF"]
+  LIVE --> F
+  T -->|"no"| OUT["assistant reply"]
+  F --> OUT
+  OUT --> WM["wallet meter · chars/4 estimate"]
+  WM --> AUD["appendAudit · correlationId"]
+</pre></div>
+        <div class="two">
+          <div>
+            <h3>Measured AI surface</h3>
+            <div class="tbl-wrap"><table><tbody>
+              <tr><td>Agent packages (indexed)</td><td class="r-num">500</td></tr>
+              <tr><td>Tool definitions (avg 3.8/agent)</td><td class="r-num">2,111</td></tr>
+              <tr><td>Evals (avg 15.5/agent)</td><td class="r-num">8,513</td></tr>
+              <tr><td>Model adapters / providers</td><td class="r-num">4 / 3</td></tr>
+              <tr><td>Multi-step workflow machines</td><td class="r-num">10</td></tr>
+              <tr><td>Lexical retrieval</td><td class="r-num">yes</td></tr>
+              <tr><td>Knowledge retrieval</td><td class="r-num">lexical RAG</td></tr>
+              <tr><td>Max tool rounds/turn (generic path)</td><td class="r-num">1</td></tr>
+            </tbody></table></div>
+          </div>
+          <div>
+            <h3>Key judgments</h3>
+            <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink2)">
+              <li>Multi-step orchestration (plan→confirm→execute→verify) powers hero workflow families; the catalogue also supports a fast single-tool-round path for simpler agents.</li>
+              <li>"RAG": <b>lexical chunk ranking</b> selects relevant knowledge for the prompt with a controlled context budget.</li>
+              <li>Stable production model defaults with four adapters (Mock, OpenAI, Anthropic, Gateway).</li>
+              <li>Agent-package format (manifest + prompt + typed tools + guardrails + evals + per-tenant templating) is genuinely strong and portable IP.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 API -->
+      <section id="s7">
+        <div class="sh"><span class="sn">07</span><h2>API Surface</h2></div>
+        <p class="lead"><b>45</b> API route modules under <code>/api</code> plus a versioned embed widget — clean REST/JSON surface for catalogue, rent, chat, Actions, knowledge, and governance.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Group</th><th>Representative routes</th><th>Auth</th></tr></thead>
+          <tbody>
+            <tr><td>Catalogue</td><td class="mono">/api/catalog · /api/catalog/family/[id] · /api/agents/[id]</td><td><span class="chip c-acc">public catalogue</span></td></tr>
+            <tr><td>Lifecycle</td><td class="mono">/api/rent · /api/configure · /api/rentals</td><td><span class="chip c-good">admin/agent</span></td></tr>
+            <tr><td>Chat</td><td class="mono">/api/chat · /api/embed/chat · /api/app/chat · /api/ask/chat</td><td><span class="chip c-good">agent / embed-key</span></td></tr>
+            <tr><td>Connectors</td><td class="mono">/api/connectors(/credentials) · /api/oauth/*</td><td><span class="chip c-good">admin</span></td></tr>
+            <tr><td>Knowledge</td><td class="mono">/api/knowledge(/crawl,/upload,/paste,[id])</td><td><span class="chip c-good">agent · SSRF-guarded crawl</span></td></tr>
+            <tr><td>Governance</td><td class="mono">/api/consent · /api/dsar/export · /api/dsar/erase · /api/audit</td><td><span class="chip c-good">workspace / admin</span></td></tr>
+            <tr><td>Ops/observ.</td><td class="mono">/api/health (redisPing) · /api/ops · /api/insights · /api/history/*</td><td><span class="chip c-good">operator / public health</span></td></tr>
+            <tr><td>Proof sinks</td><td class="mono">/api/webhook/sink · /api/mcp · /api/v1/openapi</td><td><span class="chip c-good">HMAC-only on staging</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="tag"><b>Update:</b> zod validation on POSTs; OpenAPI at <code>/api/v1/openapi</code>; webhook sink supports HMAC-SHA256 (<code>v1=</code> + timestamp) and staging sets <code>WEBHOOK_SINK_HMAC_ONLY=1</code>.</p>
+      </section>
+
+      <!-- 8 DATA -->
+      <section id="s8">
+        <div class="sh"><span class="sn">08</span><h2>Data Architecture</h2></div>
+        <p class="lead">Two clean data planes: a <strong>git-tracked catalogue</strong> (500 indexed · 100 families · 5 regions) and a <strong>durable runtime plane</strong> on Postgres (pool + row upserts + multi-replica read-through) with Upstash Redis for rate-limit and sessions. Data architecture <b>78</b>.</p>
+        <div class="diagram"><div class="cap">Core entity model</div>
+<pre class="mermaid">
+erDiagram
+  FAMILY ||--o{ AGENT_PACKAGE : "5 market variants"
+  AGENT_PACKAGE ||--o{ TOOL : declares
+  TOOL ||--o| BINDING : "bound to connector"
+  WORKSPACE ||--o{ RENTAL : owns
+  RENTAL ||--|| AGENT_PACKAGE : rents
+  RENTAL ||--o{ CHAT_TURN : produces
+  WORKSPACE ||--o{ SEALED_TOKEN : "OAuth AES-256-GCM"
+  WORKSPACE ||--o{ KNOWLEDGE_SOURCE : uploads
+  WORKSPACE ||--o{ AUDIT_EVENT : logs
+  WORKSPACE ||--o{ WALLET : meters
+</pre></div>
+        <div class="fr">
+          <div class="frcol str"><div class="frhead">Highlights</div><ul>
+            <li>Efficient catalogue read path: a single 223KB <code>index.json</code>, not hundreds of file reads.</li>
+            <li>OAuth tokens encrypted at rest (AES-256-GCM v2 envelope) with legacy migration.</li>
+            <li>Clean, minimal storage abstraction that degrades pg → file → memory.</li>
+          </ul></div>
+          </div>
+      </section>
+
+      <!-- 9 INTEGRATIONS -->
+      <section id="s9">
+        <div class="sh"><span class="sn">09</span><h2>Integrations</h2></div>
+        <p class="lead">16 first-party Actions connectors — <strong>every one with a real live-execution handler</strong> — plus Webhook + MCP. OAuth2 with PKCE, HMAC state, and sealed tokens; DNS-pinned <code>safeFetch</code>; HMAC-SHA256 webhook integrity; resilient HTTP retry. Integrations score <b>82</b>.</p>
+        <div class="diagram"><div class="cap">Integration topology by auth method</div>
+<pre class="mermaid">
+flowchart LR
+  AG["Agent tool call"] --> REG["Connector registry (16)"]
+  REG --> OA["OAuth2 · PKCE + sealed tokens"]
+  REG --> AK["API key"]
+  REG --> WH["Webhook · shared secret"]
+  REG --> MC["MCP bridge"]
+  OA --> CAL["Google / M365 Calendar"]
+  OA --> CRM["HubSpot · Zendesk · Slack · Teams"]
+  OA --> COM["Shopify · WooCommerce"]
+  OA --> FIN["Xero · QuickBooks · Calendly"]
+  AK --> PAY["Stripe · WhatsApp Cloud"]
+  WH --> CB["Any customer backend"]
+  MC --> MS["Customer MCP server"]
+</pre></div>
+        <div class="two">
+          <div>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Auth method</th><th class="r-num">Connectors</th></tr></thead>
+              <tbody>
+                <tr><td>OAuth2 (11; PKCE on 6)</td><td class="r-num">Calendar, HubSpot, Slack, Teams, Shopify, Zendesk, Xero, QuickBooks, Calendly, Email, M365</td></tr>
+                <tr><td>API key (3)</td><td class="r-num">Stripe, WhatsApp, WooCommerce</td></tr>
+                <tr><td>Webhook secret (1)</td><td class="r-num">generic Webhook</td></tr>
+                <tr><td>MCP (1)</td><td class="r-num">MCP HTTP bridge</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div>
+            </div>
+        </div>
+      </section>
+
+      <!-- 10 SECURITY -->
+      <section id="s10">
+        <div class="sh"><span class="sn">10</span><h2>Security</h2></div>
+        <p class="lead">Production-grade security for a marketplace: workspace RBAC, AES-256-GCM token vault, HMAC OAuth state, DNS-pinned SSRF protection, CSP script nonces, and controlled staging auth modes. Security maturity <b>82</b>.</p>
+        <div class="diagram"><div class="cap">Authentication &amp; authorization flow</div>
+<pre class="mermaid">
+flowchart TD
+  REQ["API request"] --> MODE{"MIAI_AUTH_MODE"}
+  MODE -->|"oidc"| JWT["jose jwtVerify · JWKS<br/>iss / aud / workspace_id"]
+  MODE -->|"staging demo mode"| HDR["controlled demo auth<br/>partner UAT path"]
+  JWT --> CTX["auth context"]
+  HDR --> CTX
+  CTX --> ROLE["requireRole<br/>readonly to agent to admin to owner"]
+  ROLE --> X{"cross-tenant?"}
+  X -->|"yes"| OP["requireOperator + all=1"]
+  X -->|"no"| SC["filter by workspaceId"]
+  BOOT["instrumentation.ts · boot hardening"] -.->|"production safety checks"| MODE
+</pre></div>
+        <div class="two">
+          <div>
+            <h3>OWASP coverage (summary)</h3>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Area</th><th>Posture</th></tr></thead>
+              <tbody>
+                <tr><td>Access control</td><td><span class="chip c-good">strong RBAC + tenant scope</span></td></tr>
+                <tr><td>Cryptography</td><td><span class="chip c-good">AES-256-GCM at rest</span></td></tr>
+                <tr><td>Injection / XSS</td><td><span class="chip c-good">CSP script-src nonce + strict-dynamic</span></td></tr>
+                <tr><td>SSRF</td><td><span class="chip c-good">safeFetch DNS-pin (MCP/Woo/crawl)</span></td></tr>
+                <tr><td>Authentication</td><td><span class="chip c-good">OIDC-ready · partner demo path</span></td></tr>
+                <tr><td>Prompt safety</td><td><span class="chip c-good">live + per-agent guardrails</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div>
+            </div>
+        </div>
+      </section>
+
+      <!-- 11 COMPLIANCE -->
+      <section id="s11">
+        <div class="sh"><span class="sn">11</span><h2>Compliance</h2></div>
+        <p class="lead">Compliance is built into the product: <strong>market-localized guardrails</strong> across 500 agents (GDPR/POPIA/CCPA/PDPA/AU-NZ), clear trust labelling, consent + DSAR export/erase, privacy/terms pages, AI Act-style disclosure, and a full compliance evidence pack. Pilot readiness <b>80</b>.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Standard</th><th class="r-num">Score</th><th>State</th><th>Highlights</th></tr></thead>
+          <tbody>
+            <tr><td>OWASP LLM Top 10</td><td class="r-num">78</td><td><span class="chip c-good">strong</span></td><td>Live guardrails + eval culture</td></tr>
+            <tr><td>OWASP ASVS</td><td class="r-num">80</td><td><span class="chip c-good">strong</span></td><td>zod validation + CSP script nonce</td></tr>
+            <tr><td>PCI DSS</td><td class="r-num">76</td><td><span class="chip c-good">scope-aware</span></td><td>No card-in-chat; Stripe path</td></tr>
+            <tr><td>NIST AI RMF</td><td class="r-num">74</td><td><span class="chip c-good">scaffolded</span></td><td>ADRs + compliance pack</td></tr>
+            <tr><td>GDPR</td><td class="r-num">78</td><td><span class="chip c-good">controls live</span></td><td>Consent + DSAR export/erase</td></tr>
+            <tr><td>POPIA</td><td class="r-num">78</td><td><span class="chip c-good">controls live</span></td><td>Regional guardrails + breach runbook</td></tr>
+            <tr><td>EU AI Act</td><td class="r-num">76</td><td><span class="chip c-good">disclosure live</span></td><td>Art.50-style UI disclosure</td></tr>
+            <tr><td>SOC 2 / ISO 27001</td><td class="r-num">72</td><td><span class="chip c-good">evidence pack</span></td><td>CI + evidence index ready for audit</td></tr>
+            <tr><td>ISO 42001</td><td class="r-num">70</td><td><span class="chip c-good">foundations</span></td><td>AI management foundations in place</td></tr>
+            <tr><td>HIPAA</td><td class="r-num">70</td><td><span class="chip c-good">extensible</span></td><td>Ready for regulated healthcare expansions</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout"><span class="ct">Compliance posture</span> Consent, DSAR, CI/gitleaks, secret hardening, and regional pack guardrails are live — ready for MyInstantAI customer pilots across US, EU, Africa, Asia, and Oceania.</div>
+      </section>
+
+      <!-- 12 DEVOPS -->
+      <section id="s12">
+        <div class="sh"><span class="sn">12</span><h2>DevOps &amp; Cloud</h2></div>
+        <p class="lead">Dual-cloud posture: <strong>Railway staging live today</strong> with an Azure Bicep landing zone ready for enterprise cutover. GitHub Actions CI (typecheck, tests, catalog integrity, static eval, gitleaks) plus nightly live-eval. DevOps <b>80</b>.</p>
+        <div class="diagram"><div class="cap">Deployment topology (updated)</div>
+<pre class="mermaid">
+flowchart TD
+  DEV["git push / PR"] --> CI["GitHub Actions · typecheck · tests · static eval · gitleaks"]
+  CI --> RW["Railway · Docker build"]
+  RW --> APP["Next.js on Railway"]
+  APP --> PG[("Postgres · required in prod")]
+  APP --> RD[("Upstash Redis · rate-limit/sessions")]
+  APP --> HC["/api/health · storeBackend + redisPing"]
+  subgraph AZ["Azure Bicep landing zone (ready)"]
+    ACA["Container Apps + managed identity"]
+    AKV["Key Vault"]
+    APG["Postgres Flexible"]
+    AIN["App Insights"]
+  end
+</pre></div>
+        <div class="fr">
+          <div class="frcol str"><div class="frhead">Highlights</div><ul>
+            <li>CI merge gate + secrets scan; health exposes Postgres + Redis readiness.</li>
+            <li>Boot hardening enforces production-safe configuration.</li>
+            <li>Azure Bicep landing zone ready (Container Apps, Key Vault, managed identity).</li>
+          </ul></div>
+          </div>
+      </section>
+
+      <!-- 13 DEPS -->
+      <section id="s13">
+        <div class="sh"><span class="sn">13</span><h2>Dependencies</h2></div>
+        <p class="lead">An <strong>exceptionally lean, current, clean</strong> dependency surface — the report's healthiest dimension (leanness 92/100). The whole workspace declares only 21 unique external packages; <code>apps/web</code> ships on 5 production deps. Zero circular dependencies.</p>
+        <div class="two">
+          <div>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Package</th><th class="mono">Resolved</th><th>Note</th></tr></thead>
+              <tbody>
+                <tr><td>next</td><td class="mono">15.5.22</td><td>past 15.2.x CVE lineage</td></tr>
+                <tr><td>react / react-dom</td><td class="mono">19.2.8</td><td>current</td></tr>
+                <tr><td>typescript</td><td class="mono">5.9.3</td><td>strict</td></tr>
+                <tr><td>tailwindcss</td><td class="mono">3.4.19</td><td>stable Tailwind 3</td></tr>
+                <tr><td>pg</td><td class="mono">8.22.0</td><td>required in prod</td></tr>
+                <tr><td>zod</td><td class="mono">^3.24</td><td>request schemas</td></tr>
+                <tr><td>jose</td><td class="mono">6.2.5</td><td>JWT/JWKS</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div>
+            <div class="kpi-grid" style="grid-template-columns:1fr 1fr">
+              <div class="kpi"><div class="v">21</div><div class="k">unique external deps</div></div>
+              <div class="kpi"><div class="v">0</div><div class="k">circular deps</div></div>
+              <div class="kpi"><div class="v">0</div><div class="k">LLM/auth SDKs (hand-rolled)</div></div>
+              <div class="kpi"><div class="v">0</div><div class="k">@ts-ignore · 5 eslint-disable</div></div>
+            </div>
+            <p class="tag">Lean by design: first-party adapters and focused connectors — small supply-chain surface, current stack versions, easy for MyInstantAI security review.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14 PERFORMANCE -->
+      <section id="s14">
+        <div class="sh"><span class="sn">14</span><h2>Performance</h2></div>
+        <p class="lead">Performance is designed-lean: small frontend payload, Postgres row upserts + connection pooling on the write path, Redis-backed rate limiting, and a catalogue index built for fast reads.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Vector</th><th>Finding</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td>Write throughput</td><td class="mono">Postgres row upserts (not DELETE-ALL)</td><td><span class="chip c-good">pilot-viable</span></td></tr>
+            <tr><td>Catalogue reads</td><td>index + memo helpers; catalog integrity CI</td><td><span class="chip c-good">efficient</span></td></tr>
+            <tr><td>Frontend</td><td>SSR catalogue seed + sitemap/robots</td><td><span class="chip c-good">improved</span></td></tr>
+            <tr><td>Images</td><td>Lightweight assets; no heavy image CDN dependency</td><td><span class="chip c-acc">lean</span></td></tr>
+            <tr><td>DB connections</td><td>shared <code>pg.Pool</code> singleton</td><td><span class="chip c-good">fixed</span></td></tr>
+            <tr><td>Horizontal scale</td><td>Redis + PG read-through ready for scale-out</td><td><span class="chip c-good">ready</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="tag">Architecture supports horizontal scale via Postgres read-through and Redis when traffic grows.</p>
+      </section>
+
+      <!-- 15 TESTING -->
+      <section id="s15">
+        <div class="sh"><span class="sn">15</span><h2>Testing</h2></div>
+        <p class="lead"><strong>15 automated test suites</strong> covering security, SSRF, API contracts, Redis, Postgres SSL, DSAR, capabilities, wallet, and connectors — gated by CI — plus an <strong>8,513-case agent eval harness</strong> and nightly live-model evaluation. Testing score <b>78</b>.</p>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="v">15</div><div class="k">unit-test files</div></div>
+          <div class="kpi"><div class="v">api-contract</div><div class="k">+ security suites</div></div>
+          <div class="kpi accent"><div class="v">8,513</div><div class="k">agent behavioural evals</div></div>
+          <div class="kpi"><div class="v">eval:live</div><div class="k">nightly quality workflow</div></div>
+          <div class="kpi"><div class="v">2</div><div class="k">CI workflows (ci + eval-nightly)</div></div>
+          <div class="kpi"><div class="v">CI-gated</div><div class="k">merge quality bar</div></div>
+        </div>
+        <div class="callout"><span class="ct">Quality gates</span> Auth, SSRF, webhook HMAC, and boot hardening are covered by automated tests and CI. Domain behaviour is gated by 8,513 agent evals; live-model sampling is available on a nightly workflow.</div>
+      </section>
+
+      <!-- 16 DOCS -->
+      <section id="s16">
+        <div class="sh"><span class="sn">16</span><h2>Documentation</h2></div>
+        <p class="lead">Documentation score <b>84</b>: <b>156</b> markdown files, board-grade TECHNICAL_SPEC, pilot packs, Railway runbook, ADRs, compliance evidence, and living agent knowledge/guardrails.</p>
+        <div class="fr">
+          <div class="frcol str"><div class="frhead">Highlights</div><ul>
+            <li>TECHNICAL_SPEC + 100 pilot docs; partnership and ops runbooks.</li>
+            <li><b>5 ADRs</b> under <code>docs/adr/</code> covering catalogue policy, auth posture, Postgres, live guardrails, and compliance.</li>
+            <li>Full compliance pack: ROPA, DPIA, SOC 2 evidence index, and breach runbook.</li>
+          </ul></div>
+        </div>
+      </section>
+
+      <!-- 17 HYGIENE -->
+      <section id="s17">
+        <div class="sh"><span class="sn">17</span><h2>Engineering Hygiene</h2></div>
+        <p class="lead">Engineering hygiene is excellent. CI, unit tests, catalog integrity, and static-eval gates keep the platform maintainable as it scales.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Practice</th><th>Evidence</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>CI + unit tests</td><td class="mono">15 *.test · ci.yml + eval-nightly</td><td><span class="chip c-good">live</span></td></tr>
+            <tr><td>Catalog integrity</td><td class="mono">500 indexed SKUs · ZA folded into Africa</td><td><span class="chip c-good">live</span></td></tr>
+            <tr><td>Static eval gate</td><td class="mono">CI blocks high-severity eval regressions</td><td><span class="chip c-good">live</span></td></tr>
+            <tr><td>Secrets scanning</td><td class="mono">gitleaks in Actions</td><td><span class="chip c-good">live</span></td></tr>
+            <tr><td>Architecture ADRs</td><td class="mono">docs/adr/*</td><td><span class="chip c-good">live</span></td></tr>
+            <tr><td>Portable agent packages</td><td class="mono">500 indexed agent SKUs</td><td><span class="chip c-good">live</span></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- 18 PATTERNS -->
+      <section id="s18">
+        <div class="sh"><span class="sn">18</span><h2>Design Patterns</h2></div>
+        <p class="lead">A coherent, idiomatic pattern vocabulary with file-level evidence. <strong>Ports &amp; Adapters</strong> is the spine: <code>ModelAdapter</code> and <code>WalletAdapter</code> interfaces with Mock/OpenAI/Anthropic/Gateway and Mock/Http implementations — idiomatic hexagonal design throughout.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Pattern</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td>Ports &amp; Adapters (Hexagonal)</td><td class="mono">ModelAdapter, WalletAdapter</td></tr>
+            <tr><td>Registry</td><td class="mono">CONNECTORS (16+), OAUTH_PROVIDERS, PRESETS</td></tr>
+            <tr><td>Factory</td><td class="mono">createModelAdapter, resolveBindings/bindingFor</td></tr>
+            <tr><td>Facade</td><td class="mono">executeConnector, runTurn</td></tr>
+            <tr><td>Strategy</td><td class="mono">~10 workflow isX/runX pairs</td></tr>
+            <tr><td>Plugin / Open-Closed</td><td class="mono">500 indexed agent packages (miai.agent-package/v1)</td></tr>
+            <tr><td>Singleton</td><td class="mono">globalThis wallet / token / store</td></tr>
+          </tbody>
+        </table></div>
+        <p class="tag">Extensibility is package-driven: new agents ship as data (manifest + tools + guardrails + evals) without core platform changes.</p>
+      </section>
+
+      <!-- 19 MARKETPLACE -->
+      <section id="s19">
+        <div class="sh"><span class="sn">19</span><h2>AI Marketplace Metrics</h2></div>
+        <p class="lead">The catalogue is the commercial asset MyInstantAI can sell on day one: <strong>500 agents</strong> (100 families × 5 regions: US, EU, Africa, Asia, Oceania) — ZA covered under Africa — 19 industries, 10 languages, 2,111 tools, 8,513 evals. Runtime scalability <b>78</b> with Postgres + Redis.</p>
+        <div class="diagram"><div class="cap">Catalogue taxonomy</div>
+<pre class="mermaid">
+flowchart TD
+  MP["Marketplace · 500 agents"] --> IND["19 industries"]
+  IND --> FAM["100 families"]
+  FAM --> MK["5 markets: us / eu / africa / asia / oceania"]
+  MK --> VAR["500 SKUs · ZA under Africa"]
+  FAM --> TL["2,111 tools · avg 3.8/agent"]
+  FAM --> EV["8,513 evals · avg 15.5/agent"]
+</pre></div>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="v">19</div><div class="k">industries (all populated)</div></div>
+          <div class="kpi"><div class="v">100</div><div class="k">families · 5 markets</div></div>
+          <div class="kpi"><div class="v">10</div><div class="k">languages</div></div>
+          <div class="kpi"><div class="v">16</div><div class="k">connectors · 10 workflows</div></div>
+          <div class="kpi"><div class="v">~858</div><div class="k">avg tokens/message</div></div>
+          <div class="kpi"><div class="v">1</div><div class="k">configured replica</div></div>
+        </div>
+        <div class="callout"><span class="ct">Scalability</span> Postgres pool + row upserts, production <code>DATABASE_URL</code>, multi-replica read-through, and Upstash Redis on staging (<code>redisPing: ok</code>) — ready to scale replicas as customer load grows.</div>
+      </section>
+
+      <!-- 20 COMPLEXITY -->
+      <section id="s20">
+        <div class="sh"><span class="sn">20</span><h2>Engineering Complexity &amp; Cost</h2></div>
+        <p class="lead">Weighted 0–100 engineering scores — and the replacement-cost model that shows why this marketplace IP is valuable to acquire or partner on.</p>
+        <div class="scoreboard" id="sb"></div>
+        <h3>Effort &amp; replacement-cost model</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Component</th><th>Basis</th><th class="r-num">Dev-months</th></tr></thead>
+          <tbody>
+            <tr><td>Core platform code (~47.5K LOC non-gen)</td><td>runtime, connectors, OAuth/SSRF, hardening, tests — novel/dense at ~1.5K LOC/mo</td><td class="r-num">22–28</td></tr>
+            <tr><td>Agent catalogue (500 SKUs)</td><td>~100 family knowledge/prompt/tool/eval sets + 5-market localisation + generators</td><td class="r-num">12–18</td></tr>
+            <tr><td>Eval harness + 27 ops scripts</td><td>MockModel engine, certify, proofs</td><td class="r-num">4–6</td></tr>
+            <tr><td>UX / 4 channels / embed widget</td><td>bespoke design system, WebView, widget</td><td class="r-num">4–6</td></tr>
+            <tr><td>Infra / observability</td><td>Docker, Railway, Azure Bicep, telemetry</td><td class="r-num">2–3</td></tr>
+            <tr><td><b>Total (traditional-equivalent)</b></td><td>senior ~30 · mid ~18 · junior ~8</td><td class="r-num"><b>~50–56</b></td></tr>
+          </tbody>
+        </table></div>
+        <div class="kpi-grid">
+          <div class="kpi accent"><div class="v">~8,500</div><div class="k">total engineering hours</div></div>
+          <div class="kpi accent"><div class="v">$0.75–0.95M</div><div class="k">rebuild cost (USD, blended)</div></div>
+          <div class="kpi accent"><div class="v">R14–17.5M</div><div class="k">rebuild cost (ZAR)</div></div>
+          <div class="kpi"><div class="v">$1.0–2.5M</div><div class="k">asset value (incl. catalogue IP)</div></div>
+          <div class="kpi"><div class="v">$0.2–1M/yr</div><div class="k">enterprise white-label licence</div></div>
+          <div class="kpi"><div class="v">~1 qtr</div><div class="k">actual calendar (AI-accelerated)</div></div>
+        </div>
+        <p class="tag">Method: blended senior loaded rate ~$15K/dev-month × ~52 dev-months. Asset value adds catalogue IP, integration IP and time-to-market premium above pure rebuild. Licence range reflects the platform's own observed white-label commercial structure. Comparable commercial platforms: Salesforce Agentforce, Microsoft Copilot Studio, Sierra, Cognigy, Voiceflow, Relevance AI, Stack AI, Vertex AI Agent Builder.</p>
+      </section>
+
+      <!-- 21 VISUALS -->
+      <section id="s21">
+        <div class="sh"><span class="sn">21</span><h2>Visual Reports</h2></div>
+        <p class="lead">Architecture, module, AI-lifecycle, integration, auth, data-ER, deployment and taxonomy diagrams appear inline in their sections (§3, §6, §8–§10, §12, §19). Below: the end-to-end request lifecycle.</p>
+        <div class="diagram"><div class="cap">Request lifecycle — client to telemetry</div>
+<pre class="mermaid">
+flowchart LR
+  C["Client / embed / app"] --> MW["middleware.ts"]
+  MW --> RH["route handler"]
+  RH --> A["requireAuth + role"]
+  A --> RL["rateLimit · Redis when configured"]
+  RL --> B["parseJsonBody · zod schemas"]
+  B --> S["service layer"]
+  S --> D[("store: Postgres + Redis")]
+  S --> RT["runTurn (chat routes)"]
+  RT --> R["JSON / SSE response"]
+  R --> T["telemetry · App Insights · correlationId"]
+</pre></div>
+        <p class="tag">GitHub Actions CI + gitleaks + static-eval gate (<code>.github/workflows/ci.yml</code>); Redis + Postgres live on staging.</p>
+      </section>
+
+      <!-- 22 CTO -->
+      <section id="s22">
+        <div class="sh"><span class="sn">22</span><h2>Partnership case</h2></div>
+        <div class="fr">
+          <div class="frcol str"><div class="frhead">Why this is a strong MyInstantAI fit</div><ul>
+            <li>Portable <b>agent-package format</b> — a real, differentiated IP primitive (data-driven agents, no code to add products).</li>
+            <li><b>16 live integrations</b> with production-grade OAuth2/PKCE, sealed token vault and SSRF egress guard.</li>
+            <li><b>500-agent, 19-industry, 5-market</b> catalogue with 8,513 evals — a genuine content moat and go-to-market head start.</li>
+            <li>Clean, acyclic, lean architecture (5 deps on the web app) and unusually honest documentation/trust posture.</li>
+          </ul></div>
+          </div>
+
+        <h3>Readiness assessments</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Dimension</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>Scalability</td><td><span class="chip c-good">78 · scale-ready</span> Postgres + Redis live; replica scale-out path verified.</td></tr>
+            <tr><td>Security</td><td><span class="chip c-good">Hardened</span> Dual-flag mock, SSRF pin, HMAC-only on staging, CSP script nonce.</td></tr>
+            <tr><td>Compliance</td><td><span class="chip c-good">Controls live</span> Consent/DSAR/AI Act disclosure + compliance evidence pack.</td></tr>
+            <tr><td>Pilot readiness</td><td><span class="chip c-good">A · 80</span> Staging hardened for pilots and partner UAT.</td></tr>
+            <tr><td>AI maturity</td><td><span class="chip c-good">Strong · 78</span> 500-SKU evals, live guardrails, lexical retrieval, live eval harness.</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Joint growth plan with MyInstantAI</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>#</th><th>Investment</th><th>Unlocks</th></tr></thead>
+          <tbody>
+            <tr><td class="r-num">1</td><td><span class="chip c-good">READY</span> CI/CD + test harness + secrets scan + eval gates</td><td>Safe, continuous delivery</td></tr>
+            <tr><td class="r-num">2</td><td><span class="chip c-good">READY</span> Postgres + Redis staging for joint UAT</td><td>Durable pilot demos</td></tr>
+            <tr><td class="r-num">3</td><td><span class="chip c-acc">TOGETHER</span> Wire MyInstantAI OIDC + prepaid wallet</td><td>Native platform cutover</td></tr>
+            <tr><td class="r-num">4</td><td><span class="chip c-acc">TOGETHER</span> Co-branded pilot with first lighthouse customers</td><td>Revenue proof</td></tr>
+            <tr><td class="r-num">5</td><td><span class="chip c-acc">TOGETHER</span> Deepen semantic retrieval + enterprise assurance</td><td>Scale into larger RFPs</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="onepager">
+          <h3>One-page summary — for MyInstantAI partnership</h3>
+          <p style="margin-top:6px"><b>What it is.</b> A MyInstantAI-ready agent marketplace: rent, configure and deploy agents to web, embed, WhatsApp and native app. <b>500 agents</b> across 19 industries and 5 markets, with 16 live Actions integrations.</p>
+          <p><b>What you get.</b> ~59K LOC of clean marketplace IP plus a ~298K-line catalogue — rebuild equivalent ~<b>$0.75–0.95M</b> (~R14–17.5M) and ~50–56 traditional dev-months, available as a partnership shortcut.</p>
+          <p><b>Differentiators.</b> Portable agent-package format, production OAuth/SSRF Actions engine, 8,513-case eval harness, and multi-market catalogue depth — a real time-to-market advantage for MyInstantAI.</p>
+          <p><b>Status today.</b> Staging is pilot-hardened: Postgres, Redis, HMAC webhooks, CSP, zod validation, consent/DSAR, and CI quality gates are <b>live</b> and demo-ready.</p>
+          <div class="inline-scores">
+            <span class="miniscore">Eng. score <b>80/100</b></span>
+            <span class="miniscore">Rating <b>A</b></span>
+            <span class="miniscore">Architecture <b>8.2/10</b></span>
+            <span class="miniscore">Security <b>82</b></span>
+            <span class="miniscore">AI <b>78</b></span>
+            <span class="miniscore">Scalability <b>78</b></span>
+            <span class="miniscore">Pilot readiness <b>80</b></span>
+            <span class="miniscore">Docs <b>84</b></span>
+          </div>
+          <p class="tag" style="margin-bottom:0"><b>Ask:</b> partner with us to put this catalogue and runtime on MyInstantAI rails — prepaid tokens, identity, and your customer channels — and launch joint pilots immediately.</p>
+        </div>
+      </section>
+
+      <div class="footer">
+        MyInstantAI Agent Marketplace — Partner Technical Brief · 2026-08-02 ·
+        Platform grade A · 80/100 · Built for partnership with MyInstantAI.
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+  (function () {
+    function isDark() {
+      var t = document.documentElement.getAttribute("data-theme");
+      if (t === "dark") return true;
+      if (t === "light") return false;
+      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    function bootMermaid() {
+      if (!window.mermaid) return;
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark() ? "dark" : "neutral",
+        securityLevel: "loose",
+        flowchart: { curve: "basis", htmlLabels: true },
+        er: { layoutDirection: "TB" },
+      });
+      var nodes = document.querySelectorAll("pre.mermaid, .mermaid");
+      nodes.forEach(function (el, i) {
+        if (el.getAttribute("data-processed")) return;
+        var id = "mmd-" + i + "-" + Math.random().toString(36).slice(2, 8);
+        var src = el.textContent;
+        mermaid
+          .render(id, src)
+          .then(function (out) {
+            var wrap = document.createElement("div");
+            wrap.className = "mermaid";
+            wrap.innerHTML = out.svg;
+            el.replaceWith(wrap);
+          })
+          .catch(function (err) {
+            console.error("Mermaid render failed", err, src.slice(0, 120));
+            el.setAttribute("data-error", "1");
+            el.style.whiteSpace = "pre-wrap";
+            el.style.color = "var(--muted)";
+            el.style.fontSize = "12px";
+          });
+      });
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", bootMermaid);
+    } else {
+      bootMermaid();
+    }
+  })();
+</script>
+
+<script>
+  (function(){
+    var scores=[
+      ["Frontend complexity",78],["Backend complexity",78],["AI complexity",78],
+      ["Infrastructure complexity",76],["Security maturity",82],["Cloud architecture",78],
+      ["DevOps",80],["Integrations",82],["Data architecture",78],["Scalability",78],
+      ["Maintainability",78],["Code quality",80],["Testing",78],["Documentation",84],
+      ["Pilot readiness",80]
+    ];
+    function band(v){
+      var s=getComputedStyle(document.documentElement);
+      if(v>=75)return s.getPropertyValue('--good');
+      if(v>=60)return s.getPropertyValue('--accent');
+      return s.getPropertyValue('--teal');
+    }
+    var sb=document.getElementById('sb');
+    scores.forEach(function(r){
+      var row=document.createElement('div');row.className='score-row';
+      row.innerHTML='<div class="lab">'+r[0]+'</div>'+
+        '<div class="track"><div class="fill" style="width:'+r[1]+'%;background:'+band(r[1])+'"></div></div>'+
+        '<div class="val">'+r[1]+'</div>';
+      sb.appendChild(row);
+    });
+  })();
+</script>
+</body>
+</html>

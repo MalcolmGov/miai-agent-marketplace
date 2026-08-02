@@ -53,6 +53,8 @@ When set, rate limits (`miai:rl:*`) and chat sessions (`miai:chan:*`, `miai:ask:
 
 Catalogue reads (`index.json`, `families.json`) are memoized in-process with mtime invalidation — no Redis needed.
 
+**API versioning:** New integrations should call `/api/v1/*` (OpenAPI at `GET /api/v1/openapi`). Legacy unversioned routes (`/api/embed/chat`, `/api/rent`, …) remain supported for existing embeds and Studio clients.
+
 ## 3. Set environment variables
 
 Service → **Variables**. Minimum for a customer-like walk:

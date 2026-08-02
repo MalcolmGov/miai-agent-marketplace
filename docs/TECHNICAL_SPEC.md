@@ -185,6 +185,8 @@ Base path relative to app origin.
 | POST | `/api/knowledge/crawl` | Mock/OIDC | Website crawl |
 | DELETE | `/api/knowledge/[id]` | Mock/OIDC | Delete source |
 | POST | `/api/embed/chat` | Embed key | Public widget chat |
+| POST | `/api/v1/embed/chat` | Embed key | Versioned embed chat (same handler) |
+| POST | `/api/v1/rent` | Mock/OIDC | Versioned rent (same handler as `/api/rent`) |
 | POST | `/api/app/chat` | Embed key | App channel chat (SSE or JSON) |
 
 ### UI routes

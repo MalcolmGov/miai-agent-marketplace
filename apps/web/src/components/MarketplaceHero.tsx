@@ -5,14 +5,17 @@ import { useT } from "@/lib/locale";
 
 export function MarketplaceHero({
   familyCount,
+  agentCount = 500,
   workflowCount = 10,
 }: {
   familyCount: number;
+  /** Indexed catalogue SKUs (100 families × 5 regions). */
+  agentCount?: number;
   categoryCount?: number;
   workflowCount?: number;
 }) {
   const t = useT();
-  const agentsLive = familyCount || 55;
+  const agentsLive = agentCount || familyCount * 5 || 500;
   const steps = [
     t("hero.stepBrowse"),
     t("hero.stepRent"),

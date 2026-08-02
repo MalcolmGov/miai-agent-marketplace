@@ -8,7 +8,8 @@ Generated into `output/`:
 
 | File | Use |
 |---|---|
-| `MyInstantAI-x-MoveDigital-Partnership-Proposal.pdf` | **Primary** 4-page partnership proposal + commercials |
+| `MyInstantAI-x-MoveDigital-Partnership-Proposal.pdf` | **Primary** 5-page partnership proposal + commercials |
+| `MyInstantAI-x-MoveDigital-Partnership-Proposal-Premium.pdf` | Same proposal (partner leave-behind filename) |
 | `MyInstantAI-Agents-One-Pager.pdf` | Executive one-pager |
 | `MyInstantAI-Agents-Commercial-Leavebehind.pdf` | 2-page commercial decisions + asks |
 | `MyInstantAI-Agents-Monday-Demo-Pilot6.pdf` | Demo shortlist + timed script |

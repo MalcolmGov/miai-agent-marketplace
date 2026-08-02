@@ -92,7 +92,7 @@ export const en = {
 
   "hero.headline": "Hire an AI agent for your business",
   "hero.lede":
-    "{count} ready-made agents for WhatsApp, web, and app — rent one, configure, go live.",
+    "{count} ready-made agents across US, EU, Africa, Asia, and Oceania — rent one, configure, go live.",
   "hero.browse": "Browse agents",
   "hero.mondayDemo": "Production pack",
   "hero.howItWorks": "How it works",

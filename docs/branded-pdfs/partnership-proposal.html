@@ -8,13 +8,13 @@
       .price-hero {
         display: grid;
         grid-template-columns: 1.2fr 1fr;
-        gap: 3.5mm;
+        gap: 2.5mm;
       }
       .price-big {
         background: linear-gradient(145deg, #0a121c 0%, #121a28 100%);
         color: #f2f6fc;
-        border-radius: 14px;
-        padding: 5mm 5.5mm;
+        border-radius: 12px;
+        padding: 3.5mm 4mm;
         border: 1px solid rgba(61, 214, 198, 0.35);
         position: relative;
         overflow: hidden;
@@ -36,22 +36,22 @@
         color: #6aefe0;
       }
       .price-big .amount {
-        margin-top: 2mm;
-        font-size: 28px;
+        margin-top: 1.5mm;
+        font-size: 22px;
         font-weight: 800;
         letter-spacing: -0.03em;
         line-height: 1;
       }
       .price-big .amount small {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
         color: #9aabbf;
       }
       .price-big .sub {
-        margin-top: 2.5mm;
-        font-size: 9.5px;
+        margin-top: 1.8mm;
+        font-size: 9px;
         color: #9aabbf;
-        line-height: 1.45;
+        line-height: 1.4;
       }
       .split-row {
         display: grid;
@@ -104,21 +104,83 @@
         text-transform: uppercase;
         color: #9aabbf;
       }
-      .price-big .amount {
-        font-size: 24px !important;
+      .cover-page .hero {
+        padding-bottom: 7mm;
       }
-      .page.compact .section {
+      .cover-page .grid-2 .card {
+        padding: 2.6mm 3mm;
+      }
+      .cover-page .grid-2 .card h3 {
+        margin-bottom: 1mm;
+        font-size: 10px;
+      }
+      .cover-page .grid-2 .card p {
+        font-size: 9px;
+        line-height: 1.4;
+        margin: 0;
+      }
+      .cover-page .section {
         margin-bottom: 3mm;
+      }
+      .close-cta {
+        background: linear-gradient(135deg, #0a121c, #121a28);
+        color: #f2f6fc;
+        border-color: rgba(61, 214, 198, 0.35);
+        padding: 3.5mm 4mm;
+      }
+      .close-cta h3 {
+        color: #6aefe0;
+        margin-bottom: 1.5mm;
+        font-size: 11px;
+      }
+      .close-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2mm;
+        margin-bottom: 2.5mm;
+      }
+      .close-metrics .m {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        border-radius: 8px;
+        padding: 2mm 2.5mm;
+      }
+      .close-metrics .m .k {
+        font-size: 7.5px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #9aabbf;
+      }
+      .close-metrics .m .v {
+        margin-top: 1mm;
+        font-size: 12px;
+        font-weight: 800;
+        color: #6aefe0;
+        letter-spacing: -0.02em;
+      }
+      .close-metrics .m .s {
+        margin-top: 0.8mm;
+        font-size: 8px;
+        color: #9aabbf;
+        line-height: 1.3;
+      }
+      .page.deal th,
+      .page.deal td {
+        padding: 3.2mm 2.6mm;
+        font-size: 9.5px;
+        line-height: 1.42;
       }
       th, td {
         padding: 2mm 1.8mm;
         font-size: 9px;
+        line-height: 1.35;
       }
     </style>
   </head>
   <body>
     <!-- PAGE 1 — Cover + summary -->
-    <section class="page">
+    <section class="page cover-page">
       <header class="hero">
         <div class="brand">
           <div class="brand-mark">M</div>
@@ -129,30 +191,32 @@
         <p class="lede">
           First-to-market platform: merchants don’t build payment rails — you shouldn’t rebuild an
           agent catalogue, studio, trust layer, and regional packs from scratch.
-          <strong style="color: #fff">500 agents · 3,500+ evals · US / EU / Africa / Asia / Oceania</strong> —
-          ready to sit on your identity, wallet, models, and Azure.
+          <strong style="color: #fff">500 agents · 8,500+ evals · US / EU / Africa / Asia / Oceania</strong> —
+          ready to sit on your identity, wallet, models, and Azure. ZA covered under Africa.
         </p>
         <div class="meta-row">
           <span class="pill">First to market</span>
           <span class="pill">Platform license</span>
+          <span class="pill">Eng. grade A · 80</span>
+          <span class="pill">Postgres + Redis live</span>
           <span class="pill muted">August 2026</span>
         </div>
         <div class="cover-metrics">
           <div class="cover-metric">
-            <div class="n">220</div>
+            <div class="n">500</div>
             <div class="l">Agents included</div>
           </div>
           <div class="cover-metric">
-            <div class="n">3.5k+</div>
+            <div class="n">8.5k+</div>
             <div class="l">Eval cases</div>
           </div>
           <div class="cover-metric">
-            <div class="n">4</div>
-            <div class="l">Regional packs</div>
+            <div class="n">~398K</div>
+            <div class="l">Total lines of code</div>
           </div>
           <div class="cover-metric">
-            <div class="n">~$909</div>
-            <div class="l">Per agent / year</div>
+            <div class="n">A · 80</div>
+            <div class="l">Eng. grade</div>
           </div>
         </div>
       </header>
@@ -166,7 +230,7 @@
               <strong>marketplace + commerce operating system</strong>. Agents is the same bet for
               MyInstantAI: a first-party surface where every customer can browse, configure, connect
               Actions, embed, and meter prepaid tokens — with a deep catalogue already localised for
-              four regions. Competitors shipping a chatbot wrapper are months behind this stack.
+              five regions. Competitors shipping a chatbot wrapper are months behind this stack.
             </p>
           </div>
           <div class="grid-2">
@@ -180,8 +244,9 @@
             <div class="card">
               <h3>Depth × breadth</h3>
               <p style="margin:0">
-                <strong>100 families × 5 markets = 500</strong> catalogue-ready packages (~2.5M chars
-                prompts/knowledge, 936 tools) — not a thin demo set.
+                <strong>100 families × 5 markets = 500</strong> packages —
+                <strong>~298K lines</strong> of authored catalogue IP (prompts, knowledge, tools,
+                guardrails, evals) plus the runtime — not a thin demo set.
               </p>
             </div>
             <div class="card">
@@ -194,44 +259,36 @@
             <div class="card">
               <h3>Regional compliance</h3>
               <p style="margin:0">
-                Market packs encode US CCPA/TCPA, EU GDPR, Africa POPIA-style, Asia PDPA-style
-                guardrails — not one global prompt pretending to be local.
+                Market packs encode US CCPA/TCPA, EU GDPR, Africa POPIA-style (incl. ZA), Asia
+                PDPA-style, Oceania AU/NZ privacy — not one global prompt pretending to be local.
               </p>
             </div>
             <div class="card">
               <h3>Evals as quality IP</h3>
               <p style="margin:0">
-                <strong>~3,566 eval cases</strong> (~16 / agent) — regression harness for grounded
-                answers, confirm-before-write, and cross-tenant refusals.
+                <strong>8,500+ behavioural eval cases</strong> (~15 / agent) — regression harness for
+                grounded answers, confirm-before-write, and cross-tenant refusals.
               </p>
             </div>
             <div class="card">
               <h3>Build vs buy</h3>
               <p style="margin:0">
-                Rebuilding platform + catalogue in-house is years of specialised work. At
-                <strong>~$400 / agent / year</strong>, the license is a fraction of one senior team.
+                <strong>~398K total lines</strong> already written (~298K catalogue + ~59K platform).
+                Rebuild estimate <strong>~$0.75–0.95M · ~50–56 months</strong> — not a weekend clone.
               </p>
             </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="callout">
-            <strong>Commercial intent:</strong> $200k annual platform license (full 500) · $30k / mo
-            support &amp; new agents · rev-share on end-customer rental (50/50) and tokens (20% MD /
-            80% MIAI). What remains is agreement + cutover — not invention.
           </div>
         </div>
       </div>
       <footer class="footer">
         <span><strong>Move Digital</strong> · Partnership proposal</span>
-        <span>Page 1 / 4 · Confidential</span>
+        <span>Page 1 / 5 · Confidential</span>
       </footer>
     </section>
 
     <!-- PAGE 2 — Commercial proposal -->
-    <section class="page">
-      <header class="hero">
+    <section class="page compact">
+      <header class="hero slim">
         <div class="brand">
           <div class="brand-mark">M</div>
           <div class="brand-name">myinstant<span>ai</span> · Agents</div>
@@ -239,8 +296,8 @@
         <p class="eyebrow">Commercial proposal</p>
         <h1>Proposed commercial terms</h1>
         <p class="lede">
-          You are licensing a category-defining operating system for agents — marketplace, catalogue
-          IP, trust &amp; regional packs, evals — not renting six demos.
+          Licensing a category-defining agent OS — marketplace, catalogue IP, trust &amp; regional
+          packs, evals — not renting six demos.
         </p>
       </header>
 
@@ -258,23 +315,27 @@
               <tbody>
                 <tr>
                   <td><strong>Marketplace OS</strong></td>
-                  <td>Catalogue, Studio, Actions/OAuth, knowledge, sandbox &amp; live chat, embed, wallet metering, Live Ops, Insights, Admin, Trust Center</td>
+                  <td>
+                    Catalogue, Studio, Actions/OAuth, knowledge, chat, embed, wallet, Live Ops,
+                    Trust Center — <strong>~398K-line</strong> codebase (~298K catalogue + ~59K
+                    platform) · 45 API routes · CI-gated quality
+                  </td>
                 </tr>
                 <tr>
                   <td><strong>Catalogue IP</strong></td>
-                  <td>All 500 agents day 1 — prompts, knowledge, 936 tools, guardrails, prepaid SKUs</td>
+                  <td>All 500 agents day 1 — prompts, knowledge, ~1,900 tools, guardrails, prepaid SKUs</td>
                 </tr>
                 <tr>
                   <td><strong>Quality system</strong></td>
-                  <td>~3,566 evals; confirm-before-write workflows; honest capability tags</td>
+                  <td>8,500+ evals; confirm-before-write workflows; honest capability tags</td>
                 </tr>
                 <tr>
                   <td><strong>Trust &amp; regions</strong></td>
-                  <td>Security controls + US / EU / Africa / Asia / Oceania market-pack compliance posture</td>
+                  <td>Security controls + US / EU / Africa (incl. ZA) / Asia / Oceania market-pack compliance</td>
                 </tr>
                 <tr>
                   <td><strong>Cutover path</strong></td>
-                  <td>OIDC, wallet, model gateway adapters; Azure Bicep + 30-day runbook; staging live now</td>
+                  <td>OIDC, wallet, model gateway adapters; Azure Bicep + 30-day runbook; Postgres + Redis staging live</td>
                 </tr>
               </tbody>
             </table>
@@ -305,9 +366,6 @@
 
         <div class="section">
           <h2><span class="n">04</span> Revenue share — end-customer usage</h2>
-          <p style="margin-bottom: 2mm; font-size: 9.5px">
-            MyInstantAI remains customer of record. End-customer rental &amp; token packaging split:
-          </p>
           <div class="grid-2">
             <div class="card">
               <h3>Monthly agent rental — 50 / 50</h3>
@@ -321,9 +379,6 @@
                   <div class="pct">50%</div>
                 </div>
               </div>
-              <p style="margin-top: 2mm; margin-bottom: 0; font-size: 9px">
-                Catalogue IP + quality (MD) · brand &amp; distribution (MIAI).
-              </p>
             </div>
             <div class="card">
               <h3>Token top-ups — 20 / 80</h3>
@@ -337,9 +392,6 @@
                   <div class="pct">80%</div>
                 </div>
               </div>
-              <p style="margin-top: 2mm; margin-bottom: 0; font-size: 9px">
-                Majority to MIAI — model, wallet, and infra on your rails.
-              </p>
             </div>
           </div>
         </div>
@@ -385,40 +437,140 @@
             </table>
           </div>
         </div>
+      </div>
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Partnership proposal</span>
+        <span>Page 2 / 5 · Confidential</span>
+      </footer>
+    </section>
 
+    <!-- PAGE 3 — Deal terms -->
+    <section class="page airy deal">
+      <header class="hero slim">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Commercial terms</p>
+        <h1>Deal terms at a glance</h1>
+        <p class="lede">
+          Commercial mechanics behind the headline — a fair starting point for the agreement.
+        </p>
+      </header>
+
+      <div class="content">
         <div class="section">
-          <div class="callout">
-            <strong>Clarity:</strong> license = platform + full catalogue. Rent/tokens = end-customer
-            packaging on MyInstantAI (shared above). Demo 6 is UAT depth only — not commercial scope.
-            Fixed year-1 floor before rev-share: <strong>$560,000</strong>.
+          <h2><span class="n">06</span> Proposed terms</h2>
+          <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 3.5mm">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 28%">Term</th>
+                  <th>Proposed position</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Initial term</strong></td>
+                  <td>
+                    12 months from production go-live, auto-renewing for successive 12-month terms
+                    unless either party gives 60 days’ written notice.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>License fee</strong></td>
+                  <td>
+                    <strong>$200,000 / year</strong>, invoiced annually in advance on the go-live
+                    date. Covers the platform + full <strong>500-agent</strong> catalogue
+                    (100 families × 5 markets).
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Support &amp; development</strong></td>
+                  <td>
+                    <strong>$30,000 / month</strong>, invoiced monthly in arrears (net 30).
+                    Business-hours support with next-business-day response; maintenance &amp;
+                    platform updates; 5–10 new agents per month — larger or bespoke builds scoped
+                    separately.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Revenue share</strong></td>
+                  <td>
+                    Agent rental <strong>50 / 50</strong>; token top-ups
+                    <strong>20% MD / 80% MIAI</strong> — calculated on net end-customer revenue,
+                    after refunds and chargebacks.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Reporting &amp; remittance</strong></td>
+                  <td>
+                    MyInstantAI reports rental &amp; token revenue monthly; Move Digital’s share is
+                    remitted within 30 days of month-end. Either party may audit the figures once
+                    per year.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Exclusivity</strong></td>
+                  <td>
+                    Non-exclusive. MyInstantAI receives the first-to-market advantage; Move Digital
+                    retains the right to license the catalogue to other partners.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Intellectual property</strong></td>
+                  <td>
+                    Move Digital licenses the agent packages &amp; presets and retains ownership of
+                    all reusable IP. On termination, MyInstantAI keeps a license to agents already
+                    deployed to live customers for a 90-day wind-down.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Data protection</strong></td>
+                  <td>
+                    MyInstantAI is controller and customer of record; Move Digital acts as processor
+                    under a DPA. Data residency follows the Azure tenancy per region
+                    (US / EU / Africa / Asia / Oceania).
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Currency &amp; taxes</strong></td>
+                  <td>All amounts in USD, exclusive of any applicable taxes or withholding.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
       <footer class="footer">
         <span><strong>Move Digital</strong> · Partnership proposal</span>
-        <span>Page 2 / 4 · Confidential</span>
+        <span>Page 3 / 5 · Confidential</span>
       </footer>
     </section>
 
-    <!-- PAGE 3 — Delivery + product -->
-    <section class="page">
-      <header class="hero">
+    <!-- PAGE 4 — Roles + technical complexity (breathing room for the moat story) -->
+    <section class="page airy">
+      <header class="hero slim">
         <div class="brand">
           <div class="brand-mark">M</div>
           <div class="brand-name">myinstant<span>ai</span> · Agents</div>
         </div>
-        <p class="eyebrow">Delivery · Product · Roles</p>
-        <h1>How we deliver together</h1>
+        <p class="eyebrow">Delivery · Technical complexity</p>
+        <h1>What you are licensing</h1>
+        <p class="lede">
+          Roles are clear — and the codebase is already written. Catalogue IP is the moat; the
+          runtime is the operating system.
+        </p>
       </header>
 
       <div class="content">
         <div class="section">
-          <h2><span class="n">06</span> Partnership roles</h2>
+          <h2><span class="n">07</span> Partnership roles</h2>
           <div class="card" style="padding: 0; overflow: hidden">
             <table>
               <thead>
                 <tr>
-                  <th>Topic</th>
+                  <th style="width: 26%">Topic</th>
                   <th>Proposal</th>
                 </tr>
               </thead>
@@ -449,139 +601,155 @@
         </div>
 
         <div class="section">
-          <h2><span class="n">07</span> 30-day cutover plan</h2>
-          <div class="grid-2">
-            <div class="card">
-              <h3>Week 1</h3>
-              <p>Commercial principles locked; staging OIDC, wallet, and model gateway credentials received.</p>
+          <h2><span class="n">08</span> Technical complexity</h2>
+          <p style="margin-bottom: 2.5mm; font-size: 9.5px; line-height: 1.45">
+            Measured monorepo size (excl. <span class="mono">node_modules</span> /
+            <span class="mono">dist</span> / <span class="mono">.next</span>): the catalogue is
+            <strong>authored product IP</strong>, not empty scaffolding — rebuilding both layers is
+            years of specialised work.
+          </p>
+          <div class="grid-3" style="margin-bottom: 3mm">
+            <div class="card stat">
+              <div class="label">Total codebase</div>
+              <div class="value">~398K lines · 1,021 files</div>
+              <div class="why">Full written surface: platform + catalogue + config</div>
             </div>
-            <div class="card">
-              <h3>Week 2</h3>
-              <p>Marketplace pointed at your staging rails — login → activate agent → chat → debit.</p>
+            <div class="card stat">
+              <div class="label">Catalogue IP</div>
+              <div class="value">~298K lines JSON</div>
+              <div class="why">500 agents · prompts · knowledge · tools · guardrails · evals</div>
             </div>
-            <div class="card">
-              <h3>Week 3</h3>
-              <p>Custom domain + OAuth redirects; UAT on demo shortlist; Live Ops / health green.</p>
-            </div>
-            <div class="card">
-              <h3>Week 4</h3>
-              <p>Cutover rehearsal (Migration Runbook); production go-live checklist; backlog for next connectors.</p>
+            <div class="card stat">
+              <div class="label">Platform runtime</div>
+              <div class="value">~59K hand-written LOC</div>
+              <div class="why">TS/JS/CSS/HTML · ~2.5K-LOC engine · 16 Actions · CI gates</div>
             </div>
           </div>
-          <p class="callout" style="margin-top: 3mm">
-            <strong>Day-30 success:</strong> a MyInstantAI user can SSO in, use an agent from the
-            licensed catalogue, run a tool-backed conversation billed to your wallet, on your hostname.
-          </p>
-        </div>
-
-        <div class="section">
-          <h2><span class="n">08</span> Already built (staging)</h2>
           <div class="card" style="padding: 0; overflow: hidden">
             <table>
               <thead>
                 <tr>
-                  <th>Capability</th>
-                  <th>Status</th>
+                  <th style="width: 26%">Layer</th>
+                  <th>Complexity facts</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Catalogue — 100 × 5 markets (500)</td>
-                  <td class="rec">Catalogue-ready</td>
+                  <td><strong>Catalogue (moat)</strong></td>
+                  <td>
+                    <strong>~298K lines</strong> of market-localised agent packages
+                    (100 × 5 = 500) — cannot be “prompted up” in a sprint; each pack carries tools,
+                    guardrails, and evals
+                  </td>
                 </tr>
                 <tr>
-                  <td>Product loop — browse → configure → Actions → embed → tokens</td>
-                  <td class="rec">Live on staging</td>
+                  <td><strong>Backend</strong></td>
+                  <td>
+                    Next.js App Router · <strong>45</strong> <span class="mono">route.ts</span> ·
+                    ~51 handlers · <span class="mono">requireAuth → RBAC</span> · zod · body caps
+                  </td>
                 </tr>
                 <tr>
-                  <td>Multi-step workflows (confirm-before-write)</td>
-                  <td class="rec">10 families</td>
+                  <td><strong>Actions engine</strong></td>
+                  <td>
+                    <strong>16</strong> live connectors · OAuth2/PKCE · AES-256-GCM sealed tokens ·
+                    DNS-pinned SSRF · HMAC webhooks
+                  </td>
                 </tr>
                 <tr>
-                  <td>Trust Center, Admin, Insights, custom requests</td>
-                  <td class="rec">Live on staging</td>
+                  <td><strong>AI runtime</strong></td>
+                  <td>
+                    ~2.5K-LOC turn engine · 4 adapters · live guardrails · lexical RAG ·
+                    10 workflows · 8,500+ evals
+                  </td>
                 </tr>
                 <tr>
-                  <td>Connectors (e.g. Slack, Calendar) + OAuth path</td>
-                  <td class="rec">Staging / extendable</td>
+                  <td><strong>Data / DevOps</strong></td>
+                  <td>
+                    Postgres + Redis staging · CI + gitleaks + static-eval gate · Azure Bicep ·
+                    Railway live
+                  </td>
                 </tr>
                 <tr>
-                  <td>Azure path + Railway→Azure runbook</td>
-                  <td class="rec">Documented</td>
+                  <td><strong>Rebuild avoid</strong></td>
+                  <td>
+                    Full <strong>~398K-line</strong> surface:
+                    <strong>~$0.75–0.95M</strong> / <strong>~50–56 months</strong> — partnership is
+                    the shortcut
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p style="margin-top: 2.5mm; font-size: 9.5px">
-            Staging: <span class="mono">https://miaiweb-production.up.railway.app</span> · Demo pack
-            <span class="mono">/demo</span> · Trust <span class="mono">/trust</span>
-          </p>
         </div>
       </div>
       <footer class="footer">
         <span><strong>Move Digital</strong> · Partnership proposal</span>
-        <span>Page 3 / 4 · Confidential</span>
+        <span>Page 4 / 5 · Confidential</span>
       </footer>
     </section>
 
-    <!-- PAGE 4 — Asks + close -->
-    <section class="page">
-      <header class="hero">
+    <!-- PAGE 5 — Cutover, built status, asks, close -->
+    <section class="page compact">
+      <header class="hero slim">
         <div class="brand">
           <div class="brand-mark">M</div>
           <div class="brand-name">myinstant<span>ai</span> · Agents</div>
         </div>
         <p class="eyebrow">Next steps</p>
-        <h1>Asks &amp; proposed close</h1>
+        <h1>Delivery plan &amp; proposed close</h1>
+        <p class="lede">
+          Staging is live today. Lock commercial principles, exchange credentials, and start Week 1.
+        </p>
       </header>
 
       <div class="content">
         <div class="section">
-          <h2><span class="n">09</span> Required from MyInstantAI</h2>
+          <h2><span class="n">09</span> 30-day cutover plan</h2>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Week 1–2 — Integrate</h3>
+              <p style="margin:0">
+                Lock terms; receive OIDC, wallet, and model-gateway credentials; point marketplace
+                at your rails — login → activate → chat → debit.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Week 3–4 — Go-live</h3>
+              <p style="margin:0">
+                Custom domain + OAuth redirects; UAT on demo shortlist; cutover rehearsal; Live Ops
+                green on your hostname. Success: SSO → agent → billed tool turn on your domain.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">10</span> Already built (staging)</h2>
           <div class="card" style="padding: 0; overflow: hidden">
             <table>
               <thead>
                 <tr>
-                  <th>Ask</th>
-                  <th>Owner</th>
-                  <th>✓</th>
+                  <th>Capability</th>
+                  <th style="width: 28%">Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Commercial sign-off on terms in §03–04 (or marked counter)</td>
-                  <td></td>
-                  <td>□</td>
+                  <td>Catalogue — 100 × 5 markets (500) · ZA ⊂ Africa · 19 industries</td>
+                  <td class="rec">Catalogue-ready</td>
                 </tr>
                 <tr>
-                  <td>Staging OIDC — issuer, audience, JWKS, sample JWT</td>
-                  <td></td>
-                  <td>□</td>
+                  <td>Runtime loop — browse → Actions → embed → wallet · Postgres + Redis</td>
+                  <td class="rec">Live on staging</td>
                 </tr>
                 <tr>
-                  <td>Staging wallet API — debit / balance / top-up</td>
-                  <td></td>
-                  <td>□</td>
+                  <td>Security — CSP nonces · DSAR · SSRF pin · sealed OAuth · HMAC webhooks</td>
+                  <td class="rec">Live</td>
                 </tr>
                 <tr>
-                  <td>Model gateway — base URL, auth, tool-calling</td>
-                  <td></td>
-                  <td>□</td>
-                </tr>
-                <tr>
-                  <td>Azure subscription / region owner</td>
-                  <td></td>
-                  <td>□</td>
-                </tr>
-                <tr>
-                  <td>Production hostname / DNS for Agents + embed</td>
-                  <td></td>
-                  <td>□</td>
-                </tr>
-                <tr>
-                  <td>WhatsApp WABA / BSP ownership</td>
-                  <td></td>
-                  <td>□</td>
+                  <td>Actions (16) + OAuth/PKCE · Azure Bicep + Railway→Azure runbook</td>
+                  <td class="rec">Staging / documented</td>
                 </tr>
               </tbody>
             </table>
@@ -589,7 +757,49 @@
         </div>
 
         <div class="section">
-          <h2><span class="n">10</span> Proposed Monday close</h2>
+          <h2><span class="n">11</span> Required from MyInstantAI</h2>
+          <div class="card" style="padding: 0; overflow: hidden">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 62%">Ask</th>
+                  <th style="width: 28%">Owner</th>
+                  <th style="width: 10%; text-align: center">✓</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Commercial sign-off on terms in §03–06 (or marked counter)</td>
+                  <td></td>
+                  <td style="text-align: center">□</td>
+                </tr>
+                <tr>
+                  <td>Staging OIDC — issuer, audience, JWKS, sample JWT</td>
+                  <td></td>
+                  <td style="text-align: center">□</td>
+                </tr>
+                <tr>
+                  <td>Staging wallet API — debit / balance / top-up</td>
+                  <td></td>
+                  <td style="text-align: center">□</td>
+                </tr>
+                <tr>
+                  <td>Model gateway — base URL, auth, tool-calling</td>
+                  <td></td>
+                  <td style="text-align: center">□</td>
+                </tr>
+                <tr>
+                  <td>Azure subscription / region · production hostname / DNS · WhatsApp WABA/BSP</td>
+                  <td></td>
+                  <td style="text-align: center">□</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">12</span> Proposed Monday close</h2>
           <div class="card">
             <ul class="check">
               <li>
@@ -602,58 +812,54 @@
               </li>
               <li>
                 <span class="box"></span>
-                Agree rev-share: <strong>agent rental 50/50</strong> · <strong>tokens 20% MD / 80% MIAI</strong>
+                Agree rev-share: <strong>agent rental 50/50</strong> ·
+                <strong>tokens 20% MD / 80% MIAI</strong>
               </li>
               <li>
                 <span class="box"></span>
-                Name owners for Auth, Wallet, Models, Azure, Commercial
-              </li>
-              <li>
-                <span class="box"></span>
-                Set date for staging credentials and next working session
+                Name owners (Auth, Wallet, Models, Azure, Commercial) · set credentials date
               </li>
             </ul>
           </div>
         </div>
 
         <div class="section">
-          <h2><span class="n">11</span> Commercial snapshot</h2>
-          <div class="grid-3">
-            <div class="card stat">
-              <div class="label">License</div>
-              <div class="value">$200k / yr</div>
-              <div class="why">500 agents · ~$400 / agent / year</div>
+          <h2><span class="n">13</span> Snapshot &amp; close</h2>
+          <div class="card close-cta">
+            <div class="close-metrics">
+              <div class="m">
+                <div class="k">License</div>
+                <div class="v">$200k / yr</div>
+                <div class="s">500 agents · ~$400 / agent</div>
+              </div>
+              <div class="m">
+                <div class="k">Retainer</div>
+                <div class="v">$30k / mo</div>
+                <div class="s">Support · new agents</div>
+              </div>
+              <div class="m">
+                <div class="k">Upside</div>
+                <div class="v">50% · 20%</div>
+                <div class="s">Rent · tokens to MD</div>
+              </div>
             </div>
-            <div class="card stat">
-              <div class="label">Retainer</div>
-              <div class="value">$30k / mo</div>
-              <div class="why">Support, maintenance, new agents</div>
-            </div>
-            <div class="card stat">
-              <div class="label">Upside</div>
-              <div class="value">Rent 50% · Tokens 20%</div>
-              <div class="why">Move Digital shares · rest to MyInstantAI</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="card" style="background: linear-gradient(135deg, #0a121c, #121a28); color: #f2f6fc; border-color: rgba(61,214,198,0.35)">
-            <h3 style="color: #6aefe0; margin-bottom: 2mm">Ready when you are</h3>
-            <p style="margin: 0; color: #9aabbf; font-size: 10px; line-height: 1.5">
-              Staging is live for walkthrough. Move Digital is ready to start Week 1 as soon as
-              commercial principles and staging credentials are confirmed.
+            <h3>Ready when you are</h3>
+            <p style="margin: 0; color: #9aabbf; font-size: 9px; line-height: 1.45">
+              Staging is live (Postgres + Redis). Catalogue, trust layer, and five regional packs
+              are built — <strong style="color:#fff">500 agents · ~398K lines</strong> ready to
+              license. Week 1 starts when commercial principles and credentials are confirmed.
             </p>
-            <p style="margin: 3mm 0 0; color: #c5d0e0; font-size: 10px">
-              <strong style="color: #fff">Move Digital</strong> · Agent Marketplace delivery partner<br />
-              <span class="mono" style="color: #6aefe0">miaiweb-production.up.railway.app</span>
+            <p style="margin: 2.5mm 0 0; color: #c5d0e0; font-size: 9px; line-height: 1.5">
+              <strong style="color: #fff">Move Digital (Pty) Ltd</strong>
+              · <span class="mono" style="color: #6aefe0">malcolm@movedigital.africa</span>
+              · +27 83 465 4639
             </p>
           </div>
         </div>
       </div>
       <footer class="footer">
         <span><strong>Move Digital</strong> · Partnership proposal</span>
-        <span>Page 4 / 4 · Confidential</span>
+        <span>Page 5 / 5 · Confidential</span>
       </footer>
     </section>
   </body>

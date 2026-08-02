@@ -216,6 +216,7 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 | Topic | Path |
 |---|---|
 | Baseline audit (full narrative) | `docs/reports/technical-audit-2026-08-02.md` |
+| Interactive HTML (B+ · 78) | `docs/reports/technical-audit-2026-08-02.html` |
 | Residual close | `docs/reports/residual-punchlist-close-2026-08-02.md` |
 | Verifier punch-list | `docs/reports/verifier-punchlist-2026-08-02.md` |
 | Claude re-verify brief | `docs/CLAUDE_VERIFY_REMEDIATION.md` |
@@ -238,7 +239,7 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 | Classification | Confidential — technical diligence |
 | Authors | Cursor (remediation implementer) — engineering disposition; independent Claude verify may supersede the 9-risk table |
 | Baseline | Static audit @ `d4cfea2` |
-| This update | Post Phases 0–5 + residual punch-list @ `6dcb793` |
+| This update | Post Phases 0–5 + residual punch-list + B+ ops @ `3127fab` |
 | Next refresh | After counsel sign-off and/or Claude `remediation-verify-YYYY-MM-DD.md` |
 
 *Scores are engineering judgments calibrated to in-repo evidence. Ops/partner/legal items are called out as blocked or residual, not silently marked FIXED.*

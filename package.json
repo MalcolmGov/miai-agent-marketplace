@@ -28,7 +28,7 @@
     "demo:phase1": "node scripts/phase1-demo.mjs",
     "pdf:branded": "node docs/branded-pdfs/generate.mjs",
     "test": "pnpm test:wallet && pnpm --filter @miai/connectors test && pnpm test:web",
-    "test:web": "node --import ./scripts/web-test-register.mjs --experimental-strip-types --test apps/web/test/*.test.mjs",
+    "test:web": "node --import tsx --import ./scripts/web-test-register.mjs --test apps/web/test/*.test.mjs",
     "eval:live": "pnpm build:packages && node scripts/eval-live.mjs",
     "test:unit": "node --test packages/connectors/test/*.test.mjs && pnpm test:web",
     "test:wallet": "pnpm --filter @miai/wallet-adapter test",
@@ -44,5 +44,8 @@
     "proof:mcp": "node scripts/proof-mcp.mjs",
     "smoke:live-llm": "node scripts/live-llm-smoke.mjs",
     "smoke:live-llm:matrix": "node scripts/live-llm-smoke.mjs --matrix"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3"
   }
 }

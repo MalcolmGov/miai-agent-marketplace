@@ -11,7 +11,7 @@
 | **Date** | 2026-08-02 |
 | **Method** | 12-analyst static sweep (1.49M tokens, 331 tool-uses) + direct metric extraction |
 | **Files audited** | 928 (excl. `node_modules`, build artifacts) |
-| **Interactive version** | Published as a themed HTML artifact with rendered diagrams |
+| **Interactive version** | [`technical-audit-2026-08-02.html`](./technical-audit-2026-08-02.html) — themed HTML (updated to **B+ · 78**) |
 | **Current update** | [`technical-audit-update-2026-08-02.md`](./technical-audit-update-2026-08-02.md) |
 
 ## Verdict — **B–** · Engineering score **61 / 100**

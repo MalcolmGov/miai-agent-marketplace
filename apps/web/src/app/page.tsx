@@ -5,7 +5,7 @@ import { listFamilies } from "@/lib/catalog";
 export const metadata = {
   title: "MyInstantAI Agents — Global agent marketplace",
   description:
-    "Browse 100 AI agent families across US, EU, Africa, Asia, and Oceania. Rent, configure, connect Actions, and embed.",
+    "Browse 500 AI agents across US, EU, Africa, Asia, and Oceania (100 families × 5 regions). Rent, configure, connect Actions, and embed.",
 };
 
 function HomeFallback() {

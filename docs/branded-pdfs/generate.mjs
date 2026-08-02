@@ -20,6 +20,11 @@ const jobs = [
     pdf: "MyInstantAI-x-MoveDigital-Partnership-Proposal.pdf",
   },
   {
+    // Same source — Premium filename for partner leave-behind in Documents.
+    html: "partnership-proposal.html",
+    pdf: "MyInstantAI-x-MoveDigital-Partnership-Proposal-Premium.pdf",
+  },
+  {
     html: "one-pager.html",
     pdf: "MyInstantAI-Agents-One-Pager.pdf",
   },

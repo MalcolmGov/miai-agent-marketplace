@@ -52,6 +52,10 @@ export interface MarketPack {
 
 const FAMILY_PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
+/** Indexed commercial catalogue: 100 families × 5 regions (ZA is Africa, not a 6th market). */
+export const INDEXED_MARKETS = ["us", "eu", "africa", "asia", "oceania"] as const;
+export const INDEXED_AGENT_COUNT = 500;
+
 function catalogDir(): string {
   return path.resolve(process.cwd(), process.env.CATALOG_DIR ?? "../../data/catalog");
 }
@@ -60,15 +64,41 @@ export function familyIdFromAgentId(id: string): string {
   return id.replace(FAMILY_PREFIX_RE, "");
 }
 
+/**
+ * Public market map for UI/API: 5 regions only.
+ * Legacy `za` aliases fold into `africa` (same SKU entitlement).
+ */
+export function publicMarkets(markets: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const k of INDEXED_MARKETS) {
+    if (k === "africa") {
+      const id = markets.africa || markets.za;
+      if (id) out.africa = id;
+    } else if (markets[k]) {
+      out[k] = markets[k];
+    }
+  }
+  return out;
+}
+
+export function countIndexedMarketSkus(markets: Record<string, string>): number {
+  return Object.keys(publicMarkets(markets)).length;
+}
+
 function pickDefaultAgentId(
   markets: Record<string, string>,
   preferredMarket?: string | null,
 ): string {
-  if (preferredMarket && markets[preferredMarket]) return markets[preferredMarket];
-  for (const m of ["us", "eu", "africa", "asia", "oceania"]) {
-    if (markets[m]) return markets[m];
+  const pub = publicMarkets(markets);
+  const pref =
+    preferredMarket === "za" ? "africa" : preferredMarket && preferredMarket !== "all"
+      ? preferredMarket
+      : null;
+  if (pref && pub[pref]) return pub[pref];
+  for (const m of INDEXED_MARKETS) {
+    if (pub[m]) return pub[m];
   }
-  return Object.values(markets)[0];
+  return Object.values(pub)[0] ?? Object.values(markets)[0];
 }
 
 type FileMemo<T> = { mtimeMs: number; data: T };
@@ -223,7 +253,8 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
   }
 
   return familiesRaw.map((f) => {
-    const variantIds = Object.values(f.markets);
+    const markets = publicMarkets(f.markets);
+    const variantIds = Object.values(markets);
     const variants = variantIds.map((id) => byId.get(id)).filter(Boolean) as CatalogEntry[];
     const defaultAgentId = pickDefaultAgentId(f.markets, preferredMarket);
     const defaultAgent = byId.get(defaultAgentId);
@@ -252,9 +283,10 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
           model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
         }),
       audience: agentAudience(f.category),
-      markets: f.markets,
-      packs: f.packs,
-      hasZa: f.hasZa,
+      markets,
+      packs: INDEXED_MARKETS.filter((p) => Boolean(markets[p])),
+      // Legacy flag for integrity tooling; ZA is not a separate commercial market.
+      hasZa: Boolean(f.hasZa || f.markets?.za),
       pilot: variants.some((v) => v.pilot),
       liveReady: variants.some((v) => v.liveReady),
       catalogueReady,
