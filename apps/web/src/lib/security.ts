@@ -136,17 +136,19 @@ export async function rateLimit(
   if (redisAvailable()) {
     const redisKey = `miai:rl:${key}`;
     const count = await redisIncr(redisKey, ttlSec);
-    if (count != null) {
-      if (count > opts.limit) {
-        const remaining = await redisTtl(redisKey);
-        const retryAfterSec = Math.max(
-          1,
-          remaining != null && remaining > 0 ? remaining : ttlSec,
-        );
-        return { ok: false, retryAfterSec };
-      }
-      return { ok: true };
+    if (count == null) {
+      // Redis is configured but failed — do not silently fail open to a per-replica Map.
+      return { ok: false, retryAfterSec: Math.max(1, ttlSec) };
     }
+    if (count > opts.limit) {
+      const remaining = await redisTtl(redisKey);
+      const retryAfterSec = Math.max(
+        1,
+        remaining != null && remaining > 0 ? remaining : ttlSec,
+      );
+      return { ok: false, retryAfterSec };
+    }
+    return { ok: true };
   }
 
   return rateLimitInProcess(key, opts);

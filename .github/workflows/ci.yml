@@ -43,9 +43,8 @@ jobs:
       - name: Static eval suite
         run: pnpm eval:suite:static
 
-      - name: Audit production dependencies (critical only)
+      - name: Audit production dependencies (critical)
         run: pnpm audit --prod --audit-level=critical
-        continue-on-error: true
 
   secrets:
     name: secrets
@@ -62,3 +61,8 @@ jobs:
             echo "$hits"
             exit 1
           fi
+
+      - name: Gitleaks scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

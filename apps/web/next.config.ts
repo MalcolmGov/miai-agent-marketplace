@@ -11,8 +11,8 @@ const securityHeaders = [
     value: "camera=(), microphone=(self), geolocation=(), payment=()",
   },
   {
-    // Enforcing CSP — Next.js still needs style unsafe-inline; script unsafe-eval dropped (Phase 0).
-    // Remaining script unsafe-inline is for the App Router shell; nonce/hash migration is Phase 5.
+    // Enforcing CSP — unsafe-eval dropped. script/style unsafe-inline remain for the App Router
+    // shell until a nonce/'strict-dynamic' middleware migration (tracked residual).
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",

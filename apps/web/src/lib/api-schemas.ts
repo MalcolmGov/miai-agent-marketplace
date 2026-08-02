@@ -1,35 +1,40 @@
 import { z } from "zod";
 
+const id = z.string().min(1).max(200);
+const shortText = z.string().max(200);
+const message = z.string().min(1).max(8000);
+const optionalMessage = z.string().max(8000).optional();
+
 export const studioChatBodySchema = z.object({
-  agentId: z.string().min(1),
-  message: z.string().optional(),
-  workspaceId: z.string().optional(),
+  agentId: id,
+  message: optionalMessage,
+  workspaceId: shortText.optional(),
   mode: z.enum(["sandbox", "live"]).optional(),
   clear: z.boolean().optional(),
-  replyLanguage: z.string().optional(),
-  correlationId: z.string().optional(),
-  sessionId: z.string().optional(),
+  replyLanguage: z.string().max(32).optional(),
+  correlationId: shortText.optional(),
+  sessionId: shortText.optional(),
 });
 
 export const channelChatBodySchema = z.object({
-  key: z.string().min(1),
-  message: z.string().min(1),
-  sessionId: z.string().optional(),
-  replyLanguage: z.string().optional(),
-  correlationId: z.string().optional(),
+  key: z.string().min(1).max(512),
+  message,
+  sessionId: shortText.optional(),
+  replyLanguage: z.string().max(32).optional(),
+  correlationId: shortText.optional(),
 });
 
 export const askChatBodySchema = z.object({
-  message: z.string().min(1),
-  sessionId: z.string().optional(),
-  replyLanguage: z.string().optional(),
-  correlationId: z.string().optional(),
+  message,
+  sessionId: shortText.optional(),
+  replyLanguage: z.string().max(32).optional(),
+  correlationId: shortText.optional(),
 });
 
 export const rentBodySchema = z.object({
-  agentId: z.string().min(1),
+  agentId: id,
   tier: z.enum(["standard", "pro", "enterprise"]).optional(),
-  workspaceId: z.string().optional(),
+  workspaceId: shortText.optional(),
 });
 
 export function formatZodError(err: z.ZodError): string {

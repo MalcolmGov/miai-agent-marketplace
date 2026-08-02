@@ -5,12 +5,15 @@ import {
   embedOriginStarAllowed,
   checkProductionRails,
   checkProductionSecrets,
+  checkProductionPersistence,
   checkBootHardening,
   isWeakSecret,
   timingSafeEqualString,
   assertBootHardening,
   MOCK_RAILS_ACK_ENV,
   EMBED_STAR_ACK_ENV,
+  FILE_FALLBACK_ACK_ENV,
+  PG_SSL_INSECURE_ACK_ENV,
 } from "../src/lib/security-flags.ts";
 
 const ENV_KEYS = [
@@ -19,6 +22,12 @@ const ENV_KEYS = [
   MOCK_RAILS_ACK_ENV,
   "ALLOW_EMBED_ORIGIN_STAR",
   EMBED_STAR_ACK_ENV,
+  "ALLOW_FILE_FALLBACK_IN_PROD",
+  FILE_FALLBACK_ACK_ENV,
+  "PG_SSL_REJECT_UNAUTHORIZED",
+  PG_SSL_INSECURE_ACK_ENV,
+  "DATABASE_URL",
+  "MIAI_DATABASE_URL",
   "MIAI_AUTH_MODE",
   "MIAI_WALLET_MODE",
   "MIAI_MODEL_MODE",
@@ -182,5 +191,32 @@ describe("security boot hardening / dual flags", () => {
     delete process.env.ALLOW_MOCK_RAILS;
     delete process.env[MOCK_RAILS_ACK_ENV];
     assert.throws(() => assertBootHardening(), /Refusing to start/);
+  });
+
+  it("checkProductionPersistence requires DATABASE_URL in production", () => {
+    setEnv({ NODE_ENV: "production" });
+    delete process.env.DATABASE_URL;
+    delete process.env.MIAI_DATABASE_URL;
+    delete process.env.ALLOW_FILE_FALLBACK_IN_PROD;
+    delete process.env[FILE_FALLBACK_ACK_ENV];
+    const result = checkProductionPersistence();
+    assert.equal(result.ok, false);
+    if (!result.ok) {
+      assert.ok(result.errors.some((e) => e.includes("DATABASE_URL required")));
+    }
+  });
+
+  it("checkProductionPersistence blocks insecure PG SSL without ACK", () => {
+    setEnv({
+      NODE_ENV: "production",
+      DATABASE_URL: "postgresql://user:pass@db.example.com:5432/app",
+      PG_SSL_REJECT_UNAUTHORIZED: "0",
+    });
+    delete process.env[PG_SSL_INSECURE_ACK_ENV];
+    const result = checkProductionPersistence();
+    assert.equal(result.ok, false);
+    if (!result.ok) {
+      assert.ok(result.errors.some((e) => e.includes("PG_SSL_REJECT_UNAUTHORIZED=0")));
+    }
   });
 });

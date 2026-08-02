@@ -218,12 +218,12 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     requiresSubdomain: true,
     authStyle: "body",
     authorizeUrl: (ctx) => {
-      const sub = (ctx.subdomain ?? "").replace(/\.zendesk\.com$/i, "").trim();
+      const sub = normalizeZendeskSubdomain(ctx.subdomain);
       if (!sub) throw new Error("Zendesk subdomain required");
       return `https://${sub}.zendesk.com/oauth/authorizations/new`;
     },
     tokenUrl: (ctx) => {
-      const sub = (ctx.subdomain ?? "").replace(/\.zendesk\.com$/i, "").trim();
+      const sub = normalizeZendeskSubdomain(ctx.subdomain);
       if (!sub) throw new Error("Zendesk subdomain required");
       return `https://${sub}.zendesk.com/oauth/tokens`;
     },
@@ -234,11 +234,22 @@ export function normalizeShop(shop?: string): string | null {
   if (!shop) return null;
   let s = shop.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/$/, "");
   if (!s.includes(".")) s = `${s}.myshopify.com`;
-  if (!s.endsWith(".myshopify.com")) {
-    // allow custom domains only if they look like hostnames; Shopify OAuth still needs *.myshopify.com typically
-    if (!/^[a-z0-9][a-z0-9.-]+\.[a-z]{2,}$/i.test(s)) return null;
-  }
+  // Live Admin API egress is allowlisted to *.myshopify.com only (closes custom-host SSRF).
+  if (!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/i.test(s)) return null;
   return s;
+}
+
+/** Zendesk subdomain only — no dots, no scheme, no zendesk.com suffix. */
+export function normalizeZendeskSubdomain(subdomain?: string): string | null {
+  if (!subdomain) return null;
+  const sub = subdomain
+    .trim()
+    .toLowerCase()
+    .replace(/^https?:\/\//, "")
+    .replace(/\.zendesk\.com.*$/i, "")
+    .replace(/\/$/, "");
+  if (!/^[a-z0-9][a-z0-9-]{0,62}$/.test(sub)) return null;
+  return sub;
 }
 
 export function isOAuthConnector(id: string): id is OAuthConnectorId {

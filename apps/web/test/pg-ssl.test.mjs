@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { sslFor, databaseUrl } from "../src/lib/pg.ts";
+import { sslFor, databaseUrl, pgSslVerifyEnabled } from "../src/lib/pg.ts";
 
 const ENV_KEYS = [
   "DATABASE_URL",
@@ -63,36 +63,21 @@ describe("pg helpers (no Postgres required)", () => {
     assert.equal(sslFor("postgresql://user:pass@127.0.0.1:5432/db"), false);
   });
 
-  it("sslFor defaults to permissive SSL for remote hosts", () => {
+  it("sslFor defaults to verified SSL for remote hosts", () => {
     delete process.env.PG_SSL_REJECT_UNAUTHORIZED;
     delete process.env.PGSSLROOTCERT;
     delete process.env.NODE_EXTRA_CA_CERTS;
+    assert.equal(pgSslVerifyEnabled("postgresql://user:pass@db.example.com:5432/db"), true);
+    assert.deepEqual(sslFor("postgresql://user:pass@db.example.com:5432/db"), {
+      rejectUnauthorized: true,
+    });
+  });
+
+  it("sslFor allows explicit insecure opt-out", () => {
+    setEnv({ PG_SSL_REJECT_UNAUTHORIZED: "0" });
+    assert.equal(pgSslVerifyEnabled("postgresql://user:pass@db.example.com:5432/db"), false);
     assert.deepEqual(sslFor("postgresql://user:pass@db.example.com:5432/db"), {
       rejectUnauthorized: false,
-    });
-  });
-
-  it("sslFor enables verification when PG_SSL_REJECT_UNAUTHORIZED=1", () => {
-    setEnv({ PG_SSL_REJECT_UNAUTHORIZED: "1" });
-    assert.deepEqual(sslFor("postgresql://user:pass@db.example.com:5432/db"), {
-      rejectUnauthorized: true,
-    });
-  });
-
-  it("sslFor enables verification when PGSSLROOTCERT is set", () => {
-    delete process.env.PG_SSL_REJECT_UNAUTHORIZED;
-    setEnv({ PGSSLROOTCERT: "/etc/ssl/certs/ca.pem" });
-    assert.deepEqual(sslFor("postgresql://user:pass@db.example.com:5432/db"), {
-      rejectUnauthorized: true,
-    });
-  });
-
-  it("sslFor enables verification when NODE_EXTRA_CA_CERTS is set", () => {
-    delete process.env.PG_SSL_REJECT_UNAUTHORIZED;
-    delete process.env.PGSSLROOTCERT;
-    setEnv({ NODE_EXTRA_CA_CERTS: "/etc/ssl/certs/extra.pem" });
-    assert.deepEqual(sslFor("postgresql://user:pass@db.example.com:5432/db"), {
-      rejectUnauthorized: true,
     });
   });
 });

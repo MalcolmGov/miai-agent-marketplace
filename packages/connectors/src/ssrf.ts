@@ -134,27 +134,30 @@ export async function safeFetch(raw: string, init?: RequestInit): Promise<Respon
     redirect: init?.redirect ?? "manual",
   };
 
+  // Node ships undici; pin connect to the pre-validated IP (anti DNS-rebinding).
+  // Fail closed if undici is unavailable — never silently drop the pin via bare fetch.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let undici: any;
   try {
-    // Node ships undici; pin connect to the pre-validated IP (anti DNS-rebinding).
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const undici = (await Function('return import("undici")')()) as any;
-    const agent = new undici.Agent({
-      connect: {
-        lookup: (
-          _hostname: string,
-          _opts: object,
-          cb: (err: Error | null, address: string, family: number) => void,
-        ) => {
-          cb(null, ip, family);
-        },
-      },
-    });
-    return (await undici.fetch(url.toString(), {
-      ...merged,
-      dispatcher: agent,
-    })) as Response;
-  } catch {
-    // Fallback: validated URL only (no pin) — still blocks private DNS at check time
-    return fetch(url.toString(), merged);
+    undici = await Function('return import("undici")')();
+  } catch (err) {
+    throw new Error(
+      `SSRF blocked: undici unavailable for DNS-pinned fetch (${err instanceof Error ? err.message : "import failed"})`,
+    );
   }
+  const agent = new undici.Agent({
+    connect: {
+      lookup: (
+        _hostname: string,
+        _opts: object,
+        cb: (err: Error | null, address: string, family: number) => void,
+      ) => {
+        cb(null, ip, family);
+      },
+    },
+  });
+  return (await undici.fetch(url.toString(), {
+    ...merged,
+    dispatcher: agent,
+  })) as Response;
 }

@@ -510,9 +510,13 @@ async function shopifyOrder(
 ): Promise<Record<string, unknown>> {
   const orderId = String(args.order_id ?? args.orderId ?? "").replace(/^#/, "");
   if (!orderId) throw new Error("order_id required");
+  const { normalizeShop } = await import("../oauth/providers.js");
+  const host = normalizeShop(shop);
+  if (!host) throw new Error("Invalid Shopify shop host (*.myshopify.com required)");
   const q = encodeURIComponent(orderId);
-  const res = await fetch(
-    `https://${shop}/admin/api/2024-10/orders.json?name=${q}&status=any`,
+  const { safeFetch } = await import("../ssrf.js");
+  const res = await safeFetch(
+    `https://${host}/admin/api/2024-10/orders.json?name=${q}&status=any`,
     { headers: { "X-Shopify-Access-Token": token, accept: "application/json" } },
   );
   if (!res.ok) throw new Error(`Shopify ${res.status}`);
@@ -873,7 +877,11 @@ async function zendeskTicket(
   subdomain: string,
   args: Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
-  const res = await fetch(`https://${subdomain}.zendesk.com/api/v2/tickets.json`, {
+  const { normalizeZendeskSubdomain } = await import("../oauth/providers.js");
+  const sub = normalizeZendeskSubdomain(subdomain);
+  if (!sub) throw new Error("Invalid Zendesk subdomain");
+  const { safeFetch } = await import("../ssrf.js");
+  const res = await safeFetch(`https://${sub}.zendesk.com/api/v2/tickets.json`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,

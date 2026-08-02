@@ -426,9 +426,9 @@ async function main() {
     console.log(`  ${f.family}: drift=${f.drift} runtime_fail=${f.runtimeFail}/${f.runtimeTotal}`);
   }
 
-  // Exit non-zero if critical: many high static issues or pass rate < 40% when runtime ran
+  // Exit non-zero on any static-high finding, or pass rate < 35% when runtime ran.
   const critical =
-    staticHigh > ids.length * 3 ||
+    staticHigh > 0 ||
     (totalEvals > 0 && runtimePass / totalEvals < 0.35);
   if (critical) {
     console.error("\nSuite finished with critical gap threshold exceeded.");

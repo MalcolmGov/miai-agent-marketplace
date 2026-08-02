@@ -4,6 +4,10 @@ const DEV_DEFAULT_SECRET = "dev-only-change-me";
 export const MOCK_RAILS_ACK_ENV = "I_UNDERSTAND_MOCK_RAILS_IN_PROD";
 /** Second confirmation required with ALLOW_EMBED_ORIGIN_STAR in production. */
 export const EMBED_STAR_ACK_ENV = "I_UNDERSTAND_EMBED_ORIGIN_STAR";
+/** Second confirmation required with ALLOW_FILE_FALLBACK_IN_PROD. */
+export const FILE_FALLBACK_ACK_ENV = "I_UNDERSTAND_FILE_FALLBACK_IN_PROD";
+/** Second confirmation required when PG_SSL_REJECT_UNAUTHORIZED=0 in production. */
+export const PG_SSL_INSECURE_ACK_ENV = "I_UNDERSTAND_PG_SSL_INSECURE";
 
 export function isProductionRuntime(): boolean {
   return process.env.NODE_ENV === "production";
@@ -115,12 +119,49 @@ export function checkProductionRails(): HardeningCheck {
   return errors.length ? { ok: false, errors } : { ok: true };
 }
 
+/**
+ * Production must use Postgres unless dual file-fallback flags are set.
+ * Remote Postgres must verify TLS unless dual insecure-SSL flags are set.
+ */
+export function checkProductionPersistence(): HardeningCheck {
+  if (!isProductionRuntime()) return { ok: true };
+
+  const errors: string[] = [];
+  const dbUrl = (process.env.DATABASE_URL || process.env.MIAI_DATABASE_URL)?.trim();
+  const allowFile = envFlag("ALLOW_FILE_FALLBACK_IN_PROD");
+  const fileAck = envFlag(FILE_FALLBACK_ACK_ENV);
+  if (allowFile !== fileAck) {
+    errors.push(
+      `File fallback escape hatch incomplete — ${dualFlagHint("ALLOW_FILE_FALLBACK_IN_PROD", FILE_FALLBACK_ACK_ENV)}`,
+    );
+  }
+  if (!dbUrl && !(allowFile && fileAck)) {
+    errors.push(
+      `DATABASE_URL required in production (or ${dualFlagHint("ALLOW_FILE_FALLBACK_IN_PROD", FILE_FALLBACK_ACK_ENV)})`,
+    );
+  }
+
+  if (dbUrl && !/localhost|127\.0\.0\.1/.test(dbUrl)) {
+    const insecureSsl = process.env.PG_SSL_REJECT_UNAUTHORIZED === "0";
+    const sslAck = envFlag(PG_SSL_INSECURE_ACK_ENV);
+    if (insecureSsl && !sslAck) {
+      errors.push(
+        `PG_SSL_REJECT_UNAUTHORIZED=0 blocked in production without ${PG_SSL_INSECURE_ACK_ENV}=1`,
+      );
+    }
+  }
+
+  return errors.length ? { ok: false, errors } : { ok: true };
+}
+
 export function checkBootHardening(): HardeningCheck {
   const secrets = checkProductionSecrets();
   const rails = checkProductionRails();
+  const persistence = checkProductionPersistence();
   const errors = [
     ...(secrets.ok ? [] : secrets.errors),
     ...(rails.ok ? [] : rails.errors),
+    ...(persistence.ok ? [] : persistence.errors),
   ];
   return errors.length ? { ok: false, errors } : { ok: true };
 }

@@ -47,11 +47,11 @@ function databaseUrl(): string | undefined {
 
 function sslFor(url: string): boolean | { rejectUnauthorized: boolean } {
   if (/localhost|127\.0\.0\.1/.test(url)) return false;
-  const forceVerify =
-    env("PG_SSL_REJECT_UNAUTHORIZED") === "1" ||
-    Boolean(env("PGSSLROOTCERT")) ||
-    Boolean(env("NODE_EXTRA_CA_CERTS"));
-  return { rejectUnauthorized: forceVerify };
+  // Match web pg.ts: verify by default; opt out with PG_SSL_REJECT_UNAUTHORIZED=0.
+  if (env("PG_SSL_REJECT_UNAUTHORIZED") === "0") {
+    return { rejectUnauthorized: false };
+  }
+  return { rejectUnauthorized: true };
 }
 
 function storePath(): string {

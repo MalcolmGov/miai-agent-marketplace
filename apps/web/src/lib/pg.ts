@@ -11,17 +11,19 @@ export function databaseUrl(): string | undefined {
   return url?.trim() || undefined;
 }
 
+/** True when remote Postgres SSL will verify the server certificate. */
+export function pgSslVerifyEnabled(url: string): boolean {
+  if (/localhost|127\.0\.0\.1/.test(url)) return false;
+  // Explicit opt-out for managed CAs that need a custom trust store first.
+  if (process.env.PG_SSL_REJECT_UNAUTHORIZED === "0") return false;
+  return true;
+}
+
 /** SSL options for managed Postgres (Railway, Azure, etc.). */
 export function sslFor(url: string): boolean | { rejectUnauthorized: boolean } {
   if (/localhost|127\.0\.0\.1/.test(url)) return false;
-  // Prefer cert verification when a CA is available (PGSSLROOTCERT / NODE_EXTRA_CA_CERTS)
-  // or when PG_SSL_REJECT_UNAUTHORIZED=1. Default remains permissive for managed Postgres
-  // that presents non-public CAs until ops mounts a bundle (Phase 2).
-  const forceVerify =
-    process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
-    Boolean(process.env.PGSSLROOTCERT) ||
-    Boolean(process.env.NODE_EXTRA_CA_CERTS);
-  return { rejectUnauthorized: forceVerify };
+  // Default: verify certs. Opt out with PG_SSL_REJECT_UNAUTHORIZED=0 (+ boot ACK in prod).
+  return { rejectUnauthorized: pgSslVerifyEnabled(url) };
 }
 
 function loadPgSync(): typeof import("pg") {

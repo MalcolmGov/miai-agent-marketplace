@@ -72,9 +72,13 @@ Service → **Variables**. Minimum for a customer-like walk:
 | `I_UNDERSTAND_EMBED_ORIGIN_STAR` | `1` — **required with** `ALLOW_EMBED_ORIGIN_STAR` |
 | `WEBHOOK_SINK_SECRET` | long random — required for `/api/webhook/sink` in production |
 | `MCP_SINK_TOKEN` | long random — required for `/api/mcp` in production |
-| `DATABASE_URL` | Postgres connection string (preferred durability) |
-| `PG_SSL_REJECT_UNAUTHORIZED` | optional `1` when Postgres presents a verifiable CA (or set `PGSSLROOTCERT`) |
-| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | optional — multi-replica rate limits + sessions |
+| `DATABASE_URL` | **Required in production** (Postgres). File fallback needs dual ACK flags below |
+| `ALLOW_FILE_FALLBACK_IN_PROD` | `1` only for emergency file/memory mode (demo/debug) |
+| `I_UNDERSTAND_FILE_FALLBACK_IN_PROD` | `1` — required with `ALLOW_FILE_FALLBACK_IN_PROD` |
+| `PG_SSL_REJECT_UNAUTHORIZED` | default verifies TLS; set `0` only if CA trust is missing (+ ACK) |
+| `I_UNDERSTAND_PG_SSL_INSECURE` | `1` — required with `PG_SSL_REJECT_UNAUTHORIZED=0` in production |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | recommended — multi-replica rate limits + sessions; when set, Redis errors fail closed |
+| `MIAI_MAX_BODY_BYTES` | optional API body cap (default `1048576`) |
 
 **Mock rails (staging demos):** both `ALLOW_MOCK_RAILS=1` **and** `I_UNDERSTAND_MOCK_RAILS_IN_PROD=1` are required, or boot/health fail closed. Setting only one flag also fails. Boot emits a structured warning when mock rails are enabled. Unset **both** at customer cutover when OIDC + wallet + model gateway are live.
 

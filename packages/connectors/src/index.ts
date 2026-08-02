@@ -11,6 +11,7 @@ export {
   isOAuthConnector,
   listOAuthProviders,
   normalizeShop,
+  normalizeZendeskSubdomain,
   resolveProvider,
   isOAuthConfigured,
   getClientCredentials,

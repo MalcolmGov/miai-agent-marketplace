@@ -2,6 +2,8 @@ import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypt
 import {
   getClientCredentials,
   isOAuthConfigured,
+  normalizeShop,
+  normalizeZendeskSubdomain,
   resolveProvider,
   type OAuthConnectorId,
   type OAuthStartContext,
@@ -261,8 +263,16 @@ export async function exchangeCode(opts: {
       (json.incoming_webhook as { channel?: string } | undefined)?.channel ?? "";
   }
 
-  if (opts.statePayload.shop) meta.shop = normalizeShopMeta(opts.statePayload.shop);
-  if (opts.statePayload.subdomain) meta.subdomain = opts.statePayload.subdomain;
+  if (opts.statePayload.shop) {
+    const shop = normalizeShop(opts.statePayload.shop);
+    if (!shop) throw new Error("Invalid Shopify shop host (*.myshopify.com required)");
+    meta.shop = shop;
+  }
+  if (opts.statePayload.subdomain) {
+    const sub = normalizeZendeskSubdomain(opts.statePayload.subdomain);
+    if (!sub) throw new Error("Invalid Zendesk subdomain");
+    meta.subdomain = sub;
+  }
   if (opts.statePayload.emailProvider) meta.emailProvider = opts.statePayload.emailProvider;
   if (json.realmId) meta.realmId = String(json.realmId);
   if (json.tenant_id) meta.tenantId = String(json.tenant_id);
@@ -298,12 +308,6 @@ export async function exchangeCode(opts: {
 
   await saveToken(token);
   return token;
-}
-
-function normalizeShopMeta(shop: string): string {
-  let s = shop.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/$/, "");
-  if (!s.includes(".")) s = `${s}.myshopify.com`;
-  return s;
 }
 
 export async function refreshAccessToken(token: StoredToken): Promise<StoredToken> {
