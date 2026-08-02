@@ -149,7 +149,7 @@ export function ActionsPanel({
       const qs = new URLSearchParams({
         agentId,
         format: "json",
-        returnTo: `/agents/${agentId}?tab=actions`,
+        returnTo: `/agents/${agentId}?step=connect`,
       });
       if (connectorId === "shopify") {
         if (!shop.trim()) {
@@ -228,313 +228,351 @@ export function ActionsPanel({
   }
 
   const recommendedIds = (() => {
-    if (isWorkflow) return new Set(["google_calendar", "slack"]);
+    if (isWorkflow) return new Set(["google_calendar", "slack", "hubspot", "email"]);
     const flagged = connectors.filter((c) => c.recommended).map((c) => c.id);
     if (flagged.length) return new Set(flagged);
     return new Set(
-      ["slack", "google_calendar", "email", "calendly"].filter((id) =>
+      ["slack", "google_calendar", "email", "calendly", "hubspot"].filter((id) =>
         connectors.some((c) => c.id === id),
       ),
     );
   })();
-  const primaryConnectors = connectors.filter((c) => recommendedIds.has(c.id));
-  const otherPhase1 = connectors.filter((c) => c.phase === 1 && !recommendedIds.has(c.id));
-  const phase2 = connectors.filter((c) => c.phase === 2);
+
+  function isConnected(c: Connector): boolean {
+    const oauth = byId.get(c.id);
+    return connected.includes(c.id) || Boolean(oauth?.connected);
+  }
+
+  function sortConnectedFirst(list: Connector[]): Connector[] {
+    return [...list].sort((a, b) => {
+      const ac = isConnected(a) ? 0 : 1;
+      const bc = isConnected(b) ? 0 : 1;
+      if (ac !== bc) return ac - bc;
+      const aRec = recommendedIds.has(a.id) ? 0 : 1;
+      const bRec = recommendedIds.has(b.id) ? 0 : 1;
+      if (aRec !== bRec) return aRec - bRec;
+      const aReady = byId.get(a.id)?.configured !== false ? 0 : 1;
+      const bReady = byId.get(b.id)?.configured !== false ? 0 : 1;
+      if (aReady !== bReady) return aReady - bReady;
+      return a.name.localeCompare(b.name);
+    });
+  }
+
+  const phase1Sorted = sortConnectedFirst(connectors.filter((c) => c.phase === 1));
+  const connectedPhase1 = phase1Sorted.filter((c) => isConnected(c));
+  const availablePhase1 = phase1Sorted.filter((c) => !isConnected(c));
+  const phase2 = sortConnectedFirst(connectors.filter((c) => c.phase === 2));
+
+  const btnPrimary =
+    "btn btn-primary inline-flex h-9 min-w-[8.5rem] items-center justify-center px-3 text-xs";
+  const btnGhost =
+    "btn btn-ghost inline-flex h-9 min-w-[8.5rem] items-center justify-center px-3 text-xs";
 
   function row(c: Connector, opts?: { operatorDetail?: boolean }) {
     const operatorDetail = Boolean(opts?.operatorDetail);
     const oauth = byId.get(c.id);
     const isOauth = Boolean(oauth) || c.auth === "oauth";
-    const on = connected.includes(c.id) || Boolean(oauth?.connected);
+    const on = isConnected(c);
     const configured = oauth ? oauth.configured : true;
+    const recommended = c.recommended || recommendedIds.has(c.id);
 
     return (
       <div
         key={c.id}
-        className="flex flex-col gap-2 rounded-lg border border-[var(--line)] p-3"
+        className={`rounded-xl border p-4 transition ${
+          on
+            ? "border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_6%,transparent)]"
+            : "border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_40%,transparent)]"
+        }`}
       >
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-          <div>
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-6">
+          <div className="min-w-0 flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-medium">{c.name}</span>
-              {(c.recommended || recommendedIds.has(c.id)) && (
-                <span className="chip chip-live">{t("actions.recommended")}</span>
-              )}
-              {on && <span className="chip chip-live">{t("actions.connected")}</span>}
-              {isOauth && configured && !on && <span className="chip chip-live">{t("actions.ready")}</span>}
-              {isOauth && !configured && (
+              <span className="text-sm font-semibold text-[var(--text)]">{c.name}</span>
+              {on ? (
+                <span className="chip chip-live">{t("actions.connected")}</span>
+              ) : isOauth && configured ? (
+                <span className="chip">{t("actions.ready")}</span>
+              ) : isOauth && !configured ? (
                 <span className="chip">
                   {operatorDetail ? t("actions.envMissing") : t("actions.unavailable")}
                 </span>
-              )}
-              {isOauth && <span className="chip">{t("actions.oauth")}</span>}
+              ) : null}
+              {recommended ? <span className="chip">{t("actions.recommended")}</span> : null}
+              {isOauth ? <span className="chip opacity-70">{t("actions.oauth")}</span> : null}
             </div>
-            <p className="text-xs text-[var(--muted)]">{c.description}</p>
+            <p className="text-xs leading-relaxed text-[var(--muted)]">{c.description}</p>
             {isOauth && !configured ? (
               operatorDetail && oauth?.missingEnv?.length ? (
-                <p className="mt-1 font-mono text-[11px] text-[var(--warn)]">
-                  {t("actions.setEnv", { env: oauth.missingEnv.join(" + ") })}
+                <p className="text-[11px] leading-relaxed text-[var(--warn)]">
+                  Operator setup needed: {(oauth.missingEnv ?? []).join(", ")}
                 </p>
               ) : (
-                <p className="mt-1 text-[11px] text-[var(--muted)]">
-                  {t("actions.unavailableSandbox")}
-                </p>
+                <p className="text-[11px] text-[var(--muted)]">{t("actions.unavailableSandbox")}</p>
               )
             ) : null}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {isOauth ? (
-              <>
-                <button
-                  type="button"
-                  className="btn btn-primary text-xs"
-                  disabled={busy === c.id || !configured}
-                  title={
-                    !configured
-                      ? operatorDetail
-                        ? t("actions.configureEnvFirst", {
-                            env: (oauth?.missingEnv ?? []).join(", "),
-                          })
-                        : t("actions.notAvailableSandbox")
-                      : undefined
-                  }
-                  onClick={() => startOAuth(c.id)}
-                >
-                  {!configured
-                    ? operatorDetail
-                      ? t("actions.addCredentials")
-                      : t("actions.unavailable")
-                    : on
-                      ? t("actions.reconnect")
-                      : t("actions.connectOAuth")}
-                </button>
-                {on && (
+
+            {/* Extra config sits with the copy, full width of the left column */}
+            {c.id === "shopify" ? (
+              <input
+                className="input mt-1 max-w-md text-xs"
+                placeholder="my-store.myshopify.com"
+                value={shop}
+                onChange={(e) => setShop(e.target.value)}
+              />
+            ) : null}
+            {c.id === "zendesk" ? (
+              <input
+                className="input mt-1 max-w-md text-xs"
+                placeholder="your-subdomain"
+                value={zendeskSub}
+                onChange={(e) => setZendeskSub(e.target.value)}
+              />
+            ) : null}
+            {c.id === "email" ? (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {(["google", "microsoft"] as const).map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className={`chip ${emailProvider === p ? "chip-live" : ""}`}
+                    onClick={() => setEmailProvider(p)}
+                  >
+                    {p === "google" ? "Gmail" : "Microsoft 365"}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {c.id === "slack" && on ? (
+              <div className="space-y-2 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] p-3">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--muted)]">
+                  Handoff channel
+                </p>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <select
+                    className="input min-w-0 flex-1 text-xs"
+                    value={slackChannel}
+                    onChange={(e) => setSlackChannel(e.target.value)}
+                  >
+                    {slackChannels.length === 0 && (
+                      <option value="">{t("actions.loadingChannels")}</option>
+                    )}
+                    {slackChannels.map((ch) => (
+                      <option key={ch.id} value={ch.id}>
+                        {ch.is_private ? t("actions.slackPrivate") : "#"}
+                        {ch.name}
+                      </option>
+                    ))}
+                  </select>
                   <button
                     type="button"
-                    className="btn btn-ghost text-xs"
-                    disabled={busy === c.id}
-                    onClick={() => disconnect(c.id)}
+                    className={btnPrimary}
+                    disabled={busy === "slack-channel" || !slackChannel}
+                    onClick={() => void saveSlackChannel()}
                   >
-                    {t("actions.disconnect")}
+                    {slackSavedChannel === slackChannel
+                      ? t("actions.saved")
+                      : t("actions.setHandoff")}
                   </button>
-                )}
-              </>
+                </div>
+                {slackSavedChannel ? (
+                  <p className="text-xs text-[var(--muted)]">
+                    {t("actions.handoffsGoTo")}{" "}
+                    <code className="text-[var(--accent-bright)]">
+                      {slackChannels.find((ch) => ch.id === slackSavedChannel)?.name ??
+                        slackSavedChannel}
+                    </code>
+                    {slackNeedsInvite ? <> {t("actions.slackInviteHint")}</> : null}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+
+            {c.id === "webhook" ? (
+              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="https://hooks.example.com/miai"
+                  value={webhookUrl}
+                  onChange={(e) => setWebhookUrl(e.target.value)}
+                />
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="shared secret"
+                  value={webhookSecret}
+                  onChange={(e) => setWebhookSecret(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
+                  disabled={busy === "webhook"}
+                  onClick={() =>
+                    saveCredentials("webhook", {
+                      url: webhookUrl,
+                      secret: webhookSecret || "miai",
+                    })
+                  }
+                >
+                  {t("actions.saveWebhook")}
+                </button>
+              </div>
+            ) : null}
+
+            {c.id === "mcp" ? (
+              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="https://mcp.example.com"
+                  value={mcpEndpoint}
+                  onChange={(e) => setMcpEndpoint(e.target.value)}
+                />
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="bearer token"
+                  value={mcpToken}
+                  onChange={(e) => setMcpToken(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
+                  disabled={busy === "mcp"}
+                  onClick={() =>
+                    saveCredentials("mcp", { endpoint: mcpEndpoint, token: mcpToken })
+                  }
+                >
+                  {t("actions.saveMcp")}
+                </button>
+              </div>
+            ) : null}
+
+            {c.id === "whatsapp" ? (
+              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="Cloud API permanent token"
+                  value={whatsappToken}
+                  onChange={(e) => setWhatsappToken(e.target.value)}
+                />
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="Phone number ID"
+                  value={whatsappPhoneId}
+                  onChange={(e) => setWhatsappPhoneId(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
+                  disabled={busy === "whatsapp"}
+                  onClick={() =>
+                    saveCredentials("whatsapp", {
+                      api_key: whatsappToken,
+                      phone_number_id: whatsappPhoneId,
+                    })
+                  }
+                >
+                  {t("actions.saveWhatsApp")}
+                </button>
+              </div>
+            ) : null}
+
+            {c.id === "stripe" ? (
+              <div className="flex max-w-xl flex-col gap-2 sm:flex-row sm:items-center">
+                <input
+                  className="input min-w-0 flex-1 text-xs"
+                  placeholder="sk_live_… or sk_test_…"
+                  value={stripeKey}
+                  onChange={(e) => setStripeKey(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={btnPrimary}
+                  disabled={busy === "stripe"}
+                  onClick={() => saveCredentials("stripe", { api_key: stripeKey })}
+                >
+                  {t("actions.saveStripe")}
+                </button>
+              </div>
+            ) : null}
+
+            {c.id === "woocommerce" ? (
+              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
+                <input
+                  className="input text-xs sm:col-span-2"
+                  placeholder="https://shop.example.com"
+                  value={wooUrl}
+                  onChange={(e) => setWooUrl(e.target.value)}
+                />
+                <input
+                  className="input text-xs"
+                  placeholder="Consumer key"
+                  value={wooKey}
+                  onChange={(e) => setWooKey(e.target.value)}
+                />
+                <input
+                  className="input text-xs"
+                  placeholder="Consumer secret"
+                  value={wooSecret}
+                  onChange={(e) => setWooSecret(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
+                  disabled={busy === "woocommerce"}
+                  onClick={() =>
+                    saveCredentials("woocommerce", {
+                      store_url: wooUrl,
+                      consumer_key: wooKey,
+                      consumer_secret: wooSecret,
+                    })
+                  }
+                >
+                  {t("actions.saveWoo")}
+                </button>
+              </div>
             ) : null}
           </div>
-        </div>
 
-        {c.id === "shopify" && (
-          <input
-            className="input text-xs"
-            placeholder="my-store.myshopify.com"
-            value={shop}
-            onChange={(e) => setShop(e.target.value)}
-          />
-        )}
-        {c.id === "zendesk" && (
-          <input
-            className="input text-xs"
-            placeholder="your-subdomain"
-            value={zendeskSub}
-            onChange={(e) => setZendeskSub(e.target.value)}
-          />
-        )}
-        {c.id === "slack" && on && (
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <select
-                className="input text-xs"
-                value={slackChannel}
-                onChange={(e) => setSlackChannel(e.target.value)}
-              >
-                {slackChannels.length === 0 && (
-                  <option value="">{t("actions.loadingChannels")}</option>
-                )}
-                {slackChannels.map((ch) => (
-                  <option key={ch.id} value={ch.id}>
-                    {ch.is_private ? t("actions.slackPrivate") : "#"}
-                    {ch.name}
-                  </option>
-                ))}
-              </select>
+          {/* Fixed action column — same width buttons, top-aligned */}
+          {isOauth ? (
+            <div className="flex shrink-0 flex-row flex-wrap gap-2 lg:w-[11.5rem] lg:flex-col lg:items-stretch">
               <button
                 type="button"
-                className="btn btn-primary text-xs"
-                disabled={busy === "slack-channel" || !slackChannel}
-                onClick={() => void saveSlackChannel()}
+                className={!configured ? btnGhost : btnPrimary}
+                disabled={busy === c.id || !configured}
+                title={
+                  !configured
+                    ? operatorDetail
+                      ? t("actions.configureEnvFirst", {
+                          env: (oauth?.missingEnv ?? []).join(", "),
+                        })
+                      : t("actions.notAvailableSandbox")
+                    : undefined
+                }
+                onClick={() => startOAuth(c.id)}
               >
-                {slackSavedChannel === slackChannel ? t("actions.saved") : t("actions.setHandoff")}
+                {!configured
+                  ? operatorDetail
+                    ? "Set up env"
+                    : t("actions.unavailable")
+                  : on
+                    ? t("actions.reconnect")
+                    : t("actions.connectOAuth")}
               </button>
+              {on ? (
+                <button
+                  type="button"
+                  className={btnGhost}
+                  disabled={busy === c.id}
+                  onClick={() => disconnect(c.id)}
+                >
+                  {t("actions.disconnect")}
+                </button>
+              ) : (
+                <span className="hidden h-9 lg:block" aria-hidden />
+              )}
             </div>
-            {slackSavedChannel && (
-              <p className="text-xs text-[var(--muted)]">
-                {t("actions.handoffsGoTo")}{" "}
-                <code>
-                  {slackChannels.find((ch) => ch.id === slackSavedChannel)?.name ??
-                    slackSavedChannel}
-                </code>
-                {slackNeedsInvite && <> {t("actions.slackInviteHint")}</>}
-              </p>
-            )}
-          </div>
-        )}
-        {c.id === "email" && (
-          <div className="flex gap-2">
-            {(["google", "microsoft"] as const).map((p) => (
-              <button
-                key={p}
-                type="button"
-                className={`chip ${emailProvider === p ? "chip-live" : ""}`}
-                onClick={() => setEmailProvider(p)}
-              >
-                {p === "google" ? "Gmail" : "Microsoft 365"}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {c.id === "webhook" && (
-          <div className="grid gap-2 sm:grid-cols-2">
-            <input
-              className="input text-xs"
-              placeholder="https://hooks.example.com/miai"
-              value={webhookUrl}
-              onChange={(e) => setWebhookUrl(e.target.value)}
-            />
-            <input
-              className="input text-xs"
-              placeholder="shared secret"
-              value={webhookSecret}
-              onChange={(e) => setWebhookSecret(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn btn-ghost text-xs sm:col-span-2"
-              disabled={busy === "webhook"}
-              onClick={() =>
-                saveCredentials("webhook", {
-                  url: webhookUrl,
-                  secret: webhookSecret || "miai",
-                })
-              }
-            >
-              {t("actions.saveWebhook")}
-            </button>
-          </div>
-        )}
-
-        {c.id === "mcp" && (
-          <div className="grid gap-2 sm:grid-cols-2">
-            <input
-              className="input text-xs"
-              placeholder="https://mcp.example.com"
-              value={mcpEndpoint}
-              onChange={(e) => setMcpEndpoint(e.target.value)}
-            />
-            <input
-              className="input text-xs"
-              placeholder="bearer token"
-              value={mcpToken}
-              onChange={(e) => setMcpToken(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn btn-ghost text-xs sm:col-span-2"
-              disabled={busy === "mcp"}
-              onClick={() =>
-                saveCredentials("mcp", { endpoint: mcpEndpoint, token: mcpToken })
-              }
-            >
-              {t("actions.saveMcp")}
-            </button>
-          </div>
-        )}
-
-        {c.id === "whatsapp" && (
-          <div className="grid gap-2 sm:grid-cols-2">
-            <input
-              className="input text-xs"
-              placeholder="Cloud API permanent token"
-              value={whatsappToken}
-              onChange={(e) => setWhatsappToken(e.target.value)}
-            />
-            <input
-              className="input text-xs"
-              placeholder="Phone number ID"
-              value={whatsappPhoneId}
-              onChange={(e) => setWhatsappPhoneId(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn btn-ghost text-xs sm:col-span-2"
-              disabled={busy === "whatsapp"}
-              onClick={() =>
-                saveCredentials("whatsapp", {
-                  api_key: whatsappToken,
-                  phone_number_id: whatsappPhoneId,
-                })
-              }
-            >
-              {t("actions.saveWhatsApp")}
-            </button>
-          </div>
-        )}
-
-        {c.id === "stripe" && (
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <input
-              className="input text-xs"
-              placeholder="sk_live_… or sk_test_…"
-              value={stripeKey}
-              onChange={(e) => setStripeKey(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn btn-ghost text-xs"
-              disabled={busy === "stripe"}
-              onClick={() => saveCredentials("stripe", { api_key: stripeKey })}
-            >
-              {t("actions.saveStripe")}
-            </button>
-          </div>
-        )}
-
-        {c.id === "woocommerce" && (
-          <div className="grid gap-2 sm:grid-cols-3">
-            <input
-              className="input text-xs sm:col-span-3"
-              placeholder="https://shop.example.com"
-              value={wooUrl}
-              onChange={(e) => setWooUrl(e.target.value)}
-            />
-            <input
-              className="input text-xs"
-              placeholder="Consumer key"
-              value={wooKey}
-              onChange={(e) => setWooKey(e.target.value)}
-            />
-            <input
-              className="input text-xs"
-              placeholder="Consumer secret"
-              value={wooSecret}
-              onChange={(e) => setWooSecret(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn btn-ghost text-xs"
-              disabled={busy === "woocommerce"}
-              onClick={() =>
-                saveCredentials("woocommerce", {
-                  store_url: wooUrl,
-                  consumer_key: wooKey,
-                  consumer_secret: wooSecret,
-                })
-              }
-            >
-              {t("actions.saveWoo")}
-            </button>
-          </div>
-        )}
+          ) : null}
+        </div>
       </div>
     );
   }
@@ -546,9 +584,9 @@ export function ActionsPanel({
           {error}
         </div>
       )}
-      <div className="panel p-4">
+      <div className="panel p-4 sm:p-5">
         <h2 className="text-sm font-semibold">{t("actions.recommendedHeading")}</h2>
-        <p className="mt-1 text-xs text-[var(--muted)]">
+        <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">
           {t("actions.recommendedLede", {
             sandbox: t("actions.sandbox"),
             live: t("actions.live"),
@@ -563,17 +601,37 @@ export function ActionsPanel({
             </>
           ) : null}
         </p>
-        <div className="mt-4 grid gap-2">
-          {(primaryConnectors.length ? primaryConnectors : connectors.filter((c) => c.phase === 1).slice(0, 4)).map(
-            (c) => row(c),
-          )}
-        </div>
+        <p className="mt-2 text-[11px] text-[var(--muted)]">
+          Optional — skip to deploy as a knowledge responder. Connected tools always appear first.
+        </p>
+
+        {connectedPhase1.length > 0 ? (
+          <div className="mt-5">
+            <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-[var(--accent-bright)]">
+              Connected · {connectedPhase1.length}
+            </h3>
+            <div className="grid gap-3">
+              {connectedPhase1.map((c) => row(c, { operatorDetail: showAdvanced }))}
+            </div>
+          </div>
+        ) : null}
+
+        {availablePhase1.length > 0 ? (
+          <div className={connectedPhase1.length ? "mt-6" : "mt-5"}>
+            <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+              Not connected · {availablePhase1.length}
+            </h3>
+            <div className="grid gap-3">
+              {availablePhase1.map((c) => row(c, { operatorDetail: showAdvanced }))}
+            </div>
+          </div>
+        ) : null}
       </div>
 
-      <div className="panel p-4">
+      <div className="panel p-4 sm:p-5">
         <button
           type="button"
-          className="flex w-full items-center justify-between text-left"
+          className="flex w-full items-center justify-between gap-3 text-left"
           onClick={() => setShowAdvanced((v) => !v)}
         >
           <span>
@@ -583,14 +641,14 @@ export function ActionsPanel({
               {missingCount > 0 ? t("actions.missingEnv", { count: missingCount }) : ""}
             </span>
           </span>
-          <span className="text-xs text-[var(--muted)]">
+          <span className="shrink-0 text-xs text-[var(--muted)]">
             {showAdvanced ? t("actions.hide") : t("actions.show")}
           </span>
         </button>
         {showAdvanced ? (
-          <div className="mt-4 space-y-4">
+          <div className="mt-4 space-y-5">
             {callbackUrl ? (
-              <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-xs">
+              <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-3 text-xs">
                 <p className="font-medium text-[var(--text)]">{t("actions.redirectUri")}</p>
                 <code className="mt-1 block break-all text-[var(--accent-bright)]">{callbackUrl}</code>
                 {missingCount > 0 ? (
@@ -602,22 +660,12 @@ export function ActionsPanel({
                 )}
               </div>
             ) : null}
-            {otherPhase1.length > 0 ? (
-              <div>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                  {t("actions.morePhase1")}
-                </h3>
-                <div className="grid gap-2">
-                  {otherPhase1.map((c) => row(c, { operatorDetail: true }))}
-                </div>
-              </div>
-            ) : null}
             {phase2.length > 0 ? (
               <div>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
                   {t("actions.phase2")}
                 </h3>
-                <div className="grid gap-2">
+                <div className="grid gap-3">
                   {phase2.map((c) => row(c, { operatorDetail: true }))}
                 </div>
               </div>
