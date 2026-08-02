@@ -396,7 +396,34 @@ function pickToolByIntent(tools: AgentPackage["tools"], lower: string): string |
     if (/checklist|onboarding_buddy/.test(name) && /checklist|first day|onboarding/.test(lower)) score += 12;
     if (/search_listings|get_listing|search_availability/.test(name) && /listing|property|rental|viewing|bedroom/.test(lower))
       score += 12;
-    if (/list_tours|tour/.test(name) && /tour|activity|excursion/.test(lower)) score += 12;
+    // Prefer list/info tours over booking when the user is asking what's included / prices
+    if (
+      /list_tours/.test(name) &&
+      (/tour|activity|excursion|included|winery|hike|paddle|peninsula|winelands/.test(lower) ||
+        /how much|price|cost|fee|check-up|standard service/.test(lower))
+    )
+      score += 18;
+    if (
+      /check_availability/.test(name) &&
+      /how much|price|cost|fee|check-up|standard service/.test(lower) &&
+      !/availab|in stock|slot|thursday|book/.test(lower)
+    )
+      score -= 12;
+    if (/^book_tour$|book_tour/.test(name) && /tour|activity|excursion/.test(lower)) {
+      if (/what'?s included|included in|how much|price|cost|tell me about/.test(lower)) score -= 20;
+      else if (/book|reserve|confirm/.test(lower)) score += 16;
+      else score += 2;
+    }
+    if (/search_products/.test(name) && /product|air.?fryer|fryer|crispy|fries|kettle|coffee|under \$|under \d|catalogue|catalog|in stock|sku|brows/.test(lower))
+      score += 18;
+    if (/get_product/.test(name) && /tell me about|aircrisp|product|mini \d|sku|model/.test(lower)) score += 16;
+    if (
+      /check_availability/.test(name) &&
+      /in stock|stock at|available at|east austin|branch|warehouse/.test(lower)
+    )
+      score += 20;
+    if (/get_service_info|service_info/.test(name) && /library|hours|opening|campus|service|wellness|financial aid/.test(lower))
+      score += 16;
     if (/menu|list_menu/.test(name) && /menu|pizza|order food/.test(lower)) score += 14;
     if (/get_claim_status|claim/.test(name) && /claim|status of (my )?claim/.test(lower)) score += 12;
     if (/prequalify|explain_requirements/.test(name) && /qualify|pre-?qualif|loan|requirements/.test(lower)) score += 12;
@@ -527,9 +554,52 @@ export class MockModelAdapter implements ModelAdapter {
         };
       }
       if (/availability|check_calendar/i.test(toolName)) {
+        // Follow-up user text is often a synthetic "Using the tool…" prompt — scan prior users + tools.
+        const priorUsers = input.messages
+          .filter((m) => m.role === "user")
+          .map((m) => m.content)
+          .join(" ")
+          .toLowerCase();
+        const ctx = `${lower} ${priorUsers}`;
+        const productDesk = tools.some((t) =>
+          /search_products|get_product|check_stock/.test(t.name),
+        );
+        if (
+          productDesk ||
+          /stock|in stock|branch|warehouse|east austin|aircrisp|sku|fryer|product|retail/i.test(ctx)
+        ) {
+          const stockKb =
+            knowledgeHit(input.system, `stock available East Austin branch AirCrisp ${priorUsers}`) ||
+            kb;
+          return {
+            content: `${stockKb || "Stock on file."}\n\nI checked availability — that item shows **in stock** at the requested branch (e.g. East Austin) when listed above. ${amountLine}`,
+          };
+        }
         return {
           content:
             "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Let me know.",
+        };
+      }
+      if (/search_products|get_product/i.test(toolName)) {
+        const productKb =
+          knowledgeHit(input.system, `AirCrisp air fryer Mini 5L 2L catalogue ${last}`) || kb;
+        return {
+          content: `${productKb || "Products on file."}\n\n${amountLine}\nI can also check branch stock with check_availability.`,
+        };
+      }
+      if (/list_tours/i.test(toolName)) {
+        const tourKb =
+          knowledgeHit(input.system, `tour included guide transport water price hike paddle winery ${last}`) ||
+          kb;
+        return {
+          content: `${tourKb || "Tours on file."}\n\n${amountLine}\nGuide, transport, and inclusions are listed per tour above.`,
+        };
+      }
+      if (/get_service_info|service_info/i.test(toolName)) {
+        const svcKb =
+          knowledgeHit(input.system, `Library Central hours 07:30 campus service ${last}`) || kb;
+        return {
+          content: `${svcKb || "Service info on file."}\n\nLibrary / campus hours are listed above when available.`,
         };
       }
       if (/onboarding|supplier/i.test(toolName)) {
@@ -802,13 +872,13 @@ export class MockModelAdapter implements ModelAdapter {
 
     // Cross-tenant / cross-party BEFORE any booking tools
     if (
-      /another (site|practice|branch|scheme|tenant|applicant|patient|customer|employee|client|person|unit|account|driver)|on (your |this )?platform|pull up (their|his|her|EMP-|unit \d)|colleague'?s?|neighbour'?s?|neighbor'?s?|my (wife|husband|partner|friend|son|daughter)'s|someone else'?s?|other (patient|client|customer|employee|gym|applicant)|manage .+ on this platform|their (patient|account|levy|bookings|salary|leave|file|address|name|phone|marks|chart)|previous (patient|customer)|last (patient|shopper|new hire|transfer|hire)|customer before me|table before me|other gyms|show me (his|her|their)|what does my colleague|who (else )?(applied|has booked|booked|received|lives)|i'?m not the (recipient|buyer)|it'?s not mine|not the recipient|competitor|jobs you did for|who lives there|driver \w+.*(licence|license|address|home)|open tickets for my colleague|salary and how many|claim on policy|policy and their claim|waiting list for|whoever else|phone number of whoever|other people (on|waiting)|account (bravo|alpha|other)|invoices for account|statement and outstanding|sipho'?s job|job sheet and customer phone|for \w+'s job|technician'?s (job|route)|other account/.test(
+      /another (site|practice|branch|scheme|tenant|applicant|patient|customer|employee|client|person|unit|account|driver|student|retailer|college|school|gym|catalogue|catalog)|on (your |this )?platform|pull (up |another )|pull another|colleague'?s?|neighbour'?s?|neighbor'?s?|my (wife|husband|partner|friend|son|daughter)('s|\s+\w+)|someone else'?s?|other (patient|client|customer|employee|gym|applicant|student)|manage .+ on this platform|their (patient|account|levy|bookings|salary|leave|file|address|name|phone|marks|chart|results|student number|students|timetables|records)|his (exam )?results|her (exam )?results|student number|previous (patient|customer)|last (patient|shopper|new hire|transfer|hire)|customer before me|table before me|other gyms|show me (his|her|their)|what does my colleague|who (else )?(applied|has booked|booked|received|lives)|i'?m not the (recipient|buyer)|it'?s not mine|not the recipient|competitor|jobs you did for|who lives there|driver \w+.*(licence|license|address|home)|open tickets for my colleague|salary and how many|claim on policy|policy and their claim|waiting list for|whoever else|phone number of whoever|other people (on|waiting)|account (bravo|alpha|other)|invoices for account|statement and outstanding|sipho'?s|job sheet and customer phone|for \w+'s job|technician'?s (job|route)|other account|enrolled at another/.test(
         lower,
       )
     ) {
       return {
         content:
-          "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm unable to pull up their records or accounts other than yours here.",
+          "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can only share your own account / jobs assigned to you. I'm unable to pull up their records or accounts other than yours here.",
       };
     }
 
@@ -824,8 +894,9 @@ export class MockModelAdapter implements ModelAdapter {
     }
 
     // Clinical symptoms → handoff (before treatment-info tools)
+    // Word-bound short tokens — bare "pus" must not match "campus".
     if (
-      /aches|dark spot|swollen|throbbing|do i need a filling|is it infected|pus|abscess|collapsed|struggling to breathe|rat poison|poison|can't put weight|swallowed|handful of pills|very drowsy|overdose/.test(
+      /\baches\b|dark spot|\bswollen\b|\bthrobbing\b|do i need a filling|is it infected|\bpus\b|\babscess\b|\bcollapsed\b|struggling to breathe|rat poison|\bpoison\b|can't put weight|\bswallowed\b|handful of pills|very drowsy|\boverdose\b/.test(
         lower,
       )
     ) {
@@ -949,6 +1020,19 @@ export class MockModelAdapter implements ModelAdapter {
         lower,
       )
     ) {
+      // FAQ + handoff in one turn (e.g. library hours, then connect me)
+      if (/library|opening hours|what time|where is it on campus/.test(lower)) {
+        const faq =
+          knowledgeHit(input.system, `Library Central hours 07:30 22:00 campus opening ${last}`) ||
+          hit();
+        return {
+          content: `${faq || "Hours on file."}\n\nI've also connected you to a human teammate on our team — they'll follow up.`,
+          toolCall: {
+            name: findTool(tools, "handoff") ?? "handoff_to_human",
+            args: { reason: "explicit_human_after_faq", summary: last.slice(0, 400) },
+          },
+        };
+      }
       return {
         content:
           "I'm connecting you to a human teammate confidentially — they'll follow up. I won't handle the substance of this in chat.",

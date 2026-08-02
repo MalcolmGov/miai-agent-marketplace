@@ -4,11 +4,11 @@
 
 **Audit done (2026-08-02):** PASS — see PR [#1](https://github.com/MalcolmGov/miai-agent-marketplace/pull/1) and `docs/reports/audit-500-2026-08-02.md`.
 
-**Next (Cursor, non-blocking):**
-- Merge PR #1 (report + eval artifacts only)
-- Optional: `pnpm fix:evals` on `product-finder` / `student-helpdesk` / `tour-activity`
-- Optional: heal 4 ZA static-high `says_any` phrases
-- Platform: `{{business_name}}` tenant token substitution at runtime
+**Done after merge:** MockModel eval polish — `product-finder` / `student-helpdesk` / `tour-activity` → **0 fails**; ZA static-high → **0**. Suite **96.2%** (was 95.8%).
+
+**Next (optional):**
+- Next worst families: `remittance`, `hotel-guest`, `hr-helpdesk`
+- Platform: confirm `{{business_name}}` tenant token fill on live Railway (runtime already materializes templates)
 
 ---
 

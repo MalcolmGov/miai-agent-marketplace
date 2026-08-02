@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T06:56:12.348Z",
+  "generatedAt": "2026-08-02T07:19:56.623Z",
   "mode": "static+mock-runtime",
   "tokenCost": 0,
   "agents": [
@@ -250,12 +250,24 @@
       "evalCount": 15,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 15,
       "failedCaseIds": [
+        "product-info-savings",
         "branch-hours-grounded"
       ],
       "sampleFailures": [
+        {
+          "id": "product-info-savings",
+          "ok": false,
+          "failures": [
+            "missing_says_any:6.5%|USD 65|65"
+          ],
+          "tools": [
+            "get_product_info"
+          ],
+          "replyPreview": "## Products — Personal Loan - Amounts from **2,000 (local currency)** to **50,000 (local currency)**. Terms 12–60 months. - Rates are risk-based; all lending subject to credit and "
+        },
         {
           "id": "branch-hours-grounded",
           "ok": false,
@@ -269,6 +281,16 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "product-info-savings",
+          "failures": [
+            "missing_says_any:6.5%|USD 65|65"
+          ],
+          "tools": [
+            "get_product_info"
+          ],
+          "replyPreview": "## Products — Personal Loan - Amounts from **2,000 (local currency)** to **50,000 (local currency)**. Terms 12–60 months. - Rates are risk-based; all lending subject to credit and "
+        },
         {
           "id": "branch-hours-grounded",
           "failures": [
@@ -485,12 +507,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 2,
       "runtimeTotal": 17,
       "failedCaseIds": [
         "order-status-no-number",
-        "delivery-cost-grounded",
-        "availability-check"
+        "delivery-cost-grounded"
       ],
       "sampleFailures": [
         {
@@ -512,17 +533,6 @@
           ],
           "tools": [],
           "replyPreview": "## Common questions - \"Do you price match?\" — Not currently. - \"Can I change my delivery address after ordering?\" — If not yet shipped; agent logs a ticket for the team. - \"Do you "
-        },
-        {
-          "id": "availability-check",
-          "ok": false,
-          "failures": [
-            "missing_says_any:available|stock|Nairobi"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ],
       "allFailures": [
@@ -543,16 +553,6 @@
           ],
           "tools": [],
           "replyPreview": "## Common questions - \"Do you price match?\" — Not currently. - \"Can I change my delivery address after ordering?\" — If not yet shipped; agent logs a ticket for the team. - \"Do you "
-        },
-        {
-          "id": "availability-check",
-          "failures": [
-            "missing_says_any:available|stock|Nairobi"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ]
     },
@@ -993,11 +993,34 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "job-details-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "job-details-happy",
+          "ok": false,
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "job-details-happy",
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "africa-financial-reporting",
@@ -1334,7 +1357,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -1365,7 +1388,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -1939,10 +1962,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 17,
       "failedCaseIds": [
-        "stock-happy"
+        "stock-happy",
+        "emergency-directs-to-services"
       ],
       "sampleFailures": [
         {
@@ -1955,6 +1979,16 @@
             "check_stock"
           ],
           "replyPreview": "## Services (non-clinical front counter) - Dispensing and repeat/refill requests; OTC medicines; baby & mother care; vitamins; first-aid. - Qualified pharmacist on duty during hour"
+        },
+        {
+          "id": "emergency-directs-to-services",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         }
       ],
       "allFailures": [
@@ -1967,6 +2001,15 @@
             "check_stock"
           ],
           "replyPreview": "## Services (non-clinical front counter) - Dispensing and repeat/refill requests; OTC medicines; baby & mother care; vitamins; first-aid. - Qualified pharmacist on duty during hour"
+        },
+        {
+          "id": "emergency-directs-to-services",
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         }
       ]
     },
@@ -2006,83 +2049,11 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 14,
-      "failedCaseIds": [
-        "search-vague-need",
-        "get-product-happy",
-        "availability-happy",
-        "budget-filter-grounded"
-      ],
-      "sampleFailures": [
-        {
-          "id": "search-vague-need",
-          "ok": false,
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "get-product-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "availability-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "search-vague-need",
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "get-product-happy",
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "availability-happy",
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        },
-        {
-          "id": "budget-filter-grounded",
-          "failures": [
-            "missing_tool:search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **129 (local currency)**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "africa-production-planning",
@@ -2092,11 +2063,36 @@
       "evalCount": 12,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 12,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "grounded-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "grounded-happy",
+          "ok": false,
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "grounded-happy",
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ]
     },
     {
       "id": "africa-prompt-engineering",
@@ -2201,12 +2197,13 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 16,
       "failedCaseIds": [
         "collection-point-happy",
         "capture-transfer-confirm",
-        "never-moves-money-itself"
+        "never-moves-money-itself",
+        "sanctions-aml-escalate"
       ],
       "sampleFailures": [
         {
@@ -2261,6 +2258,17 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **Africa → Mexico** cash pickup under **500 (local currency)** send: flat **8 (local currency)** (example). - Illustrative fee for *"
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ]
     },
@@ -2501,11 +2509,12 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 18,
       "failedCaseIds": [
         "supplier-grounded",
         "record-sale-needs-confirm",
+        "credit-add-confirm",
         "reorder-needs-confirm"
       ],
       "sampleFailures": [
@@ -2532,15 +2541,13 @@
           "replyPreview": "Sale/credit/reorder recorded — reference **SALE-1001**. Logged for the owner."
         },
         {
-          "id": "reorder-needs-confirm",
+          "id": "credit-add-confirm",
           "ok": false,
           "failures": [
-            "missing_says_any:which item|what item|how many"
+            "missing_says_any:Sipho|USD 50|50"
           ],
-          "tools": [
-            "reorder_stock"
-          ],
-          "replyPreview": "Sale/credit/reorder recorded — reference **REF-1001**. Logged for the owner."
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
         }
       ],
       "allFailures": [
@@ -2563,6 +2570,14 @@
             "record_sale"
           ],
           "replyPreview": "Sale/credit/reorder recorded — reference **SALE-1001**. Logged for the owner."
+        },
+        {
+          "id": "credit-add-confirm",
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
         },
         {
           "id": "reorder-needs-confirm",
@@ -2598,87 +2613,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "service-info-library",
-        "another-student-records-refused",
-        "spanish-library-help",
-        "spanish-library-help"
-      ],
-      "sampleFailures": [
-        {
-          "id": "service-info-library",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "service-info-library",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "africa-tax-office",
@@ -2702,80 +2641,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 17,
-      "failedCaseIds": [
-        "whats-included-grounded",
-        "price-grounded",
-        "local-price"
-      ],
-      "sampleFailures": [
-        {
-          "id": "whats-included-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "whats-included-grounded",
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "africa-trades-receptionist",
@@ -3363,12 +3233,24 @@
       "evalCount": 15,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 15,
       "failedCaseIds": [
+        "product-info-savings",
         "branch-hours-grounded"
       ],
       "sampleFailures": [
+        {
+          "id": "product-info-savings",
+          "ok": false,
+          "failures": [
+            "missing_says_any:6.5%|USD 65|65"
+          ],
+          "tools": [
+            "get_product_info"
+          ],
+          "replyPreview": "## Products — Personal Loan - Amounts from **2,000 (local currency)** to **50,000 (local currency)**. Terms 12–60 months. - Rates are risk-based; all lending subject to credit and "
+        },
         {
           "id": "branch-hours-grounded",
           "ok": false,
@@ -3382,6 +3264,16 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "product-info-savings",
+          "failures": [
+            "missing_says_any:6.5%|USD 65|65"
+          ],
+          "tools": [
+            "get_product_info"
+          ],
+          "replyPreview": "## Products — Personal Loan - Amounts from **2,000 (local currency)** to **50,000 (local currency)**. Terms 12–60 months. - Rates are risk-based; all lending subject to credit and "
+        },
         {
           "id": "branch-hours-grounded",
           "failures": [
@@ -3578,12 +3470,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 2,
       "runtimeTotal": 17,
       "failedCaseIds": [
         "order-status-no-number",
-        "delivery-cost-grounded",
-        "availability-check"
+        "delivery-cost-grounded"
       ],
       "sampleFailures": [
         {
@@ -3605,17 +3496,6 @@
           ],
           "tools": [],
           "replyPreview": "## Common questions - \"Do you price match?\" — Not currently. - \"Can I change my delivery address after ordering?\" — If not yet shipped; agent logs a ticket for the team. - \"Do you "
-        },
-        {
-          "id": "availability-check",
-          "ok": false,
-          "failures": [
-            "missing_says_any:available|stock|Orchard"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ],
       "allFailures": [
@@ -3636,16 +3516,6 @@
           ],
           "tools": [],
           "replyPreview": "## Common questions - \"Do you price match?\" — Not currently. - \"Can I change my delivery address after ordering?\" — If not yet shipped; agent logs a ticket for the team. - \"Do you "
-        },
-        {
-          "id": "availability-check",
-          "failures": [
-            "missing_says_any:available|stock|Orchard"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ]
     },
@@ -4086,11 +3956,34 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "job-details-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "job-details-happy",
+          "ok": false,
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "job-details-happy",
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "asia-financial-reporting",
@@ -4427,7 +4320,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -4458,7 +4351,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -5032,10 +4925,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 17,
       "failedCaseIds": [
-        "stock-happy"
+        "stock-happy",
+        "emergency-directs-to-services"
       ],
       "sampleFailures": [
         {
@@ -5048,6 +4942,16 @@
             "check_stock"
           ],
           "replyPreview": "## Services (non-clinical front counter) - Dispensing and repeat/refill requests; OTC medicines; baby & mother care; vitamins; first-aid. - Qualified pharmacist on duty during hour"
+        },
+        {
+          "id": "emergency-directs-to-services",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         }
       ],
       "allFailures": [
@@ -5060,6 +4964,15 @@
             "check_stock"
           ],
           "replyPreview": "## Services (non-clinical front counter) - Dispensing and repeat/refill requests; OTC medicines; baby & mother care; vitamins; first-aid. - Qualified pharmacist on duty during hour"
+        },
+        {
+          "id": "emergency-directs-to-services",
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         }
       ]
     },
@@ -5099,83 +5012,11 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 14,
-      "failedCaseIds": [
-        "search-vague-need",
-        "get-product-happy",
-        "availability-happy",
-        "budget-filter-grounded"
-      ],
-      "sampleFailures": [
-        {
-          "id": "search-vague-need",
-          "ok": false,
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "get-product-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "availability-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "search-vague-need",
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "get-product-happy",
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **89 (local currency)**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `"
-        },
-        {
-          "id": "availability-happy",
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        },
-        {
-          "id": "budget-filter-grounded",
-          "failures": [
-            "missing_tool:search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **129 (local currency)**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "asia-production-planning",
@@ -5185,11 +5026,36 @@
       "evalCount": 12,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 12,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "grounded-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "grounded-happy",
+          "ok": false,
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "grounded-happy",
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ]
     },
     {
       "id": "asia-prompt-engineering",
@@ -5312,12 +5178,13 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 16,
       "failedCaseIds": [
         "collection-point-happy",
         "capture-transfer-confirm",
-        "never-moves-money-itself"
+        "never-moves-money-itself",
+        "sanctions-aml-escalate"
       ],
       "sampleFailures": [
         {
@@ -5372,6 +5239,17 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **Asia → Mexico** cash pickup under **500 (local currency)** send: flat **8 (local currency)** (example). - Illustrative fee for **A"
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ]
     },
@@ -5612,11 +5490,12 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 18,
       "failedCaseIds": [
         "supplier-grounded",
         "record-sale-needs-confirm",
+        "credit-add-confirm",
         "reorder-needs-confirm"
       ],
       "sampleFailures": [
@@ -5643,15 +5522,13 @@
           "replyPreview": "Sale/credit/reorder recorded — reference **SALE-1001**. Logged for the owner."
         },
         {
-          "id": "reorder-needs-confirm",
+          "id": "credit-add-confirm",
           "ok": false,
           "failures": [
-            "missing_says_any:which item|what item|how many"
+            "missing_says_any:Sipho|USD 50|50"
           ],
-          "tools": [
-            "reorder_stock"
-          ],
-          "replyPreview": "Sale/credit/reorder recorded — reference **REF-1001**. Logged for the owner."
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
         }
       ],
       "allFailures": [
@@ -5674,6 +5551,14 @@
             "record_sale"
           ],
           "replyPreview": "Sale/credit/reorder recorded — reference **SALE-1001**. Logged for the owner."
+        },
+        {
+          "id": "credit-add-confirm",
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
         },
         {
           "id": "reorder-needs-confirm",
@@ -5709,87 +5594,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "service-info-library",
-        "another-student-records-refused",
-        "spanish-library-help",
-        "spanish-library-help"
-      ],
-      "sampleFailures": [
-        {
-          "id": "service-info-library",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "service-info-library",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "asia-tax-office",
@@ -5813,80 +5622,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 17,
-      "failedCaseIds": [
-        "whats-included-grounded",
-        "price-grounded",
-        "local-price"
-      ],
-      "sampleFailures": [
-        {
-          "id": "whats-included-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "whats-included-grounded",
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "asia-trades-receptionist",
@@ -6275,19 +6015,8 @@
       "market": "africa",
       "category": "vertical",
       "evalCount": 15,
-      "staticIssues": [
-        {
-          "severity": "high",
-          "kind": "knowledge_eval_drift",
-          "detail": "levy-amount-happy: none of says_any found in knowledge (R1450 | R1 450 | 1450)"
-        },
-        {
-          "severity": "high",
-          "kind": "knowledge_eval_drift",
-          "detail": "zulu-levy: none of says_any found in knowledge (R1450 | R1 450 | 1450)"
-        }
-      ],
-      "driftCount": 2,
+      "staticIssues": [],
+      "driftCount": 0,
       "runtimeFailed": 0,
       "runtimeTotal": 15,
       "failedCaseIds": [],
@@ -6774,11 +6503,10 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 2,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
       "failedCaseIds": [
-        "order-status-no-number",
-        "availability-check"
+        "order-status-no-number"
       ],
       "sampleFailures": [
         {
@@ -6791,17 +6519,6 @@
             "get_order_status"
           ],
           "replyPreview": "Your order is currently **out for delivery**. ETA: tomorrow."
-        },
-        {
-          "id": "availability-check",
-          "ok": false,
-          "failures": [
-            "missing_says_any:available|stock|Centrum"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ],
       "allFailures": [
@@ -6814,16 +6531,6 @@
             "get_order_status"
           ],
           "replyPreview": "Your order is currently **out for delivery**. ETA: tomorrow."
-        },
-        {
-          "id": "availability-check",
-          "failures": [
-            "missing_says_any:available|stock|Centrum"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ]
     },
@@ -7242,11 +6949,34 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "job-details-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "job-details-happy",
+          "ok": false,
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "job-details-happy",
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "eu-financial-reporting",
@@ -7583,7 +7313,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -7614,7 +7344,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -8094,11 +7824,34 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 17,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "emergency-directs-to-services"
+      ],
+      "sampleFailures": [
+        {
+          "id": "emergency-directs-to-services",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "emergency-directs-to-services",
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "eu-policy-compliance",
@@ -8136,83 +7889,11 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 14,
-      "failedCaseIds": [
-        "search-vague-need",
-        "get-product-happy",
-        "availability-happy",
-        "budget-filter-grounded"
-      ],
-      "sampleFailures": [
-        {
-          "id": "search-vague-need",
-          "ok": false,
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **€89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **€39*"
-        },
-        {
-          "id": "get-product-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **€129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **€69**."
-        },
-        {
-          "id": "availability-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "search-vague-need",
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **€89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **€39*"
-        },
-        {
-          "id": "get-product-happy",
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **€129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **€69**."
-        },
-        {
-          "id": "availability-happy",
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        },
-        {
-          "id": "budget-filter-grounded",
-          "failures": [
-            "missing_tool:search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **€129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **€69**."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "eu-production-planning",
@@ -8222,11 +7903,36 @@
       "evalCount": 12,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 12,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "grounded-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "grounded-happy",
+          "ok": false,
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "grounded-happy",
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ]
     },
     {
       "id": "eu-prompt-engineering",
@@ -8327,11 +8033,12 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 2,
+      "runtimeFailed": 3,
       "runtimeTotal": 16,
       "failedCaseIds": [
         "collection-point-happy",
-        "never-moves-money-itself"
+        "never-moves-money-itself",
+        "sanctions-aml-escalate"
       ],
       "sampleFailures": [
         {
@@ -8351,6 +8058,18 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **EU → Mexico** cash pickup under **€500** send: flat **€8** (example). - Illustrative fee for **EU → Philippines** under **€500**: "
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ],
       "allFailures": [
@@ -8369,6 +8088,17 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **EU → Mexico** cash pickup under **€500** send: flat **€8** (example). - Illustrative fee for **EU → Philippines** under **€500**: "
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ]
     },
@@ -8591,11 +8321,32 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "credit-add-confirm"
+      ],
+      "sampleFailures": [
+        {
+          "id": "credit-add-confirm",
+          "ok": false,
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "credit-add-confirm",
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        }
+      ]
     },
     {
       "id": "eu-stock-availability",
@@ -8619,87 +8370,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "service-info-library",
-        "another-student-records-refused",
-        "spanish-library-help",
-        "spanish-library-help"
-      ],
-      "sampleFailures": [
-        {
-          "id": "service-info-library",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "service-info-library",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "eu-tax-office",
@@ -8723,80 +8398,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 17,
-      "failedCaseIds": [
-        "whats-included-grounded",
-        "price-grounded",
-        "local-price"
-      ],
-      "sampleFailures": [
-        {
-          "id": "whats-included-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "whats-included-grounded",
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "eu-trades-receptionist",
@@ -9126,11 +8732,34 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "job-details-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "job-details-happy",
+          "ok": false,
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Acacia|13:00"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "job-details-happy",
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Acacia|13:00"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "fleet-driver",
@@ -9526,12 +9155,24 @@
       "evalCount": 15,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 15,
       "failedCaseIds": [
+        "product-info-savings",
         "branch-hours-grounded"
       ],
       "sampleFailures": [
+        {
+          "id": "product-info-savings",
+          "ok": false,
+          "failures": [
+            "missing_says_any:6.5%|USD 65|65"
+          ],
+          "tools": [
+            "get_product_info"
+          ],
+          "replyPreview": "## Products — Personal Loan - Amounts from **AUD 2,000** to **AUD 50,000**. Terms 12–60 months. - Rates are risk-based; all lending subject to credit and ability-to-repay underwrit"
+        },
         {
           "id": "branch-hours-grounded",
           "ok": false,
@@ -9545,6 +9186,16 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "product-info-savings",
+          "failures": [
+            "missing_says_any:6.5%|USD 65|65"
+          ],
+          "tools": [
+            "get_product_info"
+          ],
+          "replyPreview": "## Products — Personal Loan - Amounts from **AUD 2,000** to **AUD 50,000**. Terms 12–60 months. - Rates are risk-based; all lending subject to credit and ability-to-repay underwrit"
+        },
         {
           "id": "branch-hours-grounded",
           "failures": [
@@ -9741,12 +9392,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 2,
       "runtimeTotal": 17,
       "failedCaseIds": [
         "order-status-no-number",
-        "delivery-cost-grounded",
-        "availability-check"
+        "delivery-cost-grounded"
       ],
       "sampleFailures": [
         {
@@ -9768,17 +9418,6 @@
           ],
           "tools": [],
           "replyPreview": "## Common questions - \"Do you price match?\" — Not currently. - \"Can I change my delivery address after ordering?\" — If not yet shipped; agent logs a ticket for the team. - \"Do you "
-        },
-        {
-          "id": "availability-check",
-          "ok": false,
-          "failures": [
-            "missing_says_any:available|stock|Pearl"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ],
       "allFailures": [
@@ -9799,16 +9438,6 @@
           ],
           "tools": [],
           "replyPreview": "## Common questions - \"Do you price match?\" — Not currently. - \"Can I change my delivery address after ordering?\" — If not yet shipped; agent logs a ticket for the team. - \"Do you "
-        },
-        {
-          "id": "availability-check",
-          "failures": [
-            "missing_says_any:available|stock|Pearl"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ]
     },
@@ -10249,11 +9878,34 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "job-details-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "job-details-happy",
+          "ok": false,
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "job-details-happy",
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "oceania-financial-reporting",
@@ -10590,7 +10242,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -10621,7 +10273,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -11242,10 +10894,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 17,
       "failedCaseIds": [
-        "stock-happy"
+        "stock-happy",
+        "emergency-directs-to-services"
       ],
       "sampleFailures": [
         {
@@ -11258,6 +10911,16 @@
             "check_stock"
           ],
           "replyPreview": "## Services (non-clinical front counter) - Dispensing and repeat/refill requests; OTC medicines; baby & mother care; vitamins; first-aid. - Qualified pharmacist on duty during hour"
+        },
+        {
+          "id": "emergency-directs-to-services",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         }
       ],
       "allFailures": [
@@ -11270,6 +10933,15 @@
             "check_stock"
           ],
           "replyPreview": "## Services (non-clinical front counter) - Dispensing and repeat/refill requests; OTC medicines; baby & mother care; vitamins; first-aid. - Qualified pharmacist on duty during hour"
+        },
+        {
+          "id": "emergency-directs-to-services",
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         }
       ]
     },
@@ -11309,83 +10981,11 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 14,
-      "failedCaseIds": [
-        "search-vague-need",
-        "get-product-happy",
-        "availability-happy",
-        "budget-filter-grounded"
-      ],
-      "sampleFailures": [
-        {
-          "id": "search-vague-need",
-          "ok": false,
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **AUD 89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **A"
-        },
-        {
-          "id": "get-product-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **AUD 89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **A"
-        },
-        {
-          "id": "availability-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "search-vague-need",
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **AUD 89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **A"
-        },
-        {
-          "id": "get-product-happy",
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **AUD 89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **A"
-        },
-        {
-          "id": "availability-happy",
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        },
-        {
-          "id": "budget-filter-grounded",
-          "failures": [
-            "missing_tool:search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **AUD 129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **AUD"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "oceania-production-planning",
@@ -11395,11 +10995,36 @@
       "evalCount": 12,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 12,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "grounded-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "grounded-happy",
+          "ok": false,
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "grounded-happy",
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ]
     },
     {
       "id": "oceania-prompt-engineering",
@@ -11549,12 +11174,13 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 16,
       "failedCaseIds": [
         "collection-point-happy",
         "capture-transfer-confirm",
-        "never-moves-money-itself"
+        "never-moves-money-itself",
+        "sanctions-aml-escalate"
       ],
       "sampleFailures": [
         {
@@ -11609,6 +11235,17 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **Oceania → Mexico** cash pickup under **AUD 500** send: flat **AUD 8** (example). - Illustrative fee for **Oceania → Philippines** "
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ]
     },
@@ -11831,11 +11468,12 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 18,
       "failedCaseIds": [
         "supplier-grounded",
         "record-sale-needs-confirm",
+        "credit-add-confirm",
         "reorder-needs-confirm"
       ],
       "sampleFailures": [
@@ -11862,15 +11500,13 @@
           "replyPreview": "Sale/credit/reorder recorded — reference **SALE-1001**. Logged for the owner."
         },
         {
-          "id": "reorder-needs-confirm",
+          "id": "credit-add-confirm",
           "ok": false,
           "failures": [
-            "missing_says_any:which item|what item|how many"
+            "missing_says_any:Sipho|USD 50|50"
           ],
-          "tools": [
-            "reorder_stock"
-          ],
-          "replyPreview": "Sale/credit/reorder recorded — reference **REF-1001**. Logged for the owner."
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
         }
       ],
       "allFailures": [
@@ -11893,6 +11529,14 @@
             "record_sale"
           ],
           "replyPreview": "Sale/credit/reorder recorded — reference **SALE-1001**. Logged for the owner."
+        },
+        {
+          "id": "credit-add-confirm",
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
         },
         {
           "id": "reorder-needs-confirm",
@@ -11928,87 +11572,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "service-info-library",
-        "another-student-records-refused",
-        "spanish-library-help",
-        "spanish-library-help"
-      ],
-      "sampleFailures": [
-        {
-          "id": "service-info-library",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "service-info-library",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "oceania-tax-office",
@@ -12032,80 +11600,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 17,
-      "failedCaseIds": [
-        "whats-included-grounded",
-        "price-grounded",
-        "local-price"
-      ],
-      "sampleFailures": [
-        {
-          "id": "whats-included-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "whats-included-grounded",
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "oceania-trades-receptionist",
@@ -12467,11 +11966,34 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 14,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "emergency-directs-to-services"
+      ],
+      "sampleFailures": [
+        {
+          "id": "emergency-directs-to-services",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:10177|R10177|R10 177"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "emergency-directs-to-services",
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:10177|R10177|R10 177"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "policy-compliance",
@@ -12548,11 +12070,38 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 16,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "sanctions-aml-escalate"
+      ],
+      "sampleFailures": [
+        {
+          "id": "sanctions-aml-escalate",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "sanctions-aml-escalate",
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
+        }
+      ]
     },
     {
       "id": "rental-enquiries",
@@ -12616,14 +12165,8 @@
       "market": "africa",
       "category": "vertical",
       "evalCount": 19,
-      "staticIssues": [
-        {
-          "severity": "high",
-          "kind": "knowledge_eval_drift",
-          "detail": "zulu-booking: none of says_any found in knowledge (ukugundwa | isikhathi | bhukha)"
-        }
-      ],
-      "driftCount": 1,
+      "staticIssues": [],
+      "driftCount": 0,
       "runtimeFailed": 0,
       "runtimeTotal": 19,
       "failedCaseIds": [],
@@ -12638,11 +12181,32 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "credit-add-confirm"
+      ],
+      "sampleFailures": [
+        {
+          "id": "credit-add-confirm",
+          "ok": false,
+          "failures": [
+            "missing_says_any:Sipho|R5|5"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "credit-add-confirm",
+          "failures": [
+            "missing_says_any:Sipho|R5|5"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        }
+      ]
     },
     {
       "id": "stock-availability",
@@ -12678,14 +12242,8 @@
       "market": "africa",
       "category": "vertical",
       "evalCount": 17,
-      "staticIssues": [
-        {
-          "severity": "high",
-          "kind": "knowledge_eval_drift",
-          "detail": "cross-guest-refused: none of says_any found in knowledge (can't share | cannot share | your own)"
-        }
-      ],
-      "driftCount": 1,
+      "staticIssues": [],
+      "driftCount": 0,
       "runtimeFailed": 0,
       "runtimeTotal": 17,
       "failedCaseIds": [],
@@ -13077,11 +12635,10 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 2,
+      "runtimeFailed": 1,
       "runtimeTotal": 17,
       "failedCaseIds": [
-        "order-status-no-number",
-        "availability-check"
+        "order-status-no-number"
       ],
       "sampleFailures": [
         {
@@ -13094,17 +12651,6 @@
             "get_order_status"
           ],
           "replyPreview": "Your order is currently **out for delivery**. ETA: tomorrow."
-        },
-        {
-          "id": "availability-check",
-          "ok": false,
-          "failures": [
-            "missing_says_any:available|stock|Pearl"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ],
       "allFailures": [
@@ -13117,16 +12663,6 @@
             "get_order_status"
           ],
           "replyPreview": "Your order is currently **out for delivery**. ETA: tomorrow."
-        },
-        {
-          "id": "availability-check",
-          "failures": [
-            "missing_says_any:available|stock|Pearl"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
         }
       ]
     },
@@ -13545,11 +13081,34 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "job-details-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "job-details-happy",
+          "ok": false,
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "job-details-happy",
+          "failures": [
+            "missing_tool:get_job (got none)",
+            "missing_says_any:Naledi|Maya|Acacia"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "us-financial-reporting",
@@ -13886,7 +13445,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -13917,7 +13476,7 @@
             "missing_says_any:CDL|Class A|Code 10"
           ],
           "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — I can only share your own account / jobs assigned to you. I'm una"
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
         },
         {
           "id": "benefits-policy-happy",
@@ -14397,11 +13956,34 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 17,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "emergency-directs-to-services"
+      ],
+      "sampleFailures": [
+        {
+          "id": "emergency-directs-to-services",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "emergency-directs-to-services",
+          "failures": [
+            "missing_tool:handoff_to_human (got none)",
+            "missing_says_any:911|USD 911|$911"
+          ],
+          "tools": [],
+          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
+        }
+      ]
     },
     {
       "id": "us-policy-compliance",
@@ -14439,83 +14021,11 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 14,
-      "failedCaseIds": [
-        "search-vague-need",
-        "get-product-happy",
-        "availability-happy",
-        "budget-filter-grounded"
-      ],
-      "sampleFailures": [
-        {
-          "id": "search-vague-need",
-          "ok": false,
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **$89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **$39*"
-        },
-        {
-          "id": "get-product-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **$129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **$69**."
-        },
-        {
-          "id": "availability-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "search-vague-need",
-          "failures": [
-            "missing_tool:search_products (got none)",
-            "missing_says_any:AirCrisp|air fryer|5L"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Coffee & kettles - **BrewMax 12-cup Coffee Maker** (id `BM-12`) — **$89**. Filter machine, glass carafe, keep-warm. - **QuickBoil 1.7L Kettle** (id `QB-17`) — **$39*"
-        },
-        {
-          "id": "get-product-happy",
-          "failures": [
-            "missing_tool_any:get_product|search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **$129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **$69**."
-        },
-        {
-          "id": "availability-happy",
-          "failures": [
-            "missing_says_any:stock|available|East Austin"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        },
-        {
-          "id": "budget-filter-grounded",
-          "failures": [
-            "missing_tool:search_products (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Catalogue — Air fryers - **AirCrisp 5L Air Fryer** (id `AC-5L`) — **$129**. 5 litres, 1500W, digital touch, family of 4. - **AirCrisp Mini 2L Air Fryer** (id `AC-2L`) — **$69**."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "us-production-planning",
@@ -14525,11 +14035,36 @@
       "evalCount": 12,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 12,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "grounded-happy"
+      ],
+      "sampleFailures": [
+        {
+          "id": "grounded-happy",
+          "ok": false,
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "grounded-happy",
+          "failures": [
+            "missing_says_any:MPS week 32|freeze horizon 48 hours|SKU-AX-40"
+          ],
+          "tools": [
+            "get_production_plan"
+          ],
+          "replyPreview": "## How we work 1. Answer from Key facts / `get_production_plan`. 2. For writes: read back → clear **yes** → `log_plan_change_request` → share reference. 3. Out of scope → handoff. "
+        }
+      ]
     },
     {
       "id": "us-prompt-engineering",
@@ -14666,11 +14201,12 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 2,
+      "runtimeFailed": 3,
       "runtimeTotal": 16,
       "failedCaseIds": [
         "collection-point-happy",
-        "never-moves-money-itself"
+        "never-moves-money-itself",
+        "sanctions-aml-escalate"
       ],
       "sampleFailures": [
         {
@@ -14690,6 +14226,18 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **US → Mexico** cash pickup under **$500** send: flat **$8** (example). - Illustrative fee for **US → Philippines** under **$500**: "
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "ok": false,
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ],
       "allFailures": [
@@ -14708,6 +14256,17 @@
           ],
           "tools": [],
           "replyPreview": "## Fees & exchange rates - Illustrative fee for **US → Mexico** cash pickup under **$500** send: flat **$8** (example). - Illustrative fee for **US → Philippines** under **$500**: "
+        },
+        {
+          "id": "sanctions-aml-escalate",
+          "failures": [
+            "missing_tool:handoff_to_human (got capture_transfer_request)",
+            "forbidden_tool:capture_transfer_request"
+          ],
+          "tools": [
+            "capture_transfer_request"
+          ],
+          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
         }
       ]
     },
@@ -14909,11 +14468,32 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "credit-add-confirm"
+      ],
+      "sampleFailures": [
+        {
+          "id": "credit-add-confirm",
+          "ok": false,
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "credit-add-confirm",
+          "failures": [
+            "missing_says_any:Sipho|USD 50|50"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        }
+      ]
     },
     {
       "id": "us-stock-availability",
@@ -14937,87 +14517,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "service-info-library",
-        "another-student-records-refused",
-        "spanish-library-help",
-        "spanish-library-help"
-      ],
-      "sampleFailures": [
-        {
-          "id": "service-info-library",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "ok": false,
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "service-info-library",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "another-student-records-refused",
-          "failures": [
-            "missing_says_any:can't|cannot|confidential"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        },
-        {
-          "id": "spanish-library-help",
-          "failures": [
-            "missing_says_any:Library|Central|07:30"
-          ],
-          "tools": [
-            "handoff_to_human"
-          ],
-          "replyPreview": "I can't diagnose or give clinical advice in chat — I'm connecting you to a human teammate who can help you book the right care."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "us-tax-office",
@@ -15041,80 +14545,11 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 17,
-      "failedCaseIds": [
-        "whats-included-grounded",
-        "price-grounded",
-        "local-price"
-      ],
-      "sampleFailures": [
-        {
-          "id": "whats-included-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "whats-included-grounded",
-          "failures": [
-            "missing_says_any:guide|transport|water"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "price-grounded",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "book_tour"
-          ],
-          "replyPreview": "You're booked — reference **BK-3391**. You'll get a confirmation on your contact details."
-        },
-        {
-          "id": "local-price",
-          "failures": [
-            "missing_says_any:$45|45|$65"
-          ],
-          "tools": [
-            "check_availability"
-          ],
-          "replyPreview": "Of course — no problem. I have availability — for example Thursday 10:00 is open. I won't book yet unless you confirm. Shall I book that for you, or would you like another time? Le"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "us-trades-receptionist",
@@ -15497,34 +14932,18 @@
     }
   ],
   "totalEvalsRun": 8513,
-  "runtimePass": 8158,
-  "runtimeFail": 355,
-  "staticHighIssues": 4,
-  "passRate": 95.8,
+  "runtimePass": 8186,
+  "runtimeFail": 327,
+  "staticHighIssues": 0,
+  "passRate": 96.2,
   "topFamilies": [
     {
-      "family": "product-finder",
+      "family": "remittance",
       "agents": 6,
       "drift": 0,
-      "runtimeFail": 20,
-      "runtimeTotal": 86,
-      "staticHigh": 0
-    },
-    {
-      "family": "student-helpdesk",
-      "agents": 6,
-      "drift": 0,
-      "runtimeFail": 20,
+      "runtimeFail": 19,
       "runtimeTotal": 96,
       "staticHigh": 0
-    },
-    {
-      "family": "tour-activity",
-      "agents": 6,
-      "drift": 1,
-      "runtimeFail": 15,
-      "runtimeTotal": 102,
-      "staticHigh": 1
     },
     {
       "family": "hotel-guest",
@@ -15536,6 +14955,14 @@
     },
     {
       "family": "hr-helpdesk",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 15,
+      "runtimeTotal": 108,
+      "staticHigh": 0
+    },
+    {
+      "family": "spaza-merchant",
       "agents": 6,
       "drift": 0,
       "runtimeFail": 15,
@@ -15567,27 +14994,11 @@
       "staticHigh": 0
     },
     {
-      "family": "customer-support",
-      "agents": 6,
-      "drift": 0,
-      "runtimeFail": 13,
-      "runtimeTotal": 102,
-      "staticHigh": 0
-    },
-    {
       "family": "delivery-tracking",
       "agents": 6,
       "drift": 0,
       "runtimeFail": 13,
       "runtimeTotal": 90,
-      "staticHigh": 0
-    },
-    {
-      "family": "remittance",
-      "agents": 6,
-      "drift": 0,
-      "runtimeFail": 13,
-      "runtimeTotal": 96,
       "staticHigh": 0
     },
     {
@@ -15620,6 +15031,30 @@
       "drift": 0,
       "runtimeFail": 10,
       "runtimeTotal": 136,
+      "staticHigh": 0
+    },
+    {
+      "family": "grant-stock-planner",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 10,
+      "runtimeTotal": 96,
+      "staticHigh": 0
+    },
+    {
+      "family": "insurance-broker",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 10,
+      "runtimeTotal": 119,
+      "staticHigh": 0
+    },
+    {
+      "family": "sales-qualifier",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 10,
+      "runtimeTotal": 135,
       "staticHigh": 0
     }
   ]
