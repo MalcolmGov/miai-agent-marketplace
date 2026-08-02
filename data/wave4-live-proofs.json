@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-02T03:11:02.199Z",
+  "updatedAt": "2026-08-02T03:42:39.977Z",
   "slice": [
     "us-executive-assistant",
     "us-dental-front-desk",
@@ -13,42 +13,6 @@
     "hubspot"
   ],
   "proofs": [
-    {
-      "agentId": "us-executive-assistant",
-      "family": "executive-assistant",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb74jhf",
-      "at": "2026-08-02T02:43:56.432Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Railway live check_calendar"
-    },
-    {
-      "agentId": "us-executive-assistant",
-      "family": "executive-assistant",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msb74jhf",
-      "at": "2026-08-02T02:43:56.500Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Railway live handoff_to_human"
-    },
-    {
-      "agentId": "us-dental-front-desk",
-      "family": "dental-front-desk",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb74n9t",
-      "at": "2026-08-02T02:43:56.563Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Railway live check_availability"
-    },
-    {
-      "agentId": "us-it-helpdesk",
-      "family": "it-helpdesk",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msb74r26",
-      "at": "2026-08-02T02:43:56.618Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Railway live notify_team; create_ticket still HubSpot stub"
-    },
     {
       "agentId": "us-home-services",
       "family": "home-services",
@@ -93,6 +57,60 @@
       "at": "2026-08-02T03:11:02.198Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "Railway live handoff_to_human"
+    },
+    {
+      "agentId": "us-executive-assistant",
+      "family": "executive-assistant",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msb98e21",
+      "at": "2026-08-02T03:42:34.649Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-executive-assistant",
+      "family": "executive-assistant",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msb98e21",
+      "at": "2026-08-02T03:42:34.652Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-dental-front-desk",
+      "family": "dental-front-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msb98gpj",
+      "at": "2026-08-02T03:42:36.347Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-sales-qualifier",
+      "family": "sales-qualifier",
+      "connector": "hubspot",
+      "correlationId": "corr_wave4_msb98i0f",
+      "at": "2026-08-02T03:42:38.605Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "family": "it-helpdesk",
+      "connector": "hubspot",
+      "correlationId": "corr_wave4_msb98jsg",
+      "at": "2026-08-02T03:42:39.976Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "family": "it-helpdesk",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msb98jsg",
+      "at": "2026-08-02T03:42:39.977Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
     }
   ]
 }
