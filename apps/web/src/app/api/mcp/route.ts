@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { sinksRequireSecret } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -22,8 +23,29 @@ function storePath(): string {
   return path.resolve(process.cwd(), "../../data/mcp-sink.json");
 }
 
-/** Health + inspect recent MCP tool calls (demo / Wave 4). */
+function authorizeMcpInspect(req: Request): NextResponse | null {
+  if (!sinksRequireSecret()) return null;
+  const expected = process.env.MCP_SINK_TOKEN?.trim();
+  if (!expected) {
+    return NextResponse.json(
+      { error: "MCP_SINK_TOKEN required in production" },
+      { status: 503 },
+    );
+  }
+  const auth = req.headers.get("authorization") || "";
+  const bearer = auth.replace(/^Bearer\s+/i, "").trim();
+  const token = bearer || new URL(req.url).searchParams.get("token") || "";
+  if (token !== expected) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return null;
+}
+
+/** Health + inspect recent MCP tool calls — gated in production. */
 export async function GET(req: Request) {
+  const denied = authorizeMcpInspect(req);
+  if (denied) return denied;
+
   const url = new URL(req.url);
   const limit = Math.min(20, Number(url.searchParams.get("limit") || 10) || 10);
   let rows = [...(g.__miaiMcpCalls ?? [])];

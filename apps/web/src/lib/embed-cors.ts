@@ -1,8 +1,40 @@
 /** Build CORS headers for the public embed chat API. */
 
+function appOrigin(): string | null {
+  const raw = process.env.APP_BASE_URL || process.env.NEXT_PUBLIC_APP_URL;
+  if (!raw) return null;
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * In production, bare `*` is denied unless ALLOW_EMBED_ORIGIN_STAR=1 (staging only).
+ * Missing config falls back to APP_BASE_URL origin, else deny browser cross-origin.
+ */
 function allowedOrigins(): string[] | "*" {
   const raw = process.env.EMBED_ALLOWED_ORIGINS?.trim();
-  if (!raw || raw === "*") return "*";
+  const prod = process.env.NODE_ENV === "production";
+  const starOk = process.env.ALLOW_EMBED_ORIGIN_STAR === "1";
+
+  if (!raw) {
+    if (prod && !starOk) {
+      const app = appOrigin();
+      return app ? [app] : [];
+    }
+    return "*";
+  }
+
+  if (raw === "*") {
+    if (prod && !starOk) {
+      const app = appOrigin();
+      return app ? [app] : [];
+    }
+    return "*";
+  }
+
   return raw
     .split(",")
     .map((s) => s.trim())
@@ -25,15 +57,17 @@ export function embedCorsHeaders(req?: Request): Record<string, string> {
   const requestOrigin = req?.headers.get("origin") ?? "";
 
   let allowOrigin = "*";
-  if (allow !== "*") {
-    if (requestOrigin && allow.some((p) => originMatches(requestOrigin, p))) {
-      allowOrigin = requestOrigin;
-    } else if (!requestOrigin) {
-      // Non-browser clients (curl/smoke) — no ACAO needed for same-origin tooling
-      allowOrigin = allow[0] ?? "null";
-    } else {
-      allowOrigin = "null";
-    }
+  if (allow === "*") {
+    allowOrigin = "*";
+  } else if (allow.length === 0) {
+    allowOrigin = "null";
+  } else if (requestOrigin && allow.some((p) => originMatches(requestOrigin, p))) {
+    allowOrigin = requestOrigin;
+  } else if (!requestOrigin) {
+    // Non-browser clients (curl/smoke) — no ACAO needed for same-origin tooling
+    allowOrigin = allow[0] ?? "null";
+  } else {
+    allowOrigin = "null";
   }
 
   return {

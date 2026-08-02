@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ensureStoreHydrated, pingStore } from "@/lib/store";
 import { telemetryMode } from "@/lib/telemetry";
+import { checkBootHardening, mockRailsAllowed } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -9,11 +10,14 @@ export async function GET() {
   const walletMode = process.env.MIAI_WALLET_MODE ?? "mock";
   const modelMode = process.env.MIAI_MODEL_MODE ?? "mock";
 
-  const checks: Record<string, string | boolean> = {
+  const hardening = checkBootHardening();
+  const checks: Record<string, string | boolean | string[]> = {
     status: "ok",
     authMode,
     walletMode,
     modelMode,
+    mockRailsAllowed: mockRailsAllowed(),
+    hardening: hardening.ok ? "ok" : "fail",
     database: process.env.DATABASE_URL || process.env.MIAI_DATABASE_URL ? "configured" : "file-fallback",
     telemetry: telemetryMode(),
     oidcIssuer: authMode === "oidc" ? (process.env.MIAI_OIDC_ISSUER ? "set" : "missing") : "n/a",
@@ -33,6 +37,12 @@ export async function GET() {
               : "missing"
             : "n/a",
   };
+
+  if (!hardening.ok) {
+    checks.status = "failing";
+    checks.hardeningErrors = hardening.errors;
+    return NextResponse.json(checks, { status: 503 });
+  }
 
   const ping = await pingStore();
   checks.storeBackend = ping.backend;

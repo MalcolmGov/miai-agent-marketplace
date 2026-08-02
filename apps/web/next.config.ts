@@ -27,6 +27,11 @@ const securityHeaders = [
       "upgrade-insecure-requests",
     ].join("; "),
   },
+  // HSTS — only meaningful on HTTPS custom domains / Railway TLS
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000; includeSubDomains",
+  },
 ];
 
 const nextConfig: NextConfig = {

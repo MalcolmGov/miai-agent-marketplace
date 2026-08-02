@@ -46,6 +46,13 @@ export {
 
 export { executeLive, stubFor } from "./live/execute.js";
 
+export {
+  assertSafeOutboundUrl,
+  assertSafeOutboundUrlOrThrow,
+  isBlockedIp,
+  type SafeUrlResult,
+} from "./ssrf.js";
+
 import type { ConnectorCall, ConnectorMeta, ConnectorResult } from "./types.js";
 import { executeLive, stubFor } from "./live/execute.js";
 

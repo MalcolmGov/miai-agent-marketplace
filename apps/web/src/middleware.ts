@@ -18,6 +18,9 @@ export function middleware(req: NextRequest) {
     "/api/embed/",
     "/api/app/",
     "/agents/v1/",
+    // Wave4 sinks — gated by WEBHOOK_SINK_SECRET / MCP_SINK_TOKEN in production
+    "/api/webhook/sink",
+    "/api/mcp",
   ];
   if (publicPaths.some((p) => pathname === p || pathname.startsWith(p))) {
     return NextResponse.next();

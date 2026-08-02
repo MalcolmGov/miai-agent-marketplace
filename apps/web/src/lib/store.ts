@@ -378,6 +378,10 @@ export async function upsertWorkspaceAgent(
 }
 
 export function resolveEmbedKey(publicKey: string): { workspaceId: string; agentId: string } | null {
+  // Demo keys are local-only — never accept in production.
+  if (/_demo$/i.test(publicKey) && process.env.NODE_ENV === "production") {
+    return null;
+  }
   const m = /^mia_pk_([A-Za-z0-9_-]+)_([a-f0-9]{10})$/.exec(publicKey);
   if (m) {
     const [, id, mac] = m;

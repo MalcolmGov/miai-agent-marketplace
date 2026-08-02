@@ -28,11 +28,17 @@ Service → **Variables**. Minimum for a customer-like walk:
 |---|---|
 | `APP_BASE_URL` | `https://YOUR_SERVICE.up.railway.app` (or custom domain) |
 | `NEXT_PUBLIC_APP_URL` | same as `APP_BASE_URL` |
-| `OAUTH_TOKEN_SECRET` | long random string |
+| `OAUTH_TOKEN_SECRET` | long random string (≥16 chars, not a default) |
 | `OAUTH_TOKEN_STORE_PATH` | `/data/oauth-tokens.json` |
 | `KNOWLEDGE_STORE_PATH` | `/data/knowledge-sources.json` |
 | `CATALOG_DIR` | `/app/data/catalog` |
 | `NODE_ENV` | `production` |
+| `ALLOW_MOCK_RAILS` | `1` while auth/wallet/model stay mock (required or boot fails) |
+| `ALLOW_EMBED_ORIGIN_STAR` | `1` only if you still need `EMBED_ALLOWED_ORIGINS=*` on staging |
+| `WEBHOOK_SINK_SECRET` | long random — required for `/api/webhook/sink` in production |
+| `MCP_SINK_TOKEN` | long random — required for `/api/mcp` in production |
+
+Without `ALLOW_MOCK_RAILS=1`, production refuses `MIAI_*_MODE=mock` at boot/health. Remove that flag at customer cutover when OIDC + wallet + model gateway are live.
 
 Add connector secrets as you test them, e.g. Slack:
 

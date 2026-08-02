@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
+import { sinksRequireSecret } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -38,19 +39,45 @@ async function persist(rows: SinkEvent[]) {
   }
 }
 
+function authorizeSink(req: Request): NextResponse | null {
+  if (!sinksRequireSecret()) return null;
+  const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
+  if (!expected) {
+    return NextResponse.json(
+      { error: "WEBHOOK_SINK_SECRET required in production" },
+      { status: 503 },
+    );
+  }
+  const signature =
+    req.headers.get("x-miai-signature") ||
+    new URL(req.url).searchParams.get("token") ||
+    "";
+  if (signature !== expected) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+  }
+  return null;
+}
+
 /**
  * Wave 4 proof sink — receives connector webhook POSTs.
  * Configure Actions → Webhook URL to:
  *   {APP_BASE_URL}/api/webhook/sink
- * Shared secret header: x-miai-signature (any string; stored for audit).
+ * Shared secret header: x-miai-signature (required in production).
  */
 export async function POST(req: Request) {
-  const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
-  const signature = req.headers.get("x-miai-signature");
-  if (expected && signature !== expected) {
-    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+  const denied = authorizeSink(req);
+  if (denied) return denied;
+
+  // Local/dev: optional shared secret when configured
+  if (!sinksRequireSecret()) {
+    const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
+    const signature = req.headers.get("x-miai-signature");
+    if (expected && signature !== expected) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
   }
 
+  const signature = req.headers.get("x-miai-signature");
   const payload = await req.json().catch(() => ({}));
   const event: SinkEvent = {
     id: `wh_${randomBytes(6).toString("hex")}`,
@@ -73,8 +100,11 @@ export async function POST(req: Request) {
   });
 }
 
-/** Inspect recent sink events (demo / Wave 4 verification). */
+/** Inspect recent sink events — requires secret in production. */
 export async function GET(req: Request) {
+  const denied = authorizeSink(req);
+  if (denied) return denied;
+
   const url = new URL(req.url);
   const limit = Math.min(20, Number(url.searchParams.get("limit") || 10) || 10);
   let rows = [...mem()];

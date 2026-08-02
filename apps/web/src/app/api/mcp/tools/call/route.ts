@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
+import { sinksRequireSecret } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -43,12 +44,24 @@ async function persist(rows: McpCall[]) {
  * Minimal HTTP MCP tool bridge for Wave 4 proof.
  * Configure Actions → MCP endpoint to: {APP_BASE_URL}/api/mcp
  * Connector calls POST {endpoint}/tools/call
+ * Bearer token required in production (MCP_SINK_TOKEN).
  */
 export async function POST(req: Request) {
   const expected = process.env.MCP_SINK_TOKEN?.trim();
   const auth = req.headers.get("authorization") || "";
   const token = auth.replace(/^Bearer\s+/i, "").trim();
-  if (expected && token !== expected) {
+
+  if (sinksRequireSecret()) {
+    if (!expected) {
+      return NextResponse.json(
+        { error: "MCP_SINK_TOKEN required in production" },
+        { status: 503 },
+      );
+    }
+    if (token !== expected) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  } else if (expected && token !== expected) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

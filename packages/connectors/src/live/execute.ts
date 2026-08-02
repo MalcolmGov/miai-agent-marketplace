@@ -501,14 +501,20 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
 }
 
 async function postWebhook(url: string, secret: string, payload: unknown): Promise<Record<string, unknown>> {
-  const res = await fetch(url, {
+  const { assertSafeOutboundUrlOrThrow } = await import("../ssrf.js");
+  const safe = await assertSafeOutboundUrlOrThrow(url);
+  const res = await fetch(safe.toString(), {
     method: "POST",
     headers: {
       "content-type": "application/json",
       "x-miai-signature": secret,
     },
     body: JSON.stringify(payload),
+    redirect: "manual",
   });
+  if (res.status >= 300 && res.status < 400) {
+    throw new Error("Webhook redirects are not followed (SSRF protection)");
+  }
   if (!res.ok) throw new Error(`Webhook ${res.status}`);
   try {
     return (await res.json()) as Record<string, unknown>;

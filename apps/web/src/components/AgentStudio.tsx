@@ -186,13 +186,20 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   }, []);
 
   const snippet = useMemo(() => {
-    const key = publicKey || `mia_pk_${agentId}_demo`;
+    // Demo keys only in local/dev — production requires a real rented publicKey.
+    const allowDemo = process.env.NODE_ENV !== "production";
+    const key = publicKey || (allowDemo ? `mia_pk_${agentId}_demo` : "");
+    if (!key) {
+      return `<!-- Rent this agent to get an embed key, then paste the Install snippet. -->`;
+    }
     const base = origin || "";
     return `<script src="${base}/agents/v1/agent.js" data-key="${key}" async></script>`;
   }, [publicKey, agentId, origin]);
 
   const appUrl = useMemo(() => {
-    const key = publicKey || `mia_pk_${agentId}_demo`;
+    const allowDemo = process.env.NODE_ENV !== "production";
+    const key = publicKey || (allowDemo ? `mia_pk_${agentId}_demo` : "");
+    if (!key) return `${origin || ""}/app/v1`;
     const q = new URLSearchParams({
       key,
       title: appTitle,

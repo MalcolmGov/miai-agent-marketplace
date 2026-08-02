@@ -1,5 +1,7 @@
 /** Lightweight HTML → plain text for website crawls (no heavy deps). */
 
+import { assertSafeOutboundUrl } from "@miai/connectors";
+
 export function htmlToText(html: string): string {
   let s = html
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -156,41 +158,66 @@ export function sameOriginLinks(html: string, pageUrl: string, limit = 8): strin
     });
 }
 
+const MAX_REDIRECTS = 3;
+
+async function fetchWithSsrfGuard(
+  startUrl: string,
+  timeoutMs: number,
+): Promise<Response & { finalUrl: string }> {
+  let current = startUrl;
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    const safe = await assertSafeOutboundUrl(current);
+    if (!safe.ok) throw new Error(safe.reason);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(safe.url.toString(), {
+        signal: controller.signal,
+        headers: {
+          "user-agent":
+            "Mozilla/5.0 (compatible; MyInstantAI-KnowledgeBot/1.0; +https://www.myinstantai.com)",
+          accept: "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.8",
+          "accept-language": "en-ZA,en;q=0.9",
+        },
+        redirect: "manual",
+      });
+      if (res.status >= 300 && res.status < 400) {
+        const loc = res.headers.get("location");
+        if (!loc) throw new Error(`HTTP ${res.status} redirect without Location`);
+        current = new URL(loc, current).toString();
+        continue;
+      }
+      return Object.assign(res, { finalUrl: current });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw new Error("Too many redirects");
+}
+
 export async function fetchPage(
   url: string,
   timeoutMs = 15_000,
 ): Promise<{ url: string; title: string; text: string; html: string }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        "user-agent":
-          "Mozilla/5.0 (compatible; MyInstantAI-KnowledgeBot/1.0; +https://www.myinstantai.com)",
-        accept: "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.8",
-        "accept-language": "en-ZA,en;q=0.9",
-      },
-      redirect: "follow",
-    });
+    const res = await fetchWithSsrfGuard(url, timeoutMs);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const ctype = res.headers.get("content-type") ?? "";
     const body = await res.text();
+    const finalUrl = res.finalUrl || url;
     if (/text\/plain/i.test(ctype)) {
-      return { url: res.url || url, title: url, text: body.slice(0, 100_000), html: "" };
+      return { url: finalUrl, title: url, text: body.slice(0, 100_000), html: "" };
     }
     const title = extractTitle(body) ?? url;
     let text = htmlToText(body).slice(0, 100_000);
     // SPA / client-rendered sites often ship an empty body — keep SEO meta as knowledge.
     if (text.length < 80 && body) {
-      const meta = extractMetaKnowledge(body, res.url || url);
+      const meta = extractMetaKnowledge(body, finalUrl);
       text = [meta, text].filter(Boolean).join("\n\n").trim();
     }
-    return { url: res.url || url, title, text, html: body };
+    return { url: finalUrl, title, text, html: body };
   } catch (e) {
     throw new Error(formatFetchError(e));
-  } finally {
-    clearTimeout(timer);
   }
 }
 

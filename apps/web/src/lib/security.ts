@@ -28,6 +28,8 @@ const ALIASES: Record<string, WorkspaceRole | "operator"> = {
   miai_admin: "operator",
 };
 
+const DEV_DEFAULT_SECRET = "dev-only-change-me";
+
 export function normalizeRoles(roles: string[]): string[] {
   const out = new Set<string>();
   for (const raw of roles) {
@@ -111,18 +113,112 @@ export function rateLimit(
   return { ok: true };
 }
 
-/** Fail closed in non-mock when critical secrets are still the dev default. */
-export function assertProductionSecrets(): void {
-  if (process.env.MIAI_AUTH_MODE !== "oidc") return;
-  const bad = "dev-only-change-me";
-  const secrets = [
-    process.env.OAUTH_TOKEN_SECRET,
-    process.env.OAUTH_STATE_SECRET,
-    process.env.EMBED_KEY_SECRET,
-  ];
-  if (secrets.some((s) => !s || s === bad || s.length < 16)) {
-    console.error(
-      "[security] OIDC mode requires strong OAUTH_TOKEN_SECRET / OAUTH_STATE_SECRET / EMBED_KEY_SECRET",
+export function isProductionRuntime(): boolean {
+  return process.env.NODE_ENV === "production";
+}
+
+/** Staging demos may keep mock auth/wallet/model when this is set. */
+export function mockRailsAllowed(): boolean {
+  if (!isProductionRuntime()) return true;
+  return process.env.ALLOW_MOCK_RAILS === "1";
+}
+
+export function isWeakSecret(value: string | undefined): boolean {
+  if (!value) return true;
+  if (value === DEV_DEFAULT_SECRET) return true;
+  if (value === "replace-with-long-random-string") return true;
+  if (value.length < 16) return true;
+  return false;
+}
+
+export type HardeningCheck = { ok: true } | { ok: false; errors: string[] };
+
+/** Strong secrets required whenever OIDC is on, or production without mock rails. */
+export function checkProductionSecrets(): HardeningCheck {
+  const authMode = process.env.MIAI_AUTH_MODE ?? "mock";
+  const mustCheck =
+    authMode === "oidc" || (isProductionRuntime() && !mockRailsAllowed());
+  if (!mustCheck) return { ok: true };
+
+  const errors: string[] = [];
+  const token = process.env.OAUTH_TOKEN_SECRET;
+  const state = process.env.OAUTH_STATE_SECRET || token;
+  const embed = process.env.EMBED_KEY_SECRET || token;
+
+  if (isWeakSecret(token)) {
+    errors.push("OAUTH_TOKEN_SECRET missing or weak (min 16 chars, not a default)");
+  }
+  if (isWeakSecret(state)) {
+    errors.push("OAUTH_STATE_SECRET missing or weak (or set a strong OAUTH_TOKEN_SECRET)");
+  }
+  if (isWeakSecret(embed)) {
+    errors.push("EMBED_KEY_SECRET missing or weak (or set a strong OAUTH_TOKEN_SECRET)");
+  }
+  return errors.length ? { ok: false, errors } : { ok: true };
+}
+
+/** Refuse mock auth/wallet/model in production unless ALLOW_MOCK_RAILS=1. */
+export function checkProductionRails(): HardeningCheck {
+  if (mockRailsAllowed()) return { ok: true };
+
+  const errors: string[] = [];
+  const auth = process.env.MIAI_AUTH_MODE ?? "mock";
+  const wallet = process.env.MIAI_WALLET_MODE ?? "mock";
+  const model = process.env.MIAI_MODEL_MODE ?? "mock";
+
+  if (auth === "mock") {
+    errors.push("MIAI_AUTH_MODE=mock blocked in production (set OIDC or ALLOW_MOCK_RAILS=1)");
+  }
+  if (wallet === "mock") {
+    errors.push("MIAI_WALLET_MODE=mock blocked in production (set http or ALLOW_MOCK_RAILS=1)");
+  }
+  if (model === "mock") {
+    errors.push(
+      "MIAI_MODEL_MODE=mock blocked in production (set openai|anthropic|gateway or ALLOW_MOCK_RAILS=1)",
     );
   }
+  return errors.length ? { ok: false, errors } : { ok: true };
+}
+
+export function checkBootHardening(): HardeningCheck {
+  const secrets = checkProductionSecrets();
+  const rails = checkProductionRails();
+  const errors = [
+    ...(secrets.ok ? [] : secrets.errors),
+    ...(rails.ok ? [] : rails.errors),
+  ];
+  return errors.length ? { ok: false, errors } : { ok: true };
+}
+
+/**
+ * Fail closed in non-mock when critical secrets are still the dev default.
+ * Logs always; throws on boot when production hardening fails.
+ */
+export function assertProductionSecrets(): void {
+  const check = checkProductionSecrets();
+  if (!check.ok) {
+    for (const e of check.errors) console.error(`[security] ${e}`);
+  }
+}
+
+/** Called from instrumentation.ts on Node server start. */
+export function assertBootHardening(): void {
+  const check = checkBootHardening();
+  if (check.ok) return;
+  for (const e of check.errors) console.error(`[security] ${e}`);
+  if (isProductionRuntime()) {
+    throw new Error(
+      `[security] Refusing to start — fix env or set ALLOW_MOCK_RAILS=1 for staging demos.\n- ${check.errors.join("\n- ")}`,
+    );
+  }
+}
+
+/** Wave4 proof sinks must require secrets outside local/dev. */
+export function sinksRequireSecret(): boolean {
+  return isProductionRuntime();
+}
+
+/** Demo embed keys (`mia_pk_*_demo`) only for local/dev. */
+export function demoEmbedKeysAllowed(): boolean {
+  return !isProductionRuntime();
 }

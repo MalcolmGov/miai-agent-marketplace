@@ -74,8 +74,8 @@ DEMO_BASE=https://… pnpm proof:webhook --url=https://hooks.example.com/miai
 ```
 
 Self-hosted sink (after deploy): `{APP_BASE_URL}/api/webhook/sink`  
-Inspect: `GET /api/webhook/sink`  
-Optional: set `WEBHOOK_SINK_SECRET` and pass the same value as the Actions shared secret.
+Inspect: `GET /api/webhook/sink` with `x-miai-signature` / `?token=`  
+**Production:** `WEBHOOK_SINK_SECRET` is required (POST + GET). Pass the same value as the Actions shared secret.
 
 In Actions → Webhook: paste URL + secret → Save webhook → Studio **live** chat.
 
@@ -85,7 +85,8 @@ MyInstantAI is the **MCP client**. Point Actions → MCP at a server that implem
 
 `POST {endpoint}/tools/call` with `{ "name": "<tool>", "arguments": {…} }` and `Authorization: Bearer <token>`.
 
-Self-hosted proof sink: `{APP_BASE_URL}/api/mcp` (inspect: `GET /api/mcp`).
+Self-hosted proof sink: `{APP_BASE_URL}/api/mcp` (inspect: `GET /api/mcp` with Bearer / `?token=`).  
+**Production:** `MCP_SINK_TOKEN` is required for POST `/api/mcp/tools/call` and GET inspect.
 
 ```bash
 DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:mcp
