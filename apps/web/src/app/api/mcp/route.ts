@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { sinksRequireSecret } from "@/lib/security";
+import { sinksRequireSecret, timingSafeEqualString } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +35,7 @@ function authorizeMcpInspect(req: Request): NextResponse | null {
   const auth = req.headers.get("authorization") || "";
   const bearer = auth.replace(/^Bearer\s+/i, "").trim();
   const token = bearer || new URL(req.url).searchParams.get("token") || "";
-  if (token !== expected) {
+  if (!timingSafeEqualString(token, expected)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   return null;

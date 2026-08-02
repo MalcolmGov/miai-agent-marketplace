@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
-import { sinksRequireSecret } from "@/lib/security";
+import { verifyWebhookSignature } from "@miai/connectors";
+import { sinksRequireSecret, timingSafeEqualString } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -39,7 +40,7 @@ async function persist(rows: SinkEvent[]) {
   }
 }
 
-function authorizeSink(req: Request): NextResponse | null {
+function authorizeInspect(req: Request): NextResponse | null {
   if (!sinksRequireSecret()) return null;
   const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
   if (!expected) {
@@ -48,11 +49,11 @@ function authorizeSink(req: Request): NextResponse | null {
       { status: 503 },
     );
   }
-  const signature =
+  const token =
     req.headers.get("x-miai-signature") ||
     new URL(req.url).searchParams.get("token") ||
     "";
-  if (signature !== expected) {
+  if (!timingSafeEqualString(token, expected)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
   return null;
@@ -62,27 +63,59 @@ function authorizeSink(req: Request): NextResponse | null {
  * Wave 4 proof sink — receives connector webhook POSTs.
  * Configure Actions → Webhook URL to:
  *   {APP_BASE_URL}/api/webhook/sink
- * Shared secret header: x-miai-signature (required in production).
+ *
+ * Prefers HMAC: x-miai-signature: v1=<hex>, x-miai-timestamp: <ms>
+ * Legacy raw shared secret still accepted for one transition window.
  */
 export async function POST(req: Request) {
-  const denied = authorizeSink(req);
-  if (denied) return denied;
+  const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
+  const rawBody = await req.text();
+  const signature = req.headers.get("x-miai-signature") || "";
+  const timestamp = req.headers.get("x-miai-timestamp");
 
-  // Local/dev: optional shared secret when configured
-  if (!sinksRequireSecret()) {
-    const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
-    const signature = req.headers.get("x-miai-signature");
-    if (expected && signature !== expected) {
+  if (sinksRequireSecret()) {
+    if (!expected) {
+      return NextResponse.json(
+        { error: "WEBHOOK_SINK_SECRET required in production" },
+        { status: 503 },
+      );
+    }
+    if (
+      !verifyWebhookSignature({
+        secret: expected,
+        signature,
+        timestamp,
+        body: rawBody,
+        allowLegacyRawSecret: true,
+      })
+    ) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
+  } else if (expected) {
+    if (
+      !verifyWebhookSignature({
+        secret: expected,
+        signature,
+        timestamp,
+        body: rawBody,
+        allowLegacyRawSecret: true,
+      })
+    ) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
   }
 
-  const signature = req.headers.get("x-miai-signature");
-  const payload = await req.json().catch(() => ({}));
+  let payload: unknown = {};
+  try {
+    payload = rawBody ? JSON.parse(rawBody) : {};
+  } catch {
+    payload = { raw: rawBody };
+  }
+
   const event: SinkEvent = {
     id: `wh_${randomBytes(6).toString("hex")}`,
     at: new Date().toISOString(),
-    signature: signature ? "present" : null,
+    signature: signature ? (signature.startsWith("v1=") ? "hmac-v1" : "present") : null,
     payload,
   };
   const rows = mem();
@@ -102,7 +135,7 @@ export async function POST(req: Request) {
 
 /** Inspect recent sink events — requires secret in production. */
 export async function GET(req: Request) {
-  const denied = authorizeSink(req);
+  const denied = authorizeInspect(req);
   if (denied) return denied;
 
   const url = new URL(req.url);

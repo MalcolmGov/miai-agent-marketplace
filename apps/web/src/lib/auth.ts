@@ -44,11 +44,19 @@ export async function resolveAuth(req: Request): Promise<AuthContext> {
     const headerUser = req.headers.get("x-user-id");
     const headerRoles = req.headers.get("x-roles");
     const envRoles = env("MIAI_MOCK_ROLES");
+    // Elevated mock defaults only outside production, or when dual mock-rails flags are set.
+    // Production without ACK must not silently grant owner+operator (boot also fails closed).
+    const elevatedMockDefault =
+      process.env.NODE_ENV !== "production" ||
+      (process.env.ALLOW_MOCK_RAILS === "1" &&
+        process.env.I_UNDERSTAND_MOCK_RAILS_IN_PROD === "1");
     let roles = headerRoles
       ? headerRoles.split(",").map((r) => r.trim()).filter(Boolean)
       : envRoles
         ? envRoles.split(",").map((r) => r.trim()).filter(Boolean)
-        : ["owner", "operator"];
+        : elevatedMockDefault
+          ? ["owner", "operator"]
+          : ["readonly"];
     const workspaceId = headerWs || url.searchParams.get("workspaceId") || WORKSPACE_ID;
     const userId = headerUser || url.searchParams.get("userId") || "demo-user";
 

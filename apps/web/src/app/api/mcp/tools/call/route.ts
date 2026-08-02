@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
-import { sinksRequireSecret } from "@/lib/security";
+import { sinksRequireSecret, timingSafeEqualString } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
@@ -58,10 +58,10 @@ export async function POST(req: Request) {
         { status: 503 },
       );
     }
-    if (token !== expected) {
+    if (!timingSafeEqualString(token, expected)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-  } else if (expected && token !== expected) {
+  } else if (expected && !timingSafeEqualString(token, expected)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

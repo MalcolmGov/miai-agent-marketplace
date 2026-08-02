@@ -3,7 +3,7 @@ import { addKnowledgeSource, updateKnowledgeSource } from "@/lib/knowledge";
 import { crawlSite } from "@/lib/ingest";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
-import { requireRole } from "@/lib/security";
+import { rateLimit, requireRole } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -13,6 +13,17 @@ export async function POST(req: Request) {
   if (!isAuthContext(auth)) return auth;
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
+
+  const limited = rateLimit(`knowledge-crawl:${auth.workspaceId}:${auth.userId}`, {
+    limit: 10,
+    windowMs: 60_000,
+  });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "Too many crawl requests — retry shortly" },
+      { status: 429, headers: { "retry-after": String(limited.retryAfterSec) } },
+    );
+  }
 
   const body = (await req.json()) as {
     agentId?: string;

@@ -8,7 +8,14 @@ import type { ToolBinding } from "@miai/connectors";
  *  config is needed; set EMBED_KEY_SECRET separately if you ever rotate the OAuth
  *  secret without wanting to invalidate installed website snippets. */
 function embedSecret(): string {
-  return process.env.EMBED_KEY_SECRET ?? process.env.OAUTH_TOKEN_SECRET ?? "dev-only-change-me";
+  const s = process.env.EMBED_KEY_SECRET ?? process.env.OAUTH_TOKEN_SECRET ?? "dev-only-change-me";
+  if (
+    process.env.NODE_ENV === "production" &&
+    (s === "dev-only-change-me" || s === "replace-with-long-random-string" || s.length < 16)
+  ) {
+    throw new Error("EMBED_KEY_SECRET / OAUTH_TOKEN_SECRET missing or weak in production");
+  }
+  return s;
 }
 
 /** Deterministic, stateless embed key: survives redeploys, needs no storage. */
@@ -177,7 +184,14 @@ async function hydrateFromPostgres(): Promise<PersistShape | null> {
 
 function sslFor(url: string): boolean | { rejectUnauthorized: boolean } {
   if (/localhost|127\.0\.0\.1/.test(url)) return false;
-  return { rejectUnauthorized: false };
+  // Prefer cert verification when a CA is available (PGSSLROOTCERT / NODE_EXTRA_CA_CERTS)
+  // or when PG_SSL_REJECT_UNAUTHORIZED=1. Default remains permissive for managed Postgres
+  // that presents non-public CAs until ops mounts a bundle (Phase 2).
+  const forceVerify =
+    process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
+    Boolean(process.env.PGSSLROOTCERT) ||
+    Boolean(process.env.NODE_EXTRA_CA_CERTS);
+  return { rejectUnauthorized: forceVerify };
 }
 
 function applyShape(data: PersistShape) {

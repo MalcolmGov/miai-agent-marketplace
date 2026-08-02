@@ -45,7 +45,14 @@ function storePath(): string {
 }
 
 function secret(): string {
-  return env("OAUTH_TOKEN_SECRET") ?? "dev-only-change-me";
+  const s = env("OAUTH_TOKEN_SECRET") ?? "dev-only-change-me";
+  if (
+    env("NODE_ENV") === "production" &&
+    (s === "dev-only-change-me" || s === "replace-with-long-random-string" || s.length < 16)
+  ) {
+    throw new Error("OAUTH_TOKEN_SECRET missing or weak in production");
+  }
+  return s;
 }
 
 /** 32-byte key derived from the configured secret. */

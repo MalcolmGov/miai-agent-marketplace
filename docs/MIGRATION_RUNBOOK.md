@@ -103,8 +103,8 @@ Rollback RTO target: **DNS TTL + 15 minutes** ops. Keep TTL ≤ 300s during cuto
 - [ ] Rotate any secrets that were shared with Railway
 - [ ] Confirm audit events appear in App Insights (`miai.audit.*`)
 - [ ] Update commercial/demo links to Azure host
-- [ ] Set `EMBED_ALLOWED_ORIGINS` to production hostnames (bare `*` needs `ALLOW_EMBED_ORIGIN_STAR=1` and is staging-only)
-- [ ] Unset `ALLOW_MOCK_RAILS` once OIDC + wallet + model are live
+- [ ] Set `EMBED_ALLOWED_ORIGINS` to production hostnames (bare `*` needs dual flags `ALLOW_EMBED_ORIGIN_STAR=1` + `I_UNDERSTAND_EMBED_ORIGIN_STAR=1` and is staging-only)
+- [ ] Unset `ALLOW_MOCK_RAILS` **and** `I_UNDERSTAND_MOCK_RAILS_IN_PROD` once OIDC + wallet + model are live
 - [ ] Confirm `WEBHOOK_SINK_SECRET` / `MCP_SINK_TOKEN` set if Wave4 sinks are enabled
 - [ ] Schedule P2: KV-only secret refs, load test
 

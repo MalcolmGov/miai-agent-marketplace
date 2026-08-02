@@ -106,7 +106,14 @@ async function hydrateFromPostgres(): Promise<TurnTranscript[] | null> {
     const Client = pgMod.default?.Client ?? pgMod.Client;
     const client = new Client({
       connectionString: url,
-      ssl: /localhost|127\.0\.0\.1/.test(url) ? false : { rejectUnauthorized: false },
+      ssl: /localhost|127\.0\.0\.1/.test(url)
+        ? false
+        : {
+            rejectUnauthorized:
+              process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
+              Boolean(process.env.PGSSLROOTCERT) ||
+              Boolean(process.env.NODE_EXTRA_CA_CERTS),
+          },
     });
     await client.connect();
     await client.query(`
@@ -149,7 +156,14 @@ async function persist(): Promise<void> {
     const Client = pgMod.default?.Client ?? pgMod.Client;
     const client = new Client({
       connectionString: url,
-      ssl: /localhost|127\.0\.0\.1/.test(url) ? false : { rejectUnauthorized: false },
+      ssl: /localhost|127\.0\.0\.1/.test(url)
+        ? false
+        : {
+            rejectUnauthorized:
+              process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
+              Boolean(process.env.PGSSLROOTCERT) ||
+              Boolean(process.env.NODE_EXTRA_CA_CERTS),
+          },
     });
     await client.connect();
     await client.query(`

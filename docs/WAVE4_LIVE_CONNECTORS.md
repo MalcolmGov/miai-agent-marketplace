@@ -74,7 +74,8 @@ DEMO_BASE=https://… pnpm proof:webhook --url=https://hooks.example.com/miai
 ```
 
 Self-hosted sink (after deploy): `{APP_BASE_URL}/api/webhook/sink`  
-Inspect: `GET /api/webhook/sink` with `x-miai-signature` / `?token=`  
+Inspect: `GET /api/webhook/sink` with `x-miai-signature` / `?token=` (shared secret).  
+Outbound POSTs use HMAC `x-miai-signature: v1=<hex>` + `x-miai-timestamp` (legacy raw secret still accepted on the sink).  
 **Production:** `WEBHOOK_SINK_SECRET` is required (POST + GET). Pass the same value as the Actions shared secret.
 
 In Actions → Webhook: paste URL + secret → Save webhook → Studio **live** chat.

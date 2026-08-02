@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import type { AuthContext } from "@/lib/auth";
 
@@ -30,6 +31,11 @@ const ALIASES: Record<string, WorkspaceRole | "operator"> = {
 
 const DEV_DEFAULT_SECRET = "dev-only-change-me";
 
+/** Second confirmation required with ALLOW_MOCK_RAILS in production. */
+export const MOCK_RAILS_ACK_ENV = "I_UNDERSTAND_MOCK_RAILS_IN_PROD";
+/** Second confirmation required with ALLOW_EMBED_ORIGIN_STAR in production. */
+export const EMBED_STAR_ACK_ENV = "I_UNDERSTAND_EMBED_ORIGIN_STAR";
+
 export function normalizeRoles(roles: string[]): string[] {
   const out = new Set<string>();
   for (const raw of roles) {
@@ -45,7 +51,6 @@ function bestWorkspaceRank(auth: AuthContext): number {
   let best = 0;
   for (const r of normalizeRoles(auth.roles)) {
     if (r in WORKSPACE_RANK) best = Math.max(best, WORKSPACE_RANK[r as WorkspaceRole]);
-    // Legacy: bare "admin" already mapped; platform operators get admin-equivalent on their home ws
     if (PLATFORM_ROLES.has(r) || r === "operator") best = Math.max(best, WORKSPACE_RANK.admin);
   }
   return best;
@@ -65,7 +70,6 @@ export function isOperator(auth: AuthContext): boolean {
 export function requireOperator(auth: AuthContext): NextResponse | null {
   const roles = normalizeRoles(auth.roles);
   const platform = roles.some((r) => r === "operator" || PLATFORM_ROLES.has(r));
-  // Demo: mock owners can open the operator view without a separate IdP role
   if (platform || (auth.mode === "mock" && hasMinRole(auth, "owner"))) return null;
   return NextResponse.json(
     { error: "Forbidden — platform operator role required" },
@@ -117,10 +121,23 @@ export function isProductionRuntime(): boolean {
   return process.env.NODE_ENV === "production";
 }
 
-/** Staging demos may keep mock auth/wallet/model when this is set. */
+function envFlag(name: string): boolean {
+  return process.env[name] === "1";
+}
+
+/**
+ * Staging demos may keep mock auth/wallet/model when BOTH flags are set in production:
+ * ALLOW_MOCK_RAILS=1 and I_UNDERSTAND_MOCK_RAILS_IN_PROD=1.
+ */
 export function mockRailsAllowed(): boolean {
   if (!isProductionRuntime()) return true;
-  return process.env.ALLOW_MOCK_RAILS === "1";
+  return envFlag("ALLOW_MOCK_RAILS") && envFlag(MOCK_RAILS_ACK_ENV);
+}
+
+/** Bare embed CORS `*` in production requires dual acknowledgment. */
+export function embedOriginStarAllowed(): boolean {
+  if (!isProductionRuntime()) return true;
+  return envFlag("ALLOW_EMBED_ORIGIN_STAR") && envFlag(EMBED_STAR_ACK_ENV);
 }
 
 export function isWeakSecret(value: string | undefined): boolean {
@@ -132,6 +149,10 @@ export function isWeakSecret(value: string | undefined): boolean {
 }
 
 export type HardeningCheck = { ok: true } | { ok: false; errors: string[] };
+
+function dualFlagHint(primary: string, ack: string): string {
+  return `set ${primary}=1 and ${ack}=1 (staging demos only)`;
+}
 
 /** Strong secrets required whenever OIDC is on, or production without mock rails. */
 export function checkProductionSecrets(): HardeningCheck {
@@ -157,24 +178,50 @@ export function checkProductionSecrets(): HardeningCheck {
   return errors.length ? { ok: false, errors } : { ok: true };
 }
 
-/** Refuse mock auth/wallet/model in production unless ALLOW_MOCK_RAILS=1. */
+/**
+ * Refuse mock auth/wallet/model in production unless dual mock-rails flags are set.
+ * Also catch half-configured escape hatches (one flag without the other).
+ */
 export function checkProductionRails(): HardeningCheck {
-  if (mockRailsAllowed()) return { ok: true };
+  if (!isProductionRuntime()) return { ok: true };
 
   const errors: string[] = [];
+  const allow = envFlag("ALLOW_MOCK_RAILS");
+  const ack = envFlag(MOCK_RAILS_ACK_ENV);
+
+  if (allow !== ack) {
+    errors.push(
+      `Mock rails escape hatch incomplete — ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)}`,
+    );
+  }
+
+  const embedStar = envFlag("ALLOW_EMBED_ORIGIN_STAR");
+  const embedAck = envFlag(EMBED_STAR_ACK_ENV);
+  if (embedStar !== embedAck) {
+    errors.push(
+      `Embed origin * escape hatch incomplete — ${dualFlagHint("ALLOW_EMBED_ORIGIN_STAR", EMBED_STAR_ACK_ENV)}`,
+    );
+  }
+
+  if (mockRailsAllowed()) return errors.length ? { ok: false, errors } : { ok: true };
+
   const auth = process.env.MIAI_AUTH_MODE ?? "mock";
   const wallet = process.env.MIAI_WALLET_MODE ?? "mock";
   const model = process.env.MIAI_MODEL_MODE ?? "mock";
 
   if (auth === "mock") {
-    errors.push("MIAI_AUTH_MODE=mock blocked in production (set OIDC or ALLOW_MOCK_RAILS=1)");
+    errors.push(
+      `MIAI_AUTH_MODE=mock blocked in production (set OIDC or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)})`,
+    );
   }
   if (wallet === "mock") {
-    errors.push("MIAI_WALLET_MODE=mock blocked in production (set http or ALLOW_MOCK_RAILS=1)");
+    errors.push(
+      `MIAI_WALLET_MODE=mock blocked in production (set http or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)})`,
+    );
   }
   if (model === "mock") {
     errors.push(
-      "MIAI_MODEL_MODE=mock blocked in production (set openai|anthropic|gateway or ALLOW_MOCK_RAILS=1)",
+      `MIAI_MODEL_MODE=mock blocked in production (set openai|anthropic|gateway or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)})`,
     );
   }
   return errors.length ? { ok: false, errors } : { ok: true };
@@ -201,16 +248,50 @@ export function assertProductionSecrets(): void {
   }
 }
 
+function logMockRailsAlert(): void {
+  if (!isProductionRuntime() || !mockRailsAllowed()) return;
+  console.warn(
+    JSON.stringify({
+      level: "warn",
+      event: "miai.mock_rails_enabled",
+      message:
+        "Production boot with mock auth/wallet/model — dual escape hatch acknowledged. Not for customer cutover.",
+      ALLOW_MOCK_RAILS: "1",
+      [MOCK_RAILS_ACK_ENV]: "1",
+      MIAI_AUTH_MODE: process.env.MIAI_AUTH_MODE ?? "mock",
+      MIAI_WALLET_MODE: process.env.MIAI_WALLET_MODE ?? "mock",
+      MIAI_MODEL_MODE: process.env.MIAI_MODEL_MODE ?? "mock",
+    }),
+  );
+}
+
+function logEmbedStarAlert(): void {
+  if (!isProductionRuntime() || !embedOriginStarAllowed()) return;
+  console.warn(
+    JSON.stringify({
+      level: "warn",
+      event: "miai.embed_origin_star_enabled",
+      message: "Production boot allows EMBED_ALLOWED_ORIGINS=* — dual escape hatch acknowledged.",
+      ALLOW_EMBED_ORIGIN_STAR: "1",
+      [EMBED_STAR_ACK_ENV]: "1",
+    }),
+  );
+}
+
 /** Called from instrumentation.ts on Node server start. */
 export function assertBootHardening(): void {
   const check = checkBootHardening();
-  if (check.ok) return;
-  for (const e of check.errors) console.error(`[security] ${e}`);
-  if (isProductionRuntime()) {
-    throw new Error(
-      `[security] Refusing to start — fix env or set ALLOW_MOCK_RAILS=1 for staging demos.\n- ${check.errors.join("\n- ")}`,
-    );
+  if (!check.ok) {
+    for (const e of check.errors) console.error(`[security] ${e}`);
+    if (isProductionRuntime()) {
+      throw new Error(
+        `[security] Refusing to start — fix env or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)} for staging demos.\n- ${check.errors.join("\n- ")}`,
+      );
+    }
+    return;
   }
+  logMockRailsAlert();
+  logEmbedStarAlert();
 }
 
 /** Wave4 proof sinks must require secrets outside local/dev. */
@@ -221,4 +302,12 @@ export function sinksRequireSecret(): boolean {
 /** Demo embed keys (`mia_pk_*_demo`) only for local/dev. */
 export function demoEmbedKeysAllowed(): boolean {
   return !isProductionRuntime();
+}
+
+/** Timing-safe compare for sink / bearer tokens. */
+export function timingSafeEqualString(a: string, b: string): boolean {
+  const ba = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ba.length !== bb.length) return false;
+  return timingSafeEqual(ba, bb);
 }

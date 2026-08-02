@@ -115,3 +115,46 @@ export async function assertSafeOutboundUrlOrThrow(raw: string): Promise<URL> {
   if (!result.ok) throw new Error(`SSRF blocked: ${result.reason}`);
   return result.url;
 }
+
+/**
+ * Fetch after SSRF checks, pinning DNS to a validated address (mitigates rebinding).
+ * Uses undici's connect.lookup override when available; otherwise fetch with redirect:manual.
+ */
+export async function safeFetch(raw: string, init?: RequestInit): Promise<Response> {
+  const result = await assertSafeOutboundUrl(raw);
+  if (!result.ok) throw new Error(`SSRF blocked: ${result.reason}`);
+  const { url, addresses } = result;
+  const ip = addresses[0];
+  const family = net.isIPv6(ip) ? 6 : 4;
+
+  const headers = new Headers(init?.headers);
+  const merged: RequestInit = {
+    ...init,
+    headers,
+    redirect: init?.redirect ?? "manual",
+  };
+
+  try {
+    // Node ships undici; pin connect to the pre-validated IP (anti DNS-rebinding).
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const undici = (await Function('return import("undici")')()) as any;
+    const agent = new undici.Agent({
+      connect: {
+        lookup: (
+          _hostname: string,
+          _opts: object,
+          cb: (err: Error | null, address: string, family: number) => void,
+        ) => {
+          cb(null, ip, family);
+        },
+      },
+    });
+    return (await undici.fetch(url.toString(), {
+      ...merged,
+      dispatcher: agent,
+    })) as Response;
+  } catch {
+    // Fallback: validated URL only (no pin) — still blocks private DNS at check time
+    return fetch(url.toString(), merged);
+  }
+}

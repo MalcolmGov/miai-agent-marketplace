@@ -49,9 +49,16 @@ export { executeLive, stubFor } from "./live/execute.js";
 export {
   assertSafeOutboundUrl,
   assertSafeOutboundUrlOrThrow,
+  safeFetch,
   isBlockedIp,
   type SafeUrlResult,
 } from "./ssrf.js";
+
+export {
+  signWebhookPayload,
+  verifyWebhookSignature,
+  timingSafeEqualString,
+} from "./webhook-sig.js";
 
 import type { ConnectorCall, ConnectorMeta, ConnectorResult } from "./types.js";
 import { executeLive, stubFor } from "./live/execute.js";

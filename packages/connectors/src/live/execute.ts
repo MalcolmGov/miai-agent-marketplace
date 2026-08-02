@@ -501,15 +501,23 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
 }
 
 async function postWebhook(url: string, secret: string, payload: unknown): Promise<Record<string, unknown>> {
-  const { assertSafeOutboundUrlOrThrow } = await import("../ssrf.js");
-  const safe = await assertSafeOutboundUrlOrThrow(url);
-  const res = await fetch(safe.toString(), {
+  const { safeFetch } = await import("../ssrf.js");
+  const { signWebhookPayload } = await import("../webhook-sig.js");
+  const body = JSON.stringify(payload);
+  const timestamp = String(Date.now());
+  const signature = secret ? signWebhookPayload(secret, timestamp, body) : "";
+  const res = await safeFetch(url, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-miai-signature": secret,
+      ...(signature
+        ? {
+            "x-miai-signature": signature,
+            "x-miai-timestamp": timestamp,
+          }
+        : {}),
     },
-    body: JSON.stringify(payload),
+    body,
     redirect: "manual",
   });
   if (res.status >= 300 && res.status < 400) {
@@ -1082,7 +1090,8 @@ async function wooOrder(config: Record<string, string>, args: Record<string, unk
   if (!base || !key || !secret) throw new Error("WooCommerce store_url + keys required");
   const orderId = String(args.order_id ?? "");
   const auth = Buffer.from(`${key}:${secret}`).toString("base64");
-  const res = await fetch(`${base}/wp-json/wc/v3/orders/${orderId}`, {
+  const { safeFetch } = await import("../ssrf.js");
+  const res = await safeFetch(`${base}/wp-json/wc/v3/orders/${orderId}`, {
     headers: { authorization: `Basic ${auth}` },
   });
   if (!res.ok) throw new Error(`WooCommerce ${res.status}`);
@@ -1126,7 +1135,8 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         const token = keyTok?.meta.token || keyTok?.accessToken || config.token || "";
         if (!endpoint) throw new Error("MCP endpoint missing");
         const bearer = token === "configured" ? config.token ?? "" : token;
-        const res = await fetch(`${endpoint}/tools/call`, {
+        const { safeFetch } = await import("../ssrf.js");
+        const res = await safeFetch(`${endpoint}/tools/call`, {
           method: "POST",
           headers: {
             "content-type": "application/json",

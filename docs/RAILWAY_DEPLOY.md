@@ -33,12 +33,19 @@ Service → **Variables**. Minimum for a customer-like walk:
 | `KNOWLEDGE_STORE_PATH` | `/data/knowledge-sources.json` |
 | `CATALOG_DIR` | `/app/data/catalog` |
 | `NODE_ENV` | `production` |
-| `ALLOW_MOCK_RAILS` | `1` while auth/wallet/model stay mock (required or boot fails) |
+| `ALLOW_MOCK_RAILS` | `1` while auth/wallet/model stay mock |
+| `I_UNDERSTAND_MOCK_RAILS_IN_PROD` | `1` — **required with** `ALLOW_MOCK_RAILS` (dual escape hatch) |
 | `ALLOW_EMBED_ORIGIN_STAR` | `1` only if you still need `EMBED_ALLOWED_ORIGINS=*` on staging |
+| `I_UNDERSTAND_EMBED_ORIGIN_STAR` | `1` — **required with** `ALLOW_EMBED_ORIGIN_STAR` |
 | `WEBHOOK_SINK_SECRET` | long random — required for `/api/webhook/sink` in production |
 | `MCP_SINK_TOKEN` | long random — required for `/api/mcp` in production |
+| `PG_SSL_REJECT_UNAUTHORIZED` | optional `1` when Postgres presents a verifiable CA (or set `PGSSLROOTCERT`) |
 
-Without `ALLOW_MOCK_RAILS=1`, production refuses `MIAI_*_MODE=mock` at boot/health. Remove that flag at customer cutover when OIDC + wallet + model gateway are live.
+**Mock rails (staging demos):** both `ALLOW_MOCK_RAILS=1` **and** `I_UNDERSTAND_MOCK_RAILS_IN_PROD=1` are required, or boot/health fail closed. Setting only one flag also fails. Boot emits a structured warning when mock rails are enabled. Unset **both** at customer cutover when OIDC + wallet + model gateway are live.
+
+**Embed `*` CORS:** same dual-flag pattern (`ALLOW_EMBED_ORIGIN_STAR` + `I_UNDERSTAND_EMBED_ORIGIN_STAR`). Prefer an explicit `EMBED_ALLOWED_ORIGINS` allowlist.
+
+**Webhooks:** outbound connectors send `x-miai-signature: v1=<hmac>` + `x-miai-timestamp`. The proof sink accepts HMAC (preferred) and legacy raw secret for one transition window.
 
 Add connector secrets as you test them, e.g. Slack:
 

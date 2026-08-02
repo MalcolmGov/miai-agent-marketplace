@@ -1,3 +1,5 @@
+import { embedOriginStarAllowed } from "@/lib/security";
+
 /** Build CORS headers for the public embed chat API. */
 
 function appOrigin(): string | null {
@@ -11,13 +13,14 @@ function appOrigin(): string | null {
 }
 
 /**
- * In production, bare `*` is denied unless ALLOW_EMBED_ORIGIN_STAR=1 (staging only).
+ * In production, bare `*` is denied unless dual flags:
+ * ALLOW_EMBED_ORIGIN_STAR=1 and I_UNDERSTAND_EMBED_ORIGIN_STAR=1 (staging only).
  * Missing config falls back to APP_BASE_URL origin, else deny browser cross-origin.
  */
 function allowedOrigins(): string[] | "*" {
   const raw = process.env.EMBED_ALLOWED_ORIGINS?.trim();
   const prod = process.env.NODE_ENV === "production";
-  const starOk = process.env.ALLOW_EMBED_ORIGIN_STAR === "1";
+  const starOk = embedOriginStarAllowed();
 
   if (!raw) {
     if (prod && !starOk) {

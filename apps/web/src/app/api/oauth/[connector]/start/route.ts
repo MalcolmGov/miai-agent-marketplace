@@ -6,7 +6,7 @@ import {
 } from "@miai/connectors";
 import { getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
-import { requireRole } from "@/lib/security";
+import { rateLimit, requireRole } from "@/lib/security";
 
 export async function GET(
   req: Request,
@@ -16,6 +16,17 @@ export async function GET(
   if (!isAuthContext(auth)) return auth;
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
+
+  const limited = rateLimit(`oauth-start:${auth.workspaceId}:${auth.userId}`, {
+    limit: 20,
+    windowMs: 60_000,
+  });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "Too many OAuth starts — retry shortly" },
+      { status: 429, headers: { "retry-after": String(limited.retryAfterSec) } },
+    );
+  }
 
   const { connector } = await ctx.params;
   if (!isOAuthConnector(connector)) {
