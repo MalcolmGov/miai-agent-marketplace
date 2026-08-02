@@ -352,16 +352,16 @@ export function CatalogGrid({
               <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
             </svg>
             <input
-              className="input !pl-11 !pr-[10.5rem] sm:!pr-[12.25rem]"
+              className="input !pl-11 !pr-[7.25rem] sm:!pr-[12.25rem]"
               placeholder={t("catalog.searchPlaceholder")}
               value={q}
               onChange={(e) => setQ(e.target.value)}
               aria-label={t("catalog.searchPlaceholder")}
             />
-            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-1">
+            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5 sm:gap-1">
               <button
                 type="button"
-                className={`inline-flex h-8 items-center gap-1 rounded-lg px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition ${
+                className={`inline-flex h-8 items-center gap-1 rounded-lg px-1.5 text-[10px] font-semibold uppercase tracking-[0.06em] transition sm:px-2 sm:text-[11px] ${
                   smartFilter
                     ? "text-[var(--accent-bright)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--accent)_28%,transparent)]"
                     : "text-[var(--muted-dim)] hover:text-[var(--text)]"
@@ -420,8 +420,7 @@ export function CatalogGrid({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex flex-wrap gap-1.5" role="group" aria-label={t("catalog.audience")}>
+          <div className="catalog-filter-scroll" role="group" aria-label={t("catalog.audience")}>
               {AUDIENCES.map((a) => (
                 <button
                   key={a.id}
@@ -475,14 +474,13 @@ export function CatalogGrid({
                 {t("catalog.demo6")}
                 <span className="cat-count">{pilotOnly ? familyCount : 100}</span>
               </button>
-            </div>
 
             <label className="sr-only" htmlFor="market-filter">
               {t("catalog.market")}
             </label>
             <select
               id="market-filter"
-              className="input !w-auto !py-2 text-xs font-semibold uppercase tracking-wide"
+              className="input !w-auto !min-w-[6.5rem] !py-2 text-xs font-semibold uppercase tracking-wide"
               value={market}
               onChange={(e) => {
                 setSmartFilter(false);
@@ -501,7 +499,7 @@ export function CatalogGrid({
             </label>
             <select
               id="category-filter"
-              className="input !w-auto max-w-[220px] !py-2 text-xs font-semibold"
+              className="input !w-auto !min-w-[8rem] max-w-[220px] !py-2 text-xs font-semibold"
               value={category}
               onChange={(e) => {
                 setSmartFilter(false);

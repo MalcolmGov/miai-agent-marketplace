@@ -164,7 +164,7 @@ export function SandboxChat({
   }
 
   return (
-    <div id="agent-chat" className="panel flex h-[520px] flex-col overflow-hidden scroll-mt-24">
+    <div id="agent-chat" className="studio-chat-panel panel flex flex-col overflow-hidden scroll-mt-24">
       <div className="border-b border-[var(--line)] px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div>

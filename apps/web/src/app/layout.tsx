@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Manrope, JetBrains_Mono } from "next/font/google";
 import { Shell } from "@/components/Shell";
@@ -23,6 +23,16 @@ export const metadata: Metadata = {
   title: "MyInstantAI Agents — The global agent marketplace",
   description:
     "Rent production-ready AI agent families across US, EU, Africa, and Asia. Configure, connect Actions, embed, and run on prepaid tokens.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#070b12" },
+    { media: "(prefers-color-scheme: light)", color: "#e6edf5" },
+  ],
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

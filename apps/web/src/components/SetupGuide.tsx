@@ -270,14 +270,14 @@ export function SetupGuide({
                   {step.done ? "✓" : idx + 1}
                 </span>
                 <span
-                  className={`text-[10px] font-semibold leading-tight sm:text-xs ${
+                  className={`setup-step-label text-[10px] font-semibold leading-tight sm:text-xs ${
                     active || step.done ? "text-[var(--text)]" : "text-[var(--muted)]"
                   }`}
                 >
                   {step.title}
                 </span>
                 <span
-                  className={`max-w-full truncate rounded-full border px-1.5 py-0.5 text-[9px] font-medium leading-none sm:text-[10px] ${requirementClass(step.requirement)}`}
+                  className={`setup-step-req max-w-full truncate rounded-full border px-1.5 py-0.5 text-[9px] font-medium leading-none sm:text-[10px] ${requirementClass(step.requirement)}`}
                 >
                   {step.requirement === "optional"
                     ? "Optional"

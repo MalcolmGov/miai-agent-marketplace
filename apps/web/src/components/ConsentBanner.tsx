@@ -49,7 +49,7 @@ export function ConsentBanner() {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-[80] border-t border-[var(--line-strong)] bg-[var(--bg-panel)] px-4 py-4 text-[var(--text)] sm:px-6"
+      className="fixed inset-x-0 bottom-0 z-[80] border-t border-[var(--line-strong)] bg-[var(--bg-panel)] px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] text-[var(--text)] sm:px-6"
       style={{
         // Solid panel + soft lift so catalogue cards never show through.
         boxShadow: "0 -12px 40px rgba(0,0,0,0.55)",
