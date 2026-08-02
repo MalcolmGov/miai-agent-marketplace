@@ -21,7 +21,7 @@ import {
   workflowCapabilityChips,
   workflowDemoHint,
 } from "@/lib/workflows";
-import { buildEmbedScriptTag } from "@/lib/agent-js-sri";
+import { buildEmbedScriptTag } from "@/lib/agent-js-script";
 import { useEffect, useMemo, useState } from "react";
 
 interface AgentPayload {
@@ -81,7 +81,7 @@ export function AgentStudio({
   scriptIntegrity,
 }: {
   agentId: string;
-  scriptIntegrity?: string;
+  scriptIntegrity: string;
 }) {
   const t = useT();
   const [data, setData] = useState<AgentPayload | null>(null);

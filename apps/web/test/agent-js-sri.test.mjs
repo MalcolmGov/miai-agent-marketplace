@@ -5,8 +5,8 @@ import {
   AGENT_JS_INTEGRITY,
   computeAgentJsIntegrity,
   agentJsDigestHeader,
-  buildEmbedScriptTag,
 } from "../src/lib/agent-js-sri.ts";
+import { buildEmbedScriptTag } from "../src/lib/agent-js-script.ts";
 
 const SRI_RE = /^sha384-[A-Za-z0-9+/=]+$/;
 
@@ -30,6 +30,7 @@ describe("agent.js SRI", () => {
     const tag = buildEmbedScriptTag({
       src: "https://example.com/agents/v1/agent.js",
       key: "mia_pk_test",
+      integrity: AGENT_JS_INTEGRITY,
     });
     assert.match(tag, /integrity="sha384-[A-Za-z0-9+/=]+"/);
     assert.match(tag, /crossorigin="anonymous"/);
