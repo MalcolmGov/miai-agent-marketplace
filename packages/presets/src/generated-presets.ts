@@ -2207,6 +2207,10 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
         "connector": "webhook"
       },
       {
+        "tool": "log_refill_request",
+        "connector": "webhook"
+      },
+      {
         "tool": "handoff_to_human",
         "connector": "slack"
       }
@@ -3686,6 +3690,10 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "store_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_refill_request",
         "connector": "webhook"
       },
       {

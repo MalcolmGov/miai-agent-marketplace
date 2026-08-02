@@ -13,3 +13,8 @@
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), Slack (`handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-dental-front-desk`): Oak Street Dental Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-dental-front-desk`): Oak Street Dental Rosebank (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-dental-front-desk`): Oak Street Dental Orchard (Singapore); PDPA / regional privacy; local currency; local emergency services.

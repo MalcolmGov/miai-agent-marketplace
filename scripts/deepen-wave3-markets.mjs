@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 /**
- * Deepen Wave 3 market packs for Cursor-owned remaining-37 families.
- * Source of truth: us-{family}.agent.json (Depth strong).
+ * Deepen Wave 3 market packs from us-{family} heroes.
  * Rewrites eu-/africa-/asia- packs with regional tenants, clean compliance,
  * grounded evals (no compliance-in-input pollution), version 1.1.0.
  *
- * NEVER touches Go-live 18 (Claude's lane) — hard deny list below.
+ * Cluster B (Claude go-live) is hard-protected and never overwritten.
  *
- * Usage: node scripts/deepen-wave3-markets.mjs [--cluster=d|e|f|all]
+ * Usage: node scripts/deepen-wave3-markets.mjs [--cluster=a|c|d|e|f|ac|all]
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -19,29 +18,33 @@ const catalogDir = path.join(root, "data/catalog");
 const pilotsDir = path.join(root, "docs/pilots");
 const packsFile = path.join(catalogDir, "market-packs.json");
 
-/** Claude Wave 3 Go-live 18 — never overwrite these market packs. */
-const GO_LIVE_18 = new Set([
-  "executive-assistant",
-  "it-helpdesk",
-  "dental-front-desk",
-  "hotel-guest",
-  "sales-qualifier",
-  "home-services",
+/** Claude Cluster B — never overwrite these market packs. */
+const CLUSTER_B_PROTECTED = new Set([
   "restaurant-takeaway",
   "salon-booking",
   "clinic-front-desk",
   "customer-support",
   "delivery-tracking",
   "trades-receptionist",
-  "events-venue",
-  "onboarding-buddy",
-  "accounting-practice",
-  "building-management",
-  "gym-membership",
-  "pharmacy",
 ]);
 
 const CLUSTERS = {
+  a: [
+    "executive-assistant",
+    "it-helpdesk",
+    "dental-front-desk",
+    "hotel-guest",
+    "sales-qualifier",
+    "home-services",
+  ],
+  c: [
+    "events-venue",
+    "onboarding-buddy",
+    "accounting-practice",
+    "building-management",
+    "gym-membership",
+    "pharmacy",
+  ],
   d: [
     "admissions",
     "agency-studio",
@@ -89,6 +92,78 @@ const CLUSTERS = {
 
 /** Per-family regional tenants (fictional, replaceable). */
 const TENANTS = {
+  "executive-assistant": {
+    us: { name: "Maya Chen / Ridgeway Labs EA desk", city: "Austin, TX" },
+    eu: { name: "Maya Chen / Ridgeway Labs Berlin EA desk", city: "Berlin" },
+    africa: { name: "Maya Chen / Ridgeway Labs Johannesburg EA desk", city: "Johannesburg" },
+    asia: { name: "Maya Chen / Ridgeway Labs Singapore EA desk", city: "Singapore" },
+  },
+  "it-helpdesk": {
+    us: { name: "Ridgeway Labs IT Helpdesk", city: "Austin, TX" },
+    eu: { name: "Ridgeway Labs IT Berlin", city: "Berlin" },
+    africa: { name: "Ridgeway Labs IT Johannesburg", city: "Johannesburg" },
+    asia: { name: "Ridgeway Labs IT Singapore", city: "Singapore" },
+  },
+  "dental-front-desk": {
+    us: { name: "Oak Street Dental", city: "Austin, TX" },
+    eu: { name: "Oak Street Dental Berlin", city: "Berlin" },
+    africa: { name: "Oak Street Dental Rosebank", city: "Johannesburg" },
+    asia: { name: "Oak Street Dental Orchard", city: "Singapore" },
+  },
+  "hotel-guest": {
+    us: { name: "Riverbend Inn Austin", city: "Austin, TX" },
+    eu: { name: "Riverbend Inn Amsterdam", city: "Amsterdam" },
+    africa: { name: "Riverbend Inn Cape Town", city: "Cape Town" },
+    asia: { name: "Riverbend Inn Singapore", city: "Singapore" },
+  },
+  "sales-qualifier": {
+    us: { name: "Ledgerly", city: "Austin, TX" },
+    eu: { name: "Ledgerly Berlin", city: "Berlin" },
+    africa: { name: "Ledgerly Johannesburg", city: "Johannesburg" },
+    asia: { name: "Ledgerly Singapore", city: "Singapore" },
+  },
+  "home-services": {
+    us: { name: "HomeLine Services Austin", city: "Austin, TX" },
+    eu: { name: "HomeLine Services Berlin", city: "Berlin" },
+    africa: { name: "HomeLine Services Johannesburg", city: "Johannesburg" },
+    asia: { name: "HomeLine Services Singapore", city: "Singapore" },
+  },
+  "events-venue": {
+    us: { name: "Willow Creek Estate", city: "Austin, TX" },
+    eu: { name: "Willow Creek Estate Berlin", city: "Berlin" },
+    africa: { name: "Willow Creek Estate Stellenbosch", city: "Cape Town" },
+    asia: { name: "Willow Creek Estate Singapore", city: "Singapore" },
+  },
+  "onboarding-buddy": {
+    us: { name: "Ridgeway Labs", city: "Austin, TX" },
+    eu: { name: "Ridgeway Labs Berlin", city: "Berlin" },
+    africa: { name: "Ridgeway Labs Johannesburg", city: "Johannesburg" },
+    asia: { name: "Ridgeway Labs Singapore", city: "Singapore" },
+  },
+  "accounting-practice": {
+    us: { name: "Ledgerline Accountants", city: "Austin, TX" },
+    eu: { name: "Ledgerline Accountants Berlin", city: "Berlin" },
+    africa: { name: "Ledgerline Accountants Johannesburg", city: "Johannesburg" },
+    asia: { name: "Ledgerline Accountants Singapore", city: "Singapore" },
+  },
+  "building-management": {
+    us: { name: "Cedar Ridge Condominiums", city: "Austin, TX" },
+    eu: { name: "Cedar Ridge Residences Berlin", city: "Berlin" },
+    africa: { name: "Cedar Ridge Residences Sandton", city: "Johannesburg" },
+    asia: { name: "Cedar Ridge Residences Singapore", city: "Singapore" },
+  },
+  "gym-membership": {
+    us: { name: "Ironleaf Fitness", city: "Austin, TX" },
+    eu: { name: "Ironleaf Fitness Berlin", city: "Berlin" },
+    africa: { name: "Ironleaf Fitness Johannesburg", city: "Johannesburg" },
+    asia: { name: "Ironleaf Fitness Singapore", city: "Singapore" },
+  },
+  pharmacy: {
+    us: { name: "Riverside Community Pharmacy", city: "Austin, TX" },
+    eu: { name: "Riverside Community Pharmacy Berlin", city: "Berlin" },
+    africa: { name: "Riverside Community Pharmacy Johannesburg", city: "Johannesburg" },
+    asia: { name: "Riverside Community Pharmacy Singapore", city: "Singapore" },
+  },
   admissions: {
     us: { name: "Horizon College of Technology", city: "Austin, TX", phone: "512-555-0144" },
     eu: { name: "Horizon College Berlin", city: "Berlin", phone: "+49 30 1234 5600" },
@@ -491,8 +566,8 @@ function localizeEvals(evals, family, market, pack, usTenant, destTenant) {
 }
 
 function deepenPack(family, market, packsById) {
-  if (GO_LIVE_18.has(family)) {
-    throw new Error(`Refusing to overwrite Go-live 18 pack: ${market}-${family} (Claude lane)`);
+  if (CLUSTER_B_PROTECTED.has(family)) {
+    throw new Error(`Refusing to overwrite Cluster B pack: ${market}-${family} (Claude lane)`);
   }
   const usPath = path.join(catalogDir, `us-${family}.agent.json`);
   const outPath = path.join(catalogDir, `${market}-${family}.agent.json`);
@@ -587,12 +662,16 @@ function updatePilotDoc(family) {
 function main() {
   const arg = process.argv.find((a) => a.startsWith("--cluster="));
   const cluster = (arg?.split("=")[1] || "all").toLowerCase();
-  const families =
-    cluster === "all"
-      ? [...CLUSTERS.d, ...CLUSTERS.e, ...CLUSTERS.f]
-      : CLUSTERS[cluster];
+  let families;
+  if (cluster === "all") {
+    families = [...CLUSTERS.d, ...CLUSTERS.e, ...CLUSTERS.f];
+  } else if (cluster === "ac") {
+    families = [...CLUSTERS.a, ...CLUSTERS.c];
+  } else {
+    families = CLUSTERS[cluster];
+  }
   if (!families) {
-    console.error("Unknown cluster. Use d|e|f|all");
+    console.error("Unknown cluster. Use a|c|d|e|f|ac|all");
     process.exit(1);
   }
 

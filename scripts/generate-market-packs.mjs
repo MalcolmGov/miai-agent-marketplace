@@ -15,26 +15,14 @@ const packsFile = path.join(catalogDir, "market-packs.json");
 const PACK_MARKETS = ["us", "eu", "africa", "asia"];
 const PREFIX_RE = /^(us|eu|africa|asia)-/;
 
-/** Never overwrite these if an africa-/eu-/asia- file already exists (Claude Go-live 18). */
-const GO_LIVE_18 = new Set([
-  "executive-assistant",
-  "it-helpdesk",
-  "dental-front-desk",
-  "hotel-guest",
-  "sales-qualifier",
-  "home-services",
+/** Never overwrite Claude Cluster B deepened packs. */
+const CLUSTER_B_PROTECTED = new Set([
   "restaurant-takeaway",
   "salon-booking",
   "clinic-front-desk",
   "customer-support",
   "delivery-tracking",
   "trades-receptionist",
-  "events-venue",
-  "onboarding-buddy",
-  "accounting-practice",
-  "building-management",
-  "gym-membership",
-  "pharmacy",
 ]);
 
 function familyIdFromAgentId(id) {
@@ -293,8 +281,8 @@ function main() {
     for (const market of PACK_MARKETS) {
       const id = variantId(family, market);
       const outPath = path.join(catalogDir, `${id}.agent.json`);
-      // Never clobber Claude Go-live 18 deepened packs.
-      if (GO_LIVE_18.has(family) && market !== "us" && fs.existsSync(outPath)) {
+      // Never clobber Claude Cluster B deepened packs.
+      if (CLUSTER_B_PROTECTED.has(family) && market !== "us" && fs.existsSync(outPath)) {
         if (!variants[market]) {
           variants[market] = JSON.parse(fs.readFileSync(outPath, "utf8"));
         }

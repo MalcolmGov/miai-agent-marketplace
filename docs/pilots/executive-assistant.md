@@ -13,3 +13,8 @@
 - Live connectors required: Google Calendar (`check_calendar`, `schedule_meeting`), Slack (`notify_team`, `handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-executive-assistant`): Maya Chen / Ridgeway Labs Berlin EA desk (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-executive-assistant`): Maya Chen / Ridgeway Labs Johannesburg EA desk (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-executive-assistant`): Maya Chen / Ridgeway Labs Singapore EA desk (Singapore); PDPA / regional privacy; local currency; local emergency services.

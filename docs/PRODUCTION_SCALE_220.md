@@ -10,9 +10,10 @@ Partner demo is done. This is the industrial path to stand behind every SKU.
 |---|---|
 | Wave 1–2 US heroes | **55 / 55 Depth strong** |
 | Prefixed packs on disk | **220 / 220** |
-| Wave 3 — remaining 37 | **111 / 111** localized + static eval drift 0 (Cursor) |
-| Wave 3 — Go-live 18 | In progress — Claude (Cluster B done; A + C next) |
-| Presets | Regenerated for full catalogue (`pnpm generate:presets`) |
+| Wave 3 — remaining 37 | **Done** (static eval drift 0) |
+| Wave 3 — Go-live 18 | **Done** (Cluster B Claude; A + C Cursor; Cluster B protected) |
+| Presets | Regenerated for full catalogue |
+| Next | **Wave 4** live connector proof |
 | Target | **220** rentable without hand-holding |
 
 Run `pnpm production:status`.

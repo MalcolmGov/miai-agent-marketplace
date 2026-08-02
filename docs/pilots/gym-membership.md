@@ -12,3 +12,8 @@
 - Live connectors required: Membership/billing system + SMS (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-gym-membership`): Ironleaf Fitness Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-gym-membership`): Ironleaf Fitness Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-gym-membership`): Ironleaf Fitness Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

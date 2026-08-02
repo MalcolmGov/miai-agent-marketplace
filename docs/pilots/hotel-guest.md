@@ -13,3 +13,8 @@
 - Live connectors required: Slack (`make_guest_request` notify / `handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-hotel-guest`): Riverbend Inn Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-hotel-guest`): Riverbend Inn Cape Town (Cape Town); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-hotel-guest`): Riverbend Inn Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

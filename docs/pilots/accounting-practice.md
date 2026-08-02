@@ -12,3 +12,8 @@
 - Live connectors required: Practice CRM / calendar (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-accounting-practice`): Ledgerline Accountants Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-accounting-practice`): Ledgerline Accountants Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-accounting-practice`): Ledgerline Accountants Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

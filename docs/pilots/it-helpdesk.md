@@ -13,3 +13,8 @@
 - Live connectors required: Slack (`create_ticket` notify / `handoff_to_human`); KB search is package-local
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-it-helpdesk`): Ridgeway Labs IT Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-it-helpdesk`): Ridgeway Labs IT Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-it-helpdesk`): Ridgeway Labs IT Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

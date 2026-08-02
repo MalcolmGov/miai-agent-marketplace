@@ -13,3 +13,8 @@
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), Slack (`notify_team`, `handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-home-services`): HomeLine Services Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-home-services`): HomeLine Services Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-home-services`): HomeLine Services Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

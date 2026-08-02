@@ -13,3 +13,8 @@
 - Live connectors required: HubSpot (`capture_lead`), Google Calendar (`book_callback`), Slack (`notify_team`, `handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-sales-qualifier`): Ledgerly Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-sales-qualifier`): Ledgerly Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-sales-qualifier`): Ledgerly Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

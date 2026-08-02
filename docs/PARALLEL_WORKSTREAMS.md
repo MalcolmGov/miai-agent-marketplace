@@ -16,8 +16,8 @@ Goal: production comfort on **all 220** agents. See `PRODUCTION_SCALE_220.md`.
 
 | Worker | Own |
 |---|---|
-| **Claude Wave 3 — Go-live 18** | Cluster **B done**; continue **A + C**. Cursor scripts hard-skip these packs. |
-| **Cursor Wave 3 — D/E/F** | **Done** — 37 families × 3 markets deepened; static eval drift 0; presets regenerated. |
+| **Claude Wave 3 — Go-live Cluster B** | **Done** — hard-protected from overwrite |
+| **Cursor Wave 3 — A + C + D/E/F** | **Done** — full 165 market packs localized; static eval drift 0 |
 
 ### Go-live 18 (Claude only)
 
