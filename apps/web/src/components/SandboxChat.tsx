@@ -285,7 +285,7 @@ export function SandboxChat({
           Rental active — token balance empty. Top up tokens to resume.
         </div>
       )}
-      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
+      <div className="studio-chat-thread flex-1 overflow-y-auto px-4 py-3">
         {messages.length === 0 && (
           <div className="space-y-4 text-sm text-[var(--muted)]">
             <div className="space-y-2">
@@ -339,18 +339,53 @@ export function SandboxChat({
             </div>
           </div>
         )}
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            className={`max-w-[90%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm ${
-              m.role === "user"
-                ? "ml-auto bg-[var(--accent-dim)]/30 text-[var(--text)]"
-                : "bg-[var(--bg-elev)] text-[var(--text)]"
-            }`}
-          >
-            {m.content}
+        {messages.map((m, i) => {
+          const isYou = m.role === "user";
+          return (
+            <div
+              key={i}
+              className={`studio-chat-row ${isYou ? "studio-chat-row-you" : "studio-chat-row-agent"}`}
+            >
+              {!isYou ? (
+                <div className="studio-chat-avatar studio-chat-avatar-agent" aria-hidden>
+                  A
+                </div>
+              ) : null}
+              <div className={`studio-chat-col ${isYou ? "studio-chat-col-you" : ""}`}>
+                <div className="studio-chat-meta">
+                  {isYou ? "You · customer" : "Agent"}
+                </div>
+                <div
+                  className={`studio-chat-bubble ${
+                    isYou ? "studio-chat-bubble-you" : "studio-chat-bubble-agent"
+                  }`}
+                >
+                  {m.content}
+                </div>
+              </div>
+              {isYou ? (
+                <div className="studio-chat-avatar studio-chat-avatar-you" aria-hidden>
+                  Y
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+        {busy ? (
+          <div className="studio-chat-row studio-chat-row-agent" aria-live="polite" aria-label="Agent is typing">
+            <div className="studio-chat-avatar studio-chat-avatar-agent" aria-hidden>
+              A
+            </div>
+            <div className="studio-chat-col">
+              <div className="studio-chat-meta">Agent</div>
+              <div className="studio-chat-bubble studio-chat-bubble-agent studio-chat-typing">
+                <i />
+                <i />
+                <i />
+              </div>
+            </div>
           </div>
-        ))}
+        ) : null}
         {workflow && (
           <div className="rounded-lg border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-xs">
             <div className="font-medium text-[var(--text)]">
