@@ -54,12 +54,12 @@ export function resolveSetupStep(flags: {
   triedChat: boolean;
   visitedInstall: boolean;
 }): SetupStepId {
-  // First visit: land on Knowledge even when starter pack already counts as done
-  if (!flags.connectDone && !flags.rented && !flags.triedChat && !flags.visitedInstall) {
+  // First visit: always start on Knowledge
+  if (!flags.hasKnowledge && !flags.rented && !flags.triedChat && !flags.visitedInstall) {
     return "knowledge";
   }
   if (!flags.hasKnowledge) return "knowledge";
-  if (!flags.connectDone) return "connect";
+  // Connect tools is optional — never block the path
   if (!flags.rented) return "rent";
   if (!flags.triedChat) return "try";
   if (!(flags.visitedInstall && flags.rented)) return "install";
@@ -98,6 +98,7 @@ export function SetupGuide({
   onStepChange,
   onSkipConnect,
   onRent,
+  onConfirmKnowledge,
 }: {
   agentId: string;
   isWorkflow: boolean;
@@ -111,6 +112,7 @@ export function SetupGuide({
   onStepChange: (step: SetupStepId) => void;
   onSkipConnect: () => void;
   onRent: () => void;
+  onConfirmKnowledge?: () => void;
 }) {
   void agentId;
 
@@ -122,20 +124,20 @@ export function SetupGuide({
       id: "knowledge",
       title: "Knowledge",
       detail:
-        "Starter pack is enough to run. Add FAQs, hours, or policies when you want it to sound like your business.",
+        "Add your business info — services, hours, FAQs, and policies — so answers sound like you. Replace the starter pack with your real content.",
       done: hasKnowledge,
-      requirement: "optional",
-      requirementLabel: "Optional — starter included",
+      requirement: "required",
+      requirementLabel: "Required — your business content",
     },
     {
       id: "connect",
       title: connectTitle,
       detail: isWorkflow
-        ? "Not needed to try in sandbox. Required for live calendar writes and Slack handoffs."
-        : "Not needed to try in sandbox. Connect only the systems you need before going live.",
+        ? "Optional. Skip to deploy as a knowledge responder. Connect Calendar / Slack later for live bookings and handoffs."
+        : "Optional. Skip to deploy as a knowledge responder. Connect tools later if you need live writes.",
       done: connectDone,
-      requirement: "live-required",
-      requirementLabel: "Optional now · required for live",
+      requirement: "optional",
+      requirementLabel: "Optional — knowledge-only is fine",
     },
     {
       id: "rent",
@@ -172,10 +174,19 @@ export function SetupGuide({
   const current = steps.find((s) => s.id === activeStep) ?? steps[0]!;
   const pct = Math.round((doneCount / steps.length) * 100);
   const minReady = hasKnowledge;
-  const liveReady = rented && (!isWorkflow || toolsConnected);
+  const liveReady = rented && hasKnowledge;
   const nxt = nextAfter(activeStep);
 
   function primaryAction() {
+    if (activeStep === "knowledge") {
+      onConfirmKnowledge?.();
+      if (nxt) onStepChange(nxt);
+      return;
+    }
+    if (activeStep === "connect" && !toolsConnected) {
+      onSkipConnect();
+      return;
+    }
     if (activeStep === "rent" && !rented) {
       onRent();
       return;
@@ -188,7 +199,9 @@ export function SetupGuide({
   }
 
   const primaryLabel =
-    activeStep === "rent" && !rented
+    activeStep === "knowledge"
+      ? "Save & continue"
+      : activeStep === "rent" && !rented
       ? "Activate plan"
       : activeStep === "install" && !rented
         ? "Activate & go live"
@@ -206,8 +219,9 @@ export function SetupGuide({
         <div>
           <h2 className="text-sm font-semibold text-[var(--text)]">Setup</h2>
           <p className="mt-0.5 max-w-xl text-xs text-[var(--muted)]">
-            One step at a time. Minimum to try: starter knowledge. Minimum to go live: activate plan
-            {isWorkflow ? " + Calendar / Slack" : ""}. Sandbox is the last check before Install.
+            One step at a time. Required: your business knowledge + activate plan. Tools are optional —
+            you can go live as a knowledge responder and connect systems later. Sandbox is the last
+            check before Install.
           </p>
         </div>
         <div className="text-right">
@@ -319,16 +333,7 @@ export function SetupGuide({
               </button>
               {activeStep === "connect" && !toolsConnected ? (
                 <button type="button" className="btn btn-ghost text-xs" onClick={onSkipConnect}>
-                  Skip for now — try sandbox
-                </button>
-              ) : null}
-              {activeStep === "knowledge" ? (
-                <button
-                  type="button"
-                  className="btn btn-ghost text-xs"
-                  onClick={() => onStepChange("connect")}
-                >
-                  Keep starter pack — next
+                  Skip tools — continue
                 </button>
               ) : null}
               {activeStep === "rent" && rented && nxt ? (
@@ -346,15 +351,21 @@ export function SetupGuide({
       </div>
 
       <p className="text-[11px] text-[var(--muted)]">
-        <span className="font-medium text-[var(--text)]">Minimum path:</span> keep starter knowledge →
-        try sandbox → activate plan → Install.
+        <span className="font-medium text-[var(--text)]">Minimum path:</span> add your knowledge →
+        activate plan → try sandbox → Install.
         {isWorkflow ? (
           <>
             {" "}
-            <span className="font-medium text-[var(--text)]">For live writes:</span> also connect
-            Calendar and Slack.
+            <span className="font-medium text-[var(--text)]">Optional later:</span> Calendar / Slack
+            for live bookings and handoffs.
           </>
-        ) : null}
+        ) : (
+          <>
+            {" "}
+            <span className="font-medium text-[var(--text)]">Optional later:</span> connect tools for
+            live actions.
+          </>
+        )}
       </p>
     </div>
   );

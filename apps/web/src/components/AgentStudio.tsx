@@ -97,6 +97,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [triedChat, setTriedChat] = useState(false);
   const [visitedInstall, setVisitedInstall] = useState(false);
   const [skippedConnect, setSkippedConnect] = useState(false);
+  const [knowledgeConfirmed, setKnowledgeConfirmed] = useState(false);
   const [tryMode, setTryMode] = useState(false);
   const [flagsReady, setFlagsReady] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -122,6 +123,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     setTriedChat(readSetupFlag(agentId, "tried"));
     setVisitedInstall(readSetupFlag(agentId, "install"));
     setSkippedConnect(readSetupFlag(agentId, "skip-connect"));
+    setKnowledgeConfirmed(readSetupFlag(agentId, "knowledge"));
     setFlagsReady(true);
     const fromUrl = stepFromUrl();
     if (fromUrl) {
@@ -139,14 +141,13 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       return;
     }
     const rentedNow = (data.rental?.state ?? "selected") !== "selected";
-    const knowledgeNow = (data.rental?.knowledge ?? data.package.knowledge).trim().length > 0;
     const connectedNow = data.rental?.connectedConnectors ?? [];
     const toolsOk = hasWorkflow
       ? connectedNow.some((id) => id === "google_calendar" || id === "slack" || id === "calendar")
       : connectedNow.length > 0;
     setActiveStep(
       resolveSetupStep({
-        hasKnowledge: knowledgeNow,
+        hasKnowledge: readSetupFlag(agentId, "knowledge"),
         connectDone: toolsOk || readSetupFlag(agentId, "skip-connect"),
         rented: rentedNow,
         triedChat: readSetupFlag(agentId, "tried"),
@@ -291,6 +292,8 @@ export function AgentStudio({ agentId }: { agentId: string }) {
           : t("studio.okDraft"),
       });
       if (markRented) setActiveStep("connect");
+      writeSetupFlag(agentId, "knowledge");
+      setKnowledgeConfirmed(true);
     } finally {
       setSaving(false);
     }
@@ -304,7 +307,12 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   function skipConnect() {
     writeSetupFlag(agentId, "skip-connect");
     setSkippedConnect(true);
-    setActiveStep("try");
+    setActiveStep("rent");
+  }
+
+  function confirmKnowledge() {
+    writeSetupFlag(agentId, "knowledge");
+    setKnowledgeConfirmed(true);
   }
 
   function goStep(step: SetupStepId) {
@@ -319,7 +327,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const demoHint = workflowDemoHint(agentId);
   const capabilityChips = workflowCapabilityChips(agentId);
   const rented = state !== "selected";
-  const hasKnowledge = knowledge.trim().length > 0;
+  const hasKnowledge = knowledgeConfirmed && knowledge.trim().length > 0;
   const toolsConnected = hasWorkflow
     ? connected.some((id) => id === "google_calendar" || id === "slack" || id === "calendar")
     : connected.length > 0 || data.connectors.some((c) => c.recommended && connected.includes(c.id));
@@ -380,6 +388,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         onStepChange={goStep}
         onSkipConnect={skipConnect}
         onRent={() => void rent()}
+        onConfirmKnowledge={confirmKnowledge}
       />
 
       <div className="space-y-4">
@@ -388,7 +397,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
             <div id="studio-model" className="panel p-4">
               <h2 className="mb-1 text-sm font-semibold">{t("studio.model")}</h2>
               <p className="mb-3 text-xs text-[var(--muted)]">
-                Required — Sonnet is the default. Change only if you need faster or stronger replies.
+                Required — pick a model. Sonnet is the default for quality.
               </p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {MODELS.map((mod) => (
