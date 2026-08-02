@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { SMOKE_AGENT_ID } from "../helpers";
 
-test.describe("Sandbox chat critical path", () => {
+test.describe("Sandbox chat critical path @uat @handover", () => {
   test("sends a message and gets a studio response bubble", async ({ page }) => {
     test.setTimeout(120_000);
     await page.goto(`/agents/${SMOKE_AGENT_ID}?step=try`);

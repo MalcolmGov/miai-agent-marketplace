@@ -4,6 +4,50 @@ export const SMOKE_AGENT_ID = process.env.SMOKE_AGENT_ID || "us-customer-support
 
 export const INDEXED_MARKETS = ["africa", "asia", "eu", "oceania", "us"] as const;
 
+/** Go-live 18 Cluster A heroes — studio shell matrix for handover. */
+export const GOLIVE_HERO_AGENT_IDS = [
+  "us-customer-support",
+  "us-dental-front-desk",
+  "us-home-services",
+  "us-hotel-guest",
+  "us-executive-assistant",
+  "us-it-helpdesk",
+] as const;
+
+export async function postJsonWithRoles<T = Record<string, unknown>>(
+  request: APIRequestContext,
+  path: string,
+  data: unknown,
+  roles: string,
+): Promise<{ status: number; body: T }> {
+  const res = await request.post(path, {
+    data,
+    headers: { "x-roles": roles },
+  });
+  let body: T;
+  try {
+    body = (await res.json()) as T;
+  } catch {
+    body = {} as T;
+  }
+  return { status: res.status(), body };
+}
+
+export async function getJsonWithRoles<T = Record<string, unknown>>(
+  request: APIRequestContext,
+  path: string,
+  roles: string,
+): Promise<{ status: number; body: T }> {
+  const res = await request.get(path, { headers: { "x-roles": roles } });
+  let body: T;
+  try {
+    body = (await res.json()) as T;
+  } catch {
+    body = {} as T;
+  }
+  return { status: res.status(), body };
+}
+
 export async function getJson<T = Record<string, unknown>>(
   request: APIRequestContext,
   path: string,
@@ -40,7 +84,19 @@ export function assertHealthyStaging(body: Record<string, unknown>): void {
   }
 }
 
+/** Skip cookie banner so it doesn't intercept clicks / steal dialog role. */
+export async function dismissConsent(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    try {
+      localStorage.setItem("miai_consent_v1", "essential");
+    } catch {
+      /* ignore */
+    }
+  });
+}
+
 export async function openCatalogue(page: Page): Promise<void> {
+  await dismissConsent(page);
   await page.goto("/");
   await expect(page.locator("#catalogue")).toBeVisible({ timeout: 30_000 });
 }

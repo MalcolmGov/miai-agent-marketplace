@@ -67,12 +67,53 @@ jobs:
             test-results/
           retention-days: 14
 
-  e2e-critical-path:
-    name: e2e-critical-path (staging)
+  e2e-functional-uat:
+    name: e2e-functional+uat (staging)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     continue-on-error: true
     needs: e2e-smoke
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run functional + UAT suites
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ vars.PLAYWRIGHT_BASE_URL }}
+          CI: "1"
+        run: pnpm uat:staging
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-uat
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  e2e-critical-path:
+    name: e2e-full (staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    continue-on-error: true
+    needs: e2e-functional-uat
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4

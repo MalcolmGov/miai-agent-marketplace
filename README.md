@@ -62,6 +62,8 @@ Grouped by purpose — full list in root `package.json`.
 | `pnpm proof:webhook` / `pnpm proof:mcp` | Webhook / MCP integration proofs |
 | `pnpm smoke:cutover` | Cutover smoke checks |
 | `pnpm smoke:staging` | Playwright `@smoke` against Railway staging |
+| `pnpm uat:staging` | Playwright `@functional` + `@uat` against Railway |
+| `pnpm handover:staging` | Full MyInstantAI handover E2E pack (76 scenarios) |
 | `pnpm smoke:live-llm` | Live LLM smoke (optional keys) |
 | `pnpm smoke:live-llm:matrix` | Live LLM smoke across model matrix |
 
@@ -74,7 +76,8 @@ Grouped by purpose — full list in root `package.json`.
 | `pnpm test:unit` / `pnpm test:web` / `pnpm test:wallet` / `pnpm test:runtime` | Subset tests |
 | `pnpm test:api-contract` | Web API contract tests |
 | `pnpm test:e2e:install` | Install Playwright Chromium |
-| `pnpm test:e2e:smoke` / `pnpm test:e2e` | Staging E2E (smoke / full) |
+| `pnpm test:e2e:smoke` / `test:e2e:functional` / `test:e2e:uat` | Staging E2E layers |
+| `pnpm test:e2e:acceptance` / `pnpm test:e2e` | Smoke+functional+UAT / full suite |
 | `pnpm typecheck` | Typecheck all workspace packages |
 | `pnpm build` / `pnpm build:packages` / `pnpm build:web` | Build packages or web app |
 
