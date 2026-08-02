@@ -2,6 +2,12 @@
 
 Use Railway (long-lived Node) so OAuth tokens + in-memory rentals survive a demo session.
 
+## CI before deploy
+
+Pull requests and pushes to `main` run GitHub Actions CI (`.github/workflows/ci.yml`): build, typecheck, lint, unit tests, static eval suite, and a secrets scan. Merges are gated on green CI. A separate nightly workflow (`.github/workflows/eval-nightly.yml`) runs the full mock eval suite on a schedule; it does not block PRs.
+
+Locally: `pnpm run ci` mirrors the main quality gate (without lint/audit/secrets).
+
 ## 1. Push the repo
 
 Create a GitHub repo for `miai-agent-marketplace` (or push this folder), then in Railway:

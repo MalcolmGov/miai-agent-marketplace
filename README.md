@@ -19,10 +19,15 @@ pnpm --filter @miai/web dev  # http://localhost:3000
 4. Copy `agent.js` snippet · sandbox chat · top up tokens
 5. Empty wallet → pause banner; top up → resume
 
+## CI
+
+PRs and `main` pushes run [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (build, typecheck, lint, tests, static evals). Nightly full evals: [`.github/workflows/eval-nightly.yml`](.github/workflows/eval-nightly.yml). Local gate: `pnpm run ci`.
+
 ## Scripts
 
 | Script | Purpose |
 |---|---|
+| `pnpm run ci` | CI quality gate (build, typecheck, test, static evals) |
 | `pnpm import:catalog` | Import agent packages into `data/catalog` |
 | `node scripts/eval-smoke.mjs` | Pilot runtime + injection refusal smoke |
 | `node scripts/phase1-demo.mjs` | Phase 1 exit-criteria API demo (dev server required) |
