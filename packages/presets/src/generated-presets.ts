@@ -203,6 +203,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-case-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_case_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_case_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-citizen-services",
     "phase": 1,
     "bindings": [
@@ -401,6 +419,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-device-upgrades",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_upgrade_offers",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_upgrade_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-enterprise-connectivity",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_enterprise_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_enterprise_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-events-venue",
     "phase": 1,
     "bindings": [
@@ -445,6 +499,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-factory-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_line_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_production_exception",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -506,6 +578,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-fraud-investigations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_fraud_reporting_steps",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fraud_case",
         "connector": "webhook"
       },
       {
@@ -739,6 +829,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-investment-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_advisor_process",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_investor_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -779,6 +887,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_consultation",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-legal-research",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_research_request_template",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_research_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-licensing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_licence_types",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_licence_application",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -1003,6 +1147,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-passport-visa",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_passport_visa_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_passport_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-payment-disputes",
     "phase": 1,
     "bindings": [
@@ -1131,6 +1293,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "check_availability",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-production-planning",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_production_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_plan_change_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -1362,6 +1542,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-social-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_benefit_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_benefits_referral",
         "connector": "webhook"
       },
       {
@@ -1625,6 +1823,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-wealth-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_wealth_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_wealth_meeting",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "agency-studio",
     "phase": 1,
     "bindings": [
@@ -1788,6 +2004,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_levy_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-case-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_case_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_case_update_request",
         "connector": "webhook"
       },
       {
@@ -1995,6 +2229,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-device-upgrades",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_upgrade_offers",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_upgrade_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-enterprise-connectivity",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_enterprise_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_enterprise_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-events-venue",
     "phase": 1,
     "bindings": [
@@ -2039,6 +2309,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-factory-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_line_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_production_exception",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -2100,6 +2388,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-fraud-investigations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_fraud_reporting_steps",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fraud_case",
         "connector": "webhook"
       },
       {
@@ -2333,6 +2639,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-investment-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_advisor_process",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_investor_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -2373,6 +2697,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_consultation",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-legal-research",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_research_request_template",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_research_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-licensing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_licence_types",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_licence_application",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -2597,6 +2957,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-passport-visa",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_passport_visa_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_passport_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-payment-disputes",
     "phase": 1,
     "bindings": [
@@ -2725,6 +3103,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "check_availability",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-production-planning",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_production_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_plan_change_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -2956,6 +3352,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-social-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_benefit_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_benefits_referral",
         "connector": "webhook"
       },
       {
@@ -3211,6 +3625,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_warehouse_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-wealth-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_wealth_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_wealth_meeting",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -3553,6 +3985,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-case-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_case_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_case_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-citizen-services",
     "phase": 1,
     "bindings": [
@@ -3751,6 +4201,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-device-upgrades",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_upgrade_offers",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_upgrade_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-enterprise-connectivity",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_enterprise_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_enterprise_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-events-venue",
     "phase": 1,
     "bindings": [
@@ -3795,6 +4281,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "teams"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-factory-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_line_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_production_exception",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -3856,6 +4360,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-fraud-investigations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_fraud_reporting_steps",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fraud_case",
         "connector": "webhook"
       },
       {
@@ -4089,6 +4611,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-investment-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_advisor_process",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_investor_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -4129,6 +4669,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_consultation",
         "connector": "m365_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-legal-research",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_research_request_template",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_research_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-licensing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_licence_types",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_licence_application",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -4353,6 +4929,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-passport-visa",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_passport_visa_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_passport_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-payment-disputes",
     "phase": 1,
     "bindings": [
@@ -4481,6 +5075,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "check_availability",
         "connector": "m365_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-production-planning",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_production_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_plan_change_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -4712,6 +5324,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-social-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_benefit_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_benefits_referral",
         "connector": "webhook"
       },
       {
@@ -4967,6 +5597,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_warehouse_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-wealth-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_wealth_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_wealth_meeting",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -5515,6 +6163,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-case-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_case_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_case_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-citizen-services",
     "phase": 1,
     "bindings": [
@@ -5713,6 +6379,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-device-upgrades",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_upgrade_offers",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_upgrade_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-enterprise-connectivity",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_enterprise_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_enterprise_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-events-venue",
     "phase": 1,
     "bindings": [
@@ -5757,6 +6459,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-factory-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_line_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_production_exception",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -5818,6 +6538,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-fraud-investigations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_fraud_reporting_steps",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fraud_case",
         "connector": "webhook"
       },
       {
@@ -6051,6 +6789,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-investment-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_advisor_process",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_investor_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -6091,6 +6847,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_consultation",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-legal-research",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_research_request_template",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_research_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-licensing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_licence_types",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_licence_application",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -6315,6 +7107,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-passport-visa",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_passport_visa_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_passport_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-payment-disputes",
     "phase": 1,
     "bindings": [
@@ -6443,6 +7253,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "check_availability",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-production-planning",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_production_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_plan_change_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -6674,6 +7502,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-social-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_benefit_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_benefits_referral",
         "connector": "webhook"
       },
       {
@@ -6929,6 +7775,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_warehouse_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-wealth-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_wealth_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_wealth_meeting",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -7563,6 +8427,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-case-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_case_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_case_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-citizen-services",
     "phase": 1,
     "bindings": [
@@ -7761,6 +8643,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-device-upgrades",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_upgrade_offers",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_upgrade_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-enterprise-connectivity",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_enterprise_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_enterprise_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-events-venue",
     "phase": 1,
     "bindings": [
@@ -7805,6 +8723,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-factory-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_line_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_production_exception",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -7866,6 +8802,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-fraud-investigations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_fraud_reporting_steps",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fraud_case",
         "connector": "webhook"
       },
       {
@@ -8099,6 +9053,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-investment-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_advisor_process",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_investor_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -8139,6 +9111,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_consultation",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-legal-research",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_research_request_template",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_research_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-licensing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_licence_types",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_licence_application",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -8363,6 +9371,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-passport-visa",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_passport_visa_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_passport_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-payment-disputes",
     "phase": 1,
     "bindings": [
@@ -8491,6 +9517,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "check_availability",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-production-planning",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_production_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_plan_change_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -8722,6 +9766,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-social-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_benefit_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_benefits_referral",
         "connector": "webhook"
       },
       {
@@ -8977,6 +10039,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_warehouse_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-wealth-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_wealth_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_wealth_meeting",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",

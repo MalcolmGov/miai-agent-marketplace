@@ -1,6 +1,6 @@
-# Parallel workstreams — scale to 350
+# Parallel workstreams — scale to 410
 
-Goal: production comfort on **all 350** agents. See `PRODUCTION_SCALE_350.md`.
+Goal: production comfort on **all 410** agents. See `PRODUCTION_SCALE_410.md`.
 
 ## Rules
 

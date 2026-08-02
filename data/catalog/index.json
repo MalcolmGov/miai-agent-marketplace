@@ -119,6 +119,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-case-management",
+    "name": "Africa Legal Case Management",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Legal Case Management — Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-citizen-services",
     "name": "Africa Citizen Services",
     "tier": "pro",
@@ -272,6 +289,40 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-device-upgrades",
+    "name": "Africa Device Upgrades",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Device Upgrades — Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-enterprise-connectivity",
+    "name": "Africa Enterprise Connectivity",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Enterprise Connectivity — Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-events-venue",
     "name": "Africa Events & Venue",
     "tier": "pro",
@@ -303,6 +354,23 @@
     ],
     "tools": 5,
     "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-factory-operations",
+    "name": "Africa Factory Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -354,6 +422,23 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-fraud-investigations",
+    "name": "Africa Fraud Investigations Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Fraud Investigations Desk — Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -527,6 +612,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-investment-advisor",
+    "name": "Africa Investment Advisor Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Investment Advisor Intake — Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-it-helpdesk",
     "name": "Africa IT Helpdesk",
     "tier": "pro",
@@ -558,6 +660,40 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-legal-research",
+    "name": "Africa Legal Research Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Legal Research Intake — Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-licensing",
+    "name": "Africa Licensing Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Licensing Desk — Licensing Desk — Business and professional licence FAQ and application intake logging",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -731,6 +867,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-passport-visa",
+    "name": "Africa Passport & Visa Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Passport & Visa Desk — Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-payment-disputes",
     "name": "Africa Card & Payment Disputes",
     "tier": "pro",
@@ -830,6 +983,23 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-production-planning",
+    "name": "Africa Production Planning",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Production Planning — Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -992,6 +1162,23 @@
     "category": "vertical",
     "market": "africa",
     "summary": "Africa SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-social-services",
+    "name": "Africa Social Services Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Social Services Desk — Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
     "channels": [
       "whatsapp",
       "web",
@@ -1190,6 +1377,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-wealth-management",
+    "name": "Africa Wealth Management Desk",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Wealth Management Desk — Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-accounting-practice",
     "name": "Asia Accounting Practice Desk",
     "tier": "pro",
@@ -1299,6 +1503,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-case-management",
+    "name": "Asia Legal Case Management",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Legal Case Management — Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1446,6 +1666,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-device-upgrades",
+    "name": "Asia Device Upgrades",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Device Upgrades — Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-enterprise-connectivity",
+    "name": "Asia Enterprise Connectivity",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Enterprise Connectivity — Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-events-venue",
     "name": "Asia Events & Venue",
     "tier": "pro",
@@ -1475,6 +1727,22 @@
     ],
     "tools": 5,
     "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-factory-operations",
+    "name": "Asia Factory Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1523,6 +1791,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-fraud-investigations",
+    "name": "Asia Fraud Investigations Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Fraud Investigations Desk — Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1686,6 +1970,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-investment-advisor",
+    "name": "Asia Investment Advisor Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Investment Advisor Intake — Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-it-helpdesk",
     "name": "Asia IT Helpdesk",
     "tier": "pro",
@@ -1715,6 +2015,38 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-legal-research",
+    "name": "Asia Legal Research Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Legal Research Intake — Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-licensing",
+    "name": "Asia Licensing Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Licensing Desk — Licensing Desk — Business and professional licence FAQ and application intake logging",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1878,6 +2210,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-passport-visa",
+    "name": "Asia Passport & Visa Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Passport & Visa Desk — Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-payment-disputes",
     "name": "Asia Card & Payment Disputes",
     "tier": "pro",
@@ -1971,6 +2319,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-production-planning",
+    "name": "Asia Production Planning",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Production Planning — Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2124,6 +2488,22 @@
     "category": "vertical",
     "market": "asia",
     "summary": "Asia SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-social-services",
+    "name": "Asia Social Services Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Social Services Desk — Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
     "channels": [
       "web",
       "app",
@@ -2310,6 +2690,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-wealth-management",
+    "name": "Asia Wealth Management Desk",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Wealth Management Desk — Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-accounting-practice",
     "name": "EU Accounting Practice Desk",
     "tier": "pro",
@@ -2419,6 +2815,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-case-management",
+    "name": "EU Legal Case Management",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Legal Case Management — Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2566,6 +2978,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-device-upgrades",
+    "name": "EU Device Upgrades",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Device Upgrades — Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-enterprise-connectivity",
+    "name": "EU Enterprise Connectivity",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Enterprise Connectivity — Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-events-venue",
     "name": "EU Events & Venue",
     "tier": "pro",
@@ -2595,6 +3039,22 @@
     ],
     "tools": 5,
     "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-factory-operations",
+    "name": "EU Factory Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2643,6 +3103,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-fraud-investigations",
+    "name": "EU Fraud Investigations Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Fraud Investigations Desk — Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2806,6 +3282,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-investment-advisor",
+    "name": "EU Investment Advisor Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Investment Advisor Intake — Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-it-helpdesk",
     "name": "EU IT Helpdesk",
     "tier": "pro",
@@ -2835,6 +3327,38 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-legal-research",
+    "name": "EU Legal Research Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Legal Research Intake — Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-licensing",
+    "name": "EU Licensing Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Licensing Desk — Licensing Desk — Business and professional licence FAQ and application intake logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2998,6 +3522,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-passport-visa",
+    "name": "EU Passport & Visa Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Passport & Visa Desk — Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-payment-disputes",
     "name": "EU Card & Payment Disputes",
     "tier": "pro",
@@ -3091,6 +3631,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-production-planning",
+    "name": "EU Production Planning",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Production Planning — Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -3244,6 +3800,22 @@
     "category": "vertical",
     "market": "eu",
     "summary": "EU SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-social-services",
+    "name": "EU Social Services Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Social Services Desk — Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
     "channels": [
       "sms",
       "web",
@@ -3430,6 +4002,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-wealth-management",
+    "name": "EU Wealth Management Desk",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Wealth Management Desk — Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-accounting-practice",
     "name": "Oceania Accounting Practice Desk",
     "tier": "pro",
@@ -3539,6 +4127,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-case-management",
+    "name": "Oceania Legal Case Management",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Legal Case Management — Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -3686,6 +4290,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-device-upgrades",
+    "name": "Oceania Device Upgrades",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Device Upgrades — Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-enterprise-connectivity",
+    "name": "Oceania Enterprise Connectivity",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Enterprise Connectivity — Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-events-venue",
     "name": "Oceania Events & Venue",
     "tier": "pro",
@@ -3715,6 +4351,22 @@
     ],
     "tools": 5,
     "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-factory-operations",
+    "name": "Oceania Factory Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -3763,6 +4415,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-fraud-investigations",
+    "name": "Oceania Fraud Investigations Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Fraud Investigations Desk — Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -3926,6 +4594,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-investment-advisor",
+    "name": "Oceania Investment Advisor Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Investment Advisor Intake — Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-it-helpdesk",
     "name": "Oceania IT Helpdesk",
     "tier": "pro",
@@ -3955,6 +4639,38 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-legal-research",
+    "name": "Oceania Legal Research Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Legal Research Intake — Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-licensing",
+    "name": "Oceania Licensing Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Licensing Desk — Licensing Desk — Business and professional licence FAQ and application intake logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4118,6 +4834,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-passport-visa",
+    "name": "Oceania Passport & Visa Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Passport & Visa Desk — Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-payment-disputes",
     "name": "Oceania Card & Payment Disputes",
     "tier": "pro",
@@ -4211,6 +4943,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-production-planning",
+    "name": "Oceania Production Planning",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Production Planning — Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4364,6 +5112,22 @@
     "category": "vertical",
     "market": "oceania",
     "summary": "Oceania SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-social-services",
+    "name": "Oceania Social Services Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Social Services Desk — Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
     "channels": [
       "sms",
       "web",
@@ -4550,6 +5314,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-wealth-management",
+    "name": "Oceania Wealth Management Desk",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Wealth Management Desk — Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-accounting-practice",
     "name": "US Accounting Practice Desk",
     "tier": "pro",
@@ -4659,6 +5439,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-case-management",
+    "name": "US Legal Case Management",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4806,6 +5602,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-device-upgrades",
+    "name": "US Device Upgrades",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "us",
+    "summary": "US Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-enterprise-connectivity",
+    "name": "US Enterprise Connectivity",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-events-venue",
     "name": "US Events & Venue",
     "tier": "pro",
@@ -4835,6 +5663,22 @@
     ],
     "tools": 5,
     "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-factory-operations",
+    "name": "US Factory Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4883,6 +5727,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-fraud-investigations",
+    "name": "US Fraud Investigations Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5046,6 +5906,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-investment-advisor",
+    "name": "US Investment Advisor Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-it-helpdesk",
     "name": "US IT Helpdesk",
     "tier": "pro",
@@ -5075,6 +5951,38 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-legal-research",
+    "name": "US Legal Research Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-licensing",
+    "name": "US Licensing Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Licensing Desk — Business and professional licence FAQ and application intake logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5238,6 +6146,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-passport-visa",
+    "name": "US Passport & Visa Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-payment-disputes",
     "name": "US Card & Payment Disputes",
     "tier": "pro",
@@ -5331,6 +6255,22 @@
     ],
     "tools": 4,
     "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-production-planning",
+    "name": "US Production Planning",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5484,6 +6424,22 @@
     "category": "vertical",
     "market": "us",
     "summary": "US SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-social-services",
+    "name": "US Social Services Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
     "channels": [
       "sms",
       "web",
@@ -5660,6 +6616,22 @@
     "category": "operations",
     "market": "us",
     "summary": "US Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-wealth-management",
+    "name": "US Wealth Management Desk",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
     "channels": [
       "sms",
       "web",

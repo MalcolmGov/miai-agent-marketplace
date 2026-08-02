@@ -94,7 +94,7 @@ export function marketplaceCategory(manifest: AgentManifest): string {
   };
   const id = manifest.id;
   // Wave 1+ sector families (id may be prefixed us-|eu-|…)
-  if (/sim-registration|airtime-bundles|fibre-support|network-faults/.test(id))
+  if (/sim-registration|airtime-bundles|fibre-support|network-faults|device-upgrades|enterprise-connectivity/.test(id))
     return "Telecommunications";
   if (/citizen-services|municipality-desk|tax-office|passport|licensing|social-services/.test(id))
     return "Government & public sector";
@@ -104,7 +104,7 @@ export function marketplaceCategory(manifest: AgentManifest): string {
     return "Hospitality & travel";
   if (/dental|clinic|pharmacy|veterinary/.test(id)) return "Health & wellness";
   if (
-    /insurance|loan|bank|payroll|utility|accounting|bookkeeping|remittance|mobile-money|mortgage|credit-cards|payment-disputes/.test(
+    /insurance|loan|bank|payroll|utility|accounting|bookkeeping|remittance|mobile-money|mortgage|credit-cards|payment-disputes|wealth-management|investment-advisor|fraud-investigations/.test(
       id,
     )
   )
@@ -113,9 +113,10 @@ export function marketplaceCategory(manifest: AgentManifest): string {
   if (/student|course|admission|onboarding-buddy/.test(id)) return "Education";
   if (/fleet|field|delivery|order-tracking|stock-availability|home-services|trades|grant-stock/.test(id))
     return "Logistics & field ops";
-  if (/recruitment|interview-scheduling|hr-helpdesk|it-helpdesk|executive-assistant|policy-compliance|procurement|onboarding-buddy/.test(id))
+  if (/recruitment|interview-scheduling|hr-helpdesk|it-helpdesk|executive-assistant|policy-compliance|procurement|onboarding-buddy|learning-development|performance-reviews/.test(id))
     return "HR & internal ops";
-  if (/law|contract-review|marketing|sales|agency/.test(id)) return "Professional services";
+  if (/law|contract-review|case-management|legal-research|marketing|sales|agency/.test(id))
+    return "Professional services";
   if (/order|vas|product|returns|loyalty|spaza/.test(id)) return "Retail & e-commerce";
   return map[manifest.category] ?? "All agents";
 }
