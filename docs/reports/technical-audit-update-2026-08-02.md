@@ -21,7 +21,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 
 **B+ ops bar (2026-08-02 staging):** Upstash Redis live (`redisPing: ok`), `WEBHOOK_SINK_HMAC_ONLY=1` on, Postgres dual-ACK retained after TLS verify proved incompatible with Railway’s CA in-image (intentional residual, not silent fail-open).
 
-**What changed the grade:** Testing, DevOps, Security, Data Architecture, and staged multi-replica readiness (Redis) moved from “prototype” to **pilot B+**. What still caps the score below **A** is enterprise procurement (no SOC 2 / counsel-signed policies), live-LLM quality as a continuous program, and semantic retrieval.
+**What changed the grade:** Testing, DevOps, Security, Data Architecture, and staged multi-replica readiness (Redis) moved from “prototype” to **pilot B+**. What still caps the score below **A** is enterprise procurement (no SOC 2 / counsel-signed policies) and live-LLM quality as a continuous program (semantic retrieval is now shipped behind env gate).
 
 **One-line verdict:** investable marketplace IP with a **pilot-hardened staging posture** — Redis + Postgres + HMAC-only webhooks live; dual-ACK PG SSL and mock rails understood; **not** yet enterprise-certified production.
 
@@ -33,7 +33,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 |---|---:|---:|---:|---|
 | Documentation | 80 | 84 | +4 | ADRs, Railway runbook, compliance drafts, residual close notes |
 | Integrations | 76 | 80 | +4 | Shopify/Zendesk/MCP/Woo via `safeFetch`; HMAC webhooks |
-| AI complexity | 74 | 76 | +2 | Live guardrails + lexical retrieval + `eval:live` harness |
+| AI complexity | 74 | 78 | +4 | Live guardrails + hybrid semantic/lexical retrieval + `eval:live` harness |
 | Frontend complexity | 72 | 74 | +2 | SSR/SEO, SRI-safe agent.js, richer Learn more |
 | Code quality | 71 | 74 | +3 | zod schemas, surgical hardening without god-module rewrite |
 | Cloud architecture | 66 | 68 | +2 | Postgres-required prod path; Azure Bicep still unused in prod |
@@ -48,7 +48,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 | Scalability | 33 | 62 | +29 | Durable writes; **Redis live on staging**; still 1 Railway replica by choice |
 | **Overall (weighted)** | **61** | **78** | **+17** | **B– → B+** |
 
-**Architecture rating:** 8.0 / 10 · **AI maturity:** 62 · **Production readiness (pilot):** ~74 · **Enterprise procurement:** ~58 · **Overall code quality:** 74.
+**Architecture rating:** 8.0 / 10 · **AI maturity:** 68 · **Production readiness (pilot):** ~74 · **Enterprise procurement:** ~58 · **Overall code quality:** 74.
 
 ---
 
@@ -59,7 +59,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 | 1 | Not horizontally scalable — in-memory + O(N) rewrites | **MOSTLY CLOSED** | Postgres pool + row upserts; prod boot requires `DATABASE_URL`; read-through for multi-replica coherence. **Redis live on staging.** Residual: still 1 Railway replica by choice; scale replicas when needed. |
 | 2 | No CI + ~zero tests | **CLOSED** | `pnpm run ci` / GitHub Actions: typecheck, tests, catalog integrity, `eval:suite:static` with `staticHigh>0` fail; gitleaks job. Web suite includes security-boot, SSRF residual, api-contract, family-capabilities, etc. |
 | 3 | Mock-default auth / single-flag fragility | **CLOSED** | Dual flags `ALLOW_MOCK_RAILS` + `I_UNDERSTAND_MOCK_RAILS_IN_PROD`; incomplete hatch fails closed. Same pattern for embed `*` and file-fallback. |
-| 4 | AI depth shallow; live safety = prompt only | **PARTIAL** | Shared live guardrails + lexical retrieval shipped; `pnpm eval:live` opt-in (not CI). Semantic/embeddings retrieval **not** shipped. MockModel % must not be sold as live quality. Catalogue depth policy unchanged (no Cluster B re-deepen). |
+| 4 | AI depth shallow; live safety = prompt only | **PARTIAL** | Shared live guardrails + hybrid semantic/lexical retrieval shipped (`RUNTIME_SEMANTIC_RETRIEVAL` / OpenAI embeddings, lexical fallback). `pnpm eval:live` opt-in (not CI). MockModel % must not be sold as live quality. Catalogue depth policy unchanged (no Cluster B re-deepen). |
 
 ---
 
@@ -104,7 +104,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 | Zod on chat/rent (+ remaining POSTs) | **FIXED** |
 | Body size middleware cap | **FIXED** |
 | `pnpm eval:live` (opt-in, not CI) | **LANDED** |
-| Semantic / embeddings retrieval | **OPEN** (flag noted; not implemented) |
+| Semantic / embeddings retrieval | **FIXED** (hybrid; `RUNTIME_SEMANTIC_RETRIEVAL` + OpenAI-compatible `/embeddings`, lexical fallback) |
 | Mock eval ≠ live quality (governance) | **DOCUMENTED** — do not conflate |
 
 ### Phase 4 — Compliance foundation
@@ -143,7 +143,7 @@ Cursor engineering disposition after residual close:
 | 6 | CSP | **PARTIAL→mostly FIXED** — script-src nonce; style-src still `unsafe-inline` | High |
 | 7 | CI/CD | **FIXED** | High |
 | 8 | Validation + rate-limit | **FIXED** (zod coverage expanded; Redis fail-closed when set) | High |
-| 9 | AI safety + model config | **PARTIAL** — live guardrails yes; live quality gate opt-in; no semantic retrieval | Med |
+| 9 | AI safety + model config | **PARTIAL** — live guardrails + hybrid retrieval yes; live quality gate opt-in | Med |
 
 **Engineering summary:** **7 FIXED · 2 PARTIAL · 0 OPEN · 0 REGRESSED** (style-src + live-AI depth as the PARTIALs).
 
@@ -159,7 +159,7 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 |---|---|---|---|
 | Counsel-signed privacy/terms/DPA/BAA | Legal | **No** (demos) | Keep **DRAFT** until counsel |
 | SOC 2 / ISO / formal certs | GRC | **No** | Evidence index only; needed for large RFPs |
-| Semantic embeddings retrieval | Eng | **No** | Lexical only today |
+| Semantic embeddings retrieval | Eng | **Yes (gated)** | Hybrid semantic+lexical; enable via `OPENAI_API_KEY` (auto) or `RUNTIME_SEMANTIC_RETRIEVAL=1` |
 | Nightly live-LLM quality sample | Eng/ML | Recommended | `eval:live` + nightly job (non-blocking); not a hard CI gate |
 | Multi-replica Redis on Railway | Ops | **B+ yes** | **DONE** on staging — `redisPing: ok` (Upstash) |
 | Verifiable Postgres CA (drop SSL dual-ACK) | Ops | **B+ preferred** | **Tried; keep dual-ACK** — unsetting broke Railway healthcheck |
@@ -207,7 +207,7 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 | Was the baseline “demo shell” fair? | **Yes** — and largely **remediated in-repo** |
 | Ready for uncontrolled enterprise RFP? | **No** — counsel + certs + live-LLM quality program still required |
 | Ready for pilot / staging customers with clear dual-ACK staging flags? | **Yes, with eyes open** |
-| Biggest remaining fundable workstreams | (1) Compliance counsel + assurance, (2) live-LLM eval as continuous quality, (3) semantic retrieval + deeper packs by policy, (4) multi-replica HA beyond single Railway replica |
+| Biggest remaining fundable workstreams | (1) Compliance counsel + assurance, (2) live-LLM eval as continuous quality, (3) multi-replica HA beyond single Railway replica, (4) deeper packs by policy (not re-deepen Cluster B without ask) |
 
 ---
 

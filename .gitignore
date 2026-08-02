@@ -12,6 +12,12 @@ data/knowledge-sources.json
 data/ask-leads.json
 data/turn-transcripts.json
 
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # Branded PDF previews / QA screenshots
 docs/branded-pdfs/output/preview-*.png
 docs/branded-pdfs/output/qa-*.png

@@ -4,9 +4,9 @@ Use Railway (long-lived Node) so OAuth tokens + in-memory rentals survive a demo
 
 ## CI before deploy
 
-Pull requests and pushes to `main` run GitHub Actions CI (`.github/workflows/ci.yml`): build, typecheck, lint, unit tests, static eval suite, and a secrets scan. Merges are gated on green CI. A separate nightly workflow (`.github/workflows/eval-nightly.yml`) runs the full mock eval suite on a schedule; it does not block PRs.
+Pull requests and pushes to `main` run GitHub Actions CI (`.github/workflows/ci.yml`): build, typecheck, lint, unit tests, static eval suite, and a secrets scan. Merges are gated on green CI. A separate nightly workflow (`.github/workflows/eval-nightly.yml`) runs the full mock eval suite on a schedule; it does not block PRs. Staging Playwright smoke (`.github/workflows/e2e-staging.yml`) runs soft (`continue-on-error`) against this Railway host — see [`TESTING.md`](./TESTING.md).
 
-Locally: `pnpm run ci` mirrors the main quality gate (without lint/audit/secrets).
+Locally: `pnpm run ci` mirrors the main quality gate (without lint/audit/secrets). Post-deploy UI/API smoke: `pnpm smoke:staging`.
 
 ## 1. Push the repo
 

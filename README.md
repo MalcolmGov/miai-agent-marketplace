@@ -19,9 +19,11 @@ pnpm --filter @miai/web dev  # http://localhost:3000
 4. Copy `agent.js` snippet · sandbox chat · top up tokens
 5. Empty wallet → pause banner; top up → resume
 
-## CI
+## CI & automation
 
-PRs and `main` pushes run [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (build, typecheck, lint, tests, static evals). Nightly full evals: [`.github/workflows/eval-nightly.yml`](.github/workflows/eval-nightly.yml). Local gate: `pnpm run ci`.
+PRs and `main` pushes run [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (build, typecheck, lint, tests, static evals). Nightly full evals: [`.github/workflows/eval-nightly.yml`](.github/workflows/eval-nightly.yml). Staging Playwright smoke (non-blocking): [`.github/workflows/e2e-staging.yml`](.github/workflows/e2e-staging.yml). Local gate: `pnpm run ci`.
+
+Full pyramid: [`docs/TESTING.md`](docs/TESTING.md).
 
 ## Scripts
 
@@ -59,6 +61,7 @@ Grouped by purpose — full list in root `package.json`.
 | `pnpm proof:live` | Live connector proof |
 | `pnpm proof:webhook` / `pnpm proof:mcp` | Webhook / MCP integration proofs |
 | `pnpm smoke:cutover` | Cutover smoke checks |
+| `pnpm smoke:staging` | Playwright `@smoke` against Railway staging |
 | `pnpm smoke:live-llm` | Live LLM smoke (optional keys) |
 | `pnpm smoke:live-llm:matrix` | Live LLM smoke across model matrix |
 
@@ -68,8 +71,10 @@ Grouped by purpose — full list in root `package.json`.
 |---|---|
 | `pnpm run ci` | CI quality gate (build, typecheck, test, static evals) |
 | `pnpm test` | Wallet + connectors + web unit tests |
-| `pnpm test:unit` / `pnpm test:web` / `pnpm test:wallet` | Subset tests |
+| `pnpm test:unit` / `pnpm test:web` / `pnpm test:wallet` / `pnpm test:runtime` | Subset tests |
 | `pnpm test:api-contract` | Web API contract tests |
+| `pnpm test:e2e:install` | Install Playwright Chromium |
+| `pnpm test:e2e:smoke` / `pnpm test:e2e` | Staging E2E (smoke / full) |
 | `pnpm typecheck` | Typecheck all workspace packages |
 | `pnpm build` / `pnpm build:packages` / `pnpm build:web` | Build packages or web app |
 

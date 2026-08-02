@@ -43,7 +43,11 @@ import {
   scrubLeakedPlaceholders,
 } from "./templates.js";
 import { checkInputGuardrails, checkOutputGuardrails } from "./guardrails.js";
-import { selectKnowledgeForPrompt } from "./knowledge-retrieve.js";
+import {
+  createEmbedderFromEnv,
+  semanticRetrievalEnabled,
+} from "./embeddings.js";
+import { selectKnowledgeForPromptAsync } from "./knowledge-retrieve.js";
 
 export type { WorkflowPlan, WorkflowStep };
 export {
@@ -53,7 +57,21 @@ export {
   scrubLeakedPlaceholders,
 } from "./templates.js";
 export { checkInputGuardrails, checkOutputGuardrails } from "./guardrails.js";
-export { selectKnowledgeForPrompt, retrieveKnowledgeChunks } from "./knowledge-retrieve.js";
+export {
+  selectKnowledgeForPrompt,
+  selectKnowledgeForPromptAsync,
+  retrieveKnowledgeChunks,
+  retrieveKnowledgeChunksHybrid,
+} from "./knowledge-retrieve.js";
+export {
+  createEmbedderFromEnv,
+  semanticRetrievalEnabled,
+  LocalHashEmbedder,
+  OpenAiCompatibleEmbedder,
+  cosineSimilarity,
+  clearEmbeddingCache,
+  type Embedder,
+} from "./embeddings.js";
 
 export type AgentState = "selected" | "configuring" | "rented" | "live" | "paused_no_tokens";
 
@@ -2022,12 +2040,18 @@ export async function runTurn(
 
   const knowledge = req.knowledgeOverride?.trim() || req.pkg.knowledge;
   const knowledgeBudget = Number(env("RUNTIME_KNOWLEDGE_CHARS") ?? 40_000);
-  // Lexical retrieval for live models only — MockModel still gets a full KB prefix
-  // so deterministic evals / knowledgeHit stay stable.
+  // Live models: hybrid semantic+lexical when an embedder is configured;
+  // otherwise lexical. MockModel still gets a full KB prefix so deterministic
+  // evals / knowledgeHit stay stable.
   const knowledgeForPrompt =
     model instanceof MockModelAdapter
       ? knowledge.slice(0, knowledgeBudget)
-      : selectKnowledgeForPrompt(knowledge, req.userMessage, knowledgeBudget);
+      : await selectKnowledgeForPromptAsync(
+          knowledge,
+          req.userMessage,
+          knowledgeBudget,
+          semanticRetrievalEnabled() ? createEmbedderFromEnv() : null,
+        );
   const modelOpts = {
     temperature: req.pkg.manifest.model?.temperature,
     maxOutputTokens: req.pkg.manifest.model?.max_output_tokens,

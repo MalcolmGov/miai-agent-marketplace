@@ -49,8 +49,8 @@
 ## P3 — AI integrity (larger; scope separately if needed)
 
 ### 6. Live-LLM eval harness + semantic retrieval
-- **Why:** the 95.8%/96.6% eval pass-rate + `staticHigh=0` come from the deterministic MockModel plus hand-tuned answer-injection (`runtime/index.ts` `knowledgeHit`), so they validate routing/guardrails, **not** live-model answer quality. Retrieval (`knowledge-retrieve.ts`) is lexical keyword-overlap, not embeddings.
-- **Fix:** (a) a **live-model** eval job (small sampled set, no answer-injection, API-key-gated, nightly not blocking) to measure real answer quality; (b) optionally add an embeddings/semantic retrieval path behind a flag.
+- **Why:** the 95.8%/96.6% eval pass-rate + `staticHigh=0` come from the deterministic MockModel plus hand-tuned answer-injection (`runtime/index.ts` `knowledgeHit`), so they validate routing/guardrails, **not** live-model answer quality.
+- **Status:** (b) **done** — hybrid semantic+lexical retrieval in `knowledge-retrieve.ts` / `embeddings.ts` (`RUNTIME_SEMANTIC_RETRIEVAL`, OpenAI-compatible `/embeddings`, lexical fallback). (a) live-eval harness exists as opt-in `pnpm eval:live` (not CI); keep using sampled limits given credit constraints.
 - **Accept:** a runnable live-eval script + a short report of live pass-rate vs mock; clearly separated from the mock gate.
 
 ---
@@ -67,4 +67,4 @@ For each task: the fix + its test, and update `docs/reports/remediation-verify-2
 
 ## Status (Cursor — 2026-08-02)
 
-See **`docs/reports/residual-punchlist-close-2026-08-02.md`**. P1 + P2 closed in-repo; P3 live-eval harness landed as opt-in `pnpm eval:live` (semantic retrieval still optional). Compliance legal copy remains counsel-blocked.
+See **`docs/reports/residual-punchlist-close-2026-08-02.md`**. P1 + P2 closed in-repo; P3 live-eval harness landed as opt-in `pnpm eval:live`; semantic/hybrid retrieval shipped behind env gate. Compliance legal copy remains counsel-blocked.
