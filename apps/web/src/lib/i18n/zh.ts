@@ -236,7 +236,7 @@ export const zh: Dictionary = {
     "支持：.txt、.md、.csv、.json、.html（PDF 尽力解析）。暂不支持 Word .docx——请导出为 .md/.txt（最大 4MB）。",
   "knowledge.readWebsite": "读取我的网站",
   "knowledge.crawlHint": "爬取同站最多 5 页（关于、FAQ、定价…）",
-  "knowledge.urlPlaceholder": "https://www.gaslite.co.za",
+  "knowledge.urlPlaceholder": "www.google.com",
   "knowledge.readingSite": "正在读取网站…",
   "knowledge.crawlWebsite": "爬取网站",
   "knowledge.addFaqs": "添加粘贴的 FAQ",

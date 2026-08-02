@@ -243,7 +243,7 @@ export const de: Dictionary = {
     "Akzeptiert: .txt, .md, .csv, .json, .html (PDF best-effort). Word .docx noch nicht — exportieren nach .md/.txt (max. 4 MB).",
   "knowledge.readWebsite": "Meine Website lesen",
   "knowledge.crawlHint": "Crawlt bis zu 5 Seiten derselben Site (About, FAQ, Preise…)",
-  "knowledge.urlPlaceholder": "https://www.gaslite.co.za",
+  "knowledge.urlPlaceholder": "www.google.com",
   "knowledge.readingSite": "Website wird gelesen…",
   "knowledge.crawlWebsite": "Website crawlen",
   "knowledge.addFaqs": "Eingefügte FAQs hinzufügen",

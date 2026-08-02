@@ -243,7 +243,7 @@ export const en = {
     "Accepted: .txt, .md, .csv, .json, .html (PDF best-effort). Word .docx is not supported yet — export or convert to .md/.txt (4MB max).",
   "knowledge.readWebsite": "Read my website",
   "knowledge.crawlHint": "Crawls up to 5 same-site pages (about, FAQ, pricing…)",
-  "knowledge.urlPlaceholder": "https://www.gaslite.co.za",
+  "knowledge.urlPlaceholder": "www.google.com",
   "knowledge.readingSite": "Reading site…",
   "knowledge.crawlWebsite": "Crawl website",
   "knowledge.addFaqs": "Add pasted FAQs",

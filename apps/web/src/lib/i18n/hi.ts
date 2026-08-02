@@ -243,7 +243,7 @@ export const hi: Dictionary = {
     "स्वीकृत: .txt, .md, .csv, .json, .html (PDF best-effort)। Word .docx अभी नहीं — .md/.txt में निर्यात करें (4MB अधिकतम)।",
   "knowledge.readWebsite": "मेरी वेबसाइट पढ़ें",
   "knowledge.crawlHint": "एक ही साइट की अधिकतम 5 पेज क्रॉल (about, FAQ, pricing…)",
-  "knowledge.urlPlaceholder": "https://www.gaslite.co.za",
+  "knowledge.urlPlaceholder": "www.google.com",
   "knowledge.readingSite": "साइट पढ़ रहे हैं…",
   "knowledge.crawlWebsite": "वेबसाइट क्रॉल करें",
   "knowledge.addFaqs": "पेस्ट किए FAQ जोड़ें",
