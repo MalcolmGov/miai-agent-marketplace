@@ -1,14 +1,17 @@
 # Claude handoff — active task
 
-## Active: merge audit PR, then optional eval polish
+## Active: final remediation verification (Phases 0–5 + punch-list)
 
-**Audit done (2026-08-02):** PASS — see PR [#1](https://github.com/MalcolmGov/miai-agent-marketplace/pull/1) and `docs/reports/audit-500-2026-08-02.md`.
+**Brief:** [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md)  
+**Pin:** `ed22434` on `main` (or latest `origin/main` if moved — record SHA).  
+**Prior verifier pin `2a40d34` is stale** — re-score all 9 risks from source.
 
-**Done after merge:** MockModel eval polish — `product-finder` / `student-helpdesk` / `tour-activity` → **0 fails**; ZA static-high → **0**. Suite **96.2%** (was 95.8%).
+**Deliverable:** `docs/reports/remediation-verify-YYYY-MM-DD.md`  
+Verdict format: `N FIXED · M PARTIAL · K OPEN · R REGRESSED` for the 9 risks, plus phase roll-up.
 
-**Next (optional):**
-- Next worst families: `remittance`, `hotel-guest`, `hr-helpdesk`
-- Platform: confirm `{{business_name}}` tenant token fill on live Railway (runtime already materializes templates)
+**Do not:** delete ZA unprefixed packs; re-deepen Cluster B; claim MockModel % as live-LLM quality.
+
+**Cursor already closed punch-list residuals in `ed22434`** (TLS default-verify, Shopify/Zendesk safeFetch, body caps, CI tighten, building-management grounding). Staging may run with `PG_SSL_REJECT_UNAUTHORIZED=0` + `I_UNDERSTAND_PG_SSL_INSECURE=1` until a verifiable CA is mounted — score that as intentional dual-ACK residual, not silent fail-open.
 
 ---
 
@@ -16,8 +19,9 @@
 
 Those **51 files are ZA (South Africa) market packs**, not orphans.
 
-- `families.json` → `markets.za` / `hasZa: true`
-- On disk = **500 international + 51 ZA = 551** (intentional)
+- Indexed catalogue = **100 × 5 = 500** (`africa-*` is the Africa/ZA sellable SKU)
+- On disk = **500 + 51 ZA aliases = 551** (intentional)
+- `families.json` maps `markets.za` → same id as `markets.africa`
 - Only delete Finder junk: `* 2.json` / `*agent 2.json`
 
 ---
@@ -26,15 +30,17 @@ Those **51 files are ZA (South Africa) market packs**, not orphans.
 
 | Slice | Owner | Status |
 |---|---|---|
+| Technical audit + remediation Phases 0–5 | Cursor | Done through `ed22434` |
+| Punch-list follow-up | Cursor | Done — see `docs/reports/verifier-punchlist-2026-08-02.md` |
 | Wave 3 market localization | Cursor + Claude | Done |
 | Go-live Cluster B deepen | Claude | Done — **protected from overwrite** |
-| Go-live 100 stand-behind | Cursor | Done (`ca8f60d`) — filter `/?pilot=1` |
+| Go-live 100 stand-behind | Cursor | Done — filter `/?pilot=1` |
 | Depth strong 100/100 | Cursor | Done |
-| Eval suite (wave packs) | Cursor | Was 100% on last gap report |
 
-**Do not re-deepen Cluster B** (`restaurant-takeaway` · `salon-booking` · `clinic-front-desk` · `customer-support` · `delivery-tracking` · `trades-receptionist`). Scripts hard-skip these.
+**Do not re-deepen Cluster B** (`restaurant-takeaway` · `salon-booking` · `clinic-front-desk` · `customer-support` · `delivery-tracking` · `trades-receptionist`).
 
-## Optional after audit
+## Optional after verify sign-off
 
-- Heal only families that fail layers B–D in the audit
-- Wave 4 live connectors: `pnpm proof:live` · `docs/WAVE4_LIVE_CONNECTORS.md` (stretch; not catalogue blocker)
+- Partner OIDC / wallet cutover (blocked externally)
+- CSP nonce / `strict-dynamic` (still open residual)
+- Wave 4 live connector proofs — `pnpm proof:live` · `docs/WAVE4_LIVE_CONNECTORS.md`
