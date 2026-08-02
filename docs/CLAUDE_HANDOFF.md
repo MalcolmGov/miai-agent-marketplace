@@ -1,6 +1,15 @@
 # Claude handoff — active task
 
-## Active: final remediation verification (Phases 0–5 + punch-list)
+## Active: Cursor — close in-repo residual punch-list
+
+**Brief:** [`docs/CURSOR_RESIDUAL_PUNCHLIST.md`](CURSOR_RESIDUAL_PUNCHLIST.md)
+Convert the 4 remaining PARTIAL verdicts to FIXED. **P1 (security):** SSRF crawl DNS-pin · webhook HMAC-only flag · CSP nonce. **P2:** persistence multi-replica reads · validation coverage. **P3:** live-LLM eval harness. Blocked (not Cursor): compliance legal copy. When P1+P2 land, ping Claude to re-run `docs/CLAUDE_VERIFY_REMEDIATION.md` for a fresh sign-off.
+
+---
+
+### ✅ Done — remediation verification (Phases 0–5 + punch-list)
+
+Verified at pin `63f3718`: **5 FIXED · 4 PARTIAL · 0 OPEN · 0 REGRESSED** → `docs/reports/remediation-verify-2026-08-02.md` (PR #3). Original verify brief:
 
 **Brief:** [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md)  
 **Pin:** `ed22434` on `main` (or latest `origin/main` if moved — record SHA).  
