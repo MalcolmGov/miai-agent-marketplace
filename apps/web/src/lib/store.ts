@@ -276,15 +276,133 @@ function ws(workspaceId: string): WorkspaceRecord {
   return s.workspaces.get(workspaceId)!;
 }
 
+async function readAgentFromPostgres(
+  workspaceId: string,
+  agentId: string,
+): Promise<WorkspaceAgent | undefined> {
+  if (!getPool()) return undefined;
+  try {
+    await ensureMigrations();
+    const res = await query<{ payload: WorkspaceAgent }>(
+      "SELECT payload FROM miai_rentals WHERE workspace_id = $1 AND agent_id = $2",
+      [workspaceId, agentId],
+    );
+    return res.rows[0]?.payload;
+  } catch (err) {
+    console.error("[store] postgres agent read failed", err);
+    return undefined;
+  }
+}
+
+async function readAgentsFromPostgres(workspaceId: string): Promise<WorkspaceAgent[] | null> {
+  if (!getPool()) return null;
+  try {
+    await ensureMigrations();
+    const res = await query<{ payload: WorkspaceAgent }>(
+      "SELECT payload FROM miai_rentals WHERE workspace_id = $1 ORDER BY agent_id",
+      [workspaceId],
+    );
+    return res.rows.map((r) => r.payload);
+  } catch (err) {
+    console.error("[store] postgres agents list failed", err);
+    return null;
+  }
+}
+
+async function readAuditFromPostgres(
+  limit: number,
+  opts?: { workspaceId?: string; type?: string; correlationId?: string; agentId?: string },
+): Promise<AuditEvent[] | null> {
+  if (!getPool()) return null;
+  try {
+    await ensureMigrations();
+    const clauses: string[] = [];
+    const params: unknown[] = [];
+    if (opts?.workspaceId) {
+      params.push(opts.workspaceId);
+      clauses.push(`workspace_id = $${params.length}`);
+    }
+    if (opts?.type) {
+      params.push(opts.type);
+      clauses.push(`type = $${params.length}`);
+    }
+    if (opts?.agentId) {
+      params.push(opts.agentId);
+      clauses.push(`agent_id = $${params.length}`);
+    }
+    if (opts?.correlationId) {
+      params.push(opts.correlationId);
+      clauses.push(`(detail->>'correlationId') = $${params.length}`);
+    }
+    params.push(limit);
+    const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
+    const res = await query<{
+      id: string;
+      at: Date | string;
+      workspace_id: string;
+      agent_id: string | null;
+      type: string;
+      detail: Record<string, unknown>;
+    }>(
+      `SELECT id, at, workspace_id, agent_id, type, detail FROM miai_audit ${where} ORDER BY at DESC LIMIT $${params.length}`,
+      params,
+    );
+    return res.rows.map((r) => {
+      const detail = r.detail ?? {};
+      return {
+        id: r.id,
+        at: r.at instanceof Date ? r.at.toISOString() : String(r.at),
+        workspaceId: r.workspace_id,
+        agentId: r.agent_id ?? undefined,
+        type: r.type,
+        detail,
+        correlationId:
+          typeof detail.correlationId === "string" ? detail.correlationId : undefined,
+        userId: typeof detail.userId === "string" ? detail.userId : undefined,
+        sessionId: typeof detail.sessionId === "string" ? detail.sessionId : undefined,
+        channel: typeof detail.channel === "string" ? detail.channel : undefined,
+      };
+    });
+  } catch (err) {
+    console.error("[store] postgres audit read failed", err);
+    return null;
+  }
+}
+
 export async function getWorkspaceAgent(
   workspaceId: string,
   agentId: string,
 ): Promise<WorkspaceAgent | undefined> {
+  // Postgres path: always read-through so multi-replica sees sibling writes.
+  if (getPool()) {
+    const fromPg = await readAgentFromPostgres(workspaceId, agentId);
+    if (fromPg) {
+      await ensureStoreHydrated();
+      ws(workspaceId).agents.set(agentId, fromPg);
+      if (fromPg.publicKey) ws(workspaceId).embedKeys.set(fromPg.publicKey, agentId);
+      return fromPg;
+    }
+    // Fall through to memory/file for local demo keys before first persist.
+  }
   await ensureStoreHydrated();
   return ws(workspaceId).agents.get(agentId);
 }
 
 export async function listWorkspaceAgents(workspaceId: string): Promise<WorkspaceAgent[]> {
+  if (getPool()) {
+    const fromPg = await readAgentsFromPostgres(workspaceId);
+    if (fromPg) {
+      await ensureStoreHydrated();
+      const rec = ws(workspaceId);
+      rec.agents.clear();
+      rec.embedKeys.clear();
+      for (const agent of fromPg) {
+        rec.agents.set(agent.agentId, agent);
+        if (agent.publicKey) rec.embedKeys.set(agent.publicKey, agent.agentId);
+      }
+      return fromPg;
+    }
+  }
   await ensureStoreHydrated();
   return [...ws(workspaceId).agents.values()];
 }
@@ -410,6 +528,10 @@ export async function listAudit(
   limit = 50,
   opts?: { workspaceId?: string; type?: string; correlationId?: string; agentId?: string },
 ): Promise<AuditEvent[]> {
+  if (getPool()) {
+    const fromPg = await readAuditFromPostgres(limit, opts);
+    if (fromPg) return fromPg;
+  }
   await ensureStoreHydrated();
   let rows = store().audit;
   if (opts?.workspaceId) rows = rows.filter((a) => a.workspaceId === opts.workspaceId);

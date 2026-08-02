@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getToken, getValidAccessToken, updateTokenFields } from "@miai/connectors";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { parseJsonBody, slackChannelsBodySchema } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -76,16 +77,12 @@ export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
 
-  const body = (await req.json().catch(() => ({}))) as {
-    channel?: string;
-    workspaceId?: string;
-  };
+  const parsed = await parseJsonBody(req, slackChannelsBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
-  const channel = (body.channel ?? "").trim();
-  if (!channel) {
-    return NextResponse.json({ error: "channel_required" }, { status: 400 });
-  }
+  const channel = body.channel.trim();
 
   const stored = await getValidAccessToken(workspaceId, "slack");
   if (!stored?.accessToken) {

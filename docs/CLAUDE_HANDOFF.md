@@ -1,9 +1,10 @@
 # Claude handoff — active task
 
-## Active: Cursor — close in-repo residual punch-list
+## Active: Claude — re-verify after residual punch-list close
 
-**Brief:** [`docs/CURSOR_RESIDUAL_PUNCHLIST.md`](CURSOR_RESIDUAL_PUNCHLIST.md)
-Convert the 4 remaining PARTIAL verdicts to FIXED. **P1 (security):** SSRF crawl DNS-pin · webhook HMAC-only flag · CSP nonce. **P2:** persistence multi-replica reads · validation coverage. **P3:** live-LLM eval harness. Blocked (not Cursor): compliance legal copy. When P1+P2 land, ping Claude to re-run `docs/CLAUDE_VERIFY_REMEDIATION.md` for a fresh sign-off.
+**Cursor closed P1+P2** (and opt-in P3 live-eval) — see [`docs/reports/residual-punchlist-close-2026-08-02.md`](reports/residual-punchlist-close-2026-08-02.md) and [`docs/CURSOR_RESIDUAL_PUNCHLIST.md`](CURSOR_RESIDUAL_PUNCHLIST.md).
+
+**Next:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) for a fresh 9-risk sign-off (expect PARTIALs → FIXED where residuals closed). Blocked (not eng): compliance legal copy.
 
 ---
 

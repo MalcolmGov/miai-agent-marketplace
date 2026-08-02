@@ -10,25 +10,7 @@ const securityHeaders = [
     // microphone=(self) — catalogue voice search (Web Speech API)
     value: "camera=(), microphone=(self), geolocation=(), payment=()",
   },
-  {
-    // Enforcing CSP — unsafe-eval dropped. script/style unsafe-inline remain for the App Router
-    // shell until a nonce/'strict-dynamic' middleware migration (tracked residual).
-    key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https:",
-      "font-src 'self' data:",
-      "connect-src 'self' https: wss:",
-      "worker-src 'self' blob:",
-      "frame-ancestors 'self'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "object-src 'none'",
-      "upgrade-insecure-requests",
-    ].join("; "),
-  },
+  // CSP is set per-request in middleware.ts (nonce + strict-dynamic for script-src).
   // HSTS — only meaningful on HTTPS custom domains / Railway TLS
   {
     key: "Strict-Transport-Security",

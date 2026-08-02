@@ -4,6 +4,7 @@ import { getPreset } from "@miai/presets";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { connectorsBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export async function GET(req: Request) {
   const phase = new URL(req.url).searchParams.get("phase");
@@ -17,11 +18,11 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as {
-    agentId: string;
-    connectorId: ConnectorId;
-    workspaceId?: string;
-    config?: Record<string, string>;
+  const parsed = await parseJsonBody(req, connectorsBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = {
+    ...parsed.data,
+    connectorId: parsed.data.connectorId as ConnectorId,
   };
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);

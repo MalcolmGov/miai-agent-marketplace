@@ -4,6 +4,7 @@ import { crawlSite } from "@/lib/ingest";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { rateLimit, requireRole } from "@/lib/security";
+import { knowledgeCrawlBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -25,16 +26,11 @@ export async function POST(req: Request) {
     );
   }
 
-  const body = (await req.json()) as {
-    agentId?: string;
-    workspaceId?: string;
-    url?: string;
-    maxPages?: number;
-  };
+  const parsed = await parseJsonBody(req, knowledgeCrawlBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
   const agentId = body.agentId;
-  const url = (body.url ?? "").trim();
-  if (!agentId) return NextResponse.json({ error: "agentId required" }, { status: 400 });
-  if (!url) return NextResponse.json({ error: "url required" }, { status: 400 });
+  const url = body.url.trim();
 
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);

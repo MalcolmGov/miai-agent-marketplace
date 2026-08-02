@@ -3,6 +3,7 @@ import { eraseWorkspaceData } from "@/lib/dsar-erase";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { dsarEraseBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -16,14 +17,8 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "admin");
   if (forbidden) return forbidden;
 
-  let body: { confirm?: boolean } = {};
-  try {
-    body = (await req.json()) as { confirm?: boolean };
-  } catch {
-    /* empty body */
-  }
-
-  if (body.confirm !== true) {
+  const parsed = await parseJsonBody(req, dsarEraseBodySchema);
+  if (!parsed.ok) {
     return NextResponse.json(
       { error: "Destructive erasure requires { confirm: true } in the request body" },
       { status: 400 },

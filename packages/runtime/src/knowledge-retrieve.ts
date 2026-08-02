@@ -1,6 +1,10 @@
 /**
  * Lexical chunk retrieval for live knowledge prompts (Phase 3 D4).
  * Prefer top-scoring ## chunks over stuffing the first N chars of the KB.
+ *
+ * Semantic / embeddings retrieval is intentionally not wired yet — gate behind
+ * something like `RUNTIME_SEMANTIC_RETRIEVAL=1` when an embedder is available.
+ * Do not treat MockModel eval pass-rate as live retrieval quality; use `pnpm eval:live`.
  */
 
 const META_CHUNK =

@@ -4,6 +4,12 @@ import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { verifyWebhookSignature } from "@miai/connectors";
 import { sinksRequireSecret, timingSafeEqualString } from "@/lib/security";
+import {
+  webhookSinkAllowLegacyRawSecret,
+  webhookSinkHmacOnly,
+} from "@/lib/webhook-sink-auth";
+
+export { webhookSinkHmacOnly };
 
 export const dynamic = "force-dynamic";
 
@@ -65,13 +71,14 @@ function authorizeInspect(req: Request): NextResponse | null {
  *   {APP_BASE_URL}/api/webhook/sink
  *
  * Prefers HMAC: x-miai-signature: v1=<hex>, x-miai-timestamp: <ms>
- * Legacy raw shared secret still accepted for one transition window.
+ * Legacy raw shared secret accepted unless WEBHOOK_SINK_HMAC_ONLY=1.
  */
 export async function POST(req: Request) {
   const expected = process.env.WEBHOOK_SINK_SECRET?.trim();
   const rawBody = await req.text();
   const signature = req.headers.get("x-miai-signature") || "";
   const timestamp = req.headers.get("x-miai-timestamp");
+  const allowLegacyRawSecret = webhookSinkAllowLegacyRawSecret();
 
   if (sinksRequireSecret()) {
     if (!expected) {
@@ -86,7 +93,7 @@ export async function POST(req: Request) {
         signature,
         timestamp,
         body: rawBody,
-        allowLegacyRawSecret: true,
+        allowLegacyRawSecret,
       })
     ) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
@@ -98,7 +105,7 @@ export async function POST(req: Request) {
         signature,
         timestamp,
         body: rawBody,
-        allowLegacyRawSecret: true,
+        allowLegacyRawSecret,
       })
     ) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });

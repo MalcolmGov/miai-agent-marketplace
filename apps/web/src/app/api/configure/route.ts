@@ -3,6 +3,7 @@ import type { ToolBinding } from "@miai/connectors";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { configureBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
@@ -10,14 +11,11 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as {
-    agentId: string;
-    workspaceId?: string;
-    model?: string;
-    knowledge?: string;
-    bindings?: ToolBinding[];
-    connectedConnectors?: string[];
-    markRented?: boolean;
+  const parsed = await parseJsonBody(req, configureBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = {
+    ...parsed.data,
+    bindings: parsed.data.bindings as ToolBinding[] | undefined,
   };
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);

@@ -71,6 +71,7 @@ Service → **Variables**. Minimum for a customer-like walk:
 | `ALLOW_EMBED_ORIGIN_STAR` | `1` only if you still need `EMBED_ALLOWED_ORIGINS=*` on staging |
 | `I_UNDERSTAND_EMBED_ORIGIN_STAR` | `1` — **required with** `ALLOW_EMBED_ORIGIN_STAR` |
 | `WEBHOOK_SINK_SECRET` | long random — required for `/api/webhook/sink` in production |
+| `WEBHOOK_SINK_HMAC_ONLY` | set `1` after clients send HMAC — rejects legacy raw-secret signatures |
 | `MCP_SINK_TOKEN` | long random — required for `/api/mcp` in production |
 | `DATABASE_URL` | **Required in production** (Postgres). File fallback needs dual ACK flags below |
 | `ALLOW_FILE_FALLBACK_IN_PROD` | `1` only for emergency file/memory mode (demo/debug) |
@@ -84,7 +85,7 @@ Service → **Variables**. Minimum for a customer-like walk:
 
 **Embed `*` CORS:** same dual-flag pattern (`ALLOW_EMBED_ORIGIN_STAR` + `I_UNDERSTAND_EMBED_ORIGIN_STAR`). Prefer an explicit `EMBED_ALLOWED_ORIGINS` allowlist.
 
-**Webhooks:** outbound connectors send `x-miai-signature: v1=<hmac>` + `x-miai-timestamp`. The proof sink accepts HMAC (preferred) and legacy raw secret for one transition window.
+**Webhooks:** outbound connectors send `x-miai-signature: v1=<hmac>` + `x-miai-timestamp`. The proof sink accepts HMAC (preferred) and, unless `WEBHOOK_SINK_HMAC_ONLY=1`, legacy raw secret for one transition window. Turn on HMAC-only once all senders are on v1 signatures.
 
 Add connector secrets as you test them, e.g. Slack:
 

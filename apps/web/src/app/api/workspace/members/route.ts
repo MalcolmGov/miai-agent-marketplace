@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
-import { requireRole, WORKSPACE_ROLES, type WorkspaceRole } from "@/lib/security";
+import { requireRole, type WorkspaceRole } from "@/lib/security";
 import { inviteMember, listMembers } from "@/lib/workspace-members";
 import { appendAudit } from "@/lib/store";
+import { parseJsonBody, workspaceMemberInviteBodySchema } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -26,15 +27,10 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "admin");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as { email?: string; role?: string };
-  const email = body.email?.trim() ?? "";
-  const role = (body.role?.trim() || "agent") as WorkspaceRole;
-  if (!WORKSPACE_ROLES.includes(role) || role === "owner") {
-    return NextResponse.json(
-      { error: "role must be readonly, agent, or admin" },
-      { status: 400 },
-    );
-  }
+  const parsed = await parseJsonBody(req, workspaceMemberInviteBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const email = parsed.data.email.trim();
+  const role = (parsed.data.role ?? "agent") as WorkspaceRole;
 
   try {
     const member = await inviteMember({

@@ -3,6 +3,7 @@ import { deleteToken, isOAuthConnector } from "@miai/connectors";
 import { appendAudit, getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { oauthDisconnectBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export async function POST(
   req: Request,
@@ -14,14 +15,12 @@ export async function POST(
   if (forbidden) return forbidden;
 
   const { connector } = await ctx.params;
-  const body = (await req.json().catch(() => ({}))) as {
-    agentId?: string;
-    workspaceId?: string;
-  };
+  const parsed = await parseJsonBody(req, oauthDisconnectBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const agentId = body.agentId;
-  if (!agentId) return NextResponse.json({ error: "agentId required" }, { status: 400 });
 
   if (isOAuthConnector(connector)) {
     await deleteToken(workspaceId, connector);

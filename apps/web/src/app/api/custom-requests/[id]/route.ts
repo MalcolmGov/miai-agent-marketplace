@@ -1,18 +1,11 @@
 import { NextResponse } from "next/server";
-import { updateCustomRequest, type CustomRequestStatus } from "@/lib/custom-requests";
+import { updateCustomRequest } from "@/lib/custom-requests";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireOperator } from "@/lib/security";
+import { customRequestStatusBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
-
-const STATUSES = new Set<CustomRequestStatus>([
-  "new",
-  "reviewing",
-  "scoped",
-  "done",
-  "declined",
-]);
 
 /** Operator updates request status in the pipeline. */
 export async function PATCH(
@@ -25,12 +18,10 @@ export async function PATCH(
   if (forbidden) return forbidden;
 
   const { id } = await ctx.params;
-  const body = (await req.json()) as { status?: CustomRequestStatus };
-  if (!body.status || !STATUSES.has(body.status)) {
-    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, customRequestStatusBodySchema);
+  if (!parsed.ok) return parsed.response;
 
-  const row = await updateCustomRequest(id, { status: body.status });
+  const row = await updateCustomRequest(id, { status: parsed.data.status });
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   await appendAudit({

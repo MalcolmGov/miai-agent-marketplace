@@ -7,6 +7,7 @@ import {
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireOperator, requireRole } from "@/lib/security";
+import { customRequestBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -34,26 +35,12 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as {
-    business?: string;
-    need?: string;
-    source?: CustomRequestSource;
-    contactEmail?: string;
-    contactName?: string;
-    channel?: string;
-  };
+  const parsed = await parseJsonBody(req, customRequestBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
-  const business = (body.business ?? "").trim();
-  const need = (body.need ?? "").trim();
-  if (business.length < 2) {
-    return NextResponse.json({ error: "Business name is required" }, { status: 400 });
-  }
-  if (need.length < 10) {
-    return NextResponse.json(
-      { error: "Describe what you need in at least a short paragraph" },
-      { status: 400 },
-    );
-  }
+  const business = body.business.trim();
+  const need = body.need.trim();
 
   const source: CustomRequestSource =
     body.source === "Marketing page" || body.source === "Create" ? body.source : "Dashboard";

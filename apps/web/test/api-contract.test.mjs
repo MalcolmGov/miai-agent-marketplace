@@ -91,3 +91,40 @@ describe("public API paths", () => {
     assert.equal(isPublicApiPath("/api/rent"), false);
   });
 });
+
+describe("mutating POST schemas (residual punch-list)", () => {
+  it("rejects malformed bodies for remaining auth-gated handlers", async () => {
+    const {
+      parseJsonBody,
+      configureBodySchema,
+      customRequestBodySchema,
+      dsarEraseBodySchema,
+      knowledgeCrawlBodySchema,
+      oauthDisconnectBodySchema,
+      slackChannelsBodySchema,
+      workspaceMemberInviteBodySchema,
+    } = await import("../src/lib/api-schemas.ts");
+
+    const cases = [
+      [configureBodySchema, {}],
+      [customRequestBodySchema, { business: "x", need: "short" }],
+      [dsarEraseBodySchema, { confirm: false }],
+      [knowledgeCrawlBodySchema, { agentId: "a", url: "" }],
+      [oauthDisconnectBodySchema, {}],
+      [slackChannelsBodySchema, {}],
+      [workspaceMemberInviteBodySchema, { email: "not-an-email" }],
+    ];
+
+    for (const [schema, body] of cases) {
+      const parsed = await parseJsonBody(
+        new Request("http://marketplace.test/api", {
+          method: "POST",
+          body: JSON.stringify(body),
+        }),
+        schema,
+      );
+      assert.equal(parsed.ok, false, `expected reject for ${JSON.stringify(body)}`);
+      if (!parsed.ok) assert.equal(parsed.response.status, 400);
+    }
+  });
+});

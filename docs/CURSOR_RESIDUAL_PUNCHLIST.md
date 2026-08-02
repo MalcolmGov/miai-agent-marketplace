@@ -62,3 +62,9 @@
 
 ## Deliverable
 For each task: the fix + its test, and update `docs/reports/remediation-verify-2026-08-02.md`'s residual table (or a new dated note) marking the item closed. When P1+P2 land, ping Claude to re-run the 9-risk verifier pass (`docs/CLAUDE_VERIFY_REMEDIATION.md`) for a fresh sign-off.
+
+---
+
+## Status (Cursor — 2026-08-02)
+
+See **`docs/reports/residual-punchlist-close-2026-08-02.md`**. P1 + P2 closed in-repo; P3 live-eval harness landed as opt-in `pnpm eval:live` (semantic retrieval still optional). Compliance legal copy remains counsel-blocked.

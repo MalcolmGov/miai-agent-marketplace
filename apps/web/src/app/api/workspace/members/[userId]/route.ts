@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
-import { requireRole, WORKSPACE_ROLES, type WorkspaceRole } from "@/lib/security";
+import { requireRole } from "@/lib/security";
 import { removeMember, updateMemberRole } from "@/lib/workspace-members";
 import { appendAudit } from "@/lib/store";
+import { parseJsonBody, workspaceMemberRoleBodySchema } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -16,11 +17,9 @@ export async function PATCH(
   if (forbidden) return forbidden;
 
   const { userId } = await ctx.params;
-  const body = (await req.json()) as { role?: string };
-  const role = body.role?.trim() as WorkspaceRole | undefined;
-  if (!role || !WORKSPACE_ROLES.includes(role)) {
-    return NextResponse.json({ error: "Valid role required" }, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, workspaceMemberRoleBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const role = parsed.data.role;
 
   try {
     const member = await updateMemberRole({

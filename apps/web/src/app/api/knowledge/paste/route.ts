@@ -3,6 +3,7 @@ import { addKnowledgeSource } from "@/lib/knowledge";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { knowledgePasteBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
@@ -10,18 +11,11 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as {
-    agentId?: string;
-    workspaceId?: string;
-    title?: string;
-    content?: string;
-  };
+  const parsed = await parseJsonBody(req, knowledgePasteBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
   const agentId = body.agentId;
-  const content = (body.content ?? "").trim();
-  if (!agentId) return NextResponse.json({ error: "agentId required" }, { status: 400 });
-  if (content.length < 10) {
-    return NextResponse.json({ error: "Paste at least a short FAQ or policy note" }, { status: 400 });
-  }
+  const content = body.content.trim();
 
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);

@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { createWalletAdapter, type TopUpRequest } from "@miai/wallet-adapter";
+import { createWalletAdapter } from "@miai/wallet-adapter";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { parseJsonBody, walletTopUpBodySchema } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -23,11 +24,9 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "admin");
   if (forbidden) return forbidden;
 
-  const body = (await req.json()) as {
-    workspaceId?: string;
-    packageId: TopUpRequest["packageId"];
-    usdAmount?: number;
-  };
+  const parsed = await parseJsonBody(req, walletTopUpBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const wallet = createWalletAdapter();

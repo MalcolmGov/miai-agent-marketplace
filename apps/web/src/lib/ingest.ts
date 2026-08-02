@@ -1,6 +1,6 @@
 /** Lightweight HTML → plain text for website crawls (no heavy deps). */
 
-import { assertSafeOutboundUrl } from "@miai/connectors";
+import { safeFetch } from "@miai/connectors";
 
 export function htmlToText(html: string): string {
   let s = html
@@ -160,18 +160,18 @@ export function sameOriginLinks(html: string, pageUrl: string, limit = 8): strin
 
 const MAX_REDIRECTS = 3;
 
-async function fetchWithSsrfGuard(
+/** Exported for unit tests — DNS-pinned via connectors `safeFetch` (anti rebinding). */
+export async function fetchWithSsrfGuard(
   startUrl: string,
   timeoutMs: number,
 ): Promise<Response & { finalUrl: string }> {
   let current = startUrl;
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
-    const safe = await assertSafeOutboundUrl(current);
-    if (!safe.ok) throw new Error(safe.reason);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const res = await fetch(safe.url.toString(), {
+      // safeFetch validates + pins DNS; fail-closed if undici pin unavailable.
+      const res = await safeFetch(current, {
         signal: controller.signal,
         headers: {
           "user-agent":

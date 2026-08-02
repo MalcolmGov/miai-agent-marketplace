@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { sinksRequireSecret, timingSafeEqualString } from "@/lib/security";
+import { mcpToolsCallBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -65,10 +66,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await req.json().catch(() => ({}))) as {
-    name?: string;
-    arguments?: unknown;
-  };
+  const parsed = await parseJsonBody(req, mcpToolsCallBodySchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const event: McpCall = {
     id: `mcp_${randomBytes(6).toString("hex")}`,
