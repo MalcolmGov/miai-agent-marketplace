@@ -1,18 +1,24 @@
 # Claude handoff — active task
 
-## Active: full audit of 500 agents
+## Active: merge audit PR, then optional eval polish
 
-**Brief:** [`docs/CLAUDE_AUDIT_500.md`](./CLAUDE_AUDIT_500.md)
+**Audit done (2026-08-02):** PASS — see PR [#1](https://github.com/MalcolmGov/miai-agent-marketplace/pull/1) and `docs/reports/audit-500-2026-08-02.md`.
 
-Run the automated gates (catalogue-ready, eval suite, certify go-live, production status), spot-check a small Studio sample, and write `docs/reports/audit-500-YYYY-MM-DD.md`.
+**Next (Cursor, non-blocking):**
+- Merge PR #1 (report + eval artifacts only)
+- Optional: `pnpm fix:evals` on `product-finder` / `student-helpdesk` / `tour-activity`
+- Optional: heal 4 ZA static-high `says_any` phrases
+- Platform: `{{business_name}}` tenant token substitution at runtime
 
-```bash
-pnpm generate:presets && pnpm build:packages
-pnpm catalog:ready
-pnpm eval:suite
-pnpm certify:golive
-pnpm production:status
-```
+---
+
+## ⚠️ NEVER delete unprefixed `data/catalog/*.agent.json`
+
+Those **51 files are ZA (South Africa) market packs**, not orphans.
+
+- `families.json` → `markets.za` / `hasZa: true`
+- On disk = **500 international + 51 ZA = 551** (intentional)
+- Only delete Finder junk: `* 2.json` / `*agent 2.json`
 
 ---
 

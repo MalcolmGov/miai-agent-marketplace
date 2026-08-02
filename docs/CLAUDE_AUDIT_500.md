@@ -113,6 +113,7 @@ Also refresh `docs/reports/eval-gap-YYYY-MM-DD.md` if the suite writes/updates g
 
 - Zero-token evals only unless Malcolm asks for live LLM spend  
 - Do not commit `data/catalog/*agent 2.json` (macOS duplicates)  
+- **Do not delete unprefixed `data/catalog/*.agent.json`** — those are **ZA market packs** (`hasZa` / `markets.za`), not orphans. On-disk total is 500 intl + 51 ZA = 551.  
 - Do not rotate/print Railway secrets  
 - Prefer small PRs: report first; fixes second if green path needs heal  
 - When done: commit report (+ any fixes) and push, or leave a PR summary for Cursor
