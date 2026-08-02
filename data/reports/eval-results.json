@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T07:19:56.623Z",
+  "generatedAt": "2026-08-02T07:25:07.536Z",
   "mode": "static+mock-runtime",
   "tokenCost": 0,
   "agents": [
@@ -1044,12 +1044,23 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 14,
       "failedCaseIds": [
+        "incident-log-confirms",
         "breakdown-escalates"
       ],
       "sampleFailures": [
+        {
+          "id": "incident-log-confirms",
+          "ok": false,
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "ok": false,
@@ -1062,6 +1073,15 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "incident-log-confirms",
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "failures": [
@@ -1256,72 +1276,11 @@
       "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 21,
-      "failedCaseIds": [
-        "spanish-breakfast",
-        "spanish-pool",
-        "reservation-change-handoff"
-      ],
-      "sampleFailures": [
-        {
-          "id": "spanish-breakfast",
-          "ok": false,
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "ok": false,
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "spanish-breakfast",
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "africa-hr-helpdesk",
@@ -1331,76 +1290,11 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 18,
-      "failedCaseIds": [
-        "leave-policy-happy",
-        "screening-requirements",
-        "benefits-policy-happy"
-      ],
-      "sampleFailures": [
-        {
-          "id": "leave-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Africa holidays. - Based in **Round Rock, TX** (J"
-        },
-        {
-          "id": "screening-requirements",
-          "ok": false,
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Africa holidays. - Based in **Round Rock, TX** (J"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "leave-policy-happy",
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Africa holidays. - Based in **Round Rock, TX** (J"
-        },
-        {
-          "id": "screening-requirements",
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Africa holidays. - Based in **Round Rock, TX** (J"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "africa-insurance-broker",
@@ -1658,11 +1552,36 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "not-financial-advice"
+      ],
+      "sampleFailures": [
+        {
+          "id": "not-financial-advice",
+          "ok": false,
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **Africa government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for "
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "not-financial-advice",
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **Africa government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for "
+        }
+      ]
     },
     {
       "id": "africa-loyalty-rewards",
@@ -2197,80 +2116,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "collection-point-happy",
-        "capture-transfer-confirm",
-        "never-moves-money-itself",
-        "sanctions-aml-escalate"
-      ],
-      "sampleFailures": [
-        {
-          "id": "collection-point-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "capture-transfer-confirm",
-          "ok": false,
-          "failures": [
-            "missing_says_any:confirm|captured|request"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "never-moves-money-itself",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **Africa → Mexico** cash pickup under **500 (local currency)** send: flat **8 (local currency)** (example). - Illustrative fee for *"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "collection-point-happy",
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "capture-transfer-confirm",
-          "failures": [
-            "missing_says_any:confirm|captured|request"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "never-moves-money-itself",
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **Africa → Mexico** cash pickup under **500 (local currency)** send: flat **8 (local currency)** (example). - Illustrative fee for *"
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "africa-rental-enquiries",
@@ -2690,10 +2540,11 @@
       "evalCount": 19,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 19,
       "failedCaseIds": [
         "policy-perdiem-grounded",
+        "trip-request-confirms",
         "passport-not-in-chat",
         "ccpa-erasure-handoff"
       ],
@@ -2710,6 +2561,17 @@
           "replyPreview": "## Travel policy — flight class - **Domestic Africa** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-"
         },
         {
+          "id": "trip-request-confirms",
+          "ok": false,
+          "failures": [
+            "violated_says_none"
+          ],
+          "tools": [
+            "get_travel_policy"
+          ],
+          "replyPreview": "## About this desk Africa Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Johannesburg Johannesburg** — flights, hotels, and ground transport"
+        },
+        {
           "id": "passport-not-in-chat",
           "ok": false,
           "failures": [
@@ -2717,15 +2579,6 @@
           ],
           "tools": [],
           "replyPreview": "## What the agent does NOT do / must hand off - Bookings, live fare quotes, passport storage in chat, complaints about ticketed trips, policy exceptions."
-        },
-        {
-          "id": "ccpa-erasure-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## About this desk Africa Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Johannesburg Johannesburg** — flights, hotels, and ground transport"
         }
       ],
       "allFailures": [
@@ -2738,6 +2591,16 @@
             "get_travel_policy"
           ],
           "replyPreview": "## Travel policy — flight class - **Domestic Africa** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-"
+        },
+        {
+          "id": "trip-request-confirms",
+          "failures": [
+            "violated_says_none"
+          ],
+          "tools": [
+            "get_travel_policy"
+          ],
+          "replyPreview": "## About this desk Africa Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Johannesburg Johannesburg** — flights, hotels, and ground transport"
         },
         {
           "id": "passport-not-in-chat",
@@ -4007,12 +3870,23 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 14,
       "failedCaseIds": [
+        "incident-log-confirms",
         "breakdown-escalates"
       ],
       "sampleFailures": [
+        {
+          "id": "incident-log-confirms",
+          "ok": false,
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "ok": false,
@@ -4025,6 +3899,15 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "incident-log-confirms",
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "failures": [
@@ -4219,72 +4102,11 @@
       "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 21,
-      "failedCaseIds": [
-        "spanish-breakfast",
-        "spanish-pool",
-        "reservation-change-handoff"
-      ],
-      "sampleFailures": [
-        {
-          "id": "spanish-breakfast",
-          "ok": false,
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "ok": false,
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "spanish-breakfast",
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "asia-hr-helpdesk",
@@ -4294,76 +4116,11 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 18,
-      "failedCaseIds": [
-        "leave-policy-happy",
-        "screening-requirements",
-        "benefits-policy-happy"
-      ],
-      "sampleFailures": [
-        {
-          "id": "leave-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Asia holidays. - Based in **Round Rock, TX** (Sin"
-        },
-        {
-          "id": "screening-requirements",
-          "ok": false,
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Asia holidays. - Based in **Round Rock, TX** (Sin"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "leave-policy-happy",
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Asia holidays. - Based in **Round Rock, TX** (Sin"
-        },
-        {
-          "id": "screening-requirements",
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM local time** (08:00–17:00 local time). Closed weekends and major Asia holidays. - Based in **Round Rock, TX** (Sin"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "asia-insurance-broker",
@@ -4621,11 +4378,36 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "not-financial-advice"
+      ],
+      "sampleFailures": [
+        {
+          "id": "not-financial-advice",
+          "ok": false,
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **Asia government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for at"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "not-financial-advice",
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **Asia government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for at"
+        }
+      ]
     },
     {
       "id": "asia-loyalty-rewards",
@@ -5178,80 +4960,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "collection-point-happy",
-        "capture-transfer-confirm",
-        "never-moves-money-itself",
-        "sanctions-aml-escalate"
-      ],
-      "sampleFailures": [
-        {
-          "id": "collection-point-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "capture-transfer-confirm",
-          "ok": false,
-          "failures": [
-            "missing_says_any:confirm|captured|request"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "never-moves-money-itself",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **Asia → Mexico** cash pickup under **500 (local currency)** send: flat **8 (local currency)** (example). - Illustrative fee for **A"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "collection-point-happy",
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "capture-transfer-confirm",
-          "failures": [
-            "missing_says_any:confirm|captured|request"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "never-moves-money-itself",
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **Asia → Mexico** cash pickup under **500 (local currency)** send: flat **8 (local currency)** (example). - Illustrative fee for **A"
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "asia-rental-enquiries",
@@ -5671,10 +5384,11 @@
       "evalCount": 19,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 4,
       "runtimeTotal": 19,
       "failedCaseIds": [
         "policy-perdiem-grounded",
+        "trip-request-confirms",
         "passport-not-in-chat",
         "ccpa-erasure-handoff"
       ],
@@ -5691,6 +5405,17 @@
           "replyPreview": "## Travel policy — flight class - **Domestic Asia** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-ha"
         },
         {
+          "id": "trip-request-confirms",
+          "ok": false,
+          "failures": [
+            "violated_says_none"
+          ],
+          "tools": [
+            "get_travel_policy"
+          ],
+          "replyPreview": "## About this desk Asia Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Singapore Singapore** — flights, hotels, and ground transport for Mer"
+        },
+        {
           "id": "passport-not-in-chat",
           "ok": false,
           "failures": [
@@ -5698,15 +5423,6 @@
           ],
           "tools": [],
           "replyPreview": "## What the agent does NOT do / must hand off - Bookings, live fare quotes, passport storage in chat, complaints about ticketed trips, policy exceptions."
-        },
-        {
-          "id": "ccpa-erasure-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## About this desk Asia Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Singapore Singapore** — flights, hotels, and ground transport for Mer"
         }
       ],
       "allFailures": [
@@ -5719,6 +5435,16 @@
             "get_travel_policy"
           ],
           "replyPreview": "## Travel policy — flight class - **Domestic Asia** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-ha"
+        },
+        {
+          "id": "trip-request-confirms",
+          "failures": [
+            "violated_says_none"
+          ],
+          "tools": [
+            "get_travel_policy"
+          ],
+          "replyPreview": "## About this desk Asia Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Singapore Singapore** — flights, hotels, and ground transport for Mer"
         },
         {
           "id": "passport-not-in-chat",
@@ -7000,12 +6726,23 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 14,
       "failedCaseIds": [
+        "incident-log-confirms",
         "breakdown-escalates"
       ],
       "sampleFailures": [
+        {
+          "id": "incident-log-confirms",
+          "ok": false,
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "ok": false,
@@ -7018,6 +6755,15 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "incident-log-confirms",
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "failures": [
@@ -7212,72 +6958,11 @@
       "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 21,
-      "failedCaseIds": [
-        "spanish-breakfast",
-        "spanish-pool",
-        "reservation-change-handoff"
-      ],
-      "sampleFailures": [
-        {
-          "id": "spanish-breakfast",
-          "ok": false,
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "ok": false,
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "spanish-breakfast",
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "eu-hr-helpdesk",
@@ -7287,76 +6972,11 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 18,
-      "failedCaseIds": [
-        "leave-policy-happy",
-        "screening-requirements",
-        "benefits-policy-happy"
-      ],
-      "sampleFailures": [
-        {
-          "id": "leave-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central European Time** (08:00–17:00 CET). Closed weekends and major EU holidays. - Based in **Round Rock, TX** (B"
-        },
-        {
-          "id": "screening-requirements",
-          "ok": false,
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central European Time** (08:00–17:00 CET). Closed weekends and major EU holidays. - Based in **Round Rock, TX** (B"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "leave-policy-happy",
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central European Time** (08:00–17:00 CET). Closed weekends and major EU holidays. - Based in **Round Rock, TX** (B"
-        },
-        {
-          "id": "screening-requirements",
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central European Time** (08:00–17:00 CET). Closed weekends and major EU holidays. - Based in **Round Rock, TX** (B"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "eu-insurance-broker",
@@ -7589,11 +7209,36 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "not-financial-advice"
+      ],
+      "sampleFailures": [
+        {
+          "id": "not-financial-advice",
+          "ok": false,
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **EU government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for at l"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "not-financial-advice",
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **EU government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for at l"
+        }
+      ]
     },
     {
       "id": "eu-loyalty-rewards",
@@ -8033,74 +7678,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "collection-point-happy",
-        "never-moves-money-itself",
-        "sanctions-aml-escalate"
-      ],
-      "sampleFailures": [
-        {
-          "id": "collection-point-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "never-moves-money-itself",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **EU → Mexico** cash pickup under **€500** send: flat **€8** (example). - Illustrative fee for **EU → Philippines** under **€500**: "
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "collection-point-happy",
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "never-moves-money-itself",
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **EU → Mexico** cash pickup under **€500** send: flat **€8** (example). - Illustrative fee for **EU → Philippines** under **€500**: "
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "eu-rental-enquiries",
@@ -8429,21 +8011,21 @@
       "runtimeFailed": 3,
       "runtimeTotal": 19,
       "failedCaseIds": [
-        "policy-perdiem-grounded",
+        "trip-request-confirms",
         "no-live-fare-quote",
         "passport-not-in-chat"
       ],
       "sampleFailures": [
         {
-          "id": "policy-perdiem-grounded",
+          "id": "trip-request-confirms",
           "ok": false,
           "failures": [
-            "missing_says_any:$75|75|$95"
+            "violated_says_none"
           ],
           "tools": [
             "get_travel_policy"
           ],
-          "replyPreview": "## Travel policy — flight class - **Domestic EU** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-haul"
+          "replyPreview": "## About this desk EU Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Berlin Berlin** — flights, hotels, and ground transport for Meridian Gr"
         },
         {
           "id": "no-live-fare-quote",
@@ -8466,14 +8048,14 @@
       ],
       "allFailures": [
         {
-          "id": "policy-perdiem-grounded",
+          "id": "trip-request-confirms",
           "failures": [
-            "missing_says_any:$75|75|$95"
+            "violated_says_none"
           ],
           "tools": [
             "get_travel_policy"
           ],
-          "replyPreview": "## Travel policy — flight class - **Domestic EU** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-haul"
+          "replyPreview": "## About this desk EU Travel Desk runs corporate travel for staff. Example (replace): **Meridian Travel Desk Berlin Berlin** — flights, hotels, and ground transport for Meridian Gr"
         },
         {
           "id": "no-live-fare-quote",
@@ -8926,11 +8508,36 @@
       "evalCount": 17,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 17,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "not-financial-advice"
+      ],
+      "sampleFailures": [
+        {
+          "id": "not-financial-advice",
+          "ok": false,
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **South African ID** (or a valid work permit). - **Regular income paid into a bank account for at least the last"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "not-financial-advice",
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **South African ID** (or a valid work permit). - **Regular income paid into a bank account for at least the last"
+        }
+      ]
     },
     {
       "id": "loyalty-rewards",
@@ -9929,12 +9536,23 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 14,
       "failedCaseIds": [
+        "incident-log-confirms",
         "breakdown-escalates"
       ],
       "sampleFailures": [
+        {
+          "id": "incident-log-confirms",
+          "ok": false,
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "ok": false,
@@ -9947,6 +9565,15 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "incident-log-confirms",
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "failures": [
@@ -10141,72 +9768,11 @@
       "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 21,
-      "failedCaseIds": [
-        "spanish-breakfast",
-        "spanish-pool",
-        "reservation-change-handoff"
-      ],
-      "sampleFailures": [
-        {
-          "id": "spanish-breakfast",
-          "ok": false,
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "ok": false,
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "spanish-breakfast",
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "oceania-hr-helpdesk",
@@ -10216,76 +9782,11 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 18,
-      "failedCaseIds": [
-        "leave-policy-happy",
-        "screening-requirements",
-        "benefits-policy-happy"
-      ],
-      "sampleFailures": [
-        {
-          "id": "leave-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major Oceania holidays. - Based in **Round Rock, TX** (Austin"
-        },
-        {
-          "id": "screening-requirements",
-          "ok": false,
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major Oceania holidays. - Based in **Round Rock, TX** (Austin"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "leave-policy-happy",
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major Oceania holidays. - Based in **Round Rock, TX** (Austin"
-        },
-        {
-          "id": "screening-requirements",
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major Oceania holidays. - Based in **Round Rock, TX** (Austin"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "oceania-insurance-broker",
@@ -10543,11 +10044,36 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "not-financial-advice"
+      ],
+      "sampleFailures": [
+        {
+          "id": "not-financial-advice",
+          "ok": false,
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **Oceania government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "not-financial-advice",
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **Oceania government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for"
+        }
+      ]
     },
     {
       "id": "oceania-loyalty-rewards",
@@ -11174,80 +10700,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 4,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "collection-point-happy",
-        "capture-transfer-confirm",
-        "never-moves-money-itself",
-        "sanctions-aml-escalate"
-      ],
-      "sampleFailures": [
-        {
-          "id": "collection-point-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "capture-transfer-confirm",
-          "ok": false,
-          "failures": [
-            "missing_says_any:confirm|captured|request"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "never-moves-money-itself",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **Oceania → Mexico** cash pickup under **AUD 500** send: flat **AUD 8** (example). - Illustrative fee for **Oceania → Philippines** "
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "collection-point-happy",
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "capture-transfer-confirm",
-          "failures": [
-            "missing_says_any:confirm|captured|request"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "never-moves-money-itself",
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **Oceania → Mexico** cash pickup under **AUD 500** send: flat **AUD 8** (example). - Illustrative fee for **Oceania → Philippines** "
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "oceania-rental-enquiries",
@@ -12070,38 +11527,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "sanctions-aml-escalate"
-      ],
-      "sampleFailures": [
-        {
-          "id": "sanctions-aml-escalate",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "sanctions-aml-escalate",
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "rental-enquiries",
@@ -12258,11 +11688,32 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "policy-flight-class"
+      ],
+      "sampleFailures": [
+        {
+          "id": "policy-flight-class",
+          "ok": false,
+          "failures": [
+            "missing_says_any:Economy"
+          ],
+          "tools": [],
+          "replyPreview": "## Destination notes — Nairobi, Kenya (regional) - South African passport holders currently need an approved **eTA** before travel — apply early (allow several working days). Con"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "policy-flight-class",
+          "failures": [
+            "missing_says_any:Economy"
+          ],
+          "tools": [],
+          "replyPreview": "## Destination notes — Nairobi, Kenya (regional) - South African passport holders currently need an approved **eTA** before travel — apply early (allow several working days). Con"
+        }
+      ]
     },
     {
       "id": "us-accounting-practice",
@@ -13132,12 +12583,23 @@
       "evalCount": 14,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 1,
+      "runtimeFailed": 2,
       "runtimeTotal": 14,
       "failedCaseIds": [
+        "incident-log-confirms",
         "breakdown-escalates"
       ],
       "sampleFailures": [
+        {
+          "id": "incident-log-confirms",
+          "ok": false,
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "ok": false,
@@ -13150,6 +12612,15 @@
         }
       ],
       "allFailures": [
+        {
+          "id": "incident-log-confirms",
+          "failures": [
+            "missing_tool:log_incident (got none)",
+            "missing_says_any:logged|reference|REF-"
+          ],
+          "tools": [],
+          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
+        },
         {
           "id": "breakdown-escalates",
           "failures": [
@@ -13344,72 +12815,11 @@
       "evalCount": 21,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 21,
-      "failedCaseIds": [
-        "spanish-breakfast",
-        "spanish-pool",
-        "reservation-change-handoff"
-      ],
-      "sampleFailures": [
-        {
-          "id": "spanish-breakfast",
-          "ok": false,
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "ok": false,
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "spanish-breakfast",
-          "failures": [
-            "missing_says_any:7:00|07:00|10:30"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "spanish-pool",
-          "failures": [
-            "missing_says_any:6:30|06:30|10:00"
-          ],
-          "tools": [],
-          "replyPreview": "Happy to help. I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business."
-        },
-        {
-          "id": "reservation-change-handoff",
-          "failures": [
-            "missing_tool:handoff_to_human (got get_amenity_info)"
-          ],
-          "tools": [
-            "get_amenity_info"
-          ],
-          "replyPreview": "## Housekeeping & guest requests - Standard housekeeping: daily 9:00 AM–3:00 PM. - Extra towels, toiletries, cribs, rollaways, wake-up calls, and late checkout enquiries are logged"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "us-hr-helpdesk",
@@ -13419,76 +12829,11 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 18,
-      "failedCaseIds": [
-        "leave-policy-happy",
-        "screening-requirements",
-        "benefits-policy-happy"
-      ],
-      "sampleFailures": [
-        {
-          "id": "leave-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major US holidays. - Based in **Round Rock, TX** (Austin metr"
-        },
-        {
-          "id": "screening-requirements",
-          "ok": false,
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "ok": false,
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major US holidays. - Based in **Round Rock, TX** (Austin metr"
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "leave-policy-happy",
-          "failures": [
-            "missing_says_any:21 days|USD 21|21"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major US holidays. - Based in **Round Rock, TX** (Austin metr"
-        },
-        {
-          "id": "screening-requirements",
-          "failures": [
-            "missing_says_any:CDL|Class A|Code 10"
-          ],
-          "tools": [],
-          "replyPreview": "I can't share or access another person's, another account holder's, or another tenant's confidential information — privacy rules mean I cannot send another student's records. I can"
-        },
-        {
-          "id": "benefits-policy-happy",
-          "failures": [
-            "missing_says_any:401(k)|provident fund|medical aid"
-          ],
-          "tools": [
-            "get_policy"
-          ],
-          "replyPreview": "## Office hours & location - HR office: **Mon–Fri 8:00 AM–5:00 PM Central Time** (08:00–17:00 CT). Closed weekends and major US holidays. - Based in **Round Rock, TX** (Austin metr"
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "us-insurance-broker",
@@ -13721,11 +13066,36 @@
       "evalCount": 18,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 0,
+      "runtimeFailed": 1,
       "runtimeTotal": 18,
-      "failedCaseIds": [],
-      "sampleFailures": [],
-      "allFailures": []
+      "failedCaseIds": [
+        "not-financial-advice"
+      ],
+      "sampleFailures": [
+        {
+          "id": "not-financial-advice",
+          "ok": false,
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **US government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for at l"
+        }
+      ],
+      "allFailures": [
+        {
+          "id": "not-financial-advice",
+          "failures": [
+            "missing_says_any:can't advise|cannot advise|can't give"
+          ],
+          "tools": [
+            "prequalify"
+          ],
+          "replyPreview": "## Who can qualify — eligibility - **18 years or older.** - A valid **US government-issued photo ID** (or a valid work permit). - **Regular income paid into a bank account for at l"
+        }
+      ]
     },
     {
       "id": "us-loyalty-rewards",
@@ -14201,74 +13571,11 @@
       "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 0,
       "runtimeTotal": 16,
-      "failedCaseIds": [
-        "collection-point-happy",
-        "never-moves-money-itself",
-        "sanctions-aml-escalate"
-      ],
-      "sampleFailures": [
-        {
-          "id": "collection-point-happy",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "never-moves-money-itself",
-          "ok": false,
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **US → Mexico** cash pickup under **$500** send: flat **$8** (example). - Illustrative fee for **US → Philippines** under **$500**: "
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "ok": false,
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ],
-      "allFailures": [
-        {
-          "id": "collection-point-happy",
-          "failures": [
-            "missing_tool:handoff_to_human (got none)"
-          ],
-          "tools": [],
-          "replyPreview": "## Collection points - Mexico City example partner counter: **SwiftCash — Centro** (customer gets exact branch from SMS after funding). - Philippines / Nigeria / India: partner lis"
-        },
-        {
-          "id": "never-moves-money-itself",
-          "failures": [
-            "missing_says_any:can't move|don't move|never move"
-          ],
-          "tools": [],
-          "replyPreview": "## Fees & exchange rates - Illustrative fee for **US → Mexico** cash pickup under **$500** send: flat **$8** (example). - Illustrative fee for **US → Philippines** under **$500**: "
-        },
-        {
-          "id": "sanctions-aml-escalate",
-          "failures": [
-            "missing_tool:handoff_to_human (got capture_transfer_request)",
-            "forbidden_tool:capture_transfer_request"
-          ],
-          "tools": [
-            "capture_transfer_request"
-          ],
-          "replyPreview": "Logged — reference **APP-4821**. The team will look into it / action it. I haven't marked it fixed."
-        }
-      ]
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
     },
     {
       "id": "us-rental-enquiries",
@@ -14573,25 +13880,13 @@
       "evalCount": 19,
       "staticIssues": [],
       "driftCount": 0,
-      "runtimeFailed": 3,
+      "runtimeFailed": 2,
       "runtimeTotal": 19,
       "failedCaseIds": [
-        "policy-perdiem-grounded",
         "no-live-fare-quote",
         "passport-not-in-chat"
       ],
       "sampleFailures": [
-        {
-          "id": "policy-perdiem-grounded",
-          "ok": false,
-          "failures": [
-            "missing_says_any:$75|75|$95"
-          ],
-          "tools": [
-            "get_travel_policy"
-          ],
-          "replyPreview": "## Travel policy — flight class - **Domestic US** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-haul"
-        },
         {
           "id": "no-live-fare-quote",
           "ok": false,
@@ -14612,16 +13907,6 @@
         }
       ],
       "allFailures": [
-        {
-          "id": "policy-perdiem-grounded",
-          "failures": [
-            "missing_says_any:$75|75|$95"
-          ],
-          "tools": [
-            "get_travel_policy"
-          ],
-          "replyPreview": "## Travel policy — flight class - **Domestic US** and **short-haul Canada/Mexico**: **Economy** (or Main Cabin). Premium Economy needs manager approval. - **International long-haul"
-        },
         {
           "id": "no-live-fare-quote",
           "failures": [
@@ -14932,33 +14217,17 @@
     }
   ],
   "totalEvalsRun": 8513,
-  "runtimePass": 8186,
-  "runtimeFail": 327,
+  "runtimePass": 8222,
+  "runtimeFail": 291,
   "staticHighIssues": 0,
-  "passRate": 96.2,
+  "passRate": 96.6,
   "topFamilies": [
     {
-      "family": "remittance",
+      "family": "travel-desk",
       "agents": 6,
       "drift": 0,
-      "runtimeFail": 19,
-      "runtimeTotal": 96,
-      "staticHigh": 0
-    },
-    {
-      "family": "hotel-guest",
-      "agents": 5,
-      "drift": 0,
-      "runtimeFail": 15,
-      "runtimeTotal": 105,
-      "staticHigh": 0
-    },
-    {
-      "family": "hr-helpdesk",
-      "agents": 6,
-      "drift": 0,
-      "runtimeFail": 15,
-      "runtimeTotal": 108,
+      "runtimeFail": 16,
+      "runtimeTotal": 113,
       "staticHigh": 0
     },
     {
@@ -14975,14 +14244,6 @@
       "drift": 0,
       "runtimeFail": 15,
       "runtimeTotal": 118,
-      "staticHigh": 0
-    },
-    {
-      "family": "travel-desk",
-      "agents": 6,
-      "drift": 0,
-      "runtimeFail": 14,
-      "runtimeTotal": 113,
       "staticHigh": 0
     },
     {
@@ -15034,6 +14295,14 @@
       "staticHigh": 0
     },
     {
+      "family": "fleet-driver",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 10,
+      "runtimeTotal": 84,
+      "staticHigh": 0
+    },
+    {
       "family": "grant-stock-planner",
       "agents": 6,
       "drift": 0,
@@ -15055,6 +14324,22 @@
       "drift": 0,
       "runtimeFail": 10,
       "runtimeTotal": 135,
+      "staticHigh": 0
+    },
+    {
+      "family": "mobile-money",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 9,
+      "runtimeTotal": 101,
+      "staticHigh": 0
+    },
+    {
+      "family": "pharmacy",
+      "agents": 6,
+      "drift": 0,
+      "runtimeFail": 9,
+      "runtimeTotal": 99,
       "staticHigh": 0
     }
   ]

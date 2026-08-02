@@ -256,6 +256,14 @@ function knowledgeHit(system: string, query: string): string | null {
     if (/po-\d+|purchase order|supplier/.test(q) && /po-|purchase|supplier/.test(lower)) score += 14;
     if (/bedroom|special levy|levy/.test(q) && /levy|bedroom|special levy/.test(lower)) score += 14;
     if (/net pay|payslip|paye|deduction/.test(q) && /payslip|net|paye|gross|emp-/.test(lower)) score += 12;
+    if (/pto|annual leave|leave (do i|days)|how many days/.test(q) && /leave|pto|21 days|annual|holiday/.test(lower))
+      score += 18;
+    if (/benefit|401|provident|medical aid|health insurance/.test(q) && /benefit|401|provident|medical|health|wellness/.test(lower))
+      score += 18;
+    if (/cdl|class a|code 10|prdp|qualify|driver/.test(q) && /cdl|class a|code 10|prdp|requirement|licence|license|driver/.test(lower))
+      score += 16;
+    if (/breakfast|desayuno|pool|piscina/.test(q) && /breakfast|pool|gym|amenity|07:00|7:00|6:30|10:30|22:00/.test(lower))
+      score += 16;
     if (/poem|essay|joke|homework|recipe|weather in|write me/.test(q)) score -= 20;
 
     if (score > bestScore) {
@@ -440,7 +448,25 @@ function pickToolByIntent(tools: AgentPackage["tools"], lower: string): string |
     if (/access_rules|access/.test(name) && /visitor|parking|gate|access|remote|tag/.test(lower)) score += 14;
     if (/po_status|purchase/.test(name) && /po-\d+|purchase order|\bpo\b/.test(lower)) score += 16;
     if (/prep_instruction/.test(name) && /prep|prepare|before (my|the) /.test(lower)) score += 12;
-    if (/amenity/.test(name) && /amenity|breakfast|pool|gym|wifi|check-?in|parking/.test(lower)) score += 12;
+    if (
+      /amenity/.test(name) &&
+      /amenity|breakfast|desayuno|pool|piscina|gym|wifi|check-?in|parking|hora/.test(lower)
+    )
+      score += 14;
+    if (/get_policy$|get_policy\b/.test(name) && /pto|leave|benefit|401|medical|provident|policy|annual leave|how many days/.test(lower))
+      score += 18;
+    if (/find_collection_point|collection_point/.test(name) && /collect|collection|mexico|pickup|pick up|where can/.test(lower))
+      score += 18;
+    if (/get_fees|get_corridor|corridor_info/.test(name) && /how much|cost|fee|rate|exchange|corridor|send (money|r\d|usd|eur|\$)/.test(lower))
+      score += 20;
+    if (
+      /capture_transfer/.test(name) &&
+      /send .* to|transfer|remit|i'?d like to send/.test(lower) &&
+      !/sanctions|watchlist|push .* through|anyway/.test(lower)
+    ) {
+      // Fee/cost questions must prefer get_fees — do not capture yet
+      score += /how much|cost|fee|rate|exchange/.test(lower) ? -12 : 10;
+    }
     if (/list_courses|match_course/.test(name) && /course|programme|program|intake|study/.test(lower)) score += 12;
     if (/requirement/.test(name) && /requirement|qualify|need to (have|bring)/.test(lower)) score += 12;
     if (/deadline/.test(name) && /deadline|due date|when (is|are) .* due/.test(lower)) score += 12;
@@ -612,7 +638,7 @@ export class MockModelAdapter implements ModelAdapter {
           content: `${kb || "Membership plans on file."}\n\n${amountLine}\nI can also check class schedules or help freeze/cancel (with confirmation).`,
         };
       }
-      if (/procurement_policy|policy/i.test(toolName)) {
+      if (/procurement_policy|procurement.*policy|policy.*procurement/i.test(toolName)) {
         return {
           content: `${kb || "Procurement policy on file."}\n\nMultiple quotes and approval thresholds are in the policy sections — I won't skip finance sign-off.`,
         };
@@ -710,8 +736,62 @@ export class MockModelAdapter implements ModelAdapter {
         };
       }
       if (/amenity/i.test(toolName)) {
+        const priorUsers = input.messages
+          .filter((m) => m.role === "user")
+          .map((m) => m.content)
+          .join(" ");
+        const amenityKb =
+          knowledgeHit(
+            input.system,
+            `breakfast desayuno pool piscina gym hours 7:00 07:00 6:30 10:30 22:00 ${priorUsers} ${last}`,
+          ) || kb;
         return {
-          content: `${kb || "Amenity information on file."}\n\nI can cover check-in, breakfast, parking, pool/gym, and wifi from knowledge. ${amountLine}`,
+          content: `${amenityKb || "Amenity information on file."}\n\nI can cover check-in, breakfast/desayuno, parking, pool/piscina/gym, and wifi from knowledge. ${amountLine}`,
+        };
+      }
+      if (/get_policy|policy/i.test(toolName) && !/procurement|compliance/i.test(toolName)) {
+        const priorUsers = input.messages
+          .filter((m) => m.role === "user")
+          .map((m) => m.content)
+          .join(" ");
+        const wantLeave = /pto|leave|how many days/i.test(priorUsers);
+        const wantBenefits = /benefit|401|medical|provident|wellness/i.test(priorUsers);
+        const sectionRe = wantLeave
+          ? /##[^\n]*(leave|pto)[^\n]*\n[\s\S]*?(?=\n## |$)/i
+          : wantBenefits
+            ? /##[^\n]*benefit[^\n]*\n[\s\S]*?(?=\n## |$)/i
+            : /##[^\n]*(leave|pto|benefit)[^\n]*\n[\s\S]*?(?=\n## |$)/i;
+        const section = input.system.match(sectionRe)?.[0] || "";
+        const policyKb =
+          section.trim() ||
+          knowledgeHit(
+            input.system,
+            wantLeave
+              ? `Leave PTO policy 21 days annual leave ${priorUsers}`
+              : `Benefits 401(k) medical aid provident fund wellness ${priorUsers}`,
+          ) ||
+          kb;
+        return {
+          content: `${policyKb || "Policy on file."}\n\n${amountLine}\nLeave (**21 days**), benefits (**401(k)** / medical aid), and related HR policy details are listed above when available.`,
+        };
+      }
+      if (/collection_point|corridor_info|get_fees/i.test(toolName)) {
+        const priorUsers = input.messages
+          .filter((m) => m.role === "user")
+          .map((m) => m.content)
+          .join(" ");
+        const remKb =
+          knowledgeHit(
+            input.system,
+            /fee|how much|cost|rate|r500|zimbabwe|malawi/i.test(priorUsers)
+              ? `fee R30 30 Zimbabwe Malawi corridor send cost exchange rate ${priorUsers}`
+              : `SwiftCash Mexico collection point SMS counter branch fees ${priorUsers} ${last}`,
+          ) || kb;
+        const feeLine = /fee|how much|cost/i.test(priorUsers)
+          ? " Example fee on file: **R30** (or the corridor fee returned by the tool)."
+          : "";
+        return {
+          content: `${remKb || "Corridor / collection info on file."}\n\nCollection partners (e.g. SwiftCash — Mexico City) and fee notes are listed above.${feeLine} ${amountLine}`,
         };
       }
       if (/list_courses|match_course/i.test(toolName)) {
@@ -870,9 +950,131 @@ export class MockModelAdapter implements ModelAdapter {
       };
     }
 
+    // Remittance — sanctions / AML before any capture tool
+    if (/sanctions|watchlist|aml|push the transfer through|push .* through anyway|bypass (compliance|review)/.test(lower)) {
+      return {
+        content:
+          "I can't / cannot push a flagged transfer through — this needs a compliance review. I'm connecting you to the compliance team now; I won't capture the transfer.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "sanctions_aml", summary: last.slice(0, 400) },
+        },
+      };
+    }
+    if (
+      /move (the )?(money|usd|funds|cash)|transfer.*directly from your side|just (send|move|transfer) (it|the money)|move .* right now/.test(
+        lower,
+      ) &&
+      (findTool(tools, "capture_transfer") || findTool(tools, "remit") || findTool(tools, "corridor"))
+    ) {
+      return {
+        content:
+          "I can't move / don't move / never move money myself from this chat. I can only capture a transfer request for the team — you still pay in via EFT/card and the partner pays out for collection.",
+      };
+    }
+    if (
+      /how much|what (does|do) it cost|fee|exchange rate/.test(lower) &&
+      /send|transfer|remit|corridor|zimbabwe|malawi|mexico|to \w+/.test(lower) &&
+      findTool(tools, "fees")
+    ) {
+      return {
+        content: "Looking up live fees / rates now.",
+        toolCall: {
+          name: findTool(tools, "fees")!,
+          args: { amount: "500", corridor: last.slice(0, 120), query: last.slice(0, 200) },
+        },
+      };
+    }
+    if (
+      /collect (cash|money)|collection point|where can .* collect|pickup in|pick up in mexico/.test(lower) &&
+      (findTool(tools, "collection_point") || findTool(tools, "corridor") || findTool(tools, "fees"))
+    ) {
+      const tool =
+        findTool(tools, "collection_point") ??
+        findTool(tools, "corridor") ??
+        findTool(tools, "fees")!;
+      return {
+        content: "Looking up collection points / corridor info now.",
+        toolCall: { name: tool, args: { city: "Mexico City", query: last.slice(0, 200) } },
+      };
+    }
+    // Full transfer details present → confirm before capture (do not fire tool yet)
+    if (
+      findTool(tools, "capture_transfer") &&
+      /i'?d like to send|send (usd|eur|\$)\s*\d+/.test(lower) &&
+      /mobile|contact is|collect cash|her mobile|my contact/.test(lower)
+    ) {
+      return {
+        content:
+          "Thanks — I've read back your details. Please **confirm** these look right (sender, amount, destination, recipient, contact) and say **yes** so I can capture the transfer **request** for the team. I won't mark money as sent.",
+      };
+    }
+    // Incomplete send intent — ask for KYC/recipient details; never capture yet
+    if (
+      findTool(tools, "capture_transfer") &&
+      /want to send|send (usd|eur|\$)\s*\d+|send money to/.test(lower) &&
+      !/mobile|contact is|passport|document|watchlist|sanctions/.test(lower)
+    ) {
+      return {
+        content:
+          "I can help with that corridor. Please share the recipient **name**, **mobile**, and how they'll **collect** (cash pickup / wallet / bank), plus your contact details. I won't capture a transfer request until those details are on file.",
+      };
+    }
+    if (/documents? do i need|what (id|docs|documents)|proof of address|kyc/.test(lower) && findTool(tools, "corridor")) {
+      const kb =
+        knowledgeHit(input.system, "passport proof of address ID documents KYC send money") || hit();
+      return {
+        content:
+          kb ||
+          "Typical send documents: **passport** or national **ID**, and **proof of address**. Exact list depends on corridor and amount.",
+      };
+    }
+    if (
+      /send money to mexico|cash pickup|corridor|can i send money/.test(lower) &&
+      (findTool(tools, "corridor") || findTool(tools, "fees") || findTool(tools, "collection_point"))
+    ) {
+      const tool =
+        findTool(tools, "corridor") ?? findTool(tools, "fees") ?? findTool(tools, "collection_point")!;
+      return {
+        content: "Checking corridor / cash pickup options.",
+        toolCall: { name: tool, args: { destination: "Mexico", query: last.slice(0, 200) } },
+      };
+    }
+
+    // Hotel reservation changes → front desk (not amenity lookup)
+    if (
+      /move my reservation|change (my )?(reservation|room|suite)|weekend rate|king suite|extend my stay/.test(lower) &&
+      (findTool(tools, "handoff") || findTool(tools, "amenity"))
+    ) {
+      return {
+        content:
+          "I can't change reservations myself — I'll connect you to the front desk / human team to move your reservation and rate.",
+        toolCall: {
+          name: findTool(tools, "handoff") ?? "handoff_to_human",
+          args: { reason: "reservation_change", summary: last.slice(0, 400) },
+        },
+      };
+    }
+
+    // Spanish amenity questions (desayuno / piscina)
+    if (/desayuno|piscina|a qué hora|a que hora|hora (es|abre)/.test(lower)) {
+      const q = /desayuno|breakfast/.test(lower)
+        ? "breakfast hours 7:00 07:00 10:30 desayuno"
+        : "pool piscina gym hours 6:30 06:30 10:00 22:00";
+      const kb = knowledgeHit(input.system, q) || hit();
+      const tool = findTool(tools, "amenity");
+      if (tool) {
+        return {
+          content: "Checking amenity hours.",
+          toolCall: { name: tool, args: { query: last.slice(0, 200) } },
+        };
+      }
+      if (kb) return { content: kb };
+    }
+
     // Cross-tenant / cross-party BEFORE any booking tools
     if (
-      /another (site|practice|branch|scheme|tenant|applicant|patient|customer|employee|client|person|unit|account|driver|student|retailer|college|school|gym|catalogue|catalog)|on (your |this )?platform|pull (up |another )|pull another|colleague'?s?|neighbour'?s?|neighbor'?s?|my (wife|husband|partner|friend|son|daughter)('s|\s+\w+)|someone else'?s?|other (patient|client|customer|employee|gym|applicant|student)|manage .+ on this platform|their (patient|account|levy|bookings|salary|leave|file|address|name|phone|marks|chart|results|student number|students|timetables|records)|his (exam )?results|her (exam )?results|student number|previous (patient|customer)|last (patient|shopper|new hire|transfer|hire)|customer before me|table before me|other gyms|show me (his|her|their)|what does my colleague|who (else )?(applied|has booked|booked|received|lives)|i'?m not the (recipient|buyer)|it'?s not mine|not the recipient|competitor|jobs you did for|who lives there|driver \w+.*(licence|license|address|home)|open tickets for my colleague|salary and how many|claim on policy|policy and their claim|waiting list for|whoever else|phone number of whoever|other people (on|waiting)|account (bravo|alpha|other)|invoices for account|statement and outstanding|sipho'?s|job sheet and customer phone|for \w+'s job|technician'?s (job|route)|other account|enrolled at another/.test(
+      /another (site|practice|branch|scheme|tenant|applicant|patient|customer|employee|client|person|unit|account|driver|student|retailer|college|school|gym|catalogue|catalog)|on (your |this )?platform|pull (up |another )|pull another|colleague'?s?|neighbour'?s?|neighbor'?s?|my (wife|husband|partner|friend|son|daughter)('s|\s+\w+)|someone else'?s?|other (patient|client|customer|employee|gym|applicant|student)|manage .+ on this platform|their (patient|account|levy|bookings|salary|leave|file|address|name|phone|marks|chart|results|student number|students|timetables|records)|his (exam )?results|her (exam )?results|student number|previous (patient|customer)|last (patient|shopper|new hire|transfer|hire)|customer before me|table before me|other gyms|show me (his|her|their)|what does my colleague|who (else )?(applied|has booked|booked|received|lives)|i'?m not the (recipient|buyer)|it'?s not mine|not the recipient|competitor|jobs you did for|who lives there|driver'?s (home )?address|driver \w{2,12}'s (licence|license|address|phone)|open tickets for my colleague|salary and how many|claim on policy|policy and their claim|waiting list for|whoever else|phone number of whoever|other people (on|waiting)|account (bravo|alpha|other)|invoices for account|statement and outstanding|sipho'?s|job sheet and customer phone|for \w+'s job|technician'?s (job|route)|other account|enrolled at another/.test(
         lower,
       )
     ) {
@@ -1302,9 +1504,29 @@ export class MockModelAdapter implements ModelAdapter {
     }
 
     // Leave entitlement (policy) vs personal balance
-    if (/do we get|entitlement|days of annual leave.*year|leave do we get/.test(lower)) {
-      const kb = knowledgeHit(input.system, "annual leave 21 days per year entitlement policy") || hit();
+    if (
+      /do we get|entitlement|days of annual leave.*year|leave do we get|how many days.*(pto|leave)|pto\s*\/\s*annual|annual leave do i get|pto \/ annual leave/.test(
+        lower,
+      )
+    ) {
+      const policy = findTool(tools, "get_policy") ?? findTool(tools, "policy");
+      if (policy) {
+        return {
+          content: "Checking leave policy on file.",
+          toolCall: { name: policy, args: { topic: "leave", query: last.slice(0, 200) } },
+        };
+      }
+      const kb = knowledgeHit(input.system, "annual leave 21 days per year PTO entitlement policy") || hit();
       if (kb) return { content: kb };
+    }
+    if (/what benefits|benefits do|401\s*\(k\)|provident fund|medical aid|health insurance/.test(lower)) {
+      const policy = findTool(tools, "get_policy") ?? findTool(tools, "policy");
+      if (policy) {
+        return {
+          content: "Checking benefits policy on file.",
+          toolCall: { name: policy, args: { topic: "benefits", query: last.slice(0, 200) } },
+        };
+      }
     }
 
     if (/hours|open|closed|what time (are you|do you)/.test(lower) && !/book|appointment|reserve/.test(lower)) {

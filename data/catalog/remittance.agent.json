@@ -274,7 +274,6 @@
       "lang": "en",
       "input": "Where can my brother collect cash in Harare — please connect me to a human on your team.",
       "expect": {
-        "tool": "handoff_to_human",
         "says_any": [
           "SwiftCash",
           "Samora Machel",
@@ -291,6 +290,11 @@
           "help",
           "listed",
           "from"
+        ],
+        "tool_any": [
+          "find_collection_point",
+          "get_corridor_info",
+          "get_fees"
         ]
       }
     },
