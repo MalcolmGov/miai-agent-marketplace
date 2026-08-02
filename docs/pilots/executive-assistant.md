@@ -18,3 +18,8 @@
 - **EU** (`eu-executive-assistant`): Maya Chen / Ridgeway Labs Berlin EA desk (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-executive-assistant`): Maya Chen / Ridgeway Labs Johannesburg EA desk (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-executive-assistant`): Maya Chen / Ridgeway Labs Singapore EA desk (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`
+- Record with: `pnpm proof:live --record --agent=us-executive-assistant --connector=<id> --corr=corr_…`
+

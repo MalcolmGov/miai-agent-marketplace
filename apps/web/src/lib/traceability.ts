@@ -16,7 +16,15 @@ export type TurnTranscript = {
   userId?: string;
   userMessage: string;
   assistantMessage: string;
-  toolCalls: Array<{ name: string; args?: Record<string, unknown>; error?: string }>;
+  toolCalls: Array<{
+    name: string;
+    args?: Record<string, unknown>;
+    error?: string;
+    connector?: string;
+    stubbed?: boolean;
+    live?: boolean;
+    resultPreview?: string;
+  }>;
   tokensDebited: number;
   paused: boolean;
   model?: string;
@@ -260,7 +268,14 @@ export async function recordChatTurn(input: {
   userId?: string;
   userMessage: string;
   assistantMessage: string;
-  toolCalls?: Array<{ name: string; args?: Record<string, unknown>; result?: unknown }>;
+  toolCalls?: Array<{
+    name: string;
+    args?: Record<string, unknown>;
+    result?: unknown;
+    connector?: string;
+    stubbed?: boolean;
+    live?: boolean;
+  }>;
   tokensDebited: number;
   paused: boolean;
   model?: string;
@@ -270,12 +285,28 @@ export async function recordChatTurn(input: {
   extraDetail?: Record<string, unknown>;
 }): Promise<{ audit: AuditEvent; turn: TurnTranscript }> {
   const tools = (input.toolCalls ?? []).map((t) => {
+    const data = t.result && typeof t.result === "object" ? (t.result as Record<string, unknown>) : null;
     const err =
-      t.result && typeof t.result === "object" && "error" in t.result
-        ? String((t.result as { error?: unknown }).error ?? "")
-        : undefined;
-    return { name: t.name, args: t.args, error: err || undefined };
+      data && "error" in data ? String(data.error ?? "") : undefined;
+    const stubbed =
+      typeof t.stubbed === "boolean"
+        ? t.stubbed
+        : Boolean(data?.source === "sandbox_stub" || data?._note || data?.stubbed);
+    const live =
+      typeof t.live === "boolean" ? t.live : Boolean(data?.live === true && !stubbed);
+    return {
+      name: t.name,
+      args: t.args,
+      error: err || undefined,
+      connector: t.connector ?? (typeof data?.provider === "string" ? data.provider : undefined),
+      stubbed,
+      live,
+      resultPreview: data ? JSON.stringify(data).slice(0, 240) : undefined,
+    };
   });
+
+  const liveTools = tools.filter((t) => t.live).map((t) => t.name);
+  const stubTools = tools.filter((t) => t.stubbed).map((t) => t.name);
 
   const audit = await appendAudit({
     workspaceId: input.workspaceId,
@@ -294,6 +325,8 @@ export async function recordChatTurn(input: {
       paused: input.paused,
       tools: tools.map((t) => t.name),
       toolErrors: tools.filter((t) => t.error).map((t) => t.name),
+      liveTools,
+      stubTools,
       model: input.model,
       mode: input.mode,
       replyLanguage: input.replyLanguage,

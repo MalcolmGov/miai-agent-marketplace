@@ -10,11 +10,9 @@ Partner demo is done. This is the industrial path to stand behind every SKU.
 |---|---|
 | Wave 1–2 US heroes | **55 / 55 Depth strong** |
 | Prefixed packs on disk | **220 / 220** |
-| Wave 3 — remaining 37 | **Done** (static eval drift 0) |
-| Wave 3 — Go-live 18 | **Done** (Cluster B Claude; A + C Cursor; Cluster B protected) |
-| Presets | Regenerated for full catalogue |
-| Next | **Wave 4** live connector proof |
-| Target | **220** rentable without hand-holding |
+| Wave 3 market packs | **Done** |
+| Wave 4 live connectors | **Harness ready** — first slice 0/4 proofs (needs OAuth env on staging) |
+| Target | **220** rentable; `depth: live` tracked separately |
 
 Run `pnpm production:status`.
 
@@ -46,7 +44,10 @@ For each family with a strong US hero, deepen `eu-` / `africa-` / `asia-` varian
 **Claude ownership (preferred):** Wave 3 for families already strong on US — see `CLAUDE_HANDOFF.md`.
 
 ### Wave 4 — Live connector proof
-Priority connectors (Calendar, Slack, HubSpot, ticket) on a subset of Wave 1, then expand.
+Priority connectors (Calendar, Slack, HubSpot, ticket) on first-slice Cluster A agents.
+
+See `docs/WAVE4_LIVE_CONNECTORS.md` and `pnpm proof:live`.
+True live calls need Railway OAuth env; product code + harness are in place.
 
 ## Status command
 

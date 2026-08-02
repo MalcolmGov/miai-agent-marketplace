@@ -13,9 +13,14 @@
 ## Optional polish
 
 - Hand-raise any Go-live A/C pack that needs Claude-level narrative depth beyond the automated regional tenant pass
-- Wave 4: live connector proof (Calendar / Slack / HubSpot / ticket) — see `PRODUCTION_SCALE_220.md`
+
+## Wave 4 (live connectors)
+
+Ops + evidence wave. Harness: `pnpm proof:live`. Checklist: `docs/WAVE4_LIVE_CONNECTORS.md`.
+Unblock Slack / Google / HubSpot OAuth vars on Railway, Connect in Actions, then record correlation ids.
 
 ```bash
 pnpm production:status
+pnpm proof:live
 pnpm eval:suite:static -- --agents <id-list>
 ```

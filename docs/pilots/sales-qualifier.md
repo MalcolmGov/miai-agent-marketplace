@@ -18,3 +18,8 @@
 - **EU** (`eu-sales-qualifier`): Ledgerly Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-sales-qualifier`): Ledgerly Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-sales-qualifier`): Ledgerly Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`
+- Record with: `pnpm proof:live --record --agent=us-sales-qualifier --connector=<id> --corr=corr_…`
+

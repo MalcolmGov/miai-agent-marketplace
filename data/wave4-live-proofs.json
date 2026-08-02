@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "updatedAt": null,
+  "slice": [
+    "us-executive-assistant",
+    "us-dental-front-desk",
+    "us-sales-qualifier",
+    "us-it-helpdesk"
+  ],
+  "requiredConnectors": ["google_calendar", "slack", "hubspot"],
+  "proofs": []
+}

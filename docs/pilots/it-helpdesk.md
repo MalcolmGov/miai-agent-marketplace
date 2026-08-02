@@ -18,3 +18,8 @@
 - **EU** (`eu-it-helpdesk`): Ridgeway Labs IT Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-it-helpdesk`): Ridgeway Labs IT Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-it-helpdesk`): Ridgeway Labs IT Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`
+- Record with: `pnpm proof:live --record --agent=us-it-helpdesk --connector=<id> --corr=corr_…`
+

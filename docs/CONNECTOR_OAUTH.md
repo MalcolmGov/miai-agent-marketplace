@@ -87,3 +87,13 @@ pnpm --filter @miai/web dev
 4. Live chat → “speak to a human” → message in channel
 
 Tokens are sealed in the OAuth token store (HMAC via `OAUTH_TOKEN_SECRET`). Never injected into LLM prompts.
+
+## Wave 4 proof harness
+
+```bash
+pnpm proof:live              # env readiness
+DEMO_BASE=https://… pnpm proof:live --chat
+pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr=corr_…
+```
+
+Full checklist: `docs/WAVE4_LIVE_CONNECTORS.md`. Never use `access_token: "demo"` for live proof.

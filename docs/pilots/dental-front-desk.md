@@ -18,3 +18,8 @@
 - **EU** (`eu-dental-front-desk`): Oak Street Dental Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-dental-front-desk`): Oak Street Dental Rosebank (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-dental-front-desk`): Oak Street Dental Orchard (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`
+- Record with: `pnpm proof:live --record --agent=us-dental-front-desk --connector=<id> --corr=corr_…`
+

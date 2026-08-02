@@ -73,6 +73,36 @@ const africaPrefixed = strongUs.filter((fam) =>
   existsSync(path.join(catalogDir, `africa-${fam}.agent.json`)),
 ).length;
 
+const WAVE4_SLICE = [
+  "executive-assistant",
+  "dental-front-desk",
+  "sales-qualifier",
+  "it-helpdesk",
+];
+const proofsPath = path.join(root, "data/wave4-live-proofs.json");
+let wave4Proofs = [];
+if (existsSync(proofsPath)) {
+  try {
+    wave4Proofs = JSON.parse(readFileSync(proofsPath, "utf8")).proofs || [];
+  } catch {
+    wave4Proofs = [];
+  }
+}
+const liveFamilies = new Set(
+  [
+    ...wave4Proofs.map((p) => p.family).filter(Boolean),
+    ...WAVE4_SLICE.filter((f) => {
+      const mdPath = path.join(pilotsDir, `${f}.md`);
+      if (!existsSync(mdPath)) return false;
+      return /^- Depth:\s*live\b/m.test(readFileSync(mdPath, "utf8"));
+    }),
+  ],
+);
+const wave4AgentsCovered = WAVE4_SLICE.filter((f) =>
+  wave4Proofs.some((p) => p.family === f || p.agentId === `us-${f}`),
+);
+const wave4Connectors = [...new Set(wave4Proofs.map((p) => p.connector).filter(Boolean))];
+
 console.log(`
 Production scale status
 ───────────────────────
@@ -89,6 +119,12 @@ Target:                   220 (55 × 4)
 Wave 1 (Go-live 18): ${strongUs.length >= 18 ? "met or exceeded" : "in progress"} (${strongUs.length})
 Wave 2 TODO families:
 ${weakUs.map((f) => `  - ${f}`).join("\n") || "  (none)"}
+
+Wave 4 live proofs (first slice):
+  Agents with recorded proof: ${wave4AgentsCovered.length} / ${WAVE4_SLICE.length}
+  Connectors proven:          ${wave4Connectors.length ? wave4Connectors.join(", ") : "(none yet)"}
+  Depth live (pilot/proof):   ${liveFamilies.size}
+  Next:                       pnpm proof:live   ·  docs/WAVE4_LIVE_CONNECTORS.md
 `);
 
 if (process.argv.includes("--json")) {
@@ -102,6 +138,13 @@ if (process.argv.includes("--json")) {
         packMissingCount: packMissing.length,
         marketPacksForStrongExisting: marketPacksExisting.length,
         target: 220,
+        wave4: {
+          slice: WAVE4_SLICE,
+          agentsCovered: wave4AgentsCovered,
+          connectors: wave4Connectors,
+          liveFamilies: [...liveFamilies],
+          proofCount: wave4Proofs.length,
+        },
       },
       null,
       2,

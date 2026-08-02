@@ -1218,7 +1218,12 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
     // Ensure token file stays warm
     void getToken(call.workspaceId, connector);
 
-    return { ok: true, data, connector, stubbed: false };
+    return {
+      ok: true,
+      data: { ...data, live: true, provider: connector },
+      connector,
+      stubbed: false,
+    };
   } catch (e) {
     return {
       ok: false,

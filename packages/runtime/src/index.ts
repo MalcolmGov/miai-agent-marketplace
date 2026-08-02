@@ -79,7 +79,14 @@ export interface TurnRequest {
 export interface TurnResult {
   assistantMessage: string;
   messages: ChatMessage[];
-  toolCalls: Array<{ name: string; args: Record<string, unknown>; result: unknown }>;
+  toolCalls: Array<{
+    name: string;
+    args: Record<string, unknown>;
+    result: unknown;
+    connector?: string;
+    stubbed?: boolean;
+    live?: boolean;
+  }>;
   tokensDebited: number;
   balance: number;
   state: AgentState;
@@ -1874,7 +1881,14 @@ export async function runTurn(
       binding: bindingFor(name, bindings),
       mode: req.mode,
     });
-    toolCalls.push({ name, args, result: result.data });
+    toolCalls.push({
+      name,
+      args,
+      result: result.data,
+      connector: result.connector,
+      stubbed: result.stubbed,
+      live: result.ok && !result.stubbed,
+    });
     messages.push({
       role: "tool",
       content: JSON.stringify(result.data),
