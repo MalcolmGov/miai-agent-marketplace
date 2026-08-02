@@ -4,12 +4,7 @@ import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { verifyWebhookSignature } from "@miai/connectors";
 import { sinksRequireSecret, timingSafeEqualString } from "@/lib/security";
-import {
-  webhookSinkAllowLegacyRawSecret,
-  webhookSinkHmacOnly,
-} from "@/lib/webhook-sink-auth";
-
-export { webhookSinkHmacOnly };
+import { webhookSinkAllowLegacyRawSecret } from "@/lib/webhook-sink-auth";
 
 export const dynamic = "force-dynamic";
 
