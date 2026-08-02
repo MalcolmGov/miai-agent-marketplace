@@ -380,7 +380,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         <div className="space-y-4">
           {tab === "configure" && (
             <>
-              <div className="panel p-4">
+              <div id="studio-model" className="panel p-4">
                 <h2 className="mb-3 text-sm font-semibold">{t("studio.model")}</h2>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {MODELS.map((mod) => (
@@ -402,16 +402,18 @@ export function AgentStudio({ agentId }: { agentId: string }) {
                   ))}
                 </div>
               </div>
-              <KnowledgePanel
-                agentId={agentId}
-                knowledge={knowledge}
-                onKnowledgeChange={setKnowledge}
-                saving={saving}
-                onSaveDraft={() => void saveConfig(false)}
-                onMarkReady={() => void saveConfig(true)}
-                configMsg={configMsg}
-                showSelectedTip={state === "selected"}
-              />
+              <div id="studio-knowledge">
+                <KnowledgePanel
+                  agentId={agentId}
+                  knowledge={knowledge}
+                  onKnowledgeChange={setKnowledge}
+                  saving={saving}
+                  onSaveDraft={() => void saveConfig(false)}
+                  onMarkReady={() => void saveConfig(true)}
+                  configMsg={configMsg}
+                  showSelectedTip={state === "selected"}
+                />
+              </div>
             </>
           )}
 
