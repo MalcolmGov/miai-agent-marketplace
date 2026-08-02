@@ -27,7 +27,11 @@ export async function GET() {
           ? process.env.OPENAI_API_KEY
             ? "set"
             : "missing"
-          : "n/a",
+          : modelMode === "anthropic" || modelMode === "claude"
+            ? process.env.ANTHROPIC_API_KEY
+              ? "set"
+              : "missing"
+            : "n/a",
   };
 
   const ping = await pingStore();

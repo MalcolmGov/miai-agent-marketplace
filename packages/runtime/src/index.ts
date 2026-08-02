@@ -1311,14 +1311,22 @@ function env(name: string): string | undefined {
   ];
 }
 
-/** Marketplace model ids -> concrete OpenAI models. The catalogue's Claude/Gemini tiers
- *  map to the closest OpenAI equivalent while OpenAI is the only wired provider. */
+/** Marketplace model ids -> concrete OpenAI models. */
 const OPENAI_MODEL_MAP: Record<string, string> = {
   "gemini-flash": "gpt-4o-mini",
   "gpt-4o-mini": "gpt-4o-mini",
   "claude-sonnet": "gpt-4o",
   "gpt-4o": "gpt-4o",
   "claude-opus": "gpt-4o",
+};
+
+/** Marketplace model ids -> Anthropic Claude models (Messages / OpenAI-compat). */
+const ANTHROPIC_MODEL_MAP: Record<string, string> = {
+  "gemini-flash": "claude-haiku-4-5-20251001",
+  "gpt-4o-mini": "claude-haiku-4-5-20251001",
+  "claude-sonnet": "claude-sonnet-4-5",
+  "gpt-4o": "claude-sonnet-4-5",
+  "claude-opus": "claude-opus-4-1-20250805",
 };
 
 function openAiMessagesPayload(input: ModelCompleteInput) {
@@ -1519,6 +1527,41 @@ export class OpenAIModelAdapter implements ModelAdapter {
   }
 }
 
+/**
+ * Live Anthropic adapter (MIAI_MODEL_MODE=anthropic|claude + ANTHROPIC_API_KEY).
+ * Uses Anthropic's OpenAI-compatible `/v1/chat/completions` surface so tool-calling
+ * stays on the same path as OpenAI/gateway.
+ */
+export class AnthropicModelAdapter implements ModelAdapter {
+  private modelId(input: ModelCompleteInput) {
+    return (
+      ANTHROPIC_MODEL_MAP[input.model] ??
+      env("ANTHROPIC_MODEL_DEFAULT") ??
+      "claude-sonnet-4-5"
+    );
+  }
+
+  async complete(input: ModelCompleteInput) {
+    const apiKey = env("ANTHROPIC_API_KEY") ?? "";
+    return openAiCompatibleComplete(
+      "https://api.anthropic.com/v1",
+      apiKey,
+      input,
+      this.modelId(input),
+    );
+  }
+
+  async *streamComplete(input: ModelCompleteInput): AsyncIterable<StreamChunk> {
+    const apiKey = env("ANTHROPIC_API_KEY") ?? "";
+    yield* openAiCompatibleStream(
+      "https://api.anthropic.com/v1",
+      apiKey,
+      input,
+      this.modelId(input),
+    );
+  }
+}
+
 /** MyInstantAI model gateway (OpenAI-compatible). MIAI_MODEL_MODE=gateway. */
 export class GatewayModelAdapter implements ModelAdapter {
   private modelId(input: ModelCompleteInput) {
@@ -1544,6 +1587,9 @@ export function createModelAdapter(): ModelAdapter {
   const mode = env("MIAI_MODEL_MODE") ?? "mock";
   if ((mode === "gateway" || mode === "http") && env("MIAI_MODEL_GATEWAY_URL")) {
     return new GatewayModelAdapter();
+  }
+  if ((mode === "anthropic" || mode === "claude") && env("ANTHROPIC_API_KEY")) {
+    return new AnthropicModelAdapter();
   }
   if (mode === "openai" && env("OPENAI_API_KEY")) {
     return new OpenAIModelAdapter();
