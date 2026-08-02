@@ -87,6 +87,8 @@ describe("public API paths", () => {
     const { isPublicApiPath } = await import("../src/lib/auth.ts");
     assert.equal(isPublicApiPath("/api/health"), true);
     assert.equal(isPublicApiPath("/api/consent"), true);
+    assert.equal(isPublicApiPath("/api/catalog"), true);
+    assert.equal(isPublicApiPath("/api/catalog/family/ai-coding-assistant"), true);
     assert.equal(isPublicApiPath("/api/v1/openapi"), true);
     assert.equal(isPublicApiPath("/api/rent"), false);
   });

@@ -6,6 +6,7 @@ import { TIER_PRICES } from "@/lib/constants";
 import { useT } from "@/lib/locale";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { sectorAccent } from "@/lib/sectors";
+import type { FamilyCapabilities } from "@/lib/family-capabilities";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
@@ -715,6 +716,34 @@ function AgentDetailModal({
   const summary = cleanCardSummary(item.summary, item.name);
   const packs = familyPacks(item);
   const activePack = isPackId(market) ? market : null;
+  const [caps, setCaps] = useState<FamilyCapabilities | null>(null);
+  const [capsError, setCapsError] = useState(false);
+  const [capsLoading, setCapsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setCaps(null);
+    setCapsError(false);
+    setCapsLoading(true);
+    const q = activePack ? `?market=${encodeURIComponent(activePack)}` : "";
+    fetch(`/api/catalog/family/${encodeURIComponent(item.id)}${q}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error("capabilities fetch failed");
+        return res.json() as Promise<{ capabilities: FamilyCapabilities }>;
+      })
+      .then((data) => {
+        if (!cancelled) setCaps(data.capabilities);
+      })
+      .catch(() => {
+        if (!cancelled) setCapsError(true);
+      })
+      .finally(() => {
+        if (!cancelled) setCapsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [item.id, activePack]);
 
   return (
     <div
@@ -726,7 +755,7 @@ function AgentDetailModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="agent-detail-title"
-        className="panel relative w-full max-w-lg overflow-hidden p-0 shadow-2xl rise"
+        className="panel relative max-h-[min(92vh,880px)] w-full max-w-2xl overflow-y-auto p-0 shadow-2xl rise"
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -781,10 +810,114 @@ function AgentDetailModal({
             </div>
           </div>
 
-          <p className="agent-card-desc text-[15px] leading-relaxed">{summary}</p>
+          <section className="space-y-2">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+              {t("catalog.whatItDoes")}
+            </h3>
+            <p className="agent-card-desc text-[15px] leading-relaxed">
+              {caps?.overview || summary}
+            </p>
+            {hasWorkflow ? (
+              <p className="text-sm text-[var(--muted)]">{t("catalog.workflowHint")}</p>
+            ) : null}
+          </section>
 
-          {hasWorkflow ? (
-            <p className="mt-3 text-sm text-[var(--muted)]">{t("catalog.workflowHint")}</p>
+          {capsLoading ? (
+            <p className="mt-4 text-sm text-[var(--muted)]">{t("catalog.capabilitiesLoading")}</p>
+          ) : null}
+          {capsError && !caps ? (
+            <p className="mt-4 text-sm text-[var(--muted)]">{t("catalog.capabilitiesError")}</p>
+          ) : null}
+
+          {caps ? (
+            <div className="mt-5 space-y-5 border-t border-[var(--line)] pt-5">
+              {caps.canDo.length > 0 ? (
+                <section>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                    {t("catalog.canDo")}
+                  </h3>
+                  <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--text)]">
+                    {caps.canDo.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+
+              {caps.willNot.length > 0 ? (
+                <section>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                    {t("catalog.willNot")}
+                  </h3>
+                  <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--muted)]">
+                    {caps.willNot.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+
+              {caps.tools.length > 0 ? (
+                <section>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                    {t("catalog.tools")}
+                  </h3>
+                  <ul className="mt-2 space-y-2">
+                    {caps.tools.map((tool) => (
+                      <li
+                        key={tool.name}
+                        className="rounded-lg bg-[color-mix(in_srgb,var(--bg-panel)_88%,transparent)] px-3 py-2 ring-1 ring-[var(--line)]"
+                      >
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-semibold text-[var(--text)]">
+                            {tool.label}
+                          </span>
+                          <span className="chip !px-2 !py-0.5 text-[10px]">
+                            {tool.sideEffects === "write"
+                              ? t("catalog.toolWrite")
+                              : t("catalog.toolReadOnly")}
+                          </span>
+                        </div>
+                        {tool.description ? (
+                          <p className="mt-1 text-[13px] leading-snug text-[var(--muted)]">
+                            {tool.description}
+                          </p>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+
+              {caps.exampleAsks.length > 0 ? (
+                <section>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                    {t("catalog.exampleAsks")}
+                  </h3>
+                  <ul className="mt-2 space-y-1.5">
+                    {caps.exampleAsks.map((ask) => (
+                      <li
+                        key={ask}
+                        className="rounded-md px-2.5 py-1.5 text-[13px] text-[var(--text)] ring-1 ring-[var(--line)]"
+                      >
+                        “{ask}”
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+
+              <section>
+                <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                  {t("catalog.howItWorks")}
+                </h3>
+                <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--text)]">
+                  {caps.howItWorks.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+              </section>
+            </div>
           ) : null}
 
           <dl className="mt-5 grid gap-3 border-t border-[var(--line)] pt-5 text-sm">

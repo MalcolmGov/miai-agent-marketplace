@@ -127,7 +127,7 @@ export class AuthError extends Error {
 /** Public routes that skip OIDC when auth mode is oidc. */
 export function isPublicApiPath(pathname: string): boolean {
   if (pathname === "/api/health") return true;
-  if (pathname === "/api/catalog") return true;
+  if (pathname === "/api/catalog" || pathname.startsWith("/api/catalog/")) return true;
   if (pathname === "/api/consent") return true;
   if (pathname.startsWith("/api/oauth/callback")) return true;
   if (pathname.startsWith("/api/embed/")) return true;

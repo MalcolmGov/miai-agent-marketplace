@@ -1,6 +1,8 @@
 # MyInstantAI Agent Marketplace — Technical Due-Diligence Audit
 
 > **Confidential.** Independent static-analysis audit of the full monorepo — engineering complexity, architecture, security, AI maturity, scalability and enterprise readiness, measured from source.
+>
+> **Updated verdict (post-remediation):** see **[`technical-audit-update-2026-08-02.md`](./technical-audit-update-2026-08-02.md)** — grade **B · 72 / 100** at pin `6dcb793`. This baseline document is retained as the original narrative @ `d4cfea2`.
 
 | | |
 |---|---|
@@ -10,8 +12,10 @@
 | **Method** | 12-analyst static sweep (1.49M tokens, 331 tool-uses) + direct metric extraction |
 | **Files audited** | 928 (excl. `node_modules`, build artifacts) |
 | **Interactive version** | Published as a themed HTML artifact with rendered diagrams |
+| **Current update** | [`technical-audit-update-2026-08-02.md`](./technical-audit-update-2026-08-02.md) |
 
 ## Verdict — **B–** · Engineering score **61 / 100**
+*(Baseline only — superseded for diligence scoring by the update report above.)*
 
 A **genuinely impressive breadth-and-architecture asset** — a clean multi-package monorepo, a data-driven 551-agent catalogue across 19 industries and 6 markets, 16 first-party integrations with production-grade OAuth/SSRF security, and unusually strong documentation — sitting on a **prototype-grade operational core**: single-writer in-memory persistence, no CI, one unit test, and pre-enterprise compliance. The IP and design are strong and investable; the gap to hardened production and enterprise procurement is real but well-understood and fundable.
 
