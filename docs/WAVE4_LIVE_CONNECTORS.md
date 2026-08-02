@@ -61,9 +61,23 @@ pnpm production:status
 
 Shows Wave 4 live proofs recorded vs first-slice targets.
 
-## Expand after first slice
+## Webhook (generic backend)
 
-While HubSpot OAuth is pending, prove more Calendar/Slack agents:
+Prove any vertical that posts to the tenant’s URL (hotel guest request, FNOL, PMS, etc.).
+
+```bash
+# Configure + live-prove us-hotel-guest make_guest_request
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:webhook
+
+# Or point at your own URL
+DEMO_BASE=https://… pnpm proof:webhook --url=https://hooks.example.com/miai
+```
+
+Self-hosted sink (after deploy): `{APP_BASE_URL}/api/webhook/sink`  
+Inspect: `GET /api/webhook/sink`  
+Optional: set `WEBHOOK_SINK_SECRET` and pass the same value as the Actions shared secret.
+
+In Actions → Webhook: paste URL + secret → Save webhook → Studio **live** chat.
 
 ```bash
 DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --expand --auto-record

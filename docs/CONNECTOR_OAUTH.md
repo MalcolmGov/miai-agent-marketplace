@@ -97,3 +97,11 @@ pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr
 ```
 
 Full checklist: `docs/WAVE4_LIVE_CONNECTORS.md`. Never use `access_token: "demo"` for live proof.
+
+## Webhook (non-OAuth)
+
+```bash
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:webhook
+```
+
+Or in Actions → Webhook: URL `{APP_BASE_URL}/api/webhook/sink` + shared secret → Save.

@@ -1108,7 +1108,12 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
           agentId: call.agentId,
           workspaceId: call.workspaceId,
         });
-        return { ok: true, data, connector, stubbed: false };
+        return {
+          ok: true,
+          data: { ...data, live: true, provider: "webhook" },
+          connector,
+          stubbed: false,
+        };
       }
       case "mcp": {
         const endpoint = keyTok?.meta.endpoint || config.endpoint;

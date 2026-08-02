@@ -31,6 +31,7 @@
     "demo:app": "pnpm --dir apps/mobile-shell start",
     "generate:ask-digest": "node scripts/generate-marketplace-digest.mjs",
     "production:status": "node scripts/production-wave-status.mjs",
-    "proof:live": "node scripts/live-connector-proof.mjs"
+    "proof:live": "node scripts/live-connector-proof.mjs",
+    "proof:webhook": "node scripts/proof-webhook.mjs"
   }
 }
