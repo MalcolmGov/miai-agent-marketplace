@@ -12,3 +12,8 @@
 - Live connectors required: HubSpot (`capture_brief`), Slack (`handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-agency-studio`): Brightline Studio Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-agency-studio`): Brightline Studio Cape Town (Cape Town); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-agency-studio`): Brightline Studio Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

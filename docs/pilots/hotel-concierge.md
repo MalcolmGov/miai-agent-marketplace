@@ -12,3 +12,8 @@
 - Live connectors required: Slack (`handoff_to_human`); guest-request webhook
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-hotel-concierge`): Riverbend Inn Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-hotel-concierge`): Riverbend Inn Cape Town (Cape Town); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-hotel-concierge`): Riverbend Inn Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

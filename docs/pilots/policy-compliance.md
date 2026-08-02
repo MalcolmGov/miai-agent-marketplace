@@ -12,3 +12,8 @@
 - Live connectors required: Policy CMS / compliance register (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-policy-compliance`): Cedarworks Compliance Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-policy-compliance`): Cedarworks Compliance Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-policy-compliance`): Cedarworks Compliance Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

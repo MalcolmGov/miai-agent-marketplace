@@ -12,3 +12,8 @@
 - Live connectors required: TMC / request queue (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-travel-desk`): Meridian Travel Desk Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-travel-desk`): Meridian Travel Desk Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-travel-desk`): Meridian Travel Desk Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

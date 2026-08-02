@@ -9,8 +9,11 @@ Partner demo is done. This is the industrial path to stand behind every SKU.
 | Layer | Status |
 |---|---|
 | Wave 1–2 US heroes | **55 / 55 Depth strong** |
-| Wave 3 market packs | In progress (Claude + Cursor) |
-| Target | **220** |
+| Prefixed packs on disk | **220 / 220** |
+| Wave 3 — remaining 37 | **111 / 111** localized + static eval drift 0 (Cursor) |
+| Wave 3 — Go-live 18 | In progress — Claude (Cluster B done; A + C next) |
+| Presets | Regenerated for full catalogue (`pnpm generate:presets`) |
+| Target | **220** rentable without hand-holding |
 
 Run `pnpm production:status`.
 

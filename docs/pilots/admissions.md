@@ -13,3 +13,8 @@
 - Live connectors required: HubSpot (`capture_application`), Slack (`handoff_to_human`); requirements/deadlines webhook/KB
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-admissions`): Horizon College Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-admissions`): Horizon College Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-admissions`): Horizon College Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

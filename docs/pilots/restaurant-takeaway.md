@@ -13,3 +13,13 @@
 - Live connectors required: Slack/Teams (`notify_team`), optional POS/order webhook; Calendar not required for takeaway path
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Market packs (EU / Africa / Asia)
+
+Same Ember & Oak job story and tools as the US hero, localized per region. Confirm-before-write and kitchen handoff are identical across all packs.
+
+- **EU** (`eu-restaurant-takeaway`): currency EUR (€, numbers preserved — €14 Margherita, €16 burger, €4 delivery fee, free over €45); compliance GDPR (access/erasure → human handoff); channels SMS / web / app; languages en, de, fr, es, it; emergency 112; Berlin example tenant with +49 phone norm and EU allergen-info (Reg. 1169/2011) wording.
+- **Africa** (`africa-restaurant-takeaway`): currency-neutral amounts (`<number> (local currency)` — 14 Margherita, 16 burger, 4 delivery, free over 45) so any country's tenant sets its own symbol; compliance POPIA + regional_privacy; WhatsApp-first channel (plus web / app / SMS) reflected in knowledge, handoff, and mobile-money payment note; languages en, fr, sw; emergency = local emergency services; Nairobi example tenant.
+- **Asia** (`asia-restaurant-takeaway`): currency-neutral amounts (same `<number> (local currency)` scheme as Africa); compliance PDPA + regional_privacy (opt-out/access → human handoff); channels web / app / SMS; languages en, zh, hi; emergency = local emergency services; Singapore example tenant with +65 phone norm.
+
+Grounding: each pack's evals are grounded in its own knowledge — EU asserts €-prefixed amounts, Africa/Asia assert the bare number plus `local currency`; hours, delivery fee/radius, and emergency tokens all appear verbatim in that pack's knowledge base.

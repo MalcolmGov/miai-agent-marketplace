@@ -12,3 +12,8 @@
 - Live connectors required: CIS/outage management + meter channel (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-utility-billing`): Riverside Stadtwerke Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-utility-billing`): Riverside Municipal Utilities Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-utility-billing`): Riverside Utilities Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

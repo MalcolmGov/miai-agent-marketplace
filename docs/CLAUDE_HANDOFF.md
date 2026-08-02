@@ -1,36 +1,41 @@
-# Claude handoff — Wave 3 to 220
+# Claude handoff — Wave 3 Go-live 18
 
-**Status:** Wave 2 complete — **all 55 US heroes** are Depth strong with `docs/pilots/{family}.md`.
+**Status:** Wave 2 complete — **all 55 US heroes** are Depth strong. Catalogue has **220** prefixed pack files on disk (`us`/`eu`/`africa`/`asia` × 55).
 
-**Your job:** Wave 3 — localize **every** market pack so the licensed catalogue is production-ready end-to-end (**220 agents**).
+**Cluster B done** (restaurant-takeaway · salon-booking · clinic-front-desk · customer-support · delivery-tracking · trades-receptionist) — do not re-deepen; Cursor scripts hard-skip these.
 
-## Own only
+**Your job:** Continue Go-live 18 — Clusters **A** and **C** next. Cursor owns the remaining 37 — see `PARALLEL_WORKSTREAMS.md`.
 
-For each of the 55 families:
+**Overwrite protection:** `scripts/deepen-wave3-markets.mjs` and `generate-market-packs.mjs` refuse to clobber Go-live 18 `eu-`/`africa-`/`asia-` packs once present.
+
+## Own only (Go-live 18)
+
+Families:
+
+- Cluster A: executive-assistant · it-helpdesk · dental-front-desk · hotel-guest · sales-qualifier · home-services
+- Cluster B: restaurant-takeaway · salon-booking · clinic-front-desk · customer-support · delivery-tracking · trades-receptionist
+- Cluster C: events-venue · onboarding-buddy · accounting-practice · building-management · gym-membership · pharmacy
+
+For each family:
 
 - `data/catalog/eu-{family}.agent.json`
 - `data/catalog/africa-{family}.agent.json`
 - `data/catalog/asia-{family}.agent.json`
+- Append **Markets** notes to `docs/pilots/{family}.md`
 
-**Do not edit** `us-*.agent.json` (US heroes are locked unless fixing a regression).
-
-## Priority batches
-
-1. Original Go-live 18 (highest commercial visibility)  
-2. Remaining 37 families  
-
-Skip missing files if a pack truly doesn’t exist on disk (`pnpm production:status` lists gaps).
+**Do not edit** `us-*.agent.json` or families outside this list.
 
 ## Per file
 
-1. Localize knowledge (currency, emergency #, compliance, hours, phones)  
-2. Keep confirm-before-write + handoff  
-3. Ground evals in knowledge (zero drift)  
-4. Append **Markets** notes to `docs/pilots/{family}.md`
+1. Localize knowledge (currency, emergency #, compliance, hours, phones, city/tenant examples)
+2. Keep confirm-before-write + handoff
+3. Ground evals in knowledge (zero drift)
+4. Bump package `version` to `1.1.0` when deepened
+5. Prefer realistic regional tenants (not Austin copy-paste)
 
 ## Done means
 
-`pnpm production:status` shows market packs present, and each pack could be rented by a customer in that region without hand-holding.
+Go-live 18 × 3 markets are rentable without hand-holding. Cursor handles the other 37.
 
 ```bash
 pnpm production:status

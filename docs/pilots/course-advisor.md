@@ -11,3 +11,8 @@
 - Live connectors required: HubSpot (`capture_interest`), Slack (`handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-course-advisor`): Trailhead Career College Lisbon (Lisbon); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-course-advisor`): Trailhead Career College Lagos (Lagos); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-course-advisor`): Trailhead Career College Jakarta (Jakarta); PDPA / regional privacy; local currency; local emergency services.

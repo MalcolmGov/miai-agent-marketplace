@@ -13,3 +13,11 @@
 - Live connectors required: Carrier TMS / tracking API; Slack/Teams for exception desk
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Market packs (EU / Africa / Asia)
+
+Same job story and golden path as the US hero, localized per region. Confirm-before-write and clean desk handoff are identical across all packs.
+
+- **EU** (`eu-delivery-tracking`): currency €/EUR (Overnight €28, Road Express €16, Economy €11 per parcel up to 5 kg); compliance GDPR; channels SMS, web, app; languages en, de, fr, es, it; emergency 112; desk hours in Central European Time; example hub Frankfurt.
+- **Africa** (`africa-delivery-tracking`): currency-neutral amounts (Overnight 28, Road Express 16, Economy 11 — local currency, per parcel up to 5 kg); compliance POPIA + regional privacy; channels WhatsApp (primary), web, app, SMS; languages en, fr, sw; emergency local emergency services; multi-country regional hubs; desk follows up on the same WhatsApp thread.
+- **Asia** (`asia-delivery-tracking`): currency-neutral amounts (Overnight 28, Road Express 16, Economy 11 — local currency, per parcel up to 5 kg); compliance PDPA + regional privacy; channels web, app, SMS; languages en, zh, hi; emergency local emergency services; example hub Singapore.

@@ -12,3 +12,8 @@
 - Live connectors required: Claims / FNOL system (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-insurance-claims`): Harbor Mutual Claims Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-insurance-claims`): Harbor Mutual Claims Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-insurance-claims`): Harbor Mutual Claims Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

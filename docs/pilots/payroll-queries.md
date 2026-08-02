@@ -12,3 +12,8 @@
 - Live connectors required: HRIS / payroll (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-payroll-queries`): Cedarworks GmbH (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-payroll-queries`): Cedarworks (Pty) Ltd (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-payroll-queries`): Cedarworks Pte Ltd (Singapore); PDPA / regional privacy; local currency; local emergency services.

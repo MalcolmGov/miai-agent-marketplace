@@ -12,3 +12,8 @@
 - Live connectors required: Practice PMS / booking calendar (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-veterinary`): Paws & Claws Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-veterinary`): Paws & Claws Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-veterinary`): Paws & Claws Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

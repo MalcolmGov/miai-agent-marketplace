@@ -12,3 +12,8 @@
 - Live connectors required: Product catalogue / inventory API (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — inventory correlation id when live)
+
+## Markets
+- **EU** (`eu-product-finder`): Homestead & Hearth Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-product-finder`): Homestead & Hearth Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-product-finder`): Homestead & Hearth Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

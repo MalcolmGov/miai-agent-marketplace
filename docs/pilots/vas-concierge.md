@@ -12,3 +12,8 @@
 - Live connectors required: EZ PIN (or equivalent) sandbox; secure checkout
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-vas-concierge`): BrightPin Digital Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-vas-concierge`): BrightPin Digital Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-vas-concierge`): BrightPin Digital Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

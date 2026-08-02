@@ -12,3 +12,8 @@
 - Live connectors required: LOS / lending CRM (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-loan-prequalifier`): ClearPath Lending Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-loan-prequalifier`): ClearPath Lending Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-loan-prequalifier`): ClearPath Lending Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

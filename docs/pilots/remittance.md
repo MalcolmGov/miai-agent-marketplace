@@ -12,3 +12,8 @@
 - Live connectors required: Remittance/core banking sandbox; compliance queue
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-remittance`): HarborSend Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-remittance`): HarborSend Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-remittance`): HarborSend Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

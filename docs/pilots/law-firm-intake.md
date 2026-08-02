@@ -12,3 +12,8 @@
 - Live connectors required: Practice management / calendar (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-law-firm-intake`): Riverstone & Hale Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-law-firm-intake`): Riverstone & Hale Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-law-firm-intake`): Riverstone & Hale Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

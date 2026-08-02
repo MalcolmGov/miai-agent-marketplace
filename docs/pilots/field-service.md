@@ -12,3 +12,8 @@
 - Live connectors required: Slack (`handoff_to_human`); job/parts/status webhook (FSM)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-field-service`): Fieldline Service GmbH (Munich); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-field-service`): Fieldline Service Nairobi (Nairobi); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-field-service`): Fieldline Service Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

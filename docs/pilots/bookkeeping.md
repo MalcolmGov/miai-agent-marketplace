@@ -12,3 +12,8 @@
 - Live connectors required: Slack (`handoff_to_human`); invoice/statement webhook (accounting system)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-bookkeeping`): Ledgerlane Bookkeeping Dublin (Dublin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-bookkeeping`): Ledgerlane Bookkeeping Nairobi (Nairobi); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-bookkeeping`): Ledgerlane Bookkeeping Mumbai (Mumbai); PDPA / regional privacy; local currency; local emergency services.

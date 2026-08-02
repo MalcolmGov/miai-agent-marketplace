@@ -13,3 +13,11 @@
 - Live connectors required: Google Calendar / Calendly (`check_availability` / `book_appointment`), Slack (`notify_team`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Market packs (EU / Africa / Asia)
+
+Region variants share the US hero's tools, confirm-before-write hard rule, and front-desk handoff; only the localized facts differ.
+
+- **EU** (`eu-salon-booking`): euro pricing (Men's cut €35, Ladies €65, colour deposit €40); compliance GDPR (data-rights requests → human handoff); channels SMS / web / app; languages en, de, fr, es, it; emergency 112; Berlin example tenant.
+- **Africa** (`africa-salon-booking`): currency-neutral pricing ("35 (local currency)", "65", "40" deposit — multi-country, no fixed symbol); compliance POPIA + regional privacy; WhatsApp is the primary channel (front desk continues on WhatsApp after handoff), plus web / app / SMS; languages en, fr, sw; emergency "local emergency services"; Nairobi example tenant.
+- **Asia** (`asia-salon-booking`): currency-neutral pricing ("35 (local currency)", "65", "40" deposit); compliance PDPA + regional privacy (access / withdraw-consent → human handoff); channels web / app / SMS; languages en, zh, hi; emergency "local emergency services"; Singapore example tenant.

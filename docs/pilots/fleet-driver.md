@@ -12,3 +12,8 @@
 - Live connectors required: Slack (`handoff_to_human`); compliance/incident webhook
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-fleet-driver`): Rhine Fleet Desk (Cologne); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-fleet-driver`): Gauteng Fleet Desk (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-fleet-driver`): Harbour Fleet Desk (Singapore); PDPA / regional privacy; local currency; local emergency services.

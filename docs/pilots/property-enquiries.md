@@ -12,3 +12,8 @@
 - Live connectors required: MLS/CRM listings + calendar for viewings (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-property-enquiries`): Cedarline Realty Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-property-enquiries`): Cedarline Realty Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-property-enquiries`): Cedarline Realty Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

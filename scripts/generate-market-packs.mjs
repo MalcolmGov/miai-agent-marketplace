@@ -15,16 +15,40 @@ const packsFile = path.join(catalogDir, "market-packs.json");
 const PACK_MARKETS = ["us", "eu", "africa", "asia"];
 const PREFIX_RE = /^(us|eu|africa|asia)-/;
 
+/** Never overwrite these if an africa-/eu-/asia- file already exists (Claude Go-live 18). */
+const GO_LIVE_18 = new Set([
+  "executive-assistant",
+  "it-helpdesk",
+  "dental-front-desk",
+  "hotel-guest",
+  "sales-qualifier",
+  "home-services",
+  "restaurant-takeaway",
+  "salon-booking",
+  "clinic-front-desk",
+  "customer-support",
+  "delivery-tracking",
+  "trades-receptionist",
+  "events-venue",
+  "onboarding-buddy",
+  "accounting-practice",
+  "building-management",
+  "gym-membership",
+  "pharmacy",
+]);
+
 function familyIdFromAgentId(id) {
   return id.replace(PREFIX_RE, "");
 }
 
 function marketFromAgentId(id, manifestMarket) {
-  if (manifestMarket && PACK_MARKETS.includes(manifestMarket)) return manifestMarket;
-  if (manifestMarket === "za") return "za";
+  // Filename / id prefix is authoritative. Unprefixed legacy ZA files often have
+  // manifest.market flipped to "africa" by merge-za-into-africa — treat those as
+  // `za` source so we still emit proper africa-{family}.agent.json packs.
   const m = id.match(PREFIX_RE);
   if (m) return m[1];
-  return manifestMarket ?? "za";
+  if (manifestMarket === "za") return "za";
+  return "za";
 }
 
 function variantId(family, market) {
@@ -150,13 +174,30 @@ function applyOverlay(sourcePkg, sourceMarket, family, pack, health) {
 
   let evals = sourcePkg.evals;
   if (Array.isArray(evals)) {
+    // Localize eval strings lightly — never append compliance blocks into inputs.
     evals = evals.map((e) => {
       if (!e || typeof e !== "object") return e;
       const copy = { ...e };
       for (const key of ["input", "expected", "notes", "user", "assistant"]) {
         if (typeof copy[key] === "string") {
-          copy[key] = localizeText(copy[key], pack, sourceMarket);
+          let v = copy[key]
+            .replace(/\b911\b/g, pack.emergency)
+            .replace(/\b112\b/g, pack.emergency === "112" ? "112" : pack.emergency)
+            .replace(/\bUSD\b/g, pack.currency)
+            .replace(/\bEUR\b/g, pack.currency)
+            .replace(/\$(\d)/g, pack.currency === "EUR" ? "€$1" : `${pack.currency} $1`);
+          copy[key] = v;
         }
+      }
+      if (Array.isArray(copy.contains)) {
+        copy.contains = copy.contains.map((c) =>
+          typeof c === "string"
+            ? c
+                .replace(/\b911\b/g, pack.emergency)
+                .replace(/\bUSD\b/g, pack.currency)
+                .replace(/\$(\d)/g, pack.currency === "EUR" ? "€$1" : c)
+            : c,
+        );
       }
       return copy;
     });
@@ -192,12 +233,16 @@ function rebuildIndex(byFamily) {
   const index = [];
   for (const [, variants] of byFamily) {
     for (const [market, pkg] of Object.entries(variants)) {
+      // Marketplace SKUs are the four prefixed packs. Keep legacy ZA on disk as
+      // source only when an africa-* pack already covers the family.
+      if (market === "za" && variants.africa) continue;
+      const outMarket = market === "za" ? "africa" : market;
       index.push({
         id: pkg.manifest.id,
         name: pkg.manifest.name,
         tier: pkg.manifest.tier,
         category: pkg.manifest.category,
-        market,
+        market: outMarket,
         summary: pkg.manifest.summary,
         channels: pkg.manifest.channels ?? [],
         tools: Array.isArray(pkg.tools) ? pkg.tools.length : 0,
@@ -248,6 +293,14 @@ function main() {
     for (const market of PACK_MARKETS) {
       const id = variantId(family, market);
       const outPath = path.join(catalogDir, `${id}.agent.json`);
+      // Never clobber Claude Go-live 18 deepened packs.
+      if (GO_LIVE_18.has(family) && market !== "us" && fs.existsSync(outPath)) {
+        if (!variants[market]) {
+          variants[market] = JSON.parse(fs.readFileSync(outPath, "utf8"));
+        }
+        skipped++;
+        continue;
+      }
       if (variants[market] || fs.existsSync(outPath)) {
         if (!variants[market] && fs.existsSync(outPath)) {
           variants[market] = JSON.parse(fs.readFileSync(outPath, "utf8"));

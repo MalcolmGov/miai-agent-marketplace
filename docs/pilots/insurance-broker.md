@@ -12,3 +12,8 @@
 - Live connectors required: Broker CRM / underwriter submission queue (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-insurance-broker`): Summit Ridge Brokers Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-insurance-broker`): Summit Ridge Brokers Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-insurance-broker`): Summit Ridge Brokers Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

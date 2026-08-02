@@ -13,3 +13,11 @@
 - Live connectors required: Google Calendar / Field Service scheduling; Slack/Teams dispatch; optional QuickBooks for invoices (human-only)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Market packs (EU / Africa / Asia)
+
+Same job story and confirm-before-write booking flow as the US hero, localized per region. Each pack keeps the write-tool HARD RULE (numbered plan → read-back → explicit yes before `book_appointment` / `request_estimate` / `notify_team`) and the emergency-first handoff.
+
+- EU (`eu-trades-receptionist`): currency EUR (€89 diagnostic, €99 drain, €120 plaster); compliance GDPR only; channels SMS / web / app (+ voice); languages en, de, fr, es, it; emergency 112 + national gas line; card/IBAN/OTP never taken in chat.
+- Africa (`africa-trades-receptionist`): WhatsApp-first (primary channel) + SMS / web / app; compliance POPIA + regional privacy; languages en, fr, sw; currency-neutral amounts ("89 (local currency)"); emergency = local emergency services; added mobile-money guardrail — never state a balance or confirm a payment.
+- Asia (`asia-trades-receptionist`): channels web / app / SMS; compliance PDPA + regional privacy; languages en, zh, hi; currency-neutral amounts ("89 (local currency)"); emergency = local emergency services; never invent a currency symbol.

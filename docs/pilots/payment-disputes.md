@@ -12,3 +12,8 @@
 - Live connectors required: Payments / dispute queue (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-payment-disputes`): Northline Payments Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-payment-disputes`): Northline Payments Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-payment-disputes`): Northline Payments Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

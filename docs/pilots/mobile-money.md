@@ -12,3 +12,8 @@
 - Live connectors required: Wallet / float ledger (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-mobile-money`): Riverbend Cash Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-mobile-money`): Riverbend Mobile Money Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-mobile-money`): Riverbend Pay Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

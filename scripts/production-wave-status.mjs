@@ -26,18 +26,33 @@ const pilotDocs = existsSync(pilotsDir)
 const strongUs = families.filter((f) => pilotDocs.has(f));
 const weakUs = families.filter((f) => !pilotDocs.has(f));
 
+function africaPackPresent(fam) {
+  if (existsSync(path.join(catalogDir, `africa-${fam}.agent.json`))) return true;
+  // Legacy: unprefixed ZA file with market africa still ships as the Africa SKU
+  const legacy = path.join(catalogDir, `${fam}.agent.json`);
+  if (!existsSync(legacy)) return false;
+  try {
+    const pkg = JSON.parse(readFileSync(legacy, "utf8"));
+    return pkg.manifest?.market === "africa" || pkg.manifest?.market === "za";
+  } catch {
+    return false;
+  }
+}
+
 let packPresent = 0;
 let packMissing = [];
 let packsStrongEstimate = 0; // US strong ⇒ count existing market packs as "ready for Wave 3 polish"
+let legacyAfricaOnly = [];
 
 for (const fam of families) {
   for (const pk of PACKS) {
     const file = path.join(catalogDir, `${pk}-${fam}.agent.json`);
-    if (existsSync(file)) {
+    const present = pk === "africa" ? africaPackPresent(fam) : existsSync(file);
+    if (present) {
       packPresent++;
       if (strongUs.includes(fam) && pk === "us") packsStrongEstimate++;
-      else if (strongUs.includes(fam) && pk !== "us") {
-        // market pack exists; Wave 3 may still be needed — mark as "pending localize" unless pilot notes say otherwise
+      if (pk === "africa" && !existsSync(file) && africaPackPresent(fam)) {
+        legacyAfricaOnly.push(fam);
       }
     } else if (pk !== "us") {
       packMissing.push(`${pk}-${fam}`);
@@ -48,9 +63,15 @@ for (const fam of families) {
 const marketPacksForStrong = strongUs.flatMap((fam) =>
   ["eu", "africa", "asia"].map((pk) => `${pk}-${fam}`),
 );
-const marketPacksExisting = marketPacksForStrong.filter((id) =>
-  existsSync(path.join(catalogDir, `${id}.agent.json`)),
-);
+const marketPacksExisting = marketPacksForStrong.filter((id) => {
+  const [pk, ...rest] = id.split("-");
+  const fam = rest.join("-");
+  if (pk === "africa") return africaPackPresent(fam);
+  return existsSync(path.join(catalogDir, `${id}.agent.json`));
+});
+const africaPrefixed = strongUs.filter((fam) =>
+  existsSync(path.join(catalogDir, `africa-${fam}.agent.json`)),
+).length;
 
 console.log(`
 Production scale status
@@ -58,9 +79,11 @@ Production scale status
 Families (US heroes):     ${families.length}
 US Depth strong (+pilot): ${strongUs.length} / ${families.length}
 US remaining (Wave 2):    ${weakUs.length}
-Catalogue files present:  ${packPresent} agent packages on disk
+Catalogue slots present:  ${packPresent} / ${families.length * 4}
 Missing non-US packs:     ${packMissing.length}
 Market packs for strong:  ${marketPacksExisting.length} / ${strongUs.length * 3} (Wave 3 localize)
+Africa prefixed files:    ${africaPrefixed} / ${strongUs.length} (rest may be legacy unprefixed ZA)
+Legacy Africa (unprefixed only): ${legacyAfricaOnly.length}
 Target:                   220 (55 × 4)
 
 Wave 1 (Go-live 18): ${strongUs.length >= 18 ? "met or exceeded" : "in progress"} (${strongUs.length})

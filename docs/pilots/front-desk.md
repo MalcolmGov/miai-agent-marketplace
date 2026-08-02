@@ -12,3 +12,8 @@
 - Live connectors required: Google Calendar (`book_appointment`), Slack (`handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-front-desk`): Summit Business Centre Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-front-desk`): Summit Business Centre Sandton (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-front-desk`): Summit Business Centre Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

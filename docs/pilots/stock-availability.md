@@ -12,3 +12,8 @@
 - Live connectors required: Inventory service + notify queue (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-stock-availability`): Ridgeway Outfitters Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-stock-availability`): Ridgeway Outfitters Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-stock-availability`): Ridgeway Outfitters Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

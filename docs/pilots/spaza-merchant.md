@@ -13,3 +13,8 @@
 - Depth: strong
 - Evidence: (none yet)
 - Note: US SME framing of the counter-trade / credit-book job (bodega / corner market); Africa market packs remain separate.
+
+## Markets
+- **EU** (`eu-spaza-merchant`): Corner Kiosk Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-spaza-merchant`): Cesar Spaza — Soweto (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-spaza-merchant`): Cesar Convenience — Jurong (Singapore); PDPA / regional privacy; local currency; local emergency services.

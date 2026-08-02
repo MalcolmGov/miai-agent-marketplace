@@ -13,3 +13,11 @@
 - Live connectors required: Shopify (`get_order_status` / availability), HubSpot or Zendesk (`create_ticket`), Slack handoff
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Market packs (EU / Africa / Asia)
+
+Localized variants of the same job story. Each keeps the confirm-before-write hard rule and the refund/complaint handoff; only region facts change.
+
+- **EU** (`eu-customer-support`): currency €/EUR (delivery flat €6, free over €75); compliance GDPR (access/erasure → handoff); channels SMS/web/app; languages en/de/fr/es/it; emergencies → 112. Adds the EU right of withdrawal (14 days) and the 2-year statutory guarantee; example tenant Casa Verde Home, Amsterdam.
+- **Africa** (`africa-customer-support`): currency-neutral amounts (delivery flat 6, free over 75 in local currency — no hardcoded symbol); compliance POPIA + regional privacy; channels WhatsApp (primary)/web/app/SMS; languages en/fr/sw; emergencies → local emergency services. WhatsApp is the lead channel for support, tracking, and handoff; payments include mobile money (M-Pesa); example tenant Umoya Home, Nairobi.
+- **Asia** (`asia-customer-support`): currency-neutral amounts (delivery flat 6, free over 75 in local currency); compliance PDPA + regional privacy; channels web/app/SMS; languages en/zh/hi; emergencies → local emergency services. Payments include PayNow; example tenant Lotus Home, Singapore.

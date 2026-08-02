@@ -1,35 +1,163 @@
 [
   {
-    "id": "accounting-practice",
-    "name": "Accounting Practice",
+    "id": "africa-accounting-practice",
+    "name": "Africa Accounting Practice Desk",
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa — Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.",
+    "summary": "Africa Accounting Practice Desk — CPA front desk for Ledgerline Accountants (Austin) — IRS deadline guides, document lists, new-client capture with confirm-before-write; never formal tax advice.",
     "channels": [
       "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
-    "id": "admissions",
-    "name": "Admissions Assistant",
+    "id": "africa-admissions",
+    "name": "Africa Admissions Assistant",
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.",
+    "summary": "Africa Admissions Assistant — college admissions assistant — explains entry requirements and deadlines, captures applications with confirm-before-write, and never makes admission decisions; routes appeals an…",
     "channels": [
       "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
+  },
+  {
+    "id": "africa-agency-studio",
+    "name": "Africa Agency & Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Agency & Studio — creative studio front door — explains services and process, captures project briefs with confirm-before-write, and routes complex scope or media-buying asks to a human producer.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-bank-branch",
+    "name": "Africa Bank Branch Assistant",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Bank Branch Assistant — community-bank branch assistant — explains products and KYC documents, books lobby appointments with confirm-before-write, and escalates fraud, balances, and advice to a banker.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-bookkeeping",
+    "name": "Africa Bookkeeping Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Bookkeeping Assistant — AR bookkeeping assistant — looks up invoices and statements, emails statement copies after confirm-before-write, and routes disputes and tax questions to a bookkeeper.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 15
+  },
+  {
+    "id": "africa-building-management",
+    "name": "Africa Building Management",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Building Management — building / HOA desk for Cedar Ridge Condominiums (Austin) — maintenance logging, access & conduct rules, and levy Q&A with emergency and dispute handoff.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-clinic-front-desk",
+    "name": "Africa Clinic Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Strictly non-clinical Africa clinic front desk for a family GP & dental practice — hours, medical aid basics, booking and prep logistics over WhatsApp; every clinical matter hands off — POPIA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-course-advisor",
+    "name": "Africa Course Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Course Advisor — career-college course advisor — lists and matches programs, captures interest with confirm-before-write, and never promises seats or financial aid.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-customer-support",
+    "name": "Africa Customer Support",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "summary": "Africa customer support for Umoya Home (Nairobi) — product and order questions, ticket logging, and handoff for refunds and complaints across WhatsApp, web, app, and SMS.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-delivery-tracking",
+    "name": "Africa Delivery & Tracking",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa delivery & tracking for PanAfri Courier — WhatsApp-first consignment status, proof of delivery, and exception logging with confirm-before-write and desk handoff for lost/damaged parcels.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 15
   },
   {
     "id": "africa-dental-front-desk",
@@ -45,16 +173,15 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
-    "id": "africa-home-services",
-    "name": "Africa Home Services Front Desk",
-    "tier": "pro",
+    "id": "africa-dental-practice",
+    "name": "Africa Dental Practice",
+    "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
+    "summary": "Strictly non-clinical Africa dental practice desk — explains treatments and fees, books with confirm-before-write, and routes every clinical, pain, or emergency matter to a human.",
     "channels": [
       "whatsapp",
       "web",
@@ -62,8 +189,151 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
+  },
+  {
+    "id": "africa-events-venue",
+    "name": "Africa Events & Venue",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Events & Venue — events & venue desk for Willow Creek Estate (Austin Hill Country) — packages, capacity, date checks, enquiry capture, and site-visit booking with confirm-before-write.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "africa-executive-assistant",
+    "name": "Africa Executive Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Executive Assistant — Executive Assistant — carries a principal's daily admin load: checks the calendar, schedules meetings with confirm-first, sets reminders, notifies the team, and hands off sensit…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 23
+  },
+  {
+    "id": "africa-field-service",
+    "name": "Africa Field Service Dispatch",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Field Service Dispatch — HVAC field-service tech assistant — pulls jobs and parts, updates status with confirm-before-write, and escalates every on-site safety issue to dispatch immediately.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-fleet-driver",
+    "name": "Africa Fleet & Driver Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Fleet & Driver Desk — fleet driver assistant — answers hours-of-service and CDL compliance questions, logs minor incidents with confirm-before-write, and escalates accidents and breakdowns to the fle…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-front-desk",
+    "name": "Africa Front Desk / Reception",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "summary": "Africa Front Desk / Reception — multi-tenant building front desk — orients visitors, routes to departments, books and takes messages with confirm-before-write, and escalates urgent or clinical matters to a human.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-grant-stock-planner",
+    "name": "Africa Grant-Day Stock Planner",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Grant-Day Stock Planner — neighborhood-market stock planner — forecasts benefit-week demand, builds pre-stock lists, and places reorders only after confirm-before-write.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-gym-membership",
+    "name": "Africa Gym Membership Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Gym Membership Desk — gym membership desk for Ironleaf Fitness (Austin) — plans, class times, freeze/cancel intake with confirm-before-write, and billing-dispute handoff.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-home-services",
+    "name": "Africa Home Services Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical Multi-step: availability → confirm → book → notify.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 6,
+    "evals": 18
+  },
+  {
+    "id": "africa-hotel-concierge",
+    "name": "Africa Hotel Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Hotel Concierge — hotel concierge — answers amenities and local tips, logs guest requests with confirm-before-write, and routes billing, complaints, and reservation changes to the front desk.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 21
   },
   {
     "id": "africa-hotel-guest",
@@ -79,16 +349,63 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
-    "id": "africa-trades-receptionist",
-    "name": "Africa Trades Receptionist",
+    "id": "africa-hr-helpdesk",
+    "name": "Africa HR Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa HR Helpdesk — HR helpdesk — answers PTO and benefits questions, screens candidates against listed requirements only, captures applications with confirm-before-write, and routes every grievanc…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-insurance-broker",
+    "name": "Africa Insurance Broker",
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
+    "summary": "Africa Insurance Broker — insurance broker for Summit Ridge Insurance Brokers (Austin) — needs analysis, cover options, underwriter submission with confirm-before-write; never advice, never a binding quote.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 20
+  },
+  {
+    "id": "africa-insurance-claims",
+    "name": "Africa Insurance Claims Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Insurance Claims Helper — insurance claims helper for Harbor Mutual (Austin) — explain cover, FNOL intake with confirm-before-write, claim status; never adjudicates or promises payouts.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-it-helpdesk",
+    "name": "Africa IT Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "First-line Africa IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets with confirm-before-write, notifies Sl…",
     "channels": [
       "whatsapp",
       "web",
@@ -96,24 +413,471 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 22
   },
   {
-    "id": "agency-studio",
-    "name": "Agency & Studio",
-    "tier": "standard",
+    "id": "africa-law-firm-intake",
+    "name": "Africa Law Firm Intake",
+    "tier": "enterprise",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
+    "summary": "Africa Law Firm Intake — law firm intake for Riverstone & Hale LLP (Austin) — practice areas, conflict note, matter capture & consult booking with confirm-before-write; never legal advice.",
     "channels": [
       "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
+  },
+  {
+    "id": "africa-loan-prequalifier",
+    "name": "Africa Loan Pre-Qualifier",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Loan Pre-Qualifier — loan pre-qualifier for ClearPath Personal Lending (Austin) — indicative affordability read and application capture with confirm-before-write; never a credit decision.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-loyalty-rewards",
+    "name": "Africa Loyalty & Rewards",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Loyalty & Rewards — loyalty & rewards for Oak & Ember Rewards (Austin) — balances, tiers, reward redemption with confirm-before-write; account disputes hand off.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 20
+  },
+  {
+    "id": "africa-marketing-assistant",
+    "name": "Africa Marketing Assistant",
+    "tier": "pro",
+    "category": "sales",
+    "market": "africa",
+    "summary": "Africa Marketing Assistant — marketing assistant for Hearth & Pantry Co. (Austin) — approved campaign info and opt-in lead capture with confirm-before-write; TCPA-aware, never invents offers.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-mobile-money",
+    "name": "Africa Mobile Money Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Mobile Money Desk — cash services desk for Riverbend Cash Services (Austin) — counter cash-in/out and send-money with confirm-before-write; never handles PIN/OTP; BSA-AML aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "africa-onboarding-buddy",
+    "name": "Africa Onboarding Buddy",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Onboarding Buddy — onboarding buddy for new joiners at Ridgeway Labs (Austin) — week-one checklist, resource pointers, confirm-before-log questions, and HR/IT handoff.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-order-tracking",
+    "name": "Africa Order Tracking",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Order Tracking — order tracking for Northline Home Goods (Austin) — status, delivery windows, preference updates with confirm-before-write; refunds and address changes hand off.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "africa-payment-disputes",
+    "name": "Africa Card & Payment Disputes",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Card & Payment Disputes — payment disputes for Northline Payments Desk (Austin) — dispute intake with evidence capture and confirm-before-write; never decides chargebacks or issues refunds.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-payroll-queries",
+    "name": "Africa Payroll Queries",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Payroll Queries — payroll queries for Cedarworks Staff Payroll (Austin) — own payslip/leave lookups and query logging with confirm-before-write; never cross-employee disclosure.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 20
+  },
+  {
+    "id": "africa-pharmacy",
+    "name": "Africa Pharmacy Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Pharmacy Assistant — pharmacy assistant for Riverside Community Pharmacy (Austin) — hours, OTC stock, script status, refill request logging with confirm-before-write; never diagnoses — HIPAA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 17
+  },
+  {
+    "id": "africa-policy-compliance",
+    "name": "Africa Policy & Compliance",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Policy & Compliance — policy & compliance for Cedarworks Compliance Desk (Austin) — cited policy answers and query logging with confirm-before-write; legal interpretation hands off.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-procurement",
+    "name": "Africa Procurement Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Procurement Desk — procurement desk for Cedarworks Procurement (Austin) — PO status, policy, supplier onboarding with confirm-before-write; approvals and exceptions hand off.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-product-finder",
+    "name": "Africa Product Finder",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Product Finder — product finder for Homestead & Hearth (Austin) — catalogue search, honest comparisons, live stock checks; complex/bulk needs hand off — never invents products or prices.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 14
+  },
+  {
+    "id": "africa-property-enquiries",
+    "name": "Africa Property Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Property Enquiries — property enquiries for Cedarline Realty (Austin) — listings, viewing bookings with confirm-before-write, and application routing; never gives legal/financial advice.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 20
+  },
+  {
+    "id": "africa-remittance",
+    "name": "Africa Remittance Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Remittance Helper — remittance helper for HarborSend (Austin) — corridors, fees, and transfer-request capture with confirm-before-write; never moves money or takes card data in chat.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 16
+  },
+  {
+    "id": "africa-rental-enquiries",
+    "name": "Africa Rental Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Rental Enquiries — rental enquiries for Oak & Key Lettings (Austin) — availability, application requirements, and viewing bookings with confirm-before-write; never decides applications or credit.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-restaurant-takeaway",
+    "name": "Africa Restaurant & Takeaway",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa restaurant & takeaway for Ember & Oak — WhatsApp-first menu Q&A, table bookings, and collection/delivery orders with allergen honesty, confirm-before-write, POPIA-minimal data, and kitchen handoff.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 6,
+    "evals": 23
+  },
+  {
+    "id": "africa-returns-exchanges",
+    "name": "Africa Returns & Exchanges",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Returns & Exchanges — returns & exchanges for Homestead & Hearth (Austin) — eligibility, methods, and return start with confirm-before-write; refunds and faulty items escalate.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-sales-qualifier",
+    "name": "Africa Sales Qualifier",
+    "tier": "pro",
+    "category": "sales",
+    "market": "africa",
+    "summary": "Africa Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks with confirm-before-write, captures leads to HubSpot, notifies Slack, and never invents pricing outside appro…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 23
+  },
+  {
+    "id": "africa-salon-booking",
+    "name": "Africa Salon & Barber Booking",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa salon & barber booking — services, availability, appointments and reschedules with confirm-before-write and front-desk handoff. WhatsApp-first, POPIA-aligned, currency-neutral pricing.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 6,
+    "evals": 20
+  },
+  {
+    "id": "africa-spaza-merchant",
+    "name": "Africa Corner Store Merchant",
+    "tier": "enterprise",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Corner Store Merchant — corner-store merchant helper for Cesar Corner Market (Austin) — shelf prices, sales logging, credit book, and wholesaler reorders with confirm-before-write on every write.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 18
+  },
+  {
+    "id": "africa-stock-availability",
+    "name": "Africa Stock & Availability",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Stock & Availability — stock availability for Ridgeway Outfitters (Austin) — live branch stock, sizes/variants, and back-in-stock alerts with confirm-before-write; never reserves stock.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 18
+  },
+  {
+    "id": "africa-student-helpdesk",
+    "name": "Africa Student Helpdesk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Student Helpdesk — student helpdesk for Laguna Community College (Austin) — timetables, campus services, and request logging with confirm-before-write; account/results always hand off — FERPA-aware.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 16
+  },
+  {
+    "id": "africa-tour-activity",
+    "name": "Africa Tour & Activity Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Tour & Activity Desk — tour & activity desk for Hill Country Trails (Austin) — tour info, availability, and bookings with confirm-before-write; complaints and custom groups hand off.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 17
+  },
+  {
+    "id": "africa-trades-receptionist",
+    "name": "Africa Trades Receptionist",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and Multi-step: availability → confirm → book → notify.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 6,
+    "evals": 18
+  },
+  {
+    "id": "africa-travel-desk",
+    "name": "Africa Travel Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Travel Desk — corporate travel desk for Meridian Travel Desk (Austin) — policy Q&A and trip-request capture with confirm-before-write; never books or quotes live fares.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-utility-billing",
+    "name": "Africa Utility & Billing",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Utility & Billing — utility & billing for Riverside Municipal Utilities (Austin metro) — outages, meter readings with confirm-before-write, and bill guidance; safety and disputes escalate.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 4,
+    "evals": 19
+  },
+  {
+    "id": "africa-vas-concierge",
+    "name": "Africa Gift Card & VAS Concierge",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Gift Card & VAS Concierge — gift card & VAS concierge for BrightPin Digital (Austin) — catalogue, confirm-before-charge purchases, PIN delivery; never takes raw card data in chat.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 19
+  },
+  {
+    "id": "africa-veterinary",
+    "name": "Africa Veterinary Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Veterinary Front Desk — veterinary front desk for Paws & Claws Veterinary Clinic (Austin) — non-clinical booking with confirm-before-write; clinical questions and emergencies escalate immediately.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 5,
+    "evals": 20
   },
   {
     "id": "asia-accounting-practice",
@@ -128,8 +892,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-admissions",
@@ -144,8 +907,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-agency-studio",
@@ -160,8 +922,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-bank-branch",
@@ -176,8 +937,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "asia-bookkeeping",
@@ -192,8 +952,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "asia-building-management",
@@ -208,8 +967,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "asia-clinic-front-desk",
@@ -217,15 +975,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Strictly non-clinical Asia clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
+    "summary": "Strictly non-clinical Asia clinic front desk for a family GP & dental practice — hours, health insurance basics, booking and prep logistics; every clinical matter hands off — PDPA-aware.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-course-advisor",
@@ -240,8 +997,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-customer-support",
@@ -249,15 +1005,14 @@
     "tier": "standard",
     "category": "front-office",
     "market": "asia",
-    "summary": "Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across, SMS, web, app and.",
+    "summary": "Asia customer support for Lotus Home (Singapore) — product and order questions, ticket logging, and handoff for refunds and complaints across web, app, and SMS.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-delivery-tracking",
@@ -265,15 +1020,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "Asia delivery & tracking for AsiaLane Courier — consignment status, proof of delivery, and exception logging with confirm-before-write and desk handoff for lost/damaged parcels.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "asia-dental-front-desk",
@@ -288,8 +1042,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-dental-practice",
@@ -304,8 +1057,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-events-venue",
@@ -320,8 +1072,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-executive-assistant",
@@ -329,15 +1080,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
+    "summary": "Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when… Multi-step workflows: plan → confirm → schedule/remind/notify → verify.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 21
   },
   {
     "id": "asia-field-service",
@@ -352,8 +1102,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-fleet-driver",
@@ -368,8 +1117,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "asia-front-desk",
@@ -384,8 +1132,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-grant-stock-planner",
@@ -400,8 +1147,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-gym-membership",
@@ -416,8 +1162,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-home-services",
@@ -425,15 +1170,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
+    "summary": "Asia Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, Multi-step: availability → confirm → book → notify.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 18
   },
   {
     "id": "asia-hotel-concierge",
@@ -448,8 +1192,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 21,
-    "readiness": "catalogue-ready"
+    "evals": 21
   },
   {
     "id": "asia-hotel-guest",
@@ -464,8 +1207,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-hr-helpdesk",
@@ -480,8 +1222,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-insurance-broker",
@@ -496,8 +1237,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-insurance-claims",
@@ -512,8 +1252,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-it-helpdesk",
@@ -521,15 +1260,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "summary": "Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and Multi-step: KB → confirm → ticket → Slack notify.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 20
   },
   {
     "id": "asia-law-firm-intake",
@@ -544,8 +1282,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-loan-prequalifier",
@@ -560,8 +1297,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-loyalty-rewards",
@@ -576,8 +1312,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-marketing-assistant",
@@ -592,8 +1327,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-mobile-money",
@@ -608,8 +1342,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-onboarding-buddy",
@@ -617,15 +1350,14 @@
     "tier": "standard",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
+    "summary": "Asia Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day Multi-step: checklist → confirm → log/escalate → notify.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 18
   },
   {
     "id": "asia-order-tracking",
@@ -640,8 +1372,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-payment-disputes",
@@ -656,8 +1387,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "asia-payroll-queries",
@@ -672,8 +1402,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-pharmacy",
@@ -688,8 +1417,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-policy-compliance",
@@ -704,8 +1432,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "asia-procurement",
@@ -720,8 +1447,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-product-finder",
@@ -736,8 +1462,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-property-enquiries",
@@ -752,8 +1477,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "asia-remittance",
@@ -768,8 +1492,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-rental-enquiries",
@@ -784,8 +1507,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-restaurant-takeaway",
@@ -793,15 +1515,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
+    "summary": "Asia restaurant & takeaway for Ember & Oak — menu Q&A, table bookings, and collection/delivery orders with allergen honesty, confirm-before-write, PDPA-minimal data, and kitchen handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 23
   },
   {
     "id": "asia-returns-exchanges",
@@ -816,8 +1537,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-sales-qualifier",
@@ -825,15 +1545,14 @@
     "tier": "pro",
     "category": "sales",
     "market": "asia",
-    "summary": "Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
+    "summary": "Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents Multi-step: qualify → confirm → callback → HubSpot/Slack.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 21
   },
   {
     "id": "asia-salon-booking",
@@ -841,15 +1560,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
+    "summary": "Asia salon & barber booking — services, availability, appointments and reschedules with confirm-before-write and front-desk handoff. PDPA-aligned, currency-neutral pricing, web/app/SMS.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 20
   },
   {
     "id": "asia-spaza-merchant",
@@ -864,8 +1582,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-stock-availability",
@@ -880,8 +1597,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "asia-student-helpdesk",
@@ -896,8 +1612,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "asia-tour-activity",
@@ -912,8 +1627,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "asia-trades-receptionist",
@@ -921,15 +1635,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …",
+    "summary": "Asia trades receptionist for plumbers, electricians and general builders — confirm-before-write booking, currency-neutral published price ranges, PDPA-style privacy, and local-emergency handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 18
   },
   {
     "id": "asia-travel-desk",
@@ -944,8 +1657,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-utility-billing",
@@ -960,8 +1672,7 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-vas-concierge",
@@ -976,8 +1687,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "asia-veterinary",
@@ -992,136 +1702,7 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "bank-branch",
-    "name": "Bank Branch Assistant",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "bookkeeping",
-    "name": "Bookkeeping Assistant",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkeeper.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "building-management",
-    "name": "Building Management",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "clinic-front-desk",
-    "name": "Clinic Front Desk",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — A non-clinical front desk — books appointment requests, shares preparation instructions and practice basics, and hands every clinical or emergency question straight to a human, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "course-advisor",
-    "name": "Course Advisor",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a human when needed.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "customer-support",
-    "name": "Customer Support",
-    "tier": "standard",
-    "category": "front-office",
-    "market": "africa",
-    "summary": "Africa — Answers product and order questions, captures support tickets, and hands off to a human with full context — 24/7, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "delivery-tracking",
-    "name": "Delivery & Tracking",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across WhatsApp, web and app, logging exceptions and handing off lost, damaged or disputed parcels with full context.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "dental-practice",
-    "name": "Dental Practice",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter to a human, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "eu-accounting-practice",
@@ -1136,8 +1717,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-admissions",
@@ -1152,8 +1732,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-agency-studio",
@@ -1168,8 +1747,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-bank-branch",
@@ -1184,8 +1762,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "eu-bookkeeping",
@@ -1200,8 +1777,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "eu-building-management",
@@ -1216,8 +1792,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "eu-clinic-front-desk",
@@ -1225,15 +1800,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "Strictly non-clinical EU clinic front desk — booking and logistics only; clinical questions always escalate.",
+    "summary": "Strictly non-clinical EU clinic front desk for a family GP & dental practice — hours, health insurance basics, booking and prep logistics; every clinical matter hands off — GDPR-aware.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-course-advisor",
@@ -1248,8 +1822,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-customer-support",
@@ -1257,15 +1830,14 @@
     "tier": "standard",
     "category": "front-office",
     "market": "eu",
-    "summary": "EU customer support — product and order help, ticket logging, and refund/complaint handoff across, SMS, web, app and.",
+    "summary": "EU customer support for Casa Verde Home (Amsterdam) — product and order questions, ticket logging, and handoff for refunds and complaints across SMS, web, and app.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-delivery-tracking",
@@ -1273,15 +1845,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "EU delivery & tracking for EuroLane Courier — consignment status, proof of delivery, and exception logging with confirm-before-write and desk handoff for lost/damaged parcels.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "eu-dental-front-desk",
@@ -1296,8 +1867,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-dental-practice",
@@ -1312,8 +1882,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-events-venue",
@@ -1328,8 +1897,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-executive-assistant",
@@ -1337,15 +1905,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…",
+    "summary": "EU Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when… Multi-step workflows: plan → confirm → schedule/remind/notify → verify.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 21
   },
   {
     "id": "eu-field-service",
@@ -1360,8 +1927,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-fleet-driver",
@@ -1376,8 +1942,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "eu-front-desk",
@@ -1392,8 +1957,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-grant-stock-planner",
@@ -1408,8 +1972,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-gym-membership",
@@ -1424,8 +1987,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-home-services",
@@ -1433,15 +1995,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
+    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, Multi-step: availability → confirm → book → notify.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 18
   },
   {
     "id": "eu-hotel-concierge",
@@ -1456,8 +2017,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 21,
-    "readiness": "catalogue-ready"
+    "evals": 21
   },
   {
     "id": "eu-hotel-guest",
@@ -1472,8 +2032,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-hr-helpdesk",
@@ -1488,8 +2047,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-insurance-broker",
@@ -1504,8 +2062,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-insurance-claims",
@@ -1520,8 +2077,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-it-helpdesk",
@@ -1529,15 +2085,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "summary": "EU IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware Multi-step: KB → confirm → ticket → Slack notify.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 20
   },
   {
     "id": "eu-law-firm-intake",
@@ -1552,8 +2107,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-loan-prequalifier",
@@ -1568,8 +2122,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-loyalty-rewards",
@@ -1584,8 +2137,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-marketing-assistant",
@@ -1600,8 +2152,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-mobile-money",
@@ -1616,8 +2167,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-onboarding-buddy",
@@ -1625,15 +2175,14 @@
     "tier": "standard",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…",
+    "summary": "EU Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day Multi-step: checklist → confirm → log/escalate → notify.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 18
   },
   {
     "id": "eu-order-tracking",
@@ -1648,8 +2197,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-payment-disputes",
@@ -1664,8 +2212,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "eu-payroll-queries",
@@ -1680,8 +2227,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-pharmacy",
@@ -1696,8 +2242,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-policy-compliance",
@@ -1712,8 +2257,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "eu-procurement",
@@ -1728,8 +2272,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-product-finder",
@@ -1744,8 +2287,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-property-enquiries",
@@ -1760,8 +2302,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "eu-remittance",
@@ -1776,8 +2317,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-rental-enquiries",
@@ -1792,8 +2332,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-restaurant-takeaway",
@@ -1801,15 +2340,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU restaurant and takeaway — menu, hours, allergens and order capture with complaint escalation.",
+    "summary": "EU restaurant & takeaway for Ember & Oak (Berlin) — menu Q&A, table bookings, and collection/delivery orders with allergen honesty, confirm-before-write, GDPR-minimal data, and kitchen handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 23
   },
   {
     "id": "eu-returns-exchanges",
@@ -1824,8 +2362,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-sales-qualifier",
@@ -1833,15 +2370,14 @@
     "tier": "pro",
     "category": "sales",
     "market": "eu",
-    "summary": "EU sales qualifier — qualifies inbound interest, books demos/callbacks, stays inside approved pricing knowledge.",
+    "summary": "EU sales qualifier — qualifies inbound interest, books demos/callbacks, stays inside approved pricing Multi-step: qualify → confirm → callback → HubSpot/Slack.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 21
   },
   {
     "id": "eu-salon-booking",
@@ -1849,15 +2385,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
+    "summary": "EU salon & barber booking for a European Union salon — services, availability, appointments and reschedules with confirm-before-write and front-desk handoff. GDPR-aligned, euro pricing, SMS/web/app.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 20
   },
   {
     "id": "eu-spaza-merchant",
@@ -1872,8 +2407,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-stock-availability",
@@ -1888,8 +2422,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "eu-student-helpdesk",
@@ -1904,8 +2437,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "eu-tour-activity",
@@ -1920,8 +2452,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "eu-trades-receptionist",
@@ -1929,15 +2460,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, app and.",
+    "summary": "EU trades receptionist for plumbers, electricians and general builders — confirm-before-write booking, published euro price ranges, GDPR handling, and 112 emergency handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 18
   },
   {
     "id": "eu-travel-desk",
@@ -1952,8 +2482,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-utility-billing",
@@ -1968,8 +2497,7 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-vas-concierge",
@@ -1984,8 +2512,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "eu-veterinary",
@@ -2000,595 +2527,7 @@
       "app"
     ],
     "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "events-venue",
-    "name": "Events & Venue",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "executive-assistant",
-    "name": "Executive Assistant",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitive or conflicting — across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "field-service",
-    "name": "Field Service Dispatch",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "fleet-driver",
-    "name": "Fleet & Driver Desk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance reminders — escalating accidents, injuries and breakdowns to a human urgently, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "front-desk",
-    "name": "Front Desk / Reception",
-    "tier": "standard",
-    "category": "front-office",
-    "market": "africa",
-    "summary": "Africa — Greets visitors, answers the basics, routes people to the right person or department, books appointments and takes messages — across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "grant-stock-planner",
-    "name": "Grant-Day Stock Planner",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the supplier account, confirming before it commits.",
-    "channels": [
-      "whatsapp",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "gym-membership",
-    "name": "Gym & Membership",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers questions on membership plans, class times, freezes and cancellations, logs freeze/cancel requests for the team to confirm, and hands off contracts and billing disputes to a human — across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "hotel-concierge",
-    "name": "Hotel Concierge",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers pre-arrival and in-stay questions about amenities and the local area, and logs guest requests for the team — a warm 24/7 concierge across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "hr-helpdesk",
-    "name": "HR Helpdesk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical matter to a human, POPIA-safe, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "insurance-broker",
-    "name": "Insurance Broker",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "insurance-claims",
-    "name": "Insurance & Claims Helper",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Explains cover in plain language, walks a customer through starting a claim, and captures every detail — then hands off to a human for any decision. Across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "it-helpdesk",
-    "name": "IT Helpdesk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages and security incidents to a human, 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "law-firm-intake",
-    "name": "Law Firm Intake",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Runs a structured, conflict-safe first contact for a law firm — explains practice areas, captures the matter, books an initial consultation, and routes every request for legal advice to an attorney. Gives no legal advice itself. Across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "loan-prequalifier",
-    "name": "Loan Pre-Qualifier",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never a credit decision, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "loyalty-rewards",
-    "name": "Loyalty & Rewards",
-    "tier": "standard",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing off account disputes to a human.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "marketing-assistant",
-    "name": "Marketing Assistant",
-    "tier": "pro",
-    "category": "sales",
-    "market": "africa",
-    "summary": "Africa — Answers campaign and promotion questions and captures interest at the moment of intent, feeding warm, opted-in leads straight to the team.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "mobile-money",
-    "name": "Mobile Money Desk",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalating anything that looks like fraud.",
-    "channels": [
-      "whatsapp",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "onboarding-buddy",
-    "name": "Onboarding Buddy",
-    "tier": "standard",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT issue to a person — across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "order-tracking",
-    "name": "Order Tracking",
-    "tier": "standard",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers 'where is my order', gives delivery windows, updates delivery preferences, and flags delays proactively — 24/7 across WhatsApp, web and app, handing off cleanly for lost or disputed parcels.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "payment-disputes",
-    "name": "Card & Payment Disputes",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guarantees an outcome and never processes refunds itself. 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "payroll-queries",
-    "name": "Payroll Queries",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers staff payslip, leave-balance and payroll-policy questions, logs anything payroll needs to action, and routes every pay dispute or confidential matter to a person — POPIA-safe, 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "pharmacy",
-    "name": "Pharmacy Assistant",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers customers on stock, prescription collection status, and store information — non-clinically — and routes every medicine, dosage or script problem to the pharmacist. 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "policy-compliance",
-    "name": "Policy & Compliance",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance officer, and treats every whistleblowing report as a confidential, protected route — across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "procurement",
-    "name": "Procurement Desk",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals and conflicts of interest to a human.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "product-finder",
-    "name": "Product Finder",
-    "tier": "standard",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "property-enquiries",
-    "name": "Property Enquiries",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Qualifies buyers and tenants, matches them to available listings, and books a viewing — with a clean handoff to the agency the moment an offer or negotiation starts. WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "remittance",
-    "name": "Remittance Helper",
-    "tier": "pro",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to pay out. Never moves money itself.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "rental-enquiries",
-    "name": "Rental Enquiries",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers questions on rental availability and application requirements and books a property viewing for prospective tenants — never an application or credit decision, across WhatsApp, web, app and.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "restaurant-takeaway",
-    "name": "Restaurant & Takeaway",
-    "tier": "enterprise",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers menu questions, checks and books tables, and captures collection or delivery orders — grounded in the restaurant's real menu and hours, across WhatsApp and web.",
-    "channels": [
-      "whatsapp",
-      "web"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "returns-exchanges",
-    "name": "Returns & Exchanges",
-    "tier": "standard",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "sales-qualifier",
-    "name": "Sales Qualifier",
-    "tier": "pro",
-    "category": "sales",
-    "market": "africa",
-    "summary": "Africa — Qualifies inbound leads conversationally — understands need, budget, timeline and authority — then hands the sales team a complete, contextual brief.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "salon-booking",
-    "name": "Salon & Barber Booking",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Fills the chair — captures the service, preferred time and stylist, checks availability and books the appointment, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "spaza-merchant",
-    "name": "Spaza & Merchant",
-    "tier": "enterprise",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa — A WhatsApp counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry before it writes.",
-    "channels": [
-      "whatsapp"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "stock-availability",
-    "name": "Stock & Availability",
-    "tier": "pro",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-stock alerts.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "student-helpdesk",
-    "name": "Student Helpdesk",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or results to a human. Grounded, private, 24/7 across WhatsApp, web and app. here means WhatsApp notes (Whisper transcription in, ElevenLabs read-back out), not a standalone channel.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "tour-activity",
-    "name": "Tour & Activity Desk",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "travel-desk",
-    "name": "Travel Desk",
-    "tier": "pro",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — Answers destination and travel-policy questions and captures trip requests for the travel team to action — honest that it doesn't book or quote live fares itself, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "us-accounting-practice",
@@ -2596,15 +2535,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
+    "summary": "US CPA front desk for Ledgerline Accountants (Austin) — IRS deadline guides, document lists, new-client capture with confirm-before-write; never formal tax advice.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-admissions",
@@ -2612,15 +2550,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. R…",
+    "summary": "US college admissions assistant — explains entry requirements and deadlines, captures applications with confirm-before-write, and never makes admission decisions; routes appeals and financial aid to humans.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-agency-studio",
@@ -2628,15 +2565,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across, web and app.",
+    "summary": "US creative studio front door — explains services and process, captures project briefs with confirm-before-write, and routes complex scope or media-buying asks to a human producer.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-bank-branch",
@@ -2644,15 +2580,14 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "us",
-    "summary": "Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/7 ac…",
+    "summary": "US community-bank branch assistant — explains products and KYC documents, books lobby appointments with confirm-before-write, and escalates fraud, balances, and advice to a banker.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "us-bookkeeping",
@@ -2660,15 +2595,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the bookkee…",
+    "summary": "US AR bookkeeping assistant — looks up invoices and statements, emails statement copies after confirm-before-write, and routes disputes and tax questions to a bookkeeper.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "us-building-management",
@@ -2676,15 +2610,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and disputes to a human, across…",
+    "summary": "US building / HOA desk for Cedar Ridge Condominiums (Austin) — maintenance logging, access & conduct rules, and levy Q&A with emergency and dispute handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "us-clinic-front-desk",
@@ -2692,15 +2625,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "Strictly non-clinical US clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.",
+    "summary": "Strictly non-clinical US clinic front desk for Rivergate Family Health (Denver) — hours, insurance basics, booking and prep logistics; every clinical matter hands off — HIPAA-aware.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-course-advisor",
@@ -2708,15 +2640,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, and hands off to a …",
+    "summary": "US career-college course advisor — lists and matches programs, captures interest with confirm-before-write, and never promises seats or financial aid.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-customer-support",
@@ -2724,15 +2655,14 @@
     "tier": "standard",
     "category": "front-office",
     "market": "us",
-    "summary": "US customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across, SMS, web, app and.",
+    "summary": "US customer support for Harbor Home Co. (Portland) — product and order questions, ticket logging, and handoff for refunds and complaints across SMS, web, and app.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-delivery-tracking",
@@ -2740,15 +2670,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…",
+    "summary": "US delivery & tracking for SwiftLane Courier (DFW) — consignment status, proof of delivery, and exception logging with confirm-before-write and desk handoff for lost/damaged parcels.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 15
   },
   {
     "id": "us-dental-front-desk",
@@ -2756,15 +2685,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, SMS, web, app and.",
+    "summary": "Strictly non-clinical US dental front desk — explains treatments and fees, books appointments with confirm-before-write, and routes every clinical, pain, or emergency matter to a human across SMS, web, and app.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-dental-practice",
@@ -2772,15 +2700,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful or emergency matter…",
+    "summary": "Strictly non-clinical US dental practice desk — explains treatments and fees, books with confirm-before-write, and routes every clinical, pain, or emergency matter to a human.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-events-venue",
@@ -2788,15 +2715,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events across, web a…",
+    "summary": "US events & venue desk for Willow Creek Estate (Austin Hill Country) — packages, capacity, date checks, enquiry capture, and site-visit booking with confirm-before-write.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-executive-assistant",
@@ -2804,15 +2730,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "US Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when a request is sensitiv…",
+    "summary": "US Executive Assistant — carries a principal's daily admin load: checks the calendar, schedules meetings with confirm-first, sets reminders, notifies the team, and hands off sensitive or conflicted requests to a human.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 23
   },
   {
     "id": "us-field-service",
@@ -2820,15 +2745,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across WhatsAp…",
+    "summary": "US HVAC field-service tech assistant — pulls jobs and parts, updates status with confirm-before-write, and escalates every on-site safety issue to dispatch immediately.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-fleet-driver",
@@ -2836,15 +2760,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "US Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance reminders — escalating acc…",
+    "summary": "US fleet driver assistant — answers hours-of-service and CDL compliance questions, logs minor incidents with confirm-before-write, and escalates accidents and breakdowns to the fleet office.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 13,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "us-front-desk",
@@ -2852,15 +2775,14 @@
     "tier": "standard",
     "category": "front-office",
     "market": "us",
-    "summary": "US front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
+    "summary": "US multi-tenant building front desk — orients visitors, routes to departments, books and takes messages with confirm-before-write, and escalates urgent or clinical matters to a human.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-grant-stock-planner",
@@ -2868,15 +2790,14 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "us",
-    "summary": "US Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and places the reorder on the…",
+    "summary": "US neighborhood-market stock planner — forecasts benefit-week demand, builds pre-stock lists, and places reorders only after confirm-before-write.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-gym-membership",
@@ -2884,15 +2805,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
+    "summary": "US gym membership desk for Ironleaf Fitness (Austin) — plans, class times, freeze/cancel intake with confirm-before-write, and billing-dispute handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-home-services",
@@ -2900,15 +2820,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, app and.",
+    "summary": "US home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, confirms before booking, notifies dispatch, and escalates emergencies and billing disputes to a human.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 20
   },
   {
     "id": "us-hotel-concierge",
@@ -2916,15 +2835,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
+    "summary": "US hotel concierge — answers amenities and local tips, logs guest requests with confirm-before-write, and routes billing, complaints, and reservation changes to the front desk.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 21,
-    "readiness": "catalogue-ready"
+    "evals": 21
   },
   {
     "id": "us-hotel-guest",
@@ -2932,15 +2850,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and.",
+    "summary": "US hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests with confirm-before-write, and escalates billing, complaints, and reservation changes to front desk across SMS, web, and app.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 21
   },
   {
     "id": "us-hr-helpdesk",
@@ -2948,15 +2865,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "US HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinary or medical m…",
+    "summary": "US HR helpdesk — answers PTO and benefits questions, screens candidates against listed requirements only, captures applications with confirm-before-write, and routes every grievance or medical matter to HR.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-insurance-broker",
@@ -2964,15 +2880,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, never a binding quote, …",
+    "summary": "US insurance broker for Summit Ridge Insurance Brokers (Austin) — needs analysis, cover options, underwriter submission with confirm-before-write; never advice, never a binding quote.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "us-insurance-claims",
@@ -2980,15 +2895,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "US insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
+    "summary": "US insurance claims helper for Harbor Mutual (Austin) — explain cover, FNOL intake with confirm-before-write, claim status; never adjudicates or promises payouts.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "us-it-helpdesk",
@@ -2996,15 +2910,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…",
+    "summary": "First-line US IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets with confirm-before-write, notifies Slack, and escalates outages and security incidents immediately.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 22
   },
   {
     "id": "us-law-firm-intake",
@@ -3012,15 +2925,14 @@
     "tier": "enterprise",
     "category": "vertical",
     "market": "us",
-    "summary": "US law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "summary": "US law firm intake for Riverstone & Hale LLP (Austin) — practice areas, conflict note, matter capture & consult booking with confirm-before-write; never legal advice.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-loan-prequalifier",
@@ -3028,15 +2940,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "US Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never a credit decision, ac…",
+    "summary": "US loan pre-qualifier for ClearPath Personal Lending (Austin) — indicative affordability read and application capture with confirm-before-write; never a credit decision.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-loyalty-rewards",
@@ -3044,15 +2955,14 @@
     "tier": "standard",
     "category": "commerce",
     "market": "us",
-    "summary": "US Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing off account disputes…",
+    "summary": "US loyalty & rewards for Oak & Ember Rewards (Austin) — balances, tiers, reward redemption with confirm-before-write; account disputes hand off.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "us-marketing-assistant",
@@ -3060,15 +2970,14 @@
     "tier": "pro",
     "category": "sales",
     "market": "us",
-    "summary": "US marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "summary": "US marketing assistant for Hearth & Pantry Co. (Austin) — approved campaign info and opt-in lead capture with confirm-before-write; TCPA-aware, never invents offers.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "us-mobile-money",
@@ -3076,15 +2985,14 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "us",
-    "summary": "US Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking the float, and escalat…",
+    "summary": "US cash services desk for Riverbend Cash Services (Austin) — counter cash-in/out and send-money with confirm-before-write; never handles PIN/OTP; BSA-AML aware.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-onboarding-buddy",
@@ -3092,15 +3000,14 @@
     "tier": "standard",
     "category": "operations",
     "market": "us",
-    "summary": "US Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off any blocker or HR/IT …",
+    "summary": "US onboarding buddy for new joiners at Ridgeway Labs (Austin) — week-one checklist, resource pointers, confirm-before-log questions, and HR/IT handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 18
   },
   {
     "id": "us-order-tracking",
@@ -3108,15 +3015,14 @@
     "tier": "standard",
     "category": "commerce",
     "market": "us",
-    "summary": "US order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "summary": "US order tracking for Northline Home Goods (Austin) — status, delivery windows, preference updates with confirm-before-write; refunds and address changes hand off.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-payment-disputes",
@@ -3124,15 +3030,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never guara…",
+    "summary": "US payment disputes for Northline Payments Desk (Austin) — dispute intake with evidence capture and confirm-before-write; never decides chargebacks or issues refunds.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-payroll-queries",
@@ -3140,15 +3045,14 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "us",
-    "summary": "US Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "summary": "US payroll queries for Cedarworks Staff Payroll (Austin) — own payslip/leave lookups and query logging with confirm-before-write; never cross-employee disclosure.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "us-pharmacy",
@@ -3156,15 +3060,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
+    "summary": "US pharmacy assistant for Riverside Community Pharmacy (Austin) — hours, OTC stock, script status, refill request logging with confirm-before-write; never diagnoses — HIPAA-aware.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 17
   },
   {
     "id": "us-policy-compliance",
@@ -3172,15 +3075,14 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "us",
-    "summary": "US Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretation to a compliance of…",
+    "summary": "US policy & compliance for Cedarworks Compliance Desk (Austin) — cited policy answers and query logging with confirm-before-write; legal interpretation hands off.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-procurement",
@@ -3188,15 +3090,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "summary": "US procurement desk for Cedarworks Procurement (Austin) — PO status, policy, supplier onboarding with confirm-before-write; approvals and exceptions hand off.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-product-finder",
@@ -3204,15 +3105,14 @@
     "tier": "standard",
     "category": "commerce",
     "market": "us",
-    "summary": "US Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually available. 24/7 a…",
+    "summary": "US product finder for Homestead & Hearth (Austin) — catalogue search, honest comparisons, live stock checks; complex/bulk needs hand off — never invents products or prices.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 14
   },
   {
     "id": "us-property-enquiries",
@@ -3220,15 +3120,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "summary": "US property enquiries for Cedarline Realty (Austin) — listings, viewing bookings with confirm-before-write, and application routing; never gives legal/financial advice.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 20
   },
   {
     "id": "us-remittance",
@@ -3236,15 +3135,14 @@
     "tier": "pro",
     "category": "operations",
     "market": "us",
-    "summary": "US Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to pay out. Never moves…",
+    "summary": "US remittance helper for HarborSend (Austin) — corridors, fees, and transfer-request capture with confirm-before-write; never moves money or takes card data in chat.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 14,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-rental-enquiries",
@@ -3252,15 +3150,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "summary": "US rental enquiries for Oak & Key Lettings (Austin) — availability, application requirements, and viewing bookings with confirm-before-write; never decides applications or credit.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-restaurant-takeaway",
@@ -3268,15 +3165,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.",
+    "summary": "US restaurant & takeaway for Ember & Oak (Austin) — menu Q&A, table bookings, and collection/delivery orders with allergen honesty, confirm-before-write, and kitchen handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 22
   },
   {
     "id": "us-returns-exchanges",
@@ -3284,15 +3180,14 @@
     "tier": "standard",
     "category": "operations",
     "market": "us",
-    "summary": "US Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refunds itself. 24/7 across …",
+    "summary": "US returns & exchanges for Homestead & Hearth (Austin) — eligibility, methods, and return start with confirm-before-write; refunds and faulty items escalate.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-sales-qualifier",
@@ -3300,15 +3195,14 @@
     "tier": "pro",
     "category": "sales",
     "market": "us",
-    "summary": "US sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.",
+    "summary": "US sales qualifier — qualifies inbound interest, books demos/callbacks with confirm-before-write, captures leads to HubSpot, notifies Slack, and never invents pricing outside approved ranges.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
+    "tools": 5,
+    "evals": 23
   },
   {
     "id": "us-salon-booking",
@@ -3316,31 +3210,29 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "US salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.",
+    "summary": "US salon & barber booking for Copper & Clip (Chicago) — services, availability, appointments and reschedules with confirm-before-write and front-desk handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 20
   },
   {
     "id": "us-spaza-merchant",
-    "name": "US Spaza & Merchant",
+    "name": "US Corner Store Merchant",
     "tier": "enterprise",
     "category": "commerce",
     "market": "us",
-    "summary": "US Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirming every entry befo…",
+    "summary": "US corner-store merchant helper for Cesar Corner Market (Austin) — shelf prices, sales logging, credit book, and wholesaler reorders with confirm-before-write on every write.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-stock-availability",
@@ -3348,15 +3240,14 @@
     "tier": "pro",
     "category": "commerce",
     "market": "us",
-    "summary": "Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-in-…",
+    "summary": "US stock availability for Ridgeway Outfitters (Austin) — live branch stock, sizes/variants, and back-in-stock alerts with confirm-before-write; never reserves stock.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 18
   },
   {
     "id": "us-student-helpdesk",
@@ -3364,15 +3255,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "summary": "US student helpdesk for Laguna Community College (Austin) — timetables, campus services, and request logging with confirm-before-write; account/results always hand off — FERPA-aware.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15,
-    "readiness": "catalogue-ready"
+    "evals": 16
   },
   {
     "id": "us-tour-activity",
@@ -3380,15 +3270,14 @@
     "tier": "standard",
     "category": "vertical",
     "market": "us",
-    "summary": "Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, web a…",
+    "summary": "US tour & activity desk for Hill Country Trails (Austin) — tour info, availability, and bookings with confirm-before-write; complaints and custom groups hand off.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "evals": 17
   },
   {
     "id": "us-trades-receptionist",
@@ -3396,15 +3285,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across, SMS, web, ap…",
+    "summary": "US trades receptionist for Ridgeline Trades (Denver metro) — plumbing, electrical, and general building jobs with confirm-before-write booking, estimates, and emergency handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
+    "tools": 6,
+    "evals": 18
   },
   {
     "id": "us-travel-desk",
@@ -3412,15 +3300,14 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "summary": "US corporate travel desk for Meridian Travel Desk (Austin) — policy Q&A and trip-request capture with confirm-before-write; never books or quotes live fares.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "us-utility-billing",
@@ -3428,15 +3315,14 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "us",
-    "summary": "US Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "summary": "US utility & billing for Riverside Municipal Utilities (Austin metro) — outages, meter readings with confirm-before-write, and bill guidance; safety and disputes escalate.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "us-vas-concierge",
@@ -3444,15 +3330,14 @@
     "tier": "pro",
     "category": "commerce",
     "market": "us",
-    "summary": "US gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "summary": "US gift card & VAS concierge for BrightPin Digital (Austin) — catalogue, confirm-before-charge purchases, PIN delivery; never takes raw card data in chat.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 19
   },
   {
     "id": "us-veterinary",
@@ -3460,62 +3345,13 @@
     "tier": "pro",
     "category": "vertical",
     "market": "us",
-    "summary": "US veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
+    "summary": "US veterinary front desk for Paws & Claws Veterinary Clinic (Austin) — non-clinical booking with confirm-before-write; clinical questions and emergencies escalate immediately.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 20,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "utility-billing",
-    "name": "Utility & Billing",
-    "tier": "enterprise",
-    "category": "operations",
-    "market": "africa",
-    "summary": "Africa — Reports outages and interruptions, captures meter readings, and answers billing questions — routing gas and electrical emergencies and billing disputes to a human, across WhatsApp, web and app.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 4,
-    "evals": 17,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "vas-concierge",
-    "name": "Gift Card & VAS Concierge",
-    "tier": "pro",
-    "category": "commerce",
-    "market": "africa",
-    "summary": "Africa — Sells and redeems gift cards, airtime, data and wallet top-ups right in the chat — instant PIN delivery, powered by the EZ PIN network.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 16,
-    "readiness": "catalogue-ready"
-  },
-  {
-    "id": "veterinary",
-    "name": "Veterinary Practice",
-    "tier": "standard",
-    "category": "vertical",
-    "market": "africa",
-    "summary": "Africa — A non-clinical vet front desk — takes appointment requests, shares preparation instructions and practice information, and routes every sick animal, symptom or emergency straight to a clinician, across WhatsApp, web, app and.",
-    "channels": [
-      "whatsapp",
-      "web",
-      "app"
-    ],
-    "tools": 5,
-    "evals": 18,
-    "readiness": "catalogue-ready"
+    "evals": 20
   }
 ]

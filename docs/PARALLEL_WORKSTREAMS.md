@@ -7,21 +7,28 @@ Goal: production comfort on **all 220** agents. See `PRODUCTION_SCALE_220.md`.
 1. One family (or market-pack set) = one owner until merged.
 2. Deepeners edit only:
    - `data/catalog/{market}-{family}.agent.json`
-   - `docs/pilots/{family}.md`
+   - `docs/pilots/{family}.md` (append **Markets** notes only)
 3. Platform files (`monday-pilot.ts`, CatalogGrid, runtime): single owner.
 4. No demo/Monday-pitch copy.
+5. Do **not** edit `us-*.agent.json` unless fixing a regression (Wave 2 locked).
 
 ## Ownership now
 
 | Worker | Own |
 |---|---|
-| Cursor Wave 2 Cluster D | US: admissions, agency-studio, bank-branch, bookkeeping, course-advisor, dental-practice, field-service, fleet-driver, front-desk, grant-stock-planner, hotel-concierge, hr-helpdesk |
-| Cursor Wave 2 Cluster E | US: insurance-broker, insurance-claims, law-firm-intake, loan-prequalifier, loyalty-rewards, marketing-assistant, mobile-money, order-tracking, payment-disputes, payroll-queries, policy-compliance, procurement |
-| Cursor Wave 2 Cluster F | US: product-finder, property-enquiries, remittance, rental-enquiries, returns-exchanges, spaza-merchant, stock-availability, student-helpdesk, tour-activity, travel-desk, utility-billing, vas-concierge, veterinary |
-| **Claude Wave 3** | `eu-` / `africa-` / `asia-` for the **18 already-strong** US families — see `CLAUDE_HANDOFF.md` |
+| **Claude Wave 3 — Go-live 18** | Cluster **B done**; continue **A + C**. Cursor scripts hard-skip these packs. |
+| **Cursor Wave 3 — D/E/F** | **Done** — 37 families × 3 markets deepened; static eval drift 0; presets regenerated. |
+
+### Go-live 18 (Claude only)
+
+executive-assistant · it-helpdesk · dental-front-desk · hotel-guest · sales-qualifier · home-services · restaurant-takeaway · salon-booking · clinic-front-desk · customer-support · delivery-tracking · trades-receptionist · events-venue · onboarding-buddy · accounting-practice · building-management · gym-membership · pharmacy
 
 ## Status
 
 ```bash
 pnpm production:status
 ```
+
+## Note on Africa files
+
+`pnpm generate:packs` emits prefixed `africa-{family}.agent.json` from the strong US hero. Legacy unprefixed ZA files may remain on disk as source archives; the marketplace index prefers `africa-*`.

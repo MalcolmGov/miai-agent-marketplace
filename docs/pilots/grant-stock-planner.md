@@ -12,3 +12,8 @@
 - Live connectors required: Shopify (`build_prestock_list` / `place_reorder`), Slack (`handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-grant-stock-planner`): BenefitDay Market — Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-grant-stock-planner`): GrantDay Market — Soweto (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-grant-stock-planner`): BenefitDay Market — Jurong (Singapore); PDPA / regional privacy; local currency; local emergency services.

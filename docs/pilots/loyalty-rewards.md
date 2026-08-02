@@ -12,3 +12,8 @@
 - Live connectors required: Loyalty platform (sandbox OK for strong; live OAuth for depth: live)
 - Depth: strong
 - Evidence: (none yet — add History correlation id / Loom when live)
+
+## Markets
+- **EU** (`eu-loyalty-rewards`): Oak & Ember Rewards Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-loyalty-rewards`): Oak & Ember Rewards Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-loyalty-rewards`): Oak & Ember Rewards Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

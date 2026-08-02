@@ -13,3 +13,11 @@
 - Live connectors required: EHR/scheduling or Google Calendar / Calendly; Slack/Teams for clinical handoff queue
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Market packs (EU / Africa / Asia)
+
+Localized variants of the same non-clinical front-desk job. Each keeps the confirm-before-write booking rule, the clinician/emergency handoff, and the {{business_name}} placeholder; only the region facts differ.
+
+- **EU** (`eu-clinic-front-desk`): currency EUR (€) — GP €75, dental check-up €95, flu €30; compliance GDPR (access/erasure requests hand off to a human); channels SMS / web / app; languages en, de, fr, es, it; emergency **112**; example locale Berlin.
+- **Africa** (`africa-clinic-front-desk`): currency-neutral prices in local currency (GP 350, dental check-up 500, flu 150 — bare numbers, tenant sets its own symbol); compliance POPIA + regional privacy; channels WhatsApp (primary) / web / app / SMS with WhatsApp-first knowledge and handoff; languages en, fr, sw; emergency **local emergency services**; example locale Sandton, Johannesburg.
+- **Asia** (`asia-clinic-front-desk`): currency-neutral prices in local currency (GP 60, dental check-up 80, flu 25 — bare numbers); compliance PDPA + regional privacy; channels web / app / SMS; languages en, zh, hi; emergency **local emergency services**; example locale Singapore.

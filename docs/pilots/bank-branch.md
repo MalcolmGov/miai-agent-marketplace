@@ -12,3 +12,8 @@
 - Live connectors required: Google Calendar (`book_branch_appointment`), Slack (`handoff_to_human`)
 - Depth: strong
 - Evidence: (correlation id / Loom — when available)
+
+## Markets
+- **EU** (`eu-bank-branch`): Riverbend Bank — Berlin Mitte (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-bank-branch`): Riverbend Bank — Sandton (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-bank-branch`): Riverbend Bank — Marina Bay (Singapore); PDPA / regional privacy; local currency; local emergency services.

@@ -12,3 +12,8 @@
 - Live connectors required: PMS/listings + calendar (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-rental-enquiries`): Oak & Key Lettings Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-rental-enquiries`): Oak & Key Lettings Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-rental-enquiries`): Oak & Key Lettings Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.

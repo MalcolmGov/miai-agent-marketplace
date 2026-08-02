@@ -12,3 +12,8 @@
 - Live connectors required: Booking calendar / Peek or FareHarbor-style API (sandbox OK for strong)
 - Depth: strong
 - Evidence: (none yet)
+
+## Markets
+- **EU** (`eu-tour-activity`): Alpine Trails Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
+- **Africa** (`africa-tour-activity`): Table Mountain Trails (Cape Town); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
+- **Asia** (`asia-tour-activity`): Harbour Trails Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
