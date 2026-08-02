@@ -2,7 +2,7 @@
 
 ## Commercial framing (safe to sell)
 
-**92 agent families × US / EU / Africa / Asia / Oceania market packs (460 agents) are catalogue-production-ready** in this marketplace. Former ZA agents are included in the **Africa** pack (no separate ZA market). Roadmap: ~100 families / ~500 agents — see `FAMILIES_100.md`.
+**100 agent families × US / EU / Africa / Asia / Oceania market packs (500 agents) are catalogue-production-ready** in this marketplace. Former ZA agents are included in the **Africa** pack (no separate ZA market). North-star target met — see `FAMILIES_100.md`.
 
 That means every variant:
 

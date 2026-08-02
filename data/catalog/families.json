@@ -94,11 +94,11 @@
     "readiness": "catalogue-ready"
   },
   {
-    "id": "ai-coding-assistant",
-    "name": "AI Coding Assistant",
+    "id": "agri-advisory",
+    "name": "Agri Advisory Desk",
     "tier": "pro",
-    "category": "operations",
-    "summary": "AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "category": "vertical",
+    "summary": "Agri Advisory Desk — General agronomy programme FAQ and advisory appointment intake; never prescribe pesticides as a vet/agronomist substitute",
     "channels": [
       "sms",
       "web",
@@ -106,11 +106,42 @@
     ],
     "health": false,
     "markets": {
-      "us": "us-ai-coding-assistant",
-      "eu": "eu-ai-coding-assistant",
+      "us": "us-agri-advisory",
+      "eu": "eu-agri-advisory",
+      "africa": "africa-agri-advisory",
+      "asia": "asia-agri-advisory",
+      "oceania": "oceania-agri-advisory"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "ai-coding-assistant",
+    "name": "AI Coding Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "AI Coding Assistant — AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "health": false,
+    "markets": {
       "africa": "africa-ai-coding-assistant",
       "asia": "asia-ai-coding-assistant",
-      "oceania": "oceania-ai-coding-assistant"
+      "eu": "eu-ai-coding-assistant",
+      "oceania": "oceania-ai-coding-assistant",
+      "us": "us-ai-coding-assistant"
     },
     "packs": [
       "us",
@@ -191,19 +222,20 @@
     "name": "BI Analyst Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "summary": "BI Analyst Assistant — BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-bi-analyst",
-      "eu": "eu-bi-analyst",
       "africa": "africa-bi-analyst",
       "asia": "asia-bi-analyst",
-      "oceania": "oceania-bi-analyst"
+      "eu": "eu-bi-analyst",
+      "oceania": "oceania-bi-analyst",
+      "us": "us-bi-analyst"
     },
     "packs": [
       "us",
@@ -501,11 +533,11 @@
     "readiness": "catalogue-ready"
   },
   {
-    "id": "data-quality",
-    "name": "Data Quality Desk",
-    "tier": "pro",
+    "id": "cybersecurity-desk",
+    "name": "Cybersecurity Desk",
+    "tier": "enterprise",
     "category": "operations",
-    "summary": "Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "summary": "Cybersecurity Desk — Security policy FAQ and intake for suspected incidents; never invent containment status",
     "channels": [
       "sms",
       "web",
@@ -513,11 +545,42 @@
     ],
     "health": false,
     "markets": {
-      "us": "us-data-quality",
-      "eu": "eu-data-quality",
+      "us": "us-cybersecurity-desk",
+      "eu": "eu-cybersecurity-desk",
+      "africa": "africa-cybersecurity-desk",
+      "asia": "asia-cybersecurity-desk",
+      "oceania": "oceania-cybersecurity-desk"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "data-quality",
+    "name": "Data Quality Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Data Quality Desk — Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "health": false,
+    "markets": {
       "africa": "africa-data-quality",
       "asia": "asia-data-quality",
-      "oceania": "oceania-data-quality"
+      "eu": "eu-data-quality",
+      "oceania": "oceania-data-quality",
+      "us": "us-data-quality"
     },
     "packs": [
       "us",
@@ -661,19 +724,20 @@
     "name": "DevOps Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "summary": "DevOps Assistant — DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-devops-assistant",
-      "eu": "eu-devops-assistant",
       "africa": "africa-devops-assistant",
       "asia": "asia-devops-assistant",
-      "oceania": "oceania-devops-assistant"
+      "eu": "eu-devops-assistant",
+      "oceania": "oceania-devops-assistant",
+      "us": "us-devops-assistant"
     },
     "packs": [
       "us",
@@ -691,7 +755,38 @@
     "name": "Documentation Assistant",
     "tier": "standard",
     "category": "operations",
-    "summary": "Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "summary": "Documentation Assistant — Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "health": false,
+    "markets": {
+      "africa": "africa-documentation-assistant",
+      "asia": "asia-documentation-assistant",
+      "eu": "eu-documentation-assistant",
+      "oceania": "oceania-documentation-assistant",
+      "us": "us-documentation-assistant"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "energy-operations",
+    "name": "Energy Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Energy Operations Desk — Outage and service FAQ plus work-order logging for energy customers; never invent restoration ETAs",
     "channels": [
       "sms",
       "web",
@@ -699,11 +794,11 @@
     ],
     "health": false,
     "markets": {
-      "us": "us-documentation-assistant",
-      "eu": "eu-documentation-assistant",
-      "africa": "africa-documentation-assistant",
-      "asia": "asia-documentation-assistant",
-      "oceania": "oceania-documentation-assistant"
+      "us": "us-energy-operations",
+      "eu": "eu-energy-operations",
+      "africa": "africa-energy-operations",
+      "asia": "asia-energy-operations",
+      "oceania": "oceania-energy-operations"
     },
     "packs": [
       "us",
@@ -816,19 +911,20 @@
     "name": "Executive Dashboards",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "summary": "Executive Dashboards — Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-executive-dashboards",
-      "eu": "eu-executive-dashboards",
       "africa": "africa-executive-dashboards",
       "asia": "asia-executive-dashboards",
-      "oceania": "oceania-executive-dashboards"
+      "eu": "eu-executive-dashboards",
+      "oceania": "oceania-executive-dashboards",
+      "us": "us-executive-dashboards"
     },
     "packs": [
       "us",
@@ -860,6 +956,36 @@
       "eu": "eu-factory-operations",
       "oceania": "oceania-factory-operations",
       "us": "us-factory-operations"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "farm-operations",
+    "name": "Farm Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-farm-operations",
+      "eu": "eu-farm-operations",
+      "africa": "africa-farm-operations",
+      "asia": "asia-farm-operations",
+      "oceania": "oceania-farm-operations"
     },
     "packs": [
       "us",
@@ -940,19 +1066,20 @@
     "name": "Financial Reporting Desk",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "summary": "Financial Reporting Desk — Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-financial-reporting",
-      "eu": "eu-financial-reporting",
       "africa": "africa-financial-reporting",
       "asia": "asia-financial-reporting",
-      "oceania": "oceania-financial-reporting"
+      "eu": "eu-financial-reporting",
+      "oceania": "oceania-financial-reporting",
+      "us": "us-financial-reporting"
     },
     "packs": [
       "us",
@@ -1441,6 +1568,36 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "learning-development",
+    "name": "Learning & Development",
+    "tier": "standard",
+    "category": "operations",
+    "summary": "Learning & Development — Course catalogue FAQ and learning enrollment logging; never invent completions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-learning-development",
+      "eu": "eu-learning-development",
+      "africa": "africa-learning-development",
+      "asia": "asia-learning-development",
+      "oceania": "oceania-learning-development"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "legal-research",
     "name": "Legal Research Intake",
     "tier": "enterprise",
@@ -1626,6 +1783,36 @@
       "oceania"
     ],
     "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "media-content-desk",
+    "name": "Media Content Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "Media Content Desk — Content rights FAQ and intake for clearance/requests; never invent licence grants",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-media-content-desk",
+      "eu": "eu-media-content-desk",
+      "africa": "africa-media-content-desk",
+      "asia": "asia-media-content-desk",
+      "oceania": "oceania-media-content-desk"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
     "catalogueReady": true,
     "readiness": "catalogue-ready"
   },
@@ -1914,6 +2101,36 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "performance-reviews",
+    "name": "Performance Reviews Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Performance Reviews Desk — Review cycle FAQ and scheduling intake; never invent ratings or compensation outcomes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-performance-reviews",
+      "eu": "eu-performance-reviews",
+      "africa": "africa-performance-reviews",
+      "asia": "asia-performance-reviews",
+      "oceania": "oceania-performance-reviews"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "pharmacy",
     "name": "Pharmacy Assistant",
     "tier": "pro",
@@ -2077,19 +2294,20 @@
     "name": "Prompt Engineering Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "summary": "Prompt Engineering Desk — Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-prompt-engineering",
-      "eu": "eu-prompt-engineering",
       "africa": "africa-prompt-engineering",
       "asia": "asia-prompt-engineering",
-      "oceania": "oceania-prompt-engineering"
+      "eu": "eu-prompt-engineering",
+      "oceania": "oceania-prompt-engineering",
+      "us": "us-prompt-engineering"
     },
     "packs": [
       "us",
@@ -2139,19 +2357,20 @@
     "name": "QA Testing Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "summary": "QA Testing Assistant — QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-qa-testing",
-      "eu": "eu-qa-testing",
       "africa": "africa-qa-testing",
       "asia": "asia-qa-testing",
-      "oceania": "oceania-qa-testing"
+      "eu": "eu-qa-testing",
+      "oceania": "oceania-qa-testing",
+      "us": "us-qa-testing"
     },
     "packs": [
       "us",
@@ -2359,19 +2578,20 @@
     "name": "Sales Forecasting Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "summary": "Sales Forecasting Desk — Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
     "channels": [
-      "sms",
+      "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
-      "us": "us-sales-forecasting",
-      "eu": "eu-sales-forecasting",
       "africa": "africa-sales-forecasting",
       "asia": "asia-sales-forecasting",
-      "oceania": "oceania-sales-forecasting"
+      "eu": "eu-sales-forecasting",
+      "oceania": "oceania-sales-forecasting",
+      "us": "us-sales-forecasting"
     },
     "packs": [
       "us",
@@ -2445,6 +2665,36 @@
       "oceania"
     ],
     "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "security-incident",
+    "name": "Security Incident Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "summary": "Security Incident Desk — Structured security-incident intake and severity triage logging; escalate P0 immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-security-incident",
+      "eu": "eu-security-incident",
+      "africa": "africa-security-incident",
+      "asia": "asia-security-incident",
+      "oceania": "oceania-security-incident"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
     "catalogueReady": true,
     "readiness": "catalogue-ready"
   },

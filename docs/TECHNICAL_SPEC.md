@@ -12,8 +12,8 @@
 | Dimension | Scale |
 |---|---|
 | Platform source LOC (TS/TSX/CSS/scripts/infra) | **~14,500** |
-| Agent catalogue JSON (460 packages) | **~102,000** lines / ~2.5M chars of prompt+knowledge |
-| Agent families × market packs | **92 × 5 = 460** agents |
+| Agent catalogue JSON (500 packages) | **~102,000** lines / ~2.5M chars of prompt+knowledge |
+| Agent families × market packs | **100 × 5 = 500** agents |
 | HTTP API route modules | **22** |
 | OAuth / API connectors | **16** product connectors (+ webhook templates) |
 | Connector presets (tool→connector maps) | **~221** |
@@ -84,7 +84,7 @@ miai-agent-marketplace/
 │   ├── presets/              # Tool→connector bindings per agent
 │   ├── runtime/              # Agent turn loop, model adapters
 │   └── wallet-adapter/       # Mock / HTTP wallet
-├── data/catalog/             # 460 *.agent.json + families + index
+├── data/catalog/             # 500 *.agent.json + families + index
 ├── scripts/                  # Catalog polish, packs, presets, evals
 ├── infra/azure/              # Bicep: CA, Postgres, KV, App Insights
 └── docs/                     # Integration, OAuth, migration runbooks
@@ -115,7 +115,7 @@ Breakdown by language: `.ts` ~10.5k · `.tsx` ~2.0k · `.mjs` ~1.5k · `.css` ~0
 
 | Metric | Value |
 |---|---:|
-| Agent package files | 460 |
+| Agent package files | 500 |
 | Approx. JSON LOC | ~102,475 |
 | Families | 55 |
 | Total tool definitions | 936 (~4.3 / agent) |
@@ -267,8 +267,8 @@ Webhook, MCP, WhatsApp Cloud API, WooCommerce, Stripe — credentials via Action
 |---|---:|
 | Families | 55 |
 | Markets | us, eu, africa, asia |
-| Agents | 460 (92×5) |
-| Catalogue-ready gate | 460/460 (commercial bar) |
+| Agents | 500 (100×5) |
+| Catalogue-ready gate | 500/500 (commercial bar) |
 
 ### Package file naming
 
@@ -353,7 +353,7 @@ Examples: `us-customer-support.agent.json`, `africa-dental-front-desk.agent.json
 }
 ```
 
-### Tier distribution (460 agents)
+### Tier distribution (500 agents)
 
 | Tier | Count |
 |---|---:|
@@ -437,7 +437,7 @@ Telemetry: structured console + optional App Insights custom events (`miai.audit
 
 | Asset | Why it’s sticky |
 |---|---|
-| **460 market-localized packages** | ~2.5M chars prompts/knowledge + 3.5k evals + compliance/prepaid SKUs |
+| **500 market-localized packages** | ~2.5M chars prompts/knowledge + 3.5k evals + compliance/prepaid SKUs |
 | **55-family × 4-pack commercial matrix** | Product taxonomy + readiness gates, not just translations |
 | **Connector surface** | 11 OAuth providers + live tool adapters + sealed tokens + PKCE/state |
 | **Runtime economics** | Wallet debit, pause-on-zero, model gateway adapters |

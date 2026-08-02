@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Production scale status: US heroes with pilot docs vs full 460 catalogue.
+ * Production scale status: US heroes with pilot docs vs full 500 catalogue.
  */
 import { readdirSync, existsSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -119,7 +119,7 @@ Market packs for strong:  ${marketPacksExisting.length} / ${strongUs.length * LO
 Africa prefixed files:    ${africaPrefixed} / ${strongUs.length} (rest may be legacy unprefixed ZA)
 Oceania prefixed files:   ${oceaniaPrefixed} / ${strongUs.length}
 Legacy Africa (unprefixed only): ${legacyAfricaOnly.length}
-Target:                   460 (92 × 5)
+Target:                   500 (100 × 5)
 
 Wave 1 (Go-live 18): ${strongUs.length >= 18 ? "met or exceeded" : "in progress"} (${strongUs.length})
 Wave 2 TODO families:
@@ -142,7 +142,7 @@ if (process.argv.includes("--json")) {
         packPresent,
         packMissingCount: packMissing.length,
         marketPacksForStrongExisting: marketPacksExisting.length,
-        target: 460,
+        target: 500,
         wave4: {
           slice: WAVE4_SLICE,
           agentsCovered: wave4AgentsCovered,

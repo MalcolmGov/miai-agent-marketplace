@@ -119,6 +119,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-agri-advisory",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_advisory_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_advisory_appointment",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-ai-coding-assistant",
     "phase": 1,
     "bindings": [
@@ -381,6 +399,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-cybersecurity-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_security_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_security_report",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-data-quality",
     "phase": 1,
     "bindings": [
@@ -527,6 +563,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-energy-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_outage_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_energy_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -625,6 +679,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_production_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-farm-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_farm_schedule",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_farm_work_order",
+        "connector": "shopify"
       },
       {
         "tool": "handoff_to_human",
@@ -1021,6 +1093,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-learning-development",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_learning_courses",
+        "connector": "webhook"
+      },
+      {
+        "tool": "enroll_in_course",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-legal-research",
     "phase": 1,
     "bindings": [
@@ -1133,6 +1223,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_callback",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-media-content-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_content_rights_faq",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_content_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -1326,6 +1434,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_payroll_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-performance-reviews",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_cycle_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_review_meeting_request",
         "connector": "webhook"
       },
       {
@@ -1705,6 +1831,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-security-incident",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_incident_severity_guide",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_security_incident",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -2109,6 +2253,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-agri-advisory",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_advisory_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_advisory_appointment",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-ai-coding-assistant",
     "phase": 1,
     "bindings": [
@@ -2371,6 +2533,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-cybersecurity-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_security_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_security_report",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-data-quality",
     "phase": 1,
     "bindings": [
@@ -2517,6 +2697,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-energy-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_outage_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_energy_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -2615,6 +2813,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_production_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-farm-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_farm_schedule",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_farm_work_order",
+        "connector": "shopify"
       },
       {
         "tool": "handoff_to_human",
@@ -3011,6 +3227,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-learning-development",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_learning_courses",
+        "connector": "webhook"
+      },
+      {
+        "tool": "enroll_in_course",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-legal-research",
     "phase": 1,
     "bindings": [
@@ -3123,6 +3357,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_callback",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-media-content-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_content_rights_faq",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_content_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -3316,6 +3568,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_payroll_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-performance-reviews",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_cycle_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_review_meeting_request",
         "connector": "webhook"
       },
       {
@@ -3695,6 +3965,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-security-incident",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_incident_severity_guide",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_security_incident",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -4261,6 +4549,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-agri-advisory",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_advisory_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_advisory_appointment",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-ai-coding-assistant",
     "phase": 1,
     "bindings": [
@@ -4523,6 +4829,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-cybersecurity-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_security_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_security_report",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-data-quality",
     "phase": 1,
     "bindings": [
@@ -4669,6 +4993,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-energy-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_outage_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_energy_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -4767,6 +5109,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_production_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-farm-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_farm_schedule",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_farm_work_order",
+        "connector": "shopify"
       },
       {
         "tool": "handoff_to_human",
@@ -5163,6 +5523,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-learning-development",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_learning_courses",
+        "connector": "webhook"
+      },
+      {
+        "tool": "enroll_in_course",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-legal-research",
     "phase": 1,
     "bindings": [
@@ -5275,6 +5653,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_callback",
         "connector": "m365_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-media-content-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_content_rights_faq",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_content_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -5468,6 +5864,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_payroll_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-performance-reviews",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_cycle_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_review_meeting_request",
         "connector": "webhook"
       },
       {
@@ -5847,6 +6261,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "teams"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-security-incident",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_incident_severity_guide",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_security_incident",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -6619,6 +7051,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-agri-advisory",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_advisory_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_advisory_appointment",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-ai-coding-assistant",
     "phase": 1,
     "bindings": [
@@ -6881,6 +7331,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-cybersecurity-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_security_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_security_report",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-data-quality",
     "phase": 1,
     "bindings": [
@@ -7027,6 +7495,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-energy-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_outage_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_energy_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -7125,6 +7611,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_production_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-farm-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_farm_schedule",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_farm_work_order",
+        "connector": "shopify"
       },
       {
         "tool": "handoff_to_human",
@@ -7521,6 +8025,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-learning-development",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_learning_courses",
+        "connector": "webhook"
+      },
+      {
+        "tool": "enroll_in_course",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-legal-research",
     "phase": 1,
     "bindings": [
@@ -7633,6 +8155,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_callback",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-media-content-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_content_rights_faq",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_content_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -7826,6 +8366,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_payroll_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-performance-reviews",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_cycle_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_review_meeting_request",
         "connector": "webhook"
       },
       {
@@ -8205,6 +8763,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-security-incident",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_incident_severity_guide",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_security_incident",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -9063,6 +9639,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-agri-advisory",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_advisory_programmes",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_advisory_appointment",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-ai-coding-assistant",
     "phase": 1,
     "bindings": [
@@ -9325,6 +9919,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-cybersecurity-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_security_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_security_report",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-data-quality",
     "phase": 1,
     "bindings": [
@@ -9471,6 +10083,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-energy-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_outage_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_energy_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -9569,6 +10199,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "log_production_exception",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-farm-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_farm_schedule",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_farm_work_order",
+        "connector": "shopify"
       },
       {
         "tool": "handoff_to_human",
@@ -9965,6 +10613,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-learning-development",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_learning_courses",
+        "connector": "webhook"
+      },
+      {
+        "tool": "enroll_in_course",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-legal-research",
     "phase": 1,
     "bindings": [
@@ -10077,6 +10743,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_callback",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-media-content-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_content_rights_faq",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_content_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -10270,6 +10954,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_payroll_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-performance-reviews",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_cycle_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_review_meeting_request",
         "connector": "webhook"
       },
       {
@@ -10649,6 +11351,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-security-incident",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_incident_severity_guide",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_security_incident",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",

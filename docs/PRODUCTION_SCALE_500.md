@@ -1,6 +1,6 @@
-# Production scale: 18 → 460
+# Production scale: 18 → 500
 
-**Goal:** Customer-facing production comfort across the **full licensed catalogue** — 92 families × 5 market packs = **460 agents** (roadmap: ~100 × 5 ≈ 500 — see `FAMILIES_100.md`).
+**Goal:** Customer-facing production comfort across the **full licensed catalogue** — 100 families × 5 market packs = **500 agents** (target met — see `FAMILIES_100.md`).
 
 Partner demo is done. This is the industrial path to stand behind every SKU.
 
@@ -8,11 +8,11 @@ Partner demo is done. This is the industrial path to stand behind every SKU.
 
 | Layer | Status |
 |---|---|
-| US heroes | **92 / 92** (Waves 1–3 family expansion live) |
-| Prefixed packs on disk | **460 / 460** |
+| US heroes | **100 / 100** (Waves 1–4 complete — 100 families) |
+| Prefixed packs on disk | **500 / 500** |
 | Wave 3 market packs | **Done** |
 | Wave 4 live connectors | **Harness ready** — first slice 0/4 proofs (needs OAuth env on staging) |
-| Target | **460** rentable; `depth: live` tracked separately |
+| Target | **500** rentable; `depth: live` tracked separately |
 
 Run `pnpm production:status`.
 

@@ -51,6 +51,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-agri-advisory",
+    "name": "Africa Agri Advisory Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Agri Advisory Desk — Agri Advisory Desk — General agronomy programme FAQ and advisory appointment intake; never prescribe pesticides as a vet/agronomist substitute",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-ai-coding-assistant",
     "name": "Africa AI Coding Assistant",
     "tier": "pro",
@@ -272,6 +289,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-cybersecurity-desk",
+    "name": "Africa Cybersecurity Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Cybersecurity Desk — Cybersecurity Desk — Security policy FAQ and intake for suspected incidents; never invent containment status",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-data-quality",
     "name": "Africa Data Quality Desk",
     "tier": "pro",
@@ -391,6 +425,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-energy-operations",
+    "name": "Africa Energy Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Energy Operations Desk — Energy Operations Desk — Outage and service FAQ plus work-order logging for energy customers; never invent restoration ETAs",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-enterprise-connectivity",
     "name": "Africa Enterprise Connectivity",
     "tier": "enterprise",
@@ -465,6 +516,23 @@
     "category": "operations",
     "market": "africa",
     "summary": "Africa Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-farm-operations",
+    "name": "Africa Farm Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Farm Operations Desk — Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately",
     "channels": [
       "whatsapp",
       "web",
@@ -782,6 +850,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-learning-development",
+    "name": "Africa Learning & Development",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Learning & Development — Learning & Development — Course catalogue FAQ and learning enrollment logging; never invent completions",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-legal-research",
     "name": "Africa Legal Research Intake",
     "tier": "enterprise",
@@ -881,6 +966,23 @@
     ],
     "tools": 4,
     "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-media-content-desk",
+    "name": "Africa Media Content Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Media Content Desk — Media Content Desk — Content rights FAQ and intake for clearance/requests; never invent licence grants",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1034,6 +1136,23 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-performance-reviews",
+    "name": "Africa Performance Reviews Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Performance Reviews Desk — Performance Reviews Desk — Review cycle FAQ and scheduling intake; never invent ratings or compensation outcomes",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1326,6 +1445,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-security-incident",
+    "name": "Africa Security Incident Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Security Incident Desk — Security Incident Desk — Structured security-incident intake and severity triage logging; escalate P0 immediately",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-sim-registration",
     "name": "Africa SIM Registration",
     "tier": "pro",
@@ -1612,6 +1748,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-agri-advisory",
+    "name": "Asia Agri Advisory Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Agri Advisory Desk — Agri Advisory Desk — General agronomy programme FAQ and advisory appointment intake; never prescribe pesticides as a vet/agronomist substitute",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-ai-coding-assistant",
     "name": "Asia AI Coding Assistant",
     "tier": "pro",
@@ -1820,6 +1972,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-cybersecurity-desk",
+    "name": "Asia Cybersecurity Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Cybersecurity Desk — Cybersecurity Desk — Security policy FAQ and intake for suspected incidents; never invent containment status",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-data-quality",
     "name": "Asia Data Quality Desk",
     "tier": "pro",
@@ -1932,6 +2100,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-energy-operations",
+    "name": "Asia Energy Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Energy Operations Desk — Energy Operations Desk — Outage and service FAQ plus work-order logging for energy customers; never invent restoration ETAs",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-enterprise-connectivity",
     "name": "Asia Enterprise Connectivity",
     "tier": "enterprise",
@@ -2002,6 +2186,22 @@
     "category": "operations",
     "market": "asia",
     "summary": "Asia Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-farm-operations",
+    "name": "Asia Farm Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Farm Operations Desk — Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately",
     "channels": [
       "web",
       "app",
@@ -2300,6 +2500,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-learning-development",
+    "name": "Asia Learning & Development",
+    "tier": "standard",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Learning & Development — Learning & Development — Course catalogue FAQ and learning enrollment logging; never invent completions",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-legal-research",
     "name": "Asia Legal Research Intake",
     "tier": "enterprise",
@@ -2393,6 +2609,22 @@
     ],
     "tools": 4,
     "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-media-content-desk",
+    "name": "Asia Media Content Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Media Content Desk — Media Content Desk — Content rights FAQ and intake for clearance/requests; never invent licence grants",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2537,6 +2769,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-performance-reviews",
+    "name": "Asia Performance Reviews Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Performance Reviews Desk — Performance Reviews Desk — Review cycle FAQ and scheduling intake; never invent ratings or compensation outcomes",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2812,6 +3060,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-security-incident",
+    "name": "Asia Security Incident Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Security Incident Desk — Security Incident Desk — Structured security-incident intake and severity triage logging; escalate P0 immediately",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-sim-registration",
     "name": "Asia SIM Registration",
     "tier": "pro",
@@ -3084,6 +3348,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-agri-advisory",
+    "name": "EU Agri Advisory Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Agri Advisory Desk — Agri Advisory Desk — General agronomy programme FAQ and advisory appointment intake; never prescribe pesticides as a vet/agronomist substitute",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-ai-coding-assistant",
     "name": "EU AI Coding Assistant",
     "tier": "pro",
@@ -3292,6 +3572,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-cybersecurity-desk",
+    "name": "EU Cybersecurity Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Cybersecurity Desk — Cybersecurity Desk — Security policy FAQ and intake for suspected incidents; never invent containment status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-data-quality",
     "name": "EU Data Quality Desk",
     "tier": "pro",
@@ -3404,6 +3700,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-energy-operations",
+    "name": "EU Energy Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Energy Operations Desk — Energy Operations Desk — Outage and service FAQ plus work-order logging for energy customers; never invent restoration ETAs",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-enterprise-connectivity",
     "name": "EU Enterprise Connectivity",
     "tier": "enterprise",
@@ -3474,6 +3786,22 @@
     "category": "operations",
     "market": "eu",
     "summary": "EU Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-farm-operations",
+    "name": "EU Farm Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Farm Operations Desk — Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately",
     "channels": [
       "sms",
       "web",
@@ -3772,6 +4100,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-learning-development",
+    "name": "EU Learning & Development",
+    "tier": "standard",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Learning & Development — Learning & Development — Course catalogue FAQ and learning enrollment logging; never invent completions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-legal-research",
     "name": "EU Legal Research Intake",
     "tier": "enterprise",
@@ -3865,6 +4209,22 @@
     ],
     "tools": 4,
     "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-media-content-desk",
+    "name": "EU Media Content Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Media Content Desk — Media Content Desk — Content rights FAQ and intake for clearance/requests; never invent licence grants",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4009,6 +4369,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-performance-reviews",
+    "name": "EU Performance Reviews Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Performance Reviews Desk — Performance Reviews Desk — Review cycle FAQ and scheduling intake; never invent ratings or compensation outcomes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4284,6 +4660,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-security-incident",
+    "name": "EU Security Incident Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Security Incident Desk — Security Incident Desk — Structured security-incident intake and severity triage logging; escalate P0 immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-sim-registration",
     "name": "EU SIM Registration",
     "tier": "pro",
@@ -4556,6 +4948,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-agri-advisory",
+    "name": "Oceania Agri Advisory Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Agri Advisory Desk — Agri Advisory Desk — General agronomy programme FAQ and advisory appointment intake; never prescribe pesticides as a vet/agronomist substitute",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-ai-coding-assistant",
     "name": "Oceania AI Coding Assistant",
     "tier": "pro",
@@ -4764,6 +5172,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-cybersecurity-desk",
+    "name": "Oceania Cybersecurity Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Cybersecurity Desk — Cybersecurity Desk — Security policy FAQ and intake for suspected incidents; never invent containment status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-data-quality",
     "name": "Oceania Data Quality Desk",
     "tier": "pro",
@@ -4876,6 +5300,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-energy-operations",
+    "name": "Oceania Energy Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Energy Operations Desk — Energy Operations Desk — Outage and service FAQ plus work-order logging for energy customers; never invent restoration ETAs",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-enterprise-connectivity",
     "name": "Oceania Enterprise Connectivity",
     "tier": "enterprise",
@@ -4946,6 +5386,22 @@
     "category": "operations",
     "market": "oceania",
     "summary": "Oceania Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-farm-operations",
+    "name": "Oceania Farm Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Farm Operations Desk — Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately",
     "channels": [
       "sms",
       "web",
@@ -5244,6 +5700,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-learning-development",
+    "name": "Oceania Learning & Development",
+    "tier": "standard",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Learning & Development — Learning & Development — Course catalogue FAQ and learning enrollment logging; never invent completions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-legal-research",
     "name": "Oceania Legal Research Intake",
     "tier": "enterprise",
@@ -5337,6 +5809,22 @@
     ],
     "tools": 4,
     "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-media-content-desk",
+    "name": "Oceania Media Content Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Media Content Desk — Media Content Desk — Content rights FAQ and intake for clearance/requests; never invent licence grants",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5481,6 +5969,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-performance-reviews",
+    "name": "Oceania Performance Reviews Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Performance Reviews Desk — Performance Reviews Desk — Review cycle FAQ and scheduling intake; never invent ratings or compensation outcomes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5756,6 +6260,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-security-incident",
+    "name": "Oceania Security Incident Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Security Incident Desk — Security Incident Desk — Structured security-incident intake and severity triage logging; escalate P0 immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-sim-registration",
     "name": "Oceania SIM Registration",
     "tier": "pro",
@@ -6028,6 +6548,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-agri-advisory",
+    "name": "US Agri Advisory Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Agri Advisory Desk — General agronomy programme FAQ and advisory appointment intake; never prescribe pesticides as a vet/agronomist substitute",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-ai-coding-assistant",
     "name": "US AI Coding Assistant",
     "tier": "pro",
@@ -6236,6 +6772,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-cybersecurity-desk",
+    "name": "US Cybersecurity Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Cybersecurity Desk — Security policy FAQ and intake for suspected incidents; never invent containment status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-data-quality",
     "name": "US Data Quality Desk",
     "tier": "pro",
@@ -6348,6 +6900,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-energy-operations",
+    "name": "US Energy Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Energy Operations Desk — Outage and service FAQ plus work-order logging for energy customers; never invent restoration ETAs",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-enterprise-connectivity",
     "name": "US Enterprise Connectivity",
     "tier": "enterprise",
@@ -6418,6 +6986,22 @@
     "category": "operations",
     "market": "us",
     "summary": "US Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-farm-operations",
+    "name": "US Farm Operations Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately",
     "channels": [
       "sms",
       "web",
@@ -6716,6 +7300,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-learning-development",
+    "name": "US Learning & Development",
+    "tier": "standard",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Learning & Development — Course catalogue FAQ and learning enrollment logging; never invent completions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-legal-research",
     "name": "US Legal Research Intake",
     "tier": "enterprise",
@@ -6809,6 +7409,22 @@
     ],
     "tools": 4,
     "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-media-content-desk",
+    "name": "US Media Content Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Media Content Desk — Content rights FAQ and intake for clearance/requests; never invent licence grants",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -6953,6 +7569,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-performance-reviews",
+    "name": "US Performance Reviews Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Performance Reviews Desk — Review cycle FAQ and scheduling intake; never invent ratings or compensation outcomes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -7225,6 +7857,22 @@
     ],
     "tools": 6,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-security-incident",
+    "name": "US Security Incident Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Security Incident Desk — Structured security-incident intake and severity triage logging; escalate P0 immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {

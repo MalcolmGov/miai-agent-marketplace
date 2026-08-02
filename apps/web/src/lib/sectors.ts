@@ -17,7 +17,11 @@ export type SectorId =
   | "hr_internal"
   | "customer_front"
   | "ai_devtools"
-  | "data_analytics";
+  | "data_analytics"
+  | "cybersecurity"
+  | "energy"
+  | "agriculture"
+  | "media";
 
 export interface SectorDef {
   id: SectorId;
@@ -26,7 +30,7 @@ export interface SectorDef {
   accent: string;
 }
 
-/** Buyer-facing sectors (Wave 1 ships labels for all; later waves fill families). */
+/** Buyer-facing sectors (Wave 1–4). */
 export const SECTORS: SectorDef[] = [
   {
     id: "telecom",
@@ -102,6 +106,26 @@ export const SECTORS: SectorDef[] = [
     id: "data_analytics",
     label: "Data & analytics",
     accent: "linear-gradient(90deg,#a78bfa,#3dd6c6)",
+  },
+  {
+    id: "cybersecurity",
+    label: "Cybersecurity",
+    accent: "linear-gradient(90deg,#ef4444,#64748b)",
+  },
+  {
+    id: "energy",
+    label: "Energy & utilities",
+    accent: "linear-gradient(90deg,#eab308,#0ea5e9)",
+  },
+  {
+    id: "agriculture",
+    label: "Agriculture",
+    accent: "linear-gradient(90deg,#84cc16,#3dd6c6)",
+  },
+  {
+    id: "media",
+    label: "Media & entertainment",
+    accent: "linear-gradient(90deg,#f472b6,#6366f1)",
   },
 ];
 

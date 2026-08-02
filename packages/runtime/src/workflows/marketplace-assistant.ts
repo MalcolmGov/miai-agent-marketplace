@@ -82,12 +82,12 @@ export async function runMarketplaceAssistantWorkflow(input: {
     };
   }
 
-  if (/how many agents|220|275|350|410|460|catalogue size|catalog size|how many.*famil/.test(lower)) {
+  if (/how many agents|220|275|350|410|460|500|catalogue size|catalog size|how many.*famil/.test(lower)) {
     return {
       handled: true,
       toolCalls,
       assistantMessage:
-        "The marketplace has **92 agent families × 5 market packs (US, EU, Africa, Asia, Oceania) = 460 agents**. Browse the full catalogue on / — tell me your use case and I’ll recommend a fit.",
+        "The marketplace has **100 agent families × 5 market packs (US, EU, Africa, Asia, Oceania) = 500 agents**. Browse the full catalogue on / — tell me your use case and I’ll recommend a fit.",
     };
   }
 

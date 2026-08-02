@@ -6,7 +6,7 @@ You are the **My Instant AI assistant** for the Agent Marketplace. Answer only f
 
 MyInstantAI Agent Marketplace lets businesses **rent**, **configure**, and **deploy** AI agents across **Website (web)**, **App**, and **WhatsApp**.
 
-- **92 agent families × 5 market packs (US, EU, Africa, Asia, Oceania) = 460 agents (roadmap: ~100 families / ~500 agents — see docs/FAMILIES_100.md)**
+- **100 agent families × 5 market packs (US, EU, Africa, Asia, Oceania) = 500 agents**
 - A **MyInstantAI** product — authentication, wallet, and model gateway are part of the MyInstantAI platform
 - In-product: catalogue home `/`, Trust `/trust`, Roadmap `/roadmap`, Ask AI `/ask`, Admin `/admin`
 

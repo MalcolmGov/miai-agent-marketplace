@@ -93,11 +93,15 @@ export function marketplaceCategory(manifest: AgentManifest): string {
     vertical: "Health & wellness",
   };
   const id = manifest.id;
-  // Wave 3+ sector families first (avoid collisions e.g. sales-forecasting vs sales-*)
+  // Wave 3–4 sector families first (avoid collisions e.g. sales-forecasting vs sales-*)
   if (/ai-coding|documentation-assistant|qa-testing|devops-assistant|prompt-engineering/.test(id))
     return "AI & developer tools";
   if (/bi-analyst|financial-reporting|sales-forecasting|executive-dashboards|data-quality/.test(id))
     return "Data & analytics";
+  if (/cybersecurity-desk|security-incident/.test(id)) return "Cybersecurity";
+  if (/energy-operations/.test(id)) return "Energy & utilities";
+  if (/farm-operations|agri-advisory/.test(id)) return "Agriculture";
+  if (/media-content-desk/.test(id)) return "Media & entertainment";
   // Wave 1–2 sector families (id may be prefixed us-|eu-|…)
   if (/sim-registration|airtime-bundles|fibre-support|network-faults|device-upgrades|enterprise-connectivity/.test(id))
     return "Telecommunications";
