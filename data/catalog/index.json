@@ -51,6 +51,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-ai-coding-assistant",
+    "name": "Africa AI Coding Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa AI Coding Assistant — AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-airtime-bundles",
     "name": "Africa Airtime & Bundles",
     "tier": "standard",
@@ -82,6 +99,23 @@
     ],
     "tools": 4,
     "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-bi-analyst",
+    "name": "Africa BI Analyst Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa BI Analyst Assistant — BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -238,6 +272,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-data-quality",
+    "name": "Africa Data Quality Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Data Quality Desk — Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-delivery-tracking",
     "name": "Africa Delivery & Tracking",
     "tier": "pro",
@@ -306,6 +357,40 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-devops-assistant",
+    "name": "Africa DevOps Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa DevOps Assistant — DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-documentation-assistant",
+    "name": "Africa Documentation Assistant",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Documentation Assistant — Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-enterprise-connectivity",
     "name": "Africa Enterprise Connectivity",
     "tier": "enterprise",
@@ -357,6 +442,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-executive-dashboards",
+    "name": "Africa Executive Dashboards",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Executive Dashboards — Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-factory-operations",
     "name": "Africa Factory Operations",
     "tier": "pro",
@@ -405,6 +507,23 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-financial-reporting",
+    "name": "Africa Financial Reporting Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Financial Reporting Desk — Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1003,6 +1122,23 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-prompt-engineering",
+    "name": "Africa Prompt Engineering Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Prompt Engineering Desk — Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "africa-property-enquiries",
     "name": "Africa Property Enquiries",
     "tier": "pro",
@@ -1017,6 +1153,23 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-qa-testing",
+    "name": "Africa QA Testing Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa QA Testing Assistant — QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1119,6 +1272,23 @@
     ],
     "tools": 4,
     "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-sales-forecasting",
+    "name": "Africa Sales Forecasting Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Sales Forecasting Desk — Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1442,6 +1612,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-ai-coding-assistant",
+    "name": "Asia AI Coding Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia AI Coding Assistant — AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-airtime-bundles",
     "name": "Asia Airtime & Bundles",
     "tier": "standard",
@@ -1471,6 +1657,22 @@
     ],
     "tools": 4,
     "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-bi-analyst",
+    "name": "Asia BI Analyst Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia BI Analyst Assistant — BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -1618,6 +1820,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-data-quality",
+    "name": "Asia Data Quality Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Data Quality Desk — Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-delivery-tracking",
     "name": "Asia Delivery & Tracking",
     "tier": "pro",
@@ -1682,6 +1900,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-devops-assistant",
+    "name": "Asia DevOps Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia DevOps Assistant — DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-documentation-assistant",
+    "name": "Asia Documentation Assistant",
+    "tier": "standard",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Documentation Assistant — Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-enterprise-connectivity",
     "name": "Asia Enterprise Connectivity",
     "tier": "enterprise",
@@ -1730,6 +1980,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-executive-dashboards",
+    "name": "Asia Executive Dashboards",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Executive Dashboards — Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-factory-operations",
     "name": "Asia Factory Operations",
     "tier": "pro",
@@ -1775,6 +2041,22 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-financial-reporting",
+    "name": "Asia Financial Reporting Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Financial Reporting Desk — Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2338,6 +2620,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "asia-prompt-engineering",
+    "name": "Asia Prompt Engineering Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Prompt Engineering Desk — Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "asia-property-enquiries",
     "name": "Asia Property Enquiries",
     "tier": "pro",
@@ -2351,6 +2649,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-qa-testing",
+    "name": "Asia QA Testing Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia QA Testing Assistant — QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2447,6 +2761,22 @@
     ],
     "tools": 4,
     "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-sales-forecasting",
+    "name": "Asia Sales Forecasting Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Sales Forecasting Desk — Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2754,6 +3084,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-ai-coding-assistant",
+    "name": "EU AI Coding Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU AI Coding Assistant — AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-airtime-bundles",
     "name": "EU Airtime & Bundles",
     "tier": "standard",
@@ -2783,6 +3129,22 @@
     ],
     "tools": 4,
     "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-bi-analyst",
+    "name": "EU BI Analyst Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU BI Analyst Assistant — BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -2930,6 +3292,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-data-quality",
+    "name": "EU Data Quality Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Data Quality Desk — Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-delivery-tracking",
     "name": "EU Delivery & Tracking",
     "tier": "pro",
@@ -2994,6 +3372,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-devops-assistant",
+    "name": "EU DevOps Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU DevOps Assistant — DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-documentation-assistant",
+    "name": "EU Documentation Assistant",
+    "tier": "standard",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Documentation Assistant — Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-enterprise-connectivity",
     "name": "EU Enterprise Connectivity",
     "tier": "enterprise",
@@ -3042,6 +3452,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-executive-dashboards",
+    "name": "EU Executive Dashboards",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Executive Dashboards — Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-factory-operations",
     "name": "EU Factory Operations",
     "tier": "pro",
@@ -3087,6 +3513,22 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-financial-reporting",
+    "name": "EU Financial Reporting Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Financial Reporting Desk — Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -3650,6 +4092,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "eu-prompt-engineering",
+    "name": "EU Prompt Engineering Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Prompt Engineering Desk — Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "eu-property-enquiries",
     "name": "EU Property Enquiries",
     "tier": "pro",
@@ -3663,6 +4121,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-qa-testing",
+    "name": "EU QA Testing Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU QA Testing Assistant — QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -3759,6 +4233,22 @@
     ],
     "tools": 4,
     "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-sales-forecasting",
+    "name": "EU Sales Forecasting Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Sales Forecasting Desk — Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4066,6 +4556,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-ai-coding-assistant",
+    "name": "Oceania AI Coding Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania AI Coding Assistant — AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-airtime-bundles",
     "name": "Oceania Airtime & Bundles",
     "tier": "standard",
@@ -4095,6 +4601,22 @@
     ],
     "tools": 4,
     "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-bi-analyst",
+    "name": "Oceania BI Analyst Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania BI Analyst Assistant — BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4242,6 +4764,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-data-quality",
+    "name": "Oceania Data Quality Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Data Quality Desk — Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-delivery-tracking",
     "name": "Oceania Delivery & Tracking",
     "tier": "pro",
@@ -4306,6 +4844,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-devops-assistant",
+    "name": "Oceania DevOps Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania DevOps Assistant — DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-documentation-assistant",
+    "name": "Oceania Documentation Assistant",
+    "tier": "standard",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Documentation Assistant — Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-enterprise-connectivity",
     "name": "Oceania Enterprise Connectivity",
     "tier": "enterprise",
@@ -4354,6 +4924,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-executive-dashboards",
+    "name": "Oceania Executive Dashboards",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Executive Dashboards — Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-factory-operations",
     "name": "Oceania Factory Operations",
     "tier": "pro",
@@ -4399,6 +4985,22 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-financial-reporting",
+    "name": "Oceania Financial Reporting Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Financial Reporting Desk — Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -4962,6 +5564,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "oceania-prompt-engineering",
+    "name": "Oceania Prompt Engineering Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Prompt Engineering Desk — Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "oceania-property-enquiries",
     "name": "Oceania Property Enquiries",
     "tier": "pro",
@@ -4975,6 +5593,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-qa-testing",
+    "name": "Oceania QA Testing Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania QA Testing Assistant — QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5071,6 +5705,22 @@
     ],
     "tools": 4,
     "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-sales-forecasting",
+    "name": "Oceania Sales Forecasting Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Sales Forecasting Desk — Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5378,6 +6028,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-ai-coding-assistant",
+    "name": "US AI Coding Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-airtime-bundles",
     "name": "US Airtime & Bundles",
     "tier": "standard",
@@ -5407,6 +6073,22 @@
     ],
     "tools": 4,
     "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-bi-analyst",
+    "name": "US BI Analyst Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -5554,6 +6236,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-data-quality",
+    "name": "US Data Quality Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-delivery-tracking",
     "name": "US Delivery & Tracking",
     "tier": "pro",
@@ -5618,6 +6316,38 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-devops-assistant",
+    "name": "US DevOps Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-documentation-assistant",
+    "name": "US Documentation Assistant",
+    "tier": "standard",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-enterprise-connectivity",
     "name": "US Enterprise Connectivity",
     "tier": "enterprise",
@@ -5666,6 +6396,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-executive-dashboards",
+    "name": "US Executive Dashboards",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-factory-operations",
     "name": "US Factory Operations",
     "tier": "pro",
@@ -5711,6 +6457,22 @@
     ],
     "tools": 4,
     "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-financial-reporting",
+    "name": "US Financial Reporting Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -6274,6 +7036,22 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "us-prompt-engineering",
+    "name": "US Prompt Engineering Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
     "id": "us-property-enquiries",
     "name": "US Property Enquiries",
     "tier": "pro",
@@ -6287,6 +7065,22 @@
     ],
     "tools": 4,
     "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-qa-testing",
+    "name": "US QA Testing Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {
@@ -6383,6 +7177,22 @@
     ],
     "tools": 4,
     "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-sales-forecasting",
+    "name": "US Sales Forecasting Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
     "readiness": "catalogue-ready"
   },
   {

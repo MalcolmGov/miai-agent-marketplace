@@ -190,6 +190,8 @@ const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: ToneName }> = {
   Telecommunications: { kind: "headset", tone: "sky" },
   "Government & public sector": { kind: "briefcase", tone: "slate" },
   "Manufacturing & industrial": { kind: "truck", tone: "amber" },
+  "AI & developer tools": { kind: "spark", tone: "indigo" },
+  "Data & analytics": { kind: "chart", tone: "sky" },
 };
 
 function Glyph({ kind }: { kind: IconKind }) {

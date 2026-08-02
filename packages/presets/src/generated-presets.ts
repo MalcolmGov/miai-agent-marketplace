@@ -119,6 +119,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-ai-coding-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_engineering_docs",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dev_assist_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-airtime-bundles",
     "phase": 1,
     "bindings": [
@@ -151,6 +169,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_branch_appointment",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-bi-analyst",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_metric_definition",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_analysis_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -345,6 +381,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-data-quality",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_dq_rules",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_data_quality_issue",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-delivery-tracking",
     "phase": 1,
     "bindings": [
@@ -437,6 +491,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-devops-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_pipeline_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_ops_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-documentation-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_doc_library",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_doc_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -507,6 +597,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-executive-dashboards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_dashboard_tiles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dashboard_deep_dive",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-factory-operations",
     "phase": 1,
     "bindings": [
@@ -556,6 +664,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "update_job_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-financial-reporting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_reporting_calendar",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_report_request",
         "connector": "webhook"
       },
       {
@@ -1319,6 +1445,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-prompt-engineering",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_prompt_patterns",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_prompt_review",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-property-enquiries",
     "phase": 1,
     "bindings": [
@@ -1333,6 +1477,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_viewing",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-qa-testing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_test_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_defect_report",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -1468,6 +1630,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-sales-forecasting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_forecast_summary",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_forecast_note",
         "connector": "webhook"
       },
       {
@@ -1929,6 +2109,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-ai-coding-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_engineering_docs",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dev_assist_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-airtime-bundles",
     "phase": 1,
     "bindings": [
@@ -1961,6 +2159,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_branch_appointment",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-bi-analyst",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_metric_definition",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_analysis_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -2155,6 +2371,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-data-quality",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_dq_rules",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_data_quality_issue",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-delivery-tracking",
     "phase": 1,
     "bindings": [
@@ -2247,6 +2481,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-devops-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_pipeline_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_ops_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-documentation-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_doc_library",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_doc_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -2317,6 +2587,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-executive-dashboards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_dashboard_tiles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dashboard_deep_dive",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-factory-operations",
     "phase": 1,
     "bindings": [
@@ -2366,6 +2654,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "update_job_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-financial-reporting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_reporting_calendar",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_report_request",
         "connector": "webhook"
       },
       {
@@ -3129,6 +3435,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-prompt-engineering",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_prompt_patterns",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_prompt_review",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-property-enquiries",
     "phase": 1,
     "bindings": [
@@ -3143,6 +3467,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_viewing",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-qa-testing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_test_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_defect_report",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -3278,6 +3620,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-sales-forecasting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_forecast_summary",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_forecast_note",
         "connector": "webhook"
       },
       {
@@ -3901,6 +4261,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-ai-coding-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_engineering_docs",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dev_assist_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-airtime-bundles",
     "phase": 1,
     "bindings": [
@@ -3933,6 +4311,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_branch_appointment",
         "connector": "m365_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-bi-analyst",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_metric_definition",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_analysis_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -4127,6 +4523,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-data-quality",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_dq_rules",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_data_quality_issue",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-delivery-tracking",
     "phase": 1,
     "bindings": [
@@ -4219,6 +4633,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-devops-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_pipeline_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_ops_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-documentation-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_doc_library",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_doc_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -4289,6 +4739,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-executive-dashboards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_dashboard_tiles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dashboard_deep_dive",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-factory-operations",
     "phase": 1,
     "bindings": [
@@ -4338,6 +4806,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "update_job_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-financial-reporting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_reporting_calendar",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_report_request",
         "connector": "webhook"
       },
       {
@@ -5101,6 +5587,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-prompt-engineering",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_prompt_patterns",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_prompt_review",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-property-enquiries",
     "phase": 1,
     "bindings": [
@@ -5115,6 +5619,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_viewing",
         "connector": "m365_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-qa-testing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_test_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_defect_report",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -5250,6 +5772,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-sales-forecasting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_forecast_summary",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_forecast_note",
         "connector": "webhook"
       },
       {
@@ -6079,6 +6619,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-ai-coding-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_engineering_docs",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dev_assist_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-airtime-bundles",
     "phase": 1,
     "bindings": [
@@ -6111,6 +6669,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_branch_appointment",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-bi-analyst",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_metric_definition",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_analysis_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -6305,6 +6881,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-data-quality",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_dq_rules",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_data_quality_issue",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-delivery-tracking",
     "phase": 1,
     "bindings": [
@@ -6397,6 +6991,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-devops-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_pipeline_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_ops_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-documentation-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_doc_library",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_doc_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -6467,6 +7097,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-executive-dashboards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_dashboard_tiles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dashboard_deep_dive",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-factory-operations",
     "phase": 1,
     "bindings": [
@@ -6516,6 +7164,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "update_job_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-financial-reporting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_reporting_calendar",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_report_request",
         "connector": "webhook"
       },
       {
@@ -7279,6 +7945,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-prompt-engineering",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_prompt_patterns",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_prompt_review",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-property-enquiries",
     "phase": 1,
     "bindings": [
@@ -7293,6 +7977,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_viewing",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-qa-testing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_test_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_defect_report",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -7428,6 +8130,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-sales-forecasting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_forecast_summary",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_forecast_note",
         "connector": "webhook"
       },
       {
@@ -8343,6 +9063,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-ai-coding-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_engineering_docs",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dev_assist_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-airtime-bundles",
     "phase": 1,
     "bindings": [
@@ -8375,6 +9113,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_branch_appointment",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-bi-analyst",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_metric_definition",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_analysis_request",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -8569,6 +9325,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-data-quality",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_dq_rules",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_data_quality_issue",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-delivery-tracking",
     "phase": 1,
     "bindings": [
@@ -8661,6 +9435,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-devops-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_pipeline_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_ops_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-documentation-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_doc_library",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_doc_update_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-enterprise-connectivity",
     "phase": 1,
     "bindings": [
@@ -8731,6 +9541,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-executive-dashboards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_dashboard_tiles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_dashboard_deep_dive",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-factory-operations",
     "phase": 1,
     "bindings": [
@@ -8780,6 +9608,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "update_job_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-financial-reporting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_reporting_calendar",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_report_request",
         "connector": "webhook"
       },
       {
@@ -9543,6 +10389,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-prompt-engineering",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_prompt_patterns",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_prompt_review",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-property-enquiries",
     "phase": 1,
     "bindings": [
@@ -9557,6 +10421,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "book_viewing",
         "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-qa-testing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_test_plan",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_defect_report",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -9692,6 +10574,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-sales-forecasting",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_forecast_summary",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_forecast_note",
         "connector": "webhook"
       },
       {

@@ -93,7 +93,12 @@ export function marketplaceCategory(manifest: AgentManifest): string {
     vertical: "Health & wellness",
   };
   const id = manifest.id;
-  // Wave 1+ sector families (id may be prefixed us-|eu-|…)
+  // Wave 3+ sector families first (avoid collisions e.g. sales-forecasting vs sales-*)
+  if (/ai-coding|documentation-assistant|qa-testing|devops-assistant|prompt-engineering/.test(id))
+    return "AI & developer tools";
+  if (/bi-analyst|financial-reporting|sales-forecasting|executive-dashboards|data-quality/.test(id))
+    return "Data & analytics";
+  // Wave 1–2 sector families (id may be prefixed us-|eu-|…)
   if (/sim-registration|airtime-bundles|fibre-support|network-faults|device-upgrades|enterprise-connectivity/.test(id))
     return "Telecommunications";
   if (/citizen-services|municipality-desk|tax-office|passport|licensing|social-services/.test(id))
@@ -115,7 +120,7 @@ export function marketplaceCategory(manifest: AgentManifest): string {
     return "Logistics & field ops";
   if (/recruitment|interview-scheduling|hr-helpdesk|it-helpdesk|executive-assistant|policy-compliance|procurement|onboarding-buddy|learning-development|performance-reviews/.test(id))
     return "HR & internal ops";
-  if (/law|contract-review|case-management|legal-research|marketing|sales|agency/.test(id))
+  if (/law|contract-review|case-management|legal-research|marketing|sales-qualifier|agency/.test(id))
     return "Professional services";
   if (/order|vas|product|returns|loyalty|spaza/.test(id)) return "Retail & e-commerce";
   return map[manifest.category] ?? "All agents";

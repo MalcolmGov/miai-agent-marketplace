@@ -16,8 +16,8 @@ ZA has been **merged into Africa**. Former ZA packages keep stable unprefixed id
 
 ## Catalogue shape
 
-- **82 families** (unique jobs / verticals)
-- Each family has **US / EU / Africa / Asia / Oceania** variants (410 agents total)
+- **92 families** (unique jobs / verticals)
+- Each family has **US / EU / Africa / Asia / Oceania** variants (460 agents total)
 - Buyer-facing UI defaults to **family cards** with pack chips and shows family + agent counts
 
 ## Files
@@ -38,7 +38,7 @@ Skips existing files. Safe to re-run after importing new ZA/US/EU agents.
 
 ## Sales framing (MyInstantAI)
 
-- Pitch **82 catalogue-ready agent products**, not 410 unique inventions
+- Pitch **92 catalogue-ready agent products**, not 460 unique inventions
 - Market packs are **localization / compliance / channel expansions** of a family
 - Recommended SKU language: `{Family} + {US|EU|Africa|Asia|Oceania} pack`
 - Africa pack includes the former ZA footprint (no separate ZA SKU)

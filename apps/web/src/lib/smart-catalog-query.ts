@@ -29,6 +29,8 @@ const AUDIENCE_PATTERNS: { id: string; re: RegExp }[] = [
 ];
 
 const CATEGORY_PATTERNS: { id: string; re: RegExp }[] = [
+  { id: "AI & developer tools", re: /\b(ai coding|devops|prompt engineer|qa testing|documentation assistant|developer tools?)\b/i },
+  { id: "Data & analytics", re: /\b(bi analyst|analytics|forecast|dashboard|data quality|financial reporting|kpi)\b/i },
   { id: "Telecommunications", re: /\b(telecom|fibre|fiber|sim|airtime|network fault|mobile network|device upgrade|enterprise connectivity|sd-?wan)\b/i },
   { id: "Government & public sector", re: /\b(government|citizen|municipality|tax office|public sector|permits?|passport|visa|licensing|social services|benefits)\b/i },
   { id: "Manufacturing & industrial", re: /\b(manufactur|warehouse|maintenance desk|quality assurance|factory|industrial|production planning)\b/i },
@@ -41,7 +43,7 @@ const CATEGORY_PATTERNS: { id: string; re: RegExp }[] = [
   { id: "Education", re: /\b(education|school|student|admissions|onboarding)\b/i },
   { id: "Property", re: /\b(property|rental|real estate|building)\b/i },
   { id: "Professional services", re: /\b(law|legal|contract review|case management|legal research|agency|professional services)\b/i },
-  { id: "Customer & front office", re: /\b(support|sales|qualifier|front desk)\b/i },
+  { id: "Customer & front office", re: /\b(support|sales qualifier|front desk)\b/i },
 ];
 
 const WORKFLOW_RE = /\b(workflow|workflows|multi[- ]?step|can act)\b/i;

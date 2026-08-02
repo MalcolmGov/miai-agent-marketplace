@@ -1,6 +1,6 @@
 # Catalogue digest — agent families
 
-Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 agents).
+Total families: 92. Each ships in US / EU / Africa / Asia / Oceania packs (460 agents).
 
 ## All families
 
@@ -22,6 +22,12 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Agency & Studio for Brightline Studio Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-agency-studio
 
+### AI Coding Assistant
+- Id: `ai-coding-assistant` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm
+- Studio: /agents/us-ai-coding-assistant
+
 ### Airtime & Bundles
 - Id: `airtime-bundles` · Tier: standard · Markets: africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app, sms
@@ -33,6 +39,12 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Channels: whatsapp, web, app, sms
 - Bank Branch Assistant for Riverbend Bank — Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-bank-branch
+
+### BI Analyst Assistant
+- Id: `bi-analyst` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers
+- Studio: /agents/us-bi-analyst
 
 ### Bookkeeping Assistant
 - Id: `bookkeeping` · Tier: pro · Markets: africa, asia, za, eu, oceania, us
@@ -94,6 +106,12 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - customer support for Umoya Home (Nairobi) — product and order questions, ticket logging, and handoff for refunds and complaints across WhatsApp, web, app, and SMS.
 - Studio: /agents/us-customer-support
 
+### Data Quality Desk
+- Id: `data-quality` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data
+- Studio: /agents/us-data-quality
+
 ### Delivery & Tracking
 - Id: `delivery-tracking` · Tier: pro · Markets: africa, asia, za, eu, oceania, us
 - Channels: whatsapp, web, app, sms
@@ -113,15 +131,27 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-dental-practice
 
 ### Device Upgrades
-- Id: `device-upgrades` · Tier: standard · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility
+- Id: `device-upgrades` · Tier: standard · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Device Upgrades — Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility
 - Studio: /agents/us-device-upgrades
 
-### Enterprise Connectivity
-- Id: `enterprise-connectivity` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
+### DevOps Assistant
+- Id: `devops-assistant` · Tier: pro · Markets: us, eu, africa, asia, oceania
 - Channels: sms, web, app
-- Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes
+- DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes
+- Studio: /agents/us-devops-assistant
+
+### Documentation Assistant
+- Id: `documentation-assistant` · Tier: standard · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies
+- Studio: /agents/us-documentation-assistant
+
+### Enterprise Connectivity
+- Id: `enterprise-connectivity` · Tier: enterprise · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Enterprise Connectivity — Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes
 - Studio: /agents/us-enterprise-connectivity
 
 ### Events & Venue
@@ -136,10 +166,16 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Executive Assistant for Maya Chen / Ridgeway Labs Johannesburg EA desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-executive-assistant
 
-### Factory Operations
-- Id: `factory-operations` · Tier: pro · Markets: us, eu, africa, asia, oceania
+### Executive Dashboards
+- Id: `executive-dashboards` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
 - Channels: sms, web, app
-- Factory Operations — Shift and line status FAQ plus production exception logging for plant staff
+- Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests
+- Studio: /agents/us-executive-dashboards
+
+### Factory Operations
+- Id: `factory-operations` · Tier: pro · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff
 - Studio: /agents/us-factory-operations
 
 ### Fibre Support
@@ -154,6 +190,12 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Field Service Dispatch for Fieldline Service Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-field-service
 
+### Financial Reporting Desk
+- Id: `financial-reporting` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures
+- Studio: /agents/us-financial-reporting
+
 ### Fleet & Driver Desk
 - Id: `fleet-driver` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
 - Channels: whatsapp, web, app, sms
@@ -161,9 +203,9 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-fleet-driver
 
 ### Fraud Investigations Desk
-- Id: `fraud-investigations` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat
+- Id: `fraud-investigations` · Tier: enterprise · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Fraud Investigations Desk — Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat
 - Studio: /agents/us-fraud-investigations
 
 ### Front Desk / Reception
@@ -233,9 +275,9 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-interview-scheduling
 
 ### Investment Advisor Intake
-- Id: `investment-advisor` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice
+- Id: `investment-advisor` · Tier: enterprise · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Investment Advisor Intake — Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice
 - Studio: /agents/us-investment-advisor
 
 ### IT Helpdesk
@@ -251,21 +293,21 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-law-firm-intake
 
 ### Legal Case Management
-- Id: `case-management` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice
+- Id: `case-management` · Tier: enterprise · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Legal Case Management — Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice
 - Studio: /agents/us-case-management
 
 ### Legal Research Intake
-- Id: `legal-research` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent
+- Id: `legal-research` · Tier: enterprise · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Legal Research Intake — Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent
 - Studio: /agents/us-legal-research
 
 ### Licensing Desk
-- Id: `licensing` · Tier: pro · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Licensing Desk — Business and professional licence FAQ and application intake logging
+- Id: `licensing` · Tier: pro · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Licensing Desk — Licensing Desk — Business and professional licence FAQ and application intake logging
 - Studio: /agents/us-licensing
 
 ### Loan Pre-Qualifier
@@ -329,9 +371,9 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-order-tracking
 
 ### Passport & Visa Desk
-- Id: `passport-visa` · Tier: pro · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice
+- Id: `passport-visa` · Tier: pro · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Passport & Visa Desk — Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice
 - Studio: /agents/us-passport-visa
 
 ### Payroll Queries
@@ -365,16 +407,28 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-product-finder
 
 ### Production Planning
-- Id: `production-planning` · Tier: pro · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity
+- Id: `production-planning` · Tier: pro · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Production Planning — Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity
 - Studio: /agents/us-production-planning
+
+### Prompt Engineering Desk
+- Id: `prompt-engineering` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests
+- Studio: /agents/us-prompt-engineering
 
 ### Property Enquiries
 - Id: `property-enquiries` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
 - Channels: whatsapp, web, app, sms
 - Property Enquiries for Cedarline Realty Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-property-enquiries
+
+### QA Testing Assistant
+- Id: `qa-testing` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests
+- Studio: /agents/us-qa-testing
 
 ### Quality Assurance Desk
 - Id: `quality-assurance` · Tier: pro · Markets: africa, asia, eu, oceania, us
@@ -412,6 +466,12 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Returns & Exchanges for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-returns-exchanges
 
+### Sales Forecasting Desk
+- Id: `sales-forecasting` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment
+- Studio: /agents/us-sales-forecasting
+
 ### Sales Qualifier
 - Id: `sales-qualifier` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
 - Channels: whatsapp, web, app, sms
@@ -431,9 +491,9 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-sim-registration
 
 ### Social Services Desk
-- Id: `social-services` · Tier: pro · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions
+- Id: `social-services` · Tier: pro · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Social Services Desk — Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions
 - Studio: /agents/us-social-services
 
 ### Stock & Availability
@@ -491,7 +551,7 @@ Total families: 82. Each ships in US / EU / Africa / Asia / Oceania packs (410 a
 - Studio: /agents/us-warehouse-operations
 
 ### Wealth Management Desk
-- Id: `wealth-management` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
-- Channels: sms, web, app
-- Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations
+- Id: `wealth-management` · Tier: enterprise · Markets: africa, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Wealth Management Desk — Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations
 - Studio: /agents/us-wealth-management
