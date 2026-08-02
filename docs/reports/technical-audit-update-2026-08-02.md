@@ -149,18 +149,22 @@ Cursor engineering disposition after residual close:
 
 ## Still open / blocked (honest residual register)
 
-| Residual | Owner | Notes |
-|---|---|---|
-| Counsel-signed privacy/terms/DPA/BAA | Legal | Keep **DRAFT** labels |
-| SOC 2 / ISO / formal certs | GRC | Evidence index only |
-| Semantic embeddings retrieval | Eng | Lexical only today |
-| Nightly live-LLM quality as hard gate | Eng/ML | `eval:live` exists; not in CI |
-| Multi-replica Redis on Railway | Ops | Code ready; must provision |
-| Verifiable Postgres CA (drop SSL dual-ACK) | Ops | Staging may use `PG_SSL_REJECT_UNAUTHORIZED=0` + ACK |
-| Azure Container Apps cutover / Key Vault | Ops/Cloud | Bicep present, Railway is prod today |
-| Partner OIDC + real wallet | Partner | Staging may still use dual-ACK mock rails |
-| CSP `style-src` without `unsafe-inline` | Eng | next/font + Tailwind follow-on |
-| Deeper catalogue beyond Cluster B policy | Product | Do **not** re-deepen Cluster B without decision |
+### Mandatory for early pilots? **Mostly no**
+
+SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run staging demos or early SMB pilots. They become expected at **enterprise procurement / regulated data**. Track them separately from the engineering B+ bar (`docs/CURSOR_BPLUS_PILOT_BAR.md`).
+
+| Residual | Owner | Mandatory for pilot? | Notes |
+|---|---|---|---|
+| Counsel-signed privacy/terms/DPA/BAA | Legal | **No** (demos) | Keep **DRAFT** until counsel |
+| SOC 2 / ISO / formal certs | GRC | **No** | Evidence index only; needed for large RFPs |
+| Semantic embeddings retrieval | Eng | **No** | Lexical only today |
+| Nightly live-LLM quality sample | Eng/ML | Recommended | `eval:live` + nightly job (non-blocking); not a hard CI gate |
+| Multi-replica Redis on Railway | Ops | **B+ yes** | Health now exposes `redisPing`; provision Upstash |
+| Verifiable Postgres CA (drop SSL dual-ACK) | Ops | **B+ preferred** | Staging may use dual-ACK until CA mounted |
+| Azure Container Apps cutover / Key Vault | Ops/Cloud | **No** | Bicep present; Railway is prod today |
+| Partner OIDC + real wallet | Partner | Cutover | Staging may still use dual-ACK mock rails |
+| CSP `style-src` without `unsafe-inline` | Eng | **No** | Deferred — next/font + Tailwind; script-src nonce is the win |
+| Deeper catalogue beyond Cluster B policy | Product | Product call | Do **not** re-deepen Cluster B without decision |
 
 ---
 

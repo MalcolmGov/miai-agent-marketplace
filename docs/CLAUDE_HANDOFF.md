@@ -1,10 +1,11 @@
 # Claude handoff — active task
 
-## Active: Claude — re-verify after residual punch-list close
+## Active: B+ pilot bar (target 78–80) + optional Claude re-verify
 
-**Cursor closed P1+P2** (and opt-in P3 live-eval) — see [`docs/reports/residual-punchlist-close-2026-08-02.md`](reports/residual-punchlist-close-2026-08-02.md) and [`docs/CURSOR_RESIDUAL_PUNCHLIST.md`](CURSOR_RESIDUAL_PUNCHLIST.md).
+**Diligence update:** [`docs/reports/technical-audit-update-2026-08-02.md`](reports/technical-audit-update-2026-08-02.md) — **B · 72**.  
+**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.**
 
-**Next:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) for a fresh 9-risk sign-off (expect PARTIALs → FIXED where residuals closed). Blocked (not eng): compliance legal copy.
+**Optional:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) at latest `main` for a fresh 9-risk sign-off.
 
 ---
 

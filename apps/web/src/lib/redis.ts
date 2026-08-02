@@ -20,6 +20,36 @@ export function redisAvailable(): boolean {
   return upstashConfig() !== null;
 }
 
+export type RedisPing =
+  | { configured: false; ok: false; backend: "none" }
+  | { configured: true; ok: boolean; backend: "upstash-rest"; error?: string };
+
+/** Lightweight readiness probe for /api/health (PING). */
+export async function pingRedis(): Promise<RedisPing> {
+  if (!upstashConfig()) {
+    return { configured: false, ok: false, backend: "none" };
+  }
+  try {
+    const result = await upstashCommand("PING");
+    if (result === "PONG" || result === "pong") {
+      return { configured: true, ok: true, backend: "upstash-rest" };
+    }
+    return {
+      configured: true,
+      ok: false,
+      backend: "upstash-rest",
+      error: `unexpected PING result: ${String(result)}`,
+    };
+  } catch (err) {
+    return {
+      configured: true,
+      ok: false,
+      backend: "upstash-rest",
+      error: err instanceof Error ? err.message : "ping failed",
+    };
+  }
+}
+
 async function upstashCommand(...args: string[]): Promise<unknown> {
   const cfg = upstashConfig();
   if (!cfg) return null;

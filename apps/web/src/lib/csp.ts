@@ -1,6 +1,8 @@
 /**
  * Per-request CSP builder (nonce + strict-dynamic for scripts).
- * style-src keeps 'unsafe-inline' for next/font + Tailwind until a style-nonce pass.
+ *
+ * style-src keeps 'unsafe-inline' for next/font + Tailwind (B+ deferred — removing it
+ * without a full style-nonce pass breaks the App Router shell). Security win is script-src.
  */
 
 export function buildContentSecurityPolicy(nonce: string): string {

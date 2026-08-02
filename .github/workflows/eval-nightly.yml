@@ -58,3 +58,40 @@ jobs:
           MIAI_MODEL_MODE: anthropic
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: pnpm smoke:live-llm:matrix
+
+  # Opt-in live quality sample — not a CI gate; separated from MockModel pass-rate.
+  # Requires ANTHROPIC_API_KEY. continue-on-error so mock nightly stays authoritative.
+  eval-live-sample:
+    name: eval-live-sample
+    runs-on: ubuntu-latest
+    needs: eval-nightly
+    if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Live-LLM eval sample (non-blocking)
+        env:
+          MIAI_MODEL_MODE: anthropic
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: pnpm eval:live -- --limit=6
+
+      - name: Upload live-eval report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-live-report
+          path: docs/reports/eval-live-*.md
+          if-no-files-found: ignore

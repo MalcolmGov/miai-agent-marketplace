@@ -78,7 +78,7 @@ Service → **Variables**. Minimum for a customer-like walk:
 | `I_UNDERSTAND_FILE_FALLBACK_IN_PROD` | `1` — required with `ALLOW_FILE_FALLBACK_IN_PROD` |
 | `PG_SSL_REJECT_UNAUTHORIZED` | default verifies TLS; set `0` only if CA trust is missing (+ ACK) |
 | `I_UNDERSTAND_PG_SSL_INSECURE` | `1` — required with `PG_SSL_REJECT_UNAUTHORIZED=0` in production |
-| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | recommended — multi-replica rate limits + sessions; when set, Redis errors fail closed |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | **B+ recommended** — multi-replica rate limits + sessions; when set, Redis errors fail closed. Health exposes `redisPing` |
 | `MIAI_MAX_BODY_BYTES` | optional API body cap (default `1048576`) |
 
 **Mock rails (staging demos):** both `ALLOW_MOCK_RAILS=1` **and** `I_UNDERSTAND_MOCK_RAILS_IN_PROD=1` are required, or boot/health fail closed. Setting only one flag also fails. Boot emits a structured warning when mock rails are enabled. Unset **both** at customer cutover when OIDC + wallet + model gateway are live.
@@ -86,6 +86,10 @@ Service → **Variables**. Minimum for a customer-like walk:
 **Embed `*` CORS:** same dual-flag pattern (`ALLOW_EMBED_ORIGIN_STAR` + `I_UNDERSTAND_EMBED_ORIGIN_STAR`). Prefer an explicit `EMBED_ALLOWED_ORIGINS` allowlist.
 
 **Webhooks:** outbound connectors send `x-miai-signature: v1=<hmac>` + `x-miai-timestamp`. The proof sink accepts HMAC (preferred) and, unless `WEBHOOK_SINK_HMAC_ONLY=1`, legacy raw secret for one transition window. Turn on HMAC-only once all senders are on v1 signatures.
+
+**Redis (B+ pilot bar):** create a free Upstash database → copy REST URL + token into Railway → redeploy → confirm `curl -sS $APP/api/health | jq '{redisConfigured,redisPing,redisBackend,storeBackend}'`. Missing Redis is OK for single-replica demos (`redisPing: not_configured`); broken credentials degrade health (fail closed).
+
+**Postgres TLS (B+):** prefer unsetting `PG_SSL_REJECT_UNAUTHORIZED` / `I_UNDERSTAND_PG_SSL_INSECURE` once the platform CA is trusted. Dual-ACK insecure SSL is an intentional staging residual, not a silent fail-open.
 
 Add connector secrets as you test them, e.g. Slack:
 

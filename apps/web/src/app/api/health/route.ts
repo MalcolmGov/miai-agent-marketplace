@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ensureStoreHydrated, pingStore } from "@/lib/store";
+import { pingRedis } from "@/lib/redis";
 import { telemetryMode } from "@/lib/telemetry";
 import { checkBootHardening, mockRailsAllowed } from "@/lib/security";
 
@@ -64,6 +65,17 @@ export async function GET() {
     return NextResponse.json(checks, { status: 503 });
   }
 
+  // Redis is optional for single-replica; when configured, surface ping for B+ ops bar.
+  const redis = await pingRedis();
+  checks.redisConfigured = redis.configured;
+  checks.redisBackend = redis.backend;
+  checks.redisPing = redis.configured ? (redis.ok ? "ok" : "error") : "not_configured";
+  if (redis.configured && !redis.ok) {
+    checks.redisPingError = redis.error ?? "ping failed";
+    // Configured-but-broken Redis is degraded (rate-limit/sessions fail closed).
+    checks.status = "degraded";
+  }
+
   const configMissing =
     (authMode === "oidc" && !process.env.MIAI_OIDC_ISSUER) ||
     (walletMode === "http" && !process.env.MIAI_WALLET_API_URL) ||
@@ -76,5 +88,6 @@ export async function GET() {
     // readiness operators should inspect status/config fields.
   }
 
-  return NextResponse.json(checks);
+  const statusCode = checks.status === "degraded" && redis.configured && !redis.ok ? 503 : 200;
+  return NextResponse.json(checks, statusCode === 200 ? undefined : { status: 503 });
 }
