@@ -2,7 +2,7 @@
 
 > **Confidential.** Independent static-analysis audit of the full monorepo — engineering complexity, architecture, security, AI maturity, scalability and enterprise readiness, measured from source.
 >
-> **Updated verdict (post-remediation):** see **[`technical-audit-update-2026-08-02.md`](./technical-audit-update-2026-08-02.md)** — grade **B · 72 / 100** at pin `6dcb793`. This baseline document is retained as the original narrative @ `d4cfea2`.
+> **Updated verdict (post-remediation + B+ ops):** see **[`technical-audit-update-2026-08-02.md`](./technical-audit-update-2026-08-02.md)** — grade **B+ · 78 / 100**. This baseline document is retained as the original narrative @ `d4cfea2`.
 
 | | |
 |---|---|

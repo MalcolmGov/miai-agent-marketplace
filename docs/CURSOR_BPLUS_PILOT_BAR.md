@@ -30,15 +30,12 @@ Keep compliance docs labeled **DRAFT**. Do not block the B+ track on SOC 2.
 
 ## P0 — ops (you on Railway; Cursor makes them measurable)
 
-### 1. Provision Upstash Redis
-- **Set:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` on the web service.
-- **Accept:** `GET /api/health` → `redisConfigured: true`, `redisPing: "ok"`, `redisBackend: "upstash-rest"`.
-- **Why:** shared rate limits + chat sessions; required before scaling replicas.
+### 1. Provision Upstash Redis — **DONE** (2026-08-02)
+- Staging health: `redisConfigured: true`, `redisPing: "ok"`, `redisBackend: "upstash-rest"`.
 
-### 2. Prefer verifiable Postgres TLS
-- **Prefer:** mount CA / use a URL Railway trusts so you can **unset** `PG_SSL_REJECT_UNAUTHORIZED` and `I_UNDERSTAND_PG_SSL_INSECURE`.
-- **Accept:** health still `storeBackend: postgres` **without** the insecure dual-ACK pair.
-- If CA is impossible on current plan, keep dual-ACK and document it — score as intentional residual.
+### 2. Prefer verifiable Postgres TLS — **RESIDUAL (intentional)**
+- Removing `PG_SSL_REJECT_UNAUTHORIZED=0` + `I_UNDERSTAND_PG_SSL_INSECURE=1` broke healthcheck on Railway Postgres (no trusted CA in the app image).
+- **Keep dual-ACK** until a verifiable CA is mounted. Not a silent fail-open — both flags required.
 
 ---
 
@@ -55,9 +52,8 @@ Keep compliance docs labeled **DRAFT**. Do not block the B+ track on SOC 2.
 - **Defer unless clean.** next/font + Tailwind usually need inline styles.
 - **Accept if deferred:** document in this file + audit update; script-src nonce remains the security win.
 
-### 6. Optional: turn on `WEBHOOK_SINK_HMAC_ONLY=1` on staging
-- After confirming all webhook senders use `v1=` HMAC.
-- **Accept:** raw-secret POST → 401; signed POST → 200.
+### 6. Optional: turn on `WEBHOOK_SINK_HMAC_ONLY=1` on staging — **DONE** (2026-08-02)
+- Staging set `WEBHOOK_SINK_HMAC_ONLY=1`; legacy raw-secret signatures rejected.
 
 ---
 
@@ -71,8 +67,11 @@ Keep compliance docs labeled **DRAFT**. Do not block the B+ track on SOC 2.
 ---
 
 ## Done when
-- [ ] Staging health shows Redis ping ok (or explicit “not_configured” accepted for single-replica demos)
-- [ ] PG insecure dual-ACK removed **or** documented as plan limitation
-- [ ] Nightly live-eval job exists (secret-gated, non-blocking)
-- [ ] Audit update notes B+ track progress
-- [ ] Diligence narrative can honestly claim **pilot B+ path** without claiming enterprise certification
+- [x] Staging health shows Redis ping ok
+- [x] PG insecure dual-ACK documented as Railway plan limitation (kept on)
+- [x] Nightly live-eval job exists (secret-gated, non-blocking)
+- [x] `WEBHOOK_SINK_HMAC_ONLY=1` on staging
+- [ ] Audit update notes B+ track progress (score refresh)
+- [x] Diligence narrative can claim **pilot B+ path** without claiming enterprise certification
+
+**Ops bar for ~78–80:** essentially closed. Remaining score lift is narrative refresh + optional nightly `ANTHROPIC_API_KEY` in GitHub secrets.

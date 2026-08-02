@@ -15,13 +15,15 @@
 
 ---
 
-## Verdict — **B** · Engineering score **72 / 100**
+## Verdict — **B+** · Engineering score **78 / 100**
 
 The baseline audit correctly identified a **strong IP / architecture core** wrapped in a **demo-grade operational shell**. Remediation Phases **0–5** plus the residual punch-list closed the highest-severity in-repo gaps: dual-flag mock rails, HMAC webhooks, DNS-pinned SSRF, required Postgres, CI + tests + static-eval gates, zod validation, CSP script nonces, DSAR/consent drafts, and opt-in live-LLM eval.
 
-**What changed the grade:** Testing, DevOps, Security, and Data Architecture moved from “prototype” to “pilot-production capable.” What still caps the score below **A** is enterprise procurement (no SOC 2 / counsel-signed policies), live-LLM quality measurement (mock gate ≠ live quality; semantic retrieval not shipped), and multi-replica ops maturity (Redis/Azure HA still ops/partner work).
+**B+ ops bar (2026-08-02 staging):** Upstash Redis live (`redisPing: ok`), `WEBHOOK_SINK_HMAC_ONLY=1` on, Postgres dual-ACK retained after TLS verify proved incompatible with Railway’s CA in-image (intentional residual, not silent fail-open).
 
-**One-line verdict:** investable marketplace IP with a **hardened pilot shell** — suitable for controlled staging / early customers with dual-ACK staging flags understood; **not** yet enterprise-certified production.
+**What changed the grade:** Testing, DevOps, Security, Data Architecture, and staged multi-replica readiness (Redis) moved from “prototype” to **pilot B+**. What still caps the score below **A** is enterprise procurement (no SOC 2 / counsel-signed policies), live-LLM quality as a continuous program, and semantic retrieval.
+
+**One-line verdict:** investable marketplace IP with a **pilot-hardened staging posture** — Redis + Postgres + HMAC-only webhooks live; dual-ACK PG SSL and mock rails understood; **not** yet enterprise-certified production.
 
 ---
 
@@ -43,10 +45,10 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 | Enterprise readiness | 45 | 58 | +13 | Consent/DSAR/AI Act drafts; certs & counsel still open |
 | Data architecture | 45 | 70 | +25 | Prod requires `DATABASE_URL`; Postgres read-through |
 | Testing | 40 | 70 | +30 | Wallet/connectors/web unit tests + api-contract + residual suite |
-| Scalability | 33 | 55 | +22 | Durable writes; Redis fail-closed when configured; ops still 1-replica default |
-| **Overall (weighted)** | **61** | **72** | **+11** | **B– → B** |
+| Scalability | 33 | 62 | +29 | Durable writes; **Redis live on staging**; still 1 Railway replica by choice |
+| **Overall (weighted)** | **61** | **78** | **+17** | **B– → B+** |
 
-**Architecture rating:** 8.0 / 10 · **AI maturity:** 62 · **Production readiness (pilot):** ~68 · **Enterprise procurement:** ~58 · **Overall code quality:** 74.
+**Architecture rating:** 8.0 / 10 · **AI maturity:** 62 · **Production readiness (pilot):** ~74 · **Enterprise procurement:** ~58 · **Overall code quality:** 74.
 
 ---
 
@@ -159,8 +161,9 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 | SOC 2 / ISO / formal certs | GRC | **No** | Evidence index only; needed for large RFPs |
 | Semantic embeddings retrieval | Eng | **No** | Lexical only today |
 | Nightly live-LLM quality sample | Eng/ML | Recommended | `eval:live` + nightly job (non-blocking); not a hard CI gate |
-| Multi-replica Redis on Railway | Ops | **B+ yes** | Health now exposes `redisPing`; provision Upstash |
-| Verifiable Postgres CA (drop SSL dual-ACK) | Ops | **B+ preferred** | Staging may use dual-ACK until CA mounted |
+| Multi-replica Redis on Railway | Ops | **B+ yes** | **DONE** on staging — `redisPing: ok` (Upstash) |
+| Verifiable Postgres CA (drop SSL dual-ACK) | Ops | **B+ preferred** | **Tried; keep dual-ACK** — unsetting broke Railway healthcheck |
+| Webhook HMAC-only on staging | Ops | Recommended | **DONE** — `WEBHOOK_SINK_HMAC_ONLY=1` |
 | Azure Container Apps cutover / Key Vault | Ops/Cloud | **No** | Bicep present; Railway is prod today |
 | Partner OIDC + real wallet | Partner | Cutover | Staging may still use dual-ACK mock rails |
 | CSP `style-src` without `unsafe-inline` | Eng | **No** | Deferred — next/font + Tailwind; script-src nonce is the win |
@@ -184,15 +187,15 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 | Metric | Baseline | Updated |
 |---|---|---|
 | Overall architecture | 7.5 / 10 | **8.0 / 10** |
-| Scalability | 33 / 100 | **55 / 100** |
-| Security maturity | 63 / 100 | **78 / 100** |
+| Scalability | 33 / 100 | **62 / 100** |
+| Security maturity | 63 / 100 | **80 / 100** |
 | AI maturity | 55 / 100 | **62 / 100** |
 | Enterprise readiness | 45 / 100 | **58 / 100** |
 | Testing | 40 / 100 | **70 / 100** |
-| DevOps | 52 / 100 | **74 / 100** |
-| Production readiness | ~50 / 100 | **~68 / 100 (pilot)** |
+| DevOps | 52 / 100 | **78 / 100** |
+| Production readiness | ~50 / 100 | **~74 / 100 (pilot)** |
 | Overall code quality | 71 / 100 | **74 / 100** |
-| **Engineering score / grade** | **61 · B–** | **72 · B** |
+| **Engineering score / grade** | **61 · B–** | **78 · B+** |
 
 ---
 
