@@ -79,6 +79,20 @@ Optional: set `WEBHOOK_SINK_SECRET` and pass the same value as the Actions share
 
 In Actions → Webhook: paste URL + secret → Save webhook → Studio **live** chat.
 
+## MCP (customer tool server)
+
+MyInstantAI is the **MCP client**. Point Actions → MCP at a server that implements:
+
+`POST {endpoint}/tools/call` with `{ "name": "<tool>", "arguments": {…} }` and `Authorization: Bearer <token>`.
+
+Self-hosted proof sink: `{APP_BASE_URL}/api/mcp` (inspect: `GET /api/mcp`).
+
+```bash
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:mcp
+```
+
+That remaps `make_guest_request` → `mcp` for the proof, then restores webhook.
+
 ## Expand after first slice
 
 ```bash

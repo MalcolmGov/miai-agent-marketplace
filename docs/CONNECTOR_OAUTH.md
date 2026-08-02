@@ -105,3 +105,15 @@ DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:webhook
 ```
 
 Or in Actions → Webhook: URL `{APP_BASE_URL}/api/webhook/sink` + shared secret → Save.
+
+## MCP (HTTP tools/call bridge)
+
+Customer MCP-style server: endpoint + bearer token in Actions → MCP.
+
+Contract: `POST {endpoint}/tools/call` body `{ name, arguments }`.
+
+```bash
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:mcp
+```
+
+Proof sink: `{APP_BASE_URL}/api/mcp` · inspect `GET /api/mcp`.

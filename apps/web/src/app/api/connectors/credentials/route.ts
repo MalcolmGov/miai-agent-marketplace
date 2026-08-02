@@ -17,40 +17,58 @@ export async function POST(req: Request) {
     connectorId: ConnectorId;
     workspaceId?: string;
     config: Record<string, string>;
+    /** Optionally rebind these tools to this connector (e.g. MCP / webhook proofs). */
+    remapTools?: string[];
   };
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const rental = await getWorkspaceAgent(workspaceId, body.agentId);
   if (!rental) return NextResponse.json({ error: "Rent the agent first" }, { status: 400 });
 
+  const meta = { ...body.config };
+  // Don't seal remap list into token meta
+  delete (meta as { remapTools?: string }).remapTools;
+
   // Persist secrets in token store (sealed) — not returned to client
   await saveToken({
     connectorId: body.connectorId,
     workspaceId,
     accessToken: body.config.api_key || body.config.token || body.config.secret || "configured",
-    meta: { ...body.config },
+    meta,
     updatedAt: new Date().toISOString(),
   });
 
   const connected = Array.from(new Set([...rental.connectedConnectors, body.connectorId]));
   const preset = getPreset(body.agentId);
-  const bindings = (preset?.bindings ?? rental.bindings).map((b) =>
-    b.connector === body.connectorId
-      ? {
-          ...b,
-          config: {
-            ...body.config,
-            // strip secrets from binding blob kept in memory rental
-            api_key: body.config.api_key ? "••••" : undefined,
-            token: body.config.token ? "••••" : undefined,
-            consumer_secret: body.config.consumer_secret ? "••••" : undefined,
-            secret: body.config.secret ? "••••" : undefined,
-          } as Record<string, string>,
-        }
-      : b,
-  );
+  // Prefer live rental bindings so reconnects don't wipe custom remaps
+  const base = (rental.bindings?.length ? rental.bindings : preset?.bindings) ?? [];
+  const remap = new Set(body.remapTools ?? []);
+  const safeConfig = {
+    ...meta,
+    api_key: body.config.api_key ? "••••" : undefined,
+    token: body.config.token ? "••••" : undefined,
+    consumer_secret: body.config.consumer_secret ? "••••" : undefined,
+    secret: body.config.secret ? "••••" : undefined,
+  } as Record<string, string>;
 
-  // Also attach binding for tools that use this connector even if not in preset list
+  let bindings = base.map((b) => {
+    if (remap.has(b.tool) || b.connector === body.connectorId) {
+      return {
+        ...b,
+        connector: remap.has(b.tool) ? body.connectorId : b.connector,
+        config: { ...b.config, ...safeConfig },
+      };
+    }
+    return b;
+  });
+
+  // Add remapped tools that weren't in the binding list yet
+  for (const tool of remap) {
+    if (!bindings.some((b) => b.tool === tool)) {
+      bindings = [...bindings, { tool, connector: body.connectorId, config: safeConfig }];
+    }
+  }
+
   const next = await upsertWorkspaceAgent(workspaceId, body.agentId, {
     agentId: body.agentId,
     connectedConnectors: connected,

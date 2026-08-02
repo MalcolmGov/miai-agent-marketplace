@@ -50,7 +50,7 @@ import type { ConnectorCall, ConnectorMeta, ConnectorResult } from "./types.js";
 import { executeLive, stubFor } from "./live/execute.js";
 
 export const CONNECTORS: ConnectorMeta[] = [
-  { id: "mcp", name: "MCP server", phase: 1, description: "Connect any system you own via secure OAuth/MCP.", auth: "mcp", recommended: true },
+  { id: "mcp", name: "MCP server", phase: 1, description: "Call tools on your HTTP MCP bridge (POST /tools/call).", auth: "mcp", recommended: true },
   { id: "webhook", name: "Webhook", phase: 1, description: "POST events to any URL and wire your backend.", auth: "webhook_secret" },
   { id: "google_calendar", name: "Google Calendar", phase: 1, description: "Availability and bookings.", auth: "oauth" },
   { id: "m365_calendar", name: "Microsoft 365 Calendar", phase: 1, description: "Availability and bookings via Graph.", auth: "oauth" },

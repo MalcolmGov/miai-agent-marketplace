@@ -1116,19 +1116,31 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         };
       }
       case "mcp": {
-        const endpoint = keyTok?.meta.endpoint || config.endpoint;
+        const endpoint = String(keyTok?.meta.endpoint || config.endpoint || "").replace(/\/$/, "");
         const token = keyTok?.meta.token || keyTok?.accessToken || config.token || "";
         if (!endpoint) throw new Error("MCP endpoint missing");
+        const bearer = token === "configured" ? config.token ?? "" : token;
         const res = await fetch(`${endpoint}/tools/call`, {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            authorization: `Bearer ${token === "configured" ? config.token ?? "" : token}`,
+            ...(bearer ? { authorization: `Bearer ${bearer}` } : {}),
           },
           body: JSON.stringify({ name: call.tool, arguments: call.args }),
         });
         if (!res.ok) throw new Error(`MCP ${res.status}`);
-        return { ok: true, data: (await res.json()) as Record<string, unknown>, connector, stubbed: false };
+        let data: Record<string, unknown> = {};
+        try {
+          data = (await res.json()) as Record<string, unknown>;
+        } catch {
+          data = { ok: true, status: res.status };
+        }
+        return {
+          ok: true,
+          data: { ...data, live: true, provider: "mcp" },
+          connector,
+          stubbed: false,
+        };
       }
       default:
         break;
