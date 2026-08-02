@@ -1,17 +1,24 @@
-import { NextResponse } from "next/server";
 import { runAskTurn } from "@/lib/ask-turn";
+import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
+import { askChatBodySchema, formatZodError } from "@/lib/api-schemas";
 import { rateLimit } from "@/lib/security";
 import { correlationFromRequest } from "@/lib/traceability";
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as {
-    message?: string;
-    sessionId?: string;
-    replyLanguage?: string;
-    correlationId?: string;
-  };
+  let raw: unknown;
+  try {
+    raw = await req.json();
+  } catch {
+    return apiErrorFromRequest(req, 400, "Invalid JSON body");
+  }
 
-  const sessionId = typeof body.sessionId === "string" ? body.sessionId : "anon";
+  const parsed = askChatBodySchema.safeParse(raw);
+  if (!parsed.success) {
+    return apiErrorFromRequest(req, 400, "Invalid request body", formatZodError(parsed.error));
+  }
+  const body = parsed.data;
+
+  const sessionId = body.sessionId ?? "anon";
   const correlationId = correlationFromRequest(req, body.correlationId);
   const limited = await rateLimit(`ask:${sessionId.slice(0, 48)}`, {
     limit: 40,
@@ -19,7 +26,7 @@ export async function POST(req: Request) {
   });
 
   const result = await runAskTurn({
-    message: typeof body.message === "string" ? body.message : "",
+    message: body.message.trim(),
     sessionId,
     replyLanguage: body.replyLanguage,
     correlationId,
@@ -30,13 +37,10 @@ export async function POST(req: Request) {
   if (!result.ok) {
     const headers: Record<string, string> = {};
     if (result.retryAfterSec != null) headers["retry-after"] = String(result.retryAfterSec);
-    return NextResponse.json(
-      { error: result.error, retryAfterSec: result.retryAfterSec },
-      { status: result.status, headers },
-    );
+    return apiErrorFromRequest(req, result.status, result.error, { retryAfterSec: result.retryAfterSec }, headers);
   }
 
-  return NextResponse.json({
+  return apiOk({
     reply: result.reply,
     paused: result.paused,
     balance: result.balance,

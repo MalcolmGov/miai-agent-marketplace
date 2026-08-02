@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import {
   buildAuthorizeUrl,
   isOAuthConnector,
@@ -7,6 +6,7 @@ import {
 import { getWorkspaceAgent, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { rateLimit, requireRole } from "@/lib/security";
+import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
 
 export async function GET(
   req: Request,
@@ -22,15 +22,18 @@ export async function GET(
     windowMs: 60_000,
   });
   if (!limited.ok) {
-    return NextResponse.json(
-      { error: "Too many OAuth starts — retry shortly" },
-      { status: 429, headers: { "retry-after": String(limited.retryAfterSec) } },
+    return apiErrorFromRequest(
+      req,
+      429,
+      "Too many OAuth starts — retry shortly",
+      undefined,
+      { "retry-after": String(limited.retryAfterSec) },
     );
   }
 
   const { connector } = await ctx.params;
   if (!isOAuthConnector(connector)) {
-    return NextResponse.json({ error: "Not an OAuth connector" }, { status: 400 });
+    return apiErrorFromRequest(req, 400, "Not an OAuth connector");
   }
 
   const url = new URL(req.url);
@@ -47,10 +50,9 @@ export async function GET(
     url.searchParams.get("returnTo") ?? `/agents/${agentId ?? ""}?tab=actions`;
 
   if (!agentId) {
-    return NextResponse.json({ error: "agentId required" }, { status: 400 });
+    return apiErrorFromRequest(req, 400, "agentId required");
   }
 
-  // Ensure rental exists so callback can mark connected
   if (!await getWorkspaceAgent(workspaceId, agentId)) {
     await upsertWorkspaceAgent(workspaceId, agentId, { agentId, state: "configuring" });
   }
@@ -65,20 +67,15 @@ export async function GET(
   });
 
   if (!result.configured) {
-    return NextResponse.json(
-      {
-        error: "OAuth app credentials missing",
-        missingEnv: result.missingEnv,
-        hint: "Copy apps/web/.env.example → .env.local and fill client id/secret for this provider.",
-      },
-      { status: 503 },
-    );
+    return apiErrorFromRequest(req, 503, "OAuth app credentials missing", {
+      missingEnv: result.missingEnv,
+      hint: "Copy apps/web/.env.example → .env.local and fill client id/secret for this provider.",
+    });
   }
 
-  // JSON mode for UI fetch, redirect mode for direct navigation
   if (url.searchParams.get("format") === "json") {
-    return NextResponse.json({ url: result.url, state: result.state });
+    return apiOk({ url: result.url, state: result.state });
   }
 
-  return NextResponse.redirect(result.url);
+  return Response.redirect(result.url);
 }

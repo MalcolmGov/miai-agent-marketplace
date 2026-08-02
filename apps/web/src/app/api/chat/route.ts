@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { runTurn, type AgentState } from "@miai/runtime";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
@@ -13,6 +12,8 @@ import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
 import { trackEvent, trackException } from "@/lib/telemetry";
 import { correlationFromRequest, recordChatTurn } from "@/lib/traceability";
+import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
+import { formatZodError, studioChatBodySchema } from "@/lib/api-schemas";
 
 export async function POST(req: Request) {
   const started = Date.now();
@@ -22,25 +23,26 @@ export async function POST(req: Request) {
   if (forbidden) return forbidden;
 
   try {
-    const body = (await req.json()) as {
-      agentId: string;
-      message?: string;
-      workspaceId?: string;
-      mode?: "sandbox" | "live";
-      clear?: boolean;
-      /** BCP-47-ish chat reply language (en, es, fr, de, it, zh, hi, sw). */
-      replyLanguage?: string;
-      correlationId?: string;
-      sessionId?: string;
-    };
+    let raw: unknown;
+    try {
+      raw = await req.json();
+    } catch {
+      return apiErrorFromRequest(req, 400, "Invalid JSON body");
+    }
+
+    const parsed = studioChatBodySchema.safeParse(raw);
+    if (!parsed.success) {
+      return apiErrorFromRequest(req, 400, "Invalid request body", formatZodError(parsed.error));
+    }
+    const body = parsed.data;
+
     const correlationId = correlationFromRequest(req, body.correlationId);
     const sessionId = body.sessionId?.trim() || `studio_${auth.userId}_${body.agentId}`;
     const workspaceId =
       auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
     const pkg = await getAgentPackage(body.agentId);
-    if (!pkg) return NextResponse.json({ error: "Unknown agent" }, { status: 404 });
+    if (!pkg) return apiErrorFromRequest(req, 404, "Unknown agent");
 
-    // Reset conversation history (UI + server-persisted turns / pending workflows).
     if (body.clear) {
       const rental = await getWorkspaceAgent(workspaceId, body.agentId);
       if (rental) {
@@ -59,11 +61,11 @@ export async function POST(req: Request) {
         channel: "studio",
         detail: { action: "clear_chat", correlationId, sessionId, userId: auth.userId },
       });
-      return NextResponse.json({ ok: true, cleared: true, messages: [], correlationId });
+      return apiOk({ ok: true, cleared: true, messages: [], correlationId });
     }
 
     if (!body.message?.trim()) {
-      return NextResponse.json({ error: "message required" }, { status: 400 });
+      return apiErrorFromRequest(req, 400, "message required");
     }
 
     let rental = await getWorkspaceAgent(workspaceId, body.agentId);
@@ -77,7 +79,6 @@ export async function POST(req: Request) {
     }
 
     const mode = body.mode ?? (rental.state === "live" ? "live" : "sandbox");
-    /** Free try-before-buy: sandbox while not yet rented. */
     const freeTry = mode === "sandbox" && rental.state === "selected";
     const knowledgeOverride = await getComposedKnowledge(
       workspaceId,
@@ -153,7 +154,7 @@ export async function POST(req: Request) {
       correlationId,
     });
 
-    return NextResponse.json({
+    return apiOk({
       assistantMessage: result.assistantMessage,
       toolCalls: result.toolCalls,
       tokensDebited: result.tokensDebited,

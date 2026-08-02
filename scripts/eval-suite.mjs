@@ -66,6 +66,8 @@ function stripEvalNoise(input) {
     .trim();
 }
 
+// Permissive matcher for mock-contract lane only (currency/digit normalization + token overlap).
+// Live reply quality is gated separately by scripts/live-llm-smoke.mjs (--matrix).
 function includesAny(hay, needles) {
   const h = hay.toLowerCase();
   const hCompactDigits = h.replace(/[^\d]/g, "");
@@ -348,7 +350,8 @@ async function main() {
 
   const summary = {
     generatedAt: new Date().toISOString(),
-    mode: staticOnly ? "static-only" : "static+mock-runtime",
+    mode: staticOnly ? "static-only" : "mock",
+    qualityLane: "mock-contract",
     tokenCost: 0,
     agents: ids.length,
     totalEvalsRun: totalEvals,

@@ -60,6 +60,14 @@ export {
   timingSafeEqualString,
 } from "./webhook-sig.js";
 
+export {
+  HttpResponseError,
+  isRetryableHttpStatus,
+  isRetryableError,
+  withRetry,
+  type WithRetryOptions,
+} from "./retry.js";
+
 import type { ConnectorCall, ConnectorMeta, ConnectorResult } from "./types.js";
 import { executeLive, stubFor } from "./live/execute.js";
 

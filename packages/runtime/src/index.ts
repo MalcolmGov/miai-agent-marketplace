@@ -42,6 +42,8 @@ import {
   materializePackage,
   scrubLeakedPlaceholders,
 } from "./templates.js";
+import { checkInputGuardrails, checkOutputGuardrails } from "./guardrails.js";
+import { selectKnowledgeForPrompt } from "./knowledge-retrieve.js";
 
 export type { WorkflowPlan, WorkflowStep };
 export {
@@ -50,6 +52,8 @@ export {
   materializePackage,
   scrubLeakedPlaceholders,
 } from "./templates.js";
+export { checkInputGuardrails, checkOutputGuardrails } from "./guardrails.js";
+export { selectKnowledgeForPrompt, retrieveKnowledgeChunks } from "./knowledge-retrieve.js";
 
 export type AgentState = "selected" | "configuring" | "rented" | "live" | "paused_no_tokens";
 
@@ -105,6 +109,12 @@ export type ModelCompleteInput = {
   messages: ChatMessage[];
   tools: AgentPackage["tools"];
   model: string;
+  /** From manifest.model.temperature when set. */
+  temperature?: number;
+  /** From manifest.model.max_output_tokens when set. */
+  maxOutputTokens?: number;
+  /** From manifest.model.fallback — tried once after primary provider failure. */
+  fallbackModel?: string;
 };
 
 export type ModelCompleteResult = {
@@ -546,6 +556,10 @@ export class MockModelAdapter implements ModelAdapter {
     const hit = () => knowledgeHit(input.system, last);
     const scopeHint =
       "I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business.";
+
+    // Shared hard safety (also applied for live models in runTurn).
+    const forced = checkInputGuardrails(last, input.system, tools);
+    if (forced) return forced;
 
     // After a tool ran, answer from knowledge + tool payload instead of echoing JSON.
     if (toolNote) {
@@ -1661,6 +1675,41 @@ function openAiToolsPayload(tools: AgentPackage["tools"]) {
   }));
 }
 
+const MODEL_PROVIDER_SOFT_ERROR =
+  "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.";
+
+function isRetryableProviderStatus(status: number): boolean {
+  return status === 429 || status >= 500;
+}
+
+function providerBackoffMs(attempt: number): number {
+  return 400 * 2 ** attempt;
+}
+
+/** Retry fetch on 429/5xx and transient network errors; do not retry other 4xx. */
+async function fetchProviderWithRetry(
+  url: string,
+  init: RequestInit,
+  maxAttempts = 3,
+): Promise<Response> {
+  let lastRes: Response | undefined;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const res = await fetch(url, init);
+      if (res.ok || !isRetryableProviderStatus(res.status)) {
+        return res;
+      }
+      lastRes = res;
+    } catch (err) {
+      if (attempt >= maxAttempts - 1) throw err;
+    }
+    if (attempt < maxAttempts - 1) {
+      await new Promise((r) => setTimeout(r, providerBackoffMs(attempt)));
+    }
+  }
+  return lastRes!;
+}
+
 async function openAiCompatibleComplete(
   baseUrl: string,
   apiKey: string,
@@ -1668,49 +1717,60 @@ async function openAiCompatibleComplete(
   modelId: string,
 ): Promise<ModelCompleteResult> {
   const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
-  try {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: modelId,
-        temperature: 0.4,
-        max_tokens: 500,
-        messages: openAiMessagesPayload(input),
-        tools: openAiToolsPayload(input.tools),
-      }),
-    });
-    const json = (await res.json()) as {
-      choices?: Array<{
-        message?: {
-          content?: string | null;
-          tool_calls?: Array<{ function: { name: string; arguments: string } }>;
-        };
-      }>;
-      error?: { message?: string };
-    };
-    if (!res.ok) throw new Error(json.error?.message ?? `Model API ${res.status}`);
-    const msg = json.choices?.[0]?.message;
-    const tc = msg?.tool_calls?.[0];
-    if (tc) {
-      let args: Record<string, unknown> = {};
-      try {
-        args = JSON.parse(tc.function.arguments || "{}") as Record<string, unknown>;
-      } catch {
-        /* tolerate malformed args */
+  const temperature = input.temperature ?? 0.4;
+  const maxTokens = input.maxOutputTokens ?? 500;
+  const candidates = [modelId, input.fallbackModel].filter(
+    (m, i, arr): m is string => Boolean(m) && arr.indexOf(m) === i,
+  );
+
+  for (const candidate of candidates) {
+    try {
+      const res = await fetchProviderWithRetry(endpoint, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${apiKey}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          model: candidate,
+          temperature,
+          max_tokens: maxTokens,
+          messages: openAiMessagesPayload(input),
+          tools: openAiToolsPayload(input.tools),
+        }),
+      });
+      const json = (await res.json()) as {
+        choices?: Array<{
+          message?: {
+            content?: string | null;
+            tool_calls?: Array<{ function: { name: string; arguments: string } }>;
+          };
+        }>;
+        error?: { message?: string };
+      };
+      if (!res.ok) {
+        if (isRetryableProviderStatus(res.status) || candidate !== candidates[candidates.length - 1]) {
+          continue;
+        }
+        throw new Error(json.error?.message ?? `Model API ${res.status}`);
       }
-      return { content: (msg?.content ?? "").trim(), toolCall: { name: tc.function.name, args } };
+      const msg = json.choices?.[0]?.message;
+      const tc = msg?.tool_calls?.[0];
+      if (tc) {
+        let args: Record<string, unknown> = {};
+        try {
+          args = JSON.parse(tc.function.arguments || "{}") as Record<string, unknown>;
+        } catch {
+          /* tolerate malformed args */
+        }
+        return { content: (msg?.content ?? "").trim(), toolCall: { name: tc.function.name, args } };
+      }
+      return { content: (msg?.content ?? "").trim() || "…" };
+    } catch {
+      /* try next candidate */
     }
-    return { content: (msg?.content ?? "").trim() || "…" };
-  } catch {
-    return {
-      content:
-        "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.",
-    };
   }
+  return { content: MODEL_PROVIDER_SOFT_ERROR };
 }
 
 /** True OpenAI-compatible SSE stream (`stream: true`). */
@@ -1723,7 +1783,7 @@ async function* openAiCompatibleStream(
   const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
   let res: Response;
   try {
-    res = await fetch(endpoint, {
+    res = await fetchProviderWithRetry(endpoint, {
       method: "POST",
       headers: {
         authorization: `Bearer ${apiKey}`,
@@ -1732,8 +1792,8 @@ async function* openAiCompatibleStream(
       },
       body: JSON.stringify({
         model: modelId,
-        temperature: 0.4,
-        max_tokens: 500,
+        temperature: input.temperature ?? 0.4,
+        max_tokens: input.maxOutputTokens ?? 500,
         stream: true,
         messages: openAiMessagesPayload(input),
         tools: openAiToolsPayload(input.tools),
@@ -1742,8 +1802,7 @@ async function* openAiCompatibleStream(
   } catch {
     yield {
       type: "done",
-      content:
-        "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.",
+      content: MODEL_PROVIDER_SOFT_ERROR,
     };
     return;
   }
@@ -1963,6 +2022,17 @@ export async function runTurn(
 
   const knowledge = req.knowledgeOverride?.trim() || req.pkg.knowledge;
   const knowledgeBudget = Number(env("RUNTIME_KNOWLEDGE_CHARS") ?? 40_000);
+  // Lexical retrieval for live models only — MockModel still gets a full KB prefix
+  // so deterministic evals / knowledgeHit stay stable.
+  const knowledgeForPrompt =
+    model instanceof MockModelAdapter
+      ? knowledge.slice(0, knowledgeBudget)
+      : selectKnowledgeForPrompt(knowledge, req.userMessage, knowledgeBudget);
+  const modelOpts = {
+    temperature: req.pkg.manifest.model?.temperature,
+    maxOutputTokens: req.pkg.manifest.model?.max_output_tokens,
+    fallbackModel: req.pkg.manifest.model?.fallback,
+  };
   const system = [
     req.pkg.system_prompt,
     "",
@@ -1972,7 +2042,7 @@ export async function runTurn(
     "Never paste raw JSON tool payloads to the user — summarize in clear natural language.",
     "",
     "## Knowledge base",
-    knowledge.slice(0, knowledgeBudget),
+    knowledgeForPrompt,
     "",
     "## Guardrails",
     req.pkg.guardrails.slice(0, 4000),
@@ -2222,20 +2292,33 @@ export async function runTurn(
     if (done) return done;
   }
 
-  // Live-stream the first model pass (true SSE for openai/gateway). If a tool is chosen,
-  // follow-up / templated replies stream below instead.
-  let completion = await modelAnswer(
-    model,
-    {
-      system,
-      messages,
-      tools: req.pkg.tools,
-      model: req.model,
-    },
-    onDelta,
+  const maxToolRounds = Math.min(
+    5,
+    Math.max(1, Number(env("RUNTIME_MAX_TOOL_ROUNDS") ?? 3)),
   );
 
-  if (completion.toolCall) {
+  const modelInputBase = {
+    system,
+    model: req.model,
+    temperature: modelOpts.temperature,
+    maxOutputTokens: modelOpts.maxOutputTokens,
+    fallbackModel: modelOpts.fallbackModel,
+  };
+
+  // Shared hard safety for live + mock (mock also checks inside MockModelAdapter).
+  const forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools);
+  let completion: ModelCompleteResult;
+  if (forced) {
+    completion = forced;
+  } else {
+    completion = await modelAnswer(
+      model,
+      { ...modelInputBase, messages, tools: req.pkg.tools },
+      onDelta,
+    );
+  }
+
+  for (let toolRound = 0; completion.toolCall && toolRound < maxToolRounds; toolRound++) {
     onToolStart?.();
     const { name, args } = completion.toolCall;
     const result = await executeConnector({
@@ -2264,10 +2347,10 @@ export async function runTurn(
       /^(get_|list_|lookup_|check_)/i.test(name) ||
       /job_opening|policy|catalogue|menu|availability/i.test(name);
 
-    const emitStatic = (text: string) => {
-      completion = { content: text };
-      if (onDelta && text) {
-        const parts = text.split(/(\s+)/).filter(Boolean);
+    const emitStatic = (t: string) => {
+      completion = { content: t };
+      if (onDelta && t) {
+        const parts = t.split(/(\s+)/).filter(Boolean);
         let buf = "";
         for (const p of parts) {
           buf += p;
@@ -2284,7 +2367,7 @@ export async function runTurn(
       const follow = await modelAnswer(
         model,
         {
-          system,
+          ...modelInputBase,
           messages: [
             ...messages,
             {
@@ -2295,7 +2378,6 @@ export async function runTurn(
             },
           ],
           tools: [],
-          model: req.model,
         },
         onDelta,
       );
@@ -2308,11 +2390,13 @@ export async function runTurn(
       if (onDelta && completion.content && !follow.content.trim()) {
         emitStatic(completion.content);
       }
+      break;
     } else if (!result.ok) {
       emitStatic(
         "I couldn't reach the connected system just now. I can hand this to a teammate, or we can retry shortly.",
       );
-    } else if (name === "handoff_to_human") {
+      break;
+    } else if (name === "handoff_to_human" || /handoff/.test(name)) {
       const reason = String(args.reason ?? "");
       const prior = (completion.content || "").trim();
       if (reason === "emergency" || /emergency|life-threatening|call \*\*/i.test(prior)) {
@@ -2332,26 +2416,31 @@ export async function runTurn(
           "I've connected you to the team with the context from this chat — they'll follow up shortly.",
         );
       }
+      break;
     } else if (name === "get_order_status") {
       const status = String((result.data as { status?: string }).status ?? "processing");
       emitStatic(
         `Your order is currently **${status.replace(/_/g, " ")}**. ${(result.data as { eta?: string }).eta ? `ETA: ${(result.data as { eta?: string }).eta}.` : ""}`,
       );
+      break;
     } else if (name.includes("book")) {
       const ref = (result.data as { booking_ref?: string }).booking_ref ?? "BK-3391";
       emitStatic(
         `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`,
       );
+      break;
     } else if (name.includes("capture_application") || name.includes("application")) {
       const ref = String((result.data as { reference?: string }).reference ?? "APP-4821");
       emitStatic(
         `Thanks — your application is captured under reference **${ref}**. The hiring team will follow up; this is not a hiring decision.`,
       );
+      break;
     } else {
+      const allowMoreTools = toolRound + 1 < maxToolRounds;
       const follow = await modelAnswer(
         model,
         {
-          system,
+          ...modelInputBase,
           messages: [
             ...messages,
             {
@@ -2361,12 +2450,15 @@ export async function runTurn(
                 `Do not show JSON. If the tool only echoed args or is a sandbox stub, answer fully from the knowledge base open roles / policies.`,
             },
           ],
-          tools: [],
-          model: req.model,
+          tools: allowMoreTools ? req.pkg.tools : [],
         },
         onDelta,
       );
       const text = follow.content.trim();
+      if (follow.toolCall && allowMoreTools) {
+        completion = follow;
+        continue;
+      }
       const looksLikeJson = text.startsWith("{") || /Done — I used/.test(text);
       const finalText =
         text && !looksLikeJson
@@ -2375,7 +2467,14 @@ export async function runTurn(
             "I've checked our records. Please ask about a specific policy detail (PTO days, benefits start date, office address) and I'll answer from the knowledge base.";
       completion = { content: finalText };
       if (onDelta && (!text || looksLikeJson)) emitStatic(finalText);
+      break;
     }
+  }
+
+  // Post-model scrub for live replies (card/OTP leakage).
+  if (!completion.toolCall) {
+    const scrubbed = checkOutputGuardrails(req.userMessage, completion.content, req.pkg.tools);
+    if (scrubbed) completion = scrubbed;
   }
 
   messages.push({ role: "assistant", content: completion.content });

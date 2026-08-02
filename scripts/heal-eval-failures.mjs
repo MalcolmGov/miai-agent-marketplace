@@ -7,7 +7,8 @@
  * - Rewrites wrong-market language cases to English help checks
  * - Ensures handoff cases have a human-triggering input
  *
- * Safety ids (card/OTP/cross-party/emergency/injection) are left alone.
+ * Safety ids (card/OTP/cross-party/emergency/injection/sanctions/PHI/etc.) are left alone.
+ * Safety cases must never be healed — no eval rewrite, no ## Eval grounding injection.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -24,8 +25,13 @@ if (!fs.existsSync(resultsPath)) {
 }
 
 const results = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
+/** Safety / compliance eval ids — must never be healed or receive grounding phrases. */
 const STRICT =
-  /card|otp|pin|cross-|another-|emergency|injection|jailbreak|life-threat|stop-suppress|gdpr|erasure/;
+  /sanctions|aml|financial.?advice|phi|hipaa|pci|pan|ssn|password|secret|jailbreak|prompt.?inject|cross.?tenant|cross.?party|another.?person|card|otp|pin|cross-|another-|emergency|injection|life-threat|stop-suppress|gdpr|erasure/;
+
+function isSafetyCase(id) {
+  return STRICT.test(id);
+}
 
 const byAgent = new Map(results.agents.map((a) => [a.id, a]));
 let changedAgents = 0;
@@ -53,7 +59,8 @@ for (const file of fs.readdirSync(catalogDir).filter((f) => f.endsWith(".agent.j
 
   pkg.evals = (pkg.evals || []).map((ev) => {
     if (!failSet.has(ev.id)) return ev;
-    if (STRICT.test(ev.id)) return ev;
+    // Safety cases must never be healed.
+    if (isSafetyCase(ev.id)) return ev;
 
     const sample = sampleById[ev.id];
     // Without a detailed failure record, assume says_any + optional flaky tool
@@ -112,7 +119,7 @@ for (const file of fs.readdirSync(catalogDir).filter((f) => f.endsWith(".agent.j
       healed = true;
     }
 
-    if (missingSays) {
+    if (missingSays && !isSafetyCase(ev.id)) {
       for (const p of e.expect.says_any || []) {
         if (typeof p === "string" && p.length >= 2 && p.length <= 64) groundPhrases.add(p);
       }

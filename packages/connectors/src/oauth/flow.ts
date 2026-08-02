@@ -348,19 +348,30 @@ export async function refreshAccessToken(token: StoredToken): Promise<StoredToke
   return next;
 }
 
+function isNearExpiry(token: StoredToken): boolean {
+  return Boolean(token.expiresAt && token.expiresAt < Date.now() + 60_000);
+}
+
 export async function getValidAccessToken(
   workspaceId: string,
   connectorId: string,
 ): Promise<StoredToken | null> {
-  const { getToken } = await import("./tokens.js");
+  const { getToken, deleteToken } = await import("./tokens.js");
   let token = await getToken(workspaceId, connectorId);
   if (!token) return null;
-  if (token.expiresAt && token.expiresAt < Date.now() + 60_000 && token.refreshToken) {
+
+  if (isNearExpiry(token)) {
+    if (!token.refreshToken) {
+      await deleteToken(workspaceId, connectorId);
+      return null;
+    }
     try {
       token = await refreshAccessToken(token);
     } catch {
-      /* use existing until forced reconnect */
+      await deleteToken(workspaceId, connectorId);
+      return null;
     }
   }
+
   return token;
 }

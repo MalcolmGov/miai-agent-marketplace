@@ -158,8 +158,11 @@ Workspace packages have **no third-party runtime deps** except cross-references 
 
 Base path relative to app origin.
 
+**Versioned contract (Phase 3):** Prefer `/api/v1/*` for new clients. OpenAPI stub: `GET /api/v1/openapi`. Legacy unversioned routes (`/api/embed/chat`, `/api/rent`, …) remain supported. Chat/rent bodies are validated with zod; shared errors use `apiError` / `apiOk`.
+
 | Method | Path | Auth | Purpose |
 |---|---|---|---|
+| GET | `/api/v1/openapi` | Public | OpenAPI 3 stub for versioned routes |
 | GET | `/api/health` | Public | Liveness / mode report |
 | GET | `/api/catalog` | Public | Families / agents catalogue |
 | GET | `/api/agents/[id]` | Mock/OIDC | Package + rental + connectors |

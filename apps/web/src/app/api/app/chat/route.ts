@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { runChannelTurn, runChannelTurnStream } from "@/lib/channel-turn";
+import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
+import { channelChatBodySchema, formatZodError } from "@/lib/api-schemas";
 import { embedCorsHeaders } from "@/lib/embed-cors";
 import { rateLimit } from "@/lib/security";
 import { correlationFromRequest } from "@/lib/traceability";
@@ -19,16 +21,21 @@ function sseLine(event: string, data: unknown): string {
 
 export async function POST(req: Request) {
   const cors = embedCorsHeaders(req);
-  const body = (await req.json()) as {
-    key: string;
-    message: string;
-    sessionId?: string;
-    replyLanguage?: string;
-    correlationId?: string;
-  };
+  let raw: unknown;
+  try {
+    raw = await req.json();
+  } catch {
+    return apiErrorFromRequest(req, 400, "Invalid JSON body", undefined, cors);
+  }
+
+  const parsed = channelChatBodySchema.safeParse(raw);
+  if (!parsed.success) {
+    return apiErrorFromRequest(req, 400, "Invalid request body", formatZodError(parsed.error), cors);
+  }
+  const body = parsed.data;
 
   const correlationId = correlationFromRequest(req, body.correlationId);
-  const limited = await rateLimit(`app:${(body.key || "").slice(0, 48)}`, {
+  const limited = await rateLimit(`app:${body.key.slice(0, 48)}`, {
     limit: 30,
     windowMs: 60_000,
   });
@@ -41,7 +48,7 @@ export async function POST(req: Request) {
     const result = await runChannelTurn({
       channel: "app",
       key: body.key,
-      message: typeof body.message === "string" ? body.message : "",
+      message: body.message.trim(),
       sessionId: body.sessionId,
       replyLanguage: body.replyLanguage,
       correlationId,
@@ -51,12 +58,15 @@ export async function POST(req: Request) {
     if (!result.ok) {
       const headers: Record<string, string> = { ...cors };
       if (result.retryAfterSec != null) headers["retry-after"] = String(result.retryAfterSec);
-      return NextResponse.json(
-        { error: result.error, detail: result.detail, retryAfterSec: result.retryAfterSec },
-        { status: result.status, headers },
+      return apiErrorFromRequest(
+        req,
+        result.status,
+        result.error,
+        { detail: result.detail, retryAfterSec: result.retryAfterSec },
+        headers,
       );
     }
-    return NextResponse.json(
+    return apiOk(
       {
         reply: result.assistantMessage,
         paused: result.paused,
@@ -64,7 +74,8 @@ export async function POST(req: Request) {
         channel: "app",
         correlationId: result.correlationId,
       },
-      { headers: cors },
+      200,
+      cors,
     );
   }
 
@@ -81,7 +92,7 @@ export async function POST(req: Request) {
         const result = await runChannelTurnStream({
           channel: "app",
           key: body.key,
-          message: typeof body.message === "string" ? body.message : "",
+          message: body.message.trim(),
           sessionId: body.sessionId,
           replyLanguage: body.replyLanguage,
           correlationId,

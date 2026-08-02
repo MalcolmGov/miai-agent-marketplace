@@ -39,6 +39,8 @@
     "production:status": "node scripts/production-wave-status.mjs",
     "proof:live": "node scripts/live-connector-proof.mjs",
     "proof:webhook": "node scripts/proof-webhook.mjs",
-    "proof:mcp": "node scripts/proof-mcp.mjs"
+    "proof:mcp": "node scripts/proof-mcp.mjs",
+    "smoke:live-llm": "node scripts/live-llm-smoke.mjs",
+    "smoke:live-llm:matrix": "node scripts/live-llm-smoke.mjs --matrix"
   }
 }

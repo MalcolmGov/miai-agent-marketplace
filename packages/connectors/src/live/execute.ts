@@ -1,6 +1,7 @@
 import type { ConnectorCall, ConnectorResult, ConnectorId } from "../types.js";
 import { getValidAccessToken } from "../oauth/flow.js";
 import { getToken } from "../oauth/tokens.js";
+import { HttpResponseError, withRetry } from "../retry.js";
 
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
@@ -503,32 +504,34 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
 async function postWebhook(url: string, secret: string, payload: unknown): Promise<Record<string, unknown>> {
   const { safeFetch } = await import("../ssrf.js");
   const { signWebhookPayload } = await import("../webhook-sig.js");
-  const body = JSON.stringify(payload);
-  const timestamp = String(Date.now());
-  const signature = secret ? signWebhookPayload(secret, timestamp, body) : "";
-  const res = await safeFetch(url, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      ...(signature
-        ? {
-            "x-miai-signature": signature,
-            "x-miai-timestamp": timestamp,
-          }
-        : {}),
-    },
-    body,
-    redirect: "manual",
+  return withRetry(async () => {
+    const body = JSON.stringify(payload);
+    const timestamp = String(Date.now());
+    const signature = secret ? signWebhookPayload(secret, timestamp, body) : "";
+    const res = await safeFetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        ...(signature
+          ? {
+              "x-miai-signature": signature,
+              "x-miai-timestamp": timestamp,
+            }
+          : {}),
+      },
+      body,
+      redirect: "manual",
+    });
+    if (res.status >= 300 && res.status < 400) {
+      throw new Error("Webhook redirects are not followed (SSRF protection)");
+    }
+    if (!res.ok) throw new HttpResponseError(res.status, `Webhook ${res.status}`);
+    try {
+      return (await res.json()) as Record<string, unknown>;
+    } catch {
+      return { ok: true, status: res.status };
+    }
   });
-  if (res.status >= 300 && res.status < 400) {
-    throw new Error("Webhook redirects are not followed (SSRF protection)");
-  }
-  if (!res.ok) throw new Error(`Webhook ${res.status}`);
-  try {
-    return (await res.json()) as Record<string, unknown>;
-  } catch {
-    return { ok: true, status: res.status };
-  }
 }
 
 async function slackHandoff(
@@ -1136,21 +1139,22 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         if (!endpoint) throw new Error("MCP endpoint missing");
         const bearer = token === "configured" ? config.token ?? "" : token;
         const { safeFetch } = await import("../ssrf.js");
-        const res = await safeFetch(`${endpoint}/tools/call`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            ...(bearer ? { authorization: `Bearer ${bearer}` } : {}),
-          },
-          body: JSON.stringify({ name: call.tool, arguments: call.args }),
+        const data = await withRetry(async () => {
+          const res = await safeFetch(`${endpoint}/tools/call`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              ...(bearer ? { authorization: `Bearer ${bearer}` } : {}),
+            },
+            body: JSON.stringify({ name: call.tool, arguments: call.args }),
+          });
+          if (!res.ok) throw new HttpResponseError(res.status, `MCP ${res.status}`);
+          try {
+            return (await res.json()) as Record<string, unknown>;
+          } catch {
+            return { ok: true, status: res.status };
+          }
         });
-        if (!res.ok) throw new Error(`MCP ${res.status}`);
-        let data: Record<string, unknown> = {};
-        try {
-          data = (await res.json()) as Record<string, unknown>;
-        } catch {
-          data = { ok: true, status: res.status };
-        }
         return {
           ok: true,
           data: { ...data, live: true, provider: "mcp" },

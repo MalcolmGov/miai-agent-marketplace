@@ -4,6 +4,7 @@ import { randomBytes } from "node:crypto";
 import { appendAudit, type AuditEvent } from "@/lib/store";
 import { getPool, query } from "@/lib/pg";
 import { ensureMigrations } from "@/lib/migrate";
+import { redactPii } from "@/lib/pii-redact";
 
 export type TraceChannel = "studio" | "embed" | "app" | "ask" | "whatsapp" | "system";
 
@@ -150,8 +151,8 @@ export async function appendTurnTranscript(
     channel: input.channel,
     sessionId: input.sessionId,
     userId: input.userId,
-    userMessage: input.userMessage.slice(0, 8000),
-    assistantMessage: input.assistantMessage.slice(0, 12000),
+    userMessage: redactPii(input.userMessage).slice(0, 8000),
+    assistantMessage: redactPii(input.assistantMessage).slice(0, 12000),
     toolCalls: input.toolCalls.slice(0, 40).map((t) => ({
       name: t.name,
       args: t.args,
@@ -239,6 +240,9 @@ export async function recordChatTurn(input: {
   auditType?: string;
   extraDetail?: Record<string, unknown>;
 }): Promise<{ audit: AuditEvent; turn: TurnTranscript }> {
+  const userMessage = redactPii(input.userMessage);
+  const assistantMessage = redactPii(input.assistantMessage);
+
   const tools = (input.toolCalls ?? []).map((t) => {
     const data = t.result && typeof t.result === "object" ? (t.result as Record<string, unknown>) : null;
     const err =
@@ -285,8 +289,8 @@ export async function recordChatTurn(input: {
       model: input.model,
       mode: input.mode,
       replyLanguage: input.replyLanguage,
-      userPreview: input.userMessage.slice(0, 160),
-      assistantPreview: input.assistantMessage.slice(0, 160),
+      userPreview: userMessage.slice(0, 160),
+      assistantPreview: assistantMessage.slice(0, 160),
       ...input.extraDetail,
     },
   });
@@ -318,8 +322,8 @@ export async function recordChatTurn(input: {
     channel: input.channel,
     sessionId: input.sessionId,
     userId: input.userId,
-    userMessage: input.userMessage,
-    assistantMessage: input.assistantMessage,
+    userMessage,
+    assistantMessage,
     toolCalls: tools,
     tokensDebited: input.tokensDebited,
     paused: input.paused,
