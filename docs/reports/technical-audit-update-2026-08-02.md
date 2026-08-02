@@ -8,10 +8,10 @@
 |---|---|
 | **Repo** | `miai-agent-marketplace` |
 | **Baseline audit** | 2026-08-02 @ `d4cfea2` — **B– · 61 / 100** |
-| **Update pin** | `main` @ `6dcb793` (+ Learn-more capabilities on branch tip / next commit) |
+| **Update pin** | `main` @ `3127fab` (B+ ops close: Redis + HMAC-only) |
 | **Update date** | 2026-08-02 |
-| **Method** | Evidence from remediation Phases 0–5, verifier punch-list, residual punch-list close, and pack-derived catalogue UX |
-| **Staging** | `https://miaiweb-production.up.railway.app` |
+| **Method** | Evidence from remediation Phases 0–5, verifier punch-list, residual punch-list close, B+ staging ops, pack-derived catalogue UX |
+| **Staging** | `https://miaiweb-production.up.railway.app` — `storeBackend: postgres`, `redisPing: ok` |
 
 ---
 
@@ -40,8 +40,8 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 | Backend complexity | 66 | 72 | +6 | Row upserts, read-through, body caps, RBAC + public path cleanup |
 | Maintainability | 66 | 70 | +4 | CI gate, catalog integrity, capability extractor tests |
 | Infrastructure | 63 | 68 | +5 | Migrations, dual-ACK TLS/file fallbacks |
-| Security maturity | 63 | 78 | +15 | Dual-flag mock, SSRF pin, HMAC-only flag, CSP nonce (script-src) |
-| DevOps | 52 | 74 | +22 | `.github/workflows/ci.yml` + gitleaks + `staticHigh>0` fail |
+| Security maturity | 63 | 80 | +17 | Dual-flag mock, SSRF pin, HMAC-only on staging, CSP nonce (script-src) |
+| DevOps | 52 | 78 | +26 | CI + gitleaks + `staticHigh>0` fail + Redis/HMAC ops live |
 | Enterprise readiness | 45 | 58 | +13 | Consent/DSAR/AI Act drafts; certs & counsel still open |
 | Data architecture | 45 | 70 | +25 | Prod requires `DATABASE_URL`; Postgres read-through |
 | Testing | 40 | 70 | +30 | Wallet/connectors/web unit tests + api-contract + residual suite |
@@ -56,7 +56,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 
 | # | Baseline finding | Status | Evidence / residual |
 |---|---|---|---|
-| 1 | Not horizontally scalable — in-memory + O(N) rewrites | **MOSTLY CLOSED (in-repo)** | Postgres pool + row upserts; prod boot requires `DATABASE_URL`. Reads for rentals/audit are Postgres read-through (multi-replica coherent). **Residual (ops):** Redis must be provisioned for shared rate-limit/sessions; Railway still typically 1 replica. |
+| 1 | Not horizontally scalable — in-memory + O(N) rewrites | **MOSTLY CLOSED** | Postgres pool + row upserts; prod boot requires `DATABASE_URL`; read-through for multi-replica coherence. **Redis live on staging.** Residual: still 1 Railway replica by choice; scale replicas when needed. |
 | 2 | No CI + ~zero tests | **CLOSED** | `pnpm run ci` / GitHub Actions: typecheck, tests, catalog integrity, `eval:suite:static` with `staticHigh>0` fail; gitleaks job. Web suite includes security-boot, SSRF residual, api-contract, family-capabilities, etc. |
 | 3 | Mock-default auth / single-flag fragility | **CLOSED** | Dual flags `ALLOW_MOCK_RAILS` + `I_UNDERSTAND_MOCK_RAILS_IN_PROD`; incomplete hatch fails closed. Same pattern for embed `*` and file-fallback. |
 | 4 | AI depth shallow; live safety = prompt only | **PARTIAL** | Shared live guardrails + lexical retrieval shipped; `pnpm eval:live` opt-in (not CI). Semantic/embeddings retrieval **not** shipped. MockModel % must not be sold as live quality. Catalogue depth policy unchanged (no Cluster B re-deepen). |
@@ -94,7 +94,7 @@ The baseline audit correctly identified a **strong IP / architecture core** wrap
 | Prod requires `DATABASE_URL` (file fallback dual-ACK only) | **FIXED** |
 | PG TLS verify-by-default; insecure needs dual ACK | **FIXED** |
 | Multi-replica read-through for agents/audit | **FIXED** |
-| Redis rate-limit/sessions fail-closed when configured | **FIXED** (ops: provision Redis for >1 replica) |
+| Redis rate-limit/sessions fail-closed when configured | **FIXED** — Upstash provisioned on staging (`redisPing: ok`) |
 
 ### Phase 3 — AI integrity
 | Item | Status |
@@ -207,7 +207,7 @@ SOC 2, ISO, counsel-signed DPA/BAA, and Azure HA are **not** required to run sta
 | Was the baseline “demo shell” fair? | **Yes** — and largely **remediated in-repo** |
 | Ready for uncontrolled enterprise RFP? | **No** — counsel + certs + live-LLM quality program still required |
 | Ready for pilot / staging customers with clear dual-ACK staging flags? | **Yes, with eyes open** |
-| Biggest remaining fundable workstreams | (1) Compliance counsel + assurance, (2) live-LLM eval as continuous quality, (3) semantic retrieval + deeper packs by policy, (4) multi-replica ops (Redis/HA) |
+| Biggest remaining fundable workstreams | (1) Compliance counsel + assurance, (2) live-LLM eval as continuous quality, (3) semantic retrieval + deeper packs by policy, (4) multi-replica HA beyond single Railway replica |
 
 ---
 
