@@ -1,12 +1,12 @@
 "use client";
 
-export type SetupStepId = "knowledge" | "connect" | "rent" | "try" | "install";
+export type SetupStepId = "knowledge" | "connect" | "try" | "rent" | "install";
 
 export const SETUP_STEPS: SetupStepId[] = [
   "knowledge",
   "connect",
-  "rent",
   "try",
+  "rent",
   "install",
 ];
 
@@ -54,14 +54,13 @@ export function resolveSetupStep(flags: {
   triedChat: boolean;
   visitedInstall: boolean;
 }): SetupStepId {
-  // First visit: always start on Knowledge
   if (!flags.hasKnowledge && !flags.rented && !flags.triedChat && !flags.visitedInstall) {
     return "knowledge";
   }
   if (!flags.hasKnowledge) return "knowledge";
   // Connect tools is optional — never block the path
-  if (!flags.rented) return "rent";
   if (!flags.triedChat) return "try";
+  if (!flags.rented) return "rent";
   if (!(flags.visitedInstall && flags.rented)) return "install";
   return "install";
 }
@@ -97,7 +96,6 @@ export function SetupGuide({
   activeStep,
   onStepChange,
   onSkipConnect,
-  onRent,
   onConfirmKnowledge,
 }: {
   agentId: string;
@@ -111,7 +109,6 @@ export function SetupGuide({
   activeStep: SetupStepId;
   onStepChange: (step: SetupStepId) => void;
   onSkipConnect: () => void;
-  onRent: () => void;
   onConfirmKnowledge?: () => void;
 }) {
   void agentId;
@@ -133,37 +130,37 @@ export function SetupGuide({
       id: "connect",
       title: connectTitle,
       detail: isWorkflow
-        ? "Optional. Skip to deploy as a knowledge responder. Connect Calendar / Slack later for live bookings and handoffs."
-        : "Optional. Skip to deploy as a knowledge responder. Connect tools later if you need live writes.",
+        ? "Optional. Skip to try the agent on knowledge alone. Connect Calendar / Slack later for live bookings and handoffs."
+        : "Optional. Skip to try the agent on knowledge alone. Connect tools later if you need live writes.",
       done: connectDone,
       requirement: "optional",
       requirementLabel: "Optional — knowledge-only is fine",
     },
     {
-      id: "rent",
-      title: rented ? "Plan active" : "Activate plan",
-      detail: rented
-        ? "Entitlement is ready — try the agent, then install on your site or app."
-        : "Required before Install. Sandbox try still works without this.",
-      done: rented,
-      requirement: "required",
-      requirementLabel: "Required to go live",
-    },
-    {
       id: "try",
-      title: "Try in sandbox",
+      title: "Sandbox",
       detail:
-        "Last check before go live — send a real scenario. Free while not rented; no live API writes.",
+        "Try a real customer scenario before you pay. Free while not rented — no live API writes.",
       done: triedChat,
       requirement: "recommended",
       requirementLabel: "Recommended",
     },
     {
+      id: "rent",
+      title: rented ? "Paid" : "Rent + Pay",
+      detail: rented
+        ? "Plan is active — continue to go live and activate on your website or app."
+        : "Pick a plan and complete mock card payment to unlock Install and live channels.",
+      done: rented,
+      requirement: "required",
+      requirementLabel: "Required to go live",
+    },
+    {
       id: "install",
-      title: "Go live",
+      title: "Go live and activate",
       detail: rented
         ? "Copy website embed or App link — once installed, you’re running."
-        : "Activate a plan first, then copy website embed or App link.",
+        : "Complete Rent + Pay first, then copy website embed or App link.",
       done: visitedInstall && rented,
       requirement: "required",
       requirementLabel: "Required",
@@ -188,11 +185,11 @@ export function SetupGuide({
       return;
     }
     if (activeStep === "rent" && !rented) {
-      onRent();
+      document.getElementById("rent-pay")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
     if (activeStep === "install" && !rented) {
-      onRent();
+      onStepChange("rent");
       return;
     }
     if (nxt) onStepChange(nxt);
@@ -202,16 +199,16 @@ export function SetupGuide({
     activeStep === "knowledge"
       ? "Save & continue"
       : activeStep === "rent" && !rented
-      ? "Activate plan"
-      : activeStep === "install" && !rented
-        ? "Activate & go live"
-        : activeStep === "try"
-          ? "Continue to Go live"
-          : activeStep === "install"
-            ? "Setup complete"
-            : nxt
-              ? `Continue — ${steps.find((s) => s.id === nxt)?.title}`
-              : "Done";
+        ? "Continue to payment form"
+        : activeStep === "install" && !rented
+          ? "Rent + Pay first"
+          : activeStep === "try"
+            ? "Continue — Rent + Pay"
+            : activeStep === "install"
+              ? "Setup complete"
+              : nxt
+                ? `Continue — ${steps.find((s) => s.id === nxt)?.title}`
+                : "Done";
 
   return (
     <div className="panel space-y-4 p-4">
@@ -219,9 +216,8 @@ export function SetupGuide({
         <div>
           <h2 className="text-sm font-semibold text-[var(--text)]">Setup</h2>
           <p className="mt-0.5 max-w-xl text-xs text-[var(--muted)]">
-            One step at a time. Required: your business knowledge + activate plan. Tools are optional —
-            you can go live as a knowledge responder and connect systems later. Sandbox is the last
-            check before Install.
+            One step at a time. Add knowledge, optionally connect tools, try sandbox, then rent &amp;
+            pay before you go live and activate.
           </p>
         </div>
         <div className="text-right">
@@ -352,7 +348,7 @@ export function SetupGuide({
 
       <p className="text-[11px] text-[var(--muted)]">
         <span className="font-medium text-[var(--text)]">Minimum path:</span> add your knowledge →
-        activate plan → try sandbox → Install.
+        try sandbox → rent &amp; pay → go live and activate.
         {isWorkflow ? (
           <>
             {" "}

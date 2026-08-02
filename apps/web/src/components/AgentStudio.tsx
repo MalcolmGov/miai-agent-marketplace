@@ -3,6 +3,7 @@
 import { KnowledgePanel } from "./KnowledgePanel";
 import { ActionsPanel } from "./ActionsPanel";
 import { InstallPanel } from "./InstallPanel";
+import { RentPayPanel } from "./RentPayPanel";
 import { SandboxChat } from "./SandboxChat";
 import {
   SetupGuide,
@@ -243,15 +244,16 @@ export function AgentStudio({ agentId }: { agentId: string }) {
     return true;
   }
 
-  async function rent() {
+  async function rent(): Promise<boolean> {
     setSaving(true);
     setConfigMsg(null);
     try {
       const ok = await ensureRented();
-      if (!ok) return;
+      if (!ok) return false;
       setConfigMsg({ kind: "ok", text: t("studio.okRented") });
       await load();
-      setActiveStep("try");
+      setActiveStep("install");
+      return true;
     } finally {
       setSaving(false);
     }
@@ -307,7 +309,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   function skipConnect() {
     writeSetupFlag(agentId, "skip-connect");
     setSkippedConnect(true);
-    setActiveStep("rent");
+    setActiveStep("try");
   }
 
   function confirmKnowledge() {
@@ -387,7 +389,6 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         activeStep={activeStep}
         onStepChange={goStep}
         onSkipConnect={skipConnect}
-        onRent={() => void rent()}
         onConfirmKnowledge={confirmKnowledge}
       />
 
@@ -444,47 +445,15 @@ export function AgentStudio({ agentId }: { agentId: string }) {
         ) : null}
 
         {activeStep === "rent" ? (
-          <div className="panel mx-auto max-w-lg space-y-4 p-5">
-            <div>
-              <h2 className="text-sm font-semibold">{t("studio.rent")}</h2>
-              <p className="mt-1 text-xs text-[var(--muted)]">
-                Required to go live. Pick a plan to create workspace entitlement, then try sandbox and
-                Install.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {(Object.keys(TIER_PRICES) as Array<keyof typeof TIER_PRICES>).map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`chip ${tier === id ? "chip-live" : ""}`}
-                  onClick={() => setTier(id)}
-                >
-                  {id} ${TIER_PRICES[id]}
-                </button>
-              ))}
-            </div>
-            {configMsg ? (
-              <p
-                className={`text-xs ${configMsg.kind === "ok" ? "text-[var(--accent)]" : "text-red-400"}`}
-              >
-                {configMsg.text}
-              </p>
-            ) : null}
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={saving}
-              onClick={() => void rent()}
-            >
-              {state === "selected" ? t("studio.rentConfigure") : t("studio.updatePlan")}
-            </button>
-            {rented ? (
-              <button type="button" className="btn btn-ghost text-xs" onClick={() => goStep("try")}>
-                Continue to sandbox
-              </button>
-            ) : null}
-          </div>
+          <RentPayPanel
+            tier={tier}
+            onTierChange={setTier}
+            rented={rented}
+            saving={saving}
+            message={configMsg}
+            onPayAndActivate={() => rent()}
+            onContinueLive={() => goStep("install")}
+          />
         ) : null}
 
         {activeStep === "try" ? (
@@ -518,7 +487,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
               copiedApp={copiedApp}
               onCopySnippet={() => void copySnippet()}
               onCopyAppUrl={() => void copyAppUrl()}
-              onRent={() => void rent()}
+              onRent={() => goStep("rent")}
             />
           </div>
         ) : null}
