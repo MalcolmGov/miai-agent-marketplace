@@ -6,10 +6,6 @@ export async function register() {
   if (process.env.NEXT_RUNTIME !== "nodejs") return;
   const { assertBootHardening } = await import("./lib/security");
   assertBootHardening();
-  try {
-    const { ensureMigrations } = await import("./lib/migrate");
-    await ensureMigrations();
-  } catch (err) {
-    console.error("[boot] postgres migrations failed", err);
-  }
+  // Migrations run on first Postgres hydrate (store/traceability/etc.) — do not
+  // import `pg` from instrumentation; Next webpack-bundles that graph and breaks the build.
 }

@@ -1,7 +1,8 @@
-import pg, { type Pool, type QueryResult, type QueryResultRow } from "pg";
+import type { Pool, QueryResult, QueryResultRow } from "pg";
 
 const g = globalThis as typeof globalThis & {
   __miaiPgPool?: Pool | null;
+  __miaiPgModule?: typeof import("pg");
 };
 
 /** Resolved Postgres URL from DATABASE_URL or MIAI_DATABASE_URL. */
@@ -23,6 +24,14 @@ export function sslFor(url: string): boolean | { rejectUnauthorized: boolean } {
   return { rejectUnauthorized: forceVerify };
 }
 
+function loadPgSync(): typeof import("pg") {
+  if (g.__miaiPgModule) return g.__miaiPgModule;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const mod = require("pg") as typeof import("pg") & { default?: typeof import("pg") };
+  g.__miaiPgModule = mod.default ?? mod;
+  return g.__miaiPgModule;
+}
+
 /** Shared connection pool (singleton on globalThis for HMR). Returns null when no DATABASE_URL. */
 export function getPool(): Pool | null {
   if (g.__miaiPgPool !== undefined) return g.__miaiPgPool;
@@ -31,6 +40,7 @@ export function getPool(): Pool | null {
     g.__miaiPgPool = null;
     return null;
   }
+  const pg = loadPgSync();
   g.__miaiPgPool = new pg.Pool({
     connectionString: url,
     ssl: sslFor(url),
