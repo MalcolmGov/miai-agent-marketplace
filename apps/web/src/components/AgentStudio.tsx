@@ -92,7 +92,7 @@ export function AgentStudio({ agentId }: { agentId: string }) {
   const [appAccent, setAppAccent] = useState("#2bb8a8");
   const [appAccent2, setAppAccent2] = useState("#157f8d");
   const [appGreeting, setAppGreeting] = useState(
-    "Hi! I'm your AI assistant. Ask me anything, or say you'd like a human.",
+    "Hi — I'm an AI assistant (not a human). Ask me anything, or say you'd like a human.",
   );
   const [activeStep, setActiveStep] = useState<SetupStepId>("knowledge");
   const [triedChat, setTriedChat] = useState(false);

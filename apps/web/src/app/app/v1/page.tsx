@@ -21,7 +21,7 @@ export default async function AppChannelPage({
   const accent2 = one(sp.accent2 ?? sp["accent-2"], "#157f8d");
   const greeting = one(
     sp.greeting,
-    "Hi! I'm your AI assistant. Ask me anything, or say you'd like a human.",
+    "Hi — I'm an AI assistant (not a human). Ask me anything, or say you'd like a human.",
   );
   const lang = one(sp.lang, "en");
   const sugRaw = one(

@@ -70,15 +70,15 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "PII minimisation",
-        body: "Agents collect only what the task needs; connector secrets never enter prompts.",
+        body: "Agents collect only what the task needs; connector secrets never enter prompts. Turn transcripts are redacted at write time (Phase 3).",
         truth: "partial",
-        caveat: "No automated PII redaction scrubber yet — guardrails + prompt policy.",
+        caveat: "Best-effort redaction (email/phone/card/OTP) — not a substitute for data minimisation at source.",
       },
       {
         title: "Retention & erasure",
-        body: "DSAR JSON export for owners/admins · erasure language escalates to a human.",
+        body: "DSAR JSON export and admin-managed erasure API for owners/admins. Audit trail stays append-only with tombstone events.",
         truth: "live",
-        caveat: "Destructive wipe remains a human-approved offboarding step — not one-click delete in chat.",
+        caveat: "Erasure is destructive and admin-only — chat agents still escalate to a human for end-user requests.",
       },
     ],
   },
@@ -141,6 +141,12 @@ export const PILLARS: Pillar[] = [
         truth: "partial",
         caveat: "Policy-layer moderation in runtime packs — not a separate third-party moderator yet.",
       },
+      {
+        title: "AI transparency (Art.50-aligned)",
+        body: "Chat, embed, and App surfaces disclose that replies come from an AI system — not a human — with a clear path to request a person.",
+        truth: "live",
+        caveat: "Draft disclosure copy pending counsel review for jurisdiction-specific wording.",
+      },
     ],
   },
   {
@@ -158,9 +164,9 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "Full audit trail",
-        body: "Rent, chat, embed, OAuth, knowledge, wallet, and DSAR export events per workspace.",
+        body: "Rent, chat, embed, OAuth, knowledge, wallet, consent, and DSAR export/erasure events per workspace.",
         truth: "live",
-        caveat: "Operational trail today — immutable export planned with SOC 2 evidence.",
+        caveat: "Append-oriented Postgres inserts; true WORM / immutable blob export planned with SOC 2 evidence.",
       },
       {
         title: "Rate limits & spend caps",

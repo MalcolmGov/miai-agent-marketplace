@@ -22,7 +22,7 @@ const SCRIPT = String.raw`
   var accent2 = (current && current.getAttribute("data-accent-2")) || "#157f8d";
   var title   = (current && current.getAttribute("data-title"))    || "Assistant";
   var greeting = (current && current.getAttribute("data-greeting")) ||
-    "Hi! I'm the AI assistant. Ask me anything about our products and services, or say you'd like a human.";
+    "Hi — I'm an AI assistant (not a human). I can help with questions about our products and services, or connect you to a person.";
   var sugAttr = (current && current.getAttribute("data-suggestions")) || "What do you offer?,How does it work?,What does it cost?,Talk to a human";
   var suggestions = sugAttr.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 4);
 
@@ -110,7 +110,7 @@ const SCRIPT = String.raw`
     '<div id="miai-panel" role="dialog" aria-label="Chat with ' + title.replace(/[<>&"]/g, "") + '">' +
     '  <div id="miai-head">' +
     '    <div id="miai-ava">' + sparkIcon + '</div>' +
-    '    <div id="miai-ttl"><b></b><span id="miai-sub"><span id="miai-pulse"></span>AI assistant &middot; Online</span></div>' +
+    '    <div id="miai-ttl"><b></b><span id="miai-sub"><span id="miai-pulse"></span>AI system &middot; Online</span></div>' +
     '    <button id="miai-close" type="button" aria-label="Close chat">&#10005;</button>' +
     '  </div>' +
     '  <div id="miai-msgs"></div>' +
@@ -119,7 +119,7 @@ const SCRIPT = String.raw`
     '    <input id="miai-input" type="text" enterkeyhint="send" placeholder="Ask us anything…" autocomplete="off" aria-label="Message"/>' +
     '    <button id="miai-send" type="submit" aria-label="Send">' + sendIcon + '</button>' +
     '  </form>' +
-    '  <div id="miai-foot">Powered by MyInstantAI</div>' +
+    '  <div id="miai-foot">AI system &middot; Powered by MyInstantAI</div>' +
     '</div>';
   document.body.appendChild(root);
 

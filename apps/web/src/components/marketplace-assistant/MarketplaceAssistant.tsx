@@ -199,7 +199,7 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
         </div>
         <div className="miai-ask-ttl">
           <b>My Instant AI assistant</b>
-          <span>Ask anything about the product</span>
+          <span>AI system · Ask anything about the product</span>
         </div>
         {mode === "floating" && (
           <button type="button" className="miai-ask-x" aria-label="Close and clear chat" onClick={closeFloating}>

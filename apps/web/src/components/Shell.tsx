@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ConsentBanner } from "./ConsentBanner";
 import { MarketplaceAssistant } from "./marketplace-assistant/MarketplaceAssistant";
 import { Sidebar } from "./Sidebar";
 import { ThemeToggle } from "./ThemeToggle";
@@ -88,6 +89,21 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className={`shell-content ${isHome ? "shell-content-home" : ""}`}>{children}</main>
+        <footer className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-[var(--border)] px-4 py-3 text-xs text-[var(--muted-dim)] sm:px-6">
+          <Link href="/privacy" className="hover:text-[var(--text)]">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-[var(--text)]">
+            Terms
+          </Link>
+          <Link href="/cookies" className="hover:text-[var(--text)]">
+            Cookies
+          </Link>
+          <Link href="/trust" className="hover:text-[var(--text)]">
+            Trust
+          </Link>
+          <span className="text-[var(--muted-dim)]">AI system disclosures on chat surfaces</span>
+        </footer>
       </div>
 
       <TopUpModal
@@ -100,6 +116,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       />
 
       {!isAskPage && <MarketplaceAssistant mode="floating" />}
+      <ConsentBanner />
     </div>
   );
 }

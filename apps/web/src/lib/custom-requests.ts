@@ -143,6 +143,24 @@ export async function createCustomRequest(input: {
   return row;
 }
 
+/** Delete custom requests tied to a workspace (payload.workspaceId). */
+export async function deleteCustomRequestsForWorkspace(workspaceId: string): Promise<number> {
+  await hydrate();
+  const toRemove = mem().rows.filter((r) => r.workspaceId === workspaceId);
+  mem().rows = mem().rows.filter((r) => r.workspaceId !== workspaceId);
+  if (databaseUrl()) {
+    try {
+      await query(`DELETE FROM miai_custom_requests WHERE payload->>'workspaceId' = $1`, [
+        workspaceId,
+      ]);
+    } catch (err) {
+      console.error("[custom-requests] postgres workspace delete failed", err);
+    }
+  }
+  await persist();
+  return toRemove.length;
+}
+
 export async function updateCustomRequest(
   id: string,
   patch: Partial<Pick<CustomRequest, "status" | "need" | "business">>,

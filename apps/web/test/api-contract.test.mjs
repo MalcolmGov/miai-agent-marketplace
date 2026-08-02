@@ -83,9 +83,11 @@ describe("auth (oidc)", () => {
 });
 
 describe("public API paths", () => {
-  it("isPublicApiPath allowlists health, blocks rent", async () => {
+  it("isPublicApiPath allowlists health and consent, blocks rent", async () => {
     const { isPublicApiPath } = await import("../src/lib/auth.ts");
     assert.equal(isPublicApiPath("/api/health"), true);
+    assert.equal(isPublicApiPath("/api/consent"), true);
+    assert.equal(isPublicApiPath("/api/v1/openapi"), true);
     assert.equal(isPublicApiPath("/api/rent"), false);
   });
 });

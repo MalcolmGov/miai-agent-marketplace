@@ -89,6 +89,9 @@ export default function TrustPage() {
   const [events, setEvents] = useState<AuditEvent[] | null>(null);
   const [dsarBusy, setDsarBusy] = useState(false);
   const [dsarError, setDsarError] = useState<string | null>(null);
+  const [eraseBusy, setEraseBusy] = useState(false);
+  const [eraseError, setEraseError] = useState<string | null>(null);
+  const [eraseSuccess, setEraseSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/audit?limit=6")
@@ -117,6 +120,35 @@ export default function TrustPage() {
       setDsarError(e instanceof Error ? e.message : "Export failed");
     } finally {
       setDsarBusy(false);
+    }
+  }
+
+  async function requestErasure() {
+    const ok = window.confirm(
+      "Request workspace erasure?\n\nThis permanently deletes rented agents, transcripts, knowledge, OAuth tokens, and members for THIS workspace. Audit history is kept with tombstone markers.\n\nAdmin/owner only. This cannot be undone.",
+    );
+    if (!ok) return;
+
+    setEraseBusy(true);
+    setEraseError(null);
+    setEraseSuccess(null);
+    try {
+      const res = await fetch("/api/dsar/erase", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ confirm: true }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.error ?? `Erasure failed (${res.status})`);
+      }
+      setEraseSuccess(
+        `Erasure completed. Rentals: ${data.deleted?.rentals ?? 0}, transcripts: ${data.deleted?.turnTranscripts ?? 0}. Audit tombstones retained.`,
+      );
+    } catch (e) {
+      setEraseError(e instanceof Error ? e.message : "Erasure failed");
+    } finally {
+      setEraseBusy(false);
     }
   }
 
@@ -270,19 +302,37 @@ export default function TrustPage() {
                 Workspace audit &amp; DSAR
               </h2>
               <p className="mt-1 text-xs text-[var(--muted)]">
-                This workspace only — never cross-tenant. Owners/admins can export a DSAR JSON pack.
+                This workspace only — never cross-tenant. Owners/admins can export a DSAR JSON pack or
+                request destructive erasure (admin-only).
               </p>
             </div>
-            <button
-              type="button"
-              className="btn btn-ghost text-xs"
-              disabled={dsarBusy}
-              onClick={() => void downloadDsar()}
-            >
-              {dsarBusy ? "Exporting…" : "Download DSAR export"}
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost text-xs"
+                disabled={dsarBusy || eraseBusy}
+                onClick={() => void downloadDsar()}
+              >
+                {dsarBusy ? "Exporting…" : "Download DSAR export"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost text-xs"
+                disabled={dsarBusy || eraseBusy}
+                onClick={() => void requestErasure()}
+                title="Destructive — removes operational data for this workspace"
+              >
+                {eraseBusy ? "Erasing…" : "Request erasure"}
+              </button>
+            </div>
           </div>
           {dsarError ? <p className="mt-2 text-xs text-[var(--warn,#fb923c)]">{dsarError}</p> : null}
+          {eraseError ? (
+            <p className="mt-2 text-xs text-[var(--warn,#fb923c)]">{eraseError}</p>
+          ) : null}
+          {eraseSuccess ? (
+            <p className="mt-2 text-xs text-[var(--accent-bright)]">{eraseSuccess}</p>
+          ) : null}
           {events == null ? (
             <p className="mt-4 text-sm text-[var(--muted)]">Loading…</p>
           ) : events.length === 0 ? (

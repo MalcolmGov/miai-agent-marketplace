@@ -7,7 +7,7 @@ Single source of truth for security and multi-region compliance claims. The in-a
 | Layer | What it covers | What it does **not** cover |
 |---|---|---|
 | **Platform** | Auth, tenancy, audit, embed keys, OAuth token handling, headers, Azure path | SOC 2 certificate (planned), blanket “GDPR certified” |
-| **Agent / market packs** | US CCPA/TCPA, EU GDPR, Africa POPIA-style, Asia PDPA-style prompts & guardrails | Legal advice; BAAs; automated DSAR fulfilment |
+| **Agent / market packs** | US CCPA/TCPA, EU GDPR, Africa POPIA-style, Asia PDPA-style prompts & guardrails | Legal advice; BAAs; one-click erasure in chat |
 | **Deploy region** | Where the Container App + Postgres run | Per-tenant residency pin (roadmap) |
 
 ## Regions
@@ -28,18 +28,21 @@ Single source of truth for security and multi-region compliance claims. The in-a
 5. HMAC embed keys; embed chat requires live/rented agent; 30 req/min rate limit
 6. OAuth PKCE + HMAC state; tokens **AES-256-GCM** at rest (`v2.` envelopes; `v1.` migrated on write)
 7. `GET /api/dsar/export` — owner/admin JSON pack (no OAuth secrets), including conversation turn transcripts
-8. Enforcing CSP + security headers (`apps/web/next.config.ts`)
-9. Runtime erasure / injection defenses + Agent Studio **Test the guardrails** probes
-10. **Audit + traceability** — workspace audit events with correlation ids; full chat turn transcripts (Studio / Website / App / Ask AI) in History (`/history`); optional App Insights `miai.audit.*`
-11. **Workspace members** — invite + role management at `/workspace` (mock + demo); OIDC production still trusts IdP `roles` until SCIM
-12. **Try before rent** — free Studio sandbox while agent is `selected`; rent required for embed/app go-live
-13. **Insights economics** — tokens, display spend, and estimated savings (deflection × assumed ticket cost) on `/insights`
+8. `POST /api/dsar/erase` — admin-managed workspace wipe with audit tombstones (`confirm: true` required)
+9. Enforcing CSP + security headers (`apps/web/next.config.ts`)
+10. Runtime erasure / injection defenses + Agent Studio **Test the guardrails** probes
+11. **Audit + traceability** — append-oriented Postgres audit; turn transcripts with PII redaction; optional App Insights `miai.audit.*`
+12. **AI transparency** — Art.50-aligned disclosure on embed / Studio / App / Ask surfaces + Trust pillar
+13. **Draft legal pages** — `/privacy`, `/terms`, `/cookies` + consent banner (`POST /api/consent`) — counsel review pending
+14. **Workspace members** — invite + role management at `/workspace` (mock + demo); OIDC production still trusts IdP `roles` until SCIM
+15. **Try before rent** — free Studio sandbox while agent is `selected`; rent required for embed/app go-live
+16. **Insights economics** — tokens, display spend, and estimated savings (deflection × assumed ticket cost) on `/insights`
 
 ## Honest language
 
 **Say:** market-pack guardrails; deploy-time Azure region; human DSAR; HMAC-sealed tokens; SOC 2 planned; estimated savings (not invoice truth).
 
-**Do not say:** SOC 2 certified; GDPR-compliant platform; EU residency guaranteed today; automated right-to-be-forgotten in chat.
+**Do not say:** SOC 2 certified; GDPR-compliant platform; EU residency guaranteed today; one-click right-to-be-forgotten inside chat (admin Trust erasure is available; counsel-final privacy copy pending).
 
 ## Roadmap
 
@@ -60,8 +63,23 @@ Single source of truth for security and multi-region compliance claims. The in-a
 | LLM via MIAI gateway | Inference | Per gateway policy |
 | OAuth vendors | Connector auth | Vendor regions |
 
+## Compliance documentation (Phase 4 — drafts)
+
+> **DRAFT — not legal advice.** All items below are skeletons pending counsel / partner review. **Not certifications, signed agreements, or attestation.**
+
+| Document | Purpose |
+|---|---|
+| [`docs/compliance/ROPA_DRAFT.md`](compliance/ROPA_DRAFT.md) | Record of Processing Activities skeleton |
+| [`docs/compliance/DPIA_DRAFT.md`](compliance/DPIA_DRAFT.md) | DPIA for marketplace chat agents |
+| [`docs/compliance/BREACH_72H_RUNBOOK.md`](compliance/BREACH_72H_RUNBOOK.md) | Incident / breach response (72h where required) |
+| [`docs/compliance/templates/DPA_DRAFT.md`](compliance/templates/DPA_DRAFT.md) | DPA template outline — not for signature |
+| [`docs/compliance/templates/BAA_DRAFT.md`](compliance/templates/BAA_DRAFT.md) | BAA outline — **HIPAA blocked** until PHI architecture |
+| [`docs/compliance/PCI_STRIPE_SAQ.md`](compliance/PCI_STRIPE_SAQ.md) | PCI scope reduction via Stripe (SAQ-A style draft) |
+| [`docs/compliance/SOC2_EVIDENCE_INDEX.md`](compliance/SOC2_EVIDENCE_INDEX.md) | Evidence index for future auditor — **not SOC 2 certified** |
+| [`docs/AUDIT_RETENTION.md`](AUDIT_RETENTION.md) | Audit retention posture (soft cap; WORM gap) |
+
 ## Contact
 
 Partner security / DPO: `security@myinstantai.com`
 
-Related: `docs/CONNECTOR_OAUTH.md`, `docs/TECHNICAL_SPEC.md` §11, `docs/MARKET_PACKS.md`, `infra/azure/`.
+Related: `docs/compliance/`, `docs/CONNECTOR_OAUTH.md`, `docs/TECHNICAL_SPEC.md` §11, `docs/MARKET_PACKS.md`, `infra/azure/`.

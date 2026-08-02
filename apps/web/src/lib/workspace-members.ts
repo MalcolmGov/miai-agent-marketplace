@@ -237,6 +237,23 @@ export async function updateMemberRole(input: {
   return member;
 }
 
+/** Remove every member row for a workspace (used by DSAR erasure). */
+export async function clearWorkspaceMembers(workspaceId: string): Promise<number> {
+  await hydrate();
+  const rows = mem().data.workspaces[workspaceId] ?? [];
+  const count = rows.length;
+  delete mem().data.workspaces[workspaceId];
+  if (databaseUrl()) {
+    try {
+      await query("DELETE FROM miai_workspace_members WHERE workspace_id = $1", [workspaceId]);
+    } catch (err) {
+      console.error("[workspace-members] postgres workspace clear failed", err);
+    }
+  }
+  await persist();
+  return count;
+}
+
 export async function removeMember(input: {
   workspaceId: string;
   userId: string;

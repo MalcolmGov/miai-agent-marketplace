@@ -128,8 +128,10 @@ export class AuthError extends Error {
 export function isPublicApiPath(pathname: string): boolean {
   if (pathname === "/api/health") return true;
   if (pathname === "/api/catalog") return true;
+  if (pathname === "/api/consent") return true;
   if (pathname.startsWith("/api/oauth/callback")) return true;
   if (pathname.startsWith("/api/embed/")) return true;
+  if (pathname.startsWith("/api/v1/")) return true;
   if (pathname.startsWith("/agents/v1/")) return true;
   return false;
 }

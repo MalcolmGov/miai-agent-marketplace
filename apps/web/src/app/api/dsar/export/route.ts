@@ -53,7 +53,7 @@ export async function GET(req: Request) {
     requestedBy: { userId: auth.userId, roles: auth.roles },
     workspaceId,
     notice:
-      "This export is for legitimate access/portability requests. OAuth secrets are omitted. Erasure still requires a human-approved offboarding step.",
+      "This export is for legitimate access/portability requests. OAuth secrets are omitted. Destructive erasure is available to owners/admins via POST /api/dsar/erase (confirm required); audit tombstones are retained.",
     wallet: { tokens: wallet.tokens },
     agents: agents.map((a) => ({
       agentId: a.agentId,

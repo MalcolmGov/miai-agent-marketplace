@@ -405,7 +405,7 @@ RBAC: workspace roles `owner|admin|agent|readonly` on mutating APIs; `/api/admin
 
 Security headers: enforcing `Content-Security-Policy` plus nosniff / referrer / frame / permissions (`apps/web/next.config.ts`).
 
-Trust Center: `/trust` + `docs/TRUST_AND_COMPLIANCE.md` — market-pack compliance vs platform certification claims.
+Trust Center: `/trust` + `docs/TRUST_AND_COMPLIANCE.md` — market-pack compliance vs platform certification claims. Phase 4 compliance drafts (RoPA, DPIA, DPA/BAA templates, breach runbook, PCI/SOC2 evidence index): `docs/compliance/`.
 
 Telemetry: structured console + optional App Insights custom events (`miai.audit.*`).
 

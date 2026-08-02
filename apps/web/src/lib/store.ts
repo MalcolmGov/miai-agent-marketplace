@@ -185,7 +185,11 @@ async function persistToFile(): Promise<void> {
   const shape = toShape();
   const file = rentalStorePath();
   await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(shape, null, 2), "utf8");
+  // When Postgres is primary, rentals file fallback must not rewrite audit history.
+  const payload: PersistShape = getPool()
+    ? { workspaces: shape.workspaces, audit: [] }
+    : shape;
+  await fs.writeFile(file, JSON.stringify(payload, null, 2), "utf8");
 }
 
 async function upsertRentalRow(
@@ -209,16 +213,8 @@ async function insertAuditRow(row: AuditEvent): Promise<void> {
      ON CONFLICT (id) DO NOTHING`,
     [row.id, row.at, row.workspaceId, row.agentId ?? null, row.type, JSON.stringify(row.detail ?? {})],
   );
-  // Nested subquery required so Postgres allows DELETE against the same table.
-  await query(
-    `DELETE FROM miai_audit
-     WHERE id NOT IN (
-       SELECT id FROM (
-         SELECT id FROM miai_audit ORDER BY at DESC LIMIT $1
-       ) keep
-     )`,
-    [AUDIT_CAP],
-  );
+  // Append-only posture: Postgres retains full audit history until ops archives per
+  // docs/AUDIT_RETENTION.md. In-process memory is capped via AUDIT_CAP in appendAudit().
 }
 
 /** File fallback only — Postgres writes are row-level in upsert/append handlers. */
@@ -427,6 +423,41 @@ export async function listAudit(
     );
   }
   return rows.slice(0, limit);
+}
+
+/** Remove all rented agents for a workspace (memory + Postgres or file fallback). */
+export async function clearWorkspaceRentals(workspaceId: string): Promise<number> {
+  await ensureStoreHydrated();
+  const rec = store().workspaces.get(workspaceId);
+  const count = rec?.agents.size ?? 0;
+  store().workspaces.delete(workspaceId);
+
+  if (getPool()) {
+    try {
+      await query("DELETE FROM miai_rentals WHERE workspace_id = $1", [workspaceId]);
+    } catch (err) {
+      console.error("[store] postgres rental delete failed, writing file fallback", err);
+      await persist();
+    }
+  } else {
+    await persist();
+  }
+  return count;
+}
+
+/** Redact audit detail for a workspace in memory; Postgres rows are kept append-only. */
+export function redactWorkspaceAuditDetails(workspaceId: string): number {
+  let count = 0;
+  for (const row of store().audit) {
+    if (row.workspaceId !== workspaceId) continue;
+    row.detail = {
+      _erased: true,
+      erasedAt: new Date().toISOString(),
+      priorType: row.type,
+    };
+    count++;
+  }
+  return count;
 }
 
 export async function opsSummary(workspaceId: string) {

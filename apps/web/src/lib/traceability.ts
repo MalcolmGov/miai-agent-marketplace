@@ -178,6 +178,24 @@ export async function appendTurnTranscript(
   return row;
 }
 
+/** Delete all turn transcripts for a workspace (memory + Postgres or file). */
+export async function deleteTurnTranscriptsForWorkspace(workspaceId: string): Promise<number> {
+  await hydrate();
+  const before = mem().rows.length;
+  mem().rows = mem().rows.filter((r) => r.workspaceId !== workspaceId);
+  const deleted = before - mem().rows.length;
+
+  if (getPool()) {
+    try {
+      await query("DELETE FROM miai_turns WHERE workspace_id = $1", [workspaceId]);
+    } catch (err) {
+      console.error("[traceability] postgres turn delete failed", err);
+    }
+  }
+  await persistToFile();
+  return deleted;
+}
+
 export async function listTurnTranscripts(opts: {
   workspaceId?: string;
   agentId?: string;

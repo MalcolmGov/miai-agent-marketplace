@@ -177,6 +177,26 @@ export async function updateKnowledgeSource(
   return next;
 }
 
+/** Delete all knowledge sources for every agent in a workspace. */
+export async function deleteKnowledgeForWorkspace(workspaceId: string): Promise<number> {
+  await hydrate();
+  let deleted = 0;
+  for (const [k, sources] of [...mem().entries()]) {
+    if (!k.startsWith(`${workspaceId}::`)) continue;
+    deleted += sources.length;
+    mem().delete(k);
+  }
+  if (databaseUrl()) {
+    try {
+      await query("DELETE FROM miai_knowledge_sources WHERE workspace_id = $1", [workspaceId]);
+    } catch (err) {
+      console.error("[knowledge] postgres workspace delete failed", err);
+    }
+  }
+  await persist();
+  return deleted;
+}
+
 export async function deleteKnowledgeSource(
   workspaceId: string,
   agentId: string,
