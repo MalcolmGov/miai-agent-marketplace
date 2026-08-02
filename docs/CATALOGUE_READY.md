@@ -32,7 +32,7 @@ Those do **not** block selling the catalogue SKU list; they are Week-1 integrati
 pnpm polish:catalog
 pnpm generate:presets
 pnpm build:packages
-pnpm catalog:ready    # must report 271/271 and 55/55
+pnpm catalog:ready    # must report 271/271 and 100/100 go-live filter
 pnpm eval:smoke
 pnpm eval:suite       # full catalogue — expect 100% runtime (3848/3848)
 pnpm test:wallet
@@ -43,4 +43,4 @@ pnpm validate:azure   # requires az or bicep CLI
 ## Badges in UI
 
 - **Catalogue ready** — family passes the gate across its pack variants
-- Staging UI: **Go-live 18** filter = first-wave production families (not a limited SKU)
+- Staging UI: **Go-live 100** filter = stand-behind production families (not a limited SKU); featured demos = Go-live 18

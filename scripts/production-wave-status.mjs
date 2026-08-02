@@ -133,7 +133,8 @@ Oceania prefixed files:   ${oceaniaPrefixed} / ${families.length}
 Legacy Africa (unprefixed only): ${legacyAfricaOnly.length}
 Target:                   500 (100 × 5)
 
-Depth strong met (≥18 go-live bar): ${strongUs.length >= 18 ? "yes" : "in progress"} (${strongUs.length})
+Depth strong met (≥100 go-live bar): ${strongUs.length >= 100 ? "yes" : "in progress"} (${strongUs.length})
+Go-live 100 stand-behind: 100 (catalogue filter /?pilot=1 · pnpm certify:golive)
 TODO (first-pass / stub):
 ${[...firstPassUs, ...weakUs].map((f) => `  - ${f} (${depthByFamily[f]})`).join("\n") || "  (none)"}
 

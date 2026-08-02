@@ -1,8 +1,8 @@
 # Commercial pack — MyInstantAI Agents partnership
 
-Leave-behind for **commercial finalisation and go-live**. Product staging: `/demo` (go-live pack) and catalogue **Go-live 18**.
+Leave-behind for **commercial finalisation and go-live**. Product staging: `/demo` (go-live pack) and catalogue **Go-live 100**.
 
-**Commercial model:** sell the **Agent Marketplace as a platform** under an **annual license** that includes the **full catalogue — 100 families × 5 market packs = 500 agents**. First-wave **Go-live 18** are the families we stand behind for customer production while cutover completes.
+**Commercial model:** sell the **Agent Marketplace as a platform** under an **annual license** that includes the **full catalogue — 100 families × 5 market packs = 500 agents**. **Go-live 100** are the families we stand behind for customer production while cutover completes (featured **Go-live 18** for deep demos).
 
 | Component | Amount / split |
 |---|---|
@@ -86,9 +86,13 @@ Catalogue claim (safe): **100 families × 5 market packs = 500 catalogue-ready a
 
 ---
 
-## 4. Go-live wave (18 families) — production first wave
+## 4. Go-live wave (100 families) — production stand-behind
 
-These eighteen families are the **first wave we stand behind for customer production**. The **license still covers all 500**.
+**Go-live 100** are the families we stand behind for customer production. **Go-live 18** (Clusters A–C) remain the featured deep-demo set. The **license still covers all 500**.
+
+In-app: `/demo` (go-live pack) and catalogue **Go-live 100** filter (`/?pilot=1`).
+
+Certify: `pnpm certify:golive` · expand live proofs: `docs/WAVE4_LIVE_CONNECTORS.md`.
 
 See `docs/PILOT_PRODUCTION_BAR.md`, `docs/PARALLEL_WORKSTREAMS.md`, `docs/CLAUDE_HANDOFF.md`.
 
@@ -97,8 +101,8 @@ See `docs/PILOT_PRODUCTION_BAR.md`, `docs/PARALLEL_WORKSTREAMS.md`, `docs/CLAUDE
 | A | Executive Assistant, IT Helpdesk, Dental Front Desk, Hotel Guest, Sales Qualifier, Home Services |
 | B | Restaurant & Takeaway, Salon Booking, Clinic Front Desk, Customer Support, Delivery Tracking, Trades Receptionist |
 | C | Events Venue, Onboarding Buddy, Accounting Practice, Building Management, Gym Membership, Pharmacy |
-
-In-app: `/demo` (go-live pack) and catalogue **Go-live 18** filter.
+| +37 | Banking, insurance, HR, travel, retail, education — see `/demo` |
+| +45 | Remaining Depth-strong verticals — full Go-live 100 |
 
 ---
 
@@ -126,7 +130,7 @@ A MyInstantAI user can **SSO in → activate / configure an agent from the licen
 |---|---|
 | 1 | Commercial agreement principles + staging rails received |
 | 2 | Marketplace on staging OIDC / wallet / gateway |
-| 3 | Domain + OAuth redirects; Go-live 18 verified; Live Ops green |
+| 3 | Domain + OAuth redirects; Go-live 100 verified; Live Ops green |
 | 4 | Cutover rehearsal + production go-live checklist |
 
 ---
@@ -134,14 +138,14 @@ A MyInstantAI user can **SSO in → activate / configure an agent from the licen
 ## 7. Commercial walkthrough (12–15 min) — mirror `/demo`
 
 1. Catalogue — **500 agents under platform license**  
-2. Smart search + **Go-live 18** first-wave filter  
+2. Smart search + **Go-live 100** stand-behind filter  
 3. Learn more → Rent / setup (studio path)  
 4. Multi-step confirm-before-write  
 5. Actions / live connectors (Calendar, Slack, CRM as available)  
 6. Trust Center — Live / Partial / Planned tags (under-claim)  
 7. Insights + History + Workspace governance  
 
-**Say once:** commercial = annual platform license for all 500; Go-live 18 is the production first wave. SSO and live MIAI wallet are cutover items on their rails.
+**Say once:** commercial = annual platform license for all 500; Go-live 100 is the production stand-behind set. SSO and live MIAI wallet are cutover items on their rails.
 
 ---
 

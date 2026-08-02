@@ -32,8 +32,13 @@ From `PILOT_PRODUCTION_BAR.md`:
 
 ## Waves
 
-### Wave 1 — Go-live 18 (done)
-Certified first wave (US heroes + pilot docs). Catalogue filter **Go-live 18**.
+### Wave 1 — Go-live 18 → 55 → 100 (stand-behind)
+Featured Clusters A–C (18) → Monday wave (**Go-live 55**) → all Depth-strong families = **Go-live 100**. Catalogue filter **Go-live 100** (`/?pilot=1`).
+
+```bash
+pnpm certify:golive
+pnpm certify:golive -- --beyond55
+```
 
 ### Wave 2 — Remaining 37 US heroes
 Parallel clusters D / E / F deepen `data/catalog/us-{family}.agent.json` + `docs/pilots/{family}.md`.

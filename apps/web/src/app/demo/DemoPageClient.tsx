@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { useT } from "@/lib/locale";
-import { DEMO_SCRIPT_STEPS, MONDAY_PILOT_CARDS } from "@/lib/monday-pilot";
+import {
+  DEMO_SCRIPT_STEPS,
+  GO_LIVE_55_MORE,
+  GO_LIVE_100_MORE,
+  MONDAY_PILOT_CARDS,
+} from "@/lib/monday-pilot";
 
 export function DemoPageClient() {
   const t = useT();
@@ -47,6 +52,11 @@ export function DemoPageClient() {
           </h2>
           <p className="mt-1 text-xs text-[var(--muted)]">{t("demo.shortlistSub")}</p>
         </div>
+        <div className="border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_6%,transparent)] px-5 py-2.5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--accent-bright)]">
+            {t("demo.featured18")}
+          </p>
+        </div>
         <ul className="divide-y divide-[var(--line)]">
           {MONDAY_PILOT_CARDS.map((card, i) => (
             <li
@@ -81,6 +91,46 @@ export function DemoPageClient() {
             </li>
           ))}
         </ul>
+        <div className="border-t border-[var(--line)] px-5 py-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted)]">
+            {t("demo.more37")}
+          </p>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {GO_LIVE_55_MORE.map((row) => (
+              <li key={row.id}>
+                <Link
+                  href={`/agents/${row.demoAgentId}`}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-sm transition hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)]"
+                >
+                  <span className="min-w-0 truncate font-medium text-[var(--text)]">{row.name}</span>
+                  <span className="shrink-0 text-[10px] uppercase tracking-wide text-[var(--muted-dim)]">
+                    {row.audience === "internal" ? t("catalog.internal") : t("catalog.customer")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="border-t border-[var(--line)] px-5 py-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted)]">
+            {t("demo.more45")}
+          </p>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {GO_LIVE_100_MORE.map((row) => (
+              <li key={row.id}>
+                <Link
+                  href={`/agents/${row.demoAgentId}`}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-sm transition hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)]"
+                >
+                  <span className="min-w-0 truncate font-medium text-[var(--text)]">{row.name}</span>
+                  <span className="shrink-0 text-[10px] uppercase tracking-wide text-[var(--muted-dim)]">
+                    {row.audience === "internal" ? t("catalog.internal") : t("catalog.customer")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <section className="panel overflow-hidden" aria-labelledby="script-heading">

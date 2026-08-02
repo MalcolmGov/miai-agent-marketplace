@@ -242,6 +242,7 @@ export function CatalogGrid() {
   const [category, setCategory] = useState("all");
   const [audience, setAudience] = useState("all");
   const [workflowsOnly, setWorkflowsOnly] = useState(false);
+  const [pilotOnly, setPilotOnly] = useState(false);
   const [smartFilter, setSmartFilter] = useState(true);
   const [smartApplied, setSmartApplied] = useState<string[]>([]);
   const [listening, setListening] = useState(false);
@@ -259,6 +260,14 @@ export function CatalogGrid() {
 
   useEffect(() => {
     setSpeechSupported(Boolean(getSpeechRecognitionCtor()));
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("pilot") === "1" || params.get("pilot") === "true") {
+      setPilotOnly(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -309,6 +318,7 @@ export function CatalogGrid() {
     if (category !== "all") params.set("category", category);
     if (audience !== "all") params.set("audience", audience);
     if (workflowsOnly) params.set("workflow", "1");
+    if (pilotOnly) params.set("pilot", "1");
     startTransition(() => {
       fetch(`/api/catalog?${params}`)
         .then((r) => r.json())
@@ -318,7 +328,7 @@ export function CatalogGrid() {
           setFamilyCount(d.familyCount ?? d.count ?? 0);
         });
     });
-  }, [searchQ, market, category, audience, workflowsOnly]);
+  }, [searchQ, market, category, audience, workflowsOnly, pilotOnly]);
 
   function toggleVoiceSearch() {
     const Ctor = getSpeechRecognitionCtor();
@@ -380,12 +390,13 @@ export function CatalogGrid() {
     (category !== "all" ? 1 : 0) +
     (audience !== "all" ? 1 : 0) +
     (workflowsOnly ? 1 : 0) +
+    (pilotOnly ? 1 : 0) +
     (q ? 1 : 0);
 
   return (
     <div className="space-y-8">
       <MarketplaceHero
-        familyCount={totalFamilies || familyCount || 55}
+        familyCount={totalFamilies || familyCount || 100}
         categoryCount={industryCategoryCount}
         workflowCount={WORKFLOW_FAMILY_IDS.length}
       />
@@ -498,6 +509,7 @@ export function CatalogGrid() {
                     // Show the full workflow set when enabling — don't keep a stacked audience filter.
                     if (next) {
                       setAudience("all");
+                      setPilotOnly(false);
                     }
                     return next;
                   });
@@ -509,6 +521,24 @@ export function CatalogGrid() {
                 <span className="cat-count">
                   {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
                 </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSmartFilter(false);
+                  setPilotOnly((v) => {
+                    const next = !v;
+                    if (next) {
+                      setWorkflowsOnly(false);
+                    }
+                    return next;
+                  });
+                }}
+                className={`chip ${pilotOnly ? "filter-active chip-live" : ""}`}
+                title={t("catalog.goliveHint")}
+              >
+                {t("catalog.demo6")}
+                <span className="cat-count">{pilotOnly ? familyCount : 100}</span>
               </button>
             </div>
 
@@ -594,6 +624,7 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
+                setPilotOnly(false);
                 setSmartApplied([]);
               }}
             >
@@ -718,6 +749,7 @@ export function CatalogGrid() {
                 setCategory("all");
                 setAudience("all");
                 setWorkflowsOnly(false);
+                setPilotOnly(false);
               }}
             >
               {t("catalog.resetFilters")}
