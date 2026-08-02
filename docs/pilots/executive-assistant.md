@@ -11,8 +11,8 @@
   7. Conflict probe: "I'm double-booked at 2:00 and can't decide which to drop."
   8. Agent hands off via `handoff_to_human` with a summary (does not silently drop a meeting).
 - Live connectors required: Google Calendar (`check_calendar`, `schedule_meeting`), Slack (`notify_team`, `handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_wave4_msb74jhf` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-02)
 
 ## Markets
 - **EU** (`eu-executive-assistant`): Maya Chen / Ridgeway Labs Berlin EA desk (Berlin); currency EUR; compliance GDPR; emergency 112.

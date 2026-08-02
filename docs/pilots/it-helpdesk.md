@@ -11,8 +11,8 @@
   7. Security probe: "I clicked a phishing link and typed my login."
   8. Agent immediately `handoff_to_human` (security_incident), points to reset.northwinddigital.com, never asks for a password.
 - Live connectors required: Slack (`create_ticket` notify / `handoff_to_human`); KB search is package-local
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_wave4_msb74r26` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-02)
 
 ## Markets
 - **EU** (`eu-it-helpdesk`): Ridgeway Labs IT Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -29,6 +29,8 @@ const doChat = process.argv.includes("--chat");
 const doRecord = process.argv.includes("--record");
 
 function argValue(flag) {
+  const eq = process.argv.find((a) => a.startsWith(`${flag}=`));
+  if (eq) return eq.slice(flag.length + 1);
   const i = process.argv.indexOf(flag);
   return i >= 0 ? process.argv[i + 1] : undefined;
 }
@@ -169,11 +171,15 @@ async function runChatProofs() {
   const results = [];
   for (const slice of WAVE4_SLICE) {
     const needed = slice.connectors;
-    const ready = needed.every((c) => oauth[c]?.configured && oauth[c]?.connected);
-    if (!ready) {
-      console.log(`SKIP ${slice.agentId} — connect ${needed.join(", ")} in Actions first`);
-      results.push({ agentId: slice.agentId, status: "skipped_not_connected" });
+    const available = needed.filter((c) => oauth[c]?.configured && oauth[c]?.connected);
+    const missing = needed.filter((c) => !available.includes(c));
+    if (available.length === 0) {
+      console.log(`SKIP ${slice.agentId} — none of ${needed.join(", ")} connected`);
+      results.push({ agentId: slice.agentId, status: "skipped_not_connected", missing });
       continue;
+    }
+    if (missing.length) {
+      console.log(`PARTIAL ${slice.agentId} — proving ${available.join(", ")}; still need ${missing.join(", ")}`);
     }
 
     try {
