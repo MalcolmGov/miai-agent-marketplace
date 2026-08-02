@@ -24,7 +24,7 @@ const PRODUCT: Array<{ when: string; item: string; status: Status }> = [
   },
   {
     when: "Shipped",
-    item: "Monday demo pack — platform annual license framing (220) + demo shortlist",
+    item: "Partnership go-live pack — platform annual license (220) + Go-live 18 first wave",
     status: "shipped",
   },
   {

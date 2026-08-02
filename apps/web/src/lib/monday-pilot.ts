@@ -1,15 +1,30 @@
 /**
- * Demo / UAT shortlist (6 of 220).
- * Commercial model: annual platform license covers the full catalogue — this list is for room depth only.
+ * First-wave production families (18 of 220).
+ * Full catalogue remains under the annual platform license; these are the go-live wave we stand behind.
  */
 
 export const MONDAY_PILOT_FAMILY_IDS = [
+  // Cluster A — first go-live wave (original six)
   "executive-assistant",
   "it-helpdesk",
   "dental-front-desk",
   "hotel-guest",
   "sales-qualifier",
   "home-services",
+  // Cluster B — customer front office
+  "restaurant-takeaway",
+  "salon-booking",
+  "clinic-front-desk",
+  "customer-support",
+  "delivery-tracking",
+  "trades-receptionist",
+  // Cluster C — ops & vertical
+  "events-venue",
+  "onboarding-buddy",
+  "accounting-practice",
+  "building-management",
+  "gym-membership",
+  "pharmacy",
 ] as const;
 
 export type MondayPilotId = (typeof MONDAY_PILOT_FAMILY_IDS)[number];
@@ -77,6 +92,102 @@ export const MONDAY_PILOT_CARDS: Array<{
     demoAgentId: "us-home-services",
     prompt: "I need a plumber for a leaking geyser tomorrow afternoon.",
   },
+  {
+    id: "restaurant-takeaway",
+    name: "Restaurant & Takeaway",
+    audience: "customer",
+    blurb: "Menu & hours → takeaway order → confirm pickup.",
+    demoAgentId: "us-restaurant-takeaway",
+    prompt: "I'd like to order two burgers for pickup in 30 minutes.",
+  },
+  {
+    id: "salon-booking",
+    name: "Salon Booking",
+    audience: "customer",
+    blurb: "Services & prices → book stylist → confirm appointment.",
+    demoAgentId: "us-salon-booking",
+    prompt: "Book a women's haircut Saturday morning if possible.",
+  },
+  {
+    id: "clinic-front-desk",
+    name: "Clinic Front Desk",
+    audience: "customer",
+    blurb: "Hours & prep → book visit → clinical handoff.",
+    demoAgentId: "us-clinic-front-desk",
+    prompt: "I need a same-week GP appointment for a persistent cough.",
+  },
+  {
+    id: "customer-support",
+    name: "Customer Support",
+    audience: "customer",
+    blurb: "Policy answers → order help → escalate with transcript.",
+    demoAgentId: "us-customer-support",
+    prompt: "My order hasn't arrived and tracking hasn't updated in 3 days.",
+  },
+  {
+    id: "delivery-tracking",
+    name: "Delivery Tracking",
+    audience: "customer",
+    blurb: "Status lookup → ETA → exception handoff.",
+    demoAgentId: "us-delivery-tracking",
+    prompt: "Where is parcel TRK-48291 and when will it arrive?",
+  },
+  {
+    id: "trades-receptionist",
+    name: "Trades Receptionist",
+    audience: "customer",
+    blurb: "Quote intake → book site visit → notify the crew.",
+    demoAgentId: "us-trades-receptionist",
+    prompt: "We need a sparky to replace a faulty DB board this week.",
+  },
+  {
+    id: "events-venue",
+    name: "Events Venue",
+    audience: "customer",
+    blurb: "Capacity & packages → hold date → confirm booking.",
+    demoAgentId: "us-events-venue",
+    prompt: "Do you have space for 120 guests on a Saturday in October?",
+  },
+  {
+    id: "onboarding-buddy",
+    name: "Onboarding Buddy",
+    audience: "internal",
+    blurb: "Day-1 checklist → tools access → escalate to HR/IT.",
+    demoAgentId: "us-onboarding-buddy",
+    prompt: "It's my first day — what do I need to set up before standup?",
+  },
+  {
+    id: "accounting-practice",
+    name: "Accounting Practice",
+    audience: "customer",
+    blurb: "Deadlines & docs → book consult → secure handoff.",
+    demoAgentId: "us-accounting-practice",
+    prompt: "When are Q3 estimated taxes due and what should I bring?",
+  },
+  {
+    id: "building-management",
+    name: "Building Management",
+    audience: "customer",
+    blurb: "Levies & access → log maintenance → emergency escalate.",
+    demoAgentId: "us-building-management",
+    prompt: "There's a water leak in the parking level — who do I contact?",
+  },
+  {
+    id: "gym-membership",
+    name: "Gym Membership",
+    audience: "customer",
+    blurb: "Plans & hours → start membership → book induction.",
+    demoAgentId: "us-gym-membership",
+    prompt: "What does the monthly plan cost and can I book an induction?",
+  },
+  {
+    id: "pharmacy",
+    name: "Pharmacy Assistant",
+    audience: "customer",
+    blurb: "Hours & OTC → prescription pickup → clinical handoff.",
+    demoAgentId: "us-pharmacy",
+    prompt: "What are your hours and can I reserve a flu shot this week?",
+  },
 ];
 
 export const DEMO_SCRIPT_STEPS: Array<{
@@ -89,7 +200,7 @@ export const DEMO_SCRIPT_STEPS: Array<{
     title: "Catalogue & Smart search",
     minutes: "2",
     detail:
-      "Platform story: annual license = all 220. Brand hero, Smart search, optional Demo 6 shortlist.",
+      "Platform license = all 220. First-wave Production 18 are the go-live families we stand behind.",
     href: "/#catalogue",
   },
   {

@@ -1,9 +1,9 @@
 import { DemoPageClient } from "./DemoPageClient";
 
 export const metadata = {
-  title: "Monday demo — MyInstantAI Agents",
+  title: "Go-live pack — MyInstantAI Agents",
   description:
-    "Platform annual license for 220 agents — demo shortlist and 12–15 minute commercial script.",
+    "Partnership go-live: annual platform license for 220 agents; first-wave Go-live 18 for customer production.",
 };
 
 export default function DemoPage() {

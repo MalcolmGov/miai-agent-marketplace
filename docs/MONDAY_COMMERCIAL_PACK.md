@@ -1,8 +1,8 @@
-# Monday commercial pack — MyInstantAI Agents
+# Commercial pack — MyInstantAI Agents partnership
 
-Leave-behind for commercial finalisation. Product demo lives at `/demo` on staging.
+Leave-behind for **commercial finalisation and go-live**. Product staging: `/demo` (go-live pack) and catalogue **Go-live 18**.
 
-**Commercial model (proposal):** sell the **Agent Marketplace as a platform** under an **annual license** that includes the **full catalogue — 55 families × 4 market packs = 220 agents**.
+**Commercial model:** sell the **Agent Marketplace as a platform** under an **annual license** that includes the **full catalogue — 55 families × 4 market packs = 220 agents**. First-wave **Go-live 18** are the families we stand behind for customer production while cutover completes.
 
 | Component | Amount / split |
 |---|---|
@@ -15,16 +15,15 @@ Leave-behind for commercial finalisation. Product demo lives at `/demo` on stagi
 - `MyInstantAI-x-MoveDigital-Partnership-Proposal.pdf` ← primary leave-behind  
 - `MyInstantAI-Agents-One-Pager.pdf`  
 - `MyInstantAI-Agents-Commercial-Leavebehind.pdf`  
-- `MyInstantAI-Agents-Monday-Demo-Pilot6.pdf`  
 
 Regenerate with `pnpm pdf:branded`.
 
 **Staging:** https://miaiweb-production.up.railway.app  
-**Trust Center:** `/trust` · **Roadmap:** `/roadmap` · **Demo script:** `/demo`
+**Trust Center:** `/trust` · **Roadmap:** `/roadmap` · **Go-live pack:** `/demo`
 
 ---
 
-## 1. Commercial proposal (firmed for Monday)
+## 1. Commercial proposal (agreement path)
 
 **Platform annual license (primary) + monthly retainer + rev-share on end-customer usage**
 
@@ -35,13 +34,13 @@ Regenerate with `pnpm pdf:branded`.
 | **Agent rental (end-customer)** | **50% MD · 50% MIAI** | Catalogue IP + distribution partnership |
 | **Token top-ups (end-customer)** | **20% MD · 80% MIAI** | Model/wallet economics sit with MyInstantAI |
 
-Cutover onto OIDC / wallet / gateway / Azure is delivered under the partnership (retainer + license), not a separate SKU-limited pilot.
+Cutover onto OIDC / wallet / gateway / Azure is delivered under the partnership (retainer + license).
 
 **Year-1 fixed floor (before rev-share):** $200k + $360k = **$560,000**.
 
 ---
 
-## 2. Decisions to lock Monday
+## 2. Decisions to lock (commercial close)
 
 | # | Decision | Options | Our recommendation |
 |---|---|---|---|
@@ -87,24 +86,23 @@ Catalogue claim (safe): **55 families × 4 market packs = 220 catalogue-ready ag
 
 ---
 
-## 4. Demo shortlist (Pilot 6) — UAT only, not commercial scope
+## 4. Go-live wave (18 families) — production first wave
 
-These six are for **Monday demo depth** and Week‑3 UAT. The **license still covers all 220**.
+These eighteen families are the **first wave we stand behind for customer production**. The **license still covers all 220**.
 
-| # | Family | Why in the room |
-|---|---|---|
-| 1 | Executive Assistant | Internal multi-step + calendar confirm |
-| 2 | IT Helpdesk | KB → ticket → escalate |
-| 3 | Dental Front Desk | Vertical booking + clinical handoff |
-| 4 | Hotel Guest Concierge | Hospitality amenities + logged requests |
-| 5 | Sales Qualifier | Lead capture + callback |
-| 6 | Home Services Front Desk | Field ops book + notify dispatch |
+See `docs/PILOT_PRODUCTION_BAR.md`, `docs/PARALLEL_WORKSTREAMS.md`, `docs/CLAUDE_HANDOFF.md`.
 
-In-app: `/demo` and catalogue **Pilot 6** filter (= demo shortlist).
+| Cluster | Families |
+|---|---|
+| A | Executive Assistant, IT Helpdesk, Dental Front Desk, Hotel Guest, Sales Qualifier, Home Services |
+| B | Restaurant & Takeaway, Salon Booking, Clinic Front Desk, Customer Support, Delivery Tracking, Trades Receptionist |
+| C | Events Venue, Onboarding Buddy, Accounting Practice, Building Management, Gym Membership, Pharmacy |
+
+In-app: `/demo` (go-live pack) and catalogue **Go-live 18** filter.
 
 ---
 
-## 5. Open asks (their side — Week 1 unblockers)
+## 5. Open asks (their side — cutover unblockers)
 
 | Ask | Owner (name) | Status |
 |---|---|---|
@@ -116,38 +114,38 @@ In-app: `/demo` and catalogue **Pilot 6** filter (= demo shortlist).
 | WhatsApp WABA / BSP ownership | | |
 | Commercial signatory + annual license number | | |
 
-Without Auth + Wallet + Models in writing (even staging stubs), sprint stays documentation-heavy.
+Without Auth + Wallet + Models in writing (even staging stubs), production cutover cannot complete.
 
 ---
 
-## 6. 30-day success criteria (reconfirm)
+## 6. 30-day success criteria (production)
 
 A MyInstantAI user can **SSO in → activate / configure an agent from the licensed catalogue → run a tool-backed conversation billed to your wallet → on your hostname.**
 
 | Week | Outcome |
 |---|---|
-| 1 | Commercial principles (annual platform license) + staging rails received |
+| 1 | Commercial agreement principles + staging rails received |
 | 2 | Marketplace on staging OIDC / wallet / gateway |
-| 3 | Domain + OAuth redirects; demo shortlist UAT; Live Ops green |
-| 4 | Cutover rehearsal + go-live checklist |
+| 3 | Domain + OAuth redirects; Go-live 18 verified; Live Ops green |
+| 4 | Cutover rehearsal + production go-live checklist |
 
 ---
 
-## 7. Demo path (12–15 min) — mirror `/demo`
+## 7. Commercial walkthrough (12–15 min) — mirror `/demo`
 
-1. Catalogue brand — **220 agents under platform license**  
-2. Smart search + optional Pilot 6 shortlist for depth  
+1. Catalogue — **220 agents under platform license**  
+2. Smart search + **Go-live 18** first-wave filter  
 3. Learn more → Rent / setup (studio path)  
-4. Multi-step confirm-before-write in sandbox  
-5. Actions / Slack (if connected)  
+4. Multi-step confirm-before-write  
+5. Actions / live connectors (Calendar, Slack, CRM as available)  
 6. Trust Center — Live / Partial / Planned tags (under-claim)  
-7. Agent Admin + Insights + custom request pipeline  
+7. Insights + History + Workspace governance  
 
-**Say once:** commercial = annual platform license for all 220; Pilot 6 is demo/UAT only. SSO and live MIAI wallet are cutover items.
+**Say once:** commercial = annual platform license for all 220; Go-live 18 is the production first wave. SSO and live MIAI wallet are cutover items on their rails.
 
 ---
 
-## 8. Suggested Monday close
+## 8. Commercial close checklist
 
 - [ ] **Annual platform license $200,000** = full 220 agents  
 - [ ] **Monthly support & development $30,000**  

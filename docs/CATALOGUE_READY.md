@@ -43,4 +43,4 @@ pnpm validate:azure   # requires az or bicep CLI
 ## Badges in UI
 
 - **Catalogue ready** — family passes the gate across its pack variants
-- Staging UI no longer surfaces Pilot/Live noise on cards; Demo 6 is a filter for UAT only
+- Staging UI: **Go-live 18** filter = first-wave production families (not a limited SKU)
