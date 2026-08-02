@@ -12,7 +12,7 @@
     ],
     "health": false,
     "markets": {
-      "za": "accounting-practice",
+      "za": "africa-accounting-practice",
       "africa": "africa-accounting-practice",
       "asia": "asia-accounting-practice",
       "eu": "eu-accounting-practice",
@@ -43,7 +43,7 @@
     ],
     "health": false,
     "markets": {
-      "za": "admissions",
+      "za": "africa-admissions",
       "africa": "africa-admissions",
       "asia": "asia-admissions",
       "eu": "eu-admissions",
@@ -76,7 +76,7 @@
     "health": false,
     "markets": {
       "africa": "africa-agency-studio",
-      "za": "agency-studio",
+      "za": "africa-agency-studio",
       "asia": "asia-agency-studio",
       "eu": "eu-agency-studio",
       "oceania": "oceania-agency-studio",
@@ -199,7 +199,7 @@
     "markets": {
       "africa": "africa-bank-branch",
       "asia": "asia-bank-branch",
-      "za": "bank-branch",
+      "za": "africa-bank-branch",
       "eu": "eu-bank-branch",
       "oceania": "oceania-bank-branch",
       "us": "us-bank-branch"
@@ -261,7 +261,7 @@
     "markets": {
       "africa": "africa-bookkeeping",
       "asia": "asia-bookkeeping",
-      "za": "bookkeeping",
+      "za": "africa-bookkeeping",
       "eu": "eu-bookkeeping",
       "oceania": "oceania-bookkeeping",
       "us": "us-bookkeeping"
@@ -293,7 +293,7 @@
     "markets": {
       "africa": "africa-building-management",
       "asia": "asia-building-management",
-      "za": "building-management",
+      "za": "africa-building-management",
       "eu": "eu-building-management",
       "oceania": "oceania-building-management",
       "us": "us-building-management"
@@ -385,7 +385,7 @@
     "markets": {
       "africa": "africa-clinic-front-desk",
       "asia": "asia-clinic-front-desk",
-      "za": "clinic-front-desk",
+      "za": "africa-clinic-front-desk",
       "eu": "eu-clinic-front-desk",
       "oceania": "oceania-clinic-front-desk",
       "us": "us-clinic-front-desk"
@@ -447,7 +447,7 @@
     "markets": {
       "africa": "africa-course-advisor",
       "asia": "asia-course-advisor",
-      "za": "course-advisor",
+      "za": "africa-course-advisor",
       "eu": "eu-course-advisor",
       "oceania": "oceania-course-advisor",
       "us": "us-course-advisor"
@@ -509,7 +509,7 @@
     "markets": {
       "africa": "africa-customer-support",
       "asia": "asia-customer-support",
-      "za": "customer-support",
+      "za": "africa-customer-support",
       "eu": "eu-customer-support",
       "oceania": "oceania-customer-support",
       "us": "us-customer-support"
@@ -601,7 +601,7 @@
     "markets": {
       "africa": "africa-delivery-tracking",
       "asia": "asia-delivery-tracking",
-      "za": "delivery-tracking",
+      "za": "africa-delivery-tracking",
       "eu": "eu-delivery-tracking",
       "oceania": "oceania-delivery-tracking",
       "us": "us-delivery-tracking"
@@ -664,7 +664,7 @@
     "markets": {
       "africa": "africa-dental-practice",
       "asia": "asia-dental-practice",
-      "za": "dental-practice",
+      "za": "africa-dental-practice",
       "eu": "eu-dental-practice",
       "oceania": "oceania-dental-practice",
       "us": "us-dental-practice"
@@ -847,7 +847,7 @@
       "africa": "africa-events-venue",
       "asia": "asia-events-venue",
       "eu": "eu-events-venue",
-      "za": "events-venue",
+      "za": "africa-events-venue",
       "oceania": "oceania-events-venue",
       "us": "us-events-venue"
     },
@@ -879,7 +879,7 @@
       "africa": "africa-executive-assistant",
       "asia": "asia-executive-assistant",
       "eu": "eu-executive-assistant",
-      "za": "executive-assistant",
+      "za": "africa-executive-assistant",
       "oceania": "oceania-executive-assistant",
       "us": "us-executive-assistant"
     },
@@ -1031,7 +1031,7 @@
       "africa": "africa-field-service",
       "asia": "asia-field-service",
       "eu": "eu-field-service",
-      "za": "field-service",
+      "za": "africa-field-service",
       "oceania": "oceania-field-service",
       "us": "us-field-service"
     },
@@ -1093,7 +1093,7 @@
       "africa": "africa-fleet-driver",
       "asia": "asia-fleet-driver",
       "eu": "eu-fleet-driver",
-      "za": "fleet-driver",
+      "za": "africa-fleet-driver",
       "oceania": "oceania-fleet-driver",
       "us": "us-fleet-driver"
     },
@@ -1155,7 +1155,7 @@
       "africa": "africa-front-desk",
       "asia": "asia-front-desk",
       "eu": "eu-front-desk",
-      "za": "front-desk",
+      "za": "africa-front-desk",
       "oceania": "oceania-front-desk",
       "us": "us-front-desk"
     },
@@ -1187,7 +1187,7 @@
       "africa": "africa-grant-stock-planner",
       "asia": "asia-grant-stock-planner",
       "eu": "eu-grant-stock-planner",
-      "za": "grant-stock-planner",
+      "za": "africa-grant-stock-planner",
       "oceania": "oceania-grant-stock-planner",
       "us": "us-grant-stock-planner"
     },
@@ -1219,7 +1219,7 @@
       "africa": "africa-gym-membership",
       "asia": "asia-gym-membership",
       "eu": "eu-gym-membership",
-      "za": "gym-membership",
+      "za": "africa-gym-membership",
       "oceania": "oceania-gym-membership",
       "us": "us-gym-membership"
     },
@@ -1282,7 +1282,7 @@
       "africa": "africa-hotel-concierge",
       "asia": "asia-hotel-concierge",
       "eu": "eu-hotel-concierge",
-      "za": "hotel-concierge",
+      "za": "africa-hotel-concierge",
       "oceania": "oceania-hotel-concierge",
       "us": "us-hotel-concierge"
     },
@@ -1345,7 +1345,7 @@
       "africa": "africa-hr-helpdesk",
       "asia": "asia-hr-helpdesk",
       "eu": "eu-hr-helpdesk",
-      "za": "hr-helpdesk",
+      "za": "africa-hr-helpdesk",
       "oceania": "oceania-hr-helpdesk",
       "us": "us-hr-helpdesk"
     },
@@ -1377,7 +1377,7 @@
       "africa": "africa-insurance-broker",
       "asia": "asia-insurance-broker",
       "eu": "eu-insurance-broker",
-      "za": "insurance-broker",
+      "za": "africa-insurance-broker",
       "oceania": "oceania-insurance-broker",
       "us": "us-insurance-broker"
     },
@@ -1409,7 +1409,7 @@
       "africa": "africa-insurance-claims",
       "asia": "asia-insurance-claims",
       "eu": "eu-insurance-claims",
-      "za": "insurance-claims",
+      "za": "africa-insurance-claims",
       "oceania": "oceania-insurance-claims",
       "us": "us-insurance-claims"
     },
@@ -1501,7 +1501,7 @@
       "africa": "africa-it-helpdesk",
       "asia": "asia-it-helpdesk",
       "eu": "eu-it-helpdesk",
-      "za": "it-helpdesk",
+      "za": "africa-it-helpdesk",
       "oceania": "oceania-it-helpdesk",
       "us": "us-it-helpdesk"
     },
@@ -1533,7 +1533,7 @@
       "africa": "africa-law-firm-intake",
       "asia": "asia-law-firm-intake",
       "eu": "eu-law-firm-intake",
-      "za": "law-firm-intake",
+      "za": "africa-law-firm-intake",
       "oceania": "oceania-law-firm-intake",
       "us": "us-law-firm-intake"
     },
@@ -1655,7 +1655,7 @@
       "africa": "africa-loan-prequalifier",
       "asia": "asia-loan-prequalifier",
       "eu": "eu-loan-prequalifier",
-      "za": "loan-prequalifier",
+      "za": "africa-loan-prequalifier",
       "oceania": "oceania-loan-prequalifier",
       "us": "us-loan-prequalifier"
     },
@@ -1687,7 +1687,7 @@
       "africa": "africa-loyalty-rewards",
       "asia": "asia-loyalty-rewards",
       "eu": "eu-loyalty-rewards",
-      "za": "loyalty-rewards",
+      "za": "africa-loyalty-rewards",
       "oceania": "oceania-loyalty-rewards",
       "us": "us-loyalty-rewards"
     },
@@ -1749,7 +1749,7 @@
       "africa": "africa-marketing-assistant",
       "asia": "asia-marketing-assistant",
       "eu": "eu-marketing-assistant",
-      "za": "marketing-assistant",
+      "za": "africa-marketing-assistant",
       "oceania": "oceania-marketing-assistant",
       "us": "us-marketing-assistant"
     },
@@ -1811,7 +1811,7 @@
       "africa": "africa-mobile-money",
       "asia": "asia-mobile-money",
       "eu": "eu-mobile-money",
-      "za": "mobile-money",
+      "za": "africa-mobile-money",
       "oceania": "oceania-mobile-money",
       "us": "us-mobile-money"
     },
@@ -1934,7 +1934,7 @@
       "asia": "asia-onboarding-buddy",
       "eu": "eu-onboarding-buddy",
       "oceania": "oceania-onboarding-buddy",
-      "za": "onboarding-buddy",
+      "za": "africa-onboarding-buddy",
       "us": "us-onboarding-buddy"
     },
     "packs": [
@@ -1966,7 +1966,7 @@
       "asia": "asia-order-tracking",
       "eu": "eu-order-tracking",
       "oceania": "oceania-order-tracking",
-      "za": "order-tracking",
+      "za": "africa-order-tracking",
       "us": "us-order-tracking"
     },
     "packs": [
@@ -2028,7 +2028,7 @@
       "asia": "asia-payment-disputes",
       "eu": "eu-payment-disputes",
       "oceania": "oceania-payment-disputes",
-      "za": "payment-disputes",
+      "za": "africa-payment-disputes",
       "us": "us-payment-disputes"
     },
     "packs": [
@@ -2060,7 +2060,7 @@
       "asia": "asia-payroll-queries",
       "eu": "eu-payroll-queries",
       "oceania": "oceania-payroll-queries",
-      "za": "payroll-queries",
+      "za": "africa-payroll-queries",
       "us": "us-payroll-queries"
     },
     "packs": [
@@ -2122,7 +2122,7 @@
       "asia": "asia-pharmacy",
       "eu": "eu-pharmacy",
       "oceania": "oceania-pharmacy",
-      "za": "pharmacy",
+      "za": "africa-pharmacy",
       "us": "us-pharmacy"
     },
     "packs": [
@@ -2154,7 +2154,7 @@
       "asia": "asia-policy-compliance",
       "eu": "eu-policy-compliance",
       "oceania": "oceania-policy-compliance",
-      "za": "policy-compliance",
+      "za": "africa-policy-compliance",
       "us": "us-policy-compliance"
     },
     "packs": [
@@ -2186,7 +2186,7 @@
       "asia": "asia-procurement",
       "eu": "eu-procurement",
       "oceania": "oceania-procurement",
-      "za": "procurement",
+      "za": "africa-procurement",
       "us": "us-procurement"
     },
     "packs": [
@@ -2218,7 +2218,7 @@
       "asia": "asia-product-finder",
       "eu": "eu-product-finder",
       "oceania": "oceania-product-finder",
-      "za": "product-finder",
+      "za": "africa-product-finder",
       "us": "us-product-finder"
     },
     "packs": [
@@ -2310,7 +2310,7 @@
       "asia": "asia-property-enquiries",
       "eu": "eu-property-enquiries",
       "oceania": "oceania-property-enquiries",
-      "za": "property-enquiries",
+      "za": "africa-property-enquiries",
       "us": "us-property-enquiries"
     },
     "packs": [
@@ -2432,7 +2432,7 @@
       "asia": "asia-remittance",
       "eu": "eu-remittance",
       "oceania": "oceania-remittance",
-      "za": "remittance",
+      "za": "africa-remittance",
       "us": "us-remittance"
     },
     "packs": [
@@ -2464,7 +2464,7 @@
       "asia": "asia-rental-enquiries",
       "eu": "eu-rental-enquiries",
       "oceania": "oceania-rental-enquiries",
-      "za": "rental-enquiries",
+      "za": "africa-rental-enquiries",
       "us": "us-rental-enquiries"
     },
     "packs": [
@@ -2496,7 +2496,7 @@
       "asia": "asia-restaurant-takeaway",
       "eu": "eu-restaurant-takeaway",
       "oceania": "oceania-restaurant-takeaway",
-      "za": "restaurant-takeaway",
+      "za": "africa-restaurant-takeaway",
       "us": "us-restaurant-takeaway"
     },
     "packs": [
@@ -2528,7 +2528,7 @@
       "asia": "asia-returns-exchanges",
       "eu": "eu-returns-exchanges",
       "oceania": "oceania-returns-exchanges",
-      "za": "returns-exchanges",
+      "za": "africa-returns-exchanges",
       "us": "us-returns-exchanges"
     },
     "packs": [
@@ -2590,7 +2590,7 @@
       "asia": "asia-sales-qualifier",
       "eu": "eu-sales-qualifier",
       "oceania": "oceania-sales-qualifier",
-      "za": "sales-qualifier",
+      "za": "africa-sales-qualifier",
       "us": "us-sales-qualifier"
     },
     "packs": [
@@ -2622,7 +2622,7 @@
       "asia": "asia-salon-booking",
       "eu": "eu-salon-booking",
       "oceania": "oceania-salon-booking",
-      "za": "salon-booking",
+      "za": "africa-salon-booking",
       "us": "us-salon-booking"
     },
     "packs": [
@@ -2744,7 +2744,7 @@
       "asia": "asia-spaza-merchant",
       "eu": "eu-spaza-merchant",
       "oceania": "oceania-spaza-merchant",
-      "za": "spaza-merchant",
+      "za": "africa-spaza-merchant",
       "us": "us-spaza-merchant"
     },
     "packs": [
@@ -2776,7 +2776,7 @@
       "asia": "asia-stock-availability",
       "eu": "eu-stock-availability",
       "oceania": "oceania-stock-availability",
-      "za": "stock-availability",
+      "za": "africa-stock-availability",
       "us": "us-stock-availability"
     },
     "packs": [
@@ -2808,7 +2808,7 @@
       "asia": "asia-student-helpdesk",
       "eu": "eu-student-helpdesk",
       "oceania": "oceania-student-helpdesk",
-      "za": "student-helpdesk",
+      "za": "africa-student-helpdesk",
       "us": "us-student-helpdesk"
     },
     "packs": [
@@ -2870,7 +2870,7 @@
       "asia": "asia-tour-activity",
       "eu": "eu-tour-activity",
       "oceania": "oceania-tour-activity",
-      "za": "tour-activity",
+      "za": "africa-tour-activity",
       "us": "us-tour-activity"
     },
     "packs": [
@@ -2933,7 +2933,7 @@
       "asia": "asia-travel-desk",
       "eu": "eu-travel-desk",
       "oceania": "oceania-travel-desk",
-      "za": "travel-desk",
+      "za": "africa-travel-desk",
       "us": "us-travel-desk"
     },
     "packs": [
@@ -2966,7 +2966,7 @@
       "eu": "eu-utility-billing",
       "oceania": "oceania-utility-billing",
       "us": "us-utility-billing",
-      "za": "utility-billing"
+      "za": "africa-utility-billing"
     },
     "packs": [
       "us",
@@ -2998,7 +2998,7 @@
       "eu": "eu-vas-concierge",
       "oceania": "oceania-vas-concierge",
       "us": "us-vas-concierge",
-      "za": "vas-concierge"
+      "za": "africa-vas-concierge"
     },
     "packs": [
       "us",
@@ -3030,7 +3030,7 @@
       "eu": "eu-veterinary",
       "oceania": "oceania-veterinary",
       "us": "us-veterinary",
-      "za": "veterinary"
+      "za": "africa-veterinary"
     },
     "packs": [
       "us",

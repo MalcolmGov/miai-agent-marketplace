@@ -21,6 +21,7 @@ import {
   workflowCapabilityChips,
   workflowDemoHint,
 } from "@/lib/workflows";
+import { buildEmbedScriptTag } from "@/lib/agent-js-sri";
 import { useEffect, useMemo, useState } from "react";
 
 interface AgentPayload {
@@ -75,7 +76,13 @@ function stepFromUrl(): SetupStepId | null {
   return null;
 }
 
-export function AgentStudio({ agentId }: { agentId: string }) {
+export function AgentStudio({
+  agentId,
+  scriptIntegrity,
+}: {
+  agentId: string;
+  scriptIntegrity?: string;
+}) {
   const t = useT();
   const [data, setData] = useState<AgentPayload | null>(null);
   const [model, setModel] = useState("claude-sonnet");
@@ -193,8 +200,12 @@ export function AgentStudio({ agentId }: { agentId: string }) {
       return `<!-- Rent this agent to get an embed key, then paste the Install snippet. -->`;
     }
     const base = origin || "";
-    return `<script src="${base}/agents/v1/agent.js" data-key="${key}" async></script>`;
-  }, [publicKey, agentId, origin]);
+    return buildEmbedScriptTag({
+      src: `${base}/agents/v1/agent.js`,
+      key,
+      integrity: scriptIntegrity,
+    });
+  }, [publicKey, agentId, origin, scriptIntegrity]);
 
   const appUrl = useMemo(() => {
     const allowDemo = process.env.NODE_ENV !== "production";

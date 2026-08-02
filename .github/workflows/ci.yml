@@ -37,6 +37,9 @@ jobs:
       - name: Unit tests (wallet + connectors + web)
         run: pnpm test
 
+      - name: Catalogue integrity (100×5 + ZA alias policy)
+        run: pnpm catalog:integrity
+
       - name: Static eval suite
         run: pnpm eval:suite:static
 

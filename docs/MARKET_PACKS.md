@@ -14,6 +14,10 @@ Commercial model for the Agent Marketplace: sell **agent families**, expand with
 
 ZA has been **merged into Africa**. Former ZA packages keep stable unprefixed ids; duplicate generated `africa-*` variants were removed.
 
+### ZA legacy packs (aliases)
+
+Unprefixed `{family}.agent.json` files on disk are **legacy ZA aliases** — retained for stable deep links and imports, **not** a sixth sellable market. The indexed catalogue remains **100 × 5 = 500 SKUs**; `families.json` maps `markets.za` to the canonical `africa-{family}` id. **Do not delete** unprefixed packs when regenerating. See [ADR 0001](adr/0001-catalog-100x5.md).
+
 ## Catalogue shape
 
 - **100 families** (unique jobs / verticals)

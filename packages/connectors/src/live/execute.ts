@@ -1,7 +1,9 @@
 import type { ConnectorCall, ConnectorResult, ConnectorId } from "../types.js";
 import { getValidAccessToken } from "../oauth/flow.js";
 import { getToken } from "../oauth/tokens.js";
-import { HttpResponseError, withRetry } from "../retry.js";
+import { executeMcp } from "./handlers/mcp.js";
+import { slackHandoff } from "./handlers/slack.js";
+import { executeWebhook } from "./handlers/webhook.js";
 
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
@@ -499,80 +501,6 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       ...args,
     };
   return { ok: true, reference: "REF-0001", echo: args };
-}
-
-async function postWebhook(url: string, secret: string, payload: unknown): Promise<Record<string, unknown>> {
-  const { safeFetch } = await import("../ssrf.js");
-  const { signWebhookPayload } = await import("../webhook-sig.js");
-  return withRetry(async () => {
-    const body = JSON.stringify(payload);
-    const timestamp = String(Date.now());
-    const signature = secret ? signWebhookPayload(secret, timestamp, body) : "";
-    const res = await safeFetch(url, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        ...(signature
-          ? {
-              "x-miai-signature": signature,
-              "x-miai-timestamp": timestamp,
-            }
-          : {}),
-      },
-      body,
-      redirect: "manual",
-    });
-    if (res.status >= 300 && res.status < 400) {
-      throw new Error("Webhook redirects are not followed (SSRF protection)");
-    }
-    if (!res.ok) throw new HttpResponseError(res.status, `Webhook ${res.status}`);
-    try {
-      return (await res.json()) as Record<string, unknown>;
-    } catch {
-      return { ok: true, status: res.status };
-    }
-  });
-}
-
-async function slackHandoff(
-  token: string,
-  args: Record<string, unknown>,
-  meta: Record<string, string>,
-): Promise<Record<string, unknown>> {
-  const channel =
-    String(args.channel ?? meta.default_channel ?? process.env.SLACK_DEFAULT_CHANNEL ?? "").trim();
-  if (!channel) {
-    throw new Error(
-      "Slack connected but no handoff channel set — pick one in Actions after connecting",
-    );
-  }
-  const customer = (args.customer ?? {}) as Record<string, unknown>;
-  const custName = customer.name ?? args.name;
-  const custPhone = customer.phone ?? args.phone ?? args.contact;
-  const custEmail = customer.email ?? args.email;
-  const text = [
-    `*Agent handoff*`,
-    args.reason ? `Reason: ${args.reason}` : null,
-    args.summary ? `Summary: ${args.summary}` : null,
-    custName || custPhone || custEmail ? `*Contact for follow-up:*` : null,
-    custName ? `• Name: ${custName}` : null,
-    custPhone ? `• Phone: ${custPhone}` : null,
-    custEmail ? `• Email: ${custEmail}` : null,
-  ]
-    .filter(Boolean)
-    .join("\n");
-
-  const res = await fetch("https://slack.com/api/chat.postMessage", {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "content-type": "application/json; charset=utf-8",
-    },
-    body: JSON.stringify({ channel, text }),
-  });
-  const json = (await res.json()) as { ok: boolean; error?: string; ts?: string; channel?: string };
-  if (!json.ok) throw new Error(`Slack: ${json.error ?? "post_failed"}`);
-  return { routed: true, provider: "slack", channel: json.channel, ts: json.ts };
 }
 
 async function shopifyOrder(
@@ -1116,52 +1044,10 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
     const keyTok = await getToken(call.workspaceId, connector);
 
     switch (connector) {
-      case "webhook": {
-        const url = keyTok?.meta.url || config.url;
-        const secret = keyTok?.meta.secret || keyTok?.accessToken || config.secret || "";
-        if (!url) throw new Error("Webhook URL missing");
-        const data = await postWebhook(url, secret === "configured" ? config.secret ?? "" : secret, {
-          tool: call.tool,
-          args: call.args,
-          agentId: call.agentId,
-          workspaceId: call.workspaceId,
-        });
-        return {
-          ok: true,
-          data: { ...data, live: true, provider: "webhook" },
-          connector,
-          stubbed: false,
-        };
-      }
-      case "mcp": {
-        const endpoint = String(keyTok?.meta.endpoint || config.endpoint || "").replace(/\/$/, "");
-        const token = keyTok?.meta.token || keyTok?.accessToken || config.token || "";
-        if (!endpoint) throw new Error("MCP endpoint missing");
-        const bearer = token === "configured" ? config.token ?? "" : token;
-        const { safeFetch } = await import("../ssrf.js");
-        const data = await withRetry(async () => {
-          const res = await safeFetch(`${endpoint}/tools/call`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              ...(bearer ? { authorization: `Bearer ${bearer}` } : {}),
-            },
-            body: JSON.stringify({ name: call.tool, arguments: call.args }),
-          });
-          if (!res.ok) throw new HttpResponseError(res.status, `MCP ${res.status}`);
-          try {
-            return (await res.json()) as Record<string, unknown>;
-          } catch {
-            return { ok: true, status: res.status };
-          }
-        });
-        return {
-          ok: true,
-          data: { ...data, live: true, provider: "mcp" },
-          connector,
-          stubbed: false,
-        };
-      }
+      case "webhook":
+        return executeWebhook(call, keyTok, config);
+      case "mcp":
+        return executeMcp(call, keyTok, config);
       default:
         break;
     }
