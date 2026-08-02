@@ -1,10 +1,8 @@
-# Production go-live bar (18 families)
+# Production go-live bar
 
-**Context:** Partner demo is complete. This bar is for **customer-facing production**, not a pitch shortlist.
+**North star:** production comfort on **all 220** agents — see `PRODUCTION_SCALE_220.md`.
 
-**Goal:** 18 families that a real business can take live (Rent → knowledge → connectors → website/App) without hand-holding in every chat.
-
-Catalogue size (220) remains the **license entitlement**. These 18 are the **first wave we stand behind in production**.
+Catalogue size (220) is the **license entitlement**. Depth is earned family-by-family, then pack-by-pack.
 
 ## Definition of done (hero US agent, then market packs)
 

@@ -1,38 +1,42 @@
-# Claude handoff — production readiness (not demo)
+# Claude handoff — scale to 220 (production)
 
-**Context:** Partner demo already completed successfully. Current work is **commercial agreement + production go-live**, not another demo polish pass.
+**Context:** Partner demo is done. Goal = **production comfort across all 220 agents** (55 families × 4 packs).
 
-## Non‑negotiables
+## Current state
 
-1. Agents must be **fully working** for a real customer: knowledge, confirm-before-write, handoff, evals grounded, Install path clear.
-2. Do **not** add “demo/UAT/Monday pitch” language to product UI or customer-facing docs.
-3. Prefer **live connector readiness** (correct tool bindings, presets, failure copy) over marketing copy.
-4. File ownership: see `PARALLEL_WORKSTREAMS.md` — do not edit files another agent owns.
+- **Wave 1 done:** 18 US heroes at Depth strong + `docs/pilots/{family}.md`
+- **Wave 2 (Cursor):** remaining ~37 US heroes
+- **Wave 3 (Claude — your lane):** localize market packs for families that already have strong US heroes
 
-## Recommended Claude slice (avoids Cursor collisions)
+## Your ownership (Wave 3) — no collisions with Cursor US work
 
-While Cursor clusters finish `us-*` heroes, Claude should take **market packs for Cluster B** (already deepened on US):
+For **each** family listed under Wave 1 strong US (see `node scripts/production-wave-status.mjs`), deepen:
 
-| Own these files only |
-|---|
-| `data/catalog/eu-restaurant-takeaway.agent.json` |
-| `data/catalog/africa-restaurant-takeaway.agent.json` |
-| `data/catalog/asia-restaurant-takeaway.agent.json` |
-| Same pattern for: `salon-booking`, `clinic-front-desk`, `customer-support`, `delivery-tracking`, `trades-receptionist` |
+- `data/catalog/eu-{family}.agent.json`
+- `data/catalog/africa-{family}.agent.json`
+- `data/catalog/asia-{family}.agent.json`
 
-For each pack variant:
+**Do not edit** `us-*.agent.json` while Cursor Wave 2 is running.
 
-- Localize knowledge (currency, compliance, hours, phone norms) to that market
-- Keep tools/evals consistent with US hero intent; fix knowledge↔eval drift
-- Confirm-before-write + handoff language preserved
-- Update `docs/pilots/{family}.md` with market notes (append section, don’t rewrite US job story)
+### Start order (Cluster B first, then A, then C)
+
+1. restaurant-takeaway, salon-booking, clinic-front-desk, customer-support, delivery-tracking, trades-receptionist  
+2. executive-assistant, it-helpdesk, dental-front-desk, hotel-guest, sales-qualifier, home-services  
+3. events-venue, onboarding-buddy, accounting-practice, building-management, gym-membership, pharmacy  
+
+## Per market-pack file
+
+1. Localize knowledge: currency, emergency numbers, compliance (GDPR / POPIA-style / PDPA-style), hours, phone formats  
+2. Preserve confirm-before-write + handoff from US hero intent  
+3. Fix knowledge↔eval drift (`says_any` must appear in knowledge)  
+4. Append a **Markets** section to `docs/pilots/{family}.md` (do not erase US job story)
 
 ## Done means
 
-A customer in that market can Rent → Configure knowledge → Connect tools → go live on website/App without Move Digital sitting in the chat.
+A customer in that market can Rent → configure → connect tools → go live without hand-holding.
 
 ## Do not
 
-- Rewrite catalogue to “demo shortlist”
-- Touch `monday-pilot.ts` / Sidebar / Agent Admin unless asked
-- Claim SOC2 / live OAuth if credentials aren’t wired
+- Touch `monday-pilot.ts`, CatalogGrid, runtime core  
+- Add demo/Monday pitch language  
+- Claim live OAuth without credentials  

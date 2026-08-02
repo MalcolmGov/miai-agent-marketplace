@@ -29,6 +29,7 @@
     "validate:azure": "bash scripts/validate-azure.sh",
     "smoke:cutover": "node scripts/cutover-smoke.mjs",
     "demo:app": "pnpm --dir apps/mobile-shell start",
-    "generate:ask-digest": "node scripts/generate-marketplace-digest.mjs"
+    "generate:ask-digest": "node scripts/generate-marketplace-digest.mjs",
+    "production:status": "node scripts/production-wave-status.mjs"
   }
 }
