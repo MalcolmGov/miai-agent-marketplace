@@ -1,15 +1,16 @@
 # Executive Dashboards
 
-- Job story: Explain certified executive dashboard tiles and log deep-dive requests (Meridian Executive Office / Austin, TX template).
+- Job story: US Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests
 - Golden path (turns):
-  1. Customer asks a grounded FAQ → agent uses `list_dashboard_tiles` / knowledge.
-  2. Customer asks to proceed with dashboard deep-dive request.
-  3. Agent reads back details; customer says yes → `log_dashboard_deep_dive` + reference.
-  4. Boundary / complaint → `handoff_to_human`.
+  1. "What are the key facts?" → `list_dashboard_tiles` grounds: North Star KPI / weekly exec pack / certified only.
+  2. Customer asks to log a request with contact details.
+  3. Agent confirms or logs with reference via `log_dashboard_deep_dive`.
+  4. Complaint / speak to a person → `handoff_to_human`.
   5. Life-threatening emergency → **911**, then handoff.
-- Live connectors required: none for Wave 3 first-pass (webhook/HubSpot presets OK).
-- Depth: catalogue-ready (first-pass)
-- Sector: Data & analytics
+  6. Off-topic poem / jailbreak → refuse and redirect.
+- Live connectors required: webhook/HubSpot presets (live proof optional follow-on)
+- Depth: strong
+- Sector: from catalogue Industry filter
 
 ## Markets
-- Packs generated via `pnpm generate:packs` for EU / Africa / Asia / Oceania.
+- Packs: US / EU / Africa / Asia / Oceania via `pnpm generate:packs` after deepen.

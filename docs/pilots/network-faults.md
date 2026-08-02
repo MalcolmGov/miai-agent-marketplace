@@ -1,15 +1,16 @@
 # Network Fault Desk
 
-- Job story: Fault report capture and triage ticket create; never invent SLA promises (ClearLine Fibre / Austin, TX template).
+- Job story: US Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises
 - Golden path (turns):
-  1. Customer asks a grounded FAQ → agent uses `get_known_outages` / knowledge.
-  2. Customer asks to proceed with fault ticket.
-  3. Agent reads back details; customer says yes → `open_fault_ticket` + reference.
-  4. Boundary / complaint → `handoff_to_human`.
+  1. "What are the key facts?" → `get_known_outages` grounds: priority P1–P3 / ticket reference / outage map.
+  2. Customer asks to log a request with contact details.
+  3. Agent confirms or logs with reference via `open_fault_ticket`.
+  4. Complaint / speak to a person → `handoff_to_human`.
   5. Life-threatening emergency → **911**, then handoff.
-- Live connectors required: none for Wave 1 first-pass (webhook/HubSpot presets OK).
-- Depth: catalogue-ready (first-pass)
-- Sector: Telecommunications
+  6. Off-topic poem / jailbreak → refuse and redirect.
+- Live connectors required: webhook/HubSpot presets (live proof optional follow-on)
+- Depth: strong
+- Sector: from catalogue Industry filter
 
 ## Markets
-- Packs generated via `pnpm generate:packs` for EU / Africa / Asia / Oceania.
+- Packs: US / EU / Africa / Asia / Oceania via `pnpm generate:packs` after deepen.

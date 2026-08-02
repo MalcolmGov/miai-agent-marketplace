@@ -1,15 +1,16 @@
 # Fraud Investigations Desk
 
-- Job story: Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat (Summit Card Fraud Ops / Austin, TX template).
+- Job story: US Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat
 - Golden path (turns):
-  1. Customer asks a grounded FAQ → agent uses `get_fraud_reporting_steps` / knowledge.
-  2. Customer asks to proceed with fraud case.
-  3. Agent reads back details; customer says yes → `open_fraud_case` + reference.
-  4. Boundary / complaint → `handoff_to_human`.
+  1. "What are the key facts?" → `get_fraud_reporting_steps` grounds: case reference / provisional credit FAQ / no PAN in chat.
+  2. Customer asks to log a request with contact details.
+  3. Agent confirms or logs with reference via `open_fraud_case`.
+  4. Complaint / speak to a person → `handoff_to_human`.
   5. Life-threatening emergency → **911**, then handoff.
-- Live connectors required: none for Wave 2 first-pass (webhook/HubSpot presets OK).
-- Depth: catalogue-ready (first-pass)
-- Sector: Financial services
+  6. Off-topic poem / jailbreak → refuse and redirect.
+- Live connectors required: webhook/HubSpot presets (live proof optional follow-on)
+- Depth: strong
+- Sector: from catalogue Industry filter
 
 ## Markets
-- Packs generated via `pnpm generate:packs` for EU / Africa / Asia / Oceania.
+- Packs: US / EU / Africa / Asia / Oceania via `pnpm generate:packs` after deepen.

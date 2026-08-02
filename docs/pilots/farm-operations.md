@@ -1,15 +1,16 @@
 # Farm Operations Desk
 
-- Job story: Farm task and equipment FAQ with work-log capture; escalate safety immediately (Prairie Bend Farms / Taylor, TX template).
+- Job story: US Farm Operations Desk — Farm task and equipment FAQ with work-log capture; escalate safety immediately
 - Golden path (turns):
-  1. Customer asks a grounded FAQ → agent uses `get_farm_schedule` / knowledge.
-  2. Customer asks to proceed with farm work order.
-  3. Agent reads back details; customer says yes → `log_farm_work_order` + reference.
-  4. Boundary / complaint → `handoff_to_human`.
+  1. "What are the key facts?" → `get_farm_schedule` grounds: Field 12 / irrigation block B / PPE required.
+  2. Customer asks to log a request with contact details.
+  3. Agent confirms or logs with reference via `log_farm_work_order`.
+  4. Complaint / speak to a person → `handoff_to_human`.
   5. Life-threatening emergency → **911**, then handoff.
-- Live connectors required: none for Wave 4 first-pass (webhook/HubSpot presets OK).
-- Depth: catalogue-ready (first-pass)
-- Sector: Agriculture
+  6. Off-topic poem / jailbreak → refuse and redirect.
+- Live connectors required: webhook/HubSpot presets (live proof optional follow-on)
+- Depth: strong
+- Sector: from catalogue Industry filter
 
 ## Markets
-- Packs generated via `pnpm generate:packs` for EU / Africa / Asia / Oceania.
+- Packs: US / EU / Africa / Asia / Oceania via `pnpm generate:packs` after deepen.

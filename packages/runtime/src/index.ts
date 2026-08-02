@@ -666,9 +666,22 @@ export class MockModelAdapter implements ModelAdapter {
             "You're booked — reference BK-3391. You'll get a confirmation on your contact details. Please confirm if anything looks wrong.",
         };
       }
-      if (/log_|maintenance|exception|payroll_query|guest_request/i.test(toolName)) {
+      if (/log_|maintenance|exception|payroll_query|guest_request|capture_|submit_|open_|create_|enroll_/i.test(toolName)) {
         return {
           content: `Logged — reference **${data.reference ?? data.request_ref ?? "REF-1001"}**. The team will look into it / action it. I haven't marked it fixed.`,
+        };
+      }
+      // Generic read tools (Wave family scaffolds): prefer ## Key facts over Process blobs
+      if (
+        /^(get_|list_|search_|lookup_|check_)/i.test(toolName) ||
+        /_info$|_status$|_requirements$|_products$|_slots$|_plan$|_rules$|_checklist$|_calendar$|_summary$|_template$|_programmes$|_courses$|_offers$|_guide$|_process$|_deadlines$|_outages$|_schedule$|_definition$|_rights$|_policy$|_severity$|_bundles$|_openings$|_docs$|_library$|_patterns$|_tiles$|_faq$/i.test(
+          toolName,
+        )
+      ) {
+        const factsMatch = input.system.match(/## Key facts[\s\S]*?(?=\n## |$)/i);
+        const facts = factsMatch?.[0]?.trim() || kb;
+        return {
+          content: `${facts || "Details on file from knowledge."}\n\n${amountLine}\nHappy to help further — shall I continue?`,
         };
       }
       if (kb) return { content: `${kb}\n\n${amountLine}\n(Looked up via ${toolName}.)` };

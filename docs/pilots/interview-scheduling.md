@@ -1,15 +1,16 @@
 # Interview Scheduling
 
-- Job story: Candidate interview slot booking with confirm-before-write (Northwind Digital Talent / Round Rock, TX template).
+- Job story: US Interview Scheduling — Candidate interview slot booking with confirm-before-write
 - Golden path (turns):
-  1. Customer asks a grounded FAQ → agent uses `get_interview_slots` / knowledge.
-  2. Customer asks to proceed with interview booking.
-  3. Agent reads back details; customer says yes → `book_interview_slot` + reference.
-  4. Boundary / complaint → `handoff_to_human`.
+  1. "What are the key facts?" → `get_interview_slots` grounds: 45-minute interview / video or onsite / Tue–Thu 10:00–16:00.
+  2. Customer asks to log a request with contact details.
+  3. Agent confirms or logs with reference via `book_interview_slot`.
+  4. Complaint / speak to a person → `handoff_to_human`.
   5. Life-threatening emergency → **911**, then handoff.
-- Live connectors required: none for Wave 1 first-pass (webhook/HubSpot presets OK).
-- Depth: catalogue-ready (first-pass)
-- Sector: HR & internal ops
+  6. Off-topic poem / jailbreak → refuse and redirect.
+- Live connectors required: webhook/HubSpot presets (live proof optional follow-on)
+- Depth: strong
+- Sector: from catalogue Industry filter
 
 ## Markets
-- Packs generated via `pnpm generate:packs` for EU / Africa / Asia / Oceania.
+- Packs: US / EU / Africa / Asia / Oceania via `pnpm generate:packs` after deepen.

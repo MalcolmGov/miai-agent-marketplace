@@ -20,12 +20,22 @@ function familyFromUsFile(name) {
 
 const usFiles = readdirSync(catalogDir).filter((f) => f.startsWith("us-") && f.endsWith(".agent.json"));
 const families = usFiles.map(familyFromUsFile).sort();
-const pilotDocs = existsSync(pilotsDir)
-  ? new Set(readdirSync(pilotsDir).filter((f) => f.endsWith(".md")).map((f) => f.replace(/\.md$/, "")))
-  : new Set();
 
-const strongUs = families.filter((f) => pilotDocs.has(f));
-const weakUs = families.filter((f) => !pilotDocs.has(f));
+function pilotDepth(fam) {
+  const p = path.join(pilotsDir, `${fam}.md`);
+  if (!existsSync(p)) return "none";
+  const t = readFileSync(p, "utf8");
+  if (/^- Depth:\s*live\b/m.test(t)) return "live";
+  if (/^- Depth:\s*strong\b/m.test(t)) return "strong";
+  if (/catalogue-ready|first-pass/i.test(t)) return "first-pass";
+  return "stub";
+}
+
+const depthByFamily = Object.fromEntries(families.map((f) => [f, pilotDepth(f)]));
+const strongUs = families.filter((f) => depthByFamily[f] === "strong" || depthByFamily[f] === "live");
+const liveUs = families.filter((f) => depthByFamily[f] === "live");
+const firstPassUs = families.filter((f) => depthByFamily[f] === "first-pass");
+const weakUs = families.filter((f) => depthByFamily[f] === "none" || depthByFamily[f] === "stub");
 
 function africaPackPresent(fam) {
   if (existsSync(path.join(catalogDir, `africa-${fam}.agent.json`))) return true;
@@ -70,10 +80,10 @@ const marketPacksExisting = marketPacksForStrong.filter((id) => {
   if (pk === "africa") return africaPackPresent(fam);
   return existsSync(path.join(catalogDir, `${id}.agent.json`));
 });
-const africaPrefixed = strongUs.filter((fam) =>
+const africaPrefixed = families.filter((fam) =>
   existsSync(path.join(catalogDir, `africa-${fam}.agent.json`)),
 ).length;
-const oceaniaPrefixed = strongUs.filter((fam) =>
+const oceaniaPrefixed = families.filter((fam) =>
   existsSync(path.join(catalogDir, `oceania-${fam}.agent.json`)),
 ).length;
 
@@ -111,19 +121,21 @@ console.log(`
 Production scale status
 ───────────────────────
 Families (US heroes):     ${families.length}
-US Depth strong (+pilot): ${strongUs.length} / ${families.length}
-US remaining (Wave 2):    ${weakUs.length}
+US Depth live:            ${liveUs.length} / ${families.length}
+US Depth strong (+live):  ${strongUs.length} / ${families.length}
+US first-pass (not strong): ${firstPassUs.length}
+US missing/stub pilots:   ${weakUs.length}
 Catalogue slots present:  ${packPresent} / ${families.length * PACKS.length}
 Missing non-US packs:     ${packMissing.length}
 Market packs for strong:  ${marketPacksExisting.length} / ${strongUs.length * LOCALIZE_PACKS.length} (localize)
-Africa prefixed files:    ${africaPrefixed} / ${strongUs.length} (rest may be legacy unprefixed ZA)
-Oceania prefixed files:   ${oceaniaPrefixed} / ${strongUs.length}
+Africa prefixed files:    ${africaPrefixed} / ${families.length} (rest may be legacy unprefixed ZA)
+Oceania prefixed files:   ${oceaniaPrefixed} / ${families.length}
 Legacy Africa (unprefixed only): ${legacyAfricaOnly.length}
 Target:                   500 (100 × 5)
 
-Wave 1 (Go-live 18): ${strongUs.length >= 18 ? "met or exceeded" : "in progress"} (${strongUs.length})
-Wave 2 TODO families:
-${weakUs.map((f) => `  - ${f}`).join("\n") || "  (none)"}
+Depth strong met (≥18 go-live bar): ${strongUs.length >= 18 ? "yes" : "in progress"} (${strongUs.length})
+TODO (first-pass / stub):
+${[...firstPassUs, ...weakUs].map((f) => `  - ${f} (${depthByFamily[f]})`).join("\n") || "  (none)"}
 
 Wave 4 live proofs (first slice):
   Agents with recorded proof: ${wave4AgentsCovered.length} / ${WAVE4_SLICE.length}
