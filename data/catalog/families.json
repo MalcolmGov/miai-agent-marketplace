@@ -128,20 +128,19 @@
     "name": "AI Coding Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "AI Coding Assistant — AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
+    "summary": "AI Coding Assistant — Help engineers with code questions grounded in repo docs; never invent secrets or push without confirm",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-ai-coding-assistant",
+      "eu": "eu-ai-coding-assistant",
       "africa": "africa-ai-coding-assistant",
       "asia": "asia-ai-coding-assistant",
-      "eu": "eu-ai-coding-assistant",
-      "oceania": "oceania-ai-coding-assistant",
-      "us": "us-ai-coding-assistant"
+      "oceania": "oceania-ai-coding-assistant"
     },
     "packs": [
       "us",
@@ -159,20 +158,19 @@
     "name": "Airtime & Bundles",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Airtime & Bundles — Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "summary": "Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-airtime-bundles",
+      "eu": "eu-airtime-bundles",
       "africa": "africa-airtime-bundles",
       "asia": "asia-airtime-bundles",
-      "eu": "eu-airtime-bundles",
-      "oceania": "oceania-airtime-bundles",
-      "us": "us-airtime-bundles"
+      "oceania": "oceania-airtime-bundles"
     },
     "packs": [
       "us",
@@ -222,20 +220,19 @@
     "name": "BI Analyst Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "BI Analyst Assistant — BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
+    "summary": "BI Analyst Assistant — Explain published metrics and capture analysis requests; never invent numbers",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-bi-analyst",
+      "eu": "eu-bi-analyst",
       "africa": "africa-bi-analyst",
       "asia": "asia-bi-analyst",
-      "eu": "eu-bi-analyst",
-      "oceania": "oceania-bi-analyst",
-      "us": "us-bi-analyst"
+      "oceania": "oceania-bi-analyst"
     },
     "packs": [
       "us",
@@ -317,20 +314,19 @@
     "name": "Legal Case Management",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Legal Case Management — Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
+    "summary": "Legal Case Management — Matter status FAQ and document/checklist logging for open cases; never legal advice",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-case-management",
+      "eu": "eu-case-management",
       "africa": "africa-case-management",
       "asia": "asia-case-management",
-      "eu": "eu-case-management",
-      "oceania": "oceania-case-management",
-      "us": "us-case-management"
+      "oceania": "oceania-case-management"
     },
     "packs": [
       "us",
@@ -348,20 +344,19 @@
     "name": "Citizen Services",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Citizen Services — Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "summary": "Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-citizen-services",
+      "eu": "eu-citizen-services",
       "africa": "africa-citizen-services",
       "asia": "asia-citizen-services",
-      "eu": "eu-citizen-services",
-      "oceania": "oceania-citizen-services",
-      "us": "us-citizen-services"
+      "oceania": "oceania-citizen-services"
     },
     "packs": [
       "us",
@@ -411,20 +406,19 @@
     "name": "Contract Review Intake",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Contract Review Intake — Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "summary": "Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-contract-review",
+      "eu": "eu-contract-review",
       "africa": "africa-contract-review",
       "asia": "asia-contract-review",
-      "eu": "eu-contract-review",
-      "oceania": "oceania-contract-review",
-      "us": "us-contract-review"
+      "oceania": "oceania-contract-review"
     },
     "packs": [
       "us",
@@ -474,20 +468,19 @@
     "name": "Credit Card Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Credit Card Desk — Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "summary": "Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-credit-cards",
+      "eu": "eu-credit-cards",
       "africa": "africa-credit-cards",
       "asia": "asia-credit-cards",
-      "eu": "eu-credit-cards",
-      "oceania": "oceania-credit-cards",
-      "us": "us-credit-cards"
+      "oceania": "oceania-credit-cards"
     },
     "packs": [
       "us",
@@ -567,20 +560,19 @@
     "name": "Data Quality Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Data Quality Desk — Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
+    "summary": "Data Quality Desk — Data-quality issue FAQ and incident logging; never silently fix production data",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-data-quality",
+      "eu": "eu-data-quality",
       "africa": "africa-data-quality",
       "asia": "asia-data-quality",
-      "eu": "eu-data-quality",
-      "oceania": "oceania-data-quality",
-      "us": "us-data-quality"
+      "oceania": "oceania-data-quality"
     },
     "packs": [
       "us",
@@ -693,20 +685,19 @@
     "name": "Device Upgrades",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Device Upgrades — Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
+    "summary": "Device Upgrades — Explain eligible device upgrade offers and capture upgrade intent; never invent eligibility",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-device-upgrades",
+      "eu": "eu-device-upgrades",
       "africa": "africa-device-upgrades",
       "asia": "asia-device-upgrades",
-      "eu": "eu-device-upgrades",
-      "oceania": "oceania-device-upgrades",
-      "us": "us-device-upgrades"
+      "oceania": "oceania-device-upgrades"
     },
     "packs": [
       "us",
@@ -724,20 +715,19 @@
     "name": "DevOps Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "DevOps Assistant — DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
+    "summary": "DevOps Assistant — CI/CD and environment FAQ plus incident ticket logging; never invent prod changes",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-devops-assistant",
+      "eu": "eu-devops-assistant",
       "africa": "africa-devops-assistant",
       "asia": "asia-devops-assistant",
-      "eu": "eu-devops-assistant",
-      "oceania": "oceania-devops-assistant",
-      "us": "us-devops-assistant"
+      "oceania": "oceania-devops-assistant"
     },
     "packs": [
       "us",
@@ -755,20 +745,19 @@
     "name": "Documentation Assistant",
     "tier": "standard",
     "category": "operations",
-    "summary": "Documentation Assistant — Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
+    "summary": "Documentation Assistant — Draft and locate internal docs from approved sources; never invent policies",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-documentation-assistant",
+      "eu": "eu-documentation-assistant",
       "africa": "africa-documentation-assistant",
       "asia": "asia-documentation-assistant",
-      "eu": "eu-documentation-assistant",
-      "oceania": "oceania-documentation-assistant",
-      "us": "us-documentation-assistant"
+      "oceania": "oceania-documentation-assistant"
     },
     "packs": [
       "us",
@@ -816,20 +805,19 @@
     "name": "Enterprise Connectivity",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Enterprise Connectivity — Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
+    "summary": "Enterprise Connectivity — B2B connectivity FAQ and opportunity capture for SD-WAN / dedicated fibre; hand off quotes",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-enterprise-connectivity",
+      "eu": "eu-enterprise-connectivity",
       "africa": "africa-enterprise-connectivity",
       "asia": "asia-enterprise-connectivity",
-      "eu": "eu-enterprise-connectivity",
-      "oceania": "oceania-enterprise-connectivity",
-      "us": "us-enterprise-connectivity"
+      "oceania": "oceania-enterprise-connectivity"
     },
     "packs": [
       "us",
@@ -911,20 +899,19 @@
     "name": "Executive Dashboards",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Executive Dashboards — Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
+    "summary": "Executive Dashboards — Explain certified executive dashboard tiles and log deep-dive requests",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-executive-dashboards",
+      "eu": "eu-executive-dashboards",
       "africa": "africa-executive-dashboards",
       "asia": "asia-executive-dashboards",
-      "eu": "eu-executive-dashboards",
-      "oceania": "oceania-executive-dashboards",
-      "us": "us-executive-dashboards"
+      "oceania": "oceania-executive-dashboards"
     },
     "packs": [
       "us",
@@ -942,20 +929,19 @@
     "name": "Factory Operations",
     "tier": "pro",
     "category": "operations",
-    "summary": "Factory Operations — Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
+    "summary": "Factory Operations — Shift and line status FAQ plus production exception logging for plant staff",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-factory-operations",
+      "eu": "eu-factory-operations",
       "africa": "africa-factory-operations",
       "asia": "asia-factory-operations",
-      "eu": "eu-factory-operations",
-      "oceania": "oceania-factory-operations",
-      "us": "us-factory-operations"
+      "oceania": "oceania-factory-operations"
     },
     "packs": [
       "us",
@@ -1003,20 +989,19 @@
     "name": "Fibre Support",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Fibre Support — Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "summary": "Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-fibre-support",
+      "eu": "eu-fibre-support",
       "africa": "africa-fibre-support",
       "asia": "asia-fibre-support",
-      "eu": "eu-fibre-support",
-      "oceania": "oceania-fibre-support",
-      "us": "us-fibre-support"
+      "oceania": "oceania-fibre-support"
     },
     "packs": [
       "us",
@@ -1066,20 +1051,19 @@
     "name": "Financial Reporting Desk",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Financial Reporting Desk — Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
+    "summary": "Financial Reporting Desk — Close calendar and report pack FAQ with report-request logging; never invent figures",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-financial-reporting",
+      "eu": "eu-financial-reporting",
       "africa": "africa-financial-reporting",
       "asia": "asia-financial-reporting",
-      "eu": "eu-financial-reporting",
-      "oceania": "oceania-financial-reporting",
-      "us": "us-financial-reporting"
+      "oceania": "oceania-financial-reporting"
     },
     "packs": [
       "us",
@@ -1129,20 +1113,19 @@
     "name": "Fraud Investigations Desk",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Fraud Investigations Desk — Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
+    "summary": "Fraud Investigations Desk — Fraud report intake and case logging; never adjudicate liability or freeze accounts unilaterally in chat",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-fraud-investigations",
+      "eu": "eu-fraud-investigations",
       "africa": "africa-fraud-investigations",
       "asia": "asia-fraud-investigations",
-      "eu": "eu-fraud-investigations",
-      "oceania": "oceania-fraud-investigations",
-      "us": "us-fraud-investigations"
+      "oceania": "oceania-fraud-investigations"
     },
     "packs": [
       "us",
@@ -1446,20 +1429,19 @@
     "name": "Interview Scheduling",
     "tier": "standard",
     "category": "operations",
-    "summary": "Interview Scheduling — Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "summary": "Interview Scheduling — Candidate interview slot booking with confirm-before-write",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-interview-scheduling",
+      "eu": "eu-interview-scheduling",
       "africa": "africa-interview-scheduling",
       "asia": "asia-interview-scheduling",
-      "eu": "eu-interview-scheduling",
-      "oceania": "oceania-interview-scheduling",
-      "us": "us-interview-scheduling"
+      "oceania": "oceania-interview-scheduling"
     },
     "packs": [
       "us",
@@ -1477,20 +1459,19 @@
     "name": "Investment Advisor Intake",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Investment Advisor Intake — Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
+    "summary": "Investment Advisor Intake — Intake for advisor introduction and risk questionnaire logging; never personalized investment advice",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-investment-advisor",
+      "eu": "eu-investment-advisor",
       "africa": "africa-investment-advisor",
       "asia": "asia-investment-advisor",
-      "eu": "eu-investment-advisor",
-      "oceania": "oceania-investment-advisor",
-      "us": "us-investment-advisor"
+      "oceania": "oceania-investment-advisor"
     },
     "packs": [
       "us",
@@ -1602,20 +1583,19 @@
     "name": "Legal Research Intake",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Legal Research Intake — Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
+    "summary": "Legal Research Intake — Capture research requests for attorneys; never deliver legal opinions or citation invent",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-legal-research",
+      "eu": "eu-legal-research",
       "africa": "africa-legal-research",
       "asia": "asia-legal-research",
-      "eu": "eu-legal-research",
-      "oceania": "oceania-legal-research",
-      "us": "us-legal-research"
+      "oceania": "oceania-legal-research"
     },
     "packs": [
       "us",
@@ -1633,20 +1613,19 @@
     "name": "Licensing Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Licensing Desk — Licensing Desk — Business and professional licence FAQ and application intake logging",
+    "summary": "Licensing Desk — Business and professional licence FAQ and application intake logging",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-licensing",
+      "eu": "eu-licensing",
       "africa": "africa-licensing",
       "asia": "asia-licensing",
-      "eu": "eu-licensing",
-      "oceania": "oceania-licensing",
-      "us": "us-licensing"
+      "oceania": "oceania-licensing"
     },
     "packs": [
       "us",
@@ -1728,20 +1707,19 @@
     "name": "Maintenance Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Maintenance Desk — Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "summary": "Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-maintenance-desk",
+      "eu": "eu-maintenance-desk",
       "africa": "africa-maintenance-desk",
       "asia": "asia-maintenance-desk",
-      "eu": "eu-maintenance-desk",
-      "oceania": "oceania-maintenance-desk",
-      "us": "us-maintenance-desk"
+      "oceania": "oceania-maintenance-desk"
     },
     "packs": [
       "us",
@@ -1853,20 +1831,19 @@
     "name": "Mortgage Advisor",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Mortgage Advisor — Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "summary": "Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-mortgage-advisor",
+      "eu": "eu-mortgage-advisor",
       "africa": "africa-mortgage-advisor",
       "asia": "asia-mortgage-advisor",
-      "eu": "eu-mortgage-advisor",
-      "oceania": "oceania-mortgage-advisor",
-      "us": "us-mortgage-advisor"
+      "oceania": "oceania-mortgage-advisor"
     },
     "packs": [
       "us",
@@ -1884,20 +1861,19 @@
     "name": "Municipality Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Municipality Desk — Municipality Desk — Rates/permits FAQ and service request logging",
+    "summary": "Municipality Desk — Rates/permits FAQ and service request logging",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-municipality-desk",
+      "eu": "eu-municipality-desk",
       "africa": "africa-municipality-desk",
       "asia": "asia-municipality-desk",
-      "eu": "eu-municipality-desk",
-      "oceania": "oceania-municipality-desk",
-      "us": "us-municipality-desk"
+      "oceania": "oceania-municipality-desk"
     },
     "packs": [
       "us",
@@ -1915,20 +1891,19 @@
     "name": "Network Fault Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Network Fault Desk — Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "summary": "Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-network-faults",
+      "eu": "eu-network-faults",
       "africa": "africa-network-faults",
       "asia": "asia-network-faults",
-      "eu": "eu-network-faults",
-      "oceania": "oceania-network-faults",
-      "us": "us-network-faults"
+      "oceania": "oceania-network-faults"
     },
     "packs": [
       "us",
@@ -2010,20 +1985,19 @@
     "name": "Passport & Visa Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Passport & Visa Desk — Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
+    "summary": "Passport & Visa Desk — Passport and visa process FAQ and appointment/intake logging; never immigration advice",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-passport-visa",
+      "eu": "eu-passport-visa",
       "africa": "africa-passport-visa",
       "asia": "asia-passport-visa",
-      "eu": "eu-passport-visa",
-      "oceania": "oceania-passport-visa",
-      "us": "us-passport-visa"
+      "oceania": "oceania-passport-visa"
     },
     "packs": [
       "us",
@@ -2263,20 +2237,19 @@
     "name": "Production Planning",
     "tier": "pro",
     "category": "operations",
-    "summary": "Production Planning — Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
+    "summary": "Production Planning — Plan and schedule FAQ with change-request logging; never invent capacity",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-production-planning",
+      "eu": "eu-production-planning",
       "africa": "africa-production-planning",
       "asia": "asia-production-planning",
-      "eu": "eu-production-planning",
-      "oceania": "oceania-production-planning",
-      "us": "us-production-planning"
+      "oceania": "oceania-production-planning"
     },
     "packs": [
       "us",
@@ -2294,20 +2267,19 @@
     "name": "Prompt Engineering Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Prompt Engineering Desk — Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
+    "summary": "Prompt Engineering Desk — Help teams design prompts using approved patterns; capture prompt-review requests",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-prompt-engineering",
+      "eu": "eu-prompt-engineering",
       "africa": "africa-prompt-engineering",
       "asia": "asia-prompt-engineering",
-      "eu": "eu-prompt-engineering",
-      "oceania": "oceania-prompt-engineering",
-      "us": "us-prompt-engineering"
+      "oceania": "oceania-prompt-engineering"
     },
     "packs": [
       "us",
@@ -2357,20 +2329,19 @@
     "name": "QA Testing Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "QA Testing Assistant — QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
+    "summary": "QA Testing Assistant — Test-case FAQ and defect intake logging; never invent pass/fail for unrun tests",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-qa-testing",
+      "eu": "eu-qa-testing",
       "africa": "africa-qa-testing",
       "asia": "asia-qa-testing",
-      "eu": "eu-qa-testing",
-      "oceania": "oceania-qa-testing",
-      "us": "us-qa-testing"
+      "oceania": "oceania-qa-testing"
     },
     "packs": [
       "us",
@@ -2388,20 +2359,19 @@
     "name": "Quality Assurance Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Quality Assurance Desk — Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "summary": "Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-quality-assurance",
+      "eu": "eu-quality-assurance",
       "africa": "africa-quality-assurance",
       "asia": "asia-quality-assurance",
-      "eu": "eu-quality-assurance",
-      "oceania": "oceania-quality-assurance",
-      "us": "us-quality-assurance"
+      "oceania": "oceania-quality-assurance"
     },
     "packs": [
       "us",
@@ -2419,20 +2389,19 @@
     "name": "Recruitment Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "Recruitment Assistant — Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "summary": "Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-recruitment",
+      "eu": "eu-recruitment",
       "africa": "africa-recruitment",
       "asia": "asia-recruitment",
-      "eu": "eu-recruitment",
-      "oceania": "oceania-recruitment",
-      "us": "us-recruitment"
+      "oceania": "oceania-recruitment"
     },
     "packs": [
       "us",
@@ -2578,20 +2547,19 @@
     "name": "Sales Forecasting Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Sales Forecasting Desk — Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
+    "summary": "Sales Forecasting Desk — Pipeline forecast FAQ and forecast-adjustment logging; never invent quota attainment",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-sales-forecasting",
+      "eu": "eu-sales-forecasting",
       "africa": "africa-sales-forecasting",
       "asia": "asia-sales-forecasting",
-      "eu": "eu-sales-forecasting",
-      "oceania": "oceania-sales-forecasting",
-      "us": "us-sales-forecasting"
+      "oceania": "oceania-sales-forecasting"
     },
     "packs": [
       "us",
@@ -2703,20 +2671,19 @@
     "name": "SIM Registration",
     "tier": "pro",
     "category": "vertical",
-    "summary": "SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "summary": "SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-sim-registration",
+      "eu": "eu-sim-registration",
       "africa": "africa-sim-registration",
       "asia": "asia-sim-registration",
-      "eu": "eu-sim-registration",
-      "oceania": "oceania-sim-registration",
-      "us": "us-sim-registration"
+      "oceania": "oceania-sim-registration"
     },
     "packs": [
       "us",
@@ -2734,20 +2701,19 @@
     "name": "Social Services Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Social Services Desk — Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
+    "summary": "Social Services Desk — Benefits programme FAQ and referral intake; never eligibility decisions",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-social-services",
+      "eu": "eu-social-services",
       "africa": "africa-social-services",
       "asia": "asia-social-services",
-      "eu": "eu-social-services",
-      "oceania": "oceania-social-services",
-      "us": "us-social-services"
+      "oceania": "oceania-social-services"
     },
     "packs": [
       "us",
@@ -2861,20 +2827,19 @@
     "name": "Tax Office Assistant",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Tax Office Assistant — Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "summary": "Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-tax-office",
+      "eu": "eu-tax-office",
       "africa": "africa-tax-office",
       "asia": "asia-tax-office",
-      "eu": "eu-tax-office",
-      "oceania": "oceania-tax-office",
-      "us": "us-tax-office"
+      "oceania": "oceania-tax-office"
     },
     "packs": [
       "us",
@@ -3083,20 +3048,19 @@
     "name": "Warehouse Operations",
     "tier": "pro",
     "category": "operations",
-    "summary": "Warehouse Operations — Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "summary": "Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-warehouse-operations",
+      "eu": "eu-warehouse-operations",
       "africa": "africa-warehouse-operations",
       "asia": "asia-warehouse-operations",
-      "eu": "eu-warehouse-operations",
-      "oceania": "oceania-warehouse-operations",
-      "us": "us-warehouse-operations"
+      "oceania": "oceania-warehouse-operations"
     },
     "packs": [
       "us",
@@ -3114,20 +3078,19 @@
     "name": "Wealth Management Desk",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Wealth Management Desk — Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
+    "summary": "Wealth Management Desk — Wealth desk FAQ and meeting intake; never investment advice or portfolio recommendations",
     "channels": [
-      "whatsapp",
+      "sms",
       "web",
-      "app",
-      "sms"
+      "app"
     ],
     "health": false,
     "markets": {
+      "us": "us-wealth-management",
+      "eu": "eu-wealth-management",
       "africa": "africa-wealth-management",
       "asia": "asia-wealth-management",
-      "eu": "eu-wealth-management",
-      "oceania": "oceania-wealth-management",
-      "us": "us-wealth-management"
+      "oceania": "oceania-wealth-management"
     },
     "packs": [
       "us",
