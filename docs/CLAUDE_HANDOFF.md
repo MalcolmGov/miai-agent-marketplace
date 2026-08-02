@@ -1,42 +1,38 @@
-# Claude handoff — scale to 220 (production)
+# Claude handoff — Wave 3 to 220
 
-**Context:** Partner demo is done. Goal = **production comfort across all 220 agents** (55 families × 4 packs).
+**Status:** Wave 2 complete — **all 55 US heroes** are Depth strong with `docs/pilots/{family}.md`.
 
-## Current state
+**Your job:** Wave 3 — localize **every** market pack so the licensed catalogue is production-ready end-to-end (**220 agents**).
 
-- **Wave 1 done:** 18 US heroes at Depth strong + `docs/pilots/{family}.md`
-- **Wave 2 (Cursor):** remaining ~37 US heroes
-- **Wave 3 (Claude — your lane):** localize market packs for families that already have strong US heroes
+## Own only
 
-## Your ownership (Wave 3) — no collisions with Cursor US work
-
-For **each** family listed under Wave 1 strong US (see `node scripts/production-wave-status.mjs`), deepen:
+For each of the 55 families:
 
 - `data/catalog/eu-{family}.agent.json`
 - `data/catalog/africa-{family}.agent.json`
 - `data/catalog/asia-{family}.agent.json`
 
-**Do not edit** `us-*.agent.json` while Cursor Wave 2 is running.
+**Do not edit** `us-*.agent.json` (US heroes are locked unless fixing a regression).
 
-### Start order (Cluster B first, then A, then C)
+## Priority batches
 
-1. restaurant-takeaway, salon-booking, clinic-front-desk, customer-support, delivery-tracking, trades-receptionist  
-2. executive-assistant, it-helpdesk, dental-front-desk, hotel-guest, sales-qualifier, home-services  
-3. events-venue, onboarding-buddy, accounting-practice, building-management, gym-membership, pharmacy  
+1. Original Go-live 18 (highest commercial visibility)  
+2. Remaining 37 families  
 
-## Per market-pack file
+Skip missing files if a pack truly doesn’t exist on disk (`pnpm production:status` lists gaps).
 
-1. Localize knowledge: currency, emergency numbers, compliance (GDPR / POPIA-style / PDPA-style), hours, phone formats  
-2. Preserve confirm-before-write + handoff from US hero intent  
-3. Fix knowledge↔eval drift (`says_any` must appear in knowledge)  
-4. Append a **Markets** section to `docs/pilots/{family}.md` (do not erase US job story)
+## Per file
+
+1. Localize knowledge (currency, emergency #, compliance, hours, phones)  
+2. Keep confirm-before-write + handoff  
+3. Ground evals in knowledge (zero drift)  
+4. Append **Markets** notes to `docs/pilots/{family}.md`
 
 ## Done means
 
-A customer in that market can Rent → configure → connect tools → go live without hand-holding.
+`pnpm production:status` shows market packs present, and each pack could be rented by a customer in that region without hand-holding.
 
-## Do not
-
-- Touch `monday-pilot.ts`, CatalogGrid, runtime core  
-- Add demo/Monday pitch language  
-- Claim live OAuth without credentials  
+```bash
+pnpm production:status
+pnpm eval:suite:static   # after batches
+```

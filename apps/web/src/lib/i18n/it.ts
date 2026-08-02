@@ -52,7 +52,7 @@ export const it: Dictionary = {
   "catalog.customer": "Cliente",
   "catalog.internal": "Interno",
   "catalog.workflows": "Workflow",
-  "catalog.demo6": "Production 18",
+  "catalog.demo6": "Production ready",
   "catalog.market": "Mercato",
   "catalog.allMarkets": "Tutti i mercati",
   "catalog.industry": "Settore",

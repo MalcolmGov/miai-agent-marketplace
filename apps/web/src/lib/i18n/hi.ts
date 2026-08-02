@@ -52,7 +52,7 @@ export const hi: Dictionary = {
   "catalog.customer": "ग्राहक",
   "catalog.internal": "आंतरिक",
   "catalog.workflows": "वर्कफ़्लो",
-  "catalog.demo6": "प्रोडक्शन 18",
+  "catalog.demo6": "प्रोडक्शन रेडी",
   "catalog.market": "बाज़ार",
   "catalog.allMarkets": "सभी बाज़ार",
   "catalog.industry": "उद्योग",

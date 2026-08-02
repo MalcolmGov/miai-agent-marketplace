@@ -1,31 +1,67 @@
 /**
- * First-wave production families (18 of 220).
- * Full catalogue remains under the annual platform license; these are the go-live wave we stand behind.
+ * All 55 production families (US heroes at Depth strong).
+ * Full catalogue = 55 × 4 market packs = 220 agents under the annual license.
+ * Catalogue "Production ready" filter = these families; Wave 3 localizes eu/africa/asia packs.
  */
 
 export const MONDAY_PILOT_FAMILY_IDS = [
-  // Cluster A — first go-live wave (original six)
-  "executive-assistant",
-  "it-helpdesk",
-  "dental-front-desk",
-  "hotel-guest",
-  "sales-qualifier",
-  "home-services",
-  // Cluster B — customer front office
-  "restaurant-takeaway",
-  "salon-booking",
+  "accounting-practice",
+  "admissions",
+  "agency-studio",
+  "bank-branch",
+  "bookkeeping",
+  "building-management",
   "clinic-front-desk",
+  "course-advisor",
   "customer-support",
   "delivery-tracking",
-  "trades-receptionist",
-  // Cluster C — ops & vertical
+  "dental-front-desk",
+  "dental-practice",
   "events-venue",
-  "onboarding-buddy",
-  "accounting-practice",
-  "building-management",
+  "executive-assistant",
+  "field-service",
+  "fleet-driver",
+  "front-desk",
+  "grant-stock-planner",
   "gym-membership",
+  "home-services",
+  "hotel-concierge",
+  "hotel-guest",
+  "hr-helpdesk",
+  "insurance-broker",
+  "insurance-claims",
+  "it-helpdesk",
+  "law-firm-intake",
+  "loan-prequalifier",
+  "loyalty-rewards",
+  "marketing-assistant",
+  "mobile-money",
+  "onboarding-buddy",
+  "order-tracking",
+  "payment-disputes",
+  "payroll-queries",
   "pharmacy",
+  "policy-compliance",
+  "procurement",
+  "product-finder",
+  "property-enquiries",
+  "remittance",
+  "rental-enquiries",
+  "restaurant-takeaway",
+  "returns-exchanges",
+  "sales-qualifier",
+  "salon-booking",
+  "spaza-merchant",
+  "stock-availability",
+  "student-helpdesk",
+  "tour-activity",
+  "trades-receptionist",
+  "travel-desk",
+  "utility-billing",
+  "vas-concierge",
+  "veterinary",
 ] as const;
+
 
 export type MondayPilotId = (typeof MONDAY_PILOT_FAMILY_IDS)[number];
 

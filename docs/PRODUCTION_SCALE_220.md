@@ -4,15 +4,15 @@
 
 Partner demo is done. This is the industrial path to stand behind every SKU.
 
-## Math
+## Current state
 
-| Layer | Count | Status (start of scale) |
-|---|---:|---|
-| Families | 55 | — |
-| US heroes at Depth strong + pilot doc | 18 | Wave 1 done |
-| US heroes remaining | 37 | Wave 2 (in progress) |
-| Market packs per family | eu · africa · asia | Wave 3 after US hero is strong |
-| Total agents | 220 | Wave 2+3 |
+| Layer | Status |
+|---|---|
+| Wave 1–2 US heroes | **55 / 55 Depth strong** |
+| Wave 3 market packs | In progress (Claude + Cursor) |
+| Target | **220** |
+
+Run `pnpm production:status`.
 
 ## Definition of done (same bar, every agent)
 

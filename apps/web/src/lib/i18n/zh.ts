@@ -52,7 +52,7 @@ export const zh: Dictionary = {
   "catalog.customer": "客户",
   "catalog.internal": "内部",
   "catalog.workflows": "工作流",
-  "catalog.demo6": "精选 18",
+  "catalog.demo6": "生产就绪",
   "catalog.market": "市场",
   "catalog.allMarkets": "全部市场",
   "catalog.industry": "行业",

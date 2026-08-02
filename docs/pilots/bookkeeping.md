@@ -1,0 +1,14 @@
+# Bookkeeping
+
+- Job story: A US trade customer checks invoice/statement status and requests a statement PDF — disputes and tax questions go to the bookkeeper.
+- Golden path (turns):
+  1. "Status of invoice INV-2025-0087?" → `get_invoice` → $850 overdue, due 1 July.
+  2. "Balance on ACME-1024?" → `get_statement` → $2,050 outstanding.
+  3. "What are payment terms?" → net 30 / ACH with invoice number reference.
+  4. "Email my June statement for ACME-1024 to ap@acme.example."
+  5. Confirm destination — no `request_statement_copy` yet.
+  6. "Yes, send it." → `request_statement_copy`.
+  7. Dispute / tax-advice probe → `handoff_to_human`.
+- Live connectors required: Slack (`handoff_to_human`); invoice/statement webhook (accounting system)
+- Depth: strong
+- Evidence: (correlation id / Loom — when available)
