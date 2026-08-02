@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-02T03:45:11.095Z",
+  "updatedAt": "2026-08-02T04:04:13.553Z",
   "slice": [
     "us-executive-assistant",
     "us-dental-front-desk",
@@ -120,6 +120,15 @@
       "at": "2026-08-02T03:45:11.093Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "Wave 4 live webhook → https://httpbin.org/post"
+    },
+    {
+      "agentId": "us-hotel-guest",
+      "family": "hotel-guest",
+      "connector": "mcp",
+      "correlationId": "corr_wave4_mcp_msba09u3",
+      "at": "2026-08-02T04:04:13.552Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Wave 4 live MCP tools/call → https://miaiweb-production.up.railway.app/api/mcp"
     }
   ]
 }

@@ -12,7 +12,7 @@
   8. Agent `handoff_to_human` to front desk with room context.
 - Live connectors required: Slack (`make_guest_request` notify / `handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_wh_msb9bsjz` — live `webhook` on https://miaiweb-production.up.railway.app (2026-08-02)
+- Evidence: `corr_wave4_mcp_msba09u3` — live `mcp` on https://miaiweb-production.up.railway.app (2026-08-02)
 
 ## Markets
 - **EU** (`eu-hotel-guest`): Riverbend Inn Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.
