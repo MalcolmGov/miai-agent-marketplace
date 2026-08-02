@@ -13,7 +13,7 @@ Move Digital has built a production-oriented **Agent Marketplace** ready to plug
 
 | Capability | Status |
 |---|---|
-| Catalogue | **55 agent families × 4 market packs (US / EU / Africa / Asia) = 220 agents**, catalogue-ready |
+| Catalogue | **70 agent families × 5 market packs (US / EU / Africa / Asia / Oceania) = 350 agents**, catalogue-ready |
 | Product loop | Browse → rent → configure → Actions → knowledge → sandbox/live chat → embed → prepaid tokens |
 | Live connectors (staging) | Slack, Google Calendar, Gmail, Calendly |
 | Platform adapters | Auth (OIDC), wallet (HTTP), model gateway — mockable until your credentials land |
@@ -81,7 +81,7 @@ Please indicate preferred position(s) — hybrid models are welcome:
 
 Also confirm:
 
-1. **v1 scope** — full 220-SKU catalogue at launch vs pilot bundle first?  
+1. **v1 scope** — full 350-SKU catalogue at launch vs pilot bundle first?  
 2. **Exclusivity** — exclusive Agents marketplace for MyInstantAI in defined markets/verticals?  
 3. **IP** — license vs assignment of agent packages and connector presets?  
 4. **Operations** — who runs production after cutover (Move Digital / MyInstantAI / joint)?  

@@ -100,7 +100,7 @@ function knowledgeHasAny(knowledge, needles) {
 }
 
 function familyId(agentId) {
-  return agentId.replace(/^(us|eu|africa|asia)-/, "");
+  return agentId.replace(/^(us|eu|africa|asia|oceania)-/, "");
 }
 
 async function listAgentIds() {

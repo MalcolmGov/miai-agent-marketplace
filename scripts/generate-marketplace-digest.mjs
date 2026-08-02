@@ -23,7 +23,7 @@ const DEMO = new Set([
 const lines = [
   "# Catalogue digest — agent families",
   "",
-  `Total families: ${families.length}. Each ships in US / EU / Africa / Asia packs (220 agents).`,
+  `Total families: ${families.length}. Each ships in US / EU / Africa / Asia / Oceania packs (${families.length * 5} agents).`,
   "",
   // Skip demo shortlist — customer-facing Ask AI should not surface internal shortlists.
   "## All families",

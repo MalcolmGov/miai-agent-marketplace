@@ -1,8 +1,8 @@
 # Production go-live bar
 
-**North star:** production comfort on **all 220** agents — see `PRODUCTION_SCALE_220.md`.
+**North star:** production comfort on **all 350** agents — see `PRODUCTION_SCALE_350.md`.
 
-Catalogue size (220) is the **license entitlement**. Depth is earned family-by-family, then pack-by-pack.
+Catalogue size (350) is the **license entitlement**. Depth is earned family-by-family, then pack-by-pack. Roadmap to ~100 / ~500: `FAMILIES_100.md`.
 
 ## Definition of done (hero US agent, then market packs)
 

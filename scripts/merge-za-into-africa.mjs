@@ -11,8 +11,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const catalogDir = path.join(root, "data/catalog");
-const PREFIX_RE = /^(us|eu|africa|asia)-/;
-const PACK_MARKETS = ["us", "eu", "africa", "asia"];
+const PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
+const PACK_MARKETS = ["us", "eu", "africa", "asia", "oceania"];
 
 function familyId(id) {
   return id.replace(PREFIX_RE, "");

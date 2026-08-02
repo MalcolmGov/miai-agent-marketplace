@@ -1,6 +1,6 @@
-# Production scale: 18 → 220
+# Production scale: 18 → 350
 
-**Goal:** Customer-facing production comfort across the **full licensed catalogue** — 55 families × 4 market packs = **220 agents**.
+**Goal:** Customer-facing production comfort across the **full licensed catalogue** — 70 families × 5 market packs = **350 agents** (roadmap: ~100 × 5 ≈ 500 — see `FAMILIES_100.md`).
 
 Partner demo is done. This is the industrial path to stand behind every SKU.
 
@@ -8,11 +8,11 @@ Partner demo is done. This is the industrial path to stand behind every SKU.
 
 | Layer | Status |
 |---|---|
-| Wave 1–2 US heroes | **55 / 55 Depth strong** |
-| Prefixed packs on disk | **220 / 220** |
+| US heroes | **70 / 70** (Wave 1 family expansion live) |
+| Prefixed packs on disk | **350 / 350** |
 | Wave 3 market packs | **Done** |
 | Wave 4 live connectors | **Harness ready** — first slice 0/4 proofs (needs OAuth env on staging) |
-| Target | **220** rentable; `depth: live` tracked separately |
+| Target | **350** rentable; `depth: live` tracked separately |
 
 Run `pnpm production:status`.
 
@@ -39,7 +39,7 @@ Certified first wave (US heroes + pilot docs). Catalogue filter **Go-live 18**.
 Parallel clusters D / E / F deepen `data/catalog/us-{family}.agent.json` + `docs/pilots/{family}.md`.
 
 ### Wave 3 — Market packs (×3)
-For each family with a strong US hero, deepen `eu-` / `africa-` / `asia-` variants (currency, compliance, locale, grounded evals).
+For each family with a strong US hero, deepen `eu-` / `africa-` / `asia-` / `oceania-` variants (currency, compliance, locale, grounded evals).
 
 **Claude ownership (preferred):** Wave 3 for families already strong on US — see `CLAUDE_HANDOFF.md`.
 

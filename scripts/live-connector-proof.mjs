@@ -190,7 +190,7 @@ Staging steps (see docs/WAVE4_LIVE_CONNECTORS.md):
 }
 
 function recordOne({ agentId, connector, corr, notes }) {
-  const family = agentId?.replace(/^(us|eu|africa|asia)-/, "");
+  const family = agentId?.replace(/^(us|eu|africa|asia|oceania)-/, "");
   const doc = loadProofs();
   const entry = {
     agentId,

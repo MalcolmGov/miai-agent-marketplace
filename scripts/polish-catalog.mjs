@@ -14,9 +14,9 @@ const catalogDir = path.join(root, "data/catalog");
 const packsFile = path.join(catalogDir, "market-packs.json");
 const force = process.argv.includes("--force");
 
-const PACK_MARKETS = ["us", "eu", "africa", "asia"];
+const PACK_MARKETS = ["us", "eu", "africa", "asia", "oceania"];
 const ALL_MARKETS = [...PACK_MARKETS];
-const PREFIX_RE = /^(us|eu|africa|asia)-/;
+const PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
 /** Original hand-authored set before market-pack expansion (87). */
 const ORIGINAL_HAND = new Set([

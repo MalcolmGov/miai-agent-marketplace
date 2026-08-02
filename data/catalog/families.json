@@ -13,18 +13,22 @@
     "health": false,
     "markets": {
       "za": "accounting-practice",
+      "africa": "africa-accounting-practice",
       "asia": "asia-accounting-practice",
       "eu": "eu-accounting-practice",
-      "us": "us-accounting-practice",
-      "africa": "africa-accounting-practice"
+      "oceania": "oceania-accounting-practice",
+      "us": "us-accounting-practice"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "admissions",
@@ -40,126 +44,210 @@
     "health": false,
     "markets": {
       "za": "admissions",
+      "africa": "africa-admissions",
       "asia": "asia-admissions",
       "eu": "eu-admissions",
-      "us": "us-admissions",
-      "africa": "africa-admissions"
+      "oceania": "oceania-admissions",
+      "us": "us-admissions"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "agency-studio",
     "name": "Agency & Studio",
     "tier": "standard",
     "category": "vertical",
-    "summary": "— Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.",
+    "summary": "Agency & Studio for Brightline Studio Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
-      "app"
+      "app",
+      "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-agency-studio",
       "za": "agency-studio",
       "asia": "asia-agency-studio",
       "eu": "eu-agency-studio",
-      "us": "us-agency-studio",
-      "africa": "africa-agency-studio"
+      "oceania": "oceania-agency-studio",
+      "us": "us-agency-studio"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "airtime-bundles",
+    "name": "Airtime & Bundles",
+    "tier": "standard",
+    "category": "commerce",
+    "summary": "Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-airtime-bundles",
+      "eu": "eu-airtime-bundles",
+      "africa": "africa-airtime-bundles",
+      "asia": "asia-airtime-bundles",
+      "oceania": "oceania-airtime-bundles"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "bank-branch",
     "name": "Bank Branch Assistant",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
+    "summary": "Bank Branch Assistant for Riverbend Bank — Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-bank-branch",
       "asia": "asia-bank-branch",
       "za": "bank-branch",
       "eu": "eu-bank-branch",
-      "us": "us-bank-branch",
-      "africa": "africa-bank-branch"
+      "oceania": "oceania-bank-branch",
+      "us": "us-bank-branch"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "bookkeeping",
     "name": "Bookkeeping Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "Bookkeeping Assistant for Ledgerlane Bookkeeping Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-bookkeeping",
       "asia": "asia-bookkeeping",
       "za": "bookkeeping",
       "eu": "eu-bookkeeping",
-      "us": "us-bookkeeping",
-      "africa": "africa-bookkeeping"
+      "oceania": "oceania-bookkeeping",
+      "us": "us-bookkeeping"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "building-management",
     "name": "Building Management",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "summary": "Building Management for Cedar Ridge Residences Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-building-management",
       "asia": "asia-building-management",
       "za": "building-management",
       "eu": "eu-building-management",
-      "us": "us-building-management",
-      "africa": "africa-building-management"
+      "oceania": "oceania-building-management",
+      "us": "us-building-management"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "citizen-services",
+    "name": "Citizen Services",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-citizen-services",
+      "eu": "eu-citizen-services",
+      "africa": "africa-citizen-services",
+      "asia": "asia-citizen-services",
+      "oceania": "oceania-citizen-services"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "clinic-front-desk",
@@ -179,42 +267,111 @@
       "asia": "asia-clinic-front-desk",
       "za": "clinic-front-desk",
       "eu": "eu-clinic-front-desk",
+      "oceania": "oceania-clinic-front-desk",
       "us": "us-clinic-front-desk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "contract-review",
+    "name": "Contract Review Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "summary": "Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-contract-review",
+      "eu": "eu-contract-review",
+      "africa": "africa-contract-review",
+      "asia": "asia-contract-review",
+      "oceania": "oceania-contract-review"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "course-advisor",
     "name": "Course Advisor",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "summary": "Course Advisor for Trailhead Career College Lagos (Lagos) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-course-advisor",
       "asia": "asia-course-advisor",
       "za": "course-advisor",
       "eu": "eu-course-advisor",
-      "us": "us-course-advisor",
-      "africa": "africa-course-advisor"
+      "oceania": "oceania-course-advisor",
+      "us": "us-course-advisor"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "credit-cards",
+    "name": "Credit Card Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-credit-cards",
+      "eu": "eu-credit-cards",
+      "africa": "africa-credit-cards",
+      "asia": "asia-credit-cards",
+      "oceania": "oceania-credit-cards"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "customer-support",
@@ -234,15 +391,19 @@
       "asia": "asia-customer-support",
       "za": "customer-support",
       "eu": "eu-customer-support",
+      "oceania": "oceania-customer-support",
       "us": "us-customer-support"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "delivery-tracking",
@@ -262,22 +423,26 @@
       "asia": "asia-delivery-tracking",
       "za": "delivery-tracking",
       "eu": "eu-delivery-tracking",
+      "oceania": "oceania-delivery-tracking",
       "us": "us-delivery-tracking"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "dental-front-desk",
     "name": "Dental Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across…",
+    "summary": "Dental Front Desk for Oak Street Dental Rosebank (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -289,238 +454,312 @@
       "africa": "africa-dental-front-desk",
       "asia": "asia-dental-front-desk",
       "eu": "eu-dental-front-desk",
+      "oceania": "oceania-dental-front-desk",
       "us": "us-dental-front-desk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": false
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "dental-practice",
     "name": "Dental Practice",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "summary": "Dental Practice for Oak Street Dental Rosebank (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": true,
     "markets": {
+      "africa": "africa-dental-practice",
       "asia": "asia-dental-practice",
       "za": "dental-practice",
       "eu": "eu-dental-practice",
-      "us": "us-dental-practice",
-      "africa": "africa-dental-practice"
+      "oceania": "oceania-dental-practice",
+      "us": "us-dental-practice"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "events-venue",
     "name": "Events & Venue",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "summary": "Events & Venue for Willow Creek Estate Stellenbosch (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-events-venue",
       "asia": "asia-events-venue",
       "eu": "eu-events-venue",
       "za": "events-venue",
-      "us": "us-events-venue",
-      "africa": "africa-events-venue"
+      "oceania": "oceania-events-venue",
+      "us": "us-events-venue"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "executive-assistant",
     "name": "Executive Assistant",
     "tier": "pro",
     "category": "operations",
-    "summary": "Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when… Multi-step workflows: plan → confirm → schedule/remind/notify → verify.",
+    "summary": "Executive Assistant for Maya Chen / Ridgeway Labs Johannesburg EA desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-executive-assistant",
       "asia": "asia-executive-assistant",
       "eu": "eu-executive-assistant",
       "za": "executive-assistant",
-      "us": "us-executive-assistant",
-      "africa": "africa-executive-assistant"
+      "oceania": "oceania-executive-assistant",
+      "us": "us-executive-assistant"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "fibre-support",
+    "name": "Fibre Support",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-fibre-support",
+      "eu": "eu-fibre-support",
+      "africa": "africa-fibre-support",
+      "asia": "asia-fibre-support",
+      "oceania": "oceania-fibre-support"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "field-service",
     "name": "Field Service Dispatch",
     "tier": "pro",
     "category": "operations",
-    "summary": "Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
+    "summary": "Field Service Dispatch for Fieldline Service Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-field-service",
       "asia": "asia-field-service",
       "eu": "eu-field-service",
       "za": "field-service",
-      "us": "us-field-service",
-      "africa": "africa-field-service"
+      "oceania": "oceania-field-service",
+      "us": "us-field-service"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "fleet-driver",
     "name": "Fleet & Driver Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "summary": "Fleet & Driver Desk for Gauteng Fleet Desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-fleet-driver",
       "asia": "asia-fleet-driver",
       "eu": "eu-fleet-driver",
       "za": "fleet-driver",
-      "us": "us-fleet-driver",
-      "africa": "africa-fleet-driver"
+      "oceania": "oceania-fleet-driver",
+      "us": "us-fleet-driver"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "front-desk",
     "name": "Front Desk / Reception",
     "tier": "standard",
     "category": "front-office",
-    "summary": "Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
+    "summary": "Front Desk / Reception for Summit Business Centre Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-front-desk",
       "asia": "asia-front-desk",
       "eu": "eu-front-desk",
       "za": "front-desk",
-      "us": "us-front-desk",
-      "africa": "africa-front-desk"
+      "oceania": "oceania-front-desk",
+      "us": "us-front-desk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "grant-stock-planner",
     "name": "Grant-Day Stock Planner",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
+    "summary": "Grant-Day Stock Planner for GrantDay Market — Soweto (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-grant-stock-planner",
       "asia": "asia-grant-stock-planner",
       "eu": "eu-grant-stock-planner",
       "za": "grant-stock-planner",
-      "us": "us-grant-stock-planner",
-      "africa": "africa-grant-stock-planner"
+      "oceania": "oceania-grant-stock-planner",
+      "us": "us-grant-stock-planner"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "gym-membership",
     "name": "Gym Membership Desk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
+    "summary": "Gym Membership Desk for Ironleaf Fitness Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-gym-membership",
       "asia": "asia-gym-membership",
       "eu": "eu-gym-membership",
       "za": "gym-membership",
-      "us": "us-gym-membership",
-      "africa": "africa-gym-membership"
+      "oceania": "oceania-gym-membership",
+      "us": "us-gym-membership"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "home-services",
     "name": "Home Services Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical Multi-step: availability → confirm → book → notify.",
+    "summary": "Home Services Front Desk for HomeLine Services Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -532,49 +771,58 @@
       "africa": "africa-home-services",
       "asia": "asia-home-services",
       "eu": "eu-home-services",
+      "oceania": "oceania-home-services",
       "us": "us-home-services"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": false
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "hotel-concierge",
     "name": "Hotel Concierge",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
+    "summary": "Hotel Concierge for Riverbend Inn Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-hotel-concierge",
       "asia": "asia-hotel-concierge",
       "eu": "eu-hotel-concierge",
       "za": "hotel-concierge",
-      "us": "us-hotel-concierge",
-      "africa": "africa-hotel-concierge"
+      "oceania": "oceania-hotel-concierge",
+      "us": "us-hotel-concierge"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "hotel-guest",
     "name": "Hotel Guest Concierge",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, …",
+    "summary": "Hotel Guest Concierge for Riverbend Inn Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -586,555 +834,869 @@
       "africa": "africa-hotel-guest",
       "asia": "asia-hotel-guest",
       "eu": "eu-hotel-guest",
+      "oceania": "oceania-hotel-guest",
       "us": "us-hotel-guest"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": false
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "hr-helpdesk",
     "name": "HR Helpdesk",
     "tier": "pro",
     "category": "operations",
-    "summary": "HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "summary": "HR Helpdesk for Cedarworks People Ops Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-hr-helpdesk",
       "asia": "asia-hr-helpdesk",
       "eu": "eu-hr-helpdesk",
       "za": "hr-helpdesk",
-      "us": "us-hr-helpdesk",
-      "africa": "africa-hr-helpdesk"
+      "oceania": "oceania-hr-helpdesk",
+      "us": "us-hr-helpdesk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "insurance-broker",
     "name": "Insurance Broker",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "summary": "Insurance Broker for Summit Ridge Brokers Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-insurance-broker",
       "asia": "asia-insurance-broker",
       "eu": "eu-insurance-broker",
       "za": "insurance-broker",
-      "us": "us-insurance-broker",
-      "africa": "africa-insurance-broker"
+      "oceania": "oceania-insurance-broker",
+      "us": "us-insurance-broker"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "insurance-claims",
     "name": "Insurance Claims Helper",
     "tier": "pro",
     "category": "operations",
-    "summary": "Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
+    "summary": "Insurance Claims Helper for Harbor Mutual Claims Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-insurance-claims",
       "asia": "asia-insurance-claims",
       "eu": "eu-insurance-claims",
       "za": "insurance-claims",
-      "us": "us-insurance-claims",
-      "africa": "africa-insurance-claims"
+      "oceania": "oceania-insurance-claims",
+      "us": "us-insurance-claims"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "interview-scheduling",
+    "name": "Interview Scheduling",
+    "tier": "standard",
+    "category": "operations",
+    "summary": "Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-interview-scheduling",
+      "eu": "eu-interview-scheduling",
+      "africa": "africa-interview-scheduling",
+      "asia": "asia-interview-scheduling",
+      "oceania": "oceania-interview-scheduling"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "it-helpdesk",
     "name": "IT Helpdesk",
     "tier": "pro",
     "category": "operations",
-    "summary": "IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and Multi-step: KB → confirm → ticket → Slack notify.",
+    "summary": "IT Helpdesk for Ridgeway Labs IT Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-it-helpdesk",
       "asia": "asia-it-helpdesk",
       "eu": "eu-it-helpdesk",
       "za": "it-helpdesk",
-      "us": "us-it-helpdesk",
-      "africa": "africa-it-helpdesk"
+      "oceania": "oceania-it-helpdesk",
+      "us": "us-it-helpdesk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "law-firm-intake",
     "name": "Law Firm Intake",
     "tier": "enterprise",
     "category": "vertical",
-    "summary": "Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "summary": "Law Firm Intake for Riverstone & Hale Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-law-firm-intake",
       "asia": "asia-law-firm-intake",
       "eu": "eu-law-firm-intake",
       "za": "law-firm-intake",
-      "us": "us-law-firm-intake",
-      "africa": "africa-law-firm-intake"
+      "oceania": "oceania-law-firm-intake",
+      "us": "us-law-firm-intake"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "loan-prequalifier",
     "name": "Loan Pre-Qualifier",
     "tier": "pro",
     "category": "operations",
-    "summary": "Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "summary": "Loan Pre-Qualifier for ClearPath Lending Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-loan-prequalifier",
       "asia": "asia-loan-prequalifier",
       "eu": "eu-loan-prequalifier",
       "za": "loan-prequalifier",
-      "us": "us-loan-prequalifier",
-      "africa": "africa-loan-prequalifier"
+      "oceania": "oceania-loan-prequalifier",
+      "us": "us-loan-prequalifier"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "loyalty-rewards",
     "name": "Loyalty & Rewards",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "summary": "Loyalty & Rewards for Oak & Ember Rewards Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-loyalty-rewards",
       "asia": "asia-loyalty-rewards",
       "eu": "eu-loyalty-rewards",
       "za": "loyalty-rewards",
-      "us": "us-loyalty-rewards",
-      "africa": "africa-loyalty-rewards"
+      "oceania": "oceania-loyalty-rewards",
+      "us": "us-loyalty-rewards"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "maintenance-desk",
+    "name": "Maintenance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-maintenance-desk",
+      "eu": "eu-maintenance-desk",
+      "africa": "africa-maintenance-desk",
+      "asia": "asia-maintenance-desk",
+      "oceania": "oceania-maintenance-desk"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "marketing-assistant",
     "name": "Marketing Assistant",
     "tier": "pro",
     "category": "sales",
-    "summary": "Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "summary": "Marketing Assistant for Hearth & Pantry Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-marketing-assistant",
       "asia": "asia-marketing-assistant",
       "eu": "eu-marketing-assistant",
       "za": "marketing-assistant",
-      "us": "us-marketing-assistant",
-      "africa": "africa-marketing-assistant"
+      "oceania": "oceania-marketing-assistant",
+      "us": "us-marketing-assistant"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "mobile-money",
     "name": "Mobile Money Desk",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "summary": "Mobile Money Desk for Riverbend Mobile Money Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-mobile-money",
       "asia": "asia-mobile-money",
       "eu": "eu-mobile-money",
       "za": "mobile-money",
-      "us": "us-mobile-money",
-      "africa": "africa-mobile-money"
+      "oceania": "oceania-mobile-money",
+      "us": "us-mobile-money"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "mortgage-advisor",
+    "name": "Mortgage Advisor",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-mortgage-advisor",
+      "eu": "eu-mortgage-advisor",
+      "africa": "africa-mortgage-advisor",
+      "asia": "asia-mortgage-advisor",
+      "oceania": "oceania-mortgage-advisor"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "municipality-desk",
+    "name": "Municipality Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "Municipality Desk — Rates/permits FAQ and service request logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-municipality-desk",
+      "eu": "eu-municipality-desk",
+      "africa": "africa-municipality-desk",
+      "asia": "asia-municipality-desk",
+      "oceania": "oceania-municipality-desk"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "network-faults",
+    "name": "Network Fault Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-network-faults",
+      "eu": "eu-network-faults",
+      "africa": "africa-network-faults",
+      "asia": "asia-network-faults",
+      "oceania": "oceania-network-faults"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "onboarding-buddy",
     "name": "Onboarding Buddy",
     "tier": "standard",
     "category": "operations",
-    "summary": "Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day Multi-step: checklist → confirm → log/escalate → notify.",
+    "summary": "Onboarding Buddy for Ridgeway Labs Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-onboarding-buddy",
       "asia": "asia-onboarding-buddy",
       "eu": "eu-onboarding-buddy",
+      "oceania": "oceania-onboarding-buddy",
       "za": "onboarding-buddy",
-      "us": "us-onboarding-buddy",
-      "africa": "africa-onboarding-buddy"
+      "us": "us-onboarding-buddy"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "order-tracking",
     "name": "Order Tracking",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "summary": "Order Tracking for Northline Home Goods Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-order-tracking",
       "asia": "asia-order-tracking",
       "eu": "eu-order-tracking",
+      "oceania": "oceania-order-tracking",
       "za": "order-tracking",
-      "us": "us-order-tracking",
-      "africa": "africa-order-tracking"
+      "us": "us-order-tracking"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "payment-disputes",
     "name": "Card & Payment Disputes",
     "tier": "pro",
     "category": "operations",
-    "summary": "Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
+    "summary": "Card & Payment Disputes for Northline Payments Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-payment-disputes",
       "asia": "asia-payment-disputes",
       "eu": "eu-payment-disputes",
+      "oceania": "oceania-payment-disputes",
       "za": "payment-disputes",
-      "us": "us-payment-disputes",
-      "africa": "africa-payment-disputes"
+      "us": "us-payment-disputes"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "payroll-queries",
     "name": "Payroll Queries",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "summary": "Payroll Queries for Cedarworks (Pty) Ltd (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-payroll-queries",
       "asia": "asia-payroll-queries",
       "eu": "eu-payroll-queries",
+      "oceania": "oceania-payroll-queries",
       "za": "payroll-queries",
-      "us": "us-payroll-queries",
-      "africa": "africa-payroll-queries"
+      "us": "us-payroll-queries"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "pharmacy",
     "name": "Pharmacy Assistant",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
+    "summary": "Pharmacy Assistant for Riverside Community Pharmacy Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": true,
     "markets": {
+      "africa": "africa-pharmacy",
       "asia": "asia-pharmacy",
       "eu": "eu-pharmacy",
+      "oceania": "oceania-pharmacy",
       "za": "pharmacy",
-      "us": "us-pharmacy",
-      "africa": "africa-pharmacy"
+      "us": "us-pharmacy"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "policy-compliance",
     "name": "Policy & Compliance",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "summary": "Policy & Compliance for Cedarworks Compliance Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-policy-compliance",
       "asia": "asia-policy-compliance",
       "eu": "eu-policy-compliance",
+      "oceania": "oceania-policy-compliance",
       "za": "policy-compliance",
-      "us": "us-policy-compliance",
-      "africa": "africa-policy-compliance"
+      "us": "us-policy-compliance"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "procurement",
     "name": "Procurement Desk",
     "tier": "pro",
     "category": "operations",
-    "summary": "Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "summary": "Procurement Desk for Cedarworks Procurement Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-procurement",
       "asia": "asia-procurement",
       "eu": "eu-procurement",
+      "oceania": "oceania-procurement",
       "za": "procurement",
-      "us": "us-procurement",
-      "africa": "africa-procurement"
+      "us": "us-procurement"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "product-finder",
     "name": "Product Finder",
     "tier": "standard",
     "category": "commerce",
-    "summary": "Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "summary": "Product Finder for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-product-finder",
       "asia": "asia-product-finder",
       "eu": "eu-product-finder",
+      "oceania": "oceania-product-finder",
       "za": "product-finder",
-      "us": "us-product-finder",
-      "africa": "africa-product-finder"
+      "us": "us-product-finder"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "property-enquiries",
     "name": "Property Enquiries",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "summary": "Property Enquiries for Cedarline Realty Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-property-enquiries",
       "asia": "asia-property-enquiries",
       "eu": "eu-property-enquiries",
+      "oceania": "oceania-property-enquiries",
       "za": "property-enquiries",
-      "us": "us-property-enquiries",
-      "africa": "africa-property-enquiries"
+      "us": "us-property-enquiries"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "quality-assurance",
+    "name": "Quality Assurance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-quality-assurance",
+      "eu": "eu-quality-assurance",
+      "africa": "africa-quality-assurance",
+      "asia": "asia-quality-assurance",
+      "oceania": "oceania-quality-assurance"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "recruitment",
+    "name": "Recruitment Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-recruitment",
+      "eu": "eu-recruitment",
+      "africa": "africa-recruitment",
+      "asia": "asia-recruitment",
+      "oceania": "oceania-recruitment"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "remittance",
     "name": "Remittance Helper",
     "tier": "pro",
     "category": "operations",
-    "summary": "Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "summary": "Remittance Helper for HarborSend Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-remittance",
       "asia": "asia-remittance",
       "eu": "eu-remittance",
+      "oceania": "oceania-remittance",
       "za": "remittance",
-      "us": "us-remittance",
-      "africa": "africa-remittance"
+      "us": "us-remittance"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "rental-enquiries",
     "name": "Rental Enquiries",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "summary": "Rental Enquiries for Oak & Key Lettings Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-rental-enquiries",
       "asia": "asia-rental-enquiries",
       "eu": "eu-rental-enquiries",
+      "oceania": "oceania-rental-enquiries",
       "za": "rental-enquiries",
-      "us": "us-rental-enquiries",
-      "africa": "africa-rental-enquiries"
+      "us": "us-rental-enquiries"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "restaurant-takeaway",
@@ -1153,6 +1715,7 @@
       "africa": "africa-restaurant-takeaway",
       "asia": "asia-restaurant-takeaway",
       "eu": "eu-restaurant-takeaway",
+      "oceania": "oceania-restaurant-takeaway",
       "za": "restaurant-takeaway",
       "us": "us-restaurant-takeaway"
     },
@@ -1160,63 +1723,76 @@
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "returns-exchanges",
     "name": "Returns & Exchanges",
     "tier": "standard",
     "category": "operations",
-    "summary": "Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "summary": "Returns & Exchanges for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-returns-exchanges",
       "asia": "asia-returns-exchanges",
       "eu": "eu-returns-exchanges",
+      "oceania": "oceania-returns-exchanges",
       "za": "returns-exchanges",
-      "us": "us-returns-exchanges",
-      "africa": "africa-returns-exchanges"
+      "us": "us-returns-exchanges"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "sales-qualifier",
     "name": "Sales Qualifier",
     "tier": "pro",
     "category": "sales",
-    "summary": "Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents Multi-step: qualify → confirm → callback → HubSpot/Slack.",
+    "summary": "Sales Qualifier for Ledgerly Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-sales-qualifier",
       "asia": "asia-sales-qualifier",
       "eu": "eu-sales-qualifier",
+      "oceania": "oceania-sales-qualifier",
       "za": "sales-qualifier",
-      "us": "us-sales-qualifier",
-      "africa": "africa-sales-qualifier"
+      "us": "us-sales-qualifier"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "salon-booking",
@@ -1235,6 +1811,7 @@
       "africa": "africa-salon-booking",
       "asia": "asia-salon-booking",
       "eu": "eu-salon-booking",
+      "oceania": "oceania-salon-booking",
       "za": "salon-booking",
       "us": "us-salon-booking"
     },
@@ -1242,124 +1819,207 @@
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "sim-registration",
+    "name": "SIM Registration",
+    "tier": "pro",
+    "category": "vertical",
+    "summary": "SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-sim-registration",
+      "eu": "eu-sim-registration",
+      "africa": "africa-sim-registration",
+      "asia": "asia-sim-registration",
+      "oceania": "oceania-sim-registration"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "spaza-merchant",
-    "name": "Spaza & Merchant",
+    "name": "Corner Store Merchant",
     "tier": "enterprise",
     "category": "commerce",
-    "summary": "Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "Corner Store Merchant for Cesar Spaza — Soweto (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-spaza-merchant",
       "asia": "asia-spaza-merchant",
       "eu": "eu-spaza-merchant",
+      "oceania": "oceania-spaza-merchant",
       "za": "spaza-merchant",
-      "us": "us-spaza-merchant",
-      "africa": "africa-spaza-merchant"
+      "us": "us-spaza-merchant"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "stock-availability",
     "name": "Stock & Availability",
     "tier": "pro",
     "category": "commerce",
-    "summary": "Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
+    "summary": "Stock & Availability for Ridgeway Outfitters Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-stock-availability",
       "asia": "asia-stock-availability",
       "eu": "eu-stock-availability",
+      "oceania": "oceania-stock-availability",
       "za": "stock-availability",
-      "us": "us-stock-availability",
-      "africa": "africa-stock-availability"
+      "us": "us-stock-availability"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "student-helpdesk",
     "name": "Student Helpdesk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "summary": "Student Helpdesk for Laguna College Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-student-helpdesk",
       "asia": "asia-student-helpdesk",
       "eu": "eu-student-helpdesk",
+      "oceania": "oceania-student-helpdesk",
       "za": "student-helpdesk",
-      "us": "us-student-helpdesk",
-      "africa": "africa-student-helpdesk"
+      "us": "us-student-helpdesk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "tax-office",
+    "name": "Tax Office Assistant",
+    "tier": "enterprise",
+    "category": "vertical",
+    "summary": "Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-tax-office",
+      "eu": "eu-tax-office",
+      "africa": "africa-tax-office",
+      "asia": "asia-tax-office",
+      "oceania": "oceania-tax-office"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "tour-activity",
     "name": "Tour & Activity Desk",
     "tier": "standard",
     "category": "vertical",
-    "summary": "Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
+    "summary": "Tour & Activity Desk for Table Mountain Trails (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-tour-activity",
       "asia": "asia-tour-activity",
       "eu": "eu-tour-activity",
+      "oceania": "oceania-tour-activity",
       "za": "tour-activity",
-      "us": "us-tour-activity",
-      "africa": "africa-tour-activity"
+      "us": "us-tour-activity"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "trades-receptionist",
     "name": "Trades Receptionist",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and Multi-step: availability → confirm → book → notify.",
+    "summary": "trades receptionist for plumbers, electricians and general builders — WhatsApp-first, confirm-before-write booking, currency-neutral published price ranges, POPIA-style privacy, and local-emergency handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -1371,122 +2031,176 @@
       "africa": "africa-trades-receptionist",
       "asia": "asia-trades-receptionist",
       "eu": "eu-trades-receptionist",
+      "oceania": "oceania-trades-receptionist",
       "us": "us-trades-receptionist"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": false
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "travel-desk",
     "name": "Travel Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "summary": "Travel Desk for Meridian Travel Desk Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-travel-desk",
       "asia": "asia-travel-desk",
       "eu": "eu-travel-desk",
+      "oceania": "oceania-travel-desk",
       "za": "travel-desk",
-      "us": "us-travel-desk",
-      "africa": "africa-travel-desk"
+      "us": "us-travel-desk"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "utility-billing",
     "name": "Utility & Billing",
     "tier": "enterprise",
     "category": "operations",
-    "summary": "Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "summary": "Utility & Billing for Riverside Municipal Utilities Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-utility-billing",
       "asia": "asia-utility-billing",
       "eu": "eu-utility-billing",
+      "oceania": "oceania-utility-billing",
       "us": "us-utility-billing",
-      "za": "utility-billing",
-      "africa": "africa-utility-billing"
+      "za": "utility-billing"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "vas-concierge",
     "name": "Gift Card & VAS Concierge",
     "tier": "pro",
     "category": "commerce",
-    "summary": "Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "summary": "Gift Card & VAS Concierge for BrightPin Digital Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": false,
     "markets": {
+      "africa": "africa-vas-concierge",
       "asia": "asia-vas-concierge",
       "eu": "eu-vas-concierge",
+      "oceania": "oceania-vas-concierge",
       "us": "us-vas-concierge",
-      "za": "vas-concierge",
-      "africa": "africa-vas-concierge"
+      "za": "vas-concierge"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "veterinary",
     "name": "Veterinary Front Desk",
     "tier": "pro",
     "category": "vertical",
-    "summary": "Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
+    "summary": "Veterinary Front Desk for Paws & Claws Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
+      "whatsapp",
       "web",
       "app",
       "sms"
     ],
     "health": true,
     "markets": {
+      "africa": "africa-veterinary",
       "asia": "asia-veterinary",
       "eu": "eu-veterinary",
+      "oceania": "oceania-veterinary",
       "us": "us-veterinary",
-      "za": "veterinary",
-      "africa": "africa-veterinary"
+      "za": "veterinary"
     },
     "packs": [
       "us",
       "eu",
       "africa",
-      "asia"
+      "asia",
+      "oceania"
     ],
-    "hasZa": true
+    "hasZa": true,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "warehouse-operations",
+    "name": "Warehouse Operations",
+    "tier": "pro",
+    "category": "operations",
+    "summary": "Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "us": "us-warehouse-operations",
+      "eu": "eu-warehouse-operations",
+      "africa": "africa-warehouse-operations",
+      "asia": "asia-warehouse-operations",
+      "oceania": "oceania-warehouse-operations"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": false,
+    "catalogueReady": true,
+    "readiness": "catalogue-ready"
   }
 ]

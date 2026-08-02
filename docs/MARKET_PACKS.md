@@ -10,13 +10,14 @@ Commercial model for the Agent Marketplace: sell **agent families**, expand with
 | **EU** | Sellable pack | `eu-{family}` |
 | **Africa** | Sellable pack (includes former ZA footprint) | unprefixed `{family}` or `africa-{family}` |
 | **Asia** | Sellable pack | `asia-{family}` |
+| **Oceania** | Sellable pack (AU / NZ / Pacific) | `oceania-{family}` |
 
 ZA has been **merged into Africa**. Former ZA packages keep stable unprefixed ids; duplicate generated `africa-*` variants were removed.
 
 ## Catalogue shape
 
-- **55 families** (unique jobs / verticals)
-- Each family has **US / EU / Africa / Asia** variants (220 agents total)
+- **70 families** (unique jobs / verticals)
+- Each family has **US / EU / Africa / Asia / Oceania** variants (350 agents total)
 - Buyer-facing UI defaults to **family cards** with pack chips and shows family + agent counts
 
 ## Files
@@ -37,9 +38,9 @@ Skips existing files. Safe to re-run after importing new ZA/US/EU agents.
 
 ## Sales framing (MyInstantAI)
 
-- Pitch **55 catalogue-ready agent products**, not 270 unique inventions
+- Pitch **70 catalogue-ready agent products**, not 350 unique inventions
 - Market packs are **localization / compliance / channel expansions** of a family
-- Recommended SKU language: `{Family} + {US|EU|Africa|Asia} pack`
+- Recommended SKU language: `{Family} + {US|EU|Africa|Asia|Oceania} pack`
 - Africa pack includes the former ZA footprint (no separate ZA SKU)
 - Full claim language and caveats: [CATALOGUE_READY.md](./CATALOGUE_READY.md)
 
@@ -55,4 +56,4 @@ pnpm build:packages && pnpm catalog:ready
 
 `GET /api/catalog?view=families` (default) — family cards with `markets`, `packs`, `defaultAgentId`  
 `GET /api/catalog?view=agents` — flat variant list  
-`?market=us|eu|africa|asia|za` — filter by market / pack
+`?market=us|eu|africa|asia|oceania|za` — filter by market / pack

@@ -1,335 +1,425 @@
 # Catalogue digest — agent families
 
-Total families: 55. Each ships in US / EU / Africa / Asia packs (220 agents).
+Total families: 70. Each ships in US / EU / Africa / Asia / Oceania packs (350 agents).
 
 ## All families
 
 ### Accounting Practice
-- Id: `accounting-practice` · Tier: pro · Markets: africa, asia, eu, us
+- Id: `accounting-practice` · Tier: pro · Markets: za, africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app
-- Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.
+- — Answers a practice's front-desk questions — general filing deadlines, the documents each service needs, and new-client onboarding — and routes every tax or accounting question to a qualified accountant.
 - Studio: /agents/us-accounting-practice
 
 ### Admissions Assistant
-- Id: `admissions` · Tier: pro · Markets: africa, asia, eu, us
+- Id: `admissions` · Tier: pro · Markets: za, africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app
-- Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.
+- — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and confirm-before-acting. Routes appeals, special cases and anyone who asks for a person to the admissions team. Across WhatsApp, web and app.
 - Studio: /agents/us-admissions
 
 ### Agency & Studio
-- Id: `agency-studio` · Tier: standard · Markets: africa, asia, eu, us
-- Channels: whatsapp, web, app
-- Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across WhatsApp, web and app.
+- Id: `agency-studio` · Tier: standard · Markets: africa, za, asia, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Agency & Studio for Brightline Studio Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-agency-studio
 
+### Airtime & Bundles
+- Id: `airtime-bundles` · Tier: standard · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances
+- Studio: /agents/us-airtime-bundles
+
 ### Bank Branch Assistant
-- Id: `bank-branch` · Tier: enterprise · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…
+- Id: `bank-branch` · Tier: enterprise · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Bank Branch Assistant for Riverbend Bank — Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-bank-branch
 
 ### Bookkeeping Assistant
-- Id: `bookkeeping` · Tier: pro · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…
+- Id: `bookkeeping` · Tier: pro · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Bookkeeping Assistant for Ledgerlane Bookkeeping Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-bookkeeping
 
 ### Building Management
-- Id: `building-management` · Tier: pro · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…
+- Id: `building-management` · Tier: pro · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Building Management for Cedar Ridge Residences Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-building-management
 
 ### Card & Payment Disputes
-- Id: `payment-disputes` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…
+- Id: `payment-disputes` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Card & Payment Disputes for Northline Payments Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-payment-disputes
 
+### Citizen Services
+- Id: `citizen-services` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status
+- Studio: /agents/us-citizen-services
+
 ### Clinic Front Desk
-- Id: `clinic-front-desk` · Tier: pro · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Strictly non-clinical Asia clinic front desk — hours, location, booking and routing; every clinical matter goes to a human — HIPAA-aware.
+- Id: `clinic-front-desk` · Tier: pro · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Strictly non-clinical Africa clinic front desk for a family GP & dental practice — hours, medical aid basics, booking and prep logistics over WhatsApp; every clinical matter hands off — POPIA-aware.
 - Studio: /agents/us-clinic-front-desk
 
+### Contract Review Intake
+- Id: `contract-review` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney
+- Studio: /agents/us-contract-review
+
+### Corner Store Merchant
+- Id: `spaza-merchant` · Tier: enterprise · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Corner Store Merchant for Cesar Spaza — Soweto (Johannesburg) — localized production pack with confirm-before-write and human handoff.
+- Studio: /agents/us-spaza-merchant
+
 ### Course Advisor
-- Id: `course-advisor` · Tier: standard · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…
+- Id: `course-advisor` · Tier: standard · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Course Advisor for Trailhead Career College Lagos (Lagos) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-course-advisor
 
+### Credit Card Desk
+- Id: `credit-cards` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat
+- Studio: /agents/us-credit-cards
+
 ### Customer Support
-- Id: `customer-support` · Tier: standard · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Customer Support — Customer Support — customer support — answers product and order questions, logs tickets, and hands off refunds and complaints across, SMS, web, app and.
+- Id: `customer-support` · Tier: standard · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- customer support for Umoya Home (Nairobi) — product and order questions, ticket logging, and handoff for refunds and complaints across WhatsApp, web, app, and SMS.
 - Studio: /agents/us-customer-support
 
 ### Delivery & Tracking
-- Id: `delivery-tracking` · Tier: pro · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Delivery & Tracking — Delivery & Tracking — Answers consignment status, proof of delivery, and delivery exceptions for a courier — 24/7 across, web and app, logging exceptions and handing off lost, damaged or dis…
+- Id: `delivery-tracking` · Tier: pro · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- delivery & tracking for PanAfri Courier — WhatsApp-first consignment status, proof of delivery, and exception logging with confirm-before-write and desk handoff for lost/damaged parcels.
 - Studio: /agents/us-delivery-tracking
 
 ### Dental Front Desk
-- Id: `dental-front-desk` · Tier: pro · Markets: africa, asia, eu, us
+- Id: `dental-front-desk` · Tier: pro · Markets: africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app, sms
-- Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across…
+- Dental Front Desk for Oak Street Dental Rosebank (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-dental-front-desk
 
 ### Dental Practice
-- Id: `dental-practice` · Tier: standard · Markets: asia, africa, eu, us
-- Channels: whatsapp, web, app
-- Asia Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…
+- Id: `dental-practice` · Tier: standard · Markets: africa, asia, za, eu, oceania, us
+- Channels: whatsapp, web, app, sms
+- Dental Practice for Oak Street Dental Rosebank (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-dental-practice
 
 ### Events & Venue
-- Id: `events-venue` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…
+- Id: `events-venue` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Events & Venue for Willow Creek Estate Stellenbosch (Cape Town) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-events-venue
 
 ### Executive Assistant
-- Id: `executive-assistant` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when…
+- Id: `executive-assistant` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Executive Assistant for Maya Chen / Ridgeway Labs Johannesburg EA desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-executive-assistant
 
+### Fibre Support
+- Id: `fibre-support` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets
+- Studio: /agents/us-fibre-support
+
 ### Field Service Dispatch
-- Id: `field-service` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…
+- Id: `field-service` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Field Service Dispatch for Fieldline Service Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-field-service
 
 ### Fleet & Driver Desk
-- Id: `fleet-driver` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…
+- Id: `fleet-driver` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Fleet & Driver Desk for Gauteng Fleet Desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-fleet-driver
 
 ### Front Desk / Reception
-- Id: `front-desk` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.
+- Id: `front-desk` · Tier: standard · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Front Desk / Reception for Summit Business Centre Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-front-desk
 
 ### Gift Card & VAS Concierge
-- Id: `vas-concierge` · Tier: pro · Markets: asia, eu, us, africa
-- Channels: whatsapp, web, app
-- Asia Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.
+- Id: `vas-concierge` · Tier: pro · Markets: africa, asia, eu, oceania, us, za
+- Channels: whatsapp, web, app, sms
+- Gift Card & VAS Concierge for BrightPin Digital Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-vas-concierge
 
 ### Grant-Day Stock Planner
-- Id: `grant-stock-planner` · Tier: enterprise · Markets: asia, eu, africa, us
-- Channels: whatsapp, app
-- Asia Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…
+- Id: `grant-stock-planner` · Tier: enterprise · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Grant-Day Stock Planner for GrantDay Market — Soweto (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-grant-stock-planner
 
 ### Gym Membership Desk
-- Id: `gym-membership` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.
+- Id: `gym-membership` · Tier: standard · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Gym Membership Desk for Ironleaf Fitness Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-gym-membership
 
 ### Home Services Front Desk
-- Id: `home-services` · Tier: pro · Markets: africa, asia, eu, us
+- Id: `home-services` · Tier: pro · Markets: africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app, sms
-- Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, and escalates emergencies and disputes — across, SMS, web, ap…
+- Home Services Front Desk for HomeLine Services Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-home-services
 
 ### Hotel Concierge
-- Id: `hotel-concierge` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.
+- Id: `hotel-concierge` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Hotel Concierge for Riverbend Inn Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-hotel-concierge
 
 ### Hotel Guest Concierge
-- Id: `hotel-guest` · Tier: pro · Markets: africa, asia, eu, us
+- Id: `hotel-guest` · Tier: pro · Markets: africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app, sms
-- Africa Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, …
+- Hotel Guest Concierge for Riverbend Inn Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-hotel-guest
 
 ### HR Helpdesk
-- Id: `hr-helpdesk` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…
+- Id: `hr-helpdesk` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- HR Helpdesk for Cedarworks People Ops Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-hr-helpdesk
 
 ### Insurance Broker
-- Id: `insurance-broker` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…
+- Id: `insurance-broker` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Insurance Broker for Summit Ridge Brokers Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-insurance-broker
 
 ### Insurance Claims Helper
-- Id: `insurance-claims` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.
+- Id: `insurance-claims` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Insurance Claims Helper for Harbor Mutual Claims Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-insurance-claims
 
+### Interview Scheduling
+- Id: `interview-scheduling` · Tier: standard · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Interview Scheduling — Candidate interview slot booking with confirm-before-write
+- Studio: /agents/us-interview-scheduling
+
 ### IT Helpdesk
-- Id: `it-helpdesk` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets, checks their status, and escalates outages a…
+- Id: `it-helpdesk` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- IT Helpdesk for Ridgeway Labs IT Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-it-helpdesk
 
 ### Law Firm Intake
-- Id: `law-firm-intake` · Tier: enterprise · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.
+- Id: `law-firm-intake` · Tier: enterprise · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Law Firm Intake for Riverstone & Hale Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-law-firm-intake
 
 ### Loan Pre-Qualifier
-- Id: `loan-prequalifier` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …
+- Id: `loan-prequalifier` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Loan Pre-Qualifier for ClearPath Lending Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-loan-prequalifier
 
 ### Loyalty & Rewards
-- Id: `loyalty-rewards` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …
+- Id: `loyalty-rewards` · Tier: standard · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Loyalty & Rewards for Oak & Ember Rewards Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-loyalty-rewards
 
+### Maintenance Desk
+- Id: `maintenance-desk` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately
+- Studio: /agents/us-maintenance-desk
+
 ### Marketing Assistant
-- Id: `marketing-assistant` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.
+- Id: `marketing-assistant` · Tier: pro · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Marketing Assistant for Hearth & Pantry Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-marketing-assistant
 
 ### Mobile Money Desk
-- Id: `mobile-money` · Tier: enterprise · Markets: asia, eu, africa, us
-- Channels: whatsapp, app
-- Asia Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…
+- Id: `mobile-money` · Tier: enterprise · Markets: africa, asia, eu, za, oceania, us
+- Channels: whatsapp, web, app, sms
+- Mobile Money Desk for Riverbend Mobile Money Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-mobile-money
 
+### Mortgage Advisor
+- Id: `mortgage-advisor` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision
+- Studio: /agents/us-mortgage-advisor
+
+### Municipality Desk
+- Id: `municipality-desk` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Municipality Desk — Rates/permits FAQ and service request logging
+- Studio: /agents/us-municipality-desk
+
+### Network Fault Desk
+- Id: `network-faults` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises
+- Studio: /agents/us-network-faults
+
 ### Onboarding Buddy
-- Id: `onboarding-buddy` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day checklist, points them to the right resource, logs questions it can't answer, and hands off an…
+- Id: `onboarding-buddy` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Onboarding Buddy for Ridgeway Labs Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-onboarding-buddy
 
 ### Order Tracking
-- Id: `order-tracking` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.
+- Id: `order-tracking` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Order Tracking for Northline Home Goods Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-order-tracking
 
 ### Payroll Queries
-- Id: `payroll-queries` · Tier: enterprise · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.
+- Id: `payroll-queries` · Tier: enterprise · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Payroll Queries for Cedarworks (Pty) Ltd (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-payroll-queries
 
 ### Pharmacy Assistant
-- Id: `pharmacy` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.
+- Id: `pharmacy` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Pharmacy Assistant for Riverside Community Pharmacy Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-pharmacy
 
 ### Policy & Compliance
-- Id: `policy-compliance` · Tier: enterprise · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…
+- Id: `policy-compliance` · Tier: enterprise · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Policy & Compliance for Cedarworks Compliance Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-policy-compliance
 
 ### Procurement Desk
-- Id: `procurement` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …
+- Id: `procurement` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Procurement Desk for Cedarworks Procurement Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-procurement
 
 ### Product Finder
-- Id: `product-finder` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …
+- Id: `product-finder` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Product Finder for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-product-finder
 
 ### Property Enquiries
-- Id: `property-enquiries` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.
+- Id: `property-enquiries` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Property Enquiries for Cedarline Realty Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-property-enquiries
 
+### Quality Assurance Desk
+- Id: `quality-assurance` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions
+- Studio: /agents/us-quality-assurance
+
+### Recruitment Assistant
+- Id: `recruitment` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Recruitment Assistant — Role FAQ and application capture; never hiring decisions
+- Studio: /agents/us-recruitment
+
 ### Remittance Helper
-- Id: `remittance` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …
+- Id: `remittance` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Remittance Helper for HarborSend Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-remittance
 
 ### Rental Enquiries
-- Id: `rental-enquiries` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.
+- Id: `rental-enquiries` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Rental Enquiries for Oak & Key Lettings Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-rental-enquiries
 
 ### Restaurant & Takeaway
-- Id: `restaurant-takeaway` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web
-- Asia Restaurant & Takeaway — Restaurant & Takeaway — restaurant and takeaway — menu questions, hours, and order capture with allergen honesty and handoff for complaints.
+- Id: `restaurant-takeaway` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- restaurant & takeaway for Ember & Oak — WhatsApp-first menu Q&A, table bookings, and collection/delivery orders with allergen honesty, confirm-before-write, POPIA-minimal data, and kitchen handoff.
 - Studio: /agents/us-restaurant-takeaway
 
 ### Returns & Exchanges
-- Id: `returns-exchanges` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…
+- Id: `returns-exchanges` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Returns & Exchanges for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-returns-exchanges
 
 ### Sales Qualifier
-- Id: `sales-qualifier` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents pricing outside approved knowledge.
+- Id: `sales-qualifier` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Sales Qualifier for Ledgerly Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-sales-qualifier
 
 ### Salon & Barber Booking
-- Id: `salon-booking` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Salon & Barber Booking — Salon & Barber Booking — salon and barber booking — services, availability, appointments and reschedules across, SMS, web, app and.
+- Id: `salon-booking` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- salon & barber booking — services, availability, appointments and reschedules with confirm-before-write and front-desk handoff. WhatsApp-first, POPIA-aligned, currency-neutral pricing.
 - Studio: /agents/us-salon-booking
 
-### Spaza & Merchant
-- Id: `spaza-merchant` · Tier: enterprise · Markets: asia, eu, africa, us
-- Channels: whatsapp
-- Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…
-- Studio: /agents/us-spaza-merchant
+### SIM Registration
+- Id: `sim-registration` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes
+- Studio: /agents/us-sim-registration
 
 ### Stock & Availability
-- Id: `stock-availability` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…
+- Id: `stock-availability` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Stock & Availability for Ridgeway Outfitters Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-stock-availability
 
 ### Student Helpdesk
-- Id: `student-helpdesk` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…
+- Id: `student-helpdesk` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Student Helpdesk for Laguna College Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-student-helpdesk
 
+### Tax Office Assistant
+- Id: `tax-office` · Tier: enterprise · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments
+- Studio: /agents/us-tax-office
+
 ### Tour & Activity Desk
-- Id: `tour-activity` · Tier: standard · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…
+- Id: `tour-activity` · Tier: standard · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Tour & Activity Desk for Table Mountain Trails (Cape Town) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-tour-activity
 
 ### Trades Receptionist
-- Id: `trades-receptionist` · Tier: pro · Markets: africa, asia, eu, us
+- Id: `trades-receptionist` · Tier: pro · Markets: africa, asia, eu, oceania, us
 - Channels: whatsapp, web, app, sms
-- Africa Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and general builders — books jobs, quotes published ranges, and escalates emergencies and disputes — across …
+- trades receptionist for plumbers, electricians and general builders — WhatsApp-first, confirm-before-write booking, currency-neutral published price ranges, POPIA-style privacy, and local-emergency handoff.
 - Studio: /agents/us-trades-receptionist
 
 ### Travel Desk
-- Id: `travel-desk` · Tier: pro · Markets: asia, eu, africa, us
-- Channels: whatsapp, web, app
-- Asia Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.
+- Id: `travel-desk` · Tier: pro · Markets: africa, asia, eu, oceania, za, us
+- Channels: whatsapp, web, app, sms
+- Travel Desk for Meridian Travel Desk Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-travel-desk
 
 ### Utility & Billing
-- Id: `utility-billing` · Tier: enterprise · Markets: asia, eu, us, africa
-- Channels: whatsapp, web, app
-- Asia Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.
+- Id: `utility-billing` · Tier: enterprise · Markets: africa, asia, eu, oceania, us, za
+- Channels: whatsapp, web, app, sms
+- Utility & Billing for Riverside Municipal Utilities Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-utility-billing
 
 ### Veterinary Front Desk
-- Id: `veterinary` · Tier: pro · Markets: asia, eu, us, africa
-- Channels: whatsapp, web, app
-- Asia Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.
+- Id: `veterinary` · Tier: pro · Markets: africa, asia, eu, oceania, us, za
+- Channels: whatsapp, web, app, sms
+- Veterinary Front Desk for Paws & Claws Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.
 - Studio: /agents/us-veterinary
+
+### Warehouse Operations
+- Id: `warehouse-operations` · Tier: pro · Markets: us, eu, africa, asia, oceania
+- Channels: sms, web, app
+- Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff
+- Studio: /agents/us-warehouse-operations

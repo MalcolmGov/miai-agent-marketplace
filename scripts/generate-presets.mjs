@@ -12,7 +12,7 @@ const root = path.resolve(__dirname, "..");
 const catalogDir = path.join(root, "data/catalog");
 const outFile = path.join(root, "packages/presets/src/generated-presets.ts");
 
-const PREFIX_RE = /^(us|eu|africa|asia)-/;
+const PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
 function marketOf(id, manifestMarket) {
   if (manifestMarket) return manifestMarket;

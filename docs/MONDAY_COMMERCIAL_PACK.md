@@ -2,11 +2,11 @@
 
 Leave-behind for **commercial finalisation and go-live**. Product staging: `/demo` (go-live pack) and catalogue **Go-live 18**.
 
-**Commercial model:** sell the **Agent Marketplace as a platform** under an **annual license** that includes the **full catalogue — 55 families × 4 market packs = 220 agents**. First-wave **Go-live 18** are the families we stand behind for customer production while cutover completes.
+**Commercial model:** sell the **Agent Marketplace as a platform** under an **annual license** that includes the **full catalogue — 70 families × 5 market packs = 350 agents**. First-wave **Go-live 18** are the families we stand behind for customer production while cutover completes.
 
 | Component | Amount / split |
 |---|---|
-| Annual platform license | **$200,000 / year** (~$909 / agent / year) |
+| Annual platform license | **$200,000 / year** (~$571 / agent / year) |
 | Monthly support, maintenance & new agent development | **$30,000 / month** |
 | Monthly agent rental revenue | **50% Move Digital · 50% MyInstantAI** |
 | Monthly token top-up revenue | **20% Move Digital · 80% MyInstantAI** |
@@ -29,7 +29,7 @@ Regenerate with `pnpm pdf:branded`.
 
 | Component | Amount / split | Why |
 |---|---|---|
-| **Annual platform license** | **$200,000 / year** | Marketplace + full **220** agents day 1 (~$909 / agent / year) |
+| **Annual platform license** | **$200,000 / year** | Marketplace + full **350** agents day 1 (~$571 / agent / year) |
 | **Monthly support & development** | **$30,000 / month** | Support, maintenance, new / feature agent development |
 | **Agent rental (end-customer)** | **50% MD · 50% MIAI** | Catalogue IP + distribution partnership |
 | **Token top-ups (end-customer)** | **20% MD · 80% MIAI** | Model/wallet economics sit with MyInstantAI |
@@ -44,7 +44,7 @@ Cutover onto OIDC / wallet / gateway / Azure is delivered under the partnership 
 
 | # | Decision | Options | Our recommendation |
 |---|---|---|---|
-| 1 | **Product entitlement** | Subset vs **full 220** | **Full catalogue under annual platform license** |
+| 1 | **Product entitlement** | Subset vs **full 350** | **Full catalogue under annual platform license** |
 | 2 | License term | Annual / multi-year | **Annual**, renewable |
 | 3 | Exclusivity | None / market / vertical | Define if exclusive Agents marketplace for MIAI |
 | 4 | IP | License vs assignment | **License** to MyInstantAI; Move Digital retains reusable IP |
@@ -60,7 +60,7 @@ Cutover onto OIDC / wallet / gateway / Azure is delivered under the partnership 
 
 | Line | Amount |
 |---|---|
-| Annual platform license (220 agents) | **$200,000 / year** |
+| Annual platform license (350 agents) | **$200,000 / year** |
 | Monthly support, maintenance & new agent development | **$30,000 / month** |
 | Agent rental rev-share | **50% / 50%** |
 | Token top-up rev-share | **20% MD / 80% MIAI** |
@@ -82,13 +82,13 @@ Cutover onto OIDC / wallet / gateway / Azure is delivered under the partnership 
 | pro | 699 | 649 |
 | enterprise | 1,199 | 1,099 |
 
-Catalogue claim (safe): **55 families × 4 market packs = 220 catalogue-ready agents** (see `CATALOGUE_READY.md`). Platform rails (SSO, live wallet, Azure) are integration work, not catalogue gaps.
+Catalogue claim (safe): **70 families × 5 market packs = 350 catalogue-ready agents** (see `CATALOGUE_READY.md`). Platform rails (SSO, live wallet, Azure) are integration work, not catalogue gaps.
 
 ---
 
 ## 4. Go-live wave (18 families) — production first wave
 
-These eighteen families are the **first wave we stand behind for customer production**. The **license still covers all 220**.
+These eighteen families are the **first wave we stand behind for customer production**. The **license still covers all 350**.
 
 See `docs/PILOT_PRODUCTION_BAR.md`, `docs/PARALLEL_WORKSTREAMS.md`, `docs/CLAUDE_HANDOFF.md`.
 
@@ -133,7 +133,7 @@ A MyInstantAI user can **SSO in → activate / configure an agent from the licen
 
 ## 7. Commercial walkthrough (12–15 min) — mirror `/demo`
 
-1. Catalogue — **220 agents under platform license**  
+1. Catalogue — **350 agents under platform license**  
 2. Smart search + **Go-live 18** first-wave filter  
 3. Learn more → Rent / setup (studio path)  
 4. Multi-step confirm-before-write  
@@ -141,13 +141,13 @@ A MyInstantAI user can **SSO in → activate / configure an agent from the licen
 6. Trust Center — Live / Partial / Planned tags (under-claim)  
 7. Insights + History + Workspace governance  
 
-**Say once:** commercial = annual platform license for all 220; Go-live 18 is the production first wave. SSO and live MIAI wallet are cutover items on their rails.
+**Say once:** commercial = annual platform license for all 350; Go-live 18 is the production first wave. SSO and live MIAI wallet are cutover items on their rails.
 
 ---
 
 ## 8. Commercial close checklist
 
-- [ ] **Annual platform license $200,000** = full 220 agents  
+- [ ] **Annual platform license $200,000** = full 350 agents  
 - [ ] **Monthly support & development $30,000**  
 - [ ] Rev-share: **rent 50/50** · **tokens 20% MD / 80% MIAI**  
 - [ ] Named owners: Auth, Wallet, Models, Azure, Commercial  

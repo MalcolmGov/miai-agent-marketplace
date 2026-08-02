@@ -12,8 +12,8 @@
 | Dimension | Scale |
 |---|---|
 | Platform source LOC (TS/TSX/CSS/scripts/infra) | **~14,500** |
-| Agent catalogue JSON (220 packages) | **~102,000** lines / ~2.5M chars of prompt+knowledge |
-| Agent families × market packs | **55 × 4 = 220** agents |
+| Agent catalogue JSON (350 packages) | **~102,000** lines / ~2.5M chars of prompt+knowledge |
+| Agent families × market packs | **70 × 5 = 350** agents |
 | HTTP API route modules | **22** |
 | OAuth / API connectors | **16** product connectors (+ webhook templates) |
 | Connector presets (tool→connector maps) | **~221** |
@@ -84,7 +84,7 @@ miai-agent-marketplace/
 │   ├── presets/              # Tool→connector bindings per agent
 │   ├── runtime/              # Agent turn loop, model adapters
 │   └── wallet-adapter/       # Mock / HTTP wallet
-├── data/catalog/             # 220 *.agent.json + families + index
+├── data/catalog/             # 350 *.agent.json + families + index
 ├── scripts/                  # Catalog polish, packs, presets, evals
 ├── infra/azure/              # Bicep: CA, Postgres, KV, App Insights
 └── docs/                     # Integration, OAuth, migration runbooks
@@ -115,7 +115,7 @@ Breakdown by language: `.ts` ~10.5k · `.tsx` ~2.0k · `.mjs` ~1.5k · `.css` ~0
 
 | Metric | Value |
 |---|---:|
-| Agent package files | 220 |
+| Agent package files | 350 |
 | Approx. JSON LOC | ~102,475 |
 | Families | 55 |
 | Total tool definitions | 936 (~4.3 / agent) |
@@ -267,8 +267,8 @@ Webhook, MCP, WhatsApp Cloud API, WooCommerce, Stripe — credentials via Action
 |---|---:|
 | Families | 55 |
 | Markets | us, eu, africa, asia |
-| Agents | 220 (55×4) |
-| Catalogue-ready gate | 220/220 (commercial bar) |
+| Agents | 350 (70×5) |
+| Catalogue-ready gate | 350/350 (commercial bar) |
 
 ### Package file naming
 
@@ -310,7 +310,7 @@ Examples: `us-customer-support.agent.json`, `africa-dental-front-desk.agent.json
     "summary": "string",
     "channels": ["web", "whatsapp", "app"],
     "languages": ["en", "..."],
-    "market": "us|eu|africa|asia",
+    "market": "us|eu|africa|asia|oceania",
     "compliance": ["string"],
     "voice": { "enabled": false, "tts": "...", "stt": "..." },
     "model": {
@@ -353,7 +353,7 @@ Examples: `us-customer-support.agent.json`, `africa-dental-front-desk.agent.json
 }
 ```
 
-### Tier distribution (220 agents)
+### Tier distribution (350 agents)
 
 | Tier | Count |
 |---|---:|
@@ -437,7 +437,7 @@ Telemetry: structured console + optional App Insights custom events (`miai.audit
 
 | Asset | Why it’s sticky |
 |---|---|
-| **220 market-localized packages** | ~2.5M chars prompts/knowledge + 3.5k evals + compliance/prepaid SKUs |
+| **350 market-localized packages** | ~2.5M chars prompts/knowledge + 3.5k evals + compliance/prepaid SKUs |
 | **55-family × 4-pack commercial matrix** | Product taxonomy + readiness gates, not just translations |
 | **Connector surface** | 11 OAuth providers + live tool adapters + sealed tokens + PKCE/state |
 | **Runtime economics** | Wallet debit, pause-on-zero, model gateway adapters |

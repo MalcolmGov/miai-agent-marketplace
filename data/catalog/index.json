@@ -5,7 +5,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Accounting Practice Desk — CPA front desk for Ledgerline Accountants (Austin) — IRS deadline guides, document lists, new-client capture with confirm-before-write; never formal tax advice.",
+    "summary": "Africa Accounting Practice Desk for Ledgerline Accountants Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -13,7 +13,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-admissions",
@@ -21,7 +22,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Admissions Assistant — college admissions assistant — explains entry requirements and deadlines, captures applications with confirm-before-write, and never makes admission decisions; routes appeals an…",
+    "summary": "Africa Admissions Assistant for Horizon College Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -29,7 +30,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-agency-studio",
@@ -37,7 +39,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Agency & Studio — creative studio front door — explains services and process, captures project briefs with confirm-before-write, and routes complex scope or media-buying asks to a human producer.",
+    "summary": "Africa Agency & Studio for Brightline Studio Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -45,7 +47,25 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-airtime-bundles",
+    "name": "Africa Airtime & Bundles",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "summary": "Africa Airtime & Bundles — Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-bank-branch",
@@ -53,7 +73,7 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Bank Branch Assistant — community-bank branch assistant — explains products and KYC documents, books lobby appointments with confirm-before-write, and escalates fraud, balances, and advice to a banker.",
+    "summary": "Africa Bank Branch Assistant for Riverbend Bank — Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -61,7 +81,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-bookkeeping",
@@ -69,7 +90,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Bookkeeping Assistant — AR bookkeeping assistant — looks up invoices and statements, emails statement copies after confirm-before-write, and routes disputes and tax questions to a bookkeeper.",
+    "summary": "Africa Bookkeeping Assistant for Ledgerlane Bookkeeping Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -77,7 +98,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-building-management",
@@ -85,7 +107,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Building Management — building / HOA desk for Cedar Ridge Condominiums (Austin) — maintenance logging, access & conduct rules, and levy Q&A with emergency and dispute handoff.",
+    "summary": "Africa Building Management for Cedar Ridge Residences Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -93,7 +115,25 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-citizen-services",
+    "name": "Africa Citizen Services",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Citizen Services — Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-clinic-front-desk",
@@ -109,7 +149,25 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-contract-review",
+    "name": "Africa Contract Review Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Contract Review Intake — Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-course-advisor",
@@ -117,7 +175,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Course Advisor — career-college course advisor — lists and matches programs, captures interest with confirm-before-write, and never promises seats or financial aid.",
+    "summary": "Africa Course Advisor for Trailhead Career College Lagos (Lagos) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -125,7 +183,25 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-credit-cards",
+    "name": "Africa Credit Card Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Credit Card Desk — Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-customer-support",
@@ -141,7 +217,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-delivery-tracking",
@@ -157,7 +234,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-dental-front-desk",
@@ -165,7 +243,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Strictly non-clinical Africa dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across…",
+    "summary": "Africa Dental Front Desk for Oak Street Dental Rosebank (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -173,7 +251,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-dental-practice",
@@ -181,7 +260,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Strictly non-clinical Africa dental practice desk — explains treatments and fees, books with confirm-before-write, and routes every clinical, pain, or emergency matter to a human.",
+    "summary": "Africa Dental Practice for Oak Street Dental Rosebank (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -189,7 +268,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-events-venue",
@@ -197,7 +277,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Events & Venue — events & venue desk for Willow Creek Estate (Austin Hill Country) — packages, capacity, date checks, enquiry capture, and site-visit booking with confirm-before-write.",
+    "summary": "Africa Events & Venue for Willow Creek Estate Stellenbosch (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -205,7 +285,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-executive-assistant",
@@ -213,7 +294,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Executive Assistant — Executive Assistant — carries a principal's daily admin load: checks the calendar, schedules meetings with confirm-first, sets reminders, notifies the team, and hands off sensit…",
+    "summary": "Africa Executive Assistant for Maya Chen / Ridgeway Labs Johannesburg EA desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -221,7 +302,25 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-fibre-support",
+    "name": "Africa Fibre Support",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Fibre Support — Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-field-service",
@@ -229,7 +328,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Field Service Dispatch — HVAC field-service tech assistant — pulls jobs and parts, updates status with confirm-before-write, and escalates every on-site safety issue to dispatch immediately.",
+    "summary": "Africa Field Service Dispatch for Fieldline Service Nairobi (Nairobi) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -237,7 +336,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-fleet-driver",
@@ -245,7 +345,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Fleet & Driver Desk — fleet driver assistant — answers hours-of-service and CDL compliance questions, logs minor incidents with confirm-before-write, and escalates accidents and breakdowns to the fle…",
+    "summary": "Africa Fleet & Driver Desk for Gauteng Fleet Desk (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -253,7 +353,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-front-desk",
@@ -261,7 +362,7 @@
     "tier": "standard",
     "category": "front-office",
     "market": "africa",
-    "summary": "Africa Front Desk / Reception — multi-tenant building front desk — orients visitors, routes to departments, books and takes messages with confirm-before-write, and escalates urgent or clinical matters to a human.",
+    "summary": "Africa Front Desk / Reception for Summit Business Centre Sandton (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -269,7 +370,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-grant-stock-planner",
@@ -277,7 +379,7 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Grant-Day Stock Planner — neighborhood-market stock planner — forecasts benefit-week demand, builds pre-stock lists, and places reorders only after confirm-before-write.",
+    "summary": "Africa Grant-Day Stock Planner for GrantDay Market — Soweto (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -285,7 +387,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-gym-membership",
@@ -293,7 +396,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Gym Membership Desk — gym membership desk for Ironleaf Fitness (Austin) — plans, class times, freeze/cancel intake with confirm-before-write, and billing-dispute handoff.",
+    "summary": "Africa Gym Membership Desk for Ironleaf Fitness Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -301,7 +404,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-home-services",
@@ -309,7 +413,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical Multi-step: availability → confirm → book → notify.",
+    "summary": "Africa Home Services Front Desk for HomeLine Services Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -317,7 +421,8 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-hotel-concierge",
@@ -325,7 +430,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Hotel Concierge — hotel concierge — answers amenities and local tips, logs guest requests with confirm-before-write, and routes billing, complaints, and reservation changes to the front desk.",
+    "summary": "Africa Hotel Concierge for Riverbend Inn Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -333,7 +438,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 21
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-hotel-guest",
@@ -341,7 +447,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across WhatsApp, SMS, …",
+    "summary": "Africa Hotel Guest Concierge for Riverbend Inn Cape Town (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -349,7 +455,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-hr-helpdesk",
@@ -357,7 +464,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa HR Helpdesk — HR helpdesk — answers PTO and benefits questions, screens candidates against listed requirements only, captures applications with confirm-before-write, and routes every grievanc…",
+    "summary": "Africa HR Helpdesk for Cedarworks People Ops Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -365,7 +472,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-insurance-broker",
@@ -373,7 +481,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Insurance Broker — insurance broker for Summit Ridge Insurance Brokers (Austin) — needs analysis, cover options, underwriter submission with confirm-before-write; never advice, never a binding quote.",
+    "summary": "Africa Insurance Broker for Summit Ridge Brokers Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -381,7 +489,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-insurance-claims",
@@ -389,7 +498,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Insurance Claims Helper — insurance claims helper for Harbor Mutual (Austin) — explain cover, FNOL intake with confirm-before-write, claim status; never adjudicates or promises payouts.",
+    "summary": "Africa Insurance Claims Helper for Harbor Mutual Claims Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -397,7 +506,25 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-interview-scheduling",
+    "name": "Africa Interview Scheduling",
+    "tier": "standard",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Interview Scheduling — Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-it-helpdesk",
@@ -405,7 +532,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "First-line Africa IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets with confirm-before-write, notifies Sl…",
+    "summary": "Africa IT Helpdesk for Ridgeway Labs IT Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -413,7 +540,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 22
+    "evals": 22,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-law-firm-intake",
@@ -421,7 +549,7 @@
     "tier": "enterprise",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Law Firm Intake — law firm intake for Riverstone & Hale LLP (Austin) — practice areas, conflict note, matter capture & consult booking with confirm-before-write; never legal advice.",
+    "summary": "Africa Law Firm Intake for Riverstone & Hale Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -429,7 +557,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-loan-prequalifier",
@@ -437,7 +566,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Loan Pre-Qualifier — loan pre-qualifier for ClearPath Personal Lending (Austin) — indicative affordability read and application capture with confirm-before-write; never a credit decision.",
+    "summary": "Africa Loan Pre-Qualifier for ClearPath Lending Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -445,7 +574,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-loyalty-rewards",
@@ -453,7 +583,7 @@
     "tier": "standard",
     "category": "commerce",
     "market": "africa",
-    "summary": "Africa Loyalty & Rewards — loyalty & rewards for Oak & Ember Rewards (Austin) — balances, tiers, reward redemption with confirm-before-write; account disputes hand off.",
+    "summary": "Africa Loyalty & Rewards for Oak & Ember Rewards Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -461,7 +591,25 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-maintenance-desk",
+    "name": "Africa Maintenance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Maintenance Desk — Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-marketing-assistant",
@@ -469,7 +617,7 @@
     "tier": "pro",
     "category": "sales",
     "market": "africa",
-    "summary": "Africa Marketing Assistant — marketing assistant for Hearth & Pantry Co. (Austin) — approved campaign info and opt-in lead capture with confirm-before-write; TCPA-aware, never invents offers.",
+    "summary": "Africa Marketing Assistant for Hearth & Pantry Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -477,7 +625,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-mobile-money",
@@ -485,7 +634,7 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Mobile Money Desk — cash services desk for Riverbend Cash Services (Austin) — counter cash-in/out and send-money with confirm-before-write; never handles PIN/OTP; BSA-AML aware.",
+    "summary": "Africa Mobile Money Desk for Riverbend Mobile Money Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -493,7 +642,59 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-mortgage-advisor",
+    "name": "Africa Mortgage Advisor",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Mortgage Advisor — Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-municipality-desk",
+    "name": "Africa Municipality Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Municipality Desk — Municipality Desk — Rates/permits FAQ and service request logging",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-network-faults",
+    "name": "Africa Network Fault Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Network Fault Desk — Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-onboarding-buddy",
@@ -501,7 +702,7 @@
     "tier": "standard",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Onboarding Buddy — onboarding buddy for new joiners at Ridgeway Labs (Austin) — week-one checklist, resource pointers, confirm-before-log questions, and HR/IT handoff.",
+    "summary": "Africa Onboarding Buddy for Ridgeway Labs Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -509,7 +710,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-order-tracking",
@@ -517,7 +719,7 @@
     "tier": "standard",
     "category": "commerce",
     "market": "africa",
-    "summary": "Africa Order Tracking — order tracking for Northline Home Goods (Austin) — status, delivery windows, preference updates with confirm-before-write; refunds and address changes hand off.",
+    "summary": "Africa Order Tracking for Northline Home Goods Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -525,7 +727,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-payment-disputes",
@@ -533,7 +736,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Card & Payment Disputes — payment disputes for Northline Payments Desk (Austin) — dispute intake with evidence capture and confirm-before-write; never decides chargebacks or issues refunds.",
+    "summary": "Africa Card & Payment Disputes for Northline Payments Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -541,7 +744,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-payroll-queries",
@@ -549,7 +753,7 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Payroll Queries — payroll queries for Cedarworks Staff Payroll (Austin) — own payslip/leave lookups and query logging with confirm-before-write; never cross-employee disclosure.",
+    "summary": "Africa Payroll Queries for Cedarworks (Pty) Ltd (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -557,7 +761,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-pharmacy",
@@ -565,7 +770,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Pharmacy Assistant — pharmacy assistant for Riverside Community Pharmacy (Austin) — hours, OTC stock, script status, refill request logging with confirm-before-write; never diagnoses — HIPAA-aware.",
+    "summary": "Africa Pharmacy Assistant for Riverside Community Pharmacy Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -573,7 +778,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-policy-compliance",
@@ -581,7 +787,7 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Policy & Compliance — policy & compliance for Cedarworks Compliance Desk (Austin) — cited policy answers and query logging with confirm-before-write; legal interpretation hands off.",
+    "summary": "Africa Policy & Compliance for Cedarworks Compliance Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -589,7 +795,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-procurement",
@@ -597,7 +804,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Procurement Desk — procurement desk for Cedarworks Procurement (Austin) — PO status, policy, supplier onboarding with confirm-before-write; approvals and exceptions hand off.",
+    "summary": "Africa Procurement Desk for Cedarworks Procurement Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -605,7 +812,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-product-finder",
@@ -613,7 +821,7 @@
     "tier": "standard",
     "category": "commerce",
     "market": "africa",
-    "summary": "Africa Product Finder — product finder for Homestead & Hearth (Austin) — catalogue search, honest comparisons, live stock checks; complex/bulk needs hand off — never invents products or prices.",
+    "summary": "Africa Product Finder for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -621,7 +829,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-property-enquiries",
@@ -629,7 +838,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Property Enquiries — property enquiries for Cedarline Realty (Austin) — listings, viewing bookings with confirm-before-write, and application routing; never gives legal/financial advice.",
+    "summary": "Africa Property Enquiries for Cedarline Realty Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -637,7 +846,42 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-quality-assurance",
+    "name": "Africa Quality Assurance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Quality Assurance Desk — Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-recruitment",
+    "name": "Africa Recruitment Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Recruitment Assistant — Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-remittance",
@@ -645,7 +889,7 @@
     "tier": "pro",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Remittance Helper — remittance helper for HarborSend (Austin) — corridors, fees, and transfer-request capture with confirm-before-write; never moves money or takes card data in chat.",
+    "summary": "Africa Remittance Helper for HarborSend Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -653,7 +897,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-rental-enquiries",
@@ -661,7 +906,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Rental Enquiries — rental enquiries for Oak & Key Lettings (Austin) — availability, application requirements, and viewing bookings with confirm-before-write; never decides applications or credit.",
+    "summary": "Africa Rental Enquiries for Oak & Key Lettings Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -669,7 +914,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-restaurant-takeaway",
@@ -685,7 +931,8 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-returns-exchanges",
@@ -693,7 +940,7 @@
     "tier": "standard",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Returns & Exchanges — returns & exchanges for Homestead & Hearth (Austin) — eligibility, methods, and return start with confirm-before-write; refunds and faulty items escalate.",
+    "summary": "Africa Returns & Exchanges for Homestead & Hearth Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -701,7 +948,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-sales-qualifier",
@@ -709,7 +957,7 @@
     "tier": "pro",
     "category": "sales",
     "market": "africa",
-    "summary": "Africa Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks with confirm-before-write, captures leads to HubSpot, notifies Slack, and never invents pricing outside appro…",
+    "summary": "Africa Sales Qualifier for Ledgerly Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -717,7 +965,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-salon-booking",
@@ -733,7 +982,25 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-sim-registration",
+    "name": "Africa SIM Registration",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-spaza-merchant",
@@ -741,7 +1008,7 @@
     "tier": "enterprise",
     "category": "commerce",
     "market": "africa",
-    "summary": "Africa Corner Store Merchant — corner-store merchant helper for Cesar Corner Market (Austin) — shelf prices, sales logging, credit book, and wholesaler reorders with confirm-before-write on every write.",
+    "summary": "Africa Corner Store Merchant for Cesar Spaza — Soweto (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -749,7 +1016,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-stock-availability",
@@ -757,7 +1025,7 @@
     "tier": "pro",
     "category": "commerce",
     "market": "africa",
-    "summary": "Africa Stock & Availability — stock availability for Ridgeway Outfitters (Austin) — live branch stock, sizes/variants, and back-in-stock alerts with confirm-before-write; never reserves stock.",
+    "summary": "Africa Stock & Availability for Ridgeway Outfitters Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -765,7 +1033,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-student-helpdesk",
@@ -773,7 +1042,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Student Helpdesk — student helpdesk for Laguna Community College (Austin) — timetables, campus services, and request logging with confirm-before-write; account/results always hand off — FERPA-aware.",
+    "summary": "Africa Student Helpdesk for Laguna College Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -781,7 +1050,25 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-tax-office",
+    "name": "Africa Tax Office Assistant",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "africa",
+    "summary": "Africa Tax Office Assistant — Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-tour-activity",
@@ -789,7 +1076,7 @@
     "tier": "standard",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Tour & Activity Desk — tour & activity desk for Hill Country Trails (Austin) — tour info, availability, and bookings with confirm-before-write; complaints and custom groups hand off.",
+    "summary": "Africa Tour & Activity Desk for Table Mountain Trails (Cape Town) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -797,7 +1084,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-trades-receptionist",
@@ -805,7 +1093,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Trades Receptionist — Trades Receptionist — Trades Receptionist — trades receptionist for plumbers, electricians and Multi-step: availability → confirm → book → notify.",
+    "summary": "Africa trades receptionist for plumbers, electricians and general builders — WhatsApp-first, confirm-before-write booking, currency-neutral published price ranges, POPIA-style privacy, and local-emergency handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -813,7 +1101,8 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-travel-desk",
@@ -821,7 +1110,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Travel Desk — corporate travel desk for Meridian Travel Desk (Austin) — policy Q&A and trip-request capture with confirm-before-write; never books or quotes live fares.",
+    "summary": "Africa Travel Desk for Meridian Travel Desk Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -829,7 +1118,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-utility-billing",
@@ -837,7 +1127,7 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "africa",
-    "summary": "Africa Utility & Billing — utility & billing for Riverside Municipal Utilities (Austin metro) — outages, meter readings with confirm-before-write, and bill guidance; safety and disputes escalate.",
+    "summary": "Africa Utility & Billing for Riverside Municipal Utilities Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -845,7 +1135,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-vas-concierge",
@@ -853,7 +1144,7 @@
     "tier": "pro",
     "category": "commerce",
     "market": "africa",
-    "summary": "Africa Gift Card & VAS Concierge — gift card & VAS concierge for BrightPin Digital (Austin) — catalogue, confirm-before-charge purchases, PIN delivery; never takes raw card data in chat.",
+    "summary": "Africa Gift Card & VAS Concierge for BrightPin Digital Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -861,7 +1152,8 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "africa-veterinary",
@@ -869,7 +1161,7 @@
     "tier": "pro",
     "category": "vertical",
     "market": "africa",
-    "summary": "Africa Veterinary Front Desk — veterinary front desk for Paws & Claws Veterinary Clinic (Austin) — non-clinical booking with confirm-before-write; clinical questions and emergencies escalate immediately.",
+    "summary": "Africa Veterinary Front Desk for Paws & Claws Johannesburg (Johannesburg) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "whatsapp",
       "web",
@@ -877,7 +1169,25 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "africa-warehouse-operations",
+    "name": "Africa Warehouse Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "africa",
+    "summary": "Africa Warehouse Operations — Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-accounting-practice",
@@ -885,14 +1195,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Accounting Practice Desk — Accounting Practice Desk — Accounting Practice Desk — accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
+    "summary": "Asia Accounting Practice Desk for Ledgerline Accountants Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-admissions",
@@ -900,14 +1211,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Admissions Assistant — Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and c…",
+    "summary": "Asia Admissions Assistant for Horizon College Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-agency-studio",
@@ -915,14 +1227,31 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Agency & Studio — Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
+    "summary": "Asia Agency & Studio for Brightline Studio Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-airtime-bundles",
+    "name": "Asia Airtime & Bundles",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "asia",
+    "summary": "Asia Airtime & Bundles — Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-bank-branch",
@@ -930,14 +1259,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
+    "summary": "Asia Bank Branch Assistant for Riverbend Bank — Marina Bay (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-bookkeeping",
@@ -945,14 +1275,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "Asia Bookkeeping Assistant for Ledgerlane Bookkeeping Mumbai (Mumbai) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-building-management",
@@ -960,14 +1291,31 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "summary": "Asia Building Management for Cedar Ridge Residences Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-citizen-services",
+    "name": "Asia Citizen Services",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Citizen Services — Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-clinic-front-desk",
@@ -982,7 +1330,24 @@
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-contract-review",
+    "name": "Asia Contract Review Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Contract Review Intake — Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-course-advisor",
@@ -990,14 +1355,31 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "summary": "Asia Course Advisor for Trailhead Career College Jakarta (Jakarta) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-credit-cards",
+    "name": "Asia Credit Card Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Credit Card Desk — Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-customer-support",
@@ -1012,7 +1394,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-delivery-tracking",
@@ -1027,7 +1410,8 @@
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-dental-front-desk",
@@ -1035,14 +1419,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Strictly non-clinical Asia dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, …",
+    "summary": "Asia Dental Front Desk for Oak Street Dental Orchard (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-dental-practice",
@@ -1050,14 +1435,15 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "summary": "Asia Dental Practice for Oak Street Dental Orchard (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-events-venue",
@@ -1065,14 +1451,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "summary": "Asia Events & Venue for Willow Creek Estate Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-executive-assistant",
@@ -1080,14 +1467,31 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when… Multi-step workflows: plan → confirm → schedule/remind/notify → verify.",
+    "summary": "Asia Executive Assistant for Maya Chen / Ridgeway Labs Singapore EA desk (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 21
+    "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-fibre-support",
+    "name": "Asia Fibre Support",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Fibre Support — Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-field-service",
@@ -1095,14 +1499,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
+    "summary": "Asia Field Service Dispatch for Fieldline Service Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-fleet-driver",
@@ -1110,14 +1515,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "summary": "Asia Fleet & Driver Desk for Harbour Fleet Desk (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-front-desk",
@@ -1125,14 +1531,15 @@
     "tier": "standard",
     "category": "front-office",
     "market": "asia",
-    "summary": "Asia Front Desk / Reception — Front Desk / Reception — front desk — greets visitors, routes to the right team, books appointments and takes messages across, SMS, web, app and.",
+    "summary": "Asia Front Desk / Reception for Summit Business Centre Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-grant-stock-planner",
@@ -1140,14 +1547,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
+    "summary": "Asia Grant-Day Stock Planner for BenefitDay Market — Jurong (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-gym-membership",
@@ -1155,14 +1563,15 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Gym Membership Desk — Gym Membership Desk — gym membership desk — plans, hours, freezes/cancels intake, and class questions with clean handoff for billing disputes.",
+    "summary": "Asia Gym Membership Desk for Ironleaf Fitness Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-home-services",
@@ -1170,14 +1579,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, Multi-step: availability → confirm → book → notify.",
+    "summary": "Asia Home Services Front Desk for HomeLine Services Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-hotel-concierge",
@@ -1185,14 +1595,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Hotel Concierge — Hotel Concierge — hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to the front desk.",
+    "summary": "Asia Hotel Concierge for Riverbend Inn Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 21
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-hotel-guest",
@@ -1200,14 +1611,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Hotel Guest Concierge — Hotel Guest Concierge — Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, …",
+    "summary": "Asia Hotel Guest Concierge for Riverbend Inn Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-hr-helpdesk",
@@ -1215,14 +1627,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "summary": "Asia HR Helpdesk for Cedarworks People Ops Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-insurance-broker",
@@ -1230,14 +1643,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "summary": "Asia Insurance Broker for Summit Ridge Brokers Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-insurance-claims",
@@ -1245,14 +1659,31 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Insurance Claims Helper — Insurance Claims Helper — insurance claims helper — explains process, captures FNOL intakes, and never adjudicates coverage or promise payouts.",
+    "summary": "Asia Insurance Claims Helper for Harbor Mutual Claims Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-interview-scheduling",
+    "name": "Asia Interview Scheduling",
+    "tier": "standard",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Interview Scheduling — Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-it-helpdesk",
@@ -1260,14 +1691,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and Multi-step: KB → confirm → ticket → Slack notify.",
+    "summary": "Asia IT Helpdesk for Ridgeway Labs IT Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 20
+    "evals": 22,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-law-firm-intake",
@@ -1275,14 +1707,15 @@
     "tier": "enterprise",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "summary": "Asia Law Firm Intake for Riverstone & Hale Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-loan-prequalifier",
@@ -1290,14 +1723,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "summary": "Asia Loan Pre-Qualifier for ClearPath Lending Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-loyalty-rewards",
@@ -1305,14 +1739,31 @@
     "tier": "standard",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "summary": "Asia Loyalty & Rewards for Oak & Ember Rewards Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-maintenance-desk",
+    "name": "Asia Maintenance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Maintenance Desk — Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-marketing-assistant",
@@ -1320,14 +1771,15 @@
     "tier": "pro",
     "category": "sales",
     "market": "asia",
-    "summary": "Asia Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "summary": "Asia Marketing Assistant for Hearth & Pantry Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-mobile-money",
@@ -1335,14 +1787,63 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "summary": "Asia Mobile Money Desk for Riverbend Pay Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-mortgage-advisor",
+    "name": "Asia Mortgage Advisor",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Mortgage Advisor — Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-municipality-desk",
+    "name": "Asia Municipality Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Municipality Desk — Municipality Desk — Rates/permits FAQ and service request logging",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-network-faults",
+    "name": "Asia Network Fault Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Network Fault Desk — Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-onboarding-buddy",
@@ -1350,14 +1851,15 @@
     "tier": "standard",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day Multi-step: checklist → confirm → log/escalate → notify.",
+    "summary": "Asia Onboarding Buddy for Ridgeway Labs Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-order-tracking",
@@ -1365,14 +1867,15 @@
     "tier": "standard",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "summary": "Asia Order Tracking for Northline Home Goods Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-payment-disputes",
@@ -1380,14 +1883,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
+    "summary": "Asia Card & Payment Disputes for Northline Payments Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-payroll-queries",
@@ -1395,14 +1899,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Payroll Queries — Payroll Queries — Payroll Queries — payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "summary": "Asia Payroll Queries for Cedarworks Pte Ltd (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-pharmacy",
@@ -1410,14 +1915,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Pharmacy Assistant — Pharmacy Assistant — pharmacy assistant — hours, OTC guidance boundaries, refill request logging; never diagnoses or changes prescriptions — HIPAA-aware.",
+    "summary": "Asia Pharmacy Assistant for Riverside Community Pharmacy Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
-    "tools": 4,
-    "evals": 16
+    "tools": 5,
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-policy-compliance",
@@ -1425,14 +1931,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "summary": "Asia Policy & Compliance for Cedarworks Compliance Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-procurement",
@@ -1440,14 +1947,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "summary": "Asia Procurement Desk for Cedarworks Procurement Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-product-finder",
@@ -1455,14 +1963,15 @@
     "tier": "standard",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "summary": "Asia Product Finder for Homestead & Hearth Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-property-enquiries",
@@ -1470,14 +1979,47 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "summary": "Asia Property Enquiries for Cedarline Realty Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-quality-assurance",
+    "name": "Asia Quality Assurance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Quality Assurance Desk — Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-recruitment",
+    "name": "Asia Recruitment Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Recruitment Assistant — Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-remittance",
@@ -1485,14 +2027,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "summary": "Asia Remittance Helper for HarborSend Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-rental-enquiries",
@@ -1500,14 +2043,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Rental Enquiries — Rental Enquiries — Rental Enquiries — rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "summary": "Asia Rental Enquiries for Oak & Key Lettings Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-restaurant-takeaway",
@@ -1522,7 +2066,8 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-returns-exchanges",
@@ -1530,14 +2075,15 @@
     "tier": "standard",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "summary": "Asia Returns & Exchanges for Homestead & Hearth Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-sales-qualifier",
@@ -1545,14 +2091,15 @@
     "tier": "pro",
     "category": "sales",
     "market": "asia",
-    "summary": "Asia Sales Qualifier — Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks, and never invents Multi-step: qualify → confirm → callback → HubSpot/Slack.",
+    "summary": "Asia Sales Qualifier for Ledgerly Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 21
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-salon-booking",
@@ -1567,22 +2114,40 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-sim-registration",
+    "name": "Asia SIM Registration",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-spaza-merchant",
-    "name": "Asia Spaza & Merchant",
+    "name": "Asia Corner Store Merchant",
     "tier": "enterprise",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "Asia Corner Store Merchant for Cesar Convenience — Jurong (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-stock-availability",
@@ -1590,14 +2155,15 @@
     "tier": "pro",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
+    "summary": "Asia Stock & Availability for Ridgeway Outfitters Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-student-helpdesk",
@@ -1605,14 +2171,31 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "summary": "Asia Student Helpdesk for Laguna College Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-tax-office",
+    "name": "Asia Tax Office Assistant",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "asia",
+    "summary": "Asia Tax Office Assistant — Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-tour-activity",
@@ -1620,14 +2203,15 @@
     "tier": "standard",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
+    "summary": "Asia Tour & Activity Desk for Harbour Trails Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-trades-receptionist",
@@ -1642,7 +2226,8 @@
       "sms"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-travel-desk",
@@ -1650,14 +2235,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Travel Desk — Travel Desk — Travel Desk — travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "summary": "Asia Travel Desk for Meridian Travel Desk Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-utility-billing",
@@ -1665,14 +2251,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "asia",
-    "summary": "Asia Utility & Billing — Utility & Billing — Utility & Billing — utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "summary": "Asia Utility & Billing for Riverside Utilities Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-vas-concierge",
@@ -1680,14 +2267,15 @@
     "tier": "pro",
     "category": "commerce",
     "market": "asia",
-    "summary": "Asia Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "summary": "Asia Gift Card & VAS Concierge for BrightPin Digital Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "asia-veterinary",
@@ -1695,14 +2283,31 @@
     "tier": "pro",
     "category": "vertical",
     "market": "asia",
-    "summary": "Asia Veterinary Front Desk — Veterinary Front Desk — veterinary front desk — booking and non-clinical pet-care logistics; emergencies and clinical advice escalate immediately.",
+    "summary": "Asia Veterinary Front Desk for Paws & Claws Singapore (Singapore) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "web",
       "app",
       "sms"
     ],
     "tools": 5,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "asia-warehouse-operations",
+    "name": "Asia Warehouse Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "asia",
+    "summary": "Asia Warehouse Operations — Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-accounting-practice",
@@ -1710,14 +2315,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU accounting practice desk — document requests and appointment routing; never gives formal tax advice as a substitute for an accountant.",
+    "summary": "EU Accounting Practice Desk for Ledgerline Accountants Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-admissions",
@@ -1725,14 +2331,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Admissions Assistant — Admissions Assistant — Admissions Assistant — Answers entry-requirement and deadline questions for a college or university and captures a prospective student's application — grounded, honest, and c…",
+    "summary": "EU Admissions Assistant for Horizon College Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-agency-studio",
@@ -1740,14 +2347,31 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Agency & Studio — Agency & Studio — Agency & Studio — Explains what the studio does and how it works, answers on services, process, timelines and pricing, and captures a clear project brief for the team — across W…",
+    "summary": "EU Agency & Studio for Brightline Studio Amsterdam (Amsterdam) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-airtime-bundles",
+    "name": "EU Airtime & Bundles",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "eu",
+    "summary": "EU Airtime & Bundles — Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-bank-branch",
@@ -1755,14 +2379,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Bank Branch Assistant — Bank Branch Assistant — Answers product, required-document (FICA) and branch-logistics questions and books branch appointments — never touching a customer's accounts, balances or transactions — 24/…",
+    "summary": "EU Bank Branch Assistant for Riverbend Bank — Berlin Mitte (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-bookkeeping",
@@ -1770,14 +2395,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Bookkeeping Assistant — Bookkeeping Assistant — Answers a business's account queries — in status, payment terms and statement requests — grounded in real records, and hands every accounting or tax question to the boo…",
+    "summary": "EU Bookkeeping Assistant for Ledgerlane Bookkeeping Dublin (Dublin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-building-management",
@@ -1785,14 +2411,31 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Building Management — Building Management — Building Management — Logs maintenance requests for the managing agent to action, answers access and conduct rules, and handles levy questions — escalating emergencies and dispu…",
+    "summary": "EU Building Management for Cedar Ridge Residences Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-citizen-services",
+    "name": "EU Citizen Services",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Citizen Services — Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-clinic-front-desk",
@@ -1807,7 +2450,24 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-contract-review",
+    "name": "EU Contract Review Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Contract Review Intake — Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-course-advisor",
@@ -1815,14 +2475,31 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Course Advisor — Course Advisor — Course Advisor — Helps prospective learners find the right programme — lists courses, matches interests and level to a fit, captures their details for the registrations team, an…",
+    "summary": "EU Course Advisor for Trailhead Career College Lisbon (Lisbon) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-credit-cards",
+    "name": "EU Credit Card Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Credit Card Desk — Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-customer-support",
@@ -1837,7 +2514,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-delivery-tracking",
@@ -1852,7 +2530,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-dental-front-desk",
@@ -1860,14 +2539,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "Strictly non-clinical EU dental front desk — explains treatments and fees, books appointments, and routes every clinical, pain, or emergency matter to a human — across, SM…",
+    "summary": "EU Dental Front Desk for Oak Street Dental Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-dental-practice",
@@ -1875,14 +2555,15 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Dental Practice — Dental Practice — Dental Practice — A strictly non-clinical dental front desk — answers treatment and treatment-plan questions, captures appointment bookings, and routes every clinical, painful o…",
+    "summary": "EU Dental Practice for Oak Street Dental Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-events-venue",
@@ -1890,14 +2571,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Events & Venue — Events & Venue — Events & Venue — Fills the calendar — answers on capacity, packages and dates, captures event enquiries, and books site visits for weddings, functions and corporate events acros…",
+    "summary": "EU Events & Venue for Willow Creek Estate Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-executive-assistant",
@@ -1905,14 +2587,31 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Executive Assistant — Executive Assistant — Executive Assistant — Carries an executive's daily admin load — checks the calendar, schedules meetings with a confirm-first step, sets reminders, and hands off to a person when… Multi-step workflows: plan → confirm → schedule/remind/notify → verify.",
+    "summary": "EU Executive Assistant for Maya Chen / Ridgeway Labs Berlin EA desk (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 21
+    "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-fibre-support",
+    "name": "EU Fibre Support",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Fibre Support — Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-field-service",
@@ -1920,14 +2619,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Field Service Dispatch — Field Service Dispatch — Gives field technicians their job details, checks parts and stock, and captures job status from site — escalating any on-site safety issue to a human immediately, across Wh…",
+    "summary": "EU Field Service Dispatch for Fieldline Service GmbH (Munich) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-fleet-driver",
@@ -1935,14 +2635,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Fleet & Driver Desk — Fleet & Driver Desk — Fleet & Driver Desk — Answers drivers' policy and procedure questions, captures incident reports for the fleet office to action, and gives licence and roadworthy compliance remi…",
+    "summary": "EU Fleet & Driver Desk for Rhine Fleet Desk (Cologne) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-front-desk",
@@ -1950,14 +2651,15 @@
     "tier": "standard",
     "category": "front-office",
     "market": "eu",
-    "summary": "EU front desk — greets visitors, routes enquiries, books appointments and takes messages with GDPR-safe data handling.",
+    "summary": "EU Front Desk / Reception for Summit Business Centre Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-grant-stock-planner",
@@ -1965,14 +2667,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Grant-Day Stock Planner — Grant-Day Stock Planner — Grant-Day Stock Planner — Helps a merchant forecast payout-week demand and pre-stock for it — projects grant-week uplift per item, builds a pre-stock list to a budget, and…",
+    "summary": "EU Grant-Day Stock Planner for BenefitDay Market — Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-gym-membership",
@@ -1980,14 +2683,15 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU gym membership desk — plans, hours, freeze/cancel intake; billing disputes escalate.",
+    "summary": "EU Gym Membership Desk for Ironleaf Fitness Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-home-services",
@@ -1995,14 +2699,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Home Services Front Desk — Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, Multi-step: availability → confirm → book → notify.",
+    "summary": "EU Home Services Front Desk for HomeLine Services Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-hotel-concierge",
@@ -2010,14 +2715,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU hotel concierge — amenities, local tips and guest requests; billing and complaints escalate to front desk.",
+    "summary": "EU Hotel Concierge for Riverbend Inn Amsterdam (Amsterdam) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 21
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-hotel-guest",
@@ -2025,14 +2731,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests, and escalates billing and complaints — across, SMS, web, app and.",
+    "summary": "EU Hotel Guest Concierge for Riverbend Inn Amsterdam (Amsterdam) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-hr-helpdesk",
@@ -2040,14 +2747,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU HR Helpdesk — HR Helpdesk — HR Helpdesk — Answers candidate and staff HR questions, screens applicants against a role's listed requirements, and captures applications — routing every grievance, disciplinar…",
+    "summary": "EU HR Helpdesk for Cedarworks People Ops Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-insurance-broker",
@@ -2055,14 +2763,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Insurance Broker — Insurance Broker — Insurance Broker — Runs a structured insurance needs analysis, explains cover options in plain language, and prepares a clean submission for the underwriter — never advice, neve…",
+    "summary": "EU Insurance Broker for Summit Ridge Brokers Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-insurance-claims",
@@ -2070,14 +2779,31 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU insurance claims helper — explains process and captures intakes; never adjudicates coverage or promises payouts.",
+    "summary": "EU Insurance Claims Helper for Harbor Mutual Claims Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-interview-scheduling",
+    "name": "EU Interview Scheduling",
+    "tier": "standard",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Interview Scheduling — Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-it-helpdesk",
@@ -2085,14 +2811,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU IT Helpdesk — IT Helpdesk — First-line IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware Multi-step: KB → confirm → ticket → Slack notify.",
+    "summary": "EU IT Helpdesk for Ridgeway Labs IT Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 20
+    "evals": 22,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-law-firm-intake",
@@ -2100,14 +2827,15 @@
     "tier": "enterprise",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Law Firm Intake — Law Firm Intake — law firm intake — captures matter basics and conflicts screens at a high level; never gives legal advice.",
+    "summary": "EU Law Firm Intake for Riverstone & Hale Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-loan-prequalifier",
@@ -2115,14 +2843,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Loan Pre-Qualifier — Loan Pre-Qualifier — Loan Pre-Qualifier — Gives applicants an instant, indicative eligibility read, explains what a loan needs, and hands a clean, structured application to the lending team — never …",
+    "summary": "EU Loan Pre-Qualifier for ClearPath Lending Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-loyalty-rewards",
@@ -2130,14 +2859,31 @@
     "tier": "standard",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Loyalty & Rewards — Loyalty & Rewards — Loyalty & Rewards — Answers members' points, tier and rewards questions and redeems rewards on request — checking balances, explaining how to earn and spend points, and handing …",
+    "summary": "EU Loyalty & Rewards for Oak & Ember Rewards Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-maintenance-desk",
+    "name": "EU Maintenance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Maintenance Desk — Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-marketing-assistant",
@@ -2145,14 +2891,15 @@
     "tier": "pro",
     "category": "sales",
     "market": "eu",
-    "summary": "EU Marketing Assistant — Marketing Assistant — marketing assistant — approved campaign info and brief capture; never invents performance claims or sends unsolicited marketing texts.",
+    "summary": "EU Marketing Assistant for Hearth & Pantry Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-mobile-money",
@@ -2160,14 +2907,63 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Mobile Money Desk — Mobile Money Desk — Mobile Money Desk — Helps a mobile-money agent at the counter run cash-in, cash-out and send-money safely — confirming amount and recipient before every transaction, checking th…",
+    "summary": "EU Mobile Money Desk for Riverbend Cash Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-mortgage-advisor",
+    "name": "EU Mortgage Advisor",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Mortgage Advisor — Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-municipality-desk",
+    "name": "EU Municipality Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Municipality Desk — Municipality Desk — Rates/permits FAQ and service request logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-network-faults",
+    "name": "EU Network Fault Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Network Fault Desk — Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-onboarding-buddy",
@@ -2175,14 +2971,15 @@
     "tier": "standard",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Onboarding Buddy — Onboarding Buddy — Onboarding Buddy — Walks a new joiner through week one — surfaces their day-by-day Multi-step: checklist → confirm → log/escalate → notify.",
+    "summary": "EU Onboarding Buddy for Ridgeway Labs Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-order-tracking",
@@ -2190,14 +2987,15 @@
     "tier": "standard",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Order Tracking — Order Tracking — order tracking — status lookups and delivery basics; refunds and address changes escalate to a human.",
+    "summary": "EU Order Tracking for Northline Home Goods Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-payment-disputes",
@@ -2205,14 +3003,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Card & Payment Disputes — Card & Payment Disputes — Guides a customer through raising a card or payment dispute and captures the evidence properly the first time — then hands off for fraud and chargeback decisions. It never…",
+    "summary": "EU Card & Payment Disputes for Northline Payments Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-payroll-queries",
@@ -2220,14 +3019,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "eu",
-    "summary": "EU payroll queries — payslip/leave basics for the signed-in employee only; never cross-employee disclosure.",
+    "summary": "EU Payroll Queries for Cedarworks GmbH (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-pharmacy",
@@ -2235,14 +3035,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU pharmacy assistant — hours and refill request logging; never diagnoses or changes prescriptions; GDPR-safe.",
+    "summary": "EU Pharmacy Assistant for Riverside Community Pharmacy Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
-    "tools": 4,
-    "evals": 16
+    "tools": 5,
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-policy-compliance",
@@ -2250,14 +3051,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Policy & Compliance — Policy & Compliance — Policy & Compliance — Answers staff policy and compliance questions with the exact policy source cited, records queries for the compliance register, routes any legal interpretat…",
+    "summary": "EU Policy & Compliance for Cedarworks Compliance Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-procurement",
@@ -2265,14 +3067,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Procurement Desk — Procurement Desk — Handles supplier onboarding, purchase-order status, and procurement-policy questions for staff — grounded in company policy, confirming before it acts, and escalating approvals …",
+    "summary": "EU Procurement Desk for Cedarworks Procurement Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-product-finder",
@@ -2280,14 +3083,15 @@
     "tier": "standard",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Product Finder — Product Finder — Product Finder — Turns a vague need into the right product from the range — searches the catalogue, compares options, checks stock, and recommends honestly from what's actually …",
+    "summary": "EU Product Finder for Homestead & Hearth Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-property-enquiries",
@@ -2295,14 +3099,47 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Property Enquiries — Property Enquiries — property enquiries — listings, viewing bookings, and application routing; never invents availability or prices outside knowledge/tools.",
+    "summary": "EU Property Enquiries for Cedarline Realty Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-quality-assurance",
+    "name": "EU Quality Assurance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Quality Assurance Desk — Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-recruitment",
+    "name": "EU Recruitment Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Recruitment Assistant — Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-remittance",
@@ -2310,14 +3147,15 @@
     "tier": "pro",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Remittance Helper — Remittance Helper — Remittance Helper — Answers cross-border money-transfer questions — corridors, fees, documents and collection points — and captures a transfer request for a licensed partner to …",
+    "summary": "EU Remittance Helper for HarborSend Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-rental-enquiries",
@@ -2325,14 +3163,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU rental enquiries — listings, viewing bookings, and application routing with GDPR-safe tenant data handling.",
+    "summary": "EU Rental Enquiries for Oak & Key Lettings Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-restaurant-takeaway",
@@ -2347,7 +3186,8 @@
       "app"
     ],
     "tools": 6,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-returns-exchanges",
@@ -2355,14 +3195,15 @@
     "tier": "standard",
     "category": "operations",
     "market": "eu",
-    "summary": "EU Returns & Exchanges — Returns & Exchanges — Returns & Exchanges — Checks return eligibility, explains the method and next steps, and logs the return — then hands off for refunds and faulty items. It never processes refund…",
+    "summary": "EU Returns & Exchanges for Homestead & Hearth Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-sales-qualifier",
@@ -2370,14 +3211,15 @@
     "tier": "pro",
     "category": "sales",
     "market": "eu",
-    "summary": "EU sales qualifier — qualifies inbound interest, books demos/callbacks, stays inside approved pricing Multi-step: qualify → confirm → callback → HubSpot/Slack.",
+    "summary": "EU Sales Qualifier for Ledgerly Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 21
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-salon-booking",
@@ -2392,22 +3234,40 @@
       "app"
     ],
     "tools": 6,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-sim-registration",
+    "name": "EU SIM Registration",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-spaza-merchant",
-    "name": "EU Spaza & Merchant",
+    "name": "EU Corner Store Merchant",
     "tier": "enterprise",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Spaza & Merchant — Spaza & Merchant — Spaza & Merchant — A counter-trade helper for a spaza shop owner — checks prices, records sales, keeps the credit book, and reorders stock from the wholesaler, confirmi…",
+    "summary": "EU Corner Store Merchant for Corner Kiosk Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-stock-availability",
@@ -2415,14 +3275,15 @@
     "tier": "pro",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Stock & Availability — Stock & Availability — Tells customers whether an item is in stock, in the size or variant they want, and at which branch — checks live availability, finds a branch that has it, and registers back-…",
+    "summary": "EU Stock & Availability for Ridgeway Outfitters Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-student-helpdesk",
@@ -2430,14 +3291,31 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Student Helpdesk — Student Helpdesk — Answers enrolled students' everyday questions — class timetables, campus services, term dates and where-to-go — logs requests for the team, and routes anything about accounts or…",
+    "summary": "EU Student Helpdesk for Laguna College Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-tax-office",
+    "name": "EU Tax Office Assistant",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "eu",
+    "summary": "EU Tax Office Assistant — Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-tour-activity",
@@ -2445,14 +3323,15 @@
     "tier": "standard",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU Tour & Activity Desk — Tour & Activity Desk — Turns curious messages into confirmed bookings — answers what's on offer and what's included, checks availability, and captures tour and activity bookings across, we…",
+    "summary": "EU Tour & Activity Desk for Alpine Trails Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-trades-receptionist",
@@ -2467,7 +3346,8 @@
       "app"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-travel-desk",
@@ -2475,14 +3355,15 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU travel desk — itinerary basics and request logging; booking changes and refunds escalate to a human.",
+    "summary": "EU Travel Desk for Meridian Travel Desk Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-utility-billing",
@@ -2490,14 +3371,15 @@
     "tier": "enterprise",
     "category": "operations",
     "market": "eu",
-    "summary": "EU utility and billing helper — balances, tariffs and payment guidance with GDPR-safe handling; disputes escalate.",
+    "summary": "EU Utility & Billing for Riverside Stadtwerke Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-vas-concierge",
@@ -2505,14 +3387,15 @@
     "tier": "pro",
     "category": "commerce",
     "market": "eu",
-    "summary": "EU Gift Card & VAS Concierge — Gift Card & VAS Concierge — gift card and VAS concierge — catalogue, confirm-before-charge purchase flow, PIN delivery; never takes raw card data in chat.",
+    "summary": "EU Gift Card & VAS Concierge for BrightPin Digital Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "eu-veterinary",
@@ -2520,14 +3403,1151 @@
     "tier": "pro",
     "category": "vertical",
     "market": "eu",
-    "summary": "EU veterinary front desk — booking and non-clinical logistics; clinical and emergency matters escalate (112 when life-threatening).",
+    "summary": "EU Veterinary Front Desk for Paws & Claws Berlin (Berlin) — localized production pack with confirm-before-write and human handoff.",
     "channels": [
       "sms",
       "web",
       "app"
     ],
     "tools": 5,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "eu-warehouse-operations",
+    "name": "EU Warehouse Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "eu",
+    "summary": "EU Warehouse Operations — Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-accounting-practice",
+    "name": "Oceania Accounting Practice Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Accounting Practice Desk — CPA front desk for Ledgerline Accountants (Austin) — IRS deadline guides, document lists, new-client capture with confirm-before-write; never formal tax advice.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-admissions",
+    "name": "Oceania Admissions Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Admissions Assistant — college admissions assistant — explains entry requirements and deadlines, captures applications with confirm-before-write, and never makes admission decisions; routes appeals an…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-agency-studio",
+    "name": "Oceania Agency & Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Agency & Studio — creative studio front door — explains services and process, captures project briefs with confirm-before-write, and routes complex scope or media-buying asks to a human producer.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-airtime-bundles",
+    "name": "Oceania Airtime & Bundles",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Airtime & Bundles — Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-bank-branch",
+    "name": "Oceania Bank Branch Assistant",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Bank Branch Assistant — community-bank branch assistant — explains products and KYC documents, books lobby appointments with confirm-before-write, and escalates fraud, balances, and advice to a banker.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-bookkeeping",
+    "name": "Oceania Bookkeeping Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Bookkeeping Assistant — AR bookkeeping assistant — looks up invoices and statements, emails statement copies after confirm-before-write, and routes disputes and tax questions to a bookkeeper.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-building-management",
+    "name": "Oceania Building Management",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Building Management — building / HOA desk for Cedar Ridge Condominiums (Austin) — maintenance logging, access & conduct rules, and levy Q&A with emergency and dispute handoff.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-citizen-services",
+    "name": "Oceania Citizen Services",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Citizen Services — Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-clinic-front-desk",
+    "name": "Oceania Clinic Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Strictly non-clinical Oceania clinic front desk for Rivergate Family Health (Denver) — hours, insurance basics, booking and prep logistics; every clinical matter hands off — HIP…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-contract-review",
+    "name": "Oceania Contract Review Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Contract Review Intake — Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-course-advisor",
+    "name": "Oceania Course Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Course Advisor — career-college course advisor — lists and matches programs, captures interest with confirm-before-write, and never promises seats or financial aid.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-credit-cards",
+    "name": "Oceania Credit Card Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Credit Card Desk — Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-customer-support",
+    "name": "Oceania Customer Support",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "oceania",
+    "summary": "Oceania Customer Support — customer support for Harbor Home Co. (Portland) — product and order questions, ticket logging, and handoff for refunds and complaints across SMS, web, and app.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-delivery-tracking",
+    "name": "Oceania Delivery & Tracking",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Delivery & Tracking — delivery & tracking for SwiftLane Courier (DFW) — consignment status, proof of delivery, and exception logging with confirm-before-write and desk handoff for lost/damaged parcels.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 15,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-dental-front-desk",
+    "name": "Oceania Dental Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Strictly non-clinical Oceania dental front desk — explains treatments and fees, books appointments with confirm-before-write, and routes every clinical, pain, or emergency matte…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-dental-practice",
+    "name": "Oceania Dental Practice",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Strictly non-clinical Oceania dental practice desk — explains treatments and fees, books with confirm-before-write, and routes every clinical, pain, or emergency matter to a human.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-events-venue",
+    "name": "Oceania Events & Venue",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Events & Venue — events & venue desk for Willow Creek Estate (Austin Hill Country) — packages, capacity, date checks, enquiry capture, and site-visit booking with confirm-before-write.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-executive-assistant",
+    "name": "Oceania Executive Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Executive Assistant — Executive Assistant — carries a principal's daily admin load: checks the calendar, schedules meetings with confirm-first, sets reminders, notifies the team, and hands off sensit…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-fibre-support",
+    "name": "Oceania Fibre Support",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Fibre Support — Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-field-service",
+    "name": "Oceania Field Service Dispatch",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Field Service Dispatch — HVAC field-service tech assistant — pulls jobs and parts, updates status with confirm-before-write, and escalates every on-site safety issue to dispatch immediately.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-fleet-driver",
+    "name": "Oceania Fleet & Driver Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Fleet & Driver Desk — fleet driver assistant — answers hours-of-service and CDL compliance questions, logs minor incidents with confirm-before-write, and escalates accidents and breakdowns to the fle…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-front-desk",
+    "name": "Oceania Front Desk / Reception",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "oceania",
+    "summary": "Oceania Front Desk / Reception — multi-tenant building front desk — orients visitors, routes to departments, books and takes messages with confirm-before-write, and escalates urgent or clinical matters to a human.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-grant-stock-planner",
+    "name": "Oceania Grant-Day Stock Planner",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Grant-Day Stock Planner — neighborhood-market stock planner — forecasts benefit-week demand, builds pre-stock lists, and places reorders only after confirm-before-write.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-gym-membership",
+    "name": "Oceania Gym Membership Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Gym Membership Desk — gym membership desk for Ironleaf Fitness (Austin) — plans, class times, freeze/cancel intake with confirm-before-write, and billing-dispute handoff.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-home-services",
+    "name": "Oceania Home Services Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Home Services Front Desk — home-services front desk — books HVAC, plumbing, and electrical jobs, quotes published service ranges, confirms before booking, notifies dispatch, and escalates emergencies and …",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 6,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-hotel-concierge",
+    "name": "Oceania Hotel Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Hotel Concierge — hotel concierge — answers amenities and local tips, logs guest requests with confirm-before-write, and routes billing, complaints, and reservation changes to the front desk.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 21,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-hotel-guest",
+    "name": "Oceania Hotel Guest Concierge",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Hotel Guest Concierge — hotel guest concierge — answers pre-arrival and in-stay questions, logs guest requests with confirm-before-write, and escalates billing, complaints, and reservation changes to f…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 21,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-hr-helpdesk",
+    "name": "Oceania HR Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania HR Helpdesk — HR helpdesk — answers PTO and benefits questions, screens candidates against listed requirements only, captures applications with confirm-before-write, and routes every grievanc…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-insurance-broker",
+    "name": "Oceania Insurance Broker",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Insurance Broker — insurance broker for Summit Ridge Insurance Brokers (Austin) — needs analysis, cover options, underwriter submission with confirm-before-write; never advice, never a binding quote.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-insurance-claims",
+    "name": "Oceania Insurance Claims Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Insurance Claims Helper — insurance claims helper for Harbor Mutual (Austin) — explain cover, FNOL intake with confirm-before-write, claim status; never adjudicates or promises payouts.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-interview-scheduling",
+    "name": "Oceania Interview Scheduling",
+    "tier": "standard",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Interview Scheduling — Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-it-helpdesk",
+    "name": "Oceania IT Helpdesk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "First-line Oceania IT support that resolves the routine — password resets, VPN, Wi-Fi, email, software and hardware requests — logs tickets with confirm-before-write, notifies S…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 22,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-law-firm-intake",
+    "name": "Oceania Law Firm Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Law Firm Intake — law firm intake for Riverstone & Hale LLP (Austin) — practice areas, conflict note, matter capture & consult booking with confirm-before-write; never legal advice.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-loan-prequalifier",
+    "name": "Oceania Loan Pre-Qualifier",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Loan Pre-Qualifier — loan pre-qualifier for ClearPath Personal Lending (Austin) — indicative affordability read and application capture with confirm-before-write; never a credit decision.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-loyalty-rewards",
+    "name": "Oceania Loyalty & Rewards",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Loyalty & Rewards — loyalty & rewards for Oak & Ember Rewards (Austin) — balances, tiers, reward redemption with confirm-before-write; account disputes hand off.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-maintenance-desk",
+    "name": "Oceania Maintenance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Maintenance Desk — Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-marketing-assistant",
+    "name": "Oceania Marketing Assistant",
+    "tier": "pro",
+    "category": "sales",
+    "market": "oceania",
+    "summary": "Oceania Marketing Assistant — marketing assistant for Hearth & Pantry Co. (Austin) — approved campaign info and opt-in lead capture with confirm-before-write; TCPA-aware, never invents offers.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-mobile-money",
+    "name": "Oceania Mobile Money Desk",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Mobile Money Desk — cash services desk for Riverbend Cash Services (Austin) — counter cash-in/out and send-money with confirm-before-write; never handles PIN/OTP; BSA-AML aware.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-mortgage-advisor",
+    "name": "Oceania Mortgage Advisor",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Mortgage Advisor — Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-municipality-desk",
+    "name": "Oceania Municipality Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Municipality Desk — Municipality Desk — Rates/permits FAQ and service request logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-network-faults",
+    "name": "Oceania Network Fault Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Network Fault Desk — Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-onboarding-buddy",
+    "name": "Oceania Onboarding Buddy",
+    "tier": "standard",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Onboarding Buddy — onboarding buddy for new joiners at Ridgeway Labs (Austin) — week-one checklist, resource pointers, confirm-before-log questions, and HR/IT handoff.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-order-tracking",
+    "name": "Oceania Order Tracking",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Order Tracking — order tracking for Northline Home Goods (Austin) — status, delivery windows, preference updates with confirm-before-write; refunds and address changes hand off.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-payment-disputes",
+    "name": "Oceania Card & Payment Disputes",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Card & Payment Disputes — payment disputes for Northline Payments Desk (Austin) — dispute intake with evidence capture and confirm-before-write; never decides chargebacks or issues refunds.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-payroll-queries",
+    "name": "Oceania Payroll Queries",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Payroll Queries — payroll queries for Cedarworks Staff Payroll (Austin) — own payslip/leave lookups and query logging with confirm-before-write; never cross-employee disclosure.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-pharmacy",
+    "name": "Oceania Pharmacy Assistant",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Pharmacy Assistant — pharmacy assistant for Riverside Community Pharmacy (Austin) — hours, OTC stock, script status, refill request logging with confirm-before-write; never diagnoses — HIPAA-aware.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-policy-compliance",
+    "name": "Oceania Policy & Compliance",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Policy & Compliance — policy & compliance for Cedarworks Compliance Desk (Austin) — cited policy answers and query logging with confirm-before-write; legal interpretation hands off.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-procurement",
+    "name": "Oceania Procurement Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Procurement Desk — procurement desk for Cedarworks Procurement (Austin) — PO status, policy, supplier onboarding with confirm-before-write; approvals and exceptions hand off.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-product-finder",
+    "name": "Oceania Product Finder",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Product Finder — product finder for Homestead & Hearth (Austin) — catalogue search, honest comparisons, live stock checks; complex/bulk needs hand off — never invents products or prices.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-property-enquiries",
+    "name": "Oceania Property Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Property Enquiries — property enquiries for Cedarline Realty (Austin) — listings, viewing bookings with confirm-before-write, and application routing; never gives legal/financial advice.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-quality-assurance",
+    "name": "Oceania Quality Assurance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Quality Assurance Desk — Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-recruitment",
+    "name": "Oceania Recruitment Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Recruitment Assistant — Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-remittance",
+    "name": "Oceania Remittance Helper",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Remittance Helper — remittance helper for HarborSend (Austin) — corridors, fees, and transfer-request capture with confirm-before-write; never moves money or takes card data in chat.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-rental-enquiries",
+    "name": "Oceania Rental Enquiries",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Rental Enquiries — rental enquiries for Oak & Key Lettings (Austin) — availability, application requirements, and viewing bookings with confirm-before-write; never decides applications or credit.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-restaurant-takeaway",
+    "name": "Oceania Restaurant & Takeaway",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Restaurant & Takeaway — restaurant & takeaway for Ember & Oak (Austin) — menu Q&A, table bookings, and collection/delivery orders with allergen honesty, confirm-before-write, and kitchen handoff.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 6,
+    "evals": 22,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-returns-exchanges",
+    "name": "Oceania Returns & Exchanges",
+    "tier": "standard",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Returns & Exchanges — returns & exchanges for Homestead & Hearth (Austin) — eligibility, methods, and return start with confirm-before-write; refunds and faulty items escalate.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-sales-qualifier",
+    "name": "Oceania Sales Qualifier",
+    "tier": "pro",
+    "category": "sales",
+    "market": "oceania",
+    "summary": "Oceania Sales Qualifier — sales qualifier — qualifies inbound interest, books demos/callbacks with confirm-before-write, captures leads to HubSpot, notifies Slack, and never invents pricing outside appro…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-salon-booking",
+    "name": "Oceania Salon & Barber Booking",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Salon & Barber Booking — salon & barber booking for Copper & Clip (Chicago) — services, availability, appointments and reschedules with confirm-before-write and front-desk handoff.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 6,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-sim-registration",
+    "name": "Oceania SIM Registration",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania SIM Registration — SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-spaza-merchant",
+    "name": "Oceania Corner Store Merchant",
+    "tier": "enterprise",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Corner Store Merchant — corner-store merchant helper for Cesar Corner Market (Austin) — shelf prices, sales logging, credit book, and wholesaler reorders with confirm-before-write on every write.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-stock-availability",
+    "name": "Oceania Stock & Availability",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Stock & Availability — stock availability for Ridgeway Outfitters (Austin) — live branch stock, sizes/variants, and back-in-stock alerts with confirm-before-write; never reserves stock.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-student-helpdesk",
+    "name": "Oceania Student Helpdesk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Student Helpdesk — student helpdesk for Laguna Community College (Austin) — timetables, campus services, and request logging with confirm-before-write; account/results always hand off — FERPA-aware.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-tax-office",
+    "name": "Oceania Tax Office Assistant",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Tax Office Assistant — Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-tour-activity",
+    "name": "Oceania Tour & Activity Desk",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Tour & Activity Desk — tour & activity desk for Hill Country Trails (Austin) — tour info, availability, and bookings with confirm-before-write; complaints and custom groups hand off.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-trades-receptionist",
+    "name": "Oceania Trades Receptionist",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Trades Receptionist — trades receptionist for Ridgeline Trades (Denver metro) — plumbing, electrical, and general building jobs with confirm-before-write booking, estimates, and emergency handoff.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 6,
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-travel-desk",
+    "name": "Oceania Travel Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Travel Desk — corporate travel desk for Meridian Travel Desk (Austin) — policy Q&A and trip-request capture with confirm-before-write; never books or quotes live fares.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-utility-billing",
+    "name": "Oceania Utility & Billing",
+    "tier": "enterprise",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Utility & Billing — utility & billing for Riverside Municipal Utilities (Austin metro) — outages, meter readings with confirm-before-write, and bill guidance; safety and disputes escalate.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 4,
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-vas-concierge",
+    "name": "Oceania Gift Card & VAS Concierge",
+    "tier": "pro",
+    "category": "commerce",
+    "market": "oceania",
+    "summary": "Oceania Gift Card & VAS Concierge — gift card & VAS concierge for BrightPin Digital (Austin) — catalogue, confirm-before-charge purchases, PIN delivery; never takes raw card data in chat.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-veterinary",
+    "name": "Oceania Veterinary Front Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "oceania",
+    "summary": "Oceania Veterinary Front Desk — veterinary front desk for Paws & Claws Veterinary Clinic (Austin) — non-clinical booking with confirm-before-write; clinical questions and emergencies escalate immediately.",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 5,
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "oceania-warehouse-operations",
+    "name": "Oceania Warehouse Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "oceania",
+    "summary": "Oceania Warehouse Operations — Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-accounting-practice",
@@ -2542,7 +4562,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-admissions",
@@ -2557,7 +4578,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-agency-studio",
@@ -2572,7 +4594,24 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-airtime-bundles",
+    "name": "US Airtime & Bundles",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "us",
+    "summary": "US Airtime & Bundles — Explain plans/bundles from knowledge and capture purchase intent; never invent balances",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-bank-branch",
@@ -2587,7 +4626,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-bookkeeping",
@@ -2602,7 +4642,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-building-management",
@@ -2617,7 +4658,24 @@
       "app"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-citizen-services",
+    "name": "US Citizen Services",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Citizen Services — Hours, forms, where-to-go FAQ; never legal advice; hand off case status",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-clinic-front-desk",
@@ -2632,7 +4690,24 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-contract-review",
+    "name": "US Contract Review Intake",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Contract Review Intake — Matter intake and document checklist; never legal advice; escalate to attorney",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-course-advisor",
@@ -2647,7 +4722,24 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-credit-cards",
+    "name": "US Credit Card Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Credit Card Desk — Card product FAQ and dispute intake routing; PCI — no PAN in chat",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-customer-support",
@@ -2662,7 +4754,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-delivery-tracking",
@@ -2677,7 +4770,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 15
+    "evals": 15,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-dental-front-desk",
@@ -2692,7 +4786,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-dental-practice",
@@ -2707,7 +4802,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-events-venue",
@@ -2722,7 +4818,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-executive-assistant",
@@ -2737,7 +4834,24 @@
       "app"
     ],
     "tools": 5,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-fibre-support",
+    "name": "US Fibre Support",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Fibre Support — Install status FAQ, outage tips, appointment logging; escalate network tickets",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-field-service",
@@ -2752,7 +4866,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-fleet-driver",
@@ -2767,7 +4882,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-front-desk",
@@ -2782,7 +4898,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-grant-stock-planner",
@@ -2797,7 +4914,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-gym-membership",
@@ -2812,7 +4930,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-home-services",
@@ -2827,7 +4946,8 @@
       "app"
     ],
     "tools": 6,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-hotel-concierge",
@@ -2842,7 +4962,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 21
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-hotel-guest",
@@ -2857,7 +4978,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 21
+    "evals": 21,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-hr-helpdesk",
@@ -2872,7 +4994,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-insurance-broker",
@@ -2887,7 +5010,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-insurance-claims",
@@ -2902,7 +5026,24 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-interview-scheduling",
+    "name": "US Interview Scheduling",
+    "tier": "standard",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Interview Scheduling — Candidate interview slot booking with confirm-before-write",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-it-helpdesk",
@@ -2917,7 +5058,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 22
+    "evals": 22,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-law-firm-intake",
@@ -2932,7 +5074,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-loan-prequalifier",
@@ -2947,7 +5090,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-loyalty-rewards",
@@ -2962,7 +5106,24 @@
       "app"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-maintenance-desk",
+    "name": "US Maintenance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Maintenance Desk — Work-order intake and parts check stub; escalate safety immediately",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-marketing-assistant",
@@ -2977,7 +5138,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-mobile-money",
@@ -2992,7 +5154,56 @@
       "app"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-mortgage-advisor",
+    "name": "US Mortgage Advisor",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Mortgage Advisor — Product FAQ and soft pre-qual capture; never a credit decision",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-municipality-desk",
+    "name": "US Municipality Desk",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Municipality Desk — Rates/permits FAQ and service request logging",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-network-faults",
+    "name": "US Network Fault Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Network Fault Desk — Fault report capture and triage ticket create; never invent SLA promises",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-onboarding-buddy",
@@ -3007,7 +5218,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-order-tracking",
@@ -3022,7 +5234,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-payment-disputes",
@@ -3037,7 +5250,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-payroll-queries",
@@ -3052,7 +5266,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-pharmacy",
@@ -3067,7 +5282,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-policy-compliance",
@@ -3082,7 +5298,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-procurement",
@@ -3097,7 +5314,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-product-finder",
@@ -3112,7 +5330,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 14
+    "evals": 14,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-property-enquiries",
@@ -3127,7 +5346,40 @@
       "app"
     ],
     "tools": 4,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-quality-assurance",
+    "name": "US Quality Assurance Desk",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Quality Assurance Desk — Nonconformance report capture; never invent pass/fail decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-recruitment",
+    "name": "US Recruitment Assistant",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Recruitment Assistant — Role FAQ and application capture; never hiring decisions",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-remittance",
@@ -3142,7 +5394,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-rental-enquiries",
@@ -3157,7 +5410,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-restaurant-takeaway",
@@ -3172,7 +5426,8 @@
       "app"
     ],
     "tools": 6,
-    "evals": 22
+    "evals": 22,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-returns-exchanges",
@@ -3187,7 +5442,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-sales-qualifier",
@@ -3202,7 +5458,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 23
+    "evals": 23,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-salon-booking",
@@ -3217,7 +5474,24 @@
       "app"
     ],
     "tools": 6,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-sim-registration",
+    "name": "US SIM Registration",
+    "tier": "pro",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US SIM Registration — RICA/KYC-style SIM register intake with confirm-before-submit; hand off ID disputes",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-spaza-merchant",
@@ -3232,7 +5506,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-stock-availability",
@@ -3247,7 +5522,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-student-helpdesk",
@@ -3262,7 +5538,24 @@
       "app"
     ],
     "tools": 4,
-    "evals": 16
+    "evals": 16,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-tax-office",
+    "name": "US Tax Office Assistant",
+    "tier": "enterprise",
+    "category": "vertical",
+    "market": "us",
+    "summary": "US Tax Office Assistant — Filing deadlines and documents FAQ; never tax advice; hand off assessments",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-tour-activity",
@@ -3277,7 +5570,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 17
+    "evals": 17,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-trades-receptionist",
@@ -3292,7 +5586,8 @@
       "app"
     ],
     "tools": 6,
-    "evals": 18
+    "evals": 18,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-travel-desk",
@@ -3307,7 +5602,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-utility-billing",
@@ -3322,7 +5618,8 @@
       "app"
     ],
     "tools": 4,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-vas-concierge",
@@ -3337,7 +5634,8 @@
       "app"
     ],
     "tools": 5,
-    "evals": 19
+    "evals": 19,
+    "readiness": "catalogue-ready"
   },
   {
     "id": "us-veterinary",
@@ -3352,6 +5650,23 @@
       "app"
     ],
     "tools": 5,
-    "evals": 20
+    "evals": 20,
+    "readiness": "catalogue-ready"
+  },
+  {
+    "id": "us-warehouse-operations",
+    "name": "US Warehouse Operations",
+    "tier": "pro",
+    "category": "operations",
+    "market": "us",
+    "summary": "US Warehouse Operations — Pick/pack/location FAQ and exception logging for warehouse staff",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 3,
+    "evals": 12,
+    "readiness": "catalogue-ready"
   }
 ]

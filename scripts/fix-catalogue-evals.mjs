@@ -19,7 +19,7 @@ const packs = JSON.parse(
 ).packs;
 const packById = Object.fromEntries(packs.map((p) => [p.id, p]));
 
-const PREFIX_RE = /^(us|eu|africa|asia)-/;
+const PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
 function marketOf(id, manifestMarket) {
   if (manifestMarket && packById[manifestMarket]) return manifestMarket;

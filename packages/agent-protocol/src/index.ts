@@ -78,7 +78,7 @@ export type AgentAudience = "customer" | "internal";
 
 /**
  * Customer-facing vs internal workforce agents.
- * `operations` maps to Internal & back office; all other categories are customer-facing.
+ * `operations` maps to HR & internal ops (audience: internal); all other categories are customer-facing.
  */
 export function agentAudience(category: AgentCategory | string): AgentAudience {
   return category === "operations" ? "internal" : "customer";
@@ -89,20 +89,33 @@ export function marketplaceCategory(manifest: AgentManifest): string {
     "front-office": "Customer & front office",
     sales: "Professional services",
     commerce: "Retail & e-commerce",
-    operations: "Internal & back office",
+    operations: "HR & internal ops",
     vertical: "Health & wellness",
   };
   const id = manifest.id;
+  // Wave 1+ sector families (id may be prefixed us-|eu-|…)
+  if (/sim-registration|airtime-bundles|fibre-support|network-faults/.test(id))
+    return "Telecommunications";
+  if (/citizen-services|municipality-desk|tax-office|passport|licensing|social-services/.test(id))
+    return "Government & public sector";
+  if (/warehouse-operations|maintenance-desk|quality-assurance|factory-operations|production-planning/.test(id))
+    return "Manufacturing & industrial";
   if (/hotel|travel|restaurant|salon|gym|tour|events/.test(id))
     return "Hospitality & travel";
   if (/dental|clinic|pharmacy|veterinary/.test(id)) return "Health & wellness";
-  if (/insurance|loan|bank|payroll|utility|accounting|bookkeeping|remittance|mobile-money/.test(id))
+  if (
+    /insurance|loan|bank|payroll|utility|accounting|bookkeeping|remittance|mobile-money|mortgage|credit-cards|payment-disputes/.test(
+      id,
+    )
+  )
     return "Financial services";
   if (/property|rental|building/.test(id)) return "Property";
-  if (/student|course|admission|onboarding/.test(id)) return "Education";
-  if (/fleet|field|delivery|order-tracking|stock|home-services|trades/.test(id))
+  if (/student|course|admission|onboarding-buddy/.test(id)) return "Education";
+  if (/fleet|field|delivery|order-tracking|stock-availability|home-services|trades|grant-stock/.test(id))
     return "Logistics & field ops";
-  if (/law|marketing|sales|agency/.test(id)) return "Professional services";
+  if (/recruitment|interview-scheduling|hr-helpdesk|it-helpdesk|executive-assistant|policy-compliance|procurement|onboarding-buddy/.test(id))
+    return "HR & internal ops";
+  if (/law|contract-review|marketing|sales|agency/.test(id)) return "Professional services";
   if (/order|vas|product|returns|loyalty|spaza/.test(id)) return "Retail & e-commerce";
   return map[manifest.category] ?? "All agents";
 }

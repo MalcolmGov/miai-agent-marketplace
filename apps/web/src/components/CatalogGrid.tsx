@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { TIER_PRICES } from "@/lib/constants";
 import { useT } from "@/lib/locale";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
+import { sectorAccent } from "@/lib/sectors";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
@@ -56,12 +56,13 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-const PACK_ORDER = ["us", "eu", "africa", "asia"] as const;
+const PACK_ORDER = ["us", "eu", "africa", "asia", "oceania"] as const;
 type PackId = (typeof PACK_ORDER)[number];
 
 function packLabel(m: string) {
   if (m === "africa") return "Africa";
   if (m === "asia") return "Asia";
+  if (m === "oceania") return "Oceania";
   return m.toUpperCase();
 }
 
@@ -112,7 +113,23 @@ function MarketFlagIcon({ market, className = "h-3 w-[18px]" }: { market: PackId
       </svg>
     );
   }
-  // Asia — stylized navy / gold (APAC cue)
+  if (market === "oceania") {
+    // Southern Cross cue (AU/NZ/Pacific)
+    return (
+      <svg viewBox="0 0 19 13" className={`${className} rounded-[2px] shadow-sm`} aria-hidden>
+        <rect width="19" height="13" fill="#012169" rx="1" />
+        <g fill="#fff">
+          <circle cx="12.2" cy="3.2" r="0.7" />
+          <circle cx="14.6" cy="5.1" r="0.55" />
+          <circle cx="11.4" cy="6.8" r="0.65" />
+          <circle cx="13.8" cy="8.6" r="0.5" />
+          <circle cx="15.5" cy="7.2" r="0.4" />
+        </g>
+        <path fill="#E4002B" d="M0 0h8.2v13H0z" opacity="0.15" />
+      </svg>
+    );
+  }
+  // Asia — stylized navy / gold
   return (
     <svg viewBox="0 0 19 13" className={`${className} rounded-[2px] shadow-sm`} aria-hidden>
       <rect width="19" height="13" fill="#1B3A6B" rx="1" />
@@ -171,6 +188,7 @@ const MARKETS = [
   { id: "eu", label: "EU" },
   { id: "africa", label: "Africa" },
   { id: "asia", label: "Asia" },
+  { id: "oceania", label: "Oceania" },
 ] as const;
 
 const AUDIENCES = [
@@ -180,21 +198,8 @@ const AUDIENCES = [
 ] as const;
 
 /** Soft category accent for card rails — teal family, not purple. */
-const CATEGORY_ACCENT: Record<string, string> = {
-  "Customer & front office": "linear-gradient(90deg,#3dd6c6,#5ec8f0)",
-  Education: "linear-gradient(90deg,#6aefe0,#3dd6c6)",
-  "Financial services": "linear-gradient(90deg,#f0b429,#3dd6c6)",
-  Property: "linear-gradient(90deg,#7eb6ff,#3dd6c6)",
-  "Health & wellness": "linear-gradient(90deg,#5eead4,#34d399)",
-  "Hospitality & travel": "linear-gradient(90deg,#fbbf24,#3dd6c6)",
-  "Retail & e-commerce": "linear-gradient(90deg,#38bdf8,#3dd6c6)",
-  "Professional services": "linear-gradient(90deg,#94a3b8,#3dd6c6)",
-  "Internal & back office": "linear-gradient(90deg,#64748b,#3dd6c6)",
-  "Logistics & field ops": "linear-gradient(90deg,#2dd4bf,#0ea5e9)",
-};
-
 function categoryAccent(category: string) {
-  return CATEGORY_ACCENT[category] ?? "linear-gradient(90deg,#3dd6c6,#2bb8a8)";
+  return sectorAccent(category);
 }
 
 /**
@@ -227,7 +232,6 @@ function cleanCardSummary(summary: string, name: string): string {
 
 export function CatalogGrid() {
   const t = useT();
-  const searchParams = useSearchParams();
   const [items, setItems] = useState<FamilyItem[]>([]);
   const [familyCount, setFamilyCount] = useState(0);
   const [totalFamilies, setTotalFamilies] = useState(0);

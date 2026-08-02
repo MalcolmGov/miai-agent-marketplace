@@ -1,6 +1,6 @@
 /**
  * All 55 production families (US heroes at Depth strong).
- * Full catalogue = 55 × 4 market packs = 220 agents under the annual license.
+ * Full catalogue = 70 × 5 market packs = 350 agents under the annual license.
  * Catalogue "Production ready" filter = these families; Wave 3 localizes eu/africa/asia packs.
  */
 
@@ -236,7 +236,7 @@ export const DEMO_SCRIPT_STEPS: Array<{
     title: "Catalogue & Smart search",
     minutes: "2",
     detail:
-      "Platform license = all 220. First-wave Production 18 are the go-live families we stand behind.",
+      "Platform license = all 350. First-wave Production 18 are the go-live families we stand behind.",
     href: "/#catalogue",
   },
   {

@@ -119,6 +119,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-airtime-bundles",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_bundles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_bundle_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-bank-branch",
     "phase": 1,
     "bindings": [
@@ -185,6 +203,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-citizen-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_service_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_citizen_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-clinic-front-desk",
     "phase": 1,
     "bindings": [
@@ -211,6 +247,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-contract-review",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_contract_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-course-advisor",
     "phase": 1,
     "bindings": [
@@ -225,6 +279,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "capture_interest",
         "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-credit-cards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_card_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_card_dispute_intake",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -373,6 +445,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-fibre-support",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_install_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_appointment",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -631,6 +721,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-interview-scheduling",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_interview_slots",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_interview_slot",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -723,6 +831,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-maintenance-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_parts_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_work_order",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-marketing-assistant",
     "phase": 1,
     "bindings": [
@@ -763,6 +889,60 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "send_money",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-mortgage-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_mortgage_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_prequal_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-municipality-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_permit_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-network-faults",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_known_outages",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fault_ticket",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -981,6 +1161,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-quality-assurance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_qa_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_nonconformance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-recruitment",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_open_roles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_job_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-remittance",
     "phase": 1,
     "bindings": [
@@ -1137,6 +1353,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-sim-registration",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_registration_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-spaza-merchant",
     "phase": 1,
     "bindings": [
@@ -1198,6 +1432,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "africa-tax-office",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_filing_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_tax_enquiry",
         "connector": "webhook"
       },
       {
@@ -1355,6 +1607,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-warehouse-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "lookup_bin_location",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_warehouse_exception",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "agency-studio",
     "phase": 1,
     "bindings": [
@@ -1443,6 +1713,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-airtime-bundles",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_bundles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_bundle_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-bank-branch",
     "phase": 1,
     "bindings": [
@@ -1509,6 +1797,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-citizen-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_service_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_citizen_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-clinic-front-desk",
     "phase": 1,
     "bindings": [
@@ -1535,6 +1841,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-contract-review",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_contract_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-course-advisor",
     "phase": 1,
     "bindings": [
@@ -1549,6 +1873,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "capture_interest",
         "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-credit-cards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_card_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_card_dispute_intake",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -1697,6 +2039,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-fibre-support",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_install_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_appointment",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -1955,6 +2315,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-interview-scheduling",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_interview_slots",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_interview_slot",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -2047,6 +2425,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-maintenance-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_parts_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_work_order",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-marketing-assistant",
     "phase": 1,
     "bindings": [
@@ -2087,6 +2483,60 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "send_money",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-mortgage-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_mortgage_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_prequal_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-municipality-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_permit_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-network-faults",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_known_outages",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fault_ticket",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -2305,6 +2755,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-quality-assurance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_qa_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_nonconformance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-recruitment",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_open_roles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_job_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-remittance",
     "phase": 1,
     "bindings": [
@@ -2461,6 +2947,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-sim-registration",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_registration_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-spaza-merchant",
     "phase": 1,
     "bindings": [
@@ -2522,6 +3026,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-tax-office",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_filing_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_tax_enquiry",
         "connector": "webhook"
       },
       {
@@ -2670,6 +3192,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-warehouse-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "lookup_bin_location",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_warehouse_exception",
         "connector": "webhook"
       },
       {
@@ -2929,6 +3469,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-airtime-bundles",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_bundles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_bundle_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-bank-branch",
     "phase": 1,
     "bindings": [
@@ -2995,6 +3553,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-citizen-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_service_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_citizen_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-clinic-front-desk",
     "phase": 1,
     "bindings": [
@@ -3021,6 +3597,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-contract-review",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_contract_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-course-advisor",
     "phase": 1,
     "bindings": [
@@ -3035,6 +3629,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "capture_interest",
         "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-credit-cards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_card_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_card_dispute_intake",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -3183,6 +3795,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "teams"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-fibre-support",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_install_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_appointment",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -3441,6 +4071,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-interview-scheduling",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_interview_slots",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_interview_slot",
+        "connector": "m365_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -3533,6 +4181,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-maintenance-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_parts_availability",
+        "connector": "m365_calendar"
+      },
+      {
+        "tool": "create_work_order",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-marketing-assistant",
     "phase": 1,
     "bindings": [
@@ -3573,6 +4239,60 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "send_money",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-mortgage-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_mortgage_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_prequal_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-municipality-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_permit_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-network-faults",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_known_outages",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fault_ticket",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -3791,6 +4511,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-quality-assurance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_qa_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_nonconformance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-recruitment",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_open_roles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_job_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-remittance",
     "phase": 1,
     "bindings": [
@@ -3947,6 +4703,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "eu-sim-registration",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_registration_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
     "agentId": "eu-spaza-merchant",
     "phase": 1,
     "bindings": [
@@ -4008,6 +4782,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-tax-office",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_filing_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_tax_enquiry",
         "connector": "webhook"
       },
       {
@@ -4156,6 +4948,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-warehouse-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "lookup_bin_location",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_warehouse_exception",
         "connector": "webhook"
       },
       {
@@ -4546,6 +5356,1578 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "send_money",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-accounting-practice",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_required_documents",
+        "connector": "xero"
+      },
+      {
+        "tool": "capture_onboarding",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-admissions",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-agency-studio",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_process_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_brief",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-airtime-bundles",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_bundles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_bundle_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-bank-branch",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_product_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_required_documents",
+        "connector": "xero"
+      },
+      {
+        "tool": "book_branch_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-bookkeeping",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_invoice",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "request_statement_copy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-building-management",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "log_maintenance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_access_rules",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_levy_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-citizen-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_service_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_citizen_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-clinic-front-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-contract-review",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_contract_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-course-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_courses",
+        "connector": "webhook"
+      },
+      {
+        "tool": "match_course",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_interest",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-credit-cards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_card_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_card_dispute_intake",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-customer-support",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_order_status",
+        "connector": "shopify"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-delivery-tracking",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "track_consignment",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_proof_of_delivery",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_exception",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-dental-front-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "get_treatment_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-dental-practice",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "get_treatment_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-events-venue",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_packages",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_date_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "capture_enquiry",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_site_visit",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-executive-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_calendar",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "set_reminder",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-fibre-support",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_install_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_appointment",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-field-service",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_job",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_part",
+        "connector": "webhook"
+      },
+      {
+        "tool": "update_job_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-fleet-driver",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_policy_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_compliance_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_incident",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-front-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "route_to_department",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "take_message",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-grant-stock-planner",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_demand_forecast",
+        "connector": "webhook"
+      },
+      {
+        "tool": "build_prestock_list",
+        "connector": "shopify"
+      },
+      {
+        "tool": "place_reorder",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-gym-membership",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_plans",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_class_schedule",
+        "connector": "webhook"
+      },
+      {
+        "tool": "request_freeze_or_cancel",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-home-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "request_estimate",
+        "connector": "webhook"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-hotel-concierge",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_amenity_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_local_recommendations",
+        "connector": "webhook"
+      },
+      {
+        "tool": "make_guest_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-hotel-guest",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_amenity_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_local_recommendations",
+        "connector": "webhook"
+      },
+      {
+        "tool": "make_guest_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-hr-helpdesk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_job_openings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-insurance-broker",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_cover_options",
+        "connector": "webhook"
+      },
+      {
+        "tool": "needs_analysis",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_submission",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-insurance-claims",
+    "phase": 2,
+    "bindings": [
+      {
+        "tool": "explain_cover",
+        "connector": "webhook"
+      },
+      {
+        "tool": "start_claim",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_claim_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-interview-scheduling",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_interview_slots",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_interview_slot",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-it-helpdesk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_kb",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_ticket_status",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "create_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-law-firm-intake",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_practice_areas",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_consultation",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-loan-prequalifier",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "prequalify",
+        "connector": "webhook"
+      },
+      {
+        "tool": "explain_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-loyalty-rewards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_points_balance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_tier_benefits",
+        "connector": "webhook"
+      },
+      {
+        "tool": "redeem_reward",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-maintenance-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_parts_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_work_order",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-marketing-assistant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_campaign_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_interest",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_callback",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-mobile-money",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_float",
+        "connector": "webhook"
+      },
+      {
+        "tool": "record_cash_in",
+        "connector": "webhook"
+      },
+      {
+        "tool": "record_cash_out",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_money",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-mortgage-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_mortgage_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_prequal_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-municipality-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_permit_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-network-faults",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_known_outages",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fault_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-onboarding-buddy",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_onboarding_checklist",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "get_resource",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_question",
+        "connector": "webhook"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-order-tracking",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_order_status",
+        "connector": "shopify"
+      },
+      {
+        "tool": "get_delivery_window",
+        "connector": "webhook"
+      },
+      {
+        "tool": "update_delivery_preference",
+        "connector": "webhook"
+      },
+      {
+        "tool": "create_ticket",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-payment-disputes",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_dispute_process",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_dispute",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_dispute_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-payroll-queries",
+    "phase": 2,
+    "bindings": [
+      {
+        "tool": "get_payslip_info",
+        "connector": "xero"
+      },
+      {
+        "tool": "get_leave_balance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_payroll_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-pharmacy",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_stock",
+        "connector": "shopify"
+      },
+      {
+        "tool": "get_script_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "store_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_refill_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-policy-compliance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_compliance_query",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-procurement",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_po_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_procurement_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "start_supplier_onboarding",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-product-finder",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_product",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-property-enquiries",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_listings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_listing",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_viewing",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-quality-assurance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_qa_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_nonconformance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-recruitment",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_open_roles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_job_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-remittance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_corridor_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_fees",
+        "connector": "webhook"
+      },
+      {
+        "tool": "find_collection_point",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_transfer_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-rental-enquiries",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_rentals",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_viewing",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-restaurant-takeaway",
+    "phase": 2,
+    "bindings": [
+      {
+        "tool": "get_menu",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_table_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_table",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "place_order",
+        "connector": "shopify"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-returns-exchanges",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_return_eligibility",
+        "connector": "webhook"
+      },
+      {
+        "tool": "start_return",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-sales-qualifier",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "send_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_callback",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-salon-booking",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "reschedule_or_cancel",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-sim-registration",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_registration_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-spaza-merchant",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_price",
+        "connector": "webhook"
+      },
+      {
+        "tool": "record_sale",
+        "connector": "webhook"
+      },
+      {
+        "tool": "credit_book",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "reorder_stock",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-stock-availability",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_stock",
+        "connector": "shopify"
+      },
+      {
+        "tool": "find_branch_with_stock",
+        "connector": "shopify"
+      },
+      {
+        "tool": "notify_when_available",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-student-helpdesk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_timetable",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_service_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-tax-office",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_filing_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_tax_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-tour-activity",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_tours",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_tour",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-trades-receptionist",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "request_estimate",
+        "connector": "webhook"
+      },
+      {
+        "tool": "notify_team",
+        "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-travel-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_destination_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_travel_policy",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_trip_request",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-utility-billing",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_outage_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "submit_meter_reading",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_bill",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-vas-concierge",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_catalogue",
+        "connector": "webhook"
+      },
+      {
+        "tool": "purchase_voucher",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_wallet_balance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "redeem_or_check_code",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-veterinary",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_services",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "book_appointment",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-warehouse-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "lookup_bin_location",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_warehouse_exception",
         "connector": "webhook"
       },
       {
@@ -5097,6 +7479,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-airtime-bundles",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_bundles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_bundle_intent",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-bank-branch",
     "phase": 1,
     "bindings": [
@@ -5163,6 +7563,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-citizen-services",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_service_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_citizen_enquiry",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-clinic-front-desk",
     "phase": 1,
     "bindings": [
@@ -5189,6 +7607,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-contract-review",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_review_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_contract_intake",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-course-advisor",
     "phase": 1,
     "bindings": [
@@ -5203,6 +7639,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "capture_interest",
         "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-credit-cards",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_card_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_card_dispute_intake",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -5351,6 +7805,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "notify_team",
         "connector": "slack"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-fibre-support",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_install_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_appointment",
+        "connector": "webhook"
       },
       {
         "tool": "handoff_to_human",
@@ -5609,6 +8081,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-interview-scheduling",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_interview_slots",
+        "connector": "webhook"
+      },
+      {
+        "tool": "book_interview_slot",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-it-helpdesk",
     "phase": 1,
     "bindings": [
@@ -5701,6 +8191,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-maintenance-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "check_parts_availability",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_work_order",
+        "connector": "shopify"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-marketing-assistant",
     "phase": 1,
     "bindings": [
@@ -5741,6 +8249,60 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "send_money",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-mortgage-advisor",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_mortgage_products",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_prequal_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-municipality-desk",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_permit_info",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_service_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-network-faults",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_known_outages",
+        "connector": "webhook"
+      },
+      {
+        "tool": "open_fault_ticket",
+        "connector": "hubspot"
       },
       {
         "tool": "handoff_to_human",
@@ -5959,6 +8521,42 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-quality-assurance",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_qa_checklist",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_nonconformance",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-recruitment",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "list_open_roles",
+        "connector": "webhook"
+      },
+      {
+        "tool": "capture_job_application",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-remittance",
     "phase": 1,
     "bindings": [
@@ -6115,6 +8713,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "us-sim-registration",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_registration_requirements",
+        "connector": "webhook"
+      },
+      {
+        "tool": "submit_sim_registration",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "us-spaza-merchant",
     "phase": 1,
     "bindings": [
@@ -6176,6 +8792,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "log_request",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-tax-office",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_filing_deadlines",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_tax_enquiry",
         "connector": "webhook"
       },
       {
@@ -6324,6 +8958,24 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-warehouse-operations",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "lookup_bin_location",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_warehouse_exception",
         "connector": "webhook"
       },
       {

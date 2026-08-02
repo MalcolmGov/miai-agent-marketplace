@@ -177,6 +177,7 @@ const FAMILY_ICONS: Record<string, { kind: IconKind; tone: ToneName }> = {
 
 const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: ToneName }> = {
   "Health & wellness": { kind: "heart", tone: "mint" },
+  "HR & internal ops": { kind: "briefcase", tone: "slate" },
   "Internal & back office": { kind: "briefcase", tone: "slate" },
   "Logistics & field ops": { kind: "truck", tone: "sky" },
   "Hospitality & travel": { kind: "hotel", tone: "amber" },
@@ -186,6 +187,9 @@ const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: ToneName }> = {
   Property: { kind: "home", tone: "coral" },
   "Professional services": { kind: "briefcase", tone: "slate" },
   "Customer & front office": { kind: "headset", tone: "teal" },
+  Telecommunications: { kind: "headset", tone: "sky" },
+  "Government & public sector": { kind: "briefcase", tone: "slate" },
+  "Manufacturing & industrial": { kind: "truck", tone: "amber" },
 };
 
 function Glyph({ kind }: { kind: IconKind }) {

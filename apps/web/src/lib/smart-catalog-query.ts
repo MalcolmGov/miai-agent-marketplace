@@ -15,6 +15,7 @@ export type SmartCatalogQuery = {
 const MARKET_PATTERNS: { id: string; re: RegExp }[] = [
   { id: "africa", re: /\b(africa|african|za|south africa|nigeria|kenya)\b/i },
   { id: "asia", re: /\b(asia|asian|india|singapore|apac)\b/i },
+  { id: "oceania", re: /\b(oceania|australia|australian|nz|new zealand|pacific|auckland|sydney|melbourne)\b/i },
   { id: "eu", re: /\b(eu|europe|european|uk|u\.k\.?|britain|united kingdom)\b/i },
   {
     id: "us",
@@ -28,15 +29,18 @@ const AUDIENCE_PATTERNS: { id: string; re: RegExp }[] = [
 ];
 
 const CATEGORY_PATTERNS: { id: string; re: RegExp }[] = [
+  { id: "Telecommunications", re: /\b(telecom|fibre|fiber|sim|airtime|network fault|mobile network)\b/i },
+  { id: "Government & public sector", re: /\b(government|citizen|municipality|tax office|public sector|permits?)\b/i },
+  { id: "Manufacturing & industrial", re: /\b(manufactur|warehouse|maintenance desk|quality assurance|factory|industrial)\b/i },
   { id: "Health & wellness", re: /\b(health|wellness|dental|clinic|pharmacy|vet|gym|medical)\b/i },
   { id: "Hospitality & travel", re: /\b(hotel|hospitality|travel|concierge|guest|restaurant|salon|barber)\b/i },
   { id: "Logistics & field ops", re: /\b(logistics|field|trades?|dispatch|fleet|delivery|home services)\b/i },
-  { id: "Internal & back office", re: /\b(helpdesk|it support|payroll|procurement|executive assistant)\b/i },
-  { id: "Financial services", re: /\b(finance|bank|insurance|loan|claims|accounting)\b/i },
+  { id: "HR & internal ops", re: /\b(helpdesk|it support|payroll|procurement|executive assistant|recruitment|interview|hr)\b/i },
+  { id: "Financial services", re: /\b(finance|bank|insurance|loan|claims|accounting|mortgage|credit card)\b/i },
   { id: "Retail & e-commerce", re: /\b(retail|e-?commerce|stock|returns?|loyalty|shop)\b/i },
   { id: "Education", re: /\b(education|school|student|admissions|onboarding)\b/i },
   { id: "Property", re: /\b(property|rental|real estate|building)\b/i },
-  { id: "Professional services", re: /\b(law|legal|agency|professional services)\b/i },
+  { id: "Professional services", re: /\b(law|legal|contract review|agency|professional services)\b/i },
   { id: "Customer & front office", re: /\b(support|sales|qualifier|front desk)\b/i },
 ];
 

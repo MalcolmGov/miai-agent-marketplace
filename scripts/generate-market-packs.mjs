@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generate missing US / EU / Africa / Asia market-pack variants for every agent family.
+ * Generate missing US / EU / Africa / Asia / Oceania market-pack variants for every agent family.
  * ZA agents (unprefixed) are left untouched. Idempotent: skips existing variant files.
  */
 import fs from "node:fs";
@@ -12,8 +12,8 @@ const root = path.resolve(__dirname, "..");
 const catalogDir = path.join(root, "data/catalog");
 const packsFile = path.join(catalogDir, "market-packs.json");
 
-const PACK_MARKETS = ["us", "eu", "africa", "asia"];
-const PREFIX_RE = /^(us|eu|africa|asia)-/;
+const PACK_MARKETS = ["us", "eu", "africa", "asia", "oceania"];
+const PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
 /** Never overwrite Claude Cluster B deepened packs. */
 const CLUSTER_B_PROTECTED = new Set([
@@ -52,7 +52,7 @@ function titleCaseFamily(family) {
 }
 
 function stripMarketNamePrefix(name) {
-  return name.replace(/^(US|EU|Africa|Asia|ZA)\s+/i, "").trim();
+  return name.replace(/^(US|EU|Africa|Asia|Oceania|ZA)\s+/i, "").trim();
 }
 
 function isHealthFamily(family, healthHints) {
@@ -66,6 +66,7 @@ function localizeText(text, pack, sourceMarket) {
   // Emergency numbers
   out = out.replace(/\b911\b/g, pack.emergency === "911" ? "911" : pack.emergency);
   out = out.replace(/\b112\b/g, pack.emergency === "112" ? "112" : pack.emergency);
+  out = out.replace(/\b000\b/g, pack.emergency === "000" ? "000" : pack.emergency);
   out = out.replace(/\b10111\b/g, pack.emergency);
   out = out.replace(/call emergency services right now \(in the United States:[^)]+\)/gi, `call **${pack.emergency}**`);
   out = out.replace(/United States:\s*\*\*911\*\*[^.]*\./gi, `${pack.regionPhrase}: **${pack.emergency}**.`);
@@ -77,6 +78,7 @@ function localizeText(text, pack, sourceMarket) {
     za: "ZA",
     africa: "Africa",
     asia: "Asia",
+    oceania: "Oceania",
   };
   const srcLabel = sourceLabels[sourceMarket] ?? "ZA";
   const dstLabel = pack.label;
@@ -89,13 +91,14 @@ function localizeText(text, pack, sourceMarket) {
     out = out.replace(/\bZAR\b/g, pack.currency);
     out = out.replace(/\bUSD\b/g, pack.currency);
     out = out.replace(/\bEUR\b/g, pack.currency);
+    out = out.replace(/\bAUD\b/g, pack.currency);
     out = out.replace(/R\s?(\d)/g, `${pack.currency} $1`);
     out = out.replace(/\$(\d)/g, `${pack.currency} $1`);
     out = out.replace(/€(\d)/g, `${pack.currency} $1`);
   }
 
   // Strip old compliance sections and append pack notes
-  out = out.replace(/\n## (US|EU|ZA|Africa|Asia) compliance notes[\s\S]*?(?=\n## |\nToday's date|\s*$)/i, "\n");
+  out = out.replace(/\n## (US|EU|ZA|Africa|Asia|Oceania) compliance notes[\s\S]*?(?=\n## |\nToday's date|\s*$)/i, "\n");
 
   if (!out.includes(`## ${dstLabel} compliance notes`)) {
     out = out.trimEnd() + "\n\n" + pack.complianceNotes;
@@ -106,7 +109,7 @@ function localizeText(text, pack, sourceMarket) {
 
 function localizeSummary(summary, pack, baseName) {
   const clean = (summary || "")
-    .replace(/^(US|EU|Africa|Asia|ZA)\s+/i, "")
+    .replace(/^(US|EU|Africa|Asia|Oceania|ZA)\s+/i, "")
     .replace(/\bUS\b/g, pack.label)
     .replace(/\bEU\b/g, pack.label)
     .replace(/South African?/gi, pack.regionPhrase)
@@ -120,8 +123,8 @@ function localizeSummary(summary, pack, baseName) {
 }
 
 function pickSource(variants, targetMarket) {
-  // Prefer existing same market, then us, eu, za, africa, asia
-  const order = [targetMarket, "us", "eu", "za", "africa", "asia"];
+  // Prefer existing same market, then us, eu, za, africa, asia, oceania
+  const order = [targetMarket, "us", "eu", "za", "africa", "asia", "oceania"];
   for (const m of order) {
     if (variants[m]) return { market: m, pkg: variants[m] };
   }
@@ -256,7 +259,7 @@ function buildFamilies(byFamily, healthHints) {
       name: baseName,
       tier: any.manifest.tier,
       category: any.manifest.category,
-      summary: stripMarketNamePrefix(any.manifest.summary || "").replace(/^(US|EU|Africa|Asia)\s+[—-]\s*/i, ""),
+      summary: stripMarketNamePrefix(any.manifest.summary || "").replace(/^(US|EU|Africa|Asia|Oceania)\s+[—-]\s*/i, ""),
       channels: any.manifest.channels ?? [],
       health: isHealthFamily(family, healthHints),
       markets,
@@ -317,7 +320,7 @@ function main() {
   fs.writeFileSync(path.join(catalogDir, "families.json"), JSON.stringify(families, null, 2) + "\n");
 
   // Coverage check
-  const incomplete = families.filter((f) => f.packs.length < 4);
+  const incomplete = families.filter((f) => f.packs.length < PACK_MARKETS.length);
   console.log(`\nDone. created=${created} skipped_existing=${skipped}`);
   console.log(`agents=${index.length} families=${families.length}`);
   console.log(
@@ -330,7 +333,7 @@ function main() {
     console.warn(`WARNING: ${incomplete.length} families missing packs:`, incomplete.map((f) => f.id));
     process.exitCode = 1;
   } else {
-    console.log("All families have us/eu/africa/asia packs.");
+    console.log("All families have us/eu/africa/asia/oceania packs.");
   }
 }
 

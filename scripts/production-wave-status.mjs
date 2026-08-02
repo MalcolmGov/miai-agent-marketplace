@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Production scale status: US heroes with pilot docs vs full 220 catalogue.
+ * Production scale status: US heroes with pilot docs vs full 350 catalogue.
  */
 import { readdirSync, existsSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -10,7 +10,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const catalogDir = path.join(root, "data/catalog");
 const pilotsDir = path.join(root, "docs/pilots");
 
-const PACKS = ["us", "eu", "africa", "asia"];
+const PACKS = ["us", "eu", "africa", "asia", "oceania"];
+const LOCALIZE_PACKS = ["eu", "africa", "asia", "oceania"];
 
 function familyFromUsFile(name) {
   // us-foo.agent.json -> foo
@@ -61,7 +62,7 @@ for (const fam of families) {
 }
 
 const marketPacksForStrong = strongUs.flatMap((fam) =>
-  ["eu", "africa", "asia"].map((pk) => `${pk}-${fam}`),
+  LOCALIZE_PACKS.map((pk) => `${pk}-${fam}`),
 );
 const marketPacksExisting = marketPacksForStrong.filter((id) => {
   const [pk, ...rest] = id.split("-");
@@ -71,6 +72,9 @@ const marketPacksExisting = marketPacksForStrong.filter((id) => {
 });
 const africaPrefixed = strongUs.filter((fam) =>
   existsSync(path.join(catalogDir, `africa-${fam}.agent.json`)),
+).length;
+const oceaniaPrefixed = strongUs.filter((fam) =>
+  existsSync(path.join(catalogDir, `oceania-${fam}.agent.json`)),
 ).length;
 
 const WAVE4_SLICE = [
@@ -109,12 +113,13 @@ Production scale status
 Families (US heroes):     ${families.length}
 US Depth strong (+pilot): ${strongUs.length} / ${families.length}
 US remaining (Wave 2):    ${weakUs.length}
-Catalogue slots present:  ${packPresent} / ${families.length * 4}
+Catalogue slots present:  ${packPresent} / ${families.length * PACKS.length}
 Missing non-US packs:     ${packMissing.length}
-Market packs for strong:  ${marketPacksExisting.length} / ${strongUs.length * 3} (Wave 3 localize)
+Market packs for strong:  ${marketPacksExisting.length} / ${strongUs.length * LOCALIZE_PACKS.length} (localize)
 Africa prefixed files:    ${africaPrefixed} / ${strongUs.length} (rest may be legacy unprefixed ZA)
+Oceania prefixed files:   ${oceaniaPrefixed} / ${strongUs.length}
 Legacy Africa (unprefixed only): ${legacyAfricaOnly.length}
-Target:                   220 (55 × 4)
+Target:                   350 (70 × 5)
 
 Wave 1 (Go-live 18): ${strongUs.length >= 18 ? "met or exceeded" : "in progress"} (${strongUs.length})
 Wave 2 TODO families:
@@ -137,7 +142,7 @@ if (process.argv.includes("--json")) {
         packPresent,
         packMissingCount: packMissing.length,
         marketPacksForStrongExisting: marketPacksExisting.length,
-        target: 220,
+        target: 350,
         wave4: {
           slice: WAVE4_SLICE,
           agentsCovered: wave4AgentsCovered,

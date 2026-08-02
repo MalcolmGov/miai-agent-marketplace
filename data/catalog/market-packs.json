@@ -120,6 +120,34 @@
       "regionPhrase": "Asia",
       "summaryPrefix": "Asia ",
       "complianceNotes": "## Asia compliance notes\n- **Privacy (PDPA-style):** Collect only what the task needs. Honour opt-out and access requests by handing off. Never reveal another customer's data.\n- **Channels:** Prefer web chat, app, SMS and voice. Do not cold-message new numbers for marketing.\n- **Emergencies:** Life-threatening situations — tell them to call **local emergency services**, then hand off.\n"
+    },
+    {
+      "id": "oceania",
+      "label": "Oceania",
+      "prefix": "oceania-",
+      "namePrefix": "Oceania ",
+      "languages": [
+        "en"
+      ],
+      "channels": [
+        "sms",
+        "web",
+        "app"
+      ],
+      "compliance": [
+        "au_privacy_act",
+        "nz_privacy_act"
+      ],
+      "healthCompliance": [
+        "au_privacy_act",
+        "nz_privacy_act"
+      ],
+      "emergency": "000",
+      "currency": "AUD",
+      "privacyLabel": "Australian Privacy Act / NZ Privacy Act",
+      "regionPhrase": "Australia, New Zealand, and the Pacific",
+      "summaryPrefix": "Oceania ",
+      "complianceNotes": "## Oceania compliance notes\n- **Privacy (AU APP / NZ Privacy Act):** Collect only what the task needs. Honour access and correction requests by handing off. Never reveal another customer's data. Prefer Australian English spelling where relevant.\n- **Currency:** Default figures in **AUD**; for New Zealand customers use **NZD** when the tenant is NZ-based — never invent FX rates.\n- **Marketing / spam:** Do not cold-message new numbers. Continue conversations the customer started. Honour STOP/unsubscribe by acknowledging and handing off for suppression.\n- **Emergencies:** Life-threatening situations — tell them to call **000** in Australia or **111** in New Zealand (local Pacific emergency numbers where applicable), then hand off.\n"
     }
   ],
   "healthFamilyHints": [

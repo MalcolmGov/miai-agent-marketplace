@@ -219,13 +219,23 @@ export const REGION_PACKS: Array<{
   },
   {
     id: "asia",
-    label: "Asia-Pacific",
+    label: "Asia",
     frameworks: ["PDPA-style", "Regional privacy"],
     emergency: "Local emergency services",
     channels: ["Web", "App", "SMS"],
     agentLayer:
-      "Asia packs apply PDPA-style minimisation, opt-out via human handoff, and no cold marketing messages.",
-    platformNote: "APAC residency follows the customer’s Azure region choice.",
+      "Asia packs apply PDPA-style minimisation, opt-out via human handoff, and no cold marketing messages. Distinct from Oceania (AU/NZ/Pacific).",
+    platformNote: "Asia residency follows the customer’s Azure region choice.",
+  },
+  {
+    id: "oceania",
+    label: "Oceania (AU / NZ / Pacific)",
+    frameworks: ["Australian Privacy Act (APPs)", "NZ Privacy Act"],
+    emergency: "000 (AU) / 111 (NZ)",
+    channels: ["SMS", "Web", "App"],
+    agentLayer:
+      "Oceania packs bake AU/NZ privacy minimisation, STOP handling, and dual emergency guidance (000 / 111) into prompts and guardrails. Default currency AUD with NZD called out for NZ tenants.",
+    platformNote: "AU/NZ/Pacific residency follows the customer’s Azure region choice.",
   },
 ];
 

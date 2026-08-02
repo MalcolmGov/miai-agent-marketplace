@@ -50,7 +50,7 @@ export interface MarketPack {
   prefix: string;
 }
 
-const FAMILY_PREFIX_RE = /^(us|eu|africa|asia)-/;
+const FAMILY_PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
 function catalogDir(): string {
   return path.resolve(process.cwd(), process.env.CATALOG_DIR ?? "../../data/catalog");
@@ -65,7 +65,7 @@ function pickDefaultAgentId(
   preferredMarket?: string | null,
 ): string {
   if (preferredMarket && markets[preferredMarket]) return markets[preferredMarket];
-  for (const m of ["us", "eu", "africa", "asia"]) {
+  for (const m of ["us", "eu", "africa", "asia", "oceania"]) {
     if (markets[m]) return markets[m];
   }
   return Object.values(markets)[0];
@@ -130,6 +130,7 @@ export async function listMarketPacks(): Promise<MarketPack[]> {
       { id: "eu", label: "EU", prefix: "eu-" },
       { id: "africa", label: "Africa", prefix: "africa-" },
       { id: "asia", label: "Asia", prefix: "asia-" },
+      { id: "oceania", label: "Oceania", prefix: "oceania-" },
     ];
   }
 }
@@ -176,7 +177,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
         summary: m.summary,
         channels: m.channels,
         markets,
-        packs: ["us", "eu", "africa", "asia"].filter((p) => markets[p]),
+        packs: ["us", "eu", "africa", "asia", "oceania"].filter((p) => markets[p]),
         hasZa: Boolean(markets.za),
         catalogueReady,
       };
