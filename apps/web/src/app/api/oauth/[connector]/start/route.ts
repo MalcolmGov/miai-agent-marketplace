@@ -17,7 +17,7 @@ export async function GET(
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const limited = rateLimit(`oauth-start:${auth.workspaceId}:${auth.userId}`, {
+  const limited = await rateLimit(`oauth-start:${auth.workspaceId}:${auth.userId}`, {
     limit: 20,
     windowMs: 60_000,
   });

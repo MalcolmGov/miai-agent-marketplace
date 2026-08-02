@@ -8,6 +8,7 @@ import {
   randomBytes,
   timingSafeEqual,
 } from "node:crypto";
+import type { Pool } from "pg";
 import type { OAuthConnectorId } from "./providers.js";
 
 export interface StoredToken {
@@ -37,6 +38,20 @@ function env(name: string): string | undefined {
   return (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.[
     name
   ];
+}
+
+function databaseUrl(): string | undefined {
+  const url = env("DATABASE_URL")?.trim() || env("MIAI_DATABASE_URL")?.trim();
+  return url || undefined;
+}
+
+function sslFor(url: string): boolean | { rejectUnauthorized: boolean } {
+  if (/localhost|127\.0\.0\.1/.test(url)) return false;
+  const forceVerify =
+    env("PG_SSL_REJECT_UNAUTHORIZED") === "1" ||
+    Boolean(env("PGSSLROOTCERT")) ||
+    Boolean(env("NODE_EXTRA_CA_CERTS"));
+  return { rejectUnauthorized: forceVerify };
 }
 
 function storePath(): string {
@@ -105,7 +120,18 @@ type DiskShape = Record<
   }
 >;
 
-const g = globalThis as typeof globalThis & { __miaiOauthTokens?: Map<string, StoredToken> };
+type SealedRow = Omit<StoredToken, "accessToken" | "refreshToken"> & {
+  accessToken: string;
+  refreshToken?: string;
+};
+
+const g = globalThis as typeof globalThis & {
+  __miaiOauthTokens?: Map<string, StoredToken>;
+  __miaiOauthTokensHydrated?: boolean;
+  __miaiOauthTokensHydrating?: Promise<void>;
+  __miaiOauthPgPool?: Pool | null;
+  __miaiOauthPgReady?: Promise<Pool | null>;
+};
 
 function mem(): Map<string, StoredToken> {
   if (!g.__miaiOauthTokens) g.__miaiOauthTokens = new Map();
@@ -116,43 +142,158 @@ export function tokenKey(workspaceId: string, connectorId: string): string {
   return `${workspaceId}::${connectorId}`;
 }
 
-async function persist(): Promise<void> {
-  const file = storePath();
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  const out: DiskShape = {};
-  for (const [k, v] of mem()) {
-    out[k] = {
-      ...v,
-      accessToken: seal(v.accessToken),
-      refreshToken: v.refreshToken ? seal(v.refreshToken) : undefined,
-    };
-  }
-  await fs.writeFile(file, JSON.stringify(out, null, 2), "utf8");
+function toSealedRow(token: StoredToken): SealedRow {
+  return {
+    ...token,
+    accessToken: seal(token.accessToken),
+    refreshToken: token.refreshToken ? seal(token.refreshToken) : undefined,
+  };
 }
 
-async function hydrate(): Promise<void> {
-  if (mem().size > 0) return;
+function fromSealedRow(row: SealedRow): StoredToken {
+  return {
+    ...row,
+    accessToken: open(row.accessToken),
+    refreshToken: row.refreshToken ? open(row.refreshToken) : undefined,
+  };
+}
+
+async function getPgPool(): Promise<Pool | null> {
+  const url = databaseUrl();
+  if (!url) return null;
+  if (g.__miaiOauthPgPool) return g.__miaiOauthPgPool;
+  if (g.__miaiOauthPgReady) return g.__miaiOauthPgReady;
+  g.__miaiOauthPgReady = (async () => {
+    const pgMod = await import("pg");
+    const PoolClass = pgMod.default?.Pool ?? pgMod.Pool;
+    const pool = new PoolClass({ connectionString: url, ssl: sslFor(url) });
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS miai_oauth_tokens (
+        workspace_id TEXT NOT NULL,
+        connector TEXT NOT NULL,
+        sealed JSONB NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        PRIMARY KEY (workspace_id, connector)
+      );
+    `);
+    g.__miaiOauthPgPool = pool;
+    return pool;
+  })();
+  return g.__miaiOauthPgReady;
+}
+
+async function hydrateFromPostgres(): Promise<boolean> {
+  const pool = await getPgPool();
+  if (!pool) return false;
+  try {
+    const res = await pool.query<{ workspace_id: string; connector: string; sealed: SealedRow }>(
+      "SELECT workspace_id, connector, sealed FROM miai_oauth_tokens",
+    );
+    for (const row of res.rows) {
+      const k = tokenKey(row.workspace_id, row.connector);
+      mem().set(k, fromSealedRow(row.sealed));
+    }
+    return true;
+  } catch (err) {
+    console.error("[oauth/tokens] postgres hydrate failed", err);
+    return false;
+  }
+}
+
+async function hydrateFromFile(): Promise<void> {
   try {
     const raw = await fs.readFile(storePath(), "utf8");
     const data = JSON.parse(raw) as DiskShape;
     for (const [k, v] of Object.entries(data)) {
-      mem().set(k, {
-        ...v,
-        accessToken: open(v.accessToken),
-        refreshToken: v.refreshToken ? open(v.refreshToken) : undefined,
-      });
+      mem().set(k, fromSealedRow(v));
     }
   } catch {
     /* empty */
   }
 }
 
+async function hydrate(): Promise<void> {
+  if (g.__miaiOauthTokensHydrated) return;
+  if (g.__miaiOauthTokensHydrating) return g.__miaiOauthTokensHydrating;
+  g.__miaiOauthTokensHydrating = (async () => {
+    const fromPg = await hydrateFromPostgres();
+    if (!fromPg) await hydrateFromFile();
+    g.__miaiOauthTokensHydrated = true;
+    g.__miaiOauthTokensHydrating = undefined;
+  })();
+  return g.__miaiOauthTokensHydrating;
+}
+
+async function loadTokenFromPostgres(
+  workspaceId: string,
+  connectorId: string,
+): Promise<StoredToken | null> {
+  const pool = await getPgPool();
+  if (!pool) return null;
+  try {
+    const res = await pool.query<{ sealed: SealedRow }>(
+      "SELECT sealed FROM miai_oauth_tokens WHERE workspace_id = $1 AND connector = $2",
+      [workspaceId, connectorId],
+    );
+    const row = res.rows[0];
+    if (!row) return null;
+    const token = fromSealedRow(row.sealed);
+    mem().set(tokenKey(workspaceId, connectorId), token);
+    return token;
+  } catch (err) {
+    console.error("[oauth/tokens] postgres get failed", err);
+    return null;
+  }
+}
+
+async function upsertTokenPostgres(token: StoredToken): Promise<void> {
+  const pool = await getPgPool();
+  if (!pool) return;
+  try {
+    await pool.query(
+      `INSERT INTO miai_oauth_tokens (workspace_id, connector, sealed, updated_at)
+       VALUES ($1, $2, $3::jsonb, NOW())
+       ON CONFLICT (workspace_id, connector)
+       DO UPDATE SET sealed = EXCLUDED.sealed, updated_at = NOW()`,
+      [token.workspaceId, token.connectorId, JSON.stringify(toSealedRow(token))],
+    );
+  } catch (err) {
+    console.error("[oauth/tokens] postgres upsert failed", err);
+  }
+}
+
+async function deleteTokenPostgres(workspaceId: string, connectorId: string): Promise<void> {
+  const pool = await getPgPool();
+  if (!pool) return;
+  try {
+    await pool.query("DELETE FROM miai_oauth_tokens WHERE workspace_id = $1 AND connector = $2", [
+      workspaceId,
+      connectorId,
+    ]);
+  } catch (err) {
+    console.error("[oauth/tokens] postgres delete failed", err);
+  }
+}
+
+async function persistToFile(): Promise<void> {
+  const file = storePath();
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  const out: DiskShape = {};
+  for (const [k, v] of mem()) {
+    out[k] = toSealedRow(v);
+  }
+  await fs.writeFile(file, JSON.stringify(out, null, 2), "utf8");
+}
+
+async function persist(): Promise<void> {
+  await persistToFile();
+}
+
 export async function saveToken(token: StoredToken): Promise<void> {
   await hydrate();
-  mem().set(tokenKey(token.workspaceId, token.connectorId), {
-    ...token,
-    updatedAt: new Date().toISOString(),
-  });
+  const next = { ...token, updatedAt: new Date().toISOString() };
+  mem().set(tokenKey(token.workspaceId, token.connectorId), next);
+  await upsertTokenPostgres(next);
   await persist();
 }
 
@@ -161,12 +302,16 @@ export async function getToken(
   connectorId: string,
 ): Promise<StoredToken | null> {
   await hydrate();
-  return mem().get(tokenKey(workspaceId, connectorId)) ?? null;
+  const k = tokenKey(workspaceId, connectorId);
+  const hit = mem().get(k);
+  if (hit) return hit;
+  return loadTokenFromPostgres(workspaceId, connectorId);
 }
 
 export async function deleteToken(workspaceId: string, connectorId: string): Promise<void> {
   await hydrate();
   mem().delete(tokenKey(workspaceId, connectorId));
+  await deleteTokenPostgres(workspaceId, connectorId);
   await persist();
 }
 

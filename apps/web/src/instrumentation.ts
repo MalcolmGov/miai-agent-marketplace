@@ -6,4 +6,10 @@ export async function register() {
   if (process.env.NEXT_RUNTIME !== "nodejs") return;
   const { assertBootHardening } = await import("./lib/security");
   assertBootHardening();
+  try {
+    const { ensureMigrations } = await import("./lib/migrate");
+    await ensureMigrations();
+  } catch (err) {
+    console.error("[boot] postgres migrations failed", err);
+  }
 }

@@ -18,13 +18,40 @@ Create a GitHub repo for `miai-agent-marketplace` (or push this folder), then in
 
 Root directory: **repo root** (not `apps/web`).
 
-## 2. Add a volume (important for Slack OAuth)
+## 2. Persist state (Postgres preferred; volume as file fallback)
+
+**Preferred: Postgres.** Set `DATABASE_URL` (or `MIAI_DATABASE_URL`). On boot the app runs versioned migrations (`apps/web/migrations/001_init.sql`) and persists:
+
+| Store | Postgres table | File fallback env |
+|---|---|---|
+| Rentals + audit | `miai_rentals`, `miai_audit` | `RENTAL_STORE_PATH` |
+| Turn transcripts | `miai_turns` | (under data dir) |
+| OAuth tokens | `miai_oauth_tokens` | `OAUTH_TOKEN_STORE_PATH` |
+| Knowledge sources | `miai_knowledge_sources` | `KNOWLEDGE_STORE_PATH` |
+| Workspace members | `miai_workspace_members` | `WORKSPACE_MEMBERS_PATH` |
+| Ask leads | `miai_ask_leads` | `ASK_LEADS_PATH` |
+| Custom requests | `miai_custom_requests` | `CUSTOM_REQUESTS_PATH` |
+
+Writes are **row-level upserts** (no full-table wipe). File fallback still works when `DATABASE_URL` is unset (local/CI).
+
+**Volume (file fallback / dual-write safety)** — attach in the Railway dashboard (not configurable in `railway.toml`):
 
 1. Service → **Settings** → **Volumes**
 2. Mount path: `/data`
-3. This persists `OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json` across restarts
+3. Keep Dockerfile defaults: `OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json`, `KNOWLEDGE_STORE_PATH=/data/knowledge-sources.json`, `RENTAL_STORE_PATH=/data/rentals.json`
 
-Without a volume, OAuth still works until the container is redeployed/restarted.
+Without a volume **and** without `DATABASE_URL`, process restarts lose durable state.
+
+**Optional Upstash Redis** (shared rate limits + chat sessions across replicas):
+
+| Variable | Purpose |
+|---|---|
+| `UPSTASH_REDIS_REST_URL` | Upstash REST endpoint |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash REST token |
+
+When set, rate limits (`miai:rl:*`) and chat sessions (`miai:chan:*`, `miai:ask:*`) are shared across replicas. Without them, those stay in-process (fine for one replica). `REDIS_URL` is reserved for a future native client and is unused in v1.
+
+Catalogue reads (`index.json`, `families.json`) are memoized in-process with mtime invalidation — no Redis needed.
 
 ## 3. Set environment variables
 
@@ -45,7 +72,9 @@ Service → **Variables**. Minimum for a customer-like walk:
 | `I_UNDERSTAND_EMBED_ORIGIN_STAR` | `1` — **required with** `ALLOW_EMBED_ORIGIN_STAR` |
 | `WEBHOOK_SINK_SECRET` | long random — required for `/api/webhook/sink` in production |
 | `MCP_SINK_TOKEN` | long random — required for `/api/mcp` in production |
+| `DATABASE_URL` | Postgres connection string (preferred durability) |
 | `PG_SSL_REJECT_UNAUTHORIZED` | optional `1` when Postgres presents a verifiable CA (or set `PGSSLROOTCERT`) |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | optional — multi-replica rate limits + sessions |
 
 **Mock rails (staging demos):** both `ALLOW_MOCK_RAILS=1` **and** `I_UNDERSTAND_MOCK_RAILS_IN_PROD=1` are required, or boot/health fail closed. Setting only one flag also fails. Boot emits a structured warning when mock rails are enabled. Unset **both** at customer cutover when OIDC + wallet + model gateway are live.
 
@@ -108,7 +137,8 @@ Attach a volume at `/data` in the dashboard after `railway up`.
 ## Notes
 
 - This is **staging**, not full production: wallet/model default to mocks until MIAI credentials are set.
-- Attach a volume at `/data` and set `RENTAL_STORE_PATH` / `OAUTH_TOKEN_STORE_PATH` / `KNOWLEDGE_STORE_PATH` under `/data` (Dockerfile defaults). Optional: set `DATABASE_URL` for Postgres rentals across redeploys.
+- Prefer `DATABASE_URL` for durable multi-writer state (all app stores). Attach a `/data` volume as file fallback.
 - Without a volume or Postgres, process restarts lose file-backed state.
+- For multiple replicas, add optional Upstash Redis env vars (see section 2) so rate limits and chat sessions stay consistent.
 - Custom domain: Railway → Settings → Domains, then update `APP_BASE_URL` + all OAuth redirect URIs.
 - Smoke: `BASE=https://<your-railway-host> pnpm smoke:cutover`

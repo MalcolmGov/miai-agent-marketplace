@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
   const sessionId = typeof body.sessionId === "string" ? body.sessionId : "anon";
   const correlationId = correlationFromRequest(req, body.correlationId);
-  const limited = rateLimit(`ask:${sessionId.slice(0, 48)}`, {
+  const limited = await rateLimit(`ask:${sessionId.slice(0, 48)}`, {
     limit: 40,
     windowMs: 60_000,
   });

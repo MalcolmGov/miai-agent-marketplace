@@ -2,6 +2,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { appendAudit, type AuditEvent } from "@/lib/store";
+import { getPool, query } from "@/lib/pg";
+import { ensureMigrations } from "@/lib/migrate";
 
 export type TraceChannel = "studio" | "embed" | "app" | "ask" | "whatsapp" | "system";
 
@@ -48,10 +50,6 @@ function storePath(): string {
   return path.resolve(process.cwd(), "../../data/turn-transcripts.json");
 }
 
-function databaseUrl(): string | undefined {
-  return process.env.DATABASE_URL?.trim() || undefined;
-}
-
 function mem() {
   if (!g.__miaiTurns) g.__miaiTurns = { rows: [], hydrated: false };
   return g.__miaiTurns;
@@ -77,7 +75,7 @@ async function hydrate(): Promise<void> {
   if (s.hydrating) return s.hydrating;
   s.hydrating = (async () => {
     try {
-      if (databaseUrl()) {
+      if (getPool()) {
         const rows = await hydrateFromPostgres();
         if (rows) {
           s.rows = rows;
@@ -99,43 +97,13 @@ async function hydrate(): Promise<void> {
 }
 
 async function hydrateFromPostgres(): Promise<TurnTranscript[] | null> {
-  const url = databaseUrl();
-  if (!url) return null;
+  if (!getPool()) return null;
   try {
-    const pgMod = await import("pg");
-    const Client = pgMod.default?.Client ?? pgMod.Client;
-    const client = new Client({
-      connectionString: url,
-      ssl: /localhost|127\.0\.0\.1/.test(url)
-        ? false
-        : {
-            rejectUnauthorized:
-              process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
-              Boolean(process.env.PGSSLROOTCERT) ||
-              Boolean(process.env.NODE_EXTRA_CA_CERTS),
-          },
-    });
-    await client.connect();
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS miai_turns (
-        id TEXT PRIMARY KEY,
-        at TIMESTAMPTZ NOT NULL,
-        correlation_id TEXT NOT NULL,
-        workspace_id TEXT NOT NULL,
-        agent_id TEXT NOT NULL,
-        channel TEXT NOT NULL,
-        session_id TEXT NOT NULL,
-        user_id TEXT,
-        payload JSONB NOT NULL
-      );
-      CREATE INDEX IF NOT EXISTS miai_turns_ws_at ON miai_turns (workspace_id, at DESC);
-      CREATE INDEX IF NOT EXISTS miai_turns_corr ON miai_turns (correlation_id);
-    `);
-    const res = await client.query<{ payload: TurnTranscript }>(
+    await ensureMigrations();
+    const res = await query<{ payload: TurnTranscript }>(
       "SELECT payload FROM miai_turns ORDER BY at DESC LIMIT $1",
       [TURN_CAP],
     );
-    await client.end();
     return res.rows.map((r) => r.payload);
   } catch (err) {
     console.error("[traceability] postgres hydrate failed", err);
@@ -143,65 +111,30 @@ async function hydrateFromPostgres(): Promise<TurnTranscript[] | null> {
   }
 }
 
-async function persist(): Promise<void> {
+async function persistToFile(): Promise<void> {
   const rows = mem().rows.slice(0, TURN_CAP);
   const file = storePath();
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, JSON.stringify(rows, null, 2), "utf8");
+}
 
-  const url = databaseUrl();
-  if (!url) return;
-  try {
-    const pgMod = await import("pg");
-    const Client = pgMod.default?.Client ?? pgMod.Client;
-    const client = new Client({
-      connectionString: url,
-      ssl: /localhost|127\.0\.0\.1/.test(url)
-        ? false
-        : {
-            rejectUnauthorized:
-              process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
-              Boolean(process.env.PGSSLROOTCERT) ||
-              Boolean(process.env.NODE_EXTRA_CA_CERTS),
-          },
-    });
-    await client.connect();
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS miai_turns (
-        id TEXT PRIMARY KEY,
-        at TIMESTAMPTZ NOT NULL,
-        correlation_id TEXT NOT NULL,
-        workspace_id TEXT NOT NULL,
-        agent_id TEXT NOT NULL,
-        channel TEXT NOT NULL,
-        session_id TEXT NOT NULL,
-        user_id TEXT,
-        payload JSONB NOT NULL
-      );
-    `);
-    // Upsert newest batch only (full rewrite is expensive; keep last TURN_CAP via delete+insert of missing)
-    for (const row of rows.slice(0, 200)) {
-      await client.query(
-        `INSERT INTO miai_turns (id, at, correlation_id, workspace_id, agent_id, channel, session_id, user_id, payload)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb)
-         ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload`,
-        [
-          row.id,
-          row.at,
-          row.correlationId,
-          row.workspaceId,
-          row.agentId,
-          row.channel,
-          row.sessionId,
-          row.userId ?? null,
-          JSON.stringify(row),
-        ],
-      );
-    }
-    await client.end();
-  } catch (err) {
-    console.error("[traceability] postgres persist failed", err);
-  }
+async function upsertTurnRow(row: TurnTranscript): Promise<void> {
+  await query(
+    `INSERT INTO miai_turns (id, at, correlation_id, workspace_id, agent_id, channel, session_id, user_id, payload)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb)
+     ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload`,
+    [
+      row.id,
+      row.at,
+      row.correlationId,
+      row.workspaceId,
+      row.agentId,
+      row.channel,
+      row.sessionId,
+      row.userId ?? null,
+      JSON.stringify(row),
+    ],
+  );
 }
 
 export async function appendTurnTranscript(
@@ -232,7 +165,15 @@ export async function appendTurnTranscript(
   };
   mem().rows.unshift(row);
   if (mem().rows.length > TURN_CAP) mem().rows.length = TURN_CAP;
-  await persist();
+
+  if (getPool()) {
+    try {
+      await upsertTurnRow(row);
+    } catch (err) {
+      console.error("[traceability] postgres turn upsert failed", err);
+    }
+  }
+  await persistToFile();
   return row;
 }
 

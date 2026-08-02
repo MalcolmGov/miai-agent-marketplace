@@ -11,6 +11,7 @@ import {
   marketplaceAssistantId,
   marketplaceWorkspaceId,
 } from "@/lib/marketplace-assistant";
+import { redisAvailable, redisGet, redisSet } from "@/lib/redis";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 type SessionMap = Map<string, ChatMessage[]>;
@@ -26,6 +27,34 @@ function sessions(): SessionMap {
 
 const MAX_SESSIONS = 400;
 const MAX_TURNS = 24;
+const SESSION_TTL_SEC = 24 * 60 * 60;
+
+async function getAskHistory(sessionKey: string): Promise<ChatMessage[]> {
+  if (redisAvailable()) {
+    const raw = await redisGet(`miai:ask:${sessionKey}`);
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw) as ChatMessage[];
+    } catch {
+      return [];
+    }
+  }
+  return sessions().get(sessionKey) ?? [];
+}
+
+async function setAskHistory(sessionKey: string, messages: ChatMessage[]): Promise<void> {
+  const trimmed = messages.slice(-MAX_TURNS);
+  if (redisAvailable()) {
+    await redisSet(`miai:ask:${sessionKey}`, JSON.stringify(trimmed), SESSION_TTL_SEC);
+    return;
+  }
+  const store = sessions();
+  if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
+    const oldest = store.keys().next().value;
+    if (oldest) store.delete(oldest);
+  }
+  store.set(sessionKey, trimmed);
+}
 
 export type AskTurnOk = {
   ok: true;
@@ -74,8 +103,7 @@ export async function runAskTurn(input: {
     : "en";
 
   const sessionKey = `ask::${input.sessionId ?? "anon"}`;
-  const store = sessions();
-  const history = store.get(sessionKey) ?? [];
+  const history = await getAskHistory(sessionKey);
 
   const systemAppend = [
     "You are chatting inside the MyInstantAI Agent Marketplace product UI.",
@@ -101,11 +129,7 @@ export async function runAskTurn(input: {
     { wallet: createWalletAdapter() },
   );
 
-  if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
-    const oldest = store.keys().next().value;
-    if (oldest) store.delete(oldest);
-  }
-  store.set(sessionKey, (result.messages as ChatMessage[]).slice(-MAX_TURNS));
+  await setAskHistory(sessionKey, result.messages as ChatMessage[]);
 
   const leadIds: string[] = [];
   for (const call of result.toolCalls) {

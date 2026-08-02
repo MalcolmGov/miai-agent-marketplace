@@ -3,6 +3,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { AgentState, ChatMessage } from "@miai/runtime";
 import type { ToolBinding } from "@miai/connectors";
+import { getPool, pingPool, query } from "@/lib/pg";
+import { ensureMigrations } from "@/lib/migrate";
 
 /** Secret for deriving embed keys. Falls back to OAUTH_TOKEN_SECRET so no extra
  *  config is needed; set EMBED_KEY_SECRET separately if you ever rotate the OAuth
@@ -95,10 +97,6 @@ function rentalStorePath(): string {
   return path.resolve(process.cwd(), "../../data/rentals.json");
 }
 
-function databaseUrl(): string | undefined {
-  return process.env.DATABASE_URL || process.env.MIAI_DATABASE_URL;
-}
-
 async function hydrateFromFile(): Promise<PersistShape | null> {
   try {
     const raw = await fs.readFile(rentalStorePath(), "utf8");
@@ -109,34 +107,13 @@ async function hydrateFromFile(): Promise<PersistShape | null> {
 }
 
 async function hydrateFromPostgres(): Promise<PersistShape | null> {
-  const url = databaseUrl();
-  if (!url) return null;
+  if (!getPool()) return null;
   try {
-    const pgMod = await import("pg");
-    const Client = pgMod.default?.Client ?? pgMod.Client;
-    const client = new Client({ connectionString: url, ssl: sslFor(url) });
-    await client.connect();
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS miai_rentals (
-        workspace_id TEXT NOT NULL,
-        agent_id TEXT NOT NULL,
-        payload JSONB NOT NULL,
-        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        PRIMARY KEY (workspace_id, agent_id)
-      );
-      CREATE TABLE IF NOT EXISTS miai_audit (
-        id TEXT PRIMARY KEY,
-        at TIMESTAMPTZ NOT NULL,
-        workspace_id TEXT NOT NULL,
-        agent_id TEXT,
-        type TEXT NOT NULL,
-        detail JSONB NOT NULL DEFAULT '{}'::jsonb
-      );
-    `);
-    const rentals = await client.query<{ workspace_id: string; agent_id: string; payload: WorkspaceAgent }>(
+    await ensureMigrations();
+    const rentals = await query<{ workspace_id: string; agent_id: string; payload: WorkspaceAgent }>(
       "SELECT workspace_id, agent_id, payload FROM miai_rentals",
     );
-    const audit = await client.query<{
+    const audit = await query<{
       id: string;
       at: Date | string;
       workspace_id: string;
@@ -144,7 +121,6 @@ async function hydrateFromPostgres(): Promise<PersistShape | null> {
       type: string;
       detail: Record<string, unknown>;
     }>("SELECT id, at, workspace_id, agent_id, type, detail FROM miai_audit ORDER BY at DESC LIMIT 5000");
-    await client.end();
 
     const shape: PersistShape = {
       workspaces: {},
@@ -182,18 +158,6 @@ async function hydrateFromPostgres(): Promise<PersistShape | null> {
   }
 }
 
-function sslFor(url: string): boolean | { rejectUnauthorized: boolean } {
-  if (/localhost|127\.0\.0\.1/.test(url)) return false;
-  // Prefer cert verification when a CA is available (PGSSLROOTCERT / NODE_EXTRA_CA_CERTS)
-  // or when PG_SSL_REJECT_UNAUTHORIZED=1. Default remains permissive for managed Postgres
-  // that presents non-public CAs until ops mounts a bundle (Phase 2).
-  const forceVerify =
-    process.env.PG_SSL_REJECT_UNAUTHORIZED === "1" ||
-    Boolean(process.env.PGSSLROOTCERT) ||
-    Boolean(process.env.NODE_EXTRA_CA_CERTS);
-  return { rejectUnauthorized: forceVerify };
-}
-
 function applyShape(data: PersistShape) {
   const s = store();
   s.workspaces.clear();
@@ -217,50 +181,49 @@ function toShape(): PersistShape {
   return { workspaces, audit: s.audit.slice(0, AUDIT_CAP) };
 }
 
-async function persistToFile(shape: PersistShape): Promise<void> {
+async function persistToFile(): Promise<void> {
+  const shape = toShape();
   const file = rentalStorePath();
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, JSON.stringify(shape, null, 2), "utf8");
 }
 
-async function persistToPostgres(shape: PersistShape): Promise<void> {
-  const url = databaseUrl();
-  if (!url) return;
-  const pgMod = await import("pg");
-  const Client = pgMod.default?.Client ?? pgMod.Client;
-  const client = new Client({ connectionString: url, ssl: sslFor(url) });
-  await client.connect();
-  try {
-    await client.query("BEGIN");
-    await client.query("DELETE FROM miai_rentals");
-    for (const [workspaceId, rec] of Object.entries(shape.workspaces)) {
-      for (const [agentId, payload] of Object.entries(rec.agents)) {
-        await client.query(
-          `INSERT INTO miai_rentals (workspace_id, agent_id, payload, updated_at)
-           VALUES ($1, $2, $3::jsonb, NOW())
-           ON CONFLICT (workspace_id, agent_id)
-           DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`,
-          [workspaceId, agentId, JSON.stringify(payload)],
-        );
-      }
-    }
-    // Keep last AUDIT_CAP audit rows for operator metering / compliance trail
-    await client.query("DELETE FROM miai_audit");
-    for (const row of shape.audit.slice(0, AUDIT_CAP)) {
-      await client.query(
-        `INSERT INTO miai_audit (id, at, workspace_id, agent_id, type, detail)
-         VALUES ($1, $2, $3, $4, $5, $6::jsonb)
-         ON CONFLICT (id) DO NOTHING`,
-        [row.id, row.at, row.workspaceId, row.agentId ?? null, row.type, JSON.stringify(row.detail ?? {})],
-      );
-    }
-    await client.query("COMMIT");
-  } catch (err) {
-    await client.query("ROLLBACK");
-    throw err;
-  } finally {
-    await client.end();
-  }
+async function upsertRentalRow(
+  workspaceId: string,
+  agentId: string,
+  payload: WorkspaceAgent,
+): Promise<void> {
+  await query(
+    `INSERT INTO miai_rentals (workspace_id, agent_id, payload, updated_at)
+     VALUES ($1, $2, $3::jsonb, NOW())
+     ON CONFLICT (workspace_id, agent_id)
+     DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`,
+    [workspaceId, agentId, JSON.stringify(payload)],
+  );
+}
+
+async function insertAuditRow(row: AuditEvent): Promise<void> {
+  await query(
+    `INSERT INTO miai_audit (id, at, workspace_id, agent_id, type, detail)
+     VALUES ($1, $2, $3, $4, $5, $6::jsonb)
+     ON CONFLICT (id) DO NOTHING`,
+    [row.id, row.at, row.workspaceId, row.agentId ?? null, row.type, JSON.stringify(row.detail ?? {})],
+  );
+  // Nested subquery required so Postgres allows DELETE against the same table.
+  await query(
+    `DELETE FROM miai_audit
+     WHERE id NOT IN (
+       SELECT id FROM (
+         SELECT id FROM miai_audit ORDER BY at DESC LIMIT $1
+       ) keep
+     )`,
+    [AUDIT_CAP],
+  );
+}
+
+/** File fallback only — Postgres writes are row-level in upsert/append handlers. */
+async function persist(): Promise<void> {
+  await persistToFile();
 }
 
 /** Lightweight readiness probe for /api/health — does not hydrate rentals. */
@@ -269,23 +232,13 @@ export async function pingStore(): Promise<{
   ok: boolean;
   error?: string;
 }> {
-  const url = databaseUrl();
-  if (url) {
-    try {
-      const pgMod = await import("pg");
-      const Client = pgMod.default?.Client ?? pgMod.Client;
-      const client = new Client({ connectionString: url, ssl: sslFor(url) });
-      await client.connect();
-      await client.query("SELECT 1");
-      await client.end();
-      return { backend: "postgres", ok: true };
-    } catch (err) {
-      return {
-        backend: "postgres",
-        ok: false,
-        error: err instanceof Error ? err.message : "postgres ping failed",
-      };
-    }
+  if (getPool()) {
+    const ping = await pingPool();
+    return {
+      backend: "postgres",
+      ok: ping.ok,
+      error: ping.error,
+    };
   }
   try {
     const file = rentalStorePath();
@@ -317,19 +270,6 @@ export async function ensureStoreHydrated(): Promise<void> {
     s.hydrating = undefined;
   })();
   return s.hydrating;
-}
-
-async function persist(): Promise<void> {
-  const shape = toShape();
-  if (databaseUrl()) {
-    try {
-      await persistToPostgres(shape);
-      return;
-    } catch (err) {
-      console.error("[store] postgres persist failed, writing file fallback", err);
-    }
-  }
-  await persistToFile(shape);
 }
 
 function ws(workspaceId: string): WorkspaceRecord {
@@ -387,7 +327,17 @@ export async function upsertWorkspaceAgent(
   };
   ws(workspaceId).agents.set(agentId, next);
   ws(workspaceId).embedKeys.set(next.publicKey, agentId);
-  await persist();
+
+  if (getPool()) {
+    try {
+      await upsertRentalRow(workspaceId, agentId, next);
+    } catch (err) {
+      console.error("[store] postgres upsert failed, writing file fallback", err);
+      await persist();
+    }
+  } else {
+    await persist();
+  }
   return next;
 }
 
@@ -439,7 +389,18 @@ export async function appendAudit(event: Omit<AuditEvent, "id" | "at">): Promise
   const s = store();
   s.audit.unshift(row);
   if (s.audit.length > AUDIT_CAP) s.audit.length = AUDIT_CAP;
-  await persist();
+
+  if (getPool()) {
+    try {
+      await insertAuditRow(row);
+    } catch (err) {
+      console.error("[store] postgres audit insert failed, writing file fallback", err);
+      await persist();
+    }
+  } else {
+    await persist();
+  }
+
   try {
     const { trackAudit } = await import("@/lib/telemetry");
     trackAudit(row);

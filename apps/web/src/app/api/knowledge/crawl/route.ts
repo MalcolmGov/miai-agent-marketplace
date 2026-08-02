@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "agent");
   if (forbidden) return forbidden;
 
-  const limited = rateLimit(`knowledge-crawl:${auth.workspaceId}:${auth.userId}`, {
+  const limited = await rateLimit(`knowledge-crawl:${auth.workspaceId}:${auth.userId}`, {
     limit: 10,
     windowMs: 60_000,
   });

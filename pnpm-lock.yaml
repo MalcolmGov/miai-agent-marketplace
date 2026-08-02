@@ -108,10 +108,17 @@ importers:
         version: 5.9.3
 
   packages/connectors:
+    dependencies:
+      pg:
+        specifier: ^8.22.0
+        version: 8.22.0
     devDependencies:
       '@types/node':
         specifier: ^20.17.10
         version: 20.19.43
+      '@types/pg':
+        specifier: ^8.20.0
+        version: 8.20.0
       typescript:
         specifier: ^5.7.3
         version: 5.9.3

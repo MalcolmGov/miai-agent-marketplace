@@ -1,6 +1,8 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
+import { ensureMigrations } from "@/lib/migrate";
+import { databaseUrl, query } from "@/lib/pg";
 
 export type CustomRequestStatus = "new" | "reviewing" | "scoped" | "done" | "declined";
 export type CustomRequestSource = "Dashboard" | "Marketing page" | "Create";
@@ -40,28 +42,66 @@ function mem() {
   return g.__miaiCustomRequests;
 }
 
+async function hydrateFromPostgres(): Promise<boolean> {
+  if (!databaseUrl()) return false;
+  try {
+    await ensureMigrations();
+    const res = await query<{ payload: CustomRequest }>(
+      "SELECT payload FROM miai_custom_requests ORDER BY updated_at DESC",
+    );
+    mem().rows = res.rows.map((r) => r.payload);
+    return true;
+  } catch (err) {
+    console.error("[custom-requests] postgres hydrate failed", err);
+    return false;
+  }
+}
+
+async function hydrateFromFile(): Promise<void> {
+  try {
+    const raw = await fs.readFile(storePath(), "utf8");
+    const data = JSON.parse(raw) as CustomRequest[];
+    mem().rows = Array.isArray(data) ? data : [];
+  } catch {
+    mem().rows = [];
+  }
+}
+
 async function hydrate(): Promise<void> {
   const s = mem();
   if (s.hydrated) return;
   if (s.hydrating) return s.hydrating;
   s.hydrating = (async () => {
-    try {
-      const raw = await fs.readFile(storePath(), "utf8");
-      const data = JSON.parse(raw) as CustomRequest[];
-      s.rows = Array.isArray(data) ? data : [];
-    } catch {
-      s.rows = [];
-    }
+    const fromPg = await hydrateFromPostgres();
+    if (!fromPg) await hydrateFromFile();
     s.hydrated = true;
     s.hydrating = undefined;
   })();
   return s.hydrating;
 }
 
-async function persist(): Promise<void> {
+async function persistToFile(): Promise<void> {
   const file = storePath();
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, JSON.stringify(mem().rows, null, 2), "utf8");
+}
+
+async function upsertRequestPostgres(row: CustomRequest): Promise<void> {
+  if (!databaseUrl()) return;
+  try {
+    await query(
+      `INSERT INTO miai_custom_requests (id, payload, updated_at)
+       VALUES ($1, $2::jsonb, NOW())
+       ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`,
+      [row.id, JSON.stringify(row)],
+    );
+  } catch (err) {
+    console.error("[custom-requests] postgres upsert failed", err);
+  }
+}
+
+async function persist(): Promise<void> {
+  await persistToFile();
 }
 
 export async function listCustomRequests(opts?: {
@@ -98,6 +138,7 @@ export async function createCustomRequest(input: {
     updatedAt: now,
   };
   mem().rows.unshift(row);
+  await upsertRequestPostgres(row);
   await persist();
   return row;
 }
@@ -116,6 +157,7 @@ export async function updateCustomRequest(
     updatedAt: new Date().toISOString(),
   };
   mem().rows[idx] = next;
+  await upsertRequestPostgres(next);
   await persist();
   return next;
 }

@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   };
 
   const correlationId = correlationFromRequest(req, body.correlationId);
-  const limited = rateLimit(`embed:${(body.key || "").slice(0, 48)}`, {
+  const limited = await rateLimit(`embed:${(body.key || "").slice(0, 48)}`, {
     limit: 30,
     windowMs: 60_000,
   });

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { AuthContext } from "@/lib/auth";
+import { redisAvailable, redisIncr, redisTtl } from "@/lib/redis";
 import { isProductionRuntime } from "@/lib/security-flags";
 
 export {
@@ -104,11 +105,7 @@ function buckets(): Map<string, Bucket> {
   return g.__miaiRateLimit;
 }
 
-/**
- * Simple in-process token bucket. Good enough for embed abuse control on a single
- * Container App replica; replace with Redis/APIM when multi-region scale lands.
- */
-export function rateLimit(
+function rateLimitInProcess(
   key: string,
   opts: { limit: number; windowMs: number },
 ): { ok: true } | { ok: false; retryAfterSec: number } {
@@ -124,6 +121,35 @@ export function rateLimit(
   }
   current.count += 1;
   return { ok: true };
+}
+
+/**
+ * Token bucket rate limiter. Uses Redis INCR + EXPIRE when Upstash is configured
+ * (shared across replicas); otherwise in-process Map (single replica).
+ */
+export async function rateLimit(
+  key: string,
+  opts: { limit: number; windowMs: number },
+): Promise<{ ok: true } | { ok: false; retryAfterSec: number }> {
+  const ttlSec = Math.ceil(opts.windowMs / 1000);
+
+  if (redisAvailable()) {
+    const redisKey = `miai:rl:${key}`;
+    const count = await redisIncr(redisKey, ttlSec);
+    if (count != null) {
+      if (count > opts.limit) {
+        const remaining = await redisTtl(redisKey);
+        const retryAfterSec = Math.max(
+          1,
+          remaining != null && remaining > 0 ? remaining : ttlSec,
+        );
+        return { ok: false, retryAfterSec };
+      }
+      return { ok: true };
+    }
+  }
+
+  return rateLimitInProcess(key, opts);
 }
 
 /** Wave4 proof sinks must require secrets outside local/dev. */

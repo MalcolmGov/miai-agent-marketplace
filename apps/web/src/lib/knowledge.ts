@@ -1,6 +1,8 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
+import { ensureMigrations } from "@/lib/migrate";
+import { databaseUrl, query } from "@/lib/pg";
 
 export type KnowledgeSourceType = "paste" | "file" | "website";
 
@@ -31,6 +33,8 @@ function storePath(): string {
 
 const g = globalThis as typeof globalThis & {
   __miaiKnowledge?: Map<string, KnowledgeSource[]>;
+  __miaiKnowledgeHydrated?: boolean;
+  __miaiKnowledgeHydrating?: Promise<void>;
 };
 
 function mem(): Map<string, KnowledgeSource[]> {
@@ -42,8 +46,29 @@ function key(workspaceId: string, agentId: string): string {
   return `${workspaceId}::${agentId}`;
 }
 
-async function hydrate(): Promise<void> {
-  if (mem().size > 0) return;
+async function hydrateFromPostgres(): Promise<boolean> {
+  if (!databaseUrl()) return false;
+  try {
+    await ensureMigrations();
+    const res = await query<{
+      workspace_id: string;
+      agent_id: string;
+      payload: KnowledgeSource;
+    }>("SELECT workspace_id, agent_id, payload FROM miai_knowledge_sources");
+    for (const row of res.rows) {
+      const k = key(row.workspace_id, row.agent_id);
+      const list = mem().get(k) ?? [];
+      list.push(row.payload);
+      mem().set(k, list);
+    }
+    return true;
+  } catch (err) {
+    console.error("[knowledge] postgres hydrate failed", err);
+    return false;
+  }
+}
+
+async function hydrateFromFile(): Promise<void> {
   try {
     const raw = await fs.readFile(storePath(), "utf8");
     const data = JSON.parse(raw) as Record<string, KnowledgeSource[]>;
@@ -53,12 +78,51 @@ async function hydrate(): Promise<void> {
   }
 }
 
-async function persist(): Promise<void> {
+async function hydrate(): Promise<void> {
+  if (g.__miaiKnowledgeHydrated) return;
+  if (g.__miaiKnowledgeHydrating) return g.__miaiKnowledgeHydrating;
+  g.__miaiKnowledgeHydrating = (async () => {
+    const fromPg = await hydrateFromPostgres();
+    if (!fromPg) await hydrateFromFile();
+    g.__miaiKnowledgeHydrated = true;
+    g.__miaiKnowledgeHydrating = undefined;
+  })();
+  return g.__miaiKnowledgeHydrating;
+}
+
+async function persistToFile(): Promise<void> {
   const file = storePath();
   await fs.mkdir(path.dirname(file), { recursive: true });
   const out: Record<string, KnowledgeSource[]> = {};
   for (const [k, v] of mem()) out[k] = v;
   await fs.writeFile(file, JSON.stringify(out, null, 2), "utf8");
+}
+
+async function upsertSourcePostgres(source: KnowledgeSource): Promise<void> {
+  if (!databaseUrl()) return;
+  try {
+    await query(
+      `INSERT INTO miai_knowledge_sources (id, workspace_id, agent_id, payload, updated_at)
+       VALUES ($1, $2, $3, $4::jsonb, NOW())
+       ON CONFLICT (id) DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`,
+      [source.id, source.workspaceId, source.agentId, JSON.stringify(source)],
+    );
+  } catch (err) {
+    console.error("[knowledge] postgres upsert failed", err);
+  }
+}
+
+async function deleteSourcePostgres(sourceId: string): Promise<void> {
+  if (!databaseUrl()) return;
+  try {
+    await query("DELETE FROM miai_knowledge_sources WHERE id = $1", [sourceId]);
+  } catch (err) {
+    console.error("[knowledge] postgres delete failed", err);
+  }
+}
+
+async function persist(): Promise<void> {
+  await persistToFile();
 }
 
 export async function listKnowledgeSources(
@@ -85,6 +149,7 @@ export async function addKnowledgeSource(
   const list = mem().get(k) ?? [];
   list.unshift(row);
   mem().set(k, list);
+  await upsertSourcePostgres(row);
   await persist();
   return row;
 }
@@ -107,6 +172,7 @@ export async function updateKnowledgeSource(
   };
   list[idx] = next;
   mem().set(k, list);
+  await upsertSourcePostgres(next);
   await persist();
   return next;
 }
@@ -122,6 +188,7 @@ export async function deleteKnowledgeSource(
   const next = list.filter((s) => s.id !== sourceId);
   if (next.length === list.length) return false;
   mem().set(k, next);
+  await deleteSourcePostgres(sourceId);
   await persist();
   return true;
 }

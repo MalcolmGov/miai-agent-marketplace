@@ -71,9 +71,27 @@ function pickDefaultAgentId(
   return Object.values(markets)[0];
 }
 
-export async function listCatalog(): Promise<CatalogEntry[]> {
-  const raw = await fs.readFile(path.join(catalogDir(), "index.json"), "utf8");
-  const index = JSON.parse(raw) as Array<{
+type FileMemo<T> = { mtimeMs: number; data: T };
+
+let catalogMemo: FileMemo<CatalogEntry[]> | null = null;
+let familiesMemo: FileMemo<
+  Array<{
+    id: string;
+    name: string;
+    tier: string;
+    category: string;
+    summary: string;
+    channels: string[];
+    markets: Record<string, string>;
+    packs: string[];
+    hasZa: boolean;
+    catalogueReady?: boolean;
+    readiness?: string;
+  }>
+> | null = null;
+
+function parseCatalogIndex(
+  index: Array<{
     id: string;
     name: string;
     tier: string;
@@ -84,7 +102,8 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
     tools: number;
     evals: number;
     readiness?: string;
-  }>;
+  }>,
+): CatalogEntry[] {
   return index.map((e) => {
     const catalogueReady = e.readiness === "catalogue-ready";
     return {
@@ -110,13 +129,25 @@ export async function listCatalog(): Promise<CatalogEntry[]> {
         model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
       }),
       audience: agentAudience(e.category),
-      // Catalogue-ready packages are production marketplace SKUs (no pilot badge).
       pilot: false,
       liveReady: catalogueReady,
       catalogueReady,
       familyId: familyIdFromAgentId(e.id),
     };
   });
+}
+
+export async function listCatalog(): Promise<CatalogEntry[]> {
+  const indexPath = path.join(catalogDir(), "index.json");
+  const stat = await fs.stat(indexPath);
+  if (catalogMemo && catalogMemo.mtimeMs === stat.mtimeMs) {
+    return catalogMemo.data;
+  }
+  const raw = await fs.readFile(indexPath, "utf8");
+  const index = JSON.parse(raw) as Parameters<typeof parseCatalogIndex>[0];
+  const data = parseCatalogIndex(index);
+  catalogMemo = { mtimeMs: stat.mtimeMs, data };
+  return data;
 }
 
 export async function listMarketPacks(): Promise<MarketPack[]> {
@@ -154,8 +185,15 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
   }>;
 
   try {
-    const raw = await fs.readFile(path.join(catalogDir(), "families.json"), "utf8");
-    familiesRaw = JSON.parse(raw);
+    const familiesPath = path.join(catalogDir(), "families.json");
+    const stat = await fs.stat(familiesPath);
+    if (familiesMemo && familiesMemo.mtimeMs === stat.mtimeMs) {
+      familiesRaw = familiesMemo.data;
+    } else {
+      const raw = await fs.readFile(familiesPath, "utf8");
+      familiesRaw = JSON.parse(raw);
+      familiesMemo = { mtimeMs: stat.mtimeMs, data: familiesRaw };
+    }
   } catch {
     const map = new Map<string, FamilyEntry["markets"]>();
     const meta = new Map<string, CatalogEntry>();

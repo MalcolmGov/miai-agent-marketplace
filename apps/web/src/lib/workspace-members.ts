@@ -2,6 +2,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { WORKSPACE_ID } from "@/lib/constants";
+import { ensureMigrations } from "@/lib/migrate";
+import { databaseUrl, query } from "@/lib/pg";
 import type { WorkspaceRole } from "@/lib/security";
 
 export type MemberStatus = "active" | "pending";
@@ -45,31 +47,88 @@ function mem() {
   return g.__miaiWorkspaceMembers;
 }
 
+async function hydrateFromPostgres(): Promise<boolean> {
+  if (!databaseUrl()) return false;
+  try {
+    await ensureMigrations();
+    const res = await query<{ workspace_id: string; payload: WorkspaceMember }>(
+      "SELECT workspace_id, payload FROM miai_workspace_members",
+    );
+    const workspaces: Record<string, WorkspaceMember[]> = {};
+    for (const row of res.rows) {
+      const list = workspaces[row.workspace_id] ?? [];
+      list.push(row.payload);
+      workspaces[row.workspace_id] = list;
+    }
+    mem().data = { workspaces };
+    return true;
+  } catch (err) {
+    console.error("[workspace-members] postgres hydrate failed", err);
+    return false;
+  }
+}
+
+async function hydrateFromFile(): Promise<void> {
+  try {
+    const raw = await fs.readFile(storePath(), "utf8");
+    const parsed = JSON.parse(raw) as StoreFile;
+    mem().data = {
+      workspaces:
+        parsed?.workspaces && typeof parsed.workspaces === "object" ? parsed.workspaces : {},
+    };
+  } catch {
+    mem().data = { workspaces: {} };
+  }
+}
+
 async function hydrate(): Promise<void> {
   const s = mem();
   if (s.hydrated) return;
   if (s.hydrating) return s.hydrating;
   s.hydrating = (async () => {
-    try {
-      const raw = await fs.readFile(storePath(), "utf8");
-      const parsed = JSON.parse(raw) as StoreFile;
-      s.data = {
-        workspaces:
-          parsed?.workspaces && typeof parsed.workspaces === "object" ? parsed.workspaces : {},
-      };
-    } catch {
-      s.data = { workspaces: {} };
-    }
+    const fromPg = await hydrateFromPostgres();
+    if (!fromPg) await hydrateFromFile();
     s.hydrated = true;
     s.hydrating = undefined;
   })();
   return s.hydrating;
 }
 
-async function persist(): Promise<void> {
+async function persistToFile(): Promise<void> {
   const file = storePath();
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, JSON.stringify(mem().data, null, 2), "utf8");
+}
+
+async function upsertMemberPostgres(workspaceId: string, member: WorkspaceMember): Promise<void> {
+  if (!databaseUrl()) return;
+  try {
+    await query(
+      `INSERT INTO miai_workspace_members (workspace_id, user_id, payload, updated_at)
+       VALUES ($1, $2, $3::jsonb, NOW())
+       ON CONFLICT (workspace_id, user_id)
+       DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()`,
+      [workspaceId, member.userId, JSON.stringify(member)],
+    );
+  } catch (err) {
+    console.error("[workspace-members] postgres upsert failed", err);
+  }
+}
+
+async function deleteMemberPostgres(workspaceId: string, userId: string): Promise<void> {
+  if (!databaseUrl()) return;
+  try {
+    await query("DELETE FROM miai_workspace_members WHERE workspace_id = $1 AND user_id = $2", [
+      workspaceId,
+      userId,
+    ]);
+  } catch (err) {
+    console.error("[workspace-members] postgres delete failed", err);
+  }
+}
+
+async function persist(): Promise<void> {
+  await persistToFile();
 }
 
 function seedOwner(_workspaceId: string): WorkspaceMember {
@@ -92,6 +151,11 @@ async function ensureSeeded(workspaceId: string): Promise<WorkspaceMember[]> {
     // Also seed default demo workspace if calling another id first
     if (workspaceId !== WORKSPACE_ID && !ws[WORKSPACE_ID]?.length) {
       ws[WORKSPACE_ID] = [seedOwner(WORKSPACE_ID)];
+    }
+    for (const [wid, members] of Object.entries(ws)) {
+      for (const member of members) {
+        await upsertMemberPostgres(wid, member);
+      }
     }
     await persist();
   }
@@ -145,6 +209,7 @@ export async function inviteMember(input: {
     inviteToken,
   };
   rows.push(member);
+  await upsertMemberPostgres(input.workspaceId, member);
   await persist();
   return member;
 }
@@ -167,6 +232,7 @@ export async function updateMemberRole(input: {
   if (member.status === "pending" && input.role) {
     /* keep pending until accept */
   }
+  await upsertMemberPostgres(input.workspaceId, member);
   await persist();
   return member;
 }
@@ -183,6 +249,7 @@ export async function removeMember(input: {
     if (owners.length <= 1) throw new Error("Cannot remove the last owner");
   }
   mem().data.workspaces[input.workspaceId] = rows.filter((m) => m.userId !== input.userId);
+  await deleteMemberPostgres(input.workspaceId, input.userId);
   await persist();
 }
 
