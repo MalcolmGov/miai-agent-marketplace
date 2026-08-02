@@ -78,6 +78,46 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
 ];
 
+export const DATA_PROTECTION_SECTIONS: LegalSection[] = [
+  {
+    heading: "Overview",
+    body: [
+      "This page summarises how the marketplace handles personal and workspace data. It complements the Privacy notice and is also a DRAFT pending counsel.",
+      "Operational evidence and internal drafts live under docs/compliance/ (ROPA, DPIA, breach runbook, DPA/BAA templates). Those are not customer contracts until countersigned.",
+    ],
+  },
+  {
+    heading: "Categories of data",
+    body: [
+      "Identity & membership: workspace id, user id, role.",
+      "Configuration: agent packages, knowledge documents you upload, connector settings.",
+      "Runtime: chat transcripts (with PII redaction hooks on live paths), audit events, consent choices.",
+      "Integrations: OAuth tokens encrypted at rest; provider metadata (shop, subdomain, team).",
+    ],
+  },
+  {
+    heading: "Access & export (DSAR)",
+    body: [
+      "Workspace owners and admins can request a DSAR export from the Trust Center / workspace tools when signed in.",
+      "Managed erasure is available via POST /api/dsar/erase for admins (audit tombstones retained).",
+    ],
+  },
+  {
+    heading: "Security controls (product)",
+    body: [
+      "Production boot hardening (secrets, mock-rails dual flags, DATABASE_URL required).",
+      "Outbound connector SSRF guards, webhook HMAC signatures, optional Redis rate limits.",
+      "Append-oriented audit trail when Postgres is configured.",
+    ],
+  },
+  {
+    heading: "Regional notes",
+    body: [
+      "GDPR / POPIA / CCPA rights depend on your contracting entity and hosting region. EU residency and HIPAA/BAA are not claimed until partner Azure/legal cutover is complete — see Trust Center for honest status labels.",
+    ],
+  },
+];
+
 export const COOKIES_SECTIONS: LegalSection[] = [
   {
     heading: "What we use",

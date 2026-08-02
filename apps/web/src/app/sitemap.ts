@@ -9,9 +9,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/trust",
+    "/legal",
     "/privacy",
     "/terms",
     "/cookies",
+    "/data-protection",
     "/ask",
     "/demo",
     "/install",

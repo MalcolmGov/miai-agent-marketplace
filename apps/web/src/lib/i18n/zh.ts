@@ -15,6 +15,7 @@ export const zh: Dictionary = {
   "nav.insights": "洞察",
   "nav.supportDesk": "支持台",
   "nav.agentAdmin": "智能体管理",
+  "nav.legal": "法律与政策",
   "nav.trust": "信任与安全",
   "nav.roadmap": "路线图",
   "nav.mondayDemo": "周一演示",

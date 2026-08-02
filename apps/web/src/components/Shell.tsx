@@ -89,20 +89,33 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className={`shell-content ${isHome ? "shell-content-home" : ""}`}>{children}</main>
-        <footer className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-[var(--border)] px-4 py-3 text-xs text-[var(--muted-dim)] sm:px-6">
-          <Link href="/privacy" className="hover:text-[var(--text)]">
-            Privacy
-          </Link>
-          <Link href="/terms" className="hover:text-[var(--text)]">
-            Terms
-          </Link>
-          <Link href="/cookies" className="hover:text-[var(--text)]">
-            Cookies
-          </Link>
-          <Link href="/trust" className="hover:text-[var(--text)]">
-            Trust
-          </Link>
-          <span className="text-[var(--muted-dim)]">AI system disclosures on chat surfaces</span>
+        <footer className="border-t border-[var(--line-strong)] bg-[var(--bg-panel)] px-4 py-4 text-sm text-[var(--card-body)] sm:px-6">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--card-meta)]">
+              Legal
+            </span>
+            <Link href="/legal" className="font-medium text-[var(--accent-bright)] hover:underline">
+              Legal hub
+            </Link>
+            <Link href="/privacy" className="hover:text-[var(--text)] hover:underline">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-[var(--text)] hover:underline">
+              Terms
+            </Link>
+            <Link href="/cookies" className="hover:text-[var(--text)] hover:underline">
+              Cookies
+            </Link>
+            <Link href="/data-protection" className="hover:text-[var(--text)] hover:underline">
+              Data protection
+            </Link>
+            <Link href="/trust" className="hover:text-[var(--text)] hover:underline">
+              Trust Center
+            </Link>
+          </div>
+          <p className="mt-2 text-xs text-[var(--card-meta)]">
+            Draft notices · AI system disclosures on chat surfaces · counsel review pending
+          </p>
         </footer>
       </div>
 

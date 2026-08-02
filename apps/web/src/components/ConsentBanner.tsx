@@ -74,6 +74,13 @@ export function ConsentBanner() {
           >
             Privacy
           </Link>
+          {" · "}
+          <Link
+            href="/legal"
+            className="font-medium text-[var(--accent-bright)] underline-offset-2 hover:underline"
+          >
+            All policies
+          </Link>
           .
         </p>
         <div className="flex shrink-0 flex-wrap gap-2">

@@ -32,8 +32,12 @@ export function LegalPage({
           </section>
         ))}
       </div>
-      <p className="mt-10 text-sm text-[var(--muted)]">
+      <p className="mt-10 text-sm text-[var(--card-meta)]">
         See also{" "}
+        <Link href="/legal" className="text-[var(--accent-bright)] underline-offset-2 hover:underline">
+          Legal hub
+        </Link>
+        ,{" "}
         <Link href="/trust" className="text-[var(--accent-bright)] underline-offset-2 hover:underline">
           Trust Center
         </Link>
@@ -48,6 +52,13 @@ export function LegalPage({
         ,{" "}
         <Link href="/cookies" className="text-[var(--accent-bright)] underline-offset-2 hover:underline">
           Cookies
+        </Link>
+        ,{" "}
+        <Link
+          href="/data-protection"
+          className="text-[var(--accent-bright)] underline-offset-2 hover:underline"
+        >
+          Data protection
         </Link>
         .
       </p>

@@ -186,6 +186,7 @@ const GROUPS: NavGroup[] = [
       { id: "support", href: "/support", labelKey: "nav.supportDesk", icon: <IconSupport /> },
       { id: "admin", href: "/admin", labelKey: "nav.agentAdmin", icon: <IconAdmin /> },
       { id: "trust", href: "/trust", labelKey: "nav.trust", icon: <IconShield /> },
+      { id: "legal", href: "/legal", labelKey: "nav.legal", icon: <IconShield /> },
       { id: "roadmap", href: "/roadmap", labelKey: "nav.roadmap", icon: <IconRoadmap /> },
       {
         id: "demo",

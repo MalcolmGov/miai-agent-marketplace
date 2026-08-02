@@ -15,6 +15,7 @@ export const fr: Dictionary = {
   "nav.insights": "Analyses",
   "nav.supportDesk": "Support",
   "nav.agentAdmin": "Admin agents",
+  "nav.legal": "Mentions légales",
   "nav.trust": "Confiance & sécurité",
   "nav.roadmap": "Feuille de route",
   "nav.mondayDemo": "Démo lundi",
