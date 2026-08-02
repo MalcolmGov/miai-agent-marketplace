@@ -79,9 +79,11 @@ Optional: set `WEBHOOK_SINK_SECRET` and pass the same value as the Actions share
 
 In Actions → Webhook: paste URL + secret → Save webhook → Studio **live** chat.
 
+## Expand after first slice
+
 ```bash
 DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --expand --auto-record
 ```
 
 Hotel guest, home-services, clinic-front-desk, salon-booking, then remaining Go-live 18.
-After HubSpot Connect: re-run first slice for sales-qualifier + IT `create_ticket`.
+After HubSpot: sales-qualifier + IT ticket are recorded. Next optional: Shopify.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-02T03:42:39.977Z",
+  "updatedAt": "2026-08-02T03:45:11.095Z",
   "slice": [
     "us-executive-assistant",
     "us-dental-front-desk",
@@ -111,6 +111,15 @@
       "at": "2026-08-02T03:42:39.977Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-hotel-guest",
+      "family": "hotel-guest",
+      "connector": "webhook",
+      "correlationId": "corr_wave4_wh_msb9bsjz",
+      "at": "2026-08-02T03:45:11.093Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Wave 4 live webhook → https://httpbin.org/post"
     }
   ]
 }

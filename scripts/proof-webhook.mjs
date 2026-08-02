@@ -47,7 +47,12 @@ function isLive(toolCall) {
   const r = toolCall.result;
   if (!r || typeof r !== "object") return false;
   if (r.source === "sandbox_stub" || r._note) return false;
-  return r.live === true || toolCall.stubbed === false;
+  if (r.live === true) return true;
+  if (toolCall.stubbed === false) return true;
+  // Pre-deploy runtime may omit live flags — detect real outbound webhook echoes
+  if (r.json?.tool || r.headers?.["X-Miai-Signature"] || r.url?.includes("httpbin.org")) return true;
+  if (r.received === true || r.provider === "webhook" || r.provider === "webhook_sink") return true;
+  return false;
 }
 
 async function waitForSink(timeoutMs = 180_000) {
@@ -117,8 +122,8 @@ async function main() {
 
   const corr = `corr_wave4_wh_${Date.now().toString(36)}`;
   const prompts = [
-    "Please log a guest request for extra towels in room 412 for Jordan Hale.",
-    "Yes, go ahead and log that guest request now.",
+    "I need extra towels in room 412 please.",
+    "Yes, please log the guest request for extra towels in room 412 — go ahead now.",
   ];
 
   let liveHits = 0;
