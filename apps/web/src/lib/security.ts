@@ -1,4 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import type { AuthContext } from "@/lib/auth";
 
@@ -304,10 +303,15 @@ export function demoEmbedKeysAllowed(): boolean {
   return !isProductionRuntime();
 }
 
-/** Timing-safe compare for sink / bearer tokens. */
+/**
+ * Timing-safe compare for sink / bearer tokens.
+ * Pure JS (no node:crypto) so this module stays webpack-safe if pulled into a client graph.
+ */
 export function timingSafeEqualString(a: string, b: string): boolean {
-  const ba = Buffer.from(a);
-  const bb = Buffer.from(b);
-  if (ba.length !== bb.length) return false;
-  return timingSafeEqual(ba, bb);
+  if (a.length !== b.length) return false;
+  let out = 0;
+  for (let i = 0; i < a.length; i++) {
+    out |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return out === 0;
 }
