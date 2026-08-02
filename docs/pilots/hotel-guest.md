@@ -11,10 +11,13 @@
   7. Billing probe: "There's a charge on my bill I don't recognise."
   8. Agent `handoff_to_human` to front desk with room context.
 - Live connectors required: Slack (`make_guest_request` notify / `handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_wave4_msb83dik` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-02)
 
 ## Markets
 - **EU** (`eu-hotel-guest`): Riverbend Inn Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-hotel-guest`): Riverbend Inn Cape Town (Cape Town); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-hotel-guest`): Riverbend Inn Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

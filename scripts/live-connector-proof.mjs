@@ -27,6 +27,8 @@ const require = createRequire(import.meta.url);
 const BASE = process.env.DEMO_BASE ?? process.env.PROOF_BASE ?? "";
 const doChat = process.argv.includes("--chat");
 const doRecord = process.argv.includes("--record");
+const doExpand = process.argv.includes("--expand");
+const doAutoRecord = process.argv.includes("--auto-record");
 
 function argValue(flag) {
   const eq = process.argv.find((a) => a.startsWith(`${flag}=`));
@@ -60,7 +62,7 @@ export const WAVE4_SLICE = [
     family: "sales-qualifier",
     connectors: ["hubspot", "google_calendar", "slack"],
     prompts: [
-      "We're a 40-person clinic looking at inbound WhatsApp lead capture — capture my interest as Jordan Hale, 512-555-0199.",
+      "We're a 40-person clinic looking at inbound WhatsApp lead capture — capture my interest as Jordan Hale, jordan.hale@example.com, 512-555-0199.",
       "Yes, go ahead and capture that.",
     ],
   },
@@ -71,6 +73,46 @@ export const WAVE4_SLICE = [
     prompts: [
       "I can't connect to VPN from home — open a ticket for me as Jordan Hale.",
       "Yes, create the ticket.",
+    ],
+  },
+];
+
+/** Extra Calendar + Slack proofs while HubSpot OAuth is in progress. */
+export const WAVE4_EXPAND = [
+  {
+    agentId: "us-hotel-guest",
+    family: "hotel-guest",
+    connectors: ["slack"],
+    prompts: [
+      "Can I get extra towels and a late check-out tomorrow?",
+      "Please connect me to the front desk team about the late check-out.",
+    ],
+  },
+  {
+    agentId: "us-home-services",
+    family: "home-services",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "I need a plumber for a leaking geyser tomorrow afternoon — check availability.",
+      "Please hand this to dispatch — leaking geyser, tomorrow afternoon.",
+    ],
+  },
+  {
+    agentId: "us-clinic-front-desk",
+    family: "clinic-front-desk",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "I need a same-week GP appointment for a persistent cough — what times are free?",
+      "Please connect me to the clinic team about this cough.",
+    ],
+  },
+  {
+    agentId: "us-salon-booking",
+    family: "salon-booking",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "Book a women's haircut Saturday morning if possible — check availability first.",
+      "Please hand off to reception for Saturday haircut booking.",
     ],
   },
 ];
@@ -133,14 +175,56 @@ function printReadiness() {
 First-slice agents (prove these next):
 ${WAVE4_SLICE.map((s) => `  - ${s.agentId} → ${s.connectors.join(", ")}`).join("\n")}
 
+Expand set (Calendar/Slack while HubSpot pending):
+${WAVE4_EXPAND.map((s) => `  - ${s.agentId} → ${s.connectors.join(", ")}`).join("\n")}
+
 Staging steps (see docs/WAVE4_LIVE_CONNECTORS.md):
   1. Set OAuth client id/secret on Railway for Slack, Google, HubSpot
   2. Register redirect: {APP_BASE_URL}/api/oauth/callback
   3. Actions → Connect → pick Slack channel
   4. Studio chat mode = live (never demo token)
   5. Run: DEMO_BASE=https://… pnpm proof:live --chat
-  6. Record: pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr=corr_…
+  6. Expand: DEMO_BASE=https://… pnpm proof:live --chat --expand --auto-record
+  7. Record: pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr=corr_…
 `);
+}
+
+function recordOne({ agentId, connector, corr, notes }) {
+  const family = agentId?.replace(/^(us|eu|africa|asia)-/, "");
+  const doc = loadProofs();
+  const entry = {
+    agentId,
+    family,
+    connector,
+    correlationId: corr,
+    at: new Date().toISOString(),
+    environment: BASE || process.env.APP_BASE_URL || "unspecified",
+    notes: notes || "Wave 4 proof",
+  };
+  doc.proofs = (doc.proofs || []).filter(
+    (p) => !(p.agentId === agentId && p.connector === connector),
+  );
+  doc.proofs.push(entry);
+  saveProofs(doc);
+
+  const pilotPath = path.join(root, "docs/pilots", `${family}.md`);
+  if (fs.existsSync(pilotPath)) {
+    let md = fs.readFileSync(pilotPath, "utf8");
+    const line = `- Evidence: \`${corr}\` — live \`${connector}\` on ${entry.environment} (${entry.at.slice(0, 10)})`;
+    if (/^- Evidence:/m.test(md)) {
+      md = md.replace(/^- Evidence:.*$/m, line);
+    } else {
+      md = md.replace(/^- Depth:.*$/m, (m) => `${m}\n${line}`);
+    }
+    if (!/^- Depth: live/m.test(md) && /^- Depth: strong/m.test(md)) {
+      md = md.replace(/^- Depth: strong$/m, "- Depth: live");
+    }
+    if (!/## Wave 4 live proof/.test(md)) {
+      md = md.trimEnd() + `\n\n## Wave 4 live proof\n- Target connectors: see \`docs/WAVE4_LIVE_CONNECTORS.md\`\n`;
+    }
+    fs.writeFileSync(pilotPath, md.endsWith("\n") ? md : md + "\n");
+  }
+  return entry;
 }
 
 async function runChatProofs() {
@@ -148,7 +232,7 @@ async function runChatProofs() {
     console.error("Set DEMO_BASE (or PROOF_BASE) to the web app origin for --chat");
     process.exit(1);
   }
-  console.log(`Wave 4 live chat proofs against ${BASE}\n`);
+  console.log(`Wave 4 live chat proofs against ${BASE}${doExpand ? " [expand]" : ""}\n`);
 
   let status;
   try {
@@ -168,8 +252,9 @@ async function runChatProofs() {
   }
   console.log("");
 
+  const agents = doExpand ? WAVE4_EXPAND : WAVE4_SLICE;
   const results = [];
-  for (const slice of WAVE4_SLICE) {
+  for (const slice of agents) {
     const needed = slice.connectors;
     const available = needed.filter((c) => oauth[c]?.configured && oauth[c]?.connected);
     const missing = needed.filter((c) => !available.includes(c));
@@ -195,6 +280,7 @@ async function runChatProofs() {
     let liveHits = 0;
     let stubHits = 0;
     const toolNames = [];
+    const liveConnectors = new Set();
 
     for (const message of slice.prompts) {
       const chat = await j("/api/chat", {
@@ -210,8 +296,13 @@ async function runChatProofs() {
       const tools = chat.toolCalls || [];
       for (const t of tools) {
         toolNames.push(t.name);
-        if (isLiveToolResult(t)) liveHits++;
-        else if (t.stubbed || (t.result && t.result.source === "sandbox_stub") || t.result?._note) stubHits++;
+        if (isLiveToolResult(t)) {
+          liveHits++;
+          const c = t.connector || t.result?.provider;
+          if (c) liveConnectors.add(c);
+        } else if (t.stubbed || (t.result && t.result.source === "sandbox_stub") || t.result?._note) {
+          stubHits++;
+        }
       }
       console.log(
         `  ${slice.agentId} ← ${message.slice(0, 60)}… tools=${tools.length} live=${liveHits} stub=${stubHits}`,
@@ -227,6 +318,23 @@ async function runChatProofs() {
             ? "STUB_FALLBACK"
             : "NO_TOOLS";
     console.log(`→ ${slice.agentId} ${statusOut} correlationId=${corr}\n`);
+
+    if (doAutoRecord && liveHits > 0) {
+      const connectorsToRecord =
+        liveConnectors.size > 0
+          ? [...liveConnectors]
+          : available;
+      for (const connector of connectorsToRecord) {
+        recordOne({
+          agentId: slice.agentId,
+          connector,
+          corr,
+          notes: `${statusOut} auto-record from proof:live --chat`,
+        });
+        console.log(`  recorded ${slice.agentId} / ${connector}`);
+      }
+    }
+
     results.push({
       agentId: slice.agentId,
       status: statusOut,
@@ -234,6 +342,7 @@ async function runChatProofs() {
       liveHits,
       stubHits,
       tools: toolNames,
+      liveConnectors: [...liveConnectors],
     });
   }
 
@@ -246,44 +355,16 @@ function recordProof() {
   const agentId = argValue("--agent");
   const connector = argValue("--connector");
   const corr = argValue("--corr") || argValue("--correlation");
-  const family = agentId?.replace(/^(us|eu|africa|asia)-/, "");
   if (!agentId || !connector || !corr) {
     console.error("Usage: pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr=corr_…");
     process.exit(1);
   }
-  const doc = loadProofs();
-  const entry = {
+  const entry = recordOne({
     agentId,
-    family,
     connector,
-    correlationId: corr,
-    at: new Date().toISOString(),
-    environment: BASE || process.env.APP_BASE_URL || "unspecified",
+    corr,
     notes: argValue("--notes") || "manual Wave 4 proof",
-  };
-  doc.proofs = (doc.proofs || []).filter(
-    (p) => !(p.agentId === agentId && p.connector === connector),
-  );
-  doc.proofs.push(entry);
-  saveProofs(doc);
-
-  // Stamp pilot doc Evidence line when present
-  const pilotPath = path.join(root, "docs/pilots", `${family}.md`);
-  if (fs.existsSync(pilotPath)) {
-    let md = fs.readFileSync(pilotPath, "utf8");
-    const line = `- Evidence: \`${corr}\` — live \`${connector}\` on ${entry.environment} (${entry.at.slice(0, 10)})`;
-    if (/^- Evidence:/m.test(md)) {
-      md = md.replace(/^- Evidence:.*$/m, line);
-    } else {
-      md = md.replace(/^- Depth:.*$/m, (m) => `${m}\n${line}`);
-    }
-    if (!/^- Depth: live/m.test(md) && /^- Depth: strong/m.test(md)) {
-      md = md.replace(/^- Depth: strong$/m, "- Depth: live");
-    }
-    fs.writeFileSync(pilotPath, md.endsWith("\n") ? md : md + "\n");
-    console.log("Updated", pilotPath);
-  }
-
+  });
   console.log("Recorded proof →", proofsPath);
   console.log(entry);
 }

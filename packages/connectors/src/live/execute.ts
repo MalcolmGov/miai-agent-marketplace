@@ -592,31 +592,56 @@ async function shopifyOrder(
   };
 }
 
+async function hubspotDefaultTicketStage(token: string): Promise<string | undefined> {
+  try {
+    const res = await fetch("https://api.hubapi.com/crm/v3/pipelines/tickets", {
+      headers: { authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return undefined;
+    const json = (await res.json()) as {
+      results?: Array<{ stages?: Array<{ id: string; label?: string }> }>;
+    };
+    const stage = json.results?.[0]?.stages?.[0]?.id;
+    return stage ? String(stage) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 async function hubspotWrite(
   token: string,
   tool: string,
   args: Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
   if (tool.includes("ticket") || tool === "create_ticket") {
+    const stage =
+      (typeof args.hs_pipeline_stage === "string" && args.hs_pipeline_stage) ||
+      (await hubspotDefaultTicketStage(token));
+    const properties: Record<string, string> = {
+      subject: String(args.subject ?? args.summary ?? "Agent ticket"),
+      content: String(args.details ?? args.description ?? args.summary ?? ""),
+    };
+    // Prefer portal's first ticket stage — hardcoding "1" breaks many HubSpot accounts.
+    if (stage) properties.hs_pipeline_stage = stage;
+
     const res = await fetch("https://api.hubapi.com/crm/v3/objects/tickets", {
       method: "POST",
       headers: {
         authorization: `Bearer ${token}`,
         "content-type": "application/json",
       },
-      body: JSON.stringify({
-        properties: {
-          subject: String(args.subject ?? args.summary ?? "Agent ticket"),
-          content: String(args.details ?? args.description ?? args.summary ?? ""),
-          hs_pipeline_stage: "1",
-        },
-      }),
+      body: JSON.stringify({ properties }),
     });
     const json = (await res.json()) as { id?: string; message?: string };
     if (!res.ok) throw new Error(`HubSpot: ${json.message ?? res.status}`);
     return { ok: true, reference: json.id, provider: "hubspot", live: true };
   }
 
+  const contact = String(args.email ?? args.contact ?? "");
+  const email =
+    contact.includes("@")
+      ? contact
+      : `lead+${Date.now().toString(36)}@example.com`;
   const res = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
     method: "POST",
     headers: {
@@ -625,16 +650,16 @@ async function hubspotWrite(
     },
     body: JSON.stringify({
       properties: {
-        email: String(args.email ?? args.contact ?? "unknown@example.com"),
+        email,
         firstname: String(args.name ?? args.first_name ?? "Lead"),
-        phone: String(args.phone ?? ""),
+        phone: String(args.phone ?? (contact.includes("@") ? "" : contact)),
         message: String(args.summary ?? args.notes ?? ""),
       },
     }),
   });
   const json = (await res.json()) as { id?: string; message?: string };
   if (!res.ok) throw new Error(`HubSpot: ${json.message ?? res.status}`);
-  return { ok: true, reference: json.id, provider: "hubspot", live: true };
+  return { ok: true, reference: json.id, provider: "hubspot", live: true, email };
 }
 
 async function googleCalendar(

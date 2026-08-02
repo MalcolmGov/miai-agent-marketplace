@@ -63,4 +63,11 @@ Shows Wave 4 live proofs recorded vs first-slice targets.
 
 ## Expand after first slice
 
-Hotel guest, home-services, customer-support (Shopify + HubSpot + Slack), then remaining Go-live 18.
+While HubSpot OAuth is pending, prove more Calendar/Slack agents:
+
+```bash
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --expand --auto-record
+```
+
+Hotel guest, home-services, clinic-front-desk, salon-booking, then remaining Go-live 18.
+After HubSpot Connect: re-run first slice for sales-qualifier + IT `create_ticket`.

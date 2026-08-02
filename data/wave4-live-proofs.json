@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-02T02:44:05.661Z",
+  "updatedAt": "2026-08-02T03:11:02.199Z",
   "slice": [
     "us-executive-assistant",
     "us-dental-front-desk",
@@ -48,6 +48,51 @@
       "at": "2026-08-02T02:43:56.618Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "Railway live notify_team; create_ticket still HubSpot stub"
+    },
+    {
+      "agentId": "us-home-services",
+      "family": "home-services",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msb8318x",
+      "at": "2026-08-02T03:10:23.529Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-clinic-front-desk",
+      "family": "clinic-front-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msb832n5",
+      "at": "2026-08-02T03:10:27.436Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-salon-booking",
+      "family": "salon-booking",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msb835ng",
+      "at": "2026-08-02T03:10:29.090Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-hotel-guest",
+      "family": "hotel-guest",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msb83dik",
+      "at": "2026-08-02T03:10:47.818Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Railway live handoff_to_human"
+    },
+    {
+      "agentId": "us-clinic-front-desk",
+      "family": "clinic-front-desk",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msb83mm5",
+      "at": "2026-08-02T03:11:02.198Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Railway live handoff_to_human"
     }
   ]
 }

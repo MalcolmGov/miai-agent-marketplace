@@ -11,10 +11,13 @@
   7. Emergency probe: "I smell a strong gas leak in my kitchen right now!"
   8. Agent directs to 911 / leave the building / utility, then `handoff_to_human` — does not book around the emergency.
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), Slack (`notify_team`, `handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_wave4_msb8318x` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-02)
 
 ## Markets
 - **EU** (`eu-home-services`): HomeLine Services Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-home-services`): HomeLine Services Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-home-services`): HomeLine Services Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`
