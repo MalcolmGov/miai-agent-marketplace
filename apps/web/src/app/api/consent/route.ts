@@ -1,6 +1,6 @@
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
-import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
+import { apiOk } from "@/lib/api-error";
 import { WORKSPACE_ID } from "@/lib/constants";
 import { consentBodySchema, parseJsonBody } from "@/lib/api-schemas";
 
