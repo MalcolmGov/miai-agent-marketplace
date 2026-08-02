@@ -2,7 +2,7 @@
 
 **Purpose:** evidence pack before engineering handover to the MyInstantAI team.  
 **Staging:** https://miaiweb-production.up.railway.app  
-**Last full automated run:** 2026-08-02 · **76/76 Playwright passed** (~31s)  
+**Last full automated run:** 2026-08-02 · **78/78 Playwright passed** (~27s) · commit `feb6d43`  
 **Command:** `pnpm handover:staging`
 
 Also run locally before sign-off:
@@ -24,9 +24,9 @@ Human companion: [`UAT_CHECKLIST.md`](./UAT_CHECKLIST.md). Framework: [`TESTING.
 | Functional (`@functional`) | included | Pass |
 | UAT (`@uat`) | included | Pass |
 | Handover extras (`@handover`) | included | Pass |
-| **Playwright total** | **76** | **Pass** |
-| Local `pnpm run ci` | — | Fixed `test:web` runner; re-run at sign-off |
-| Manual UAT checklist | B1–B10 + C | Human |
+| **Playwright total** | **78** | **Pass** (2026-08-02) |
+| Local `pnpm run ci` | — | ✅ Pass (2026-08-02) |
+| Manual UAT checklist | B1–B10 + C | Eng guided ✅; product sign-off pending |
 
 ---
 
@@ -52,10 +52,11 @@ Human companion: [`UAT_CHECKLIST.md`](./UAT_CHECKLIST.md). Framework: [`TESTING.
 | Partner journey browse→rent→chat→install | `partner-demo-journey` |
 | Go-live 100 filter | `catalogue-filters`, `partner-demo-journey` |
 | Go-live hero studio shells (6 agents) | `golive-hero-matrix` |
+| Mobile shell (no H-overflow; studio try fits) | `mobile-responsive` |
 
 ---
 
-## Automated scenario index (76)
+## Automated scenario index (78)
 
 ### API / security
 - Health, health hardening, security headers, OpenAPI  
@@ -75,6 +76,7 @@ Human companion: [`UAT_CHECKLIST.md`](./UAT_CHECKLIST.md). Framework: [`TESTING.
 - Partner demo journey + acceptance bar  
 - Go-live heroes: customer-support, dental-front-desk, home-services, hotel-guest, executive-assistant, it-helpdesk  
 - Sandbox chat + UI card-refusal path  
+- Mobile responsive home + studio try  
 
 ---
 
@@ -96,9 +98,12 @@ Human companion: [`UAT_CHECKLIST.md`](./UAT_CHECKLIST.md). Framework: [`TESTING.
 
 | Gate | Result | Date / by |
 |---|---|---|
-| `pnpm run ci` | ✅ last run 2026-08-02 | Eng |
-| `pnpm handover:staging` (76/76) | ✅ last run 2026-08-02 | Eng |
-| Human [`UAT_CHECKLIST.md`](./UAT_CHECKLIST.md) | ☐ | |
-| Ready to hand to MyInstantAI | ☐ Yes ☐ Yes with caveats ☐ No | |
+| `pnpm run ci` | ✅ | 2026-08-02 · Eng |
+| `pnpm handover:staging` (78/78) | ✅ | 2026-08-02 · Eng · `feb6d43` |
+| Human [`UAT_CHECKLIST.md`](./UAT_CHECKLIST.md) | ✅ B1–B10 eng-guided; product eyeball pending | 2026-08-02 |
+| Ready to hand to MyInstantAI | ☐ Yes ☑ Yes with caveats ☐ No | |
 
 **Caveats:**
+- Mock rails still on for demos; OIDC/wallet cutover not done.
+- Product owner should spot-check live Studio answer quality (B8 / C golden path) before partner call.
+- Counsel-signed legal / SOC 2 remain open (unchanged).
