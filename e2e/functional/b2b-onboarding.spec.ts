@@ -2,6 +2,17 @@ import { test, expect } from "@playwright/test";
 import { dismissConsent } from "../helpers";
 
 test.describe("B2B onboarding @functional @uat @handover", () => {
+  test("marketing preview links For business into get-started", async ({ page }) => {
+    await dismissConsent(page);
+    await page.goto("/marketing");
+    await expect(page.getByRole("heading", { name: /AI Access/i })).toBeVisible({
+      timeout: 30_000,
+    });
+    await page.getByTestId("marketing-for-business").click();
+    await expect(page).toHaveURL(/\/get-started/);
+    await expect(page.getByRole("heading", { name: /business workspace/i })).toBeVisible();
+  });
+
   test("get-started wizard completes and shows catalogue checklist", async ({ page }) => {
     test.setTimeout(90_000);
     await dismissConsent(page);

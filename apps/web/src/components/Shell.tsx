@@ -33,12 +33,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const isHome = pathname === "/";
   /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
   const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
-  /** Business onboarding / login — focused full-page, no sidebar. */
+  /** Business onboarding / login / marketing preview — focused full-page, no sidebar. */
   const isAuthEntry =
     pathname === "/get-started" ||
     pathname.startsWith("/get-started/") ||
     pathname === "/login" ||
-    pathname.startsWith("/login/");
+    pathname.startsWith("/login/") ||
+    pathname === "/marketing" ||
+    pathname.startsWith("/marketing/");
   /** Full-page Ask AI — skip floating FAB duplicate. */
   const isAskPage = pathname === "/ask" || pathname.startsWith("/ask/");
 

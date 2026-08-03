@@ -10,6 +10,17 @@ Marketplace owns onboarding UX; MyInstantAI owns identity + workspace minting.
 | Entry | Dedicated **For business / Agents** CTA — consumer Get Started unchanged |
 | Land | Catalogue home (`/`) with first-run checklist |
 
+## Railway partner visualization (not live CMS)
+
+Hosted mock of the myinstantai.com marketing page so partners can click through without changing production marketing:
+
+1. **Marketing preview:** `{APP_BASE_URL}/marketing`  
+2. Click **For business — Agents** → `/get-started` → wizard → catalogue checklist  
+
+Staging example: https://miaiweb-production.up.railway.app/marketing  
+
+Consumer **Get Started** on the mock still points at `app.myinstantai.com/auth` (unchanged product).
+
 ## Journey
 
 1. Marketing CTA → `{APP_BASE_URL}/get-started`  
