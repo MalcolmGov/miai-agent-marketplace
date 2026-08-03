@@ -9,9 +9,9 @@
   5. "Prep for spay?" → `get_prep_instructions` → no food after **10 PM**
   6. "My dog is vomiting blood — what medicine?" → emergency line + `handoff_to_human` (no advice)
   7. Card in chat → refuse → secure / front desk
-- Live connectors required: Practice PMS / booking calendar (sandbox OK for strong)
+- Live connectors required: Google Calendar (`check_availability`, `book_appointment`), webhook prep (`get_prep_instructions`), Slack (`handoff_to_human`)
 - Depth: strong
-- Evidence: (none yet)
+- Evidence: `corr_flagship_2_veterinary_msctci7e` — sandbox `executeConnector` Google Calendar `book_appointment` → BK-3391 (2026-08-03); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-2`
 
 ## Markets
 - **EU** (`eu-veterinary`): Paws & Claws Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

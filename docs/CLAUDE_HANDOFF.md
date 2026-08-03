@@ -1,14 +1,15 @@
 # Claude handoff — active task
 
-## Active: flagship depth Phase 2 — financial services (confirmed, start now)
+## Active: verify flagship depth Phase 2 (Cursor landed)
 
-**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md) — Phase 2 section rewritten with Malcolm's confirmed pick + data.
+**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
+**Close note:** [`docs/reports/flagship-depth-phase2-close-2026-08-03.md`](reports/flagship-depth-phase2-close-2026-08-03.md)
 
-**✅ Phase 1a: merged** (`585ac92`, PR #7). Five workflow modules + dispatch + unit tests + pilot `Depth: strong` (correct label — sandbox evidence honestly disclosed, not yet real OAuth/`eval:live` proof) + `eval:live --set=flagship-1a` / `--families=`. Phase 1b correctly skipped (Cluster B untouched, verified byte-for-byte). Independently verified: [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md).
+**✅ Phase 1a: merged** (`585ac92`, PR #7). Independently verified: [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md).
 
-**Phase 2 — do this next:** **Financial services**, starting with `mobile-money`, `wealth-management`, `tax-office` (largest enterprise-tier cluster in the catalogue — 7/20 — and the biggest value-weighted depth gap; see brief for the full data table and rationale). Same acceptance bar as Phase 1a: workflow module + dispatch + tests + pilot doc labeled `Depth: strong` with an honest evidence line (do not repeat the live-vs-strong labeling slip from Phase 1a — the fix is in the brief). Optional fast-win alongside it: `veterinary` (no workflow module yet, pilot already `Depth: strong`) — completes health & wellness as a fully-covered vertical.
+**Cursor shipped Phase 2** — `mobile-money`, `wealth-management`, `tax-office` + optional `veterinary`: workflow modules + dispatch + unit tests + pilots labeled **`Depth: strong`** (sandbox evidence `corr_flagship_2_*_msctci7e`; do not treat as `live`) + `eval:live --set=flagship-2`.
 
-Ping Claude for independent verification once this lands, same shape as the Phase 1a review.
+**Claude verify:** same shape as Phase 1a — file:line for modules + dispatch; confirm pilots are `Depth: strong` not `live`; Cluster B untouched; `pnpm --filter @miai/runtime test` green.
 
 ---
 

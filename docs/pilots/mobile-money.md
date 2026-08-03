@@ -9,9 +9,9 @@
   5. Single-tx cap $3,000 · send fee $7 · cash-out fees $10 / $20
   6. Over-cap / fraud pressure / dispute → handoff_to_human (don't complete)
   7. PIN, OTP, or card details offered → refuse
-- Live connectors required: Wallet / float ledger (sandbox OK for strong; live OAuth for depth: live)
+- Live connectors required: Wallet/float ledger webhook (`check_float`, `record_cash_in`, `record_cash_out`, `send_money`), Slack (`handoff_to_human`)
 - Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Evidence: `corr_flagship_2_mobile-money_msctci7e` — sandbox `executeConnector` webhook `record_cash_in` → REF-0001 (2026-08-03); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-2`
 
 ## Markets
 - **EU** (`eu-mobile-money`): Riverbend Cash Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
