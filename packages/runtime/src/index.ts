@@ -32,6 +32,23 @@ import {
 } from "./workflows/dental-front-desk.js";
 import { isHotelGuest, runHotelGuestWorkflow } from "./workflows/hotel-guest.js";
 import {
+  isAccountingPractice,
+  runAccountingPracticeWorkflow,
+} from "./workflows/accounting-practice.js";
+import {
+  isEventsVenue,
+  runEventsVenueWorkflow,
+} from "./workflows/events-venue.js";
+import {
+  isBuildingManagement,
+  runBuildingManagementWorkflow,
+} from "./workflows/building-management.js";
+import { isPharmacy, runPharmacyWorkflow } from "./workflows/pharmacy.js";
+import {
+  isGymMembership,
+  runGymMembershipWorkflow,
+} from "./workflows/gym-membership.js";
+import {
   isMarketplaceAssistant,
   runMarketplaceAssistantWorkflow,
 } from "./workflows/marketplace-assistant.js";
@@ -2313,6 +2330,77 @@ export async function runTurn(
       replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(hg);
+    if (done) return done;
+  }
+
+  // Flagship depth Phase 1a — Go-live 18 gap close (orchestration only)
+  if (isAccountingPractice(req.agentId)) {
+    const ap = await runAccountingPracticeWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(ap);
+    if (done) return done;
+  }
+
+  if (isEventsVenue(req.agentId)) {
+    const ev = await runEventsVenueWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(ev);
+    if (done) return done;
+  }
+
+  if (isBuildingManagement(req.agentId)) {
+    const bm = await runBuildingManagementWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(bm);
+    if (done) return done;
+  }
+
+  if (isPharmacy(req.agentId)) {
+    const rx = await runPharmacyWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(rx);
+    if (done) return done;
+  }
+
+  if (isGymMembership(req.agentId)) {
+    const gym = await runGymMembershipWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(gym);
     if (done) return done;
   }
 

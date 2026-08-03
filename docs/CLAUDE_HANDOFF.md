@@ -1,11 +1,13 @@
 # Claude handoff — active task
 
-## Active: flagship depth push (new — product/GTM track)
+## Active: verify flagship depth Phase 1a (Cursor landed)
 
-**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)
-**Goal:** close the depth gap inside the platform's own `GO_LIVE_18` showcase — 10 of 18 featured families have real orchestration + `Depth: live`, 8 don't (6 of those `pro` tier, already sold at premium pricing on the shallow generic path). Phase 1a: 5 clean agents (`accounting-practice`, `events-venue`, `building-management`, `pharmacy`, `gym-membership`). Phase 1b: 3 more (`customer-support`, `delivery-tracking`, `trades-receptionist`) are **also inside protected Cluster B** — runtime-orchestration-layer only, their `.agent.json` content stays untouched. Phase 2 (enterprise-tier verticals) needs Malcolm's industry pick before starting. Phase 3: turn `pnpm eval:live` into a public hero-set scoreboard.
+**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
+**Close note:** [`docs/reports/flagship-depth-close-2026-08-03.md`](reports/flagship-depth-close-2026-08-03.md)
 
-**Complementary, not overlapping**, with the B+ pilot-bar track below (that's infra/diligence-score; this is agent-orchestration depth). Ping Claude for independent verification once Phase 1a lands (same acceptance-bar checklist in the brief).
+**Cursor shipped Phase 1a** — five workflow modules + dispatch + unit tests + pilot `Depth: live` updates + `eval:live --set=flagship-1a` / `--families=`. **Phase 1b skipped** (Cluster B boundary honored — no `.agent.json` edits). Phase 2 still needs Malcolm’s industry pick. Phase 3 scoreboard page deferred; CLI targeting landed.
+
+**Claude verify:** same acceptance-bar checklist in the brief — file:line for each workflow + `index.ts` dispatch; spot-check pilots’ `Depth: live` + Evidence; confirm Cluster B packs untouched; if API keys available, run `pnpm eval:live --set=flagship-1a` and attach the report (do not treat MockModel % as live quality).
 
 ---
 
