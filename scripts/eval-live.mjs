@@ -243,15 +243,19 @@ const stamp = new Date().toISOString().slice(0, 10);
 
 /** Distinguish same-day runs (e.g. --set=go-live-18 vs --set=flagship-2) so one doesn't silently overwrite the other. */
 function slugify(s) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  return s
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean)
+    .join("-");
 }
-const runLabel = namedSet
-  ? slugify(namedSet)
-  : familyFilter.length
-    ? familyFilter.length <= 4
-      ? slugify(familyFilter.join("-"))
-      : `families-${familyFilter.length}`
-    : "sample";
+function runLabelFor(setName, families) {
+  if (setName) return slugify(setName);
+  if (families.length === 0) return "sample";
+  if (families.length <= 4) return slugify(families.join("-"));
+  return `families-${families.length}`;
+}
+const runLabel = runLabelFor(namedSet, familyFilter);
 const reportPath = path.join(root, "docs/reports", `eval-live-${stamp}-${runLabel}.md`);
 
 const md = `# Live-LLM eval sample — ${stamp}
