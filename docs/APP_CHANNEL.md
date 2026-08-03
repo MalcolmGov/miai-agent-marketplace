@@ -78,6 +78,16 @@ pnpm start             # or: pnpm --dir ../.. demo:app
 
 Open iOS Simulator / Android emulator. The shell is a full-screen WebView only.
 
+## Migration (MyInstantAI native apps)
+
+Native apps do **not** host the marketplace. After Azure cutover:
+
+1. Operator: deep link / WebView to `{APP_BASE_URL}`  
+2. End-user chat: this App URL (Phase 3) or native UI on `/api/app/chat` (Phase 4)  
+3. Keep `APP_BASE_URL` on a stable Front Door host so store builds don’t chase Railway/Azure FQDNs  
+
+Full phased plan: [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md).
+
 ## Related
 
 - Website embed: `/agents/v1/agent.js` + `POST /api/embed/chat`  

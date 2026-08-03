@@ -58,12 +58,14 @@ Without items 1–3 in writing (even staging stubs), the first sprint stays infr
 
 | Week | Outcome |
 |---|---|
-| **Week 1** | Kickoff call; lock commercial principles; receive staging OIDC + wallet + model endpoints; confirm Azure owner + domain |
+| **Week 1** | Kickoff call; lock commercial principles; receive staging OIDC + wallet + model endpoints; confirm Azure owner + domain; name native-app owner |
 | **Week 2** | Marketplace pointed at your staging rails (`auth=oidc`, `wallet=http`, `model=gateway`); smoke: login → rent → chat → debit |
-| **Week 3** | Custom domain + OAuth redirect URIs updated; 6 pilot agents UAT on your staging; Live Ops / health green |
-| **Week 4** | Cutover rehearsal (Migration Runbook); production go-live checklist; backlog for HubSpot/Shopify/Microsoft + WhatsApp |
+| **Week 3** | Custom domain + OAuth redirect URIs; 6 pilot agents UAT; Live Ops / health green; agree native deep-link + App channel WebView path |
+| **Week 4** | Cutover rehearsal ([Migration Runbook](./MIGRATION_RUNBOOK.md)); production go-live; **native pilot** — one hero agent via `/app/v1` WebView in iOS/Android (or Expo shell) |
 
-Success criteria for day 30: **a MyInstantAI user can sign in with your SSO, rent an agent, run a live tool-backed conversation billed against your wallet, on your hostname.**
+Success criteria for day 30: **a MyInstantAI user can sign in with your SSO, rent an agent, run a live tool-backed conversation billed against your wallet, on your hostname — and open that agent from a native app via the App channel (WebView).**
+
+Native note: the marketplace is **not** rebuilt inside iOS/Android for v1. Operator UI = deep link / WebView to Agents; end-user chat = App channel (`/app/v1` or later `POST /api/app/chat`). See runbook Phases 2–4.
 
 ---
 

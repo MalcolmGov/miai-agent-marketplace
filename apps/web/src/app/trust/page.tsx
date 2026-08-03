@@ -254,9 +254,9 @@ export default function TrustPage() {
           <div>
             <p className="text-sm font-semibold">See it live</p>
             <p className="mt-1 max-w-2xl text-sm text-[var(--muted)]">
-              Open any agent&apos;s studio chat and tap <strong>Test the guardrails</strong> — watch it
-              block a prompt-injection attack, refuse cross-tenant data, and escalate an erasure
-              request to a human, in real time.
+              Open any agent&apos;s studio chat and try an unsafe prompt — the runtime blocks
+              prompt-injection, refuses cross-tenant data, and escalates erasure requests to a
+              human.
             </p>
           </div>
         </div>

@@ -22,10 +22,13 @@ Completed after P0 so cutover week is runbook-driven, not ad hoc.
 - Real OIDC / wallet / model credentials  
 - Azure subscription + who runs `az deployment`  
 - Custom domain + OAuth redirect URI registration  
+- Native app owner + deep-link / App channel pilot slot (see [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md) Phases 2–3)
 
 ## P2 (later)
 
 - Persist OAuth/knowledge in Postgres (Files share is cutover-safe interim)  
+- Optional native messenger on `POST /api/app/chat` (SSE) instead of WebView  
+- Load test + production App URL monitoring  
 
 ## Polish completed (post-P1)
 

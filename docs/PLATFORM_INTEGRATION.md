@@ -34,9 +34,11 @@ Catalogue is sold as **agent families** with **US / EU / Africa / Asia** packs (
 - Preferred: `app.myinstantai.com/agents` reverse-proxy to this service
 - Embed: `https://app.myinstantai.com/agents/v1/agent.js`
 
-### 5. App channel (hosted)
-- Hosted messenger: `{APP_BASE_URL}/app/v1?key=mia_pk_…` (WebView / Expo shell)
-- Chat API: `POST /api/app/chat` (SSE). See [APP_CHANNEL.md](./APP_CHANNEL.md).
+### 5. App channel (hosted) — MyInstantAI native apps
+- Hosted messenger: `{APP_BASE_URL}/app/v1?key=mia_pk_…` (WKWebView / Android WebView / Expo shell)
+- Chat API: `POST /api/app/chat` (SSE) for a fully native messenger later
+- Operator surfaces (catalogue, rent, Studio, Ops): deep link or in-app browser to `{APP_BASE_URL}` — not rebuilt natively in v1
+- Migration phases: [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md) · detail: [APP_CHANNEL.md](./APP_CHANNEL.md)
 
 ### 6. WhatsApp
 - Confirm WABA ownership (MyInstantAI BSP vs Move Digital)

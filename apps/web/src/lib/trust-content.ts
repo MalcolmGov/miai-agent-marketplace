@@ -127,7 +127,7 @@ export const PILLARS: Pillar[] = [
       },
       {
         title: "Prompt-injection defense",
-        body: "Guardrail docs + runtime checks · “Test the guardrails” probes in Agent Studio.",
+        body: "Guardrail docs + runtime input/output checks in Agent Studio chat.",
         truth: "live",
       },
       {
@@ -248,7 +248,7 @@ export const REGION_PACKS: Array<{
 export const ROADMAP_SECURITY: Array<{ when: string; item: string; status: Status }> = [
   {
     when: "Now",
-    item: "RBAC matrix, AES-GCM tokens, DSAR export, CSP enforce, Test the guardrails demo",
+    item: "RBAC matrix, AES-GCM tokens, DSAR export, CSP enforce, runtime guardrail refusals",
     status: "shipped",
   },
   {

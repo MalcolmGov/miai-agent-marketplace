@@ -141,7 +141,7 @@ export async function runMarketplaceAssistantWorkflow(input: {
       handled: true,
       toolCalls,
       assistantMessage:
-        "Every agent is built with guardrails so customers get safe, accurate help: answers stay grounded in your knowledge, private data isn’t shared across tenants, and sensitive topics (clinical, legal, payments) go to a human. You can try **Test the guardrails** in Agent Studio, and see the broader trust picture at /trust.",
+        "Every agent is built with guardrails so customers get safe, accurate help: answers stay grounded in your knowledge, private data isn’t shared across tenants, and sensitive topics (clinical, legal, payments) go to a human. See the broader trust picture at /trust.",
     };
   }
 

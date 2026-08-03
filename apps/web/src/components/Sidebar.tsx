@@ -125,14 +125,6 @@ function IconShield() {
   );
 }
 
-function IconRoadmap() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M5 6h10l4 3-4 3H5V6ZM5 15h8l3 2.5L13 20H5v-5Z" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function IconLearn() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -187,14 +179,6 @@ const GROUPS: NavGroup[] = [
       { id: "admin", href: "/admin", labelKey: "nav.agentAdmin", icon: <IconAdmin /> },
       { id: "trust", href: "/trust", labelKey: "nav.trust", icon: <IconShield /> },
       { id: "legal", href: "/legal", labelKey: "nav.legal", icon: <IconShield /> },
-      { id: "roadmap", href: "/roadmap", labelKey: "nav.roadmap", icon: <IconRoadmap /> },
-      {
-        id: "demo",
-        href: "/demo",
-        labelKey: "nav.mondayDemo",
-        icon: <IconRoadmap />,
-        badge: { labelKey: "nav.badgeNew", tone: "new" },
-      },
     ],
   },
   {
