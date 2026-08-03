@@ -10,10 +10,13 @@
   6. Exercise prescription / injury advice → refuse + trainer/doctor
   7. Card details in chat → refuse + secure link
 - Live connectors required: Webhook membership tools (`get_plans`, `get_class_schedule`), Google Calendar (`request_freeze_or_cancel`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_1a_gym-membership_mscqcwrr` — sandbox `executeConnector` Google Calendar `request_freeze_or_cancel` → REF-1001 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
+- Depth: live
+- Evidence: `corr_wave4_msd199sy` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-03)
 
 ## Markets
 - **EU** (`eu-gym-membership`): Ironleaf Fitness Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-gym-membership`): Ironleaf Fitness Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-gym-membership`): Ironleaf Fitness Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

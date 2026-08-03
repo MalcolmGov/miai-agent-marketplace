@@ -30,6 +30,7 @@
     "test": "pnpm test:wallet && pnpm --filter @miai/connectors test && pnpm test:web",
     "test:web": "node --import ./scripts/web-test-register.mjs --experimental-strip-types --test apps/web/test/*.test.mjs",
     "eval:live": "pnpm build:packages && node scripts/eval-live.mjs",
+    "scoreboard:live": "node scripts/build-eval-live-scoreboard.mjs",
     "test:runtime": "pnpm --filter @miai/runtime test",
     "test:unit": "node --test packages/connectors/test/*.test.mjs && pnpm test:runtime && pnpm test:web",
     "test:wallet": "pnpm --filter @miai/wallet-adapter test",

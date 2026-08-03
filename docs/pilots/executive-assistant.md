@@ -12,7 +12,7 @@
   8. Agent hands off via `handoff_to_human` with a summary (does not silently drop a meeting).
 - Live connectors required: Google Calendar (`check_calendar`, `schedule_meeting`), Slack (`notify_team`, `handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msb98e21` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-02)
+- Evidence: `corr_wave4_msd2c1l1` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-03)
 
 ## Markets
 - **EU** (`eu-executive-assistant`): Maya Chen / Ridgeway Labs Berlin EA desk (Berlin); currency EUR; compliance GDPR; emergency 112.

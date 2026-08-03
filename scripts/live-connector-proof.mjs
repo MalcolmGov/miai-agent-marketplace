@@ -115,6 +115,42 @@ export const WAVE4_EXPAND = [
       "Please hand off to reception for Saturday haircut booking.",
     ],
   },
+  /** Flagship depth heroes — prove after Actions → Connect (Calendar / Slack). */
+  {
+    agentId: "us-events-venue",
+    family: "events-venue",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "I'd like to hold the Intimate wedding package for Saturday in three weeks — check availability.",
+      "Yes, go ahead and book a hold for that date — then hand off to the events team.",
+    ],
+  },
+  {
+    agentId: "us-gym-membership",
+    family: "gym-membership",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "Can I book a gym tour Saturday morning?",
+      "Please connect me to the membership desk about the tour.",
+    ],
+  },
+  {
+    agentId: "us-pharmacy",
+    family: "pharmacy",
+    connectors: ["slack"],
+    prompts: [
+      "I need help with a prescription refill — please connect me to the pharmacy team.",
+    ],
+  },
+  {
+    agentId: "us-accounting-practice",
+    family: "accounting-practice",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "I'd like to book a tax planning consult next week — what's free?",
+      "Please hand this to the practice team for a consult booking.",
+    ],
+  },
 ];
 
 const ENV_MATRIX = [

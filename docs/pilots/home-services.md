@@ -12,7 +12,7 @@
   8. Agent directs to 911 / leave the building / utility, then `handoff_to_human` — does not book around the emergency.
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), Slack (`notify_team`, `handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msb8318x` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-02)
+- Evidence: `corr_wave4_msd187lu` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-03)
 
 ## Markets
 - **EU** (`eu-home-services`): HomeLine Services Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -1,46 +1,66 @@
 # Claude handoff — active task
 
-## Active: verify flagship depth Phase 1b (Cursor landed)
+## ⚠️ Merge order (Cursor + Claude coordination)
 
-**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
-**Close note:** [`docs/reports/flagship-depth-phase1b-close-2026-08-03.md`](reports/flagship-depth-phase1b-close-2026-08-03.md)
+| Order | PR | Status | Action |
+|---|---|---|---|
+| **1st** | [#17](https://github.com/MalcolmGov/miai-agent-marketplace/pull/17) `fix/eval-live-findings` | CI **green** | Merge first — fixes reply bugs in accounting/events/gym (+ hotel/pharmacy/mobile-money/vet) |
+| **2nd** | [#16](https://github.com/MalcolmGov/miai-agent-marketplace/pull/16) `cursor/quality-scoreboard-phase3` | quality/secrets green; SonarCloud fail | **Rebase onto main after #17**, then merge — Depth: live for those 3 must sit on fixed runtime |
 
-**✅ Phase 1a / Phase 2 / STOP helper:** merged and verified earlier.
-
-**Cursor shipped Phase 1b (runtime-only):**
-- Re-gap: `trades-receptionist` already covered by shared `booking-front-desk` — no new module
-- New workflows: `customer-support`, `delivery-tracking` + dispatch + tests
-- Pilots **`Depth: strong`** + sandbox Evidence (`corr_flagship_1b_*_mscuy561`)
-- **Zero** Cluster B `.agent.json` edits
-- `pnpm eval:live --set=flagship-1b`
-
-**Claude verify:** Cluster B catalogue byte-identical to `main`; pilots `strong` not `live`; `isBookingFrontDesk` covers trades; runtime tests green.
+Do **not** merge #16 before #17. Claude wrote the note in the #17 PR body (avoided clobbering this handoff earlier); Cursor mirrored it on both PR comments + here.
 
 ---
 
-## Nearly done: B+ pilot bar (target 78–80)
+## Active: verify Wave 4 live reconnect + Depth: live promotions (Cursor landed)
 
-**Diligence update:** [`docs/reports/technical-audit-update-2026-08-02.md`](reports/technical-audit-update-2026-08-02.md) — **B · 72**.  
-**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.** Per its own "Done when" checklist: ops bar essentially closed; only remaining item is an audit-narrative score refresh.
+**Context:** Staging OAuth was reconnected (Google Calendar, Slack, HubSpot, Email). Cursor ran `proof:live --chat` + `--expand --auto-record` against `https://miaiweb-production.up.railway.app`.
 
-**Optional:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) at latest `main` for a fresh 9-risk sign-off.
+**Evidence store:** `data/wave4-live-proofs.json`  
+**Close / scoreboard context:** Phase 3 `/quality` in PR #16 (`docs/reports/flagship-depth-phase3-close-2026-08-03.md`)  
+**Related:** PR #17 live-eval judgment fixes (merge first — see above).
+
+### LIVE_PASS (promoted / refreshed Evidence)
+
+| Agent | Corr (latest) | Connectors proven |
+|---|---|---|
+| `us-executive-assistant` | `corr_wave4_msd2c1l1` | google_calendar, slack |
+| `us-dental-front-desk` | `corr_wave4_msd2c7pe` | google_calendar |
+| `us-it-helpdesk` | `corr_wave4_msd2ceut` | hubspot, slack |
+| `us-events-venue` | `corr_wave4_msd18yr3` | google_calendar → **Depth: live** |
+| `us-home-services` | `corr_wave4_msd187lu` | google_calendar, slack |
+| `us-clinic-front-desk` | `corr_wave4_msd18ch2` | google_calendar, slack |
+| `us-salon-booking` | `corr_wave4_msd18uku` | google_calendar, slack |
+| `us-gym-membership` | `corr_wave4_msd199sy` | slack → **Depth: live** |
+| `us-accounting-practice` | `corr_wave4_msd19ldp` | slack → **Depth: live** |
+
+`pnpm production:status`: US Depth live **11 / 100**; Wave 4 first-slice agents with recorded proof **4 / 4**.
+
+### Residuals (do not over-claim)
+
+| Agent | Result | Note |
+|---|---|---|
+| `us-sales-qualifier` | NO_TOOLS (this run) | `capture_lead` fired but not counted as live connector hit — investigate HubSpot live marking; prior Evidence `corr_wave4_msb98i0f` remains |
+| `us-hotel-guest` | NO_TOOLS | expand prompts did not invoke tools |
+| `us-pharmacy` | NO_TOOLS | expand handoff prompt did not invoke tools |
+
+### Claude verify
+
+1. Pilots for events-venue / gym-membership / accounting-practice say **`Depth: live`** with 2026-08-03 Evidence lines matching corr ids above  
+2. `data/wave4-live-proofs.json` includes those corr ids (not sandbox)  
+3. No ZA pack deletions; no Cluster B catalogue re-deepen  
+4. Do **not** treat MockModel % as live quality; `/quality` remains hero-set only  
+5. Optional: re-run sales-qualifier live proof after HubSpot live-marking fix
+
+### Ops note
+
+Staging still has `authMode`/`walletMode: mock` until MyInstantAI OIDC/wallet wire-up — expected.
 
 ---
 
-### ✅ Done — remediation verification (Phases 0–5 + punch-list)
+## Closed: flagship depth Phases 1a / 1b / 2 / 3
 
-Verified at pin `63f3718`: **5 FIXED · 4 PARTIAL · 0 OPEN · 0 REGRESSED** → `docs/reports/remediation-verify-2026-08-02.md` (PR #3). Original verify brief:
-
-**Brief:** [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md)  
-**Pin:** `ed22434` on `main` (or latest `origin/main` if moved — record SHA).  
-**Prior verifier pin `2a40d34` is stale** — re-score all 9 risks from source.
-
-**Deliverable:** `docs/reports/remediation-verify-YYYY-MM-DD.md`  
-Verdict format: `N FIXED · M PARTIAL · K OPEN · R REGRESSED` for the 9 risks, plus phase roll-up.
-
-**Do not:** delete ZA unprefixed packs; re-deepen Cluster B; claim MockModel % as live-LLM quality.
-
-**Cursor already closed punch-list residuals in `ed22434`** (TLS default-verify, Shopify/Zendesk safeFetch, body caps, CI tighten, building-management grounding). Staging may run with `PG_SSL_REJECT_UNAUTHORIZED=0` + `I_UNDERSTAND_PG_SSL_INSECURE=1` until a verifiable CA is mounted — score that as intentional dual-ACK residual, not silent fail-open.
+- Phases 1a–1b–2: runtime workflows + pilots at strong (then live where Wave 4 proved)  
+- Phase 3: `/quality` scoreboard — `docs/reports/flagship-depth-phase3-close-2026-08-03.md`
 
 ---
 
@@ -52,24 +72,3 @@ Those **51 files are ZA (South Africa) market packs**, not orphans.
 - On disk = **500 + 51 ZA aliases = 551** (intentional)
 - `families.json` maps `markets.za` → same id as `markets.africa`
 - Only delete Finder junk: `* 2.json` / `*agent 2.json`
-
----
-
-## Prior context (do not undo)
-
-| Slice | Owner | Status |
-|---|---|---|
-| Technical audit + remediation Phases 0–5 | Cursor | Done through `ed22434` |
-| Punch-list follow-up | Cursor | Done — see `docs/reports/verifier-punchlist-2026-08-02.md` |
-| Wave 3 market localization | Cursor + Claude | Done |
-| Go-live Cluster B deepen | Claude | Done — **protected from overwrite** |
-| Go-live 100 stand-behind | Cursor | Done — filter `/?pilot=1` |
-| Depth strong 100/100 | Cursor | Done |
-
-**Do not re-deepen Cluster B** (`restaurant-takeaway` · `salon-booking` · `clinic-front-desk` · `customer-support` · `delivery-tracking` · `trades-receptionist`).
-
-## Optional after verify sign-off
-
-- Partner OIDC / wallet cutover (blocked externally)
-- CSP nonce / `strict-dynamic` (still open residual)
-- Wave 4 live connector proofs — `pnpm proof:live` · `docs/WAVE4_LIVE_CONNECTORS.md`

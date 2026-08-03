@@ -128,6 +128,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <Link href="/trust" className="hover:text-[var(--text)] hover:underline">
               Trust Center
             </Link>
+            <Link href="/quality" className="hover:text-[var(--text)] hover:underline">
+              Live quality
+            </Link>
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-[var(--card-meta)] sm:text-xs">
             Draft notices · AI system disclosures on chat surfaces · counsel review pending

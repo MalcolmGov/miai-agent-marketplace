@@ -12,7 +12,7 @@
   8. (Alt) Chest pain / can't breathe → **911** + handoff (no booking)
 - Live connectors required: EHR/scheduling or Google Calendar / Calendly; Slack/Teams for clinical handoff queue
 - Depth: live
-- Evidence: `corr_wave4_msb83mm5` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-02)
+- Evidence: `corr_wave4_msd18ch2` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-03)
 
 ## Market packs (EU / Africa / Asia)
 

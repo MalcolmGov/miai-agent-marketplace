@@ -84,13 +84,13 @@ Remaining enterprise clusters (`legal-research`/`contract-review`/`law-firm-inta
 
 ---
 
-## Phase 3 — Publish the eval:live scoreboard (after Phase 1a lands)
+## Phase 3 — Publish the eval:live scoreboard — **DONE** (2026-08-03)
 
-`scripts/eval-live.mjs` currently samples `--limit=N` generically (first N catalog packs found), not a named set. Extend it:
+1. `--families=` / `--set=` (go-live-18, flagship-1a/1b/2) — already on `eval:live`.
+2. Public scoreboard: **`/quality`** + `data/reports/eval-live-scoreboard.json` via `pnpm scoreboard:live` (auto-refreshed after `eval:live`). Dated MD: `docs/reports/eval-live-scoreboard-YYYY-MM-DD.md`.
+3. Honest labeling on the page: live adapter only; hero/flagship sets; not full catalogue; not MockModel %.
 
-1. Add a `--families=<comma-list>` flag (or a named preset, e.g. `--set=go-live-18`) so it can target the hero set explicitly instead of whatever it samples today.
-2. Once the Phase-1a families are live-eval-validated, produce a dated, public-facing scoreboard (a `/quality` or `/trust`-adjacent page, or a `docs/reports/eval-live-scoreboard-YYYY-MM-DD.md` if a page is out of scope this round) showing live-model pass rate **per hero family**, explicitly separated from the MockModel catalogue evals — same honest-labeling discipline as the compliance/DRAFT pages (`legal-content.ts`).
-3. Do not claim or imply this covers the full 551-agent catalogue — label it as covering the hero/flagship set only.
+Close note: `docs/reports/flagship-depth-phase3-close-2026-08-03.md`.
 
 ---
 

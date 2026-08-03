@@ -16,6 +16,7 @@ const CONSUMER_ALLOWED = new Set([
   "ask",
   "search",
   "trust",
+  "quality",
   "legal",
   "ai-agents",
 ]);
@@ -190,6 +191,7 @@ const GROUPS: NavGroup[] = [
       { id: "support", href: "/support", labelKey: "nav.supportDesk", icon: <IconSupport /> },
       { id: "admin", href: "/admin", labelKey: "nav.agentAdmin", icon: <IconAdmin /> },
       { id: "trust", href: "/trust", labelKey: "nav.trust", icon: <IconShield /> },
+      { id: "quality", href: "/quality", labelKey: "nav.quality", icon: <IconChart /> },
       { id: "legal", href: "/legal", labelKey: "nav.legal", icon: <IconShield /> },
     ],
   },
