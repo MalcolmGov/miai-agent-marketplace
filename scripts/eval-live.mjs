@@ -240,7 +240,23 @@ for (const c of cases) {
 const passed = results.filter((r) => r.ok).length;
 const rate = ((passed / results.length) * 100).toFixed(1);
 const stamp = new Date().toISOString().slice(0, 10);
-const reportPath = path.join(root, "docs/reports", `eval-live-${stamp}.md`);
+
+/** Distinguish same-day runs (e.g. --set=go-live-18 vs --set=flagship-2) so one doesn't silently overwrite the other. */
+function slugify(s) {
+  return s
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean)
+    .join("-");
+}
+function runLabelFor(setName, families) {
+  if (setName) return slugify(setName);
+  if (families.length === 0) return "sample";
+  if (families.length <= 4) return slugify(families.join("-"));
+  return `families-${families.length}`;
+}
+const runLabel = runLabelFor(namedSet, familyFilter);
+const reportPath = path.join(root, "docs/reports", `eval-live-${stamp}-${runLabel}.md`);
 
 const md = `# Live-LLM eval sample — ${stamp}
 
