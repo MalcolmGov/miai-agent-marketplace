@@ -12,7 +12,7 @@
   8. (Alt) Card in chat → refuse; point to secure checkout
 - Live connectors required: Shopify (`get_order_status` / availability), HubSpot or Zendesk (`create_ticket`), Slack handoff
 - Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Evidence: `corr_flagship_1b_customer-support_mscuy561` — sandbox `executeConnector` HubSpot `create_ticket` → TKT-9102 (2026-08-03); runtime workflow only (Cluster B catalogue untouched); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-1b`
 
 ## Market packs (EU / Africa / Asia)
 

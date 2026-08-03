@@ -12,7 +12,7 @@
   8. (Alt) Gas smell → **911** / leave building + gas utility, then `handoff_to_human` (no booking)
 - Live connectors required: Google Calendar / Field Service scheduling; Slack/Teams dispatch; optional QuickBooks for invoices (human-only)
 - Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Evidence: `corr_flagship_1b_trades-receptionist_mscuy561` — covered by shared `booking-front-desk` workflow (`isBookingFrontDesk`); sandbox `executeConnector` Google Calendar `book_appointment` → BK-3391 (2026-08-03); no new family module required; promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-1b`
 
 ## Market packs (EU / Africa / Asia)
 

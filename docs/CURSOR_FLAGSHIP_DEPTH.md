@@ -41,9 +41,17 @@ Target families and their current state (all already have solid catalogue conten
 5. A passing `pnpm eval:live` run against the family (not just the static/mock suite).
 6. Unit test coverage for the new workflow module.
 
-## Phase 1b — Cluster B members of the gap (flag, do not silently include)
+## Phase 1b — Cluster B members of the gap — ✅ DONE (runtime-only)
 
-`customer-support`, `delivery-tracking`, `trades-receptionist` are also missing depth, but see the guardrail above. If you take these on: runtime-layer-only, their `.agent.json` files untouched. If in doubt, skip and report back rather than proceed.
+Re-gapped after the STOP-helper pass: **`trades-receptionist` already had orchestration** via shared `packages/runtime/src/workflows/booking-front-desk.ts` (`isBookingFrontDesk` matches `salon-booking|trades-receptionist|home-services`). The original “3 missing” list was stale for that family.
+
+| Family | Action | Notes |
+|---|---|---|
+| `trades-receptionist` | No new module | Covered by `booking-front-desk`; pilot Evidence updated |
+| `customer-support` | New `workflows/customer-support.ts` | Confirm-before-write tickets; never self-refund |
+| `delivery-tracking` | New `workflows/delivery-tracking.ts` | Confirm-before-write exceptions; lost/damaged → desk |
+
+**Guardrail honored:** zero `data/catalog/*` edits. Pilots remain **`Depth: strong`** with sandbox Evidence only. Close note: `docs/reports/flagship-depth-phase1b-close-2026-08-03.md`.
 
 ---
 
@@ -102,4 +110,4 @@ Phase 3: separate close note once undertaken.
 - Refactoring the hardcoded workflow-dispatch if-chain into a registry (real architecture debt, separate item).
 - Compliance/legal copy (counsel-blocked, unrelated to this push).
 - Phase 2b (legal/professional, security/internal-ops enterprise clusters) — future round.
-- Phase 1b (Cluster B) — still flagged, still not started, still requires explicit care if picked up.
+- Phase 1b (Cluster B) — done (runtime-only); catalogue still protected from overwrite.

@@ -9,6 +9,7 @@
  *   MIAI_MODEL_MODE=openai OPENAI_API_KEY=… pnpm eval:live --limit=6
  *   pnpm eval:live --set=flagship-1a
  *   pnpm eval:live --set=flagship-2
+ *   pnpm eval:live --set=flagship-1b
  *   pnpm eval:live --set=go-live-18 --limit=18
  *   pnpm eval:live --families=mobile-money,tax-office
  *
@@ -111,6 +112,13 @@ const FLAGSHIP_2 = [
   { agentId: "us-veterinary", prompt: "What do you charge for a wellness consult?" },
 ];
 
+/** Flagship depth Phase 1b — Cluster B runtime-only (trades already via booking-front-desk). */
+const FLAGSHIP_1B = [
+  { agentId: "us-customer-support", prompt: "Where's order 4821?" },
+  { agentId: "us-delivery-tracking", prompt: "Where's my parcel? Waybill SLC-4821" },
+  { agentId: "us-trades-receptionist", prompt: "What does drain clearing start at?" },
+];
+
 /** Hero showcase set — GO_LIVE_18 us-* packs (one prompt each). */
 const GO_LIVE_18 = [
   ...FLAGSHIP_1A,
@@ -135,13 +143,18 @@ function familyKey(agentId) {
 
 function selectSample() {
   if (namedSet === "flagship-1a") return FLAGSHIP_1A;
+  if (namedSet === "flagship-1b") return FLAGSHIP_1B;
   if (namedSet === "flagship-2" || namedSet === "financial-services") return FLAGSHIP_2;
   if (namedSet === "go-live-18") return GO_LIVE_18;
   if (familyFilter.length) {
     const wanted = new Set(familyFilter.map((f) => f.replace(/^us-/i, "")));
-    const fromKnown = [...FLAGSHIP_1A, ...FLAGSHIP_2, ...GO_LIVE_18, ...SAMPLE].filter((row) =>
-      wanted.has(familyKey(row.agentId)),
-    );
+    const fromKnown = [
+      ...FLAGSHIP_1A,
+      ...FLAGSHIP_1B,
+      ...FLAGSHIP_2,
+      ...GO_LIVE_18,
+      ...SAMPLE,
+    ].filter((row) => wanted.has(familyKey(row.agentId)));
     const extras = [...wanted]
       .filter((f) => !fromKnown.some((r) => familyKey(r.agentId) === f))
       .map((f) => ({

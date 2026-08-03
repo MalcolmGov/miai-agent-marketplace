@@ -12,7 +12,7 @@
   8. (Alt) Overnight price → `$28` / next business day before 3:00 PM cut-off
 - Live connectors required: Carrier TMS / tracking API; Slack/Teams for exception desk
 - Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Evidence: `corr_flagship_1b_delivery-tracking_mscuy561` — sandbox `executeConnector` webhook `log_exception` → REF-1001 (2026-08-03); runtime workflow only (Cluster B catalogue untouched); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-1b`
 
 ## Market packs (EU / Africa / Asia)
 
