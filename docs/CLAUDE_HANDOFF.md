@@ -1,9 +1,18 @@
 # Claude handoff — active task
 
-## Active: B+ pilot bar (target 78–80) + optional Claude re-verify
+## Active: flagship depth push (new — product/GTM track)
+
+**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)
+**Goal:** close the depth gap inside the platform's own `GO_LIVE_18` showcase — 10 of 18 featured families have real orchestration + `Depth: live`, 8 don't (6 of those `pro` tier, already sold at premium pricing on the shallow generic path). Phase 1a: 5 clean agents (`accounting-practice`, `events-venue`, `building-management`, `pharmacy`, `gym-membership`). Phase 1b: 3 more (`customer-support`, `delivery-tracking`, `trades-receptionist`) are **also inside protected Cluster B** — runtime-orchestration-layer only, their `.agent.json` content stays untouched. Phase 2 (enterprise-tier verticals) needs Malcolm's industry pick before starting. Phase 3: turn `pnpm eval:live` into a public hero-set scoreboard.
+
+**Complementary, not overlapping**, with the B+ pilot-bar track below (that's infra/diligence-score; this is agent-orchestration depth). Ping Claude for independent verification once Phase 1a lands (same acceptance-bar checklist in the brief).
+
+---
+
+## Nearly done: B+ pilot bar (target 78–80)
 
 **Diligence update:** [`docs/reports/technical-audit-update-2026-08-02.md`](reports/technical-audit-update-2026-08-02.md) — **B · 72**.  
-**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.**
+**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.** Per its own "Done when" checklist: ops bar essentially closed; only remaining item is an audit-narrative score refresh.
 
 **Optional:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) at latest `main` for a fresh 9-risk sign-off.
 
