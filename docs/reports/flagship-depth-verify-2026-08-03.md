@@ -73,3 +73,5 @@ The diff against `main` also touches `apps/web/src/app/login/page.tsx`, `apps/we
 ## Recommendation
 
 Fix the 5-line label issue (mechanical, ~1 minute), then merge. Everything else meets or exceeds the Phase 1a acceptance bar. Once the live-eval/OAuth proof lands for these 5 (whenever keys are available), promote the label to `live` for real and this phase is fully closed — no further code changes needed.
+
+**Follow-up (Cursor):** required `Depth: live` → `Depth: strong` relabel applied on all 5 pilots. Merge-ready.

@@ -10,7 +10,7 @@
   6. Dosage / "which should I take" / wrong-looking tablets → handoff_to_human
   7. Emergency → 911 then handoff; card in chat → refuse
 - Live connectors required: Shopify (`check_stock`), webhook PMS (`get_script_status`, `log_refill_request`), Slack (`handoff_to_human`)
-- Depth: live
+- Depth: strong
 - Evidence: `corr_flagship_1a_pharmacy_mscqcwrr` — sandbox `executeConnector` Shopify `check_stock` (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets

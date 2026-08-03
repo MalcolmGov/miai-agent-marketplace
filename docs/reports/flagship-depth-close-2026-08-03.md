@@ -7,13 +7,15 @@
 
 ## Phase 1a status
 
-| Family | Workflow module | Dispatch | Confirm-before-write | Connector via `executeTool` | Unit tests | Pilot `Depth: live` | `eval:live` |
+| Family | Workflow module | Dispatch | Confirm-before-write | Connector via `executeTool` | Unit tests | Pilot depth | `eval:live` |
 |---|---|---|---|---|---|---|---|
-| `accounting-practice` | `workflows/accounting-practice.ts` | yes | `capture_onboarding` | HubSpot write + Slack handoff | yes | yes | see below |
-| `events-venue` | `workflows/events-venue.ts` | yes | `book_site_visit` | Google Calendar + Slack | yes | yes | see below |
-| `building-management` | `workflows/building-management.ts` | yes | `log_maintenance` | Webhook + Slack | yes | yes | see below |
-| `pharmacy` | `workflows/pharmacy.ts` | yes | `log_refill_request` | Shopify/webhook + Slack | yes | yes | see below |
-| `gym-membership` | `workflows/gym-membership.ts` | yes | `request_freeze_or_cancel` | Calendar binding + Slack | yes | yes | see below |
+| `accounting-practice` | `workflows/accounting-practice.ts` | yes | `capture_onboarding` | HubSpot write + Slack handoff | yes | **strong** (sandbox) | see below |
+| `events-venue` | `workflows/events-venue.ts` | yes | `book_site_visit` | Google Calendar + Slack | yes | **strong** (sandbox) | see below |
+| `building-management` | `workflows/building-management.ts` | yes | `log_maintenance` | Webhook + Slack | yes | **strong** (sandbox) | see below |
+| `pharmacy` | `workflows/pharmacy.ts` | yes | `log_refill_request` | Shopify/webhook + Slack | yes | **strong** (sandbox) | see below |
+| `gym-membership` | `workflows/gym-membership.ts` | yes | `request_freeze_or_cancel` | Calendar binding + Slack | yes | **strong** (sandbox) | see below |
+
+> Relabeled from `live` → `strong` per Claude verify (`flagship-depth-verify-2026-08-03.md`): sandbox `executeConnector` must not inflate the platform `Depth live` headline metric.
 
 ## Shipped per family
 
@@ -67,4 +69,4 @@ Attach the dated `docs/reports/eval-live-*.md` when keys are present — do not 
 
 ## Claude verification ask
 
-Re-check acceptance bar in `docs/CURSOR_FLAGSHIP_DEPTH.md` Phase 1a with file:line evidence for each of the 5 modules + dispatch blocks in `packages/runtime/src/index.ts`, spot-check `Depth: live` + Evidence lines in `docs/pilots/{family}.md`, and confirm Cluster B packs untouched.
+See `docs/reports/flagship-depth-verify-2026-08-03.md`. Required pilot-label fix applied (`Depth: strong`).

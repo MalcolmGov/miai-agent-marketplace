@@ -10,7 +10,7 @@
   6. "Burst pipe flooding my kitchen!" → handoff_to_human + valve / 911
   7. Levy dispute / card details → refuse payment in chat + handoff / secure portal
 - Live connectors required: Webhook property tools (`get_levy_info`, `get_access_rules`, `log_maintenance`), Slack (`handoff_to_human`)
-- Depth: live
+- Depth: strong
 - Evidence: `corr_flagship_1a_building-management_mscqcwrr` — sandbox `executeConnector` webhook `log_maintenance` → REF-1001 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets

@@ -5,9 +5,9 @@
 **Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
 **Close note:** [`docs/reports/flagship-depth-close-2026-08-03.md`](reports/flagship-depth-close-2026-08-03.md)
 
-**Cursor shipped Phase 1a** — five workflow modules + dispatch + unit tests + pilot `Depth: live` updates + `eval:live --set=flagship-1a` / `--families=`. **Phase 1b skipped** (Cluster B boundary honored — no `.agent.json` edits). Phase 2 still needs Malcolm’s industry pick. Phase 3 scoreboard page deferred; CLI targeting landed.
+**Cursor shipped Phase 1a** — five workflow modules + dispatch + unit tests + pilot `Depth: strong` (sandbox evidence; promote to `live` after real OAuth/`eval:live`) + `eval:live --set=flagship-1a` / `--families=`. **Phase 1b skipped** (Cluster B boundary honored — no `.agent.json` edits). Phase 2 still needs Malcolm’s industry pick. Phase 3 scoreboard page deferred; CLI targeting landed.
 
-**Claude verify:** same acceptance-bar checklist in the brief — file:line for each workflow + `index.ts` dispatch; spot-check pilots’ `Depth: live` + Evidence; confirm Cluster B packs untouched; if API keys available, run `pnpm eval:live --set=flagship-1a` and attach the report (do not treat MockModel % as live quality).
+**Claude verify:** see [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md) — required pilot-label fix applied (`Depth: strong`). Merge-ready pending final glance; if API keys available, run `pnpm eval:live --set=flagship-1a` and promote labels to `live` with real corr ids.
 
 ---
 

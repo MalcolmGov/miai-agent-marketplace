@@ -10,7 +10,7 @@
   6. Exercise prescription / injury advice → refuse + trainer/doctor
   7. Card details in chat → refuse + secure link
 - Live connectors required: Webhook membership tools (`get_plans`, `get_class_schedule`), Google Calendar (`request_freeze_or_cancel`), Slack (`handoff_to_human`)
-- Depth: live
+- Depth: strong
 - Evidence: `corr_flagship_1a_gym-membership_mscqcwrr` — sandbox `executeConnector` Google Calendar `request_freeze_or_cancel` → REF-1001 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets
