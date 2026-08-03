@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-02T04:04:13.553Z",
+  "updatedAt": "2026-08-03T10:05:15.224Z",
   "slice": [
     "us-executive-assistant",
     "us-dental-front-desk",
@@ -14,33 +14,6 @@
   ],
   "proofs": [
     {
-      "agentId": "us-home-services",
-      "family": "home-services",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb8318x",
-      "at": "2026-08-02T03:10:23.529Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-clinic-front-desk",
-      "family": "clinic-front-desk",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb832n5",
-      "at": "2026-08-02T03:10:27.436Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-salon-booking",
-      "family": "salon-booking",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb835ng",
-      "at": "2026-08-02T03:10:29.090Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
       "agentId": "us-hotel-guest",
       "family": "hotel-guest",
       "connector": "slack",
@@ -50,65 +23,11 @@
       "notes": "Railway live handoff_to_human"
     },
     {
-      "agentId": "us-clinic-front-desk",
-      "family": "clinic-front-desk",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msb83mm5",
-      "at": "2026-08-02T03:11:02.198Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Railway live handoff_to_human"
-    },
-    {
-      "agentId": "us-executive-assistant",
-      "family": "executive-assistant",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb98e21",
-      "at": "2026-08-02T03:42:34.649Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-executive-assistant",
-      "family": "executive-assistant",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msb98e21",
-      "at": "2026-08-02T03:42:34.652Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-dental-front-desk",
-      "family": "dental-front-desk",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msb98gpj",
-      "at": "2026-08-02T03:42:36.347Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
       "agentId": "us-sales-qualifier",
       "family": "sales-qualifier",
       "connector": "hubspot",
       "correlationId": "corr_wave4_msb98i0f",
       "at": "2026-08-02T03:42:38.605Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-it-helpdesk",
-      "family": "it-helpdesk",
-      "connector": "hubspot",
-      "correlationId": "corr_wave4_msb98jsg",
-      "at": "2026-08-02T03:42:39.976Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-it-helpdesk",
-      "family": "it-helpdesk",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msb98jsg",
-      "at": "2026-08-02T03:42:39.977Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "LIVE_PASS auto-record from proof:live --chat"
     },
@@ -129,6 +48,132 @@
       "at": "2026-08-02T04:04:13.552Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "Wave 4 live MCP tools/call → https://miaiweb-production.up.railway.app/api/mcp"
+    },
+    {
+      "agentId": "us-home-services",
+      "family": "home-services",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msd187lu",
+      "at": "2026-08-03T09:34:04.590Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-home-services",
+      "family": "home-services",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd187lu",
+      "at": "2026-08-03T09:34:04.595Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-clinic-front-desk",
+      "family": "clinic-front-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msd18ch2",
+      "at": "2026-08-03T09:34:28.058Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-clinic-front-desk",
+      "family": "clinic-front-desk",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd18ch2",
+      "at": "2026-08-03T09:34:28.060Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-salon-booking",
+      "family": "salon-booking",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msd18uku",
+      "at": "2026-08-03T09:34:33.466Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-salon-booking",
+      "family": "salon-booking",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd18uku",
+      "at": "2026-08-03T09:34:33.468Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-events-venue",
+      "family": "events-venue",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msd18yr3",
+      "at": "2026-08-03T09:34:47.789Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-gym-membership",
+      "family": "gym-membership",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd199sy",
+      "at": "2026-08-03T09:34:58.565Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-accounting-practice",
+      "family": "accounting-practice",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd19ldp",
+      "at": "2026-08-03T09:35:06.562Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-executive-assistant",
+      "family": "executive-assistant",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msd2c1l1",
+      "at": "2026-08-03T10:05:04.661Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-executive-assistant",
+      "family": "executive-assistant",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd2c1l1",
+      "at": "2026-08-03T10:05:04.663Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-dental-front-desk",
+      "family": "dental-front-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_wave4_msd2c7pe",
+      "at": "2026-08-03T10:05:09.122Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "family": "it-helpdesk",
+      "connector": "hubspot",
+      "correlationId": "corr_wave4_msd2ceut",
+      "at": "2026-08-03T10:05:15.223Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "family": "it-helpdesk",
+      "connector": "slack",
+      "correlationId": "corr_wave4_msd2ceut",
+      "at": "2026-08-03T10:05:15.224Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "LIVE_PASS auto-record from proof:live --chat"
     }
   ]
 }

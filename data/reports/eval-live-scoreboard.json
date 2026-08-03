@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-03T09:23:47.362Z",
+  "updatedAt": "2026-08-03T10:06:19.852Z",
   "disclaimer": "Live-LLM samples only (real model adapter). MockModel catalogue eval pass-rates are a different metric and must not be sold as live quality. Coverage is the hero / flagship sets named below — not the full 551-agent catalogue.",
   "coverageNote": "Hero / flagship sets only. Depth: live on pilots still requires OAuth connector evidence (Wave 4), not merely a live-LLM FAQ pass.",
   "sets": [
@@ -173,27 +173,6 @@
     ],
     "proofs": [
       {
-        "agentId": "us-home-services",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msb8318x",
-        "at": "2026-08-02T03:10:23.529Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-clinic-front-desk",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msb832n5",
-        "at": "2026-08-02T03:10:27.436Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-salon-booking",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msb835ng",
-        "at": "2026-08-02T03:10:29.090Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
         "agentId": "us-hotel-guest",
         "connector": "slack",
         "correlationId": "corr_wave4_msb83dik",
@@ -201,52 +180,10 @@
         "notes": "Railway live handoff_to_human"
       },
       {
-        "agentId": "us-clinic-front-desk",
-        "connector": "slack",
-        "correlationId": "corr_wave4_msb83mm5",
-        "at": "2026-08-02T03:11:02.198Z",
-        "notes": "Railway live handoff_to_human"
-      },
-      {
-        "agentId": "us-executive-assistant",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msb98e21",
-        "at": "2026-08-02T03:42:34.649Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-executive-assistant",
-        "connector": "slack",
-        "correlationId": "corr_wave4_msb98e21",
-        "at": "2026-08-02T03:42:34.652Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-dental-front-desk",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msb98gpj",
-        "at": "2026-08-02T03:42:36.347Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
         "agentId": "us-sales-qualifier",
         "connector": "hubspot",
         "correlationId": "corr_wave4_msb98i0f",
         "at": "2026-08-02T03:42:38.605Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-it-helpdesk",
-        "connector": "hubspot",
-        "correlationId": "corr_wave4_msb98jsg",
-        "at": "2026-08-02T03:42:39.976Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-it-helpdesk",
-        "connector": "slack",
-        "correlationId": "corr_wave4_msb98jsg",
-        "at": "2026-08-02T03:42:39.977Z",
         "notes": "LIVE_PASS auto-record from proof:live --chat"
       },
       {
@@ -262,6 +199,104 @@
         "correlationId": "corr_wave4_mcp_msba09u3",
         "at": "2026-08-02T04:04:13.552Z",
         "notes": "Wave 4 live MCP tools/call → https://miaiweb-production.up.railway.app/api/mcp"
+      },
+      {
+        "agentId": "us-home-services",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msd187lu",
+        "at": "2026-08-03T09:34:04.590Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-home-services",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd187lu",
+        "at": "2026-08-03T09:34:04.595Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-clinic-front-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msd18ch2",
+        "at": "2026-08-03T09:34:28.058Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-clinic-front-desk",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd18ch2",
+        "at": "2026-08-03T09:34:28.060Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-salon-booking",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msd18uku",
+        "at": "2026-08-03T09:34:33.466Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-salon-booking",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd18uku",
+        "at": "2026-08-03T09:34:33.468Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-events-venue",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msd18yr3",
+        "at": "2026-08-03T09:34:47.789Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-gym-membership",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd199sy",
+        "at": "2026-08-03T09:34:58.565Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-accounting-practice",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd19ldp",
+        "at": "2026-08-03T09:35:06.562Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-executive-assistant",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msd2c1l1",
+        "at": "2026-08-03T10:05:04.661Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-executive-assistant",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd2c1l1",
+        "at": "2026-08-03T10:05:04.663Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-dental-front-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msd2c7pe",
+        "at": "2026-08-03T10:05:09.122Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-it-helpdesk",
+        "connector": "hubspot",
+        "correlationId": "corr_wave4_msd2ceut",
+        "at": "2026-08-03T10:05:15.223Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-it-helpdesk",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msd2ceut",
+        "at": "2026-08-03T10:05:15.224Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
       }
     ]
   }

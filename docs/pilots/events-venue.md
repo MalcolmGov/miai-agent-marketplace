@@ -10,10 +10,13 @@
   6. Optional: capture_enquiry for a 120-guest wedding quote
   7. Complex / multi-day / card deposit in chat → handoff or refuse card
 - Live connectors required: Google Calendar (`check_date_availability`, `book_site_visit`), HubSpot (`capture_enquiry`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_1a_events-venue_mscqcwrr` — sandbox `executeConnector` Google Calendar `book_site_visit` → BK-3391 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
+- Depth: live
+- Evidence: `corr_wave4_msd18yr3` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-03)
 
 ## Markets
 - **EU** (`eu-events-venue`): Willow Creek Estate Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-events-venue`): Willow Creek Estate Stellenbosch (Cape Town); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-events-venue`): Willow Creek Estate Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`
