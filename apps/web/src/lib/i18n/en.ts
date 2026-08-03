@@ -14,6 +14,7 @@ export const en = {
   "nav.supportDesk": "Support Desk",
   "nav.agentAdmin": "Agent Admin",
   "nav.trust": "Trust & Security",
+  "nav.quality": "Live quality",
   "nav.legal": "Legal & policies",
   "nav.roadmap": "Roadmap",
   "nav.mondayDemo": "Production pack",

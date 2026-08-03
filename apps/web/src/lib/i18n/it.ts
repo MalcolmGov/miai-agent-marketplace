@@ -17,6 +17,7 @@ export const it: Dictionary = {
   "nav.agentAdmin": "Admin agenti",
   "nav.legal": "Legale e policy",
   "nav.trust": "Trust e sicurezza",
+  "nav.quality": "Qualità live",
   "nav.roadmap": "Roadmap",
   "nav.mondayDemo": "Demo di lunedì",
   "nav.learnEarn": "Impara e guadagna",

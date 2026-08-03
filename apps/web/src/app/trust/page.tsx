@@ -160,6 +160,11 @@ export default function TrustPage() {
         <p className="mt-2 max-w-3xl text-sm text-[var(--muted)]">
           Enterprise-grade by design — how every conversation, action and token stays safe. Each
           claim is tagged so you can see what is live in this build versus planned or via a provider.
+          Live-LLM hero-set rates and connector proofs live on the{" "}
+          <Link href="/quality" className="text-[var(--accent-bright)] hover:underline">
+            Live quality scoreboard
+          </Link>
+          .
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {HERO_BADGES.map((b) => (

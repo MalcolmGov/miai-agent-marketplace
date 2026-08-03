@@ -17,6 +17,7 @@ export const hi: Dictionary = {
   "nav.agentAdmin": "एजेंट एडमिन",
   "nav.legal": "कानूनी नीतियाँ",
   "nav.trust": "ट्रस्ट और सुरक्षा",
+  "nav.quality": "लाइव क्वालिटी",
   "nav.roadmap": "रोडमैप",
   "nav.mondayDemo": "सोमवार डेमो",
   "nav.learnEarn": "सीखें और कमाएँ",

@@ -101,5 +101,11 @@ That remaps `make_guest_request` → `mcp` for the proof, then restores webhook.
 DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --expand --auto-record
 ```
 
-Hotel guest, home-services, clinic-front-desk, salon-booking, then remaining Go-live 18.
+Hotel guest, home-services, clinic-front-desk, salon-booking, then flagship expand:
+`us-events-venue`, `us-gym-membership`, `us-pharmacy`, `us-accounting-practice`.
+
 After HubSpot: sales-qualifier + IT ticket are recorded. Next optional: Shopify.
+
+**Diligence surface:** live-LLM + connector proof summary → [`/quality`](../apps/web/src/app/quality/page.tsx) (`pnpm scoreboard:live`).
+
+**Staging note:** OAuth can be `configured=true` while `connected=false` (tokens cleared / never re-linked). Re-Connect in Actions before expecting `proof:live --chat` to pass. Prefer **`us-events-venue`** as the next flagship `Depth: live` candidate once Calendar + Slack are connected.

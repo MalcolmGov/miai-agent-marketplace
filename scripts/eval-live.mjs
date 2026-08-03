@@ -289,3 +289,19 @@ await fs.mkdir(path.dirname(reportPath), { recursive: true });
 await fs.writeFile(reportPath, md);
 console.log(`\nLive pass-rate: ${rate}% (${passed}/${results.length})`);
 console.log(`Report: ${reportPath}`);
+
+/** Keep /quality + diligence scoreboard in sync after every live run. */
+try {
+  const { spawnSync } = await import("node:child_process");
+  const score = spawnSync(process.execPath, [path.join(root, "scripts/build-eval-live-scoreboard.mjs")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  if (score.status === 0) {
+    console.log((score.stdout || "").trim());
+  } else {
+    console.warn("scoreboard:live rebuild skipped:", (score.stderr || score.stdout || "").trim());
+  }
+} catch (err) {
+  console.warn("scoreboard:live rebuild skipped:", err instanceof Error ? err.message : err);
+}

@@ -1,46 +1,39 @@
 # Claude handoff — active task
 
-## Active: verify flagship depth Phase 1b (Cursor landed)
+## Active: verify flagship Phase 3 scoreboard (Cursor landed)
 
-**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
-**Close note:** [`docs/reports/flagship-depth-phase1b-close-2026-08-03.md`](reports/flagship-depth-phase1b-close-2026-08-03.md)
+**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md) (Phase 3)  
+**Close note:** [`docs/reports/flagship-depth-phase3-close-2026-08-03.md`](reports/flagship-depth-phase3-close-2026-08-03.md)
 
-**✅ Phase 1a / Phase 2 / STOP helper:** merged and verified earlier.
+**Cursor shipped:**
+- `/quality` page — live-LLM hero/flagship rates + Wave 4 connector proofs
+- `pnpm scoreboard:live` → `data/reports/eval-live-scoreboard.json` (+ dated MD)
+- `eval:live` auto-rebuilds the scoreboard
+- WAVE4_EXPAND + flagship agents (`us-events-venue`, gym, pharmacy, accounting-practice)
+- Honest labeling: not MockModel; not full catalogue; Depth: live still needs OAuth reconnect
 
-**Cursor shipped Phase 1b (runtime-only):**
-- Re-gap: `trades-receptionist` already covered by shared `booking-front-desk` — no new module
-- New workflows: `customer-support`, `delivery-tracking` + dispatch + tests
-- Pilots **`Depth: strong`** + sandbox Evidence (`corr_flagship_1b_*_mscuy561`)
-- **Zero** Cluster B `.agent.json` edits
-- `pnpm eval:live --set=flagship-1b`
+**Claude verify:**
+1. `/quality` renders go-live-18 **17/18** and flagship-2 **4/4** with disclaimer
+2. No false `Depth: live` flips in this PR
+3. `pnpm scoreboard:live` regenerates cleanly
+4. Staging OAuth reconnect is **ops**, not claimed done in-repo
 
-**Claude verify:** Cluster B catalogue byte-identical to `main`; pilots `strong` not `live`; `isBookingFrontDesk` covers trades; runtime tests green.
+**Ops next (Malcolm):** Actions → Connect Calendar/Slack on Railway →  
+`DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --expand --auto-record`  
+→ promote `us-events-venue` Evidence / `Depth: live` only with new corr ids.
+
+---
+
+## Closed: flagship depth Phases 1a / 1b / 2
+
+Runtime workflows + pilots at **`Depth: strong`**. See prior close/verify notes under `docs/reports/flagship-depth-*`.
 
 ---
 
 ## Nearly done: B+ pilot bar (target 78–80)
 
-**Diligence update:** [`docs/reports/technical-audit-update-2026-08-02.md`](reports/technical-audit-update-2026-08-02.md) — **B · 72**.  
-**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.** Per its own "Done when" checklist: ops bar essentially closed; only remaining item is an audit-narrative score refresh.
-
-**Optional:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) at latest `main` for a fresh 9-risk sign-off.
-
----
-
-### ✅ Done — remediation verification (Phases 0–5 + punch-list)
-
-Verified at pin `63f3718`: **5 FIXED · 4 PARTIAL · 0 OPEN · 0 REGRESSED** → `docs/reports/remediation-verify-2026-08-02.md` (PR #3). Original verify brief:
-
-**Brief:** [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md)  
-**Pin:** `ed22434` on `main` (or latest `origin/main` if moved — record SHA).  
-**Prior verifier pin `2a40d34` is stale** — re-score all 9 risks from source.
-
-**Deliverable:** `docs/reports/remediation-verify-YYYY-MM-DD.md`  
-Verdict format: `N FIXED · M PARTIAL · K OPEN · R REGRESSED` for the 9 risks, plus phase roll-up.
-
-**Do not:** delete ZA unprefixed packs; re-deepen Cluster B; claim MockModel % as live-LLM quality.
-
-**Cursor already closed punch-list residuals in `ed22434`** (TLS default-verify, Shopify/Zendesk safeFetch, body caps, CI tighten, building-management grounding). Staging may run with `PG_SSL_REJECT_UNAUTHORIZED=0` + `I_UNDERSTAND_PG_SSL_INSECURE=1` until a verifiable CA is mounted — score that as intentional dual-ACK residual, not silent fail-open.
+**Diligence update:** [`docs/reports/technical-audit-update-2026-08-02.md`](reports/technical-audit-update-2026-08-02.md) — **B+ · 78**.  
+**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + HMAC-only live; PG dual-ACK intentional. MIAI OIDC/wallet external.
 
 ---
 
@@ -59,17 +52,7 @@ Those **51 files are ZA (South Africa) market packs**, not orphans.
 
 | Slice | Owner | Status |
 |---|---|---|
-| Technical audit + remediation Phases 0–5 | Cursor | Done through `ed22434` |
-| Punch-list follow-up | Cursor | Done — see `docs/reports/verifier-punchlist-2026-08-02.md` |
-| Wave 3 market localization | Cursor + Claude | Done |
-| Go-live Cluster B deepen | Claude | Done — **protected from overwrite** |
-| Go-live 100 stand-behind | Cursor | Done — filter `/?pilot=1` |
-| Depth strong 100/100 | Cursor | Done |
-
-**Do not re-deepen Cluster B** (`restaurant-takeaway` · `salon-booking` · `clinic-front-desk` · `customer-support` · `delivery-tracking` · `trades-receptionist`).
-
-## Optional after verify sign-off
-
-- Partner OIDC / wallet cutover (blocked externally)
-- CSP nonce / `strict-dynamic` (still open residual)
-- Wave 4 live connector proofs — `pnpm proof:live` · `docs/WAVE4_LIVE_CONNECTORS.md`
+| Flagship Phase 1a / 2 / 1b | Cursor | Closed + verified |
+| Flagship Phase 3 scoreboard | Cursor | Landed — Claude verify |
+| Wave 4 first-slice proofs | Ops | Recorded; staging reconnect needed for expand |
+| Partner OIDC + wallet | MIAI | Deferred external wire-up |

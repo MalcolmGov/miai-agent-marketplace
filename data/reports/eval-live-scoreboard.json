@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-03T09:23:47.362Z",
+  "disclaimer": "Live-LLM samples only (real model adapter). MockModel catalogue eval pass-rates are a different metric and must not be sold as live quality. Coverage is the hero / flagship sets named below — not the full 551-agent catalogue.",
+  "coverageNote": "Hero / flagship sets only. Depth: live on pilots still requires OAuth connector evidence (Wave 4), not merely a live-LLM FAQ pass.",
+  "sets": [
+    {
+      "id": "go-live-18",
+      "label": "Go-live 18 heroes",
+      "reportFile": "eval-live-2026-08-03-go-live-18.md",
+      "date": "2026-08-03",
+      "modelMode": "anthropic",
+      "passed": 17,
+      "total": 18,
+      "rate": 94.4,
+      "results": [
+        {
+          "agentId": "us-accounting-practice",
+          "ok": true,
+          "prompt": "When is monthly payroll tax due?",
+          "preview": "## Filing deadlines — general guide only > General guideline dates for planning — not advice about any client's specific obligations. > The agent fetches this list with `get_deadlines`. - **Monthly payroll tax deposits (example guide):** ma"
+        },
+        {
+          "agentId": "us-events-venue",
+          "ok": true,
+          "prompt": "What wedding packages do you offer?",
+          "preview": "## Packages & pricing Starting prices; the events team confirms a detailed quote. `get_packages` returns this list.  - **Intimate** — up to 50 guests — from **USD 25000** / **$25000** (USD 25,000). Wedding.   Includes: venue hire, tables an"
+        },
+        {
+          "agentId": "us-building-management",
+          "ok": true,
+          "prompt": "How much is the monthly levy for a 2-bedroom?",
+          "preview": "## Levy schedule & payment Monthly HOA levies (dues) are due on the **1st of each month**. Quote these exact figures:  - **1-bedroom unit** — **USD 1450** / **$1450** per month (USD 1,450) - **2-bedroom unit** — **USD 1980** / **$1980** per"
+        },
+        {
+          "agentId": "us-pharmacy",
+          "ok": true,
+          "prompt": "Do you have Panado 500mg in stock?",
+          "preview": "I checked OTC stock for that item. If you need a prescription refill logged, share the RX number and your name/phone."
+        },
+        {
+          "agentId": "us-gym-membership",
+          "ok": true,
+          "prompt": "What memberships do you offer?",
+          "preview": "## Membership plans & pricing Monthly fees. `get_plans` returns this same list.  - **Off-Peak** — **USD 17** / **$17**/month — gym floor Mon–Fri 05:00–16:00 plus all weekend hours.   No group classes included (classes **USD 3** / **$3** eac"
+        },
+        {
+          "agentId": "us-dental-front-desk",
+          "ok": true,
+          "prompt": "What treatments do you offer?",
+          "preview": "## Treatments & fees (private / cash pay) - Comprehensive exam & cleaning — 45 min — **$150**. - Child cleaning (under 14) — 30 min — **$95**. - Filling (tooth-colored) — from **$175**. - Simple extraction — from **$200**. - Root canal (ant"
+        },
+        {
+          "agentId": "us-hotel-guest",
+          "ok": false,
+          "prompt": "What time is breakfast?",
+          "preview": "## Check-in"
+        },
+        {
+          "agentId": "us-executive-assistant",
+          "ok": true,
+          "prompt": "What's on my calendar tomorrow?",
+          "preview": "Tomorrow (Tuesday, August 4th) you have:  - **Weekly team standup** at 9:00–9:30 AM - **Lunch block** at 12:30–1:00 PM  You're free 10:00 AM–12:00 PM and 2:00–4:00 PM if you need to add anything."
+        },
+        {
+          "agentId": "us-it-helpdesk",
+          "ok": true,
+          "prompt": "My laptop won't connect to VPN.",
+          "preview": "## VPN & remote access - VPN client: **GlobalProtect** — install from the IT Portal, **portal.northwinddigital.com**.   Example (replace): the tenant's IT portal URL. - Gateway: **vpn.northwinddigital.com**. Example (replace): the tenant's"
+        },
+        {
+          "agentId": "us-sales-qualifier",
+          "ok": true,
+          "prompt": "Tell me about the Growth plan.",
+          "preview": "## Plans & pricing ranges Prices are indicative monthly ranges for grounding; a human confirms the final quote. Currency: **USD ($)**. - **Ledgerly — Starter:** for very small teams (up to ~5 users). Typically from **$53/month**.   Core inv"
+        },
+        {
+          "agentId": "us-salon-booking",
+          "ok": true,
+          "prompt": "Can I book a haircut Saturday morning?",
+          "preview": "Absolutely! Saturday mornings work well — we're open **8:00 AM–5:00 PM on Saturdays**.  Let me check what times are available for a haircut this Saturday (August 9th). Do you have a preferred time, or would you like me to show you the open"
+        },
+        {
+          "agentId": "us-home-services",
+          "ok": true,
+          "prompt": "I need a plumber this week.",
+          "preview": "I'd be happy to help you schedule a plumber this week!   To find you the best available time, I need a couple of quick details:  1. **What plumbing service do you need?** (For example: drain clearing, water heater issue, leak repair, etc.)"
+        },
+        {
+          "agentId": "us-clinic-front-desk",
+          "ok": true,
+          "prompt": "What should I bring to my first visit?",
+          "preview": "For your first visit to our practice, please bring:  1. **Insurance card** – We accept most major medical and dental insurance plans. 2. **Photo ID** – A driver's license or other government-issued ID. 3. **Any referral forms** – If your in"
+        },
+        {
+          "agentId": "us-restaurant-takeaway",
+          "ok": true,
+          "prompt": "Do you offer gluten-free options?",
+          "preview": "We do have some dishes that may work for gluten-free needs, but I need to be upfront: gluten is present in our kitchen, so we can't guarantee complete freedom from cross-contact.  That said, many of our grilled items (steaks, chicken, ribs)"
+        },
+        {
+          "agentId": "us-customer-support",
+          "ok": true,
+          "prompt": "How do I reset my password?",
+          "preview": "I appreciate you reaching out! However, I don't have access to password reset tools or account management systems directly.  Here's what I can do to help:  **For your online account password**, you'll typically find a \"Forgot Password\" or \""
+        },
+        {
+          "agentId": "us-delivery-tracking",
+          "ok": true,
+          "prompt": "Where is my package?",
+          "preview": "I can track that — what's the waybill / tracking number?"
+        },
+        {
+          "agentId": "us-trades-receptionist",
+          "ok": true,
+          "prompt": "Emergency plumbing — can someone come out?",
+          "preview": "If this is life-threatening or an emergency, call **911** / local emergency services now. I'm also handing you to a human teammate urgently."
+        },
+        {
+          "agentId": "us-onboarding-buddy",
+          "ok": true,
+          "prompt": "What do I do on my first day?",
+          "preview": "**On your first day:**  - **Arrive at 08:30** (a few minutes early is good) - Go to **reception on the 3rd floor** and ask for the People team — your onboarding buddy will meet you there - Bring your **government ID** and any certificates P"
+        }
+      ]
+    },
+    {
+      "id": "flagship-2",
+      "label": "Flagship depth Phase 2 (financial + vet)",
+      "reportFile": "eval-live-2026-08-03-flagship-2.md",
+      "date": "2026-08-03",
+      "modelMode": "anthropic",
+      "passed": 4,
+      "total": 4,
+      "rate": 100,
+      "results": [
+        {
+          "agentId": "us-mobile-money",
+          "ok": true,
+          "prompt": "What's my float?",
+          "preview": "Float checked. Single-tx cap is **$3,000**. Ready for cash-in, cash-out, or send when you have amount + customer phone."
+        },
+        {
+          "agentId": "us-wealth-management",
+          "ok": true,
+          "prompt": "What are the key facts about your wealth desk?",
+          "preview": "Here are the wealth-desk FAQs (fiduciary overlay, typical AUM minimums, discovery meeting). I can log a meeting request if you share your name and contact — I won't give portfolio advice."
+        },
+        {
+          "agentId": "us-tax-office",
+          "ok": true,
+          "prompt": "When is the individual filing deadline?",
+          "preview": "General filing-deadline / document FAQs are on file (e.g. April 15, W-2, extension Form 4868). This is not advice for your return — I can log an enquiry if you want an officer to follow up."
+        },
+        {
+          "agentId": "us-veterinary",
+          "ok": true,
+          "prompt": "What do you charge for a wellness consult?",
+          "preview": "Published consult fees are on file. Share a day/time and pet name if you'd like me to check availability or propose a booking."
+        }
+      ]
+    }
+  ],
+  "connectorProofs": {
+    "agentsProven": 4,
+    "sliceTarget": 4,
+    "connectors": [
+      "google_calendar",
+      "hubspot",
+      "mcp",
+      "slack",
+      "webhook"
+    ],
+    "proofs": [
+      {
+        "agentId": "us-home-services",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msb8318x",
+        "at": "2026-08-02T03:10:23.529Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-clinic-front-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msb832n5",
+        "at": "2026-08-02T03:10:27.436Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-salon-booking",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msb835ng",
+        "at": "2026-08-02T03:10:29.090Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-hotel-guest",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msb83dik",
+        "at": "2026-08-02T03:10:47.818Z",
+        "notes": "Railway live handoff_to_human"
+      },
+      {
+        "agentId": "us-clinic-front-desk",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msb83mm5",
+        "at": "2026-08-02T03:11:02.198Z",
+        "notes": "Railway live handoff_to_human"
+      },
+      {
+        "agentId": "us-executive-assistant",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msb98e21",
+        "at": "2026-08-02T03:42:34.649Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-executive-assistant",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msb98e21",
+        "at": "2026-08-02T03:42:34.652Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-dental-front-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_wave4_msb98gpj",
+        "at": "2026-08-02T03:42:36.347Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-sales-qualifier",
+        "connector": "hubspot",
+        "correlationId": "corr_wave4_msb98i0f",
+        "at": "2026-08-02T03:42:38.605Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-it-helpdesk",
+        "connector": "hubspot",
+        "correlationId": "corr_wave4_msb98jsg",
+        "at": "2026-08-02T03:42:39.976Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-it-helpdesk",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msb98jsg",
+        "at": "2026-08-02T03:42:39.977Z",
+        "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-hotel-guest",
+        "connector": "webhook",
+        "correlationId": "corr_wave4_wh_msb9bsjz",
+        "at": "2026-08-02T03:45:11.093Z",
+        "notes": "Wave 4 live webhook → https://httpbin.org/post"
+      },
+      {
+        "agentId": "us-hotel-guest",
+        "connector": "mcp",
+        "correlationId": "corr_wave4_mcp_msba09u3",
+        "at": "2026-08-02T04:04:13.552Z",
+        "notes": "Wave 4 live MCP tools/call → https://miaiweb-production.up.railway.app/api/mcp"
+      }
+    ]
+  }
+}
