@@ -48,6 +48,17 @@ test.describe("B2B onboarding @functional @uat @handover", () => {
     await expect(page.getByTestId("sidebar-nav").getByText(/learn & earn/i)).toHaveCount(0);
   });
 
+  test("mock sign-in accepts any credentials and lands on catalogue", async ({ page }) => {
+    await dismissConsent(page);
+    await page.goto("/login");
+    await expect(page.getByTestId("mock-login-form")).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId("login-username").fill("partner-demo");
+    await page.getByTestId("login-password").fill("anything");
+    await page.getByTestId("login-submit").click();
+    await expect(page).toHaveURL(/\/($|\?)/, { timeout: 30_000 });
+    await expect(page.getByTestId("shell-mode-business")).toBeVisible({ timeout: 30_000 });
+  });
+
   test("auth handoff API is public and describes Agents product", async ({ request }) => {
     const res = await request.get("/api/auth/handoff");
     expect(res.ok()).toBeTruthy();

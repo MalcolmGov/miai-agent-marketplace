@@ -13,7 +13,13 @@ export const metadata: Metadata = {
  */
 export default function MarketingPreviewPage() {
   return (
-    <div className="mkt-preview min-h-[100dvh] text-white">
+    <div
+      className="min-h-[100dvh] text-white"
+      style={{
+        background:
+          "radial-gradient(ellipse 90% 55% at 50% -10%, rgba(20,120,110,0.55), transparent 55%), linear-gradient(180deg, #041816 0%, #020808 45%, #010504 100%)",
+      }}
+    >
       <div className="border-b border-[#1a4a4a] bg-[#0d8f8a] px-4 py-2 text-center text-sm text-white">
         <span className="opacity-95">New here? Claim 15,000 free tokens on signup </span>
         <span className="mx-2 inline-flex items-center rounded-full bg-[#0a1210] px-3 py-0.5 text-xs font-semibold">
@@ -21,11 +27,6 @@ export default function MarketingPreviewPage() {
         </span>
         <span className="ml-3 hidden text-xs opacity-90 sm:inline">Android app</span>
       </div>
-
-      <p className="bg-[#041816] px-4 py-2 text-center text-[11px] text-[#7dede4]">
-        Demo preview on Railway — not the live myinstantai.com CMS. Shows how marketing would hand
-        off into Agents.
-      </p>
 
       <header className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
         <div className="flex items-center gap-2.5">
@@ -107,18 +108,6 @@ export default function MarketingPreviewPage() {
             <span className="text-[#3dd6c6]">✓</span> Complete privacy
           </li>
         </ul>
-
-        <div className="mt-10 max-w-lg rounded-xl border border-[#2bb8a8]/35 bg-[#0a1f1e]/90 px-4 py-3 text-left text-sm text-white/85">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#5eead4]">
-            Partner visualization
-          </p>
-          <p className="mt-1.5 leading-relaxed">
-            <strong className="text-white">Get Started</strong> = today’s consumer token path.{" "}
-            <strong className="text-[#6aefe0]">For business — Agents</strong> = the new B2B entry
-            into workspace setup → catalogue → checklist (what MyInstantAI would add on the live
-            marketing site).
-          </p>
-        </div>
 
         <p className="mt-16 text-xs uppercase tracking-[0.16em] text-white/40">
           Trusted Retail Partners

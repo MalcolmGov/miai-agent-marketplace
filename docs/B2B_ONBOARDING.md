@@ -72,7 +72,7 @@ Consumer mode (toggle): limited nav + link back to consumer app when `NEXT_PUBLI
 | Path | Role |
 |---|---|
 | `/get-started` | Business wizard (no marketplace chrome) |
-| `/login` | Redirect to MIAI Agents auth when configured; else `/get-started` |
+| `/login` | Redirect to MIAI Agents auth when configured; else mock sign-in (any username/password) → catalogue |
 | `GET/POST/PATCH /api/onboarding` | Workspace onboarding profile + checklist |
 | `GET /api/auth/handoff` | `{ mode, loginUrl, consumerAppUrl }` for clients |
 

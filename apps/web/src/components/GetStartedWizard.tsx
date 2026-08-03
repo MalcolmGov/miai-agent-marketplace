@@ -380,7 +380,7 @@ export function GetStartedWizard() {
             {!handoff?.requiresExternalLogin ? (
               <label className="block space-y-1.5">
                 <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-                  Password (demo — not verified in mock)
+                  Password
                 </span>
                 <input
                   className="input"
@@ -389,6 +389,7 @@ export function GetStartedWizard() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   autoComplete="new-password"
+                  data-testid="onboarding-password"
                 />
               </label>
             ) : null}
