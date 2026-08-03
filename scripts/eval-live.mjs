@@ -7,6 +7,9 @@
  *
  *   MIAI_MODEL_MODE=anthropic ANTHROPIC_API_KEY=… pnpm eval:live
  *   MIAI_MODEL_MODE=openai OPENAI_API_KEY=… pnpm eval:live --limit=6
+ *   pnpm eval:live --set=flagship-1a
+ *   pnpm eval:live --set=go-live-18 --limit=18
+ *   pnpm eval:live --families=accounting-practice,pharmacy
  *
  * Exit 0 always when the run completes (report is the deliverable).
  * Exit 2 if called in mock mode or without keys.
@@ -21,10 +24,24 @@ const catalogDir = path.join(root, "data/catalog");
 
 const mode = process.env.MIAI_MODEL_MODE ?? "mock";
 const limitArg = process.argv.find((a) => a.startsWith("--limit="));
-const limit = limitArg ? Math.max(1, Number(limitArg.split("=")[1]) || 8) : 8;
+const familiesArg = process.argv.find((a) => a.startsWith("--families="));
+const setArg = process.argv.find((a) => a.startsWith("--set="));
+const namedSet = setArg?.split("=")[1]?.trim() || "";
+const familyFilter = (familiesArg?.split("=")[1] || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+/** Default 8 for legacy SAMPLE; named sets / family filters use full pool unless --limit= set. */
+const limit = limitArg
+  ? Math.max(1, Number(limitArg.split("=")[1]) || 8)
+  : namedSet || familyFilter.length
+    ? 100
+    : 8;
 
 console.log("eval-live — live model quality sample (separated from mock CI gate)");
 console.log("model_mode:", mode);
+if (namedSet) console.log("set:", namedSet);
+if (familyFilter.length) console.log("families:", familyFilter.join(", "));
 
 if (mode === "mock") {
   console.error("Refusing mock mode. Set MIAI_MODEL_MODE=anthropic|openai|gateway.");
@@ -60,6 +77,71 @@ const SAMPLE = [
   { agentId: "us-delivery-tracking", prompt: "Where is my package right now?" },
   { agentId: "eu-trades-receptionist", prompt: "Can someone come out for an emergency plumbing issue?" },
 ];
+
+/** Flagship depth Phase 1a families (Go-live 18 gap close). */
+const FLAGSHIP_1A = [
+  {
+    agentId: "us-accounting-practice",
+    prompt: "When is monthly payroll tax due?",
+  },
+  {
+    agentId: "us-events-venue",
+    prompt: "What wedding packages do you offer?",
+  },
+  {
+    agentId: "us-building-management",
+    prompt: "How much is the monthly levy for a 2-bedroom?",
+  },
+  {
+    agentId: "us-pharmacy",
+    prompt: "Do you have Panado 500mg in stock?",
+  },
+  {
+    agentId: "us-gym-membership",
+    prompt: "What memberships do you offer?",
+  },
+];
+
+/** Hero showcase set — GO_LIVE_18 us-* packs (one prompt each). */
+const GO_LIVE_18 = [
+  ...FLAGSHIP_1A,
+  { agentId: "us-dental-front-desk", prompt: "What treatments do you offer?" },
+  { agentId: "us-hotel-guest", prompt: "What time is breakfast?" },
+  { agentId: "us-executive-assistant", prompt: "What's on my calendar tomorrow?" },
+  { agentId: "us-it-helpdesk", prompt: "My laptop won't connect to VPN." },
+  { agentId: "us-sales-qualifier", prompt: "Tell me about the Growth plan." },
+  { agentId: "us-salon-booking", prompt: "Can I book a haircut Saturday morning?" },
+  { agentId: "us-home-services", prompt: "I need a plumber this week." },
+  { agentId: "us-clinic-front-desk", prompt: "What should I bring to my first visit?" },
+  { agentId: "us-restaurant-takeaway", prompt: "Do you offer gluten-free options?" },
+  { agentId: "us-customer-support", prompt: "How do I reset my password?" },
+  { agentId: "us-delivery-tracking", prompt: "Where is my package?" },
+  { agentId: "us-trades-receptionist", prompt: "Emergency plumbing — can someone come out?" },
+  { agentId: "us-onboarding-buddy", prompt: "What do I do on my first day?" },
+];
+
+function familyKey(agentId) {
+  return agentId.replace(/^(us|eu|africa|asia|oceania)-/i, "");
+}
+
+function selectSample() {
+  if (namedSet === "flagship-1a") return FLAGSHIP_1A;
+  if (namedSet === "go-live-18") return GO_LIVE_18;
+  if (familyFilter.length) {
+    const wanted = new Set(familyFilter.map((f) => f.replace(/^us-/i, "")));
+    const fromKnown = [...FLAGSHIP_1A, ...GO_LIVE_18, ...SAMPLE].filter((row) =>
+      wanted.has(familyKey(row.agentId)),
+    );
+    const extras = [...wanted]
+      .filter((f) => !fromKnown.some((r) => familyKey(r.agentId) === f))
+      .map((f) => ({
+        agentId: f.startsWith("us-") ? f : `us-${f}`,
+        prompt: "What can you help me with today?",
+      }));
+    return [...fromKnown, ...extras];
+  }
+  return SAMPLE;
+}
 
 function looksBroken(reply) {
   return /trouble reaching my knowledge|try again in a moment|Happy to help\.|I'm a demo|mock mode|I don't have enough information/i.test(
@@ -101,8 +183,9 @@ async function runOne(agentId, prompt) {
   return { agentId, prompt, ok, replyPreview: reply.slice(0, 240), paused: result.paused };
 }
 
+const pool = selectSample();
 const cases = [];
-for (const row of SAMPLE) {
+for (const row of pool) {
   if (cases.length >= limit) break;
   if (await catalogExists(row.agentId)) cases.push(row);
 }

@@ -9,9 +9,9 @@
   5. "Yes, go ahead." → capture_onboarding
   6. "How much tax will I owe if I pay myself $30k?" → refuse advice → handoff_to_human
   7. Card in chat / cross-client lookup → refuse
-- Live connectors required: Practice CRM / calendar (sandbox OK for strong; live OAuth for depth: live)
+- Live connectors required: HubSpot (`capture_onboarding`), Slack (`handoff_to_human`), Xero/webhook reads
 - Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Evidence: `corr_flagship_1a_accounting-practice_mscqcwrr` — sandbox `executeConnector` Slack `handoff_to_human` (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets
 - **EU** (`eu-accounting-practice`): Ledgerline Accountants Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

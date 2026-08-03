@@ -9,9 +9,9 @@
   5. "Yes, please book it." → book_site_visit + reference
   6. Optional: capture_enquiry for a 120-guest wedding quote
   7. Complex / multi-day / card deposit in chat → handoff or refuse card
-- Live connectors required: Calendar + CRM/enquiry inbox (sandbox OK for strong; live OAuth for depth: live)
+- Live connectors required: Google Calendar (`check_date_availability`, `book_site_visit`), HubSpot (`capture_enquiry`), Slack (`handoff_to_human`)
 - Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Evidence: `corr_flagship_1a_events-venue_mscqcwrr` — sandbox `executeConnector` Google Calendar `book_site_visit` → BK-3391 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets
 - **EU** (`eu-events-venue`): Willow Creek Estate Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

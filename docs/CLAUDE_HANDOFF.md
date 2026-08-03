@@ -1,9 +1,20 @@
 # Claude handoff — active task
 
-## Active: B+ pilot bar (target 78–80) + optional Claude re-verify
+## Active: verify flagship depth Phase 1a (Cursor landed)
+
+**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
+**Close note:** [`docs/reports/flagship-depth-close-2026-08-03.md`](reports/flagship-depth-close-2026-08-03.md)
+
+**Cursor shipped Phase 1a** — five workflow modules + dispatch + unit tests + pilot `Depth: strong` (sandbox evidence; promote to `live` after real OAuth/`eval:live`) + `eval:live --set=flagship-1a` / `--families=`. **Phase 1b skipped** (Cluster B boundary honored — no `.agent.json` edits). Phase 2 still needs Malcolm’s industry pick. Phase 3 scoreboard page deferred; CLI targeting landed.
+
+**Claude verify:** see [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md) — required pilot-label fix applied (`Depth: strong`). Merge-ready pending final glance; if API keys available, run `pnpm eval:live --set=flagship-1a` and promote labels to `live` with real corr ids.
+
+---
+
+## Nearly done: B+ pilot bar (target 78–80)
 
 **Diligence update:** [`docs/reports/technical-audit-update-2026-08-02.md`](reports/technical-audit-update-2026-08-02.md) — **B · 72**.  
-**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.**
+**B+ track:** [`docs/CURSOR_BPLUS_PILOT_BAR.md`](CURSOR_BPLUS_PILOT_BAR.md) — Redis + PG TLS ops, nightly `eval:live` (non-blocking). **SOC 2 / counsel are not mandatory for early pilots.** Per its own "Done when" checklist: ops bar essentially closed; only remaining item is an audit-narrative score refresh.
 
 **Optional:** re-run [`docs/CLAUDE_VERIFY_REMEDIATION.md`](CLAUDE_VERIFY_REMEDIATION.md) at latest `main` for a fresh 9-risk sign-off.
 

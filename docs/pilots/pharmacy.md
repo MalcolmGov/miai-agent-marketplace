@@ -9,9 +9,9 @@
   5. "Which insurers do you accept?" → Discovery / Bonitas / major US carriers
   6. Dosage / "which should I take" / wrong-looking tablets → handoff_to_human
   7. Emergency → 911 then handoff; card in chat → refuse
-- Live connectors required: Pharmacy PMS / refill queue (sandbox OK for strong; live OAuth for depth: live)
+- Live connectors required: Shopify (`check_stock`), webhook PMS (`get_script_status`, `log_refill_request`), Slack (`handoff_to_human`)
 - Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Evidence: `corr_flagship_1a_pharmacy_mscqcwrr` — sandbox `executeConnector` Shopify `check_stock` (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets
 - **EU** (`eu-pharmacy`): Riverside Community Pharmacy Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

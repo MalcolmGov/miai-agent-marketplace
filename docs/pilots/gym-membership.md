@@ -9,9 +9,9 @@
   5. 12-month early cancel / double charge → handoff_to_human
   6. Exercise prescription / injury advice → refuse + trainer/doctor
   7. Card details in chat → refuse + secure link
-- Live connectors required: Membership/billing system + SMS (sandbox OK for strong; live OAuth for depth: live)
+- Live connectors required: Webhook membership tools (`get_plans`, `get_class_schedule`), Google Calendar (`request_freeze_or_cancel`), Slack (`handoff_to_human`)
 - Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Evidence: `corr_flagship_1a_gym-membership_mscqcwrr` — sandbox `executeConnector` Google Calendar `request_freeze_or_cancel` → REF-1001 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
 
 ## Markets
 - **EU** (`eu-gym-membership`): Ironleaf Fitness Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
