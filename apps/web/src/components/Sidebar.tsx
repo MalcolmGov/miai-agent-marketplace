@@ -11,15 +11,10 @@ import { ThemeToggle } from "./ThemeToggle";
 type ShellMode = "business" | "consumer";
 
 const BUSINESS_HIDDEN = new Set(["learn"]);
-const CONSUMER_ALLOWED = new Set([
-  "home",
-  "ask",
-  "search",
-  "trust",
-  "quality",
-  "legal",
-  "ai-agents",
-]);
+/** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
+const CONSUMER_ALLOWED = new Set(["home", "ask"]);
+/** Entire nav groups hidden in consumer mode (Agents is business-only). */
+const CONSUMER_HIDDEN_GROUPS = new Set(["agents", "growth"]);
 
 type NavBadge = { labelKey: MessageKey; tone: "new" | "live" };
 
@@ -294,6 +289,9 @@ export function Sidebar({
 
   const visibleGroups = useMemo(() => {
     return GROUPS.map((group) => {
+      if (mode === "consumer" && CONSUMER_HIDDEN_GROUPS.has(group.id)) {
+        return { ...group, items: [] as NavItem[] };
+      }
       const items = group.items.filter((item) => {
         if (item.id === "admin") return mode === "business" && showAdmin;
         if (mode === "business") return !BUSINESS_HIDDEN.has(item.id);
@@ -302,6 +300,14 @@ export function Sidebar({
       return { ...group, items };
     }).filter((g) => g.items.length > 0);
   }, [mode, showAdmin]);
+
+  /** Consumer home is Ask AI — catalogue `/` is Business-only. */
+  function navHref(item: NavItem): string {
+    if (mode === "consumer" && item.id === "home") return "/ask";
+    return item.href;
+  }
+
+  const logoHref = mode === "consumer" ? "/ask" : "/";
 
   return (
     <>
@@ -313,7 +319,7 @@ export function Sidebar({
       <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`} data-testid="app-sidebar">
         <div className="flex h-full flex-col">
           <div className="border-b border-[var(--line)] px-4 pb-4 pt-5">
-            <Link href="/" className="flex items-center gap-2.5" onClick={onClose}>
+            <Link href={logoHref} className="flex items-center gap-2.5" onClick={onClose}>
               <span className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_40%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-elev))]">
                 <span className="text-xs font-bold tracking-tight text-[var(--accent-bright)]">M</span>
                 <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-sm bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
@@ -364,11 +370,15 @@ export function Sidebar({
                 </p>
                 <ul className="space-y-0.5">
                   {group.items.map((item) => {
-                    const active = resolveActive(pathname, item, group.id);
+                    const href = navHref(item);
+                    const active =
+                      mode === "consumer" && item.id === "home"
+                        ? pathname === "/ask" || pathname.startsWith("/ask/")
+                        : resolveActive(pathname, item, group.id);
                     return (
                       <li key={`${group.id}-${item.id}`}>
                         <Link
-                          href={item.href}
+                          href={href}
                           onClick={onClose}
                           className={`nav-item ${active ? "nav-item-active" : ""}`}
                           data-nav-id={item.id}
@@ -425,12 +435,14 @@ export function Sidebar({
           <div className="space-y-2 border-t border-[var(--line)] px-4 py-3">
             <LanguageSelect />
             <ThemeToggle />
-            <Link href="/install" onClick={onClose} className="nav-item text-[var(--muted)]">
-              <span className="nav-item-icon">
-                <IconPlus />
-              </span>
-              <span>{t("sidebar.installEmbed")}</span>
-            </Link>
+            {mode === "business" ? (
+              <Link href="/install" onClick={onClose} className="nav-item text-[var(--muted)]">
+                <span className="nav-item-icon">
+                  <IconPlus />
+                </span>
+                <span>{t("sidebar.installEmbed")}</span>
+              </Link>
+            ) : null}
           </div>
         </div>
       </aside>
