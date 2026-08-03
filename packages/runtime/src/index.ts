@@ -56,6 +56,14 @@ import {
 import { isTaxOffice, runTaxOfficeWorkflow } from "./workflows/tax-office.js";
 import { isVeterinary, runVeterinaryWorkflow } from "./workflows/veterinary.js";
 import {
+  isCustomerSupport,
+  runCustomerSupportWorkflow,
+} from "./workflows/customer-support.js";
+import {
+  isDeliveryTracking,
+  runDeliveryTrackingWorkflow,
+} from "./workflows/delivery-tracking.js";
+import {
   isMarketplaceAssistant,
   runMarketplaceAssistantWorkflow,
 } from "./workflows/marketplace-assistant.js";
@@ -2465,6 +2473,35 @@ export async function runTurn(
       replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(vet);
+    if (done) return done;
+  }
+
+  // Flagship depth Phase 1b — Cluster B runtime-only (catalogue untouched)
+  if (isCustomerSupport(req.agentId)) {
+    const cs = await runCustomerSupportWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(cs);
+    if (done) return done;
+  }
+
+  if (isDeliveryTracking(req.agentId)) {
+    const dt = await runDeliveryTrackingWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(dt);
     if (done) return done;
   }
 

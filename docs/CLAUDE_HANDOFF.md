@@ -1,15 +1,20 @@
 # Claude handoff — active task
 
-## Active: verify flagship depth Phase 2 (Cursor landed)
+## Active: verify flagship depth Phase 1b (Cursor landed)
 
 **Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
-**Close note:** [`docs/reports/flagship-depth-phase2-close-2026-08-03.md`](reports/flagship-depth-phase2-close-2026-08-03.md)
+**Close note:** [`docs/reports/flagship-depth-phase1b-close-2026-08-03.md`](reports/flagship-depth-phase1b-close-2026-08-03.md)
 
-**✅ Phase 1a: merged** (`585ac92`, PR #7). Independently verified: [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md).
+**✅ Phase 1a / Phase 2 / STOP helper:** merged and verified earlier.
 
-**Cursor shipped Phase 2** — `mobile-money`, `wealth-management`, `tax-office` + optional `veterinary`: workflow modules + dispatch + unit tests + pilots labeled **`Depth: strong`** (sandbox evidence `corr_flagship_2_*_msctci7e`; do not treat as `live`) + `eval:live --set=flagship-2`.
+**Cursor shipped Phase 1b (runtime-only):**
+- Re-gap: `trades-receptionist` already covered by shared `booking-front-desk` — no new module
+- New workflows: `customer-support`, `delivery-tracking` + dispatch + tests
+- Pilots **`Depth: strong`** + sandbox Evidence (`corr_flagship_1b_*_mscuy561`)
+- **Zero** Cluster B `.agent.json` edits
+- `pnpm eval:live --set=flagship-1b`
 
-**Claude verify:** same shape as Phase 1a — file:line for modules + dispatch; confirm pilots are `Depth: strong` not `live`; Cluster B untouched; `pnpm --filter @miai/runtime test` green.
+**Claude verify:** Cluster B catalogue byte-identical to `main`; pilots `strong` not `live`; `isBookingFrontDesk` covers trades; runtime tests green.
 
 ---
 
