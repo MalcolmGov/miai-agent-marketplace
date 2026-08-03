@@ -80,7 +80,9 @@ function loadConnectorProofs() {
   const slice = doc.slice ?? [];
   const proofs = doc.proofs ?? [];
   const agentsWithProof = new Set(proofs.map((p) => p.agentId));
-  const connectors = [...new Set(proofs.map((p) => p.connector))].sort();
+  const connectors = [...new Set(proofs.map((p) => p.connector))].sort((a, b) =>
+    a.localeCompare(b),
+  );
   return {
     agentsProven: slice.filter((id) => agentsWithProof.has(id)).length,
     sliceTarget: slice.length,
