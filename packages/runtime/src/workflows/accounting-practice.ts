@@ -5,6 +5,7 @@
  */
 
 import { wf } from "./i18n.js";
+import { handleStopSuppression } from "./stop-suppression.js";
 
 export type ApStepStatus = "pending" | "done" | "skipped" | "failed";
 
@@ -145,19 +146,15 @@ export async function runAccountingPracticeWorkflow(input: {
     };
   }
 
-  if (/^\s*stop\b|unsubscribe|don't (text|message) me/.test(lower)) {
-    if (has("handoff_to_human")) {
-      const args = { reason: "stop_suppression", summary: user.slice(0, 200) };
-      const result = await input.executeTool("handoff_to_human", args);
-      toolCalls.push({ name: "handoff_to_human", args, result: result.data });
-    }
-    return {
-      handled: true,
-      toolCalls,
-      assistantMessage:
-        "Understood — STOP acknowledged. You won't receive marketing texts; I'm handing off so suppression is completed.",
-    };
-  }
+  const stopSuppression = await handleStopSuppression({
+    lower,
+    user,
+    has,
+    executeTool: input.executeTool,
+    assistantMessage:
+      "Understood — STOP acknowledged. You won't receive marketing texts; I'm handing off so suppression is completed.",
+  });
+  if (stopSuppression) return stopSuppression;
 
   if (/ignore (all )?previous|reveal your (system )?prompt|print your (full )?system prompt/.test(lower)) {
     return {
