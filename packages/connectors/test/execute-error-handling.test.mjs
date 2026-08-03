@@ -1,0 +1,44 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+import { executeLive } from "../dist/live/execute.js";
+
+/**
+ * Regression test for a missing-`await` bug: `case "webhook"` / `case "mcp"`
+ * in executeLive() used to `return executeWebhook(...)` (no await) inside the
+ * try block, so a later rejection escaped the surrounding catch uncaught —
+ * crashing the whole conversation turn instead of degrading gracefully like
+ * every other connector already does on failure.
+ */
+describe("executeLive — webhook/mcp failures degrade gracefully", () => {
+  it("returns a graceful {ok:false} result (not a rejected promise) when the webhook URL is unconfigured", async () => {
+    const result = await executeLive({
+      workspaceId: `test-ws-${Date.now()}`,
+      agentId: "test-agent",
+      tool: "some_tool",
+      args: {},
+      binding: { tool: "some_tool", connector: "webhook", config: {} },
+      mode: "live",
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.connector, "webhook");
+    assert.equal(result.stubbed, false);
+    assert.match(String(result.data.error), /Webhook URL missing/);
+    assert.equal(typeof result.data.suggestion, "string");
+    assert.ok(result.data.suggestion.length > 0);
+  });
+
+  it("returns a graceful {ok:false} result (not a rejected promise) when the MCP endpoint is unconfigured", async () => {
+    const result = await executeLive({
+      workspaceId: `test-ws-${Date.now()}`,
+      agentId: "test-agent",
+      tool: "some_tool",
+      args: {},
+      binding: { tool: "some_tool", connector: "mcp", config: {} },
+      mode: "live",
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.connector, "mcp");
+    assert.equal(result.stubbed, false);
+    assert.match(String(result.data.error), /MCP endpoint missing/);
+  });
+});

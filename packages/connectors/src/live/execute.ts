@@ -1053,9 +1053,12 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
 
     switch (connector) {
       case "webhook":
-        return executeWebhook(call, keyTok, config);
+        // Must await inside this try block — returning the bare promise lets a
+        // later rejection (e.g. "Webhook URL missing") escape uncaught past the
+        // catch below, instead of degrading gracefully like every other connector.
+        return await executeWebhook(call, keyTok, config);
       case "mcp":
-        return executeMcp(call, keyTok, config);
+        return await executeMcp(call, keyTok, config);
       default:
         break;
     }
