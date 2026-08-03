@@ -308,12 +308,27 @@ export async function runHotelGuestWorkflow(input: {
         };
       }
     }
-    const blob =
-      section(input.knowledge, /## (Check-in|Breakfast|Pool|Wi)/i) ||
-      section(input.knowledge, /## Check-in \/ check-out[\s\S]*?(?=\n## )/i) ||
-      section(input.knowledge, /## Breakfast, Wi[\s\S]*?(?=\n## )/i) ||
-      section(input.knowledge, /## Pool, gym, spa[\s\S]*?(?=\n## )/i) ||
+    // NOTE: this used to be an unconditional `||` chain of section() lookups tried in a fixed
+    // order, completely ignoring `topic` above — so it always returned whichever section
+    // appeared first in the knowledge doc (Check-in/check-out), regardless of what was actually
+    // asked. One of those lines was also missing the [\s\S]*?(?=\n## ) "capture to next heading"
+    // suffix every other line had, so .match() returned just the matched heading text itself
+    // ("## Check-in", 12 chars) and — being first in the chain — always won over everything else.
+    // Route on the already-computed `topic` instead, so breakfast/wifi/parking questions actually
+    // get the breakfast section, pool/gym/spa questions get the pool section, etc.
+    const checkInOut = section(input.knowledge, /## Check-in \/ check-out[\s\S]*?(?=\n## )/i);
+    const breakfastWifiParking = section(input.knowledge, /## Breakfast, Wi[\s\S]*?(?=\n## )/i);
+    const poolGymSpa = section(input.knowledge, /## Pool, gym, spa[\s\S]*?(?=\n## )/i);
+    const fallback =
       "Amenity details are on file — ask about check-in, breakfast, Wi‑Fi, pool, gym, spa, or parking.";
+    const blob =
+      (topic === "check_in" || topic === "check_out"
+        ? checkInOut
+        : topic === "breakfast" || topic === "wifi" || topic === "parking"
+          ? breakfastWifiParking
+          : topic === "pool" || topic === "gym" || topic === "spa"
+            ? poolGymSpa
+            : "") || checkInOut || breakfastWifiParking || poolGymSpa || fallback;
     return { handled: true, toolCalls, assistantMessage: blob };
   }
 

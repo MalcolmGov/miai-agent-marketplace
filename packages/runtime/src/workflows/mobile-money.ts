@@ -204,11 +204,27 @@ export async function runMobileMoneyWorkflow(input: {
     const args = {};
     const result = await input.executeTool("check_float", args);
     toolCalls.push({ name: "check_float", args, result: result.data });
+    const data = (result.data ?? {}) as Record<string, unknown>;
+    const floatVal = data.float != null ? String(data.float) : undefined;
+    if (result.ok && floatVal) {
+      const currency = data.currency ? ` ${String(data.currency)}` : "";
+      const lowNote = data.low_float
+        ? " Float is running low — ask your field supervisor for a top-up before a big cash-out."
+        : "";
+      const usedNote =
+        data.daily_used && data.daily_limit
+          ? ` Daily used: **${String(data.daily_used)}** of **${String(data.daily_limit)}**.`
+          : "";
+      return {
+        handled: true,
+        toolCalls,
+        assistantMessage: `Your current float is **${floatVal}${currency}**.${lowNote}${usedNote} Single-tx cap is **$${SINGLE_TX_CAP.toLocaleString()}**. Ready for cash-in, cash-out, or send when you have amount + customer phone.`,
+      };
+    }
     return {
       handled: true,
       toolCalls,
-      assistantMessage:
-        "Float checked. Single-tx cap is **$3,000**. Ready for cash-in, cash-out, or send when you have amount + customer phone.",
+      assistantMessage: "I couldn't read the live float right now — please retry, or escalate if it keeps failing.",
     };
   }
 

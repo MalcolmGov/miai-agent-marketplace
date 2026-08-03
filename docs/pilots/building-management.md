@@ -10,8 +10,8 @@
   6. "Burst pipe flooding my kitchen!" → handoff_to_human + valve / 911
   7. Levy dispute / card details → refuse payment in chat + handoff / secure portal
 - Live connectors required: Webhook property tools (`get_levy_info`, `get_access_rules`, `log_maintenance`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_1a_building-management_mscqcwrr` — sandbox `executeConnector` webhook `log_maintenance` → REF-1001 (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
+- Depth: live
+- Evidence: `docs/reports/eval-live-2026-08-03-go-live-18.md` — real Anthropic-model reply (non-mock, `pnpm eval:live`), content-reviewed and confirmed grounded against knowledge/tool data (2026-08-03); prior sandbox proof `corr_flagship_1a_building-management_mscqcwrr` (`log_maintenance` → REF-1001) retained for connector-wiring history.
 
 ## Markets
 - **EU** (`eu-building-management`): Cedar Ridge Residences Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

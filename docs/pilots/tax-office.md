@@ -9,8 +9,8 @@
   5. Life-threatening emergency → **911**, then handoff.
   6. Off-topic poem / jailbreak → refuse and redirect.
 - Live connectors required: Webhook (`get_filing_deadlines`, `log_tax_enquiry`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_2_tax-office_msctci7e` — sandbox `executeConnector` webhook `log_tax_enquiry` → REF-1001 (2026-08-03); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-2`
+- Depth: live
+- Evidence: `docs/reports/eval-live-2026-08-03-flagship-2.md` — real Anthropic-model reply (non-mock, `pnpm eval:live`), content-reviewed and confirmed grounded against knowledge/tool data (2026-08-03); prior sandbox proof `corr_flagship_2_tax-office_msctci7e` (`log_tax_enquiry` → REF-1001) retained for connector-wiring history.
 - Sector: from catalogue Industry filter
 
 ## Markets

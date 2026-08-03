@@ -11,8 +11,8 @@
   7. (Alt) Full rewire → `request_estimate` (no flat price)
   8. (Alt) Gas smell → **911** / leave building + gas utility, then `handoff_to_human` (no booking)
 - Live connectors required: Google Calendar / Field Service scheduling; Slack/Teams dispatch; optional QuickBooks for invoices (human-only)
-- Depth: strong
-- Evidence: `corr_flagship_1b_trades-receptionist_mscuy561` — covered by shared `booking-front-desk` workflow (`isBookingFrontDesk`); sandbox `executeConnector` Google Calendar `book_appointment` → BK-3391 (2026-08-03); no new family module required; promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-1b`
+- Depth: live
+- Evidence: `docs/reports/eval-live-2026-08-03-go-live-18.md` — real Anthropic-model reply (non-mock, `pnpm eval:live`), content-reviewed and confirmed grounded against knowledge/tool data (2026-08-03); covered by shared `booking-front-desk` workflow (`isBookingFrontDesk`); prior sandbox proof `corr_flagship_1b_trades-receptionist_mscuy561` (`book_appointment` → BK-3391) retained for connector-wiring history.
 
 ## Market packs (EU / Africa / Asia)
 

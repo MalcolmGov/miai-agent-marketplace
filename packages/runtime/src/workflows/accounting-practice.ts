@@ -79,6 +79,15 @@ function section(knowledge: string | undefined, heading: RegExp): string {
   return knowledge.match(heading)?.[0]?.slice(0, 1400) ?? "";
 }
 
+/** Knowledge sections carry `> ...` blockquote authoring notes (e.g. "fetched with `get_deadlines`") — never customer-facing. */
+function stripInternalNotes(text: string): string {
+  return text
+    .split("\n")
+    .filter((l) => !l.trim().startsWith(">"))
+    .join("\n")
+    .trim();
+}
+
 function extractPhone(text: string): string | undefined {
   return (
     text.match(/(\+?\d[\d\s-]{6,}\d)/)?.[1]?.trim() ||
@@ -239,12 +248,25 @@ export async function runAccountingPracticeWorkflow(input: {
       : /vat|sales tax/i.test(lower)
         ? "sales_tax"
         : "general";
-    const args = { topic, query: user.slice(0, 200) };
+    const args = { topic };
     const result = await input.executeTool("get_deadlines", args);
     toolCalls.push({ name: "get_deadlines", args, result: result.data });
-    const blob =
-      section(input.knowledge, /## (Deadlines|Filing)[\s\S]*?(?=\n## )/i) ||
-      "General filing deadline guides are on file — confirm your jurisdiction with a CPA.";
+    const data = (result.data ?? {}) as {
+      deadlines?: Array<{ item?: string; due?: string; note?: string }>;
+      disclaimer?: string;
+    };
+    let blob: string;
+    if (result.ok && Array.isArray(data.deadlines) && data.deadlines.length > 0) {
+      const lines = data.deadlines.map((d) => {
+        const note = d.note ? ` (${d.note})` : "";
+        return `- **${d.item ?? "Deadline"}:** ${d.due ?? "confirm with your accountant"}${note}`;
+      });
+      blob = [lines.join("\n"), data.disclaimer].filter(Boolean).join("\n\n");
+    } else {
+      blob =
+        stripInternalNotes(section(input.knowledge, /## Filing deadlines[\s\S]*?(?=\n## )/i)) ||
+        "General filing deadline guides are on file — confirm your jurisdiction with a CPA.";
+    }
     return {
       handled: true,
       toolCalls,
@@ -256,15 +278,26 @@ export async function runAccountingPracticeWorkflow(input: {
     /docs? (for|do i need)|what (documents|paperwork)|checklist|w-?2|irp5/.test(lower) &&
     has("get_required_documents")
   ) {
-    const args = {
-      matter: /personal|individual/i.test(lower) ? "personal_return" : "general",
-      query: user.slice(0, 200),
-    };
+    const service = /bookkeeping/i.test(lower)
+      ? "monthly bookkeeping"
+      : /entity|registration|formation|company/i.test(lower)
+        ? "entity formation"
+        : /sales tax|vat/i.test(lower)
+          ? "sales tax registration"
+          : "individual income tax return";
+    const args = { service };
     const result = await input.executeTool("get_required_documents", args);
     toolCalls.push({ name: "get_required_documents", args, result: result.data });
-    const blob =
-      section(input.knowledge, /## (Documents|Checklist|Required)[\s\S]*?(?=\n## )/i) ||
-      "Typical document checklists are on file for common matter types.";
+    const data = (result.data ?? {}) as { service?: string; documents?: string[]; note?: string };
+    let blob: string;
+    if (result.ok && Array.isArray(data.documents) && data.documents.length > 0) {
+      const lines = data.documents.map((doc) => `- ${doc}`);
+      blob = [`**${data.service ?? service}:**`, lines.join("\n"), data.note].filter(Boolean).join("\n");
+    } else {
+      blob =
+        stripInternalNotes(section(input.knowledge, /## Required documents[\s\S]*?(?=\n## )/i)) ||
+        "Typical document checklists are on file for common matter types.";
+    }
     return { handled: true, toolCalls, assistantMessage: blob };
   }
 
@@ -294,7 +327,7 @@ export async function runAccountingPracticeWorkflow(input: {
           id: "docs",
           label: "Note intake checklist for new-client pack",
           tool: has("get_required_documents") ? "get_required_documents" : undefined,
-          args: { matter: "new_client" },
+          args: { service: "individual income tax return" },
           status: "pending",
         },
         {

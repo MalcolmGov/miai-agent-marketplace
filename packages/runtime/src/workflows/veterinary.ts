@@ -103,6 +103,21 @@ function extractPet(text: string): string | undefined {
   );
 }
 
+function section(knowledge: string | undefined, heading: RegExp): string {
+  if (!knowledge) return "";
+  return knowledge.match(heading)?.[0]?.slice(0, 1400) ?? "";
+}
+
+/** Sandbox stub for list_services has no prices — fall back to the knowledge price list. */
+function knowledgeServicesList(knowledge: string | undefined): string {
+  const servicesSection = section(knowledge, /## Services (?:&|and) prices[\s\S]*?(?=\n## )/i);
+  const lines = servicesSection
+    .split("\n")
+    .filter((l) => l.trim().startsWith("-"))
+    .map((l) => l.replace(/^-\s*/, "").trim());
+  return lines.join("\n");
+}
+
 function extractDayTime(text: string): { date: string; time: string; datetime: string } {
   const time =
     text.match(/\b(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i)?.[1] ||
@@ -253,12 +268,23 @@ export async function runVeterinaryWorkflow(input: {
     const args = {};
     const result = await input.executeTool("list_services", args);
     toolCalls.push({ name: "list_services", args, result: result.data });
-    return {
-      handled: true,
-      toolCalls,
-      assistantMessage:
-        "Published consult fees are on file. Share a day/time and pet name if you'd like me to check availability or propose a booking.",
-    };
+    const services = (result.data as Record<string, unknown> | undefined)?.services;
+    const priced = Array.isArray(services)
+      ? (services as Array<Record<string, unknown>>).filter((s) => typeof s.price === "string")
+      : [];
+    const pivot = "Share a day/time and pet name if you'd like me to check availability or propose a booking.";
+    let assistantMessage: string;
+    if (priced.length > 0) {
+      const lines = priced.map((s) => {
+        const duration = typeof s.duration_min === "number" ? ` — ${s.duration_min} min` : "";
+        return `- ${String(s.name)}${duration} — ${String(s.price)}`;
+      });
+      assistantMessage = `${lines.join("\n")}\n\n${pivot}`;
+    } else {
+      const kbList = knowledgeServicesList(input.knowledge);
+      assistantMessage = kbList ? `${kbList}\n\n${pivot}` : `Published consult fees are on file. ${pivot}`;
+    }
+    return { handled: true, toolCalls, assistantMessage };
   }
 
   if (/prep|spay|neuter|before (the )?surgery|fasting|no food/.test(lower) && has("get_prep_instructions")) {
