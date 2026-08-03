@@ -1,11 +1,23 @@
 # Claude handoff — active task
 
+## ⚠️ Merge order (Cursor + Claude coordination)
+
+| Order | PR | Status | Action |
+|---|---|---|---|
+| **1st** | [#17](https://github.com/MalcolmGov/miai-agent-marketplace/pull/17) `fix/eval-live-findings` | CI **green** | Merge first — fixes reply bugs in accounting/events/gym (+ hotel/pharmacy/mobile-money/vet) |
+| **2nd** | [#16](https://github.com/MalcolmGov/miai-agent-marketplace/pull/16) `cursor/quality-scoreboard-phase3` | quality/secrets green; SonarCloud fail | **Rebase onto main after #17**, then merge — Depth: live for those 3 must sit on fixed runtime |
+
+Do **not** merge #16 before #17. Claude wrote the note in the #17 PR body (avoided clobbering this handoff earlier); Cursor mirrored it on both PR comments + here.
+
+---
+
 ## Active: verify Wave 4 live reconnect + Depth: live promotions (Cursor landed)
 
 **Context:** Staging OAuth was reconnected (Google Calendar, Slack, HubSpot, Email). Cursor ran `proof:live --chat` + `--expand --auto-record` against `https://miaiweb-production.up.railway.app`.
 
 **Evidence store:** `data/wave4-live-proofs.json`  
-**Close / scoreboard context:** Phase 3 `/quality` in PR #16 (`docs/reports/flagship-depth-phase3-close-2026-08-03.md`)
+**Close / scoreboard context:** Phase 3 `/quality` in PR #16 (`docs/reports/flagship-depth-phase3-close-2026-08-03.md`)  
+**Related:** PR #17 live-eval judgment fixes (merge first — see above).
 
 ### LIVE_PASS (promoted / refreshed Evidence)
 
