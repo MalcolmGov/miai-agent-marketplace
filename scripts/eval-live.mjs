@@ -8,8 +8,9 @@
  *   MIAI_MODEL_MODE=anthropic ANTHROPIC_API_KEY=… pnpm eval:live
  *   MIAI_MODEL_MODE=openai OPENAI_API_KEY=… pnpm eval:live --limit=6
  *   pnpm eval:live --set=flagship-1a
+ *   pnpm eval:live --set=flagship-2
  *   pnpm eval:live --set=go-live-18 --limit=18
- *   pnpm eval:live --families=accounting-practice,pharmacy
+ *   pnpm eval:live --families=mobile-money,tax-office
  *
  * Exit 0 always when the run completes (report is the deliverable).
  * Exit 2 if called in mock mode or without keys.
@@ -102,6 +103,14 @@ const FLAGSHIP_1A = [
   },
 ];
 
+/** Flagship depth Phase 2 — financial services (+ optional veterinary). */
+const FLAGSHIP_2 = [
+  { agentId: "us-mobile-money", prompt: "What's my float?" },
+  { agentId: "us-wealth-management", prompt: "What are the key facts about your wealth desk?" },
+  { agentId: "us-tax-office", prompt: "When is the individual filing deadline?" },
+  { agentId: "us-veterinary", prompt: "What do you charge for a wellness consult?" },
+];
+
 /** Hero showcase set — GO_LIVE_18 us-* packs (one prompt each). */
 const GO_LIVE_18 = [
   ...FLAGSHIP_1A,
@@ -126,10 +135,11 @@ function familyKey(agentId) {
 
 function selectSample() {
   if (namedSet === "flagship-1a") return FLAGSHIP_1A;
+  if (namedSet === "flagship-2" || namedSet === "financial-services") return FLAGSHIP_2;
   if (namedSet === "go-live-18") return GO_LIVE_18;
   if (familyFilter.length) {
     const wanted = new Set(familyFilter.map((f) => f.replace(/^us-/i, "")));
-    const fromKnown = [...FLAGSHIP_1A, ...GO_LIVE_18, ...SAMPLE].filter((row) =>
+    const fromKnown = [...FLAGSHIP_1A, ...FLAGSHIP_2, ...GO_LIVE_18, ...SAMPLE].filter((row) =>
       wanted.has(familyKey(row.agentId)),
     );
     const extras = [...wanted]

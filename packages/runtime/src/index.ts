@@ -48,6 +48,13 @@ import {
   isGymMembership,
   runGymMembershipWorkflow,
 } from "./workflows/gym-membership.js";
+import { isMobileMoney, runMobileMoneyWorkflow } from "./workflows/mobile-money.js";
+import {
+  isWealthManagement,
+  runWealthManagementWorkflow,
+} from "./workflows/wealth-management.js";
+import { isTaxOffice, runTaxOfficeWorkflow } from "./workflows/tax-office.js";
+import { isVeterinary, runVeterinaryWorkflow } from "./workflows/veterinary.js";
 import {
   isMarketplaceAssistant,
   runMarketplaceAssistantWorkflow,
@@ -2401,6 +2408,63 @@ export async function runTurn(
       replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(gym);
+    if (done) return done;
+  }
+
+  // Flagship depth Phase 2 — financial services (+ optional veterinary)
+  if (isMobileMoney(req.agentId)) {
+    const mm = await runMobileMoneyWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(mm);
+    if (done) return done;
+  }
+
+  if (isWealthManagement(req.agentId)) {
+    const wm = await runWealthManagementWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(wm);
+    if (done) return done;
+  }
+
+  if (isTaxOffice(req.agentId)) {
+    const tax = await runTaxOfficeWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(tax);
+    if (done) return done;
+  }
+
+  if (isVeterinary(req.agentId)) {
+    const vet = await runVeterinaryWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(vet);
     if (done) return done;
   }
 
