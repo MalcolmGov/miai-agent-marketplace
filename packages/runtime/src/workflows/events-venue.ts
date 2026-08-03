@@ -78,6 +78,15 @@ function section(knowledge: string | undefined, heading: RegExp): string {
   return knowledge.match(heading)?.[0]?.slice(0, 1400) ?? "";
 }
 
+/** Knowledge sections carry internal authoring asides (e.g. "`get_packages` returns this list") — never customer-facing. */
+function stripInternalNotes(text: string): string {
+  return text
+    .split("\n")
+    .filter((l) => !l.trim().startsWith(">") && !/`[a-z_]+`\s*(returns|fetch)/i.test(l))
+    .join("\n")
+    .trim();
+}
+
 function extractPhone(text: string): string | undefined {
   return (
     text.match(/(\+?\d[\d\s-]{6,}\d)/)?.[1]?.trim() ||
@@ -232,12 +241,32 @@ export async function runEventsVenueWorkflow(input: {
   }
 
   if (/package|how much|price|wedding packages|what (do )?you offer/.test(lower) && has("get_packages")) {
-    const args = {};
+    const type = /wedding/i.test(lower)
+      ? "wedding"
+      : /corporate|conference/i.test(lower)
+        ? "corporate"
+        : /function|party/i.test(lower)
+          ? "function"
+          : undefined;
+    const args = type ? { type } : {};
     const result = await input.executeTool("get_packages", args);
     toolCalls.push({ name: "get_packages", args, result: result.data });
-    const blob =
-      section(input.knowledge, /## (Packages|Pricing)[\s\S]*?(?=\n## )/i) ||
-      "Published packages are on file — ask about a site visit if you'd like to see the space.";
+    const data = (result.data ?? {}) as {
+      packages?: Array<{ name?: string; capacity?: string; price_from?: string; includes?: string }>;
+    };
+    let blob: string;
+    if (result.ok && Array.isArray(data.packages) && data.packages.length > 0) {
+      blob = data.packages
+        .map((p) => {
+          const includes = p.includes ? ` Includes: ${p.includes}.` : "";
+          return `- **${p.name ?? "Package"}** — ${p.capacity ?? ""} — from **${p.price_from ?? "POA"}**.${includes}`;
+        })
+        .join("\n");
+    } else {
+      blob =
+        stripInternalNotes(section(input.knowledge, /## (Packages|Pricing)[\s\S]*?(?=\n## )/i)) ||
+        "Published packages are on file — ask about a site visit if you'd like to see the space.";
+    }
     return {
       handled: true,
       toolCalls,

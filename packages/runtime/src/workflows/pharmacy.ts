@@ -87,6 +87,30 @@ function section(knowledge: string | undefined, heading: RegExp): string {
   return knowledge.match(heading)?.[0]?.slice(0, 1400) ?? "";
 }
 
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function capitalize(s: string): string {
+  return s.length ? s[0]!.toUpperCase() + s.slice(1) : s;
+}
+
+/** Sandbox/demo tool stubs don't carry prices — fall back to the matching knowledge line. */
+function knowledgeStockLine(knowledge: string | undefined, product: string): string | undefined {
+  const stockSection = section(knowledge, /## Stock[\s\S]*?(?=\n## )/i);
+  if (!stockSection) return undefined;
+  const keyword = product
+    .split(/\s+/)
+    .filter((w) => w.length > 2)
+    .sort((a, b) => b.length - a.length)[0];
+  if (!keyword) return undefined;
+  const hit = stockSection
+    .split("\n")
+    .filter((l) => l.trim().startsWith("-"))
+    .find((l) => new RegExp(escapeRegExp(keyword), "i").test(l));
+  return hit?.replace(/^-\s*/, "").trim();
+}
+
 function extractPhone(text: string): string | undefined {
   return (
     text.match(/(\+?\d[\d\s-]{6,}\d)/)?.[1]?.trim() ||
@@ -243,27 +267,56 @@ export async function runPharmacyWorkflow(input: {
   if (/do you have|in stock|stock of|got any/.test(lower) && has("check_stock")) {
     const product =
       user.match(/(?:have|stock(?: of)?|got any)\s+(.+?)(?:\?|$)/i)?.[1]?.trim() || user.slice(0, 80);
-    const args = { product, sku: product };
+    const args = { item: product };
     const result = await input.executeTool("check_stock", args);
     toolCalls.push({ name: "check_stock", args, result: result.data });
-    return {
-      handled: true,
-      toolCalls,
-      assistantMessage:
-        "I checked OTC stock for that item. If you need a prescription refill logged, share the RX number and your name/phone.",
+    const data = (result.data ?? {}) as {
+      available?: boolean;
+      level?: string;
+      price?: string;
+      note?: string;
     };
+    let assistantMessage: string;
+    if (result.ok && typeof data.available === "boolean") {
+      const stateWord = data.level === "low_stock" ? "low in stock" : data.available ? "in stock" : "out of stock";
+      const priceNote = data.price ? ` — **${data.price}**` : "";
+      const extra = data.note ? ` ${data.note}` : "";
+      assistantMessage = `${capitalize(product)} is **${stateWord}**${priceNote}.${extra}`.trim();
+      if (!data.available) {
+        assistantMessage +=
+          " If this is a prescription item, share the RX number and your name/phone and I can log a refill request.";
+      }
+    } else {
+      const knowledgeLine = knowledgeStockLine(input.knowledge, product);
+      assistantMessage =
+        knowledgeLine ??
+        "I checked OTC stock for that item but couldn't confirm a result — if you need a prescription refill logged, share the RX number and your name/phone.";
+    }
+    return { handled: true, toolCalls, assistantMessage };
   }
 
   if (/ready|script status|prescription status|is rx/i.test(lower) && has("get_script_status")) {
     const rx = extractRx(user) || "RX";
-    const args = { script_id: rx, rx };
+    const args = { script_ref: rx };
     const result = await input.executeTool("get_script_status", args);
     toolCalls.push({ name: "get_script_status", args, result: result.data });
-    return {
-      handled: true,
-      toolCalls,
-      assistantMessage: `I looked up script **${rx}**. I can log a refill request for the pharmacist if you confirm.`,
+    const data = (result.data ?? {}) as { status?: string; ready_since?: string; bring?: string };
+    const statusText: Record<string, string> = {
+      being_prepared: "still being prepared",
+      ready_for_collection: "ready for collection",
+      collected: "already collected",
+      not_found: "not found — please double-check the reference",
     };
+    let assistantMessage: string;
+    if (result.ok && data.status) {
+      const readable = statusText[data.status] ?? data.status;
+      const sinceNote = data.ready_since ? ` (ready since ${data.ready_since})` : "";
+      const bringNote = data.bring ? ` Please bring ${data.bring}.` : "";
+      assistantMessage = `Script **${rx}** is **${readable}**${sinceNote}.${bringNote}`.trim();
+    } else {
+      assistantMessage = `I couldn't confirm the status for script **${rx}** right now. I can log a refill request for the pharmacist if you confirm.`;
+    }
+    return { handled: true, toolCalls, assistantMessage };
   }
 
   if (/hours|open|close|insurer|insurance|medical aid/.test(lower) && has("store_info")) {

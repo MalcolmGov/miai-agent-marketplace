@@ -379,12 +379,25 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       eta_restore: "within 4 hours",
       source: "sandbox_stub",
     };
+  if (n.includes("check_float") || n === "check_float")
+    return {
+      ok: true,
+      float: "$4,320.00",
+      currency: "USD",
+      low_float: false,
+      daily_used: "$1,050.00",
+      daily_limit: "$10,000.00",
+      source: "sandbox_stub",
+    };
   if (n.includes("stock") || n.includes("inventory"))
     return {
       ok: true,
+      available: true,
+      level: "in_stock",
       in_stock: true,
       qty: 12,
       source: "sandbox_stub",
+      note: "Sandbox stub — prefer price from knowledge base.",
     };
   if (n.includes("product_info") || n.includes("get_product"))
     return {

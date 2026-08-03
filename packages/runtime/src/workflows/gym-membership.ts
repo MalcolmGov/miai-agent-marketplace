@@ -79,6 +79,15 @@ function section(knowledge: string | undefined, heading: RegExp): string {
   return knowledge.match(heading)?.[0]?.slice(0, 1400) ?? "";
 }
 
+/** Knowledge sections carry internal authoring asides (e.g. "`get_plans` returns this same list") — never customer-facing. */
+function stripInternalNotes(text: string): string {
+  return text
+    .split("\n")
+    .filter((l) => !l.trim().startsWith(">") && !/`[a-z_]+`\s*(returns|fetch)/i.test(l))
+    .join("\n")
+    .trim();
+}
+
 function extractMemberId(text: string): string | undefined {
   return text.match(/\b(M[- ]?\d+)\b/i)?.[1]?.replace(/\s+/g, "-").toUpperCase();
 }
@@ -295,9 +304,23 @@ export async function runGymMembershipWorkflow(input: {
     const args = {};
     const result = await input.executeTool("get_plans", args);
     toolCalls.push({ name: "get_plans", args, result: result.data });
-    const blob =
-      section(input.knowledge, /## (Plans|Membership|Pricing)[\s\S]*?(?=\n## )/i) ||
-      "Published membership plans are on file.";
+    const data = (result.data ?? {}) as {
+      plans?: Array<{ name?: string; price?: string; term?: string; includes?: string }>;
+    };
+    let blob: string;
+    if (result.ok && Array.isArray(data.plans) && data.plans.length > 0) {
+      blob = data.plans
+        .map((p) => {
+          const term = p.term ? ` (${p.term})` : "";
+          const includes = p.includes ? ` — ${p.includes}` : "";
+          return `- **${p.name ?? "Plan"}** — **${p.price ?? "POA"}**${term}${includes}`;
+        })
+        .join("\n");
+    } else {
+      blob =
+        stripInternalNotes(section(input.knowledge, /## (Plans|Membership|Pricing)[\s\S]*?(?=\n## )/i)) ||
+        "Published membership plans are on file.";
+    }
     return { handled: true, toolCalls, assistantMessage: blob };
   }
 

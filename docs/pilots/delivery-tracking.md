@@ -11,8 +11,8 @@
   7. (Alt) No waybill → ask for waybill / tracking number first
   8. (Alt) Overnight price → `$28` / next business day before 3:00 PM cut-off
 - Live connectors required: Carrier TMS / tracking API; Slack/Teams for exception desk
-- Depth: strong
-- Evidence: `corr_flagship_1b_delivery-tracking_mscuy561` — sandbox `executeConnector` webhook `log_exception` → REF-1001 (2026-08-03); runtime workflow only (Cluster B catalogue untouched); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-1b`
+- Depth: live
+- Evidence: `docs/reports/eval-live-2026-08-03-go-live-18.md` — real Anthropic-model reply (non-mock, `pnpm eval:live`), content-reviewed and confirmed grounded against knowledge/tool data (2026-08-03); prior sandbox proof `corr_flagship_1b_delivery-tracking_mscuy561` (`log_exception` → REF-1001) retained for connector-wiring history.
 
 ## Market packs (EU / Africa / Asia)
 
