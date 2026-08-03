@@ -18,7 +18,14 @@ Catalogue is sold as **agent families** with **US / EU / Africa / Asia** packs (
 
 ### 1. Auth (OIDC / JWT)
 - Issue workspace-scoped access tokens for Agents UI and embed keys
-- Claims: `workspace_id`, `user_id`, `roles[]`
+- Claims: `workspace_id`, `user_id`, `roles[]` (creator of a new business workspace must include `owner`)
+- Optional claim: `product=agents` so the marketplace defaults to business-mode nav
+- **Agents auth entry (separate from consumer Get Started):** login/signup URL that accepts:
+  - `product=agents`
+  - `return_to` — absolute URL back to Agents (`{APP_BASE_URL}/` or `/get-started` resume)
+- Env on Agents host: `MIAI_AGENTS_AUTH_URL` / `NEXT_PUBLIC_MIAI_AGENTS_AUTH_URL`
+- **Workspace provision:** on first Agents signup, mint `workspace_id` from business profile (company name) before issuing JWT
+- Full B2B journey: [B2B_ONBOARDING.md](./B2B_ONBOARDING.md)
 
 ### 2. Wallet
 - `GET /v1/wallets/:workspaceId` → `{ tokens }`

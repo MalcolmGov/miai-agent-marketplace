@@ -51,8 +51,8 @@ export function MarketplaceHero({
           <a href="#catalogue" className="btn btn-primary w-full sm:w-auto">
             {t("hero.browse")}
           </a>
-          <Link href="/demo" className="btn btn-ghost w-full sm:w-auto">
-            {t("hero.mondayDemo")}
+          <Link href="/get-started" className="btn btn-ghost w-full sm:w-auto" data-testid="hero-business-setup">
+            {t("hero.businessSetup")}
           </Link>
         </div>
 

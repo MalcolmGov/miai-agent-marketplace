@@ -26,6 +26,9 @@ export const es: Dictionary = {
 
   "sidebar.consumer": "Consumidor",
   "sidebar.workspaces": "Espacios",
+  "sidebar.business": "Business",
+  "sidebar.businessSetup": "Business setup",
+  "sidebar.openConsumerApp": "Consumer app",
   "sidebar.tokenBalance": "Saldo de tokens",
   "sidebar.prepaid": "Prepago",
   "sidebar.tapToTopUp": "Toca para recargar",
@@ -96,6 +99,7 @@ export const es: Dictionary = {
     "{count} agentes listos para WhatsApp, web y app — alquila, configura y pon en marcha.",
   "hero.browse": "Explorar agentes",
   "hero.mondayDemo": "Pack demo del lunes",
+  "hero.businessSetup": "Business setup",
   "hero.howItWorks": "Cómo funciona",
   "hero.stepBrowse": "Explorar",
   "hero.stepRent": "Alquilar",

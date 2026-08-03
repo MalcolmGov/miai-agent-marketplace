@@ -7,6 +7,10 @@
 
 export function buildContentSecurityPolicy(nonce: string): string {
   const scriptSrc = [`'self'`, `'nonce-${nonce}'`, `'strict-dynamic'`];
+  // Next.js dev / HMR evaluates scripts; block that only outside development.
+  if (process.env.NODE_ENV !== "production") {
+    scriptSrc.push("'unsafe-eval'");
+  }
   return [
     "default-src 'self'",
     `script-src ${scriptSrc.join(" ")}`,

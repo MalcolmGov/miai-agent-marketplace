@@ -26,6 +26,9 @@ export const zh: Dictionary = {
 
   "sidebar.consumer": "个人",
   "sidebar.workspaces": "工作区",
+  "sidebar.business": "Business",
+  "sidebar.businessSetup": "Business setup",
+  "sidebar.openConsumerApp": "Consumer app",
   "sidebar.tokenBalance": "代币余额",
   "sidebar.prepaid": "预付",
   "sidebar.tapToTopUp": "点击充值",
@@ -94,6 +97,7 @@ export const zh: Dictionary = {
   "hero.lede": "{count} 个现成智能体，覆盖 WhatsApp、网页与应用 — 租用、配置、上线。",
   "hero.browse": "浏览智能体",
   "hero.mondayDemo": "周一演示包",
+  "hero.businessSetup": "Business setup",
   "hero.howItWorks": "如何使用",
   "hero.stepBrowse": "浏览",
   "hero.stepRent": "租用",

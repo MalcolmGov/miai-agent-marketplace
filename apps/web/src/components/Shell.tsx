@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ConsentBanner } from "./ConsentBanner";
 import { MarketplaceAssistant } from "./marketplace-assistant/MarketplaceAssistant";
+import { OnboardingChecklist } from "./OnboardingChecklist";
 import { Sidebar } from "./Sidebar";
 import { ThemeToggle } from "./ThemeToggle";
 import { TopUpModal } from "./TopUpModal";
@@ -32,10 +33,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const isHome = pathname === "/";
   /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
   const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
+  /** Business onboarding / login — focused full-page, no sidebar. */
+  const isAuthEntry =
+    pathname === "/get-started" ||
+    pathname.startsWith("/get-started/") ||
+    pathname === "/login" ||
+    pathname.startsWith("/login/");
   /** Full-page Ask AI — skip floating FAB duplicate. */
   const isAskPage = pathname === "/ask" || pathname.startsWith("/ask/");
 
-  if (isAppChannel) {
+  if (isAppChannel || isAuthEntry) {
     return <>{children}</>;
   }
 
@@ -136,6 +143,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
       />
 
       {!isAskPage && <MarketplaceAssistant mode="floating" />}
+      {isHome ? (
+        <Suspense fallback={null}>
+          <OnboardingChecklist />
+        </Suspense>
+      ) : null}
       <ConsentBanner />
     </div>
   );

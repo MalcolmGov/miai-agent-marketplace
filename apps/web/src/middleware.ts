@@ -48,6 +48,7 @@ export function middleware(req: NextRequest) {
       "/api/webhook/sink",
       "/api/mcp",
       "/api/consent",
+      "/api/auth/handoff",
     ];
     const isPublic = publicPaths.some((p) => pathname === p || pathname.startsWith(p));
     if (!isPublic) {

@@ -42,15 +42,18 @@ Supporting packs (can share on request): Platform Integration Contract, Technica
 
 Please nominate owners and target dates for:
 
-1. **OIDC** — issuer, audience, JWKS, sample JWT with `workspace_id` / `user_id` / `roles`  
+1. **OIDC** — issuer, audience, JWKS, sample JWT with `workspace_id` / `user_id` / `roles` (include `owner` for workspace creator)  
 2. **Wallet API** — base URL, API key, debit/balance/top-up contract + sample responses; pause-on-zero semantics confirmed  
 3. **Model gateway** — base URL, auth, tool-calling support, model alias map  
 4. **Azure** — subscription / resource group, who runs `az deployment`, Key Vault access model  
 5. **DNS / TLS** — production hostname for Agents + embed (`agent.js`)  
 6. **WhatsApp** — WABA / BSP ownership (MyInstantAI vs Move Digital)  
 7. **Commercial** — term sheet principles (see §5) and target partnership / go-live dates  
+8. **B2B entry (separate from consumer)** — marketing CTA **For business / Agents** → `{agentsHost}/get-started` (do **not** reuse consumer Get Started → token signup)  
+9. **Agents auth URL** — supports `product=agents` + `return_to`; workspace provision API (company → `workspace_id`)  
+10. **Native-app owner** — WebView App channel pilot contact  
 
-Without items 1–3 in writing (even staging stubs), the first sprint stays infra-documentation only.
+B2B onboarding contract: [`B2B_ONBOARDING.md`](./B2B_ONBOARDING.md). Without items 1–3 in writing (even staging stubs), the first sprint stays infra-documentation only.
 
 ---
 

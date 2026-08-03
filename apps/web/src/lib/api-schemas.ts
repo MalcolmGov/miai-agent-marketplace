@@ -114,6 +114,35 @@ export const customRequestStatusBodySchema = z.object({
   status: z.enum(["new", "reviewing", "scoped", "done", "declined"]),
 });
 
+export const onboardingCompleteBodySchema = z.object({
+  companyName: z.string().min(2).max(200),
+  market: z.enum(["us", "eu", "africa", "asia", "oceania"]),
+  industry: z.string().min(1).max(120),
+  companySize: z.string().min(1).max(40),
+  intent: z.enum([
+    "customer-support",
+    "bookings",
+    "hotel",
+    "it-helpdesk",
+    "sales",
+    "other",
+  ]),
+  contactEmail: z.string().email().max(320).optional(),
+});
+
+export const onboardingPatchBodySchema = z.object({
+  checklist: z
+    .object({
+      market: z.boolean().optional(),
+      browse: z.boolean().optional(),
+      try: z.boolean().optional(),
+      rent: z.boolean().optional(),
+      install: z.boolean().optional(),
+    })
+    .optional(),
+  checklistDismissed: z.boolean().optional(),
+});
+
 export const workspaceMemberInviteBodySchema = z.object({
   email: z.string().email().max(320),
   role: z.enum(["readonly", "agent", "admin"]).optional(),

@@ -2,11 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { MessageKey } from "@/lib/i18n";
 import { useT } from "@/lib/locale";
 import { LanguageSelect } from "./LanguageSelect";
 import { ThemeToggle } from "./ThemeToggle";
+
+type ShellMode = "business" | "consumer";
+
+const BUSINESS_HIDDEN = new Set(["learn"]);
+const CONSUMER_ALLOWED = new Set([
+  "home",
+  "ask",
+  "search",
+  "trust",
+  "legal",
+  "ai-agents",
+]);
 
 type NavBadge = { labelKey: MessageKey; tone: "new" | "live" };
 
@@ -200,6 +212,12 @@ function resolveActive(pathname: string, item: NavItem, groupId: string) {
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
 }
 
+function platformOperator(roles: string[]): boolean {
+  return roles.some((r) =>
+    ["operator", "platform_admin", "miai_admin"].includes(r.toLowerCase()),
+  );
+}
+
 export function Sidebar({
   tokens,
   onTopUp,
@@ -213,7 +231,75 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const t = useT();
-  const [mode, setMode] = useState<"consumer" | "workspaces">("consumer");
+  const [mode, setMode] = useState<ShellMode>("business");
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [consumerAppUrl, setConsumerAppUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [onboardingRes, handoffRes] = await Promise.all([
+          fetch("/api/onboarding"),
+          fetch("/api/auth/handoff"),
+        ]);
+        if (cancelled) return;
+        if (handoffRes.ok) {
+          const handoff = await handoffRes.json();
+          setConsumerAppUrl(handoff.consumerAppUrl ?? null);
+        }
+        if (!onboardingRes.ok) return;
+        const data = await onboardingRes.json();
+        const roles: string[] = data.me?.roles ?? [];
+        const isOp = Boolean(data.me?.isOperator) || platformOperator(roles);
+        setShowAdmin(isOp);
+        const agentsProduct =
+          data.me?.product === "agents" ||
+          data.profile?.wizardCompleted ||
+          data.profile?.product === "agents";
+        let stored: string | null = null;
+        try {
+          stored = sessionStorage.getItem("miai.shellMode");
+          if (!stored && sessionStorage.getItem("miai.product") === "agents") {
+            stored = "business";
+          }
+        } catch {
+          /* ignore */
+        }
+        if (stored === "consumer" || stored === "business") {
+          setMode(stored);
+        } else {
+          setMode(agentsProduct || isOp ? "business" : "business");
+        }
+      } catch {
+        /* keep defaults */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  function changeMode(next: ShellMode) {
+    setMode(next);
+    try {
+      sessionStorage.setItem("miai.shellMode", next);
+      if (next === "business") sessionStorage.setItem("miai.product", "agents");
+    } catch {
+      /* ignore */
+    }
+  }
+
+  const visibleGroups = useMemo(() => {
+    return GROUPS.map((group) => {
+      const items = group.items.filter((item) => {
+        if (item.id === "admin") return mode === "business" && showAdmin;
+        if (mode === "business") return !BUSINESS_HIDDEN.has(item.id);
+        return CONSUMER_ALLOWED.has(item.id);
+      });
+      return { ...group, items };
+    }).filter((g) => g.items.length > 0);
+  }, [mode, showAdmin]);
 
   return (
     <>
@@ -222,7 +308,7 @@ export function Sidebar({
         onClick={onClose}
         aria-hidden={!mobileOpen}
       />
-      <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`}>
+      <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`} data-testid="app-sidebar">
         <div className="flex h-full flex-col">
           <div className="border-b border-[var(--line)] px-4 pb-4 pt-5">
             <Link href="/" className="flex items-center gap-2.5" onClick={onClose}>
@@ -239,16 +325,18 @@ export function Sidebar({
               <button
                 type="button"
                 className={mode === "consumer" ? "mode-active" : ""}
-                onClick={() => setMode("consumer")}
+                onClick={() => changeMode("consumer")}
+                data-testid="shell-mode-consumer"
               >
                 {t("sidebar.consumer")}
               </button>
               <button
                 type="button"
-                className={mode === "workspaces" ? "mode-active" : ""}
-                onClick={() => setMode("workspaces")}
+                className={mode === "business" ? "mode-active" : ""}
+                onClick={() => changeMode("business")}
+                data-testid="shell-mode-business"
               >
-                {t("sidebar.workspaces")}
+                {t("sidebar.business")}
               </button>
             </div>
 
@@ -266,8 +354,8 @@ export function Sidebar({
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-3 py-4">
-            {GROUPS.map((group) => (
+          <nav className="flex-1 overflow-y-auto px-3 py-4" data-testid="sidebar-nav">
+            {visibleGroups.map((group) => (
               <div key={group.id} className="mb-5">
                 <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-dim)]">
                   {t(group.titleKey)}
@@ -281,6 +369,7 @@ export function Sidebar({
                           href={item.href}
                           onClick={onClose}
                           className={`nav-item ${active ? "nav-item-active" : ""}`}
+                          data-nav-id={item.id}
                         >
                           <span className="nav-item-icon">{item.icon}</span>
                           <span className="flex-1 truncate">{t(item.labelKey)}</span>
@@ -303,6 +392,32 @@ export function Sidebar({
                 </ul>
               </div>
             ))}
+            {mode === "consumer" && consumerAppUrl ? (
+              <a
+                href={consumerAppUrl}
+                className="nav-item text-[var(--muted)]"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="nav-item-icon">
+                  <IconPlus />
+                </span>
+                <span className="flex-1 truncate">{t("sidebar.openConsumerApp")}</span>
+              </a>
+            ) : null}
+            {mode === "consumer" ? (
+              <Link
+                href="/get-started"
+                onClick={onClose}
+                className="nav-item mt-1 text-[var(--accent-bright)]"
+                data-testid="sidebar-business-setup"
+              >
+                <span className="nav-item-icon">
+                  <IconAgents />
+                </span>
+                <span className="flex-1 truncate">{t("sidebar.businessSetup")}</span>
+              </Link>
+            ) : null}
           </nav>
 
           <div className="space-y-2 border-t border-[var(--line)] px-4 py-3">

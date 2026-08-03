@@ -24,6 +24,9 @@ export const en = {
 
   "sidebar.consumer": "Consumer",
   "sidebar.workspaces": "Workspaces",
+  "sidebar.business": "Business",
+  "sidebar.businessSetup": "Business setup",
+  "sidebar.openConsumerApp": "Consumer app",
   "sidebar.tokenBalance": "Token balance",
   "sidebar.prepaid": "Prepaid",
   "sidebar.tapToTopUp": "Tap to top up",
@@ -95,6 +98,7 @@ export const en = {
     "{count} ready-made agents across US, EU, Africa, Asia, and Oceania — rent one, configure, go live.",
   "hero.browse": "Browse agents",
   "hero.mondayDemo": "Production pack",
+  "hero.businessSetup": "Business setup",
   "hero.howItWorks": "How it works",
   "hero.stepBrowse": "Browse",
   "hero.stepRent": "Rent",

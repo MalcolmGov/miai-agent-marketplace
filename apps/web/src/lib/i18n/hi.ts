@@ -26,6 +26,9 @@ export const hi: Dictionary = {
 
   "sidebar.consumer": "उपभोक्ता",
   "sidebar.workspaces": "वर्कस्पेस",
+  "sidebar.business": "Business",
+  "sidebar.businessSetup": "Business setup",
+  "sidebar.openConsumerApp": "Consumer app",
   "sidebar.tokenBalance": "टोकन बैलेंस",
   "sidebar.prepaid": "प्रीपेड",
   "sidebar.tapToTopUp": "टॉप-अप के लिए टैप करें",
@@ -96,6 +99,7 @@ export const hi: Dictionary = {
     "WhatsApp, वेब और ऐप के लिए {count} तैयार एजेंट — किराये पर लें, कॉन्फ़िगर करें, लाइव जाएँ।",
   "hero.browse": "एजेंट ब्राउज़ करें",
   "hero.mondayDemo": "सोमवार डेमो पैक",
+  "hero.businessSetup": "Business setup",
   "hero.howItWorks": "कैसे काम करता है",
   "hero.stepBrowse": "ब्राउज़",
   "hero.stepRent": "किराये",

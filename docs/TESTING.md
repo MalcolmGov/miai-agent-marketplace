@@ -60,6 +60,7 @@ Mock rails identity for API steps (headers set in Playwright config):
 | `e2e/functional/studio-setup.spec.ts` | `@functional` | knowledge → try → install; configure API |
 | `e2e/functional/secondary-pages.spec.ts` | `@functional` | trust / privacy / terms / demo / install / ask |
 | `e2e/functional/family-api.spec.ts` | `@functional` | family capability brief |
+| `e2e/functional/b2b-onboarding.spec.ts` | `@functional` `@uat` `@handover` | `/get-started` wizard → catalogue checklist; auth handoff |
 | `e2e/uat/partner-demo-journey.spec.ts` | `@uat` | browse → rent → chat → install |
 | `e2e/uat/acceptance-bar.spec.ts` | `@uat` | B+ ops + 500 SKUs + legal surfaces |
 
