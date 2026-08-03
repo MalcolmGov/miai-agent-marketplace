@@ -1,4 +1,4 @@
-# Cursor task — flagship depth push (close the Go-live 18 gap, then scale)
+# Cursor task — flagship depth push (Go-live 18 gap ✅ done → financial services now)
 
 **Owner:** Cursor
 **Context:** the platform's own featured showcase (`GO_LIVE_18_FAMILY_IDS` in `apps/web/src/lib/monday-pilot.ts`) is what prospects see first. Cross-referencing it against real depth investment (a `packages/runtime/src/workflows/*.ts` state machine + a `Depth: live` pilot doc) shows **10 of the 18 have it, 8 don't** — and 6 of those 8 are `pro` tier, i.e. already sold at premium pricing while running the shallow single-tool-round path the earlier audit flagged (`docs/reports/technical-audit-2026-08-02.md` §6, AI Platform). This brief closes that gap, then extends the same bar to a couple of enterprise-tier verticals, then makes it a public trust asset.
@@ -13,12 +13,14 @@
 - **⚠️ Cluster B conflict — read before Phase 1b.** `customer-support`, `delivery-tracking`, `trades-receptionist` are simultaneously (a) in the Go-live 18 gap list below, AND (b) in the protected Cluster B set (`restaurant-takeaway · salon-booking · clinic-front-desk · customer-support · delivery-tracking · trades-receptionist`) that Claude hand-deepened earlier and that scripts hard-skip. **Do not re-run any catalogue-deepening script or hand-edit their `.agent.json` knowledge/evals/guardrails.** If you pursue depth on these three, it must be **runtime-orchestration-layer only** — a new `packages/runtime/src/workflows/*.ts` module + dispatch wiring in `runtime/index.ts`, reading their *existing* knowledge/tools unchanged. If that boundary is unclear for any of the three, skip it and flag back rather than guess.
 - **MockModel eval pass-rate is not live-LLM quality.** Every "Depth: live" claim in this push must be backed by a `pnpm eval:live` run, not the static/mock suite.
 - Keep the CI gate green (`pnpm run ci`). Add unit test coverage with each new workflow module (repo convention; `dental-front-desk.ts` / `hotel-guest.ts` have no dedicated test files today — cover the new ones instead of matching that gap).
-- Phase 2 (which industries/families) is **Malcolm's call, not Cursor's** — do not start it until he confirms the target industries below.
+- Phase 2 target industry is now **confirmed by Malcolm** (see Phase 2 section — financial services). Do not substitute a different industry without checking back.
 - Surgical, additive changes. Don't refactor the existing hardcoded workflow-dispatch if-chain in `runtime/index.ts` as part of this — that's a separate architecture item (noted in the audit, not in scope here).
 
 ---
 
-## Phase 1a — Close the depth gap (5 agents, no guardrail conflict, do first)
+## Phase 1a — Close the depth gap (5 agents, no guardrail conflict) — ✅ DONE
+
+Shipped in PR #7 (merged `585ac92`), independently verified: `docs/reports/flagship-depth-verify-2026-08-03.md`. All 5 pilot docs correctly carry `Depth: strong` (not `live` — no real OAuth staging proof yet; promote once `pnpm eval:live --set=flagship-1a` or `pnpm proof:live` produces a genuine correlation id). Original brief kept below for reference.
 
 Target families and their current state (all already have solid catalogue content — 4-6 tools, 14-18 evals each — so this is orchestration work, not knowledge-authoring from scratch):
 
@@ -45,17 +47,32 @@ Target families and their current state (all already have solid catalogue conten
 
 ---
 
-## Phase 2 — Enterprise-tier flagships per top industry (after Phase 1a; needs Malcolm's sign-off on target industries)
+## Phase 2 — CONFIRMED: Financial services (do this now)
 
-20 families are `enterprise` tier — your highest-value segment — and currently thin on depth outside the Go-live 18. They cluster heavily in financial services:
+**Malcolm's pick, with data behind it** (families.json cross-tabulated by tier + existing depth coverage):
 
-| Candidate industry lean | Families |
-|---|---|
-| Financial services (8 of 20 enterprise families) | `bank-branch` · `mobile-money` · `wealth-management` · `investment-advisor` · `tax-office` · `payroll-queries` · `financial-reporting` · `fraud-investigations` |
-| Legal / professional | `contract-review` · `law-firm-intake` · `legal-research` · `policy-compliance` |
-| Security / internal ops | `cybersecurity-desk` · `security-incident` · `enterprise-connectivity` |
+| Industry | Total families | Enterprise-tier | Depth-covered today |
+|---|---:|---:|---:|
+| **Financial services** | 18 | **7** (largest cluster) | 2 |
+| Retail & e-commerce | 32 | 6 | 5 |
+| Legal & professional | 4 | 3 | 0 |
+| Health & wellness | 4 | 0 | 3 |
 
-**Do not start this phase until Malcolm picks 2 target industries.** Once he does: bring 3-4 families from that lean to the same Phase-1a acceptance bar.
+Financial services has the platform's largest enterprise-tier concentration (7 of 20 enterprise families) and is virtually unclaimed on depth (2/18) relative to its size — the biggest value-weighted gap in the catalogue. It also pairs narratively with the recent security/persistence hardening (Phases 0–5 + punch-list): "hardened enough for finance" + real financial-services depth is a stronger enterprise pitch than either alone.
+
+**Starter 3 families** (span consumer-fintech, high-net-worth, and SMB/compliance — deliberately not overfit to one buyer type):
+
+| Family | Tier | Why this one first |
+|---|---|---|
+| `mobile-money` | enterprise | consumer-fintech, highest transaction-frequency use case |
+| `wealth-management` | enterprise | high-net-worth advisory, highest per-seat value |
+| `tax-office` | enterprise | SMB/compliance-driven, broadest reach |
+
+Bring these 3 to the exact same Phase 1a acceptance bar (workflow module + dispatch + tests + `Depth: strong` pilot doc with honest evidence + `eval:live` support). Use the same guardrail: label `Depth: strong` unless a real live-OAuth/`eval:live` proof exists — do not repeat the live-vs-strong labeling issue from Phase 1a.
+
+**Optional fast-win alongside it:** `veterinary` has no workflow module today (confirmed — `packages/runtime/src/workflows/veterinary.ts` doesn't exist) but its pilot doc already says `Depth: strong`, and it's the last piece needed to complete health & wellness (currently 3/4 depth-covered — dental-front-desk, clinic-front-desk, salon-booking, pharmacy already done). Cheap to close, and lets the platform credibly claim one *fully complete* vertical, which is a different proof point than breadth. Not required, but low-cost if there's spare capacity in this pass.
+
+Remaining enterprise clusters (`legal-research`/`contract-review`/`law-firm-intake`/`policy-compliance`, and `cybersecurity-desk`/`security-incident`/`enterprise-connectivity`) are noted for a future Phase 2b — not in scope for this round.
 
 ---
 
@@ -71,17 +88,18 @@ Target families and their current state (all already have solid catalogue conten
 
 ## Deliverable
 
-For Phase 1a: the 5 workflow modules + dispatch + tests + updated pilot docs + `eval:live` evidence, and a dated close note (`docs/reports/flagship-depth-close-YYYY-MM-DD.md`, same shape as `residual-punchlist-close-2026-08-02.md`) listing what shipped per family. Update `docs/CLAUDE_HANDOFF.md` Active section to point Claude at it for independent verification (same acceptance-bar checklist above, file:line evidence, `Depth: live` + `eval:live` spot-checked for real, not just claimed).
+**Phase 1a: done** (see above).
 
-For Phase 1b: report back explicitly on whether the Cluster B boundary was honored, before or alongside the Phase 1a close note.
+**Phase 2 (this round):** the 3 financial-services workflow modules + dispatch + tests + pilot docs (`Depth: strong`, honest evidence line) + `eval:live` support, plus `veterinary` if pursued. A dated close note (`docs/reports/flagship-depth-phase2-close-YYYY-MM-DD.md`, same shape as the Phase 1a close note) listing what shipped per family. Update `docs/CLAUDE_HANDOFF.md` Active section to point Claude at it for independent verification — same acceptance bar as Phase 1a, same labeling discipline (`strong` vs `live` must match actual evidence).
 
-Phase 2/3: separate close notes once undertaken.
+Phase 3: separate close note once undertaken.
 
 ---
 
-## Out of scope for this brief
+## Out of scope for this round
 
 - Adding new families to the catalogue.
 - Refactoring the hardcoded workflow-dispatch if-chain into a registry (real architecture debt, separate item).
 - Compliance/legal copy (counsel-blocked, unrelated to this push).
-- Choosing Phase 2's target industries (Malcolm's call).
+- Phase 2b (legal/professional, security/internal-ops enterprise clusters) — future round.
+- Phase 1b (Cluster B) — still flagged, still not started, still requires explicit care if picked up.

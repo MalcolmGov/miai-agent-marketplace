@@ -1,13 +1,14 @@
 # Claude handoff — active task
 
-## Active: verify flagship depth Phase 1a (Cursor landed)
+## Active: flagship depth Phase 2 — financial services (confirmed, start now)
 
-**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md)  
-**Close note:** [`docs/reports/flagship-depth-close-2026-08-03.md`](reports/flagship-depth-close-2026-08-03.md)
+**Brief:** [`docs/CURSOR_FLAGSHIP_DEPTH.md`](CURSOR_FLAGSHIP_DEPTH.md) — Phase 2 section rewritten with Malcolm's confirmed pick + data.
 
-**Cursor shipped Phase 1a** — five workflow modules + dispatch + unit tests + pilot `Depth: strong` (sandbox evidence; promote to `live` after real OAuth/`eval:live`) + `eval:live --set=flagship-1a` / `--families=`. **Phase 1b skipped** (Cluster B boundary honored — no `.agent.json` edits). Phase 2 still needs Malcolm’s industry pick. Phase 3 scoreboard page deferred; CLI targeting landed.
+**✅ Phase 1a: merged** (`585ac92`, PR #7). Five workflow modules + dispatch + unit tests + pilot `Depth: strong` (correct label — sandbox evidence honestly disclosed, not yet real OAuth/`eval:live` proof) + `eval:live --set=flagship-1a` / `--families=`. Phase 1b correctly skipped (Cluster B untouched, verified byte-for-byte). Independently verified: [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md).
 
-**Claude verify:** see [`flagship-depth-verify-2026-08-03.md`](reports/flagship-depth-verify-2026-08-03.md) — required pilot-label fix applied (`Depth: strong`). Merge-ready pending final glance; if API keys available, run `pnpm eval:live --set=flagship-1a` and promote labels to `live` with real corr ids.
+**Phase 2 — do this next:** **Financial services**, starting with `mobile-money`, `wealth-management`, `tax-office` (largest enterprise-tier cluster in the catalogue — 7/20 — and the biggest value-weighted depth gap; see brief for the full data table and rationale). Same acceptance bar as Phase 1a: workflow module + dispatch + tests + pilot doc labeled `Depth: strong` with an honest evidence line (do not repeat the live-vs-strong labeling slip from Phase 1a — the fix is in the brief). Optional fast-win alongside it: `veterinary` (no workflow module yet, pilot already `Depth: strong`) — completes health & wellness as a fully-covered vertical.
+
+Ping Claude for independent verification once this lands, same shape as the Phase 1a review.
 
 ---
 
