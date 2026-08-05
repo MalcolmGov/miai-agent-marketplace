@@ -28,6 +28,8 @@ const BASE = process.env.DEMO_BASE ?? process.env.PROOF_BASE ?? "";
 const doChat = process.argv.includes("--chat");
 const doRecord = process.argv.includes("--record");
 const doExpand = process.argv.includes("--expand");
+/** Full featured Go-live 18: first slice + expand + remaining Cluster B/C gaps. */
+const doGolive18 = process.argv.includes("--golive18");
 const doAutoRecord = process.argv.includes("--auto-record");
 
 function argValue(flag) {
@@ -35,6 +37,18 @@ function argValue(flag) {
   if (eq) return eq.slice(flag.length + 1);
   const i = process.argv.indexOf(flag);
   return i >= 0 ? process.argv[i + 1] : undefined;
+}
+
+/** Comma-separated agent ids to limit a chat run, e.g. --only=us-hotel-guest,us-pharmacy */
+function onlyFilter() {
+  const raw = argValue("--only");
+  if (!raw) return null;
+  return new Set(
+    raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+  );
 }
 
 /** First-slice Wave 4 agents (Go-live Cluster A). */
@@ -55,6 +69,7 @@ export const WAVE4_SLICE = [
     prompts: [
       "I'd like to book a cleaning next Tuesday morning if you have availability.",
       "Yes, go ahead and book it.",
+      "Please also handoff_to_human / notify the front desk on Slack that I booked a cleaning.",
     ],
   },
   {
@@ -62,8 +77,9 @@ export const WAVE4_SLICE = [
     family: "sales-qualifier",
     connectors: ["hubspot", "google_calendar", "slack"],
     prompts: [
-      "We're a 40-person clinic looking at inbound WhatsApp lead capture — capture my interest as Jordan Hale, jordan.hale@example.com, 512-555-0199.",
-      "Yes, go ahead and capture that.",
+      `We're a 40-person clinic looking at inbound WhatsApp lead capture — capture my interest as Jordan Hale, jordan.hale+wave4${Date.now()}@example.com, 512-555-0199.`,
+      "Yes, go ahead and capture that lead now.",
+      "Please also hand me to the sales team on Slack with a short summary.",
     ],
   },
   {
@@ -84,8 +100,7 @@ export const WAVE4_EXPAND = [
     family: "hotel-guest",
     connectors: ["slack"],
     prompts: [
-      "Can I get extra towels and a late check-out tomorrow?",
-      "Please connect me to the front desk team about the late check-out.",
+      "This is urgent — please handoff_to_human / connect me to the front desk team now about a late check-out tomorrow. Do not answer from knowledge; escalate.",
     ],
   },
   {
@@ -121,8 +136,8 @@ export const WAVE4_EXPAND = [
     family: "events-venue",
     connectors: ["google_calendar", "slack"],
     prompts: [
-      "I'd like to hold the Intimate wedding package for Saturday in three weeks — check availability.",
-      "Yes, go ahead and book a hold for that date — then hand off to the events team.",
+      "Check calendar availability for a Saturday wedding in three weeks for the Intimate package.",
+      "Please handoff_to_human / connect me to the events team now to finalize the hold.",
     ],
   },
   {
@@ -139,7 +154,7 @@ export const WAVE4_EXPAND = [
     family: "pharmacy",
     connectors: ["slack"],
     prompts: [
-      "I need help with a prescription refill — please connect me to the pharmacy team.",
+      "Clinical question about dosage — please handoff_to_human / connect me to the pharmacist now. Do not advise dosage yourself.",
     ],
   },
   {
@@ -149,6 +164,72 @@ export const WAVE4_EXPAND = [
     prompts: [
       "I'd like to book a tax planning consult next week — what's free?",
       "Please hand this to the practice team for a consult booking.",
+    ],
+  },
+];
+
+/**
+ * Remaining Go-live 18 families not already in WAVE4_SLICE / WAVE4_EXPAND.
+ * Prove with Phase-1 OAuth already on Railway (Slack / Calendar / HubSpot).
+ * Shopify/TMS stay deferred until those OAuth apps are wired.
+ */
+export const WAVE4_GOLIVE18_GAPS = [
+  {
+    agentId: "us-restaurant-takeaway",
+    family: "restaurant-takeaway",
+    connectors: ["slack"],
+    prompts: [
+      "Party of 22 for Saturday night — please connect me to the restaurant team.",
+    ],
+  },
+  {
+    agentId: "us-customer-support",
+    family: "customer-support",
+    connectors: ["hubspot", "slack"],
+    prompts: [
+      "Blender arrived broken on order 4821 — please log a ticket for Jordan Hale, jordan.hale@example.com.",
+      "Yes, go ahead and log that ticket.",
+    ],
+  },
+  {
+    agentId: "us-delivery-tracking",
+    family: "delivery-tracking",
+    connectors: ["slack"],
+    prompts: [
+      "Waybill SLC-4821 shows delivered but I never got it — please connect me to the courier desk.",
+    ],
+  },
+  {
+    agentId: "us-trades-receptionist",
+    family: "trades-receptionist",
+    connectors: ["google_calendar", "slack"],
+    prompts: [
+      "I need drain clearing Thursday morning in Denver — check availability.",
+      "Please hand this to dispatch for drain clearing Thursday.",
+    ],
+  },
+  {
+    agentId: "us-onboarding-buddy",
+    family: "onboarding-buddy",
+    connectors: ["slack"],
+    prompts: [
+      "My laptop won't boot on day one. Name Aisha Khan. Phone 512-555-0144. Email aisha.khan@example.com. Please handoff_to_human / escalate to People and IT on Slack now.",
+    ],
+  },
+  {
+    agentId: "us-building-management",
+    family: "building-management",
+    connectors: ["slack"],
+    prompts: [
+      "Burst pipe flooding my kitchen in unit 12 — please escalate to the managing agent now.",
+    ],
+  },
+  {
+    agentId: "us-pharmacy",
+    family: "pharmacy",
+    connectors: ["slack"],
+    prompts: [
+      "Clinical question about dosage — please handoff_to_human / connect me to the pharmacist now. Do not advise dosage yourself.",
     ],
   },
 ];
@@ -187,6 +268,14 @@ function isLiveToolResult(toolCall) {
   if (r.source === "sandbox_stub") return false;
   if (typeof r._note === "string" && /not OAuth-connected/i.test(r._note)) return false;
   if (toolCall.stubbed === true) return false;
+  // Real vendor error (OAuth path reached) — e.g. HubSpot "Contact already exists".
+  if (
+    typeof r.error === "string" &&
+    r.error.length > 0 &&
+    !/not OAuth-connected|sandbox_stub|demo token/i.test(r.error)
+  ) {
+    return true;
+  }
   return false;
 }
 
@@ -214,6 +303,9 @@ ${WAVE4_SLICE.map((s) => `  - ${s.agentId} → ${s.connectors.join(", ")}`).join
 Expand set (Calendar/Slack while HubSpot pending):
 ${WAVE4_EXPAND.map((s) => `  - ${s.agentId} → ${s.connectors.join(", ")}`).join("\n")}
 
+Go-live 18 gaps (remaining Cluster B/C):
+${WAVE4_GOLIVE18_GAPS.map((s) => `  - ${s.agentId} → ${s.connectors.join(", ")}`).join("\n")}
+
 Staging steps (see docs/WAVE4_LIVE_CONNECTORS.md):
   1. Set OAuth client id/secret on Railway for Slack, Google, HubSpot
   2. Register redirect: {APP_BASE_URL}/api/oauth/callback
@@ -221,7 +313,8 @@ Staging steps (see docs/WAVE4_LIVE_CONNECTORS.md):
   4. Studio chat mode = live (never demo token)
   5. Run: DEMO_BASE=https://… pnpm proof:live --chat
   6. Expand: DEMO_BASE=https://… pnpm proof:live --chat --expand --auto-record
-  7. Record: pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr=corr_…
+  7. Featured 18: DEMO_BASE=https://… pnpm proof:live --chat --golive18 --auto-record
+  8. Record: pnpm proof:live --record --agent=us-executive-assistant --connector=slack --corr=corr_…
 `);
 }
 
@@ -268,7 +361,8 @@ async function runChatProofs() {
     console.error("Set DEMO_BASE (or PROOF_BASE) to the web app origin for --chat");
     process.exit(1);
   }
-  console.log(`Wave 4 live chat proofs against ${BASE}${doExpand ? " [expand]" : ""}\n`);
+  const modeLabel = doGolive18 ? " [golive18]" : doExpand ? " [expand]" : " [slice]";
+  console.log(`Wave 4 live chat proofs against ${BASE}${modeLabel}\n`);
 
   let status;
   try {
@@ -288,7 +382,24 @@ async function runChatProofs() {
   }
   console.log("");
 
-  const agents = doExpand ? WAVE4_EXPAND : WAVE4_SLICE;
+  /** @type {typeof WAVE4_SLICE} */
+  let agents;
+  if (doGolive18) {
+    const byId = new Map();
+    for (const row of [...WAVE4_SLICE, ...WAVE4_EXPAND, ...WAVE4_GOLIVE18_GAPS]) {
+      byId.set(row.agentId, row);
+    }
+    agents = [...byId.values()];
+  } else if (doExpand) {
+    agents = [...WAVE4_EXPAND, ...WAVE4_GOLIVE18_GAPS];
+  } else {
+    agents = WAVE4_SLICE;
+  }
+  const only = onlyFilter();
+  if (only) {
+    agents = agents.filter((a) => only.has(a.agentId));
+    console.log(`Filtered --only → ${agents.map((a) => a.agentId).join(", ") || "(none)"}\n`);
+  }
   const results = [];
   for (const slice of agents) {
     const needed = slice.connectors;
@@ -356,18 +467,20 @@ async function runChatProofs() {
     console.log(`→ ${slice.agentId} ${statusOut} correlationId=${corr}\n`);
 
     if (doAutoRecord && liveHits > 0) {
-      const connectorsToRecord =
-        liveConnectors.size > 0
-          ? [...liveConnectors]
-          : available;
-      for (const connector of connectorsToRecord) {
-        recordOne({
-          agentId: slice.agentId,
-          connector,
-          corr,
-          notes: `${statusOut} auto-record from proof:live --chat`,
-        });
-        console.log(`  recorded ${slice.agentId} / ${connector}`);
+      if (liveConnectors.size === 0) {
+        console.log(
+          `  skip auto-record — live tool hits but no connector id (refusing to guess ${available.join(", ")})`,
+        );
+      } else {
+        for (const connector of liveConnectors) {
+          recordOne({
+            agentId: slice.agentId,
+            connector,
+            corr,
+            notes: `${statusOut} auto-record from proof:live --chat`,
+          });
+          console.log(`  recorded ${slice.agentId} / ${connector}`);
+        }
       }
     }
 

@@ -11,8 +11,8 @@
   7. (Alt) Party of 20 → `handoff_to_human` (no self-book)
   8. (Alt) Card number in chat → refuse, point to pay at collection/secure link
 - Live connectors required: Slack/Teams (`notify_team`), optional POS/order webhook; Calendar not required for takeaway path
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_wave4_msgcbfz8` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 
@@ -23,3 +23,6 @@ Same Ember & Oak job story and tools as the US hero, localized per region. Confi
 - **Asia** (`asia-restaurant-takeaway`): currency-neutral amounts (same `<number> (local currency)` scheme as Africa); compliance PDPA + regional_privacy (opt-out/access → human handoff); channels web / app / SMS; languages en, zh, hi; emergency = local emergency services; Singapore example tenant with +65 phone norm.
 
 Grounding: each pack's evals are grounded in its own knowledge — EU asserts €-prefixed amounts, Africa/Asia assert the bare number plus `local currency`; hours, delivery fee/radius, and emergency tokens all appear verbatim in that pack's knowledge base.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

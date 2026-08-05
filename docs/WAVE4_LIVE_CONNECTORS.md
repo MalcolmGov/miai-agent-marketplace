@@ -104,6 +104,16 @@ DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --exp
 Hotel guest, home-services, clinic-front-desk, salon-booking, then flagship expand:
 `us-events-venue`, `us-gym-membership`, `us-pharmacy`, `us-accounting-practice`.
 
+### Featured Go-live 18 (Clusters A–C)
+
+Prove (or re-prove) every featured family against Phase-1 OAuth already on staging:
+
+```bash
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:live --chat --golive18 --auto-record
+```
+
+Covers first slice + expand + remaining gaps (`restaurant-takeaway`, `customer-support`, `delivery-tracking`, `trades-receptionist`, `onboarding-buddy`, `building-management`, `pharmacy`). Shopify / carrier TMS remain deferred until those OAuth apps are wired — Slack/HubSpot/Calendar handoffs still earn Depth: live.
+
 After HubSpot: sales-qualifier + IT ticket are recorded. Next optional: Shopify.
 
 **Diligence surface:** live-LLM + connector proof summary → [`/quality`](../apps/web/src/app/quality/page.tsx) (`pnpm scoreboard:live`).

@@ -12,7 +12,7 @@
   8. (Alt) Gas smell → **911** / leave building + gas utility, then `handoff_to_human` (no booking)
 - Live connectors required: Google Calendar / Field Service scheduling; Slack/Teams dispatch; optional QuickBooks for invoices (human-only)
 - Depth: live
-- Evidence: `docs/reports/eval-live-2026-08-03-go-live-18.md` — real Anthropic-model reply (non-mock, `pnpm eval:live`), content-reviewed and confirmed grounded against knowledge/tool data (2026-08-03); covered by shared `booking-front-desk` workflow (`isBookingFrontDesk`); prior sandbox proof `corr_flagship_1b_trades-receptionist_mscuy561` (`book_appointment` → BK-3391) retained for connector-wiring history.
+- Evidence: `corr_wave4_msgcbibi` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 
@@ -21,3 +21,6 @@ Same job story and confirm-before-write booking flow as the US hero, localized p
 - EU (`eu-trades-receptionist`): currency EUR (€89 diagnostic, €99 drain, €120 plaster); compliance GDPR only; channels SMS / web / app (+ voice); languages en, de, fr, es, it; emergency 112 + national gas line; card/IBAN/OTP never taken in chat.
 - Africa (`africa-trades-receptionist`): WhatsApp-first (primary channel) + SMS / web / app; compliance POPIA + regional privacy; languages en, fr, sw; currency-neutral amounts ("89 (local currency)"); emergency = local emergency services; added mobile-money guardrail — never state a balance or confirm a payment.
 - Asia (`asia-trades-receptionist`): channels web / app / SMS; compliance PDPA + regional privacy; languages en, zh, hi; currency-neutral amounts ("89 (local currency)"); emergency = local emergency services; never invent a currency symbol.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

@@ -10,10 +10,13 @@
   6. Dosage / "which should I take" / wrong-looking tablets → handoff_to_human
   7. Emergency → 911 then handoff; card in chat → refuse
 - Live connectors required: Shopify (`check_stock`), webhook PMS (`get_script_status`, `log_refill_request`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_1a_pharmacy_mscqcwrr` — sandbox `executeConnector` Shopify `check_stock` (2026-08-03); OAuth live + `pnpm eval:live --set=flagship-1a` when keys present
+- Depth: live
+- Evidence: `corr_wave4_msgcdlyk` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-pharmacy`): Riverside Community Pharmacy Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-pharmacy`): Riverside Community Pharmacy Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-pharmacy`): Riverside Community Pharmacy Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

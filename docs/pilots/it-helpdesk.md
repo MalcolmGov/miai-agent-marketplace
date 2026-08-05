@@ -12,7 +12,7 @@
   8. Agent immediately `handoff_to_human` (security_incident), points to reset.northwinddigital.com, never asks for a password.
 - Live connectors required: Slack (`create_ticket` notify / `handoff_to_human`); KB search is package-local
 - Depth: live
-- Evidence: `corr_wave4_msd2ceut` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-03)
+- Evidence: `corr_wave4_msgcaj13` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-it-helpdesk`): Ridgeway Labs IT Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -12,7 +12,7 @@
   8. Agent refuses invented discount, hands off / captures lead for sales.
 - Live connectors required: HubSpot (`capture_lead`), Google Calendar (`book_callback`), Slack (`notify_team`, `handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msb98i0f` — live `hubspot` on https://miaiweb-production.up.railway.app (2026-08-02)
+- Evidence: `corr_wave4_msgcd8c6` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-sales-qualifier`): Ledgerly Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

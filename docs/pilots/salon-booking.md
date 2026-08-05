@@ -12,7 +12,7 @@
   8. (Alt) Colour deposit question → `$40` secure link; card in chat refused
 - Live connectors required: Google Calendar / Calendly (`check_availability` / `book_appointment`), Slack (`notify_team`)
 - Depth: live
-- Evidence: `corr_wave4_msd18uku` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-03)
+- Evidence: `corr_wave4_msgcawp2` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 
