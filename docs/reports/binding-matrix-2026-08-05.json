@@ -1,0 +1,1597 @@
+{
+  "at": "2026-08-05T17:27:04.505Z",
+  "counts": {
+    "partial": 9,
+    "sandbox_only": 82,
+    "proven": 9
+  },
+  "rows": [
+    {
+      "family": "accounting-practice",
+      "agentId": "us-accounting-practice",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook",
+        "xero"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [
+        "xero"
+      ],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "admissions",
+      "agentId": "us-admissions",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "agency-studio",
+      "agentId": "us-agency-studio",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "agri-advisory",
+      "agentId": "us-agri-advisory",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "ai-coding-assistant",
+      "agentId": "us-ai-coding-assistant",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "airtime-bundles",
+      "agentId": "us-airtime-bundles",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "bank-branch",
+      "agentId": "us-bank-branch",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook",
+        "xero"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [
+        "xero"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "bi-analyst",
+      "agentId": "us-bi-analyst",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "bookkeeping",
+      "agentId": "us-bookkeeping",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "building-management",
+      "agentId": "us-building-management",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "case-management",
+      "agentId": "us-case-management",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "citizen-services",
+      "agentId": "us-citizen-services",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "clinic-front-desk",
+      "agentId": "us-clinic-front-desk",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar",
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "contract-review",
+      "agentId": "us-contract-review",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "course-advisor",
+      "agentId": "us-course-advisor",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "credit-cards",
+      "agentId": "us-credit-cards",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "customer-support",
+      "agentId": "us-customer-support",
+      "connectors": [
+        "google_calendar",
+        "hubspot",
+        "shopify",
+        "slack"
+      ],
+      "phase1": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [
+        "hubspot",
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "cybersecurity-desk",
+      "agentId": "us-cybersecurity-desk",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "data-quality",
+      "agentId": "us-data-quality",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "delivery-tracking",
+      "agentId": "us-delivery-tracking",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "dental-front-desk",
+      "agentId": "us-dental-front-desk",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "dental-practice",
+      "agentId": "us-dental-practice",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "device-upgrades",
+      "agentId": "us-device-upgrades",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "devops-assistant",
+      "agentId": "us-devops-assistant",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "documentation-assistant",
+      "agentId": "us-documentation-assistant",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "energy-operations",
+      "agentId": "us-energy-operations",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "enterprise-connectivity",
+      "agentId": "us-enterprise-connectivity",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "events-venue",
+      "agentId": "us-events-venue",
+      "connectors": [
+        "google_calendar",
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar",
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "executive-assistant",
+      "agentId": "us-executive-assistant",
+      "connectors": [
+        "google_calendar",
+        "slack"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar",
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "executive-dashboards",
+      "agentId": "us-executive-dashboards",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "factory-operations",
+      "agentId": "us-factory-operations",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "farm-operations",
+      "agentId": "us-farm-operations",
+      "connectors": [
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "fibre-support",
+      "agentId": "us-fibre-support",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "field-service",
+      "agentId": "us-field-service",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "financial-reporting",
+      "agentId": "us-financial-reporting",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "fleet-driver",
+      "agentId": "us-fleet-driver",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "fraud-investigations",
+      "agentId": "us-fraud-investigations",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "front-desk",
+      "agentId": "us-front-desk",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "grant-stock-planner",
+      "agentId": "us-grant-stock-planner",
+      "connectors": [
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "gym-membership",
+      "agentId": "us-gym-membership",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "home-services",
+      "agentId": "us-home-services",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar",
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "hotel-concierge",
+      "agentId": "us-hotel-concierge",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "hotel-guest",
+      "agentId": "us-hotel-guest",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "mcp",
+        "slack",
+        "webhook"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "hr-helpdesk",
+      "agentId": "us-hr-helpdesk",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "insurance-broker",
+      "agentId": "us-insurance-broker",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "insurance-claims",
+      "agentId": "us-insurance-claims",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "interview-scheduling",
+      "agentId": "us-interview-scheduling",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "investment-advisor",
+      "agentId": "us-investment-advisor",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "it-helpdesk",
+      "agentId": "us-it-helpdesk",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "hubspot",
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "law-firm-intake",
+      "agentId": "us-law-firm-intake",
+      "connectors": [
+        "google_calendar",
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "learning-development",
+      "agentId": "us-learning-development",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "legal-research",
+      "agentId": "us-legal-research",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "licensing",
+      "agentId": "us-licensing",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "loan-prequalifier",
+      "agentId": "us-loan-prequalifier",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "loyalty-rewards",
+      "agentId": "us-loyalty-rewards",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "maintenance-desk",
+      "agentId": "us-maintenance-desk",
+      "connectors": [
+        "google_calendar",
+        "shopify",
+        "slack"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "marketing-assistant",
+      "agentId": "us-marketing-assistant",
+      "connectors": [
+        "google_calendar",
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "media-content-desk",
+      "agentId": "us-media-content-desk",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "mobile-money",
+      "agentId": "us-mobile-money",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "mortgage-advisor",
+      "agentId": "us-mortgage-advisor",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "municipality-desk",
+      "agentId": "us-municipality-desk",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "network-faults",
+      "agentId": "us-network-faults",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "onboarding-buddy",
+      "agentId": "us-onboarding-buddy",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "order-tracking",
+      "agentId": "us-order-tracking",
+      "connectors": [
+        "hubspot",
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "passport-visa",
+      "agentId": "us-passport-visa",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "payment-disputes",
+      "agentId": "us-payment-disputes",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "payroll-queries",
+      "agentId": "us-payroll-queries",
+      "connectors": [
+        "slack",
+        "webhook",
+        "xero"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [
+        "xero"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "performance-reviews",
+      "agentId": "us-performance-reviews",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "pharmacy",
+      "agentId": "us-pharmacy",
+      "connectors": [
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "policy-compliance",
+      "agentId": "us-policy-compliance",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "procurement",
+      "agentId": "us-procurement",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "product-finder",
+      "agentId": "us-product-finder",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "production-planning",
+      "agentId": "us-production-planning",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "prompt-engineering",
+      "agentId": "us-prompt-engineering",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "property-enquiries",
+      "agentId": "us-property-enquiries",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "qa-testing",
+      "agentId": "us-qa-testing",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "quality-assurance",
+      "agentId": "us-quality-assurance",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "recruitment",
+      "agentId": "us-recruitment",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "remittance",
+      "agentId": "us-remittance",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "rental-enquiries",
+      "agentId": "us-rental-enquiries",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "restaurant-takeaway",
+      "agentId": "us-restaurant-takeaway",
+      "connectors": [
+        "google_calendar",
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "returns-exchanges",
+      "agentId": "us-returns-exchanges",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "sales-forecasting",
+      "agentId": "us-sales-forecasting",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "sales-qualifier",
+      "agentId": "us-sales-qualifier",
+      "connectors": [
+        "google_calendar",
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "hubspot",
+        "slack"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "salon-booking",
+      "agentId": "us-salon-booking",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar",
+        "slack"
+      ],
+      "assurance": "proven"
+    },
+    {
+      "family": "security-incident",
+      "agentId": "us-security-incident",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "sim-registration",
+      "agentId": "us-sim-registration",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "social-services",
+      "agentId": "us-social-services",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "spaza-merchant",
+      "agentId": "us-spaza-merchant",
+      "connectors": [
+        "google_calendar",
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "stock-availability",
+      "agentId": "us-stock-availability",
+      "connectors": [
+        "shopify",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [
+        "shopify"
+      ],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "student-helpdesk",
+      "agentId": "us-student-helpdesk",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "tax-office",
+      "agentId": "us-tax-office",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "tour-activity",
+      "agentId": "us-tour-activity",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "trades-receptionist",
+      "agentId": "us-trades-receptionist",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [
+        "google_calendar"
+      ],
+      "assurance": "partial"
+    },
+    {
+      "family": "travel-desk",
+      "agentId": "us-travel-desk",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "utility-billing",
+      "agentId": "us-utility-billing",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "vas-concierge",
+      "agentId": "us-vas-concierge",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "veterinary",
+      "agentId": "us-veterinary",
+      "connectors": [
+        "google_calendar",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "google_calendar",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "warehouse-operations",
+      "agentId": "us-warehouse-operations",
+      "connectors": [
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    },
+    {
+      "family": "wealth-management",
+      "agentId": "us-wealth-management",
+      "connectors": [
+        "hubspot",
+        "slack",
+        "webhook"
+      ],
+      "phase1": [
+        "hubspot",
+        "slack"
+      ],
+      "needsEnv": [],
+      "proven": [],
+      "assurance": "sandbox_only"
+    }
+  ]
+}

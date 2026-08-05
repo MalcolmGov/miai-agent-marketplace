@@ -45,6 +45,26 @@ pnpm proof:live --record \
 
 ## Harness
 
+### Cheap assurance (preferred — no LLM tokens)
+
+```bash
+# Family → connector matrix (offline, $0)
+pnpm proof:bindings
+pnpm proof:bindings --golive100
+
+# Platform OAuth probes — Slack auth.test / Calendar list / HubSpot account (no LLM)
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:probe
+
+# Scripted live tools — bypass the model; calendar reads by default
+DEMO_BASE=https://miaiweb-production.up.railway.app pnpm proof:tools --golive100 --auto-record
+# Optional side-effect writes (Slack handoff / HubSpot capture):
+DEMO_BASE=https://… pnpm proof:tools --golive18 --writes --auto-record
+```
+
+`POST /api/oauth/{connector}/test` and `POST /api/proof/tool` are gated by mock-rails dual-ack on staging, or `PROOF_HARNESS_SECRET` + `x-miai-proof` header after cutover.
+
+### LLM chat proofs (expensive — featured demos / flaky model paths)
+
 ```bash
 # Env readiness (no network)
 pnpm proof:live
