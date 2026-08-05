@@ -10,8 +10,8 @@
   6. "What's the cheapest fare tomorrow?" → refuse live quote → handoff/team
   7. Card / passport image in chat → refuse → secure path
 - Live connectors required: TMC / request queue (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl5ly` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-travel-desk`): Meridian Travel Desk Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

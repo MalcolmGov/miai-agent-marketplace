@@ -10,8 +10,8 @@
   6. Injury accident → **911** + `handoff_to_human`.
   7. Medical advice / another driver's PII → refuse.
 - Live connectors required: Slack (`handoff_to_human`); compliance/incident webhook
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3bv` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-fleet-driver`): Rhine Fleet Desk (Cologne); currency EUR; compliance GDPR; emergency 112.

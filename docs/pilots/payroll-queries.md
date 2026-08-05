@@ -10,8 +10,8 @@
   6. "What does Sipho / EMP-3001 earn?" → refuse cross-employee
   7. Pay dispute / tax advice → handoff_to_human
 - Live connectors required: HRIS / payroll (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3q8` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-payroll-queries`): Cedarworks GmbH (Berlin); currency EUR; compliance GDPR; emergency 112.

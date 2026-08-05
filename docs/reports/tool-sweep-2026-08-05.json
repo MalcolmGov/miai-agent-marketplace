@@ -1,0 +1,1096 @@
+{
+  "at": "2026-08-05T17:43:16.888Z",
+  "base": "https://miaiweb-production.up.railway.app",
+  "writes": false,
+  "probeOk": [
+    "slack",
+    "google_calendar",
+    "hubspot"
+  ],
+  "results": [
+    {
+      "agentId": "us-accounting-practice",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-admissions",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-agency-studio",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-agri-advisory",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-ai-coding-assistant",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-airtime-bundles",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-bank-branch",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-bi-analyst",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-bookkeeping",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-building-management",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-case-management",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-citizen-services",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-clinic-front-desk",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl1mg",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-contract-review",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-course-advisor",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-credit-cards",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-customer-support",
+      "status": "FAIL",
+      "liveConnectors": []
+    },
+    {
+      "agentId": "us-cybersecurity-desk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-data-quality",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-delivery-tracking",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-dental-front-desk",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl2dr",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-dental-practice",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl2qt",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-device-upgrades",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-devops-assistant",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-documentation-assistant",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-energy-operations",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-enterprise-connectivity",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-events-venue",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-executive-assistant",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl348",
+          "tool": "check_calendar"
+        }
+      ]
+    },
+    {
+      "agentId": "us-executive-dashboards",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-factory-operations",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-farm-operations",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-fibre-support",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-field-service",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-financial-reporting",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-fleet-driver",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-fraud-investigations",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-front-desk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-grant-stock-planner",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-gym-membership",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-home-services",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl3hn",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-hotel-concierge",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-hotel-guest",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-hr-helpdesk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-insurance-broker",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-insurance-claims",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-interview-scheduling",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-investment-advisor",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-law-firm-intake",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-learning-development",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-legal-research",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-licensing",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-loan-prequalifier",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-loyalty-rewards",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-maintenance-desk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-marketing-assistant",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-media-content-desk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-mobile-money",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-mortgage-advisor",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-municipality-desk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-network-faults",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-onboarding-buddy",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-order-tracking",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-passport-visa",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-payment-disputes",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-payroll-queries",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-performance-reviews",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-pharmacy",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-policy-compliance",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-procurement",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-product-finder",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl3w3",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-production-planning",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-prompt-engineering",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-property-enquiries",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-qa-testing",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-quality-assurance",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-recruitment",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-remittance",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-rental-enquiries",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-restaurant-takeaway",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl49c",
+          "tool": "check_table_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-returns-exchanges",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-sales-forecasting",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-sales-qualifier",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-salon-booking",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl4nl",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-security-incident",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-sim-registration",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-social-services",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-spaza-merchant",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "google_calendar",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "google_calendar",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-stock-availability",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-student-helpdesk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-tax-office",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-tour-activity",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl51f",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-trades-receptionist",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl5e3",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-travel-desk",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-utility-billing",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-vas-concierge",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-veterinary",
+      "status": "LIVE_PASS",
+      "liveConnectors": [
+        {
+          "connector": "google_calendar",
+          "corr": "corr_tools_msgdl5rr",
+          "tool": "check_availability"
+        }
+      ]
+    },
+    {
+      "agentId": "us-warehouse-operations",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "slack"
+      ],
+      "coveredByProbe": [
+        "slack"
+      ]
+    },
+    {
+      "agentId": "us-wealth-management",
+      "status": "PROBE_COVERED",
+      "bound": [
+        "hubspot",
+        "slack"
+      ],
+      "coveredByProbe": [
+        "hubspot",
+        "slack"
+      ]
+    }
+  ]
+}

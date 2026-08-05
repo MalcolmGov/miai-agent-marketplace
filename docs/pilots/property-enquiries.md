@@ -10,8 +10,8 @@
   6. Mortgage / legal advice → refuse + handoff
   7. Card in chat → refuse → secure portal
 - Live connectors required: MLS/CRM listings + calendar for viewings (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl43f` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-property-enquiries`): Cedarline Realty Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

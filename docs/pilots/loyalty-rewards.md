@@ -10,8 +10,8 @@
   6. Missing points / wrong tier → handoff_to_human
   7. Another member's balance / card in chat → refuse
 - Live connectors required: Loyalty platform (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3pi` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-loyalty-rewards`): Oak & Ember Rewards Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

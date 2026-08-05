@@ -92,8 +92,18 @@ async function main() {
   );
   console.log(`\nReport → ${reportPath}`);
 
-  const failed = results.filter((r) => r.status === "fail");
-  if (failed.length) process.exitCode = 2;
+  // Phase-1 core: Slack / Calendar / HubSpot. Email scope gaps are a warning
+  // (often Calendar-only Google consent) — don't fail the whole probe job.
+  const coreFailed = results.filter(
+    (r) => r.status === "fail" && r.connector !== "email",
+  );
+  const emailFailed = results.find((r) => r.connector === "email" && r.status === "fail");
+  if (emailFailed) {
+    console.log(
+      "\nNote: email probe failed (often missing Gmail scopes on the Google token). Re-Connect Google Email with gmail.send/readonly.",
+    );
+  }
+  if (coreFailed.length) process.exitCode = 2;
 }
 
 main().catch((e) => {

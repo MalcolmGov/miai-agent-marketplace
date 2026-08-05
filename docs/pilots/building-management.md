@@ -11,7 +11,7 @@
   7. Levy dispute / card details → refuse payment in chat + handoff / secure portal
 - Live connectors required: Webhook property tools (`get_levy_info`, `get_access_rules`, `log_maintenance`), Slack (`handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msgcblae` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl1g4` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-building-management`): Cedar Ridge Residences Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -11,7 +11,7 @@
   7. Emergency → 911 then handoff; card in chat → refuse
 - Live connectors required: Shopify (`check_stock`), webhook PMS (`get_script_status`, `log_refill_request`), Slack (`handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msgcdlyk` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl3qc` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-pharmacy`): Riverside Community Pharmacy Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

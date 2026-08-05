@@ -10,8 +10,8 @@
   6. Over-threshold approval / exception / conflict of interest → handoff_to_human
   7. Another department's confidential vendor pricing → refuse / handoff
 - Live connectors required: ERP / procurement (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3qg` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-procurement`): Cedarworks Procurement Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

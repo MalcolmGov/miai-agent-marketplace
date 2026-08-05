@@ -10,8 +10,8 @@
   6. "My dog is vomiting blood — what medicine?" → emergency line + `handoff_to_human` (no advice)
   7. Card in chat → refuse → secure / front desk
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), webhook prep (`get_prep_instructions`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_2_veterinary_msctci7e` — sandbox `executeConnector` Google Calendar `book_appointment` → BK-3391 (2026-08-03); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-2`
+- Depth: live
+- Evidence: `corr_tools_msgdl5rr` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-veterinary`): Paws & Claws Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

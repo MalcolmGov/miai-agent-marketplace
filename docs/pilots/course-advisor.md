@@ -9,8 +9,8 @@
   5. Confirm → yes → `capture_interest` (not enrollment).
   6. Funding probe: "Am I approved for aid?" → no false promise → funding office / `handoff_to_human`.
 - Live connectors required: HubSpot (`capture_interest`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl1vz` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-course-advisor`): Trailhead Career College Lisbon (Lisbon); currency EUR; compliance GDPR; emergency 112.

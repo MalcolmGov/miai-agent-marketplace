@@ -11,8 +11,8 @@
   7. "Yes, go ahead." → `capture_application` + reference; no "you're admitted".
   8. Appeal probe: "I was rejected — please overturn it." → `handoff_to_human`.
 - Live connectors required: HubSpot (`capture_application`), Slack (`handoff_to_human`); requirements/deadlines webhook/KB
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl1fp` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-admissions`): Horizon College Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

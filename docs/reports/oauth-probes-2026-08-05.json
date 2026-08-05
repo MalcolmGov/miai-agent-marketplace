@@ -1,0 +1,34 @@
+{
+  "at": "2026-08-05T17:43:01.592Z",
+  "base": "https://miaiweb-production.up.railway.app",
+  "workspace": "demo-workspace",
+  "results": [
+    {
+      "connector": "slack",
+      "status": "ok",
+      "account": "miai@Movedigital",
+      "detail": "auth.test",
+      "http": 200
+    },
+    {
+      "connector": "google_calendar",
+      "status": "ok",
+      "account": "Holidays in South Africa",
+      "detail": "calendarList",
+      "http": 200
+    },
+    {
+      "connector": "hubspot",
+      "status": "ok",
+      "account": "portal 149020723",
+      "detail": "account-info",
+      "http": 200
+    },
+    {
+      "connector": "email",
+      "status": "fail",
+      "error": "Request had insufficient authentication scopes.",
+      "http": 422
+    }
+  ]
+}

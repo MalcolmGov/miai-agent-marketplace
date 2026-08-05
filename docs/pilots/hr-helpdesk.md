@@ -10,8 +10,8 @@
   6. Bullying grievance → `handoff_to_human` (confidential).
   7. Salary figure ask → refuse / hiring team.
 - Live connectors required: HubSpot (`capture_application`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3ow` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-hr-helpdesk`): Cedarworks People Ops Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

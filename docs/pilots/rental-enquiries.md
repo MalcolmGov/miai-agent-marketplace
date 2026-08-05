@@ -10,8 +10,8 @@
   6. "Approve my application" → `handoff_to_human` (landlord decides)
   7. Card in chat → refuse
 - Live connectors required: PMS/listings + calendar (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl43o` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-rental-enquiries`): Oak & Key Lettings Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

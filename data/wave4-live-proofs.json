@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-05T17:11:19.362Z",
+  "updatedAt": "2026-08-05T17:43:16.887Z",
   "slice": [
     "us-executive-assistant",
     "us-dental-front-desk",
@@ -13,15 +13,6 @@
     "hubspot"
   ],
   "proofs": [
-    {
-      "agentId": "us-hotel-guest",
-      "family": "hotel-guest",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msb83dik",
-      "at": "2026-08-02T03:10:47.818Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Railway live handoff_to_human"
-    },
     {
       "agentId": "us-hotel-guest",
       "family": "hotel-guest",
@@ -41,56 +32,11 @@
       "notes": "Wave 4 live MCP tools/call → https://miaiweb-production.up.railway.app/api/mcp"
     },
     {
-      "agentId": "us-events-venue",
-      "family": "events-venue",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msd18yr3",
-      "at": "2026-08-03T09:34:47.789Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-executive-assistant",
-      "family": "executive-assistant",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msgca3mn",
-      "at": "2026-08-05T17:06:52.085Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
       "agentId": "us-executive-assistant",
       "family": "executive-assistant",
       "connector": "slack",
       "correlationId": "corr_wave4_msgca3mn",
       "at": "2026-08-05T17:06:52.088Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-it-helpdesk",
-      "family": "it-helpdesk",
-      "connector": "hubspot",
-      "correlationId": "corr_wave4_msgcaj13",
-      "at": "2026-08-05T17:07:02.448Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-it-helpdesk",
-      "family": "it-helpdesk",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msgcaj13",
-      "at": "2026-08-05T17:07:02.450Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-home-services",
-      "family": "home-services",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msgcal6w",
-      "at": "2026-08-05T17:07:08.356Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "LIVE_PASS auto-record from proof:live --chat"
     },
@@ -106,15 +52,6 @@
     {
       "agentId": "us-clinic-front-desk",
       "family": "clinic-front-desk",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msgcaowm",
-      "at": "2026-08-05T17:07:18.455Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-clinic-front-desk",
-      "family": "clinic-front-desk",
       "connector": "slack",
       "correlationId": "corr_wave4_msgcaowm",
       "at": "2026-08-05T17:07:18.456Z",
@@ -124,36 +61,9 @@
     {
       "agentId": "us-salon-booking",
       "family": "salon-booking",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msgcawp2",
-      "at": "2026-08-05T17:07:23.157Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-salon-booking",
-      "family": "salon-booking",
       "connector": "slack",
       "correlationId": "corr_wave4_msgcawp2",
       "at": "2026-08-05T17:07:23.158Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-gym-membership",
-      "family": "gym-membership",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msgcb3mh",
-      "at": "2026-08-05T17:07:31.282Z",
-      "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
-    },
-    {
-      "agentId": "us-accounting-practice",
-      "family": "accounting-practice",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msgcbcry",
-      "at": "2026-08-05T17:07:43.445Z",
       "environment": "https://miaiweb-production.up.railway.app",
       "notes": "LIVE_PASS auto-record from proof:live --chat"
     },
@@ -185,85 +95,1246 @@
       "notes": "MIXED auto-record from proof:live --chat"
     },
     {
-      "agentId": "us-delivery-tracking",
-      "family": "delivery-tracking",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msgcbhpt",
-      "at": "2026-08-05T17:07:46.482Z",
+      "agentId": "us-accounting-practice",
+      "family": "accounting-practice",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1fj",
+      "at": "2026-08-05T17:43:10.976Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
-      "agentId": "us-trades-receptionist",
-      "family": "trades-receptionist",
-      "connector": "google_calendar",
-      "correlationId": "corr_wave4_msgcbibi",
-      "at": "2026-08-05T17:07:49.728Z",
+      "agentId": "us-accounting-practice",
+      "family": "accounting-practice",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1fm",
+      "at": "2026-08-05T17:43:10.978Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-admissions",
+      "family": "admissions",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1fo",
+      "at": "2026-08-05T17:43:10.980Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-admissions",
+      "family": "admissions",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1fp",
+      "at": "2026-08-05T17:43:10.981Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-agency-studio",
+      "family": "agency-studio",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1fq",
+      "at": "2026-08-05T17:43:10.982Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-agency-studio",
+      "family": "agency-studio",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1fr",
+      "at": "2026-08-05T17:43:10.983Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-agri-advisory",
+      "family": "agri-advisory",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1fs",
+      "at": "2026-08-05T17:43:10.984Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-agri-advisory",
+      "family": "agri-advisory",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1ft",
+      "at": "2026-08-05T17:43:10.985Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-ai-coding-assistant",
+      "family": "ai-coding-assistant",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1fu",
+      "at": "2026-08-05T17:43:10.986Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-ai-coding-assistant",
+      "family": "ai-coding-assistant",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1fv",
+      "at": "2026-08-05T17:43:10.987Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-airtime-bundles",
+      "family": "airtime-bundles",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1fw",
+      "at": "2026-08-05T17:43:10.988Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-airtime-bundles",
+      "family": "airtime-bundles",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1fx",
+      "at": "2026-08-05T17:43:10.989Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-bank-branch",
+      "family": "bank-branch",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl1fz",
+      "at": "2026-08-05T17:43:10.991Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-bank-branch",
+      "family": "bank-branch",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1g0",
+      "at": "2026-08-05T17:43:10.992Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-bi-analyst",
+      "family": "bi-analyst",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1g1",
+      "at": "2026-08-05T17:43:10.993Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-bookkeeping",
+      "family": "bookkeeping",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1g2",
+      "at": "2026-08-05T17:43:10.994Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
       "agentId": "us-building-management",
       "family": "building-management",
       "connector": "slack",
-      "correlationId": "corr_wave4_msgcblae",
-      "at": "2026-08-05T17:07:51.092Z",
+      "correlationId": "corr_probe_slack_msgdl1g4",
+      "at": "2026-08-05T17:43:10.996Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
-      "agentId": "us-sales-qualifier",
-      "family": "sales-qualifier",
+      "agentId": "us-case-management",
+      "family": "case-management",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1g4",
+      "at": "2026-08-05T17:43:10.996Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-citizen-services",
+      "family": "citizen-services",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1g5",
+      "at": "2026-08-05T17:43:10.997Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-clinic-front-desk",
+      "family": "clinic-front-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl1mg",
+      "at": "2026-08-05T17:43:11.559Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-contract-review",
+      "family": "contract-review",
       "connector": "hubspot",
-      "correlationId": "corr_wave4_msgcd8c6",
-      "at": "2026-08-05T17:09:18.656Z",
+      "correlationId": "corr_probe_hubspot_msgdl1vt",
+      "at": "2026-08-05T17:43:11.561Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
-      "agentId": "us-sales-qualifier",
-      "family": "sales-qualifier",
+      "agentId": "us-contract-review",
+      "family": "contract-review",
       "connector": "slack",
-      "correlationId": "corr_wave4_msgcd8c6",
-      "at": "2026-08-05T17:09:18.659Z",
+      "correlationId": "corr_probe_slack_msgdl1vv",
+      "at": "2026-08-05T17:43:11.564Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
-      "agentId": "us-events-venue",
-      "family": "events-venue",
-      "connector": "slack",
-      "correlationId": "corr_wave4_msgcdhw4",
-      "at": "2026-08-05T17:09:24.511Z",
+      "agentId": "us-course-advisor",
+      "family": "course-advisor",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl1vx",
+      "at": "2026-08-05T17:43:11.565Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
-      "agentId": "us-pharmacy",
-      "family": "pharmacy",
+      "agentId": "us-course-advisor",
+      "family": "course-advisor",
       "connector": "slack",
-      "correlationId": "corr_wave4_msgcdlyk",
-      "at": "2026-08-05T17:09:25.253Z",
+      "correlationId": "corr_probe_slack_msgdl1vz",
+      "at": "2026-08-05T17:43:11.567Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-credit-cards",
+      "family": "credit-cards",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl1w0",
+      "at": "2026-08-05T17:43:11.568Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-cybersecurity-desk",
+      "family": "cybersecurity-desk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl27t",
+      "at": "2026-08-05T17:43:11.993Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-data-quality",
+      "family": "data-quality",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl27v",
+      "at": "2026-08-05T17:43:11.995Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-delivery-tracking",
+      "family": "delivery-tracking",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl27w",
+      "at": "2026-08-05T17:43:11.996Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
       "agentId": "us-dental-front-desk",
       "family": "dental-front-desk",
       "connector": "google_calendar",
-      "correlationId": "corr_wave4_msgcef7q",
-      "at": "2026-08-05T17:10:05.455Z",
+      "correlationId": "corr_tools_msgdl2dr",
+      "at": "2026-08-05T17:43:12.482Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "LIVE_PASS auto-record from proof:live --chat"
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-dental-practice",
+      "family": "dental-practice",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl2qt",
+      "at": "2026-08-05T17:43:12.942Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-device-upgrades",
+      "family": "device-upgrades",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl2y7",
+      "at": "2026-08-05T17:43:12.943Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-device-upgrades",
+      "family": "device-upgrades",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl2yb",
+      "at": "2026-08-05T17:43:12.947Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-devops-assistant",
+      "family": "devops-assistant",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl2yc",
+      "at": "2026-08-05T17:43:12.949Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-documentation-assistant",
+      "family": "documentation-assistant",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl2yf",
+      "at": "2026-08-05T17:43:12.953Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-energy-operations",
+      "family": "energy-operations",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl2yi",
+      "at": "2026-08-05T17:43:12.954Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-enterprise-connectivity",
+      "family": "enterprise-connectivity",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl2yj",
+      "at": "2026-08-05T17:43:12.955Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-enterprise-connectivity",
+      "family": "enterprise-connectivity",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl2yk",
+      "at": "2026-08-05T17:43:12.956Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-events-venue",
+      "family": "events-venue",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl2yl",
+      "at": "2026-08-05T17:43:12.957Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-events-venue",
+      "family": "events-venue",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl2ym",
+      "at": "2026-08-05T17:43:12.958Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-events-venue",
+      "family": "events-venue",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl2yn",
+      "at": "2026-08-05T17:43:12.959Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-executive-assistant",
+      "family": "executive-assistant",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl348",
+      "at": "2026-08-05T17:43:13.427Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_calendar (no LLM) [read]"
+    },
+    {
+      "agentId": "us-executive-dashboards",
+      "family": "executive-dashboards",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bo",
+      "at": "2026-08-05T17:43:13.428Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-factory-operations",
+      "family": "factory-operations",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bp",
+      "at": "2026-08-05T17:43:13.430Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-farm-operations",
+      "family": "farm-operations",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3br",
+      "at": "2026-08-05T17:43:13.431Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-fibre-support",
+      "family": "fibre-support",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bs",
+      "at": "2026-08-05T17:43:13.432Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-field-service",
+      "family": "field-service",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bt",
+      "at": "2026-08-05T17:43:13.433Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-financial-reporting",
+      "family": "financial-reporting",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bu",
+      "at": "2026-08-05T17:43:13.434Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-fleet-driver",
+      "family": "fleet-driver",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bv",
+      "at": "2026-08-05T17:43:13.435Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-fraud-investigations",
+      "family": "fraud-investigations",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bw",
+      "at": "2026-08-05T17:43:13.436Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-front-desk",
+      "family": "front-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl3bx",
+      "at": "2026-08-05T17:43:13.437Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-front-desk",
+      "family": "front-desk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3by",
+      "at": "2026-08-05T17:43:13.438Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-grant-stock-planner",
+      "family": "grant-stock-planner",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3bz",
+      "at": "2026-08-05T17:43:13.439Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-gym-membership",
+      "family": "gym-membership",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl3c0",
+      "at": "2026-08-05T17:43:13.440Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-gym-membership",
+      "family": "gym-membership",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3c2",
+      "at": "2026-08-05T17:43:13.442Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-home-services",
+      "family": "home-services",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl3hn",
+      "at": "2026-08-05T17:43:13.896Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-hotel-concierge",
+      "family": "hotel-concierge",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3oq",
+      "at": "2026-08-05T17:43:13.898Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-hotel-guest",
+      "family": "hotel-guest",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3or",
+      "at": "2026-08-05T17:43:13.900Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-hr-helpdesk",
+      "family": "hr-helpdesk",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3ov",
+      "at": "2026-08-05T17:43:13.903Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-hr-helpdesk",
+      "family": "hr-helpdesk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3ow",
+      "at": "2026-08-05T17:43:13.904Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-insurance-broker",
+      "family": "insurance-broker",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3oy",
+      "at": "2026-08-05T17:43:13.906Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-insurance-broker",
+      "family": "insurance-broker",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3oz",
+      "at": "2026-08-05T17:43:13.907Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-insurance-claims",
+      "family": "insurance-claims",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3p1",
+      "at": "2026-08-05T17:43:13.909Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-interview-scheduling",
+      "family": "interview-scheduling",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl3p3",
+      "at": "2026-08-05T17:43:13.911Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-interview-scheduling",
+      "family": "interview-scheduling",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3p4",
+      "at": "2026-08-05T17:43:13.912Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-investment-advisor",
+      "family": "investment-advisor",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3p5",
+      "at": "2026-08-05T17:43:13.913Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-investment-advisor",
+      "family": "investment-advisor",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3p6",
+      "at": "2026-08-05T17:43:13.914Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "family": "it-helpdesk",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3p7",
+      "at": "2026-08-05T17:43:13.915Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-it-helpdesk",
+      "family": "it-helpdesk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3p8",
+      "at": "2026-08-05T17:43:13.916Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-law-firm-intake",
+      "family": "law-firm-intake",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3p9",
+      "at": "2026-08-05T17:43:13.917Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-law-firm-intake",
+      "family": "law-firm-intake",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl3pa",
+      "at": "2026-08-05T17:43:13.918Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-law-firm-intake",
+      "family": "law-firm-intake",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pa",
+      "at": "2026-08-05T17:43:13.918Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-learning-development",
+      "family": "learning-development",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pb",
+      "at": "2026-08-05T17:43:13.919Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-legal-research",
+      "family": "legal-research",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3pc",
+      "at": "2026-08-05T17:43:13.920Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-legal-research",
+      "family": "legal-research",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pd",
+      "at": "2026-08-05T17:43:13.921Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-licensing",
+      "family": "licensing",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pe",
+      "at": "2026-08-05T17:43:13.922Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-loan-prequalifier",
+      "family": "loan-prequalifier",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3pg",
+      "at": "2026-08-05T17:43:13.924Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-loan-prequalifier",
+      "family": "loan-prequalifier",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3ph",
+      "at": "2026-08-05T17:43:13.925Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-loyalty-rewards",
+      "family": "loyalty-rewards",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pi",
+      "at": "2026-08-05T17:43:13.926Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-maintenance-desk",
+      "family": "maintenance-desk",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl3pj",
+      "at": "2026-08-05T17:43:13.927Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-maintenance-desk",
+      "family": "maintenance-desk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pk",
+      "at": "2026-08-05T17:43:13.928Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-marketing-assistant",
+      "family": "marketing-assistant",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3pl",
+      "at": "2026-08-05T17:43:13.929Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-marketing-assistant",
+      "family": "marketing-assistant",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl3pl",
+      "at": "2026-08-05T17:43:13.929Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-marketing-assistant",
+      "family": "marketing-assistant",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pl",
+      "at": "2026-08-05T17:43:13.930Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-media-content-desk",
+      "family": "media-content-desk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pm",
+      "at": "2026-08-05T17:43:13.930Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-mobile-money",
+      "family": "mobile-money",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pp",
+      "at": "2026-08-05T17:43:13.933Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-mortgage-advisor",
+      "family": "mortgage-advisor",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3pr",
+      "at": "2026-08-05T17:43:13.935Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-mortgage-advisor",
+      "family": "mortgage-advisor",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3ps",
+      "at": "2026-08-05T17:43:13.936Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-municipality-desk",
+      "family": "municipality-desk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3ps",
+      "at": "2026-08-05T17:43:13.936Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-network-faults",
+      "family": "network-faults",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3pu",
+      "at": "2026-08-05T17:43:13.938Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-network-faults",
+      "family": "network-faults",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3pu",
+      "at": "2026-08-05T17:43:13.939Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     },
     {
       "agentId": "us-onboarding-buddy",
       "family": "onboarding-buddy",
       "connector": "slack",
-      "correlationId": "corr_wave4_msgcfu61",
-      "at": "2026-08-05T17:11:19.362Z",
+      "correlationId": "corr_probe_slack_msgdl3pw",
+      "at": "2026-08-05T17:43:13.940Z",
       "environment": "https://miaiweb-production.up.railway.app",
-      "notes": "Go-live 18 Wave4 forced handoff with contact details"
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-order-tracking",
+      "family": "order-tracking",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl3py",
+      "at": "2026-08-05T17:43:13.942Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-order-tracking",
+      "family": "order-tracking",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3q1",
+      "at": "2026-08-05T17:43:13.945Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-passport-visa",
+      "family": "passport-visa",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3q3",
+      "at": "2026-08-05T17:43:13.947Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-payment-disputes",
+      "family": "payment-disputes",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3q5",
+      "at": "2026-08-05T17:43:13.950Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-payroll-queries",
+      "family": "payroll-queries",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3q8",
+      "at": "2026-08-05T17:43:13.952Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-performance-reviews",
+      "family": "performance-reviews",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3q9",
+      "at": "2026-08-05T17:43:13.953Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-pharmacy",
+      "family": "pharmacy",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3qc",
+      "at": "2026-08-05T17:43:13.956Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-policy-compliance",
+      "family": "policy-compliance",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3qe",
+      "at": "2026-08-05T17:43:13.958Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-procurement",
+      "family": "procurement",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl3qg",
+      "at": "2026-08-05T17:43:13.960Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-product-finder",
+      "family": "product-finder",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl3w3",
+      "at": "2026-08-05T17:43:14.422Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-production-planning",
+      "family": "production-planning",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43b",
+      "at": "2026-08-05T17:43:14.423Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-prompt-engineering",
+      "family": "prompt-engineering",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43d",
+      "at": "2026-08-05T17:43:14.425Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-property-enquiries",
+      "family": "property-enquiries",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl43e",
+      "at": "2026-08-05T17:43:14.427Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-property-enquiries",
+      "family": "property-enquiries",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43f",
+      "at": "2026-08-05T17:43:14.428Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-qa-testing",
+      "family": "qa-testing",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43g",
+      "at": "2026-08-05T17:43:14.428Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-quality-assurance",
+      "family": "quality-assurance",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43i",
+      "at": "2026-08-05T17:43:14.430Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-recruitment",
+      "family": "recruitment",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl43j",
+      "at": "2026-08-05T17:43:14.431Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-recruitment",
+      "family": "recruitment",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43k",
+      "at": "2026-08-05T17:43:14.432Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-remittance",
+      "family": "remittance",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl43l",
+      "at": "2026-08-05T17:43:14.433Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-remittance",
+      "family": "remittance",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43m",
+      "at": "2026-08-05T17:43:14.434Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-rental-enquiries",
+      "family": "rental-enquiries",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl43n",
+      "at": "2026-08-05T17:43:14.435Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-rental-enquiries",
+      "family": "rental-enquiries",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl43o",
+      "at": "2026-08-05T17:43:14.436Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-restaurant-takeaway",
+      "family": "restaurant-takeaway",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl49c",
+      "at": "2026-08-05T17:43:14.939Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_table_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-returns-exchanges",
+      "family": "returns-exchanges",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4hp",
+      "at": "2026-08-05T17:43:14.941Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-sales-forecasting",
+      "family": "sales-forecasting",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4hr",
+      "at": "2026-08-05T17:43:14.943Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-sales-qualifier",
+      "family": "sales-qualifier",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl4ht",
+      "at": "2026-08-05T17:43:14.945Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-sales-qualifier",
+      "family": "sales-qualifier",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl4hu",
+      "at": "2026-08-05T17:43:14.946Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-sales-qualifier",
+      "family": "sales-qualifier",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4hv",
+      "at": "2026-08-05T17:43:14.947Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-salon-booking",
+      "family": "salon-booking",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl4nl",
+      "at": "2026-08-05T17:43:15.442Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-security-incident",
+      "family": "security-incident",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vo",
+      "at": "2026-08-05T17:43:15.444Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-sim-registration",
+      "family": "sim-registration",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vp",
+      "at": "2026-08-05T17:43:15.445Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-social-services",
+      "family": "social-services",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vr",
+      "at": "2026-08-05T17:43:15.447Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-spaza-merchant",
+      "family": "spaza-merchant",
+      "connector": "google_calendar",
+      "correlationId": "corr_probe_google_calendar_msgdl4vs",
+      "at": "2026-08-05T17:43:15.449Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-spaza-merchant",
+      "family": "spaza-merchant",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vu",
+      "at": "2026-08-05T17:43:15.450Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-stock-availability",
+      "family": "stock-availability",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vv",
+      "at": "2026-08-05T17:43:15.451Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-student-helpdesk",
+      "family": "student-helpdesk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vx",
+      "at": "2026-08-05T17:43:15.453Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-tax-office",
+      "family": "tax-office",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl4vy",
+      "at": "2026-08-05T17:43:15.455Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-tour-activity",
+      "family": "tour-activity",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl51f",
+      "at": "2026-08-05T17:43:15.912Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-trades-receptionist",
+      "family": "trades-receptionist",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl5e3",
+      "at": "2026-08-05T17:43:16.386Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-travel-desk",
+      "family": "travel-desk",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl5lw",
+      "at": "2026-08-05T17:43:16.388Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-travel-desk",
+      "family": "travel-desk",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl5ly",
+      "at": "2026-08-05T17:43:16.390Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-utility-billing",
+      "family": "utility-billing",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl5m0",
+      "at": "2026-08-05T17:43:16.392Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-vas-concierge",
+      "family": "vas-concierge",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl5m2",
+      "at": "2026-08-05T17:43:16.394Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-veterinary",
+      "family": "veterinary",
+      "connector": "google_calendar",
+      "correlationId": "corr_tools_msgdl5rr",
+      "at": "2026-08-05T17:43:16.882Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Scripted check_availability (no LLM) [read]"
+    },
+    {
+      "agentId": "us-warehouse-operations",
+      "family": "warehouse-operations",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl5zo",
+      "at": "2026-08-05T17:43:16.884Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-wealth-management",
+      "family": "wealth-management",
+      "connector": "hubspot",
+      "correlationId": "corr_probe_hubspot_msgdl5zp",
+      "at": "2026-08-05T17:43:16.886Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+    },
+    {
+      "agentId": "us-wealth-management",
+      "family": "wealth-management",
+      "connector": "slack",
+      "correlationId": "corr_probe_slack_msgdl5zq",
+      "at": "2026-08-05T17:43:16.887Z",
+      "environment": "https://miaiweb-production.up.railway.app",
+      "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
     }
   ]
 }

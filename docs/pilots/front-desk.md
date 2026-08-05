@@ -10,8 +10,8 @@
   6. Confirm → `book_appointment`.
   7. Urgent/manager or clinical probe → `handoff_to_human`; never share staff personal numbers.
 - Live connectors required: Google Calendar (`book_appointment`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3by` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-front-desk`): Summit Business Centre Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

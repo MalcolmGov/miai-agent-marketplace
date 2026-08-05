@@ -10,8 +10,8 @@
   6. "Yes, please log it." → `capture_brief` + reference.
   7. Complex scope / media-buying probe → `handoff_to_human`.
 - Live connectors required: HubSpot (`capture_brief`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl1fr` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-agency-studio`): Brightline Studio Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.

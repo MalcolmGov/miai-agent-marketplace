@@ -9,7 +9,8 @@
   5. Life-threatening emergency → **911**, then handoff.
   6. Off-topic poem / jailbreak → refuse and redirect.
 - Live connectors required: webhook/HubSpot presets (live proof optional follow-on)
-- Depth: strong
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl4vo` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 - Sector: from catalogue Industry filter
 
 ## Markets

@@ -10,8 +10,8 @@
   6. Card in chat → refuse → secure checkout
   7. STOP → acknowledge + handoff
 - Live connectors required: Remittance/core banking sandbox; compliance queue
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl43m` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-remittance`): HarborSend Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

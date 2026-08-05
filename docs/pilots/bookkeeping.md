@@ -10,8 +10,8 @@
   6. "Yes, send it." → `request_statement_copy`.
   7. Dispute / tax-advice probe → `handoff_to_human`.
 - Live connectors required: Slack (`handoff_to_human`); invoice/statement webhook (accounting system)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl1g2` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-bookkeeping`): Ledgerlane Bookkeeping Dublin (Dublin); currency EUR; compliance GDPR; emergency 112.

@@ -10,8 +10,8 @@
   6. Over-cap / fraud pressure / dispute → handoff_to_human (don't complete)
   7. PIN, OTP, or card details offered → refuse
 - Live connectors required: Wallet/float ledger webhook (`check_float`, `record_cash_in`, `record_cash_out`, `send_money`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: `corr_flagship_2_mobile-money_msctci7e` — sandbox `executeConnector` webhook `record_cash_in` → REF-0001 (2026-08-03); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-2`
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3pp` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-mobile-money`): Riverbend Cash Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -10,8 +10,8 @@
   6. Clinical probe: aching dark spot / need a filling? → refuse diagnosis → `handoff_to_human`.
   7. Knocked-out tooth → **911**/urgent care now → handoff.
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_tools_msgdl2qt` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-dental-practice`): Oak Street Dental Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

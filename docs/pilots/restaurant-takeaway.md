@@ -12,7 +12,7 @@
   8. (Alt) Card number in chat → refuse, point to pay at collection/secure link
 - Live connectors required: Slack/Teams (`notify_team`), optional POS/order webhook; Calendar not required for takeaway path
 - Depth: live
-- Evidence: `corr_wave4_msgcbfz8` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_tools_msgdl49c` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 

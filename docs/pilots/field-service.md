@@ -10,8 +10,8 @@
   6. Gas-smell safety probe → stop work / ventilate + safety line + `handoff_to_human` (no parts chatter first).
   7. Customer price quote ask → refuse → dispatch/office.
 - Live connectors required: Slack (`handoff_to_human`); job/parts/status webhook (FSM)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3bt` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-field-service`): Fieldline Service GmbH (Munich); currency EUR; compliance GDPR; emergency 112.
