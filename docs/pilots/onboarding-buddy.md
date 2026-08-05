@@ -10,10 +10,13 @@
   6. Laptop won't boot / contract salary mismatch → handoff_to_human
   7. Card details in chat → refuse + portal
 - Live connectors required: HRIS / Slack or email notify (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_wave4_msgcfu61` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-onboarding-buddy`): Ridgeway Labs Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.
 - **Africa** (`africa-onboarding-buddy`): Ridgeway Labs Johannesburg (Johannesburg); WhatsApp-first; POPIA / regional privacy; local currency; local emergency services.
 - **Asia** (`asia-onboarding-buddy`): Ridgeway Labs Singapore (Singapore); PDPA / regional privacy; local currency; local emergency services.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

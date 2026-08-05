@@ -12,7 +12,7 @@
   8. Agent refuses diagnosis, offers to get them seen, `handoff_to_human` (collects contact).
 - Live connectors required: Google Calendar (`check_availability`, `book_appointment`), Slack (`handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msd2c7pe` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-03)
+- Evidence: `corr_wave4_msgcef7q` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-dental-front-desk`): Oak Street Dental Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

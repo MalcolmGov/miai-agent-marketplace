@@ -11,8 +11,8 @@
   7. (Alt) No order number → ask for order number / reference first
   8. (Alt) Card in chat → refuse; point to secure checkout
 - Live connectors required: Shopify (`get_order_status` / availability), HubSpot or Zendesk (`create_ticket`), Slack handoff
-- Depth: strong
-- Evidence: `corr_flagship_1b_customer-support_mscuy561` — sandbox `executeConnector` HubSpot `create_ticket` → TKT-9102 (2026-08-03); runtime workflow only (Cluster B catalogue untouched); promote to Depth: live only after OAuth/`pnpm eval:live --set=flagship-1b`
+- Depth: live
+- Evidence: `corr_wave4_msgcbgmd` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 
@@ -21,3 +21,6 @@ Localized variants of the same job story. Each keeps the confirm-before-write ha
 - **EU** (`eu-customer-support`): currency €/EUR (delivery flat €6, free over €75); compliance GDPR (access/erasure → handoff); channels SMS/web/app; languages en/de/fr/es/it; emergencies → 112. Adds the EU right of withdrawal (14 days) and the 2-year statutory guarantee; example tenant Casa Verde Home, Amsterdam.
 - **Africa** (`africa-customer-support`): currency-neutral amounts (delivery flat 6, free over 75 in local currency — no hardcoded symbol); compliance POPIA + regional privacy; channels WhatsApp (primary)/web/app/SMS; languages en/fr/sw; emergencies → local emergency services. WhatsApp is the lead channel for support, tracking, and handoff; payments include mobile money (M-Pesa); example tenant Umoya Home, Nairobi.
 - **Asia** (`asia-customer-support`): currency-neutral amounts (delivery flat 6, free over 75 in local currency); compliance PDPA + regional privacy; channels web/app/SMS; languages en/zh/hi; emergencies → local emergency services. Payments include PayNow; example tenant Lotus Home, Singapore.
+
+## Wave 4 live proof
+- Target connectors: see `docs/WAVE4_LIVE_CONNECTORS.md`

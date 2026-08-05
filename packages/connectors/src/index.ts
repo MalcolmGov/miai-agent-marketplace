@@ -45,6 +45,12 @@ export {
   type TokenMeta,
 } from "./oauth/tokens.js";
 
+export {
+  probeOAuthConnector,
+  probeSupportedConnectors,
+  type ProbeResult,
+} from "./oauth/probe.js";
+
 export { executeLive, stubFor } from "./live/execute.js";
 
 export {
