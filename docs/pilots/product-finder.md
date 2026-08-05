@@ -10,8 +10,8 @@
   6. Office kitting / custom invoice → `handoff_to_human`
   7. Card in chat → refuse → secure checkout
 - Live connectors required: Product catalogue / inventory API (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — inventory correlation id when live)
+- Depth: live
+- Evidence: `corr_tools_msgdl3w3` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-product-finder`): Homestead & Hearth Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

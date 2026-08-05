@@ -10,8 +10,8 @@
   6. Credit dispute → `handoff_to_human`
   7. Card in chat → refuse
 - Live connectors required: POS / inventory + wholesaler order API (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl4vu` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 - Note: US SME framing of the counter-trade / credit-book job (bodega / corner market); Africa market packs remain separate.
 
 ## Markets

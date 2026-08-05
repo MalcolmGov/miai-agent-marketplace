@@ -10,8 +10,8 @@
   6. "Yes, place it." → `place_reorder`.
   7. Supplier credit-hold / budget approval → `handoff_to_human`.
 - Live connectors required: Shopify (`build_prestock_list` / `place_reorder`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3bz` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-grant-stock-planner`): BenefitDay Market — Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

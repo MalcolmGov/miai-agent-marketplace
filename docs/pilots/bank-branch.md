@@ -10,8 +10,8 @@
   6. Fraud probe: unrecognized transactions → immediate `handoff_to_human`.
   7. Balance / OTP / card-in-chat → refuse + secure channels.
 - Live connectors required: Google Calendar (`book_branch_appointment`), Slack (`handoff_to_human`)
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl1g0` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-bank-branch`): Riverbend Bank — Berlin Mitte (Berlin); currency EUR; compliance GDPR; emergency 112.

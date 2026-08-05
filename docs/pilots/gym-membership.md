@@ -11,7 +11,7 @@
   7. Card details in chat → refuse + secure link
 - Live connectors required: Webhook membership tools (`get_plans`, `get_class_schedule`), Google Calendar (`request_freeze_or_cancel`), Slack (`handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msgcb3mh` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl3c2` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-gym-membership`): Ironleaf Fitness Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

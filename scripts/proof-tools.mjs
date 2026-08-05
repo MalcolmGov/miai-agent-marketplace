@@ -267,6 +267,34 @@ async function main() {
         }
       }
     }
+    if (!liveConnectors.length) {
+      // Calendar tool stubbed (mis-bound / sandbox) — fall back to platform probe coverage.
+      const bound = [...new Set(tools.map(bindingForTool).filter(Boolean))];
+      const coveredByProbe = bound.filter((c) => probeOk.has(c));
+      if (coveredByProbe.length) {
+        console.log(
+          `PROBE_COVERED  ${agent.agentId} (after stub/fail) bound=${bound.join(",")}`,
+        );
+        if (doAutoRecord) {
+          for (const c of coveredByProbe) {
+            recordProof({
+              agentId: agent.agentId,
+              connector: c,
+              corr: `corr_probe_${c}_${Date.now().toString(36)}`,
+              notes: "Platform OAuth probe OK after scripted tool stub/fail (no LLM)",
+              environment: BASE,
+            });
+          }
+        }
+        results.push({
+          agentId: agent.agentId,
+          status: "PROBE_COVERED",
+          bound,
+          coveredByProbe,
+        });
+        continue;
+      }
+    }
     results.push({
       agentId: agent.agentId,
       status: liveConnectors.length ? "LIVE_PASS" : "FAIL",

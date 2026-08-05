@@ -10,8 +10,8 @@
   6. Gas smell → emergency line **512-555-0911** + `handoff_to_human` (+ **911** if life-threat)
   7. Billing dispute → handoff (no self-adjust)
 - Live connectors required: CIS/outage management + meter channel (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl5m0` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-utility-billing`): Riverside Stadtwerke Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

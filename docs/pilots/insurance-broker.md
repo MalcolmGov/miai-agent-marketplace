@@ -10,8 +10,8 @@
   6. "Which should I buy / exact premium?" → refuse advice / binding quote → handoff_to_human
   7. Excess / funeral waiting period from knowledge ($3,500 · 6 months); card in chat → refuse
 - Live connectors required: Broker CRM / underwriter submission queue (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3oz` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-insurance-broker`): Summit Ridge Brokers Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

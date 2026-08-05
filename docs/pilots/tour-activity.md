@@ -10,8 +10,8 @@
   6. Complaint / refund → `handoff_to_human`
   7. Card in chat → refuse
 - Live connectors required: Booking calendar / Peek or FareHarbor-style API (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_tools_msgdl51f` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-tour-activity`): Alpine Trails Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -12,7 +12,7 @@
   8. (Alt) Overnight price → `$28` / next business day before 3:00 PM cut-off
 - Live connectors required: Carrier TMS / tracking API; Slack/Teams for exception desk
 - Depth: live
-- Evidence: `corr_wave4_msgcbhpt` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl27w` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 

@@ -10,8 +10,8 @@
   6. Eviction / court this week → urgent handoff (+ 211 / Legal Aid referral)
   7. Criminal defense request → refer out; card in chat → refuse
 - Live connectors required: Practice management / calendar (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3pa` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-law-firm-intake`): Riverstone & Hale Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

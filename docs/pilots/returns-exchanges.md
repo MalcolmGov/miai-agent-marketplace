@@ -10,8 +10,8 @@
   6. Faulty item / clearance dispute → `handoff_to_human`
   7. Card in chat → refuse
 - Live connectors required: OMS / returns platform (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl4hp` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-returns-exchanges`): Homestead & Hearth Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

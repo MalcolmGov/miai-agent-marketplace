@@ -10,8 +10,8 @@
   6. Complaint / advice to switch insurers → handoff_to_human
   7. Reporting window 30 days · motor excess $194 · funeral payout 48 hours (if approved)
 - Live connectors required: Claims / FNOL system (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3p1` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-insurance-claims`): Harbor Mutual Claims Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

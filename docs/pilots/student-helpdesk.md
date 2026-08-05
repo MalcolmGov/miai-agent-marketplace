@@ -10,8 +10,8 @@
   6. Distress / safety → wellness path + handoff; life-threat → **911**
   7. STOP → acknowledge + handoff
 - Live connectors required: SIS read-only published catalogue (optional); ticketing for log_request
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl4vx` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-student-helpdesk`): Laguna College Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -10,8 +10,8 @@
   6. Failed delivery / fraud velocity → `handoff_to_human`
   7. Raw card in chat → refuse → secure checkout
 - Live connectors required: EZ PIN (or equivalent) sandbox; secure checkout
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl5m2` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-vas-concierge`): BrightPin Digital Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

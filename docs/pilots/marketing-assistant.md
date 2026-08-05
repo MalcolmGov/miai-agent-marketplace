@@ -10,8 +10,8 @@
   6. Hot / high-value lead or complaint → handoff_to_human
   7. STOP → acknowledge + handoff for suppression; card in chat → refuse
 - Live connectors required: CRM / marketing automation (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3pl` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-marketing-assistant`): Hearth & Pantry Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

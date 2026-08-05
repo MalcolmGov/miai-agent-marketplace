@@ -11,7 +11,7 @@
   7. Card in chat / cross-client lookup → refuse
 - Live connectors required: HubSpot (`capture_onboarding`), Slack (`handoff_to_human`), Xero/webhook reads
 - Depth: live
-- Evidence: `corr_wave4_msgcbcry` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl1fm` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-accounting-practice`): Ledgerline Accountants Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

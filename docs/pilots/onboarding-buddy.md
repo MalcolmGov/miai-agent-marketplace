@@ -11,7 +11,7 @@
   7. Card details in chat → refuse + portal
 - Live connectors required: HRIS / Slack or email notify (sandbox OK for strong; live OAuth for depth: live)
 - Depth: live
-- Evidence: `corr_wave4_msgcfu61` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl3pw` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-onboarding-buddy`): Ridgeway Labs Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

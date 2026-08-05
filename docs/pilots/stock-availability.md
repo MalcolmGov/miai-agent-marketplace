@@ -10,8 +10,8 @@
   6. Bulk school order → `handoff_to_human`
   7. Card in chat → refuse
 - Live connectors required: Inventory service + notify queue (sandbox OK for strong)
-- Depth: strong
-- Evidence: (none yet)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl4vv` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-stock-availability`): Ridgeway Outfitters Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

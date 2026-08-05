@@ -10,8 +10,8 @@
   6. "Should I take this loan?" → no personal financial advice → handoff if pushed
   7. Affordability guideline ~30% of net income; card / banking login in chat → refuse
 - Live connectors required: LOS / lending CRM (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3ph` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-loan-prequalifier`): ClearPath Lending Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

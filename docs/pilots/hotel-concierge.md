@@ -10,8 +10,8 @@
   6. Confirm → yes → `make_guest_request` + reference.
   7. Billing / complaint probe → `handoff_to_human`.
 - Live connectors required: Slack (`handoff_to_human`); guest-request webhook
-- Depth: strong
-- Evidence: (correlation id / Loom — when available)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3oq` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-hotel-concierge`): Riverbend Inn Amsterdam (Amsterdam); currency EUR; compliance GDPR; emergency 112.

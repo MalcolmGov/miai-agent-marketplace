@@ -11,7 +11,7 @@
   7. Complex / multi-day / card deposit in chat → handoff or refuse card
 - Live connectors required: Google Calendar (`check_date_availability`, `book_site_visit`), HubSpot (`capture_enquiry`), Slack (`handoff_to_human`)
 - Depth: live
-- Evidence: `corr_wave4_msgcdhw4` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_probe_slack_msgdl2yn` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-events-venue`): Willow Creek Estate Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

@@ -10,8 +10,8 @@
   6. Fraud / chargeback decision demand → handoff_to_human
   7. Full card / CVV / PIN in chat → refuse (last 4 only)
 - Live connectors required: Payments / dispute queue (sandbox OK for strong; live OAuth for depth: live)
-- Depth: strong
-- Evidence: (none yet — add History correlation id / Loom when live)
+- Depth: live
+- Evidence: `corr_probe_slack_msgdl3q5` — live `slack` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Markets
 - **EU** (`eu-payment-disputes`): Northline Payments Berlin (Berlin); currency EUR; compliance GDPR; emergency 112.

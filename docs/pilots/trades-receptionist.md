@@ -12,7 +12,7 @@
   8. (Alt) Gas smell → **911** / leave building + gas utility, then `handoff_to_human` (no booking)
 - Live connectors required: Google Calendar / Field Service scheduling; Slack/Teams dispatch; optional QuickBooks for invoices (human-only)
 - Depth: live
-- Evidence: `corr_wave4_msgcbibi` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
+- Evidence: `corr_tools_msgdl5e3` — live `google_calendar` on https://miaiweb-production.up.railway.app (2026-08-05)
 
 ## Market packs (EU / Africa / Asia)
 
