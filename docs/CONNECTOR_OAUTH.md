@@ -30,7 +30,7 @@ Live tool execution for those connectors is already implemented in `@miai/connec
 | Connector | Env vars | Notes |
 |---|---|---|
 | Google Calendar | `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` | Calendar + PKCE |
-| Email (Gmail) | same Google vars | Gmail send scope |
+| Email (Gmail) | same Google vars | `gmail.send` + `gmail.metadata` (probe uses `users/me/profile`) — re-Connect after scope changes |
 | Email (Microsoft) | `MICROSOFT_OAUTH_CLIENT_ID`, `MICROSOFT_OAUTH_CLIENT_SECRET` | Pick Microsoft in Actions |
 | M365 Calendar | Microsoft vars | Graph Calendars.ReadWrite |
 | Teams | Microsoft vars | Also `TEAMS_TEAM_ID` + `TEAMS_CHANNEL_ID` for live handoff |

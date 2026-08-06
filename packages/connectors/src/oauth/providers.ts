@@ -78,7 +78,14 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     name: "Email (Gmail / Microsoft)",
     clientIdEnv: "GOOGLE_OAUTH_CLIENT_ID", // overridden for microsoft at runtime
     clientSecretEnv: "GOOGLE_OAUTH_CLIENT_SECRET",
-    scopes: ["https://www.googleapis.com/auth/gmail.send", "openid", "email"],
+    // gmail.send = live send tool; gmail.metadata = users/me/profile health probe
+    // (send alone cannot call getProfile — probe used to 422 insufficient scopes).
+    scopes: [
+      "https://www.googleapis.com/auth/gmail.send",
+      "https://www.googleapis.com/auth/gmail.metadata",
+      "openid",
+      "email",
+    ],
     pkce: true,
     authStyle: "body",
     authorizeUrl: (ctx) =>
