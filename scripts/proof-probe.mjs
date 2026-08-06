@@ -100,7 +100,7 @@ async function main() {
   const emailFailed = results.find((r) => r.connector === "email" && r.status === "fail");
   if (emailFailed) {
     console.log(
-      "\nNote: email probe failed (often missing Gmail scopes on the Google token). Re-Connect Google Email with gmail.send/readonly.",
+      "\nNote: email probe failed (token missing gmail.metadata for users/me/profile). Redeploy scopes, then Disconnect + Connect Google Email.",
     );
   }
   if (coreFailed.length) process.exitCode = 2;
