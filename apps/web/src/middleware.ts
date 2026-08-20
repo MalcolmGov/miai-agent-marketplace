@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { buildContentSecurityPolicy } from "@/lib/csp";
+import { isPublicApiPath } from "@/lib/public-paths";
 
 /** Default 1 MiB — override with MIAI_MAX_BODY_BYTES. */
 function maxBodyBytes(): number {
@@ -38,20 +39,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (process.env.MIAI_AUTH_MODE === "oidc" && pathname.startsWith("/api/")) {
-    const publicPaths = [
-      "/api/health",
-      "/api/catalog",
-      "/api/oauth/callback",
-      "/api/embed/",
-      "/api/app/",
-      "/agents/v1/",
-      "/api/webhook/sink",
-      "/api/mcp",
-      "/api/consent",
-      "/api/auth/handoff",
-    ];
-    const isPublic = publicPaths.some((p) => pathname === p || pathname.startsWith(p));
-    if (!isPublic) {
+    if (!isPublicApiPath(pathname)) {
       const auth = req.headers.get("authorization") || "";
       if (!auth.startsWith("Bearer ")) {
         return applySecurityHeaders(
