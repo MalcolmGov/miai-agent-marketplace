@@ -1455,28 +1455,31 @@ async function spotifyControl(
   const intent = `${tool} ${String(args.action ?? "")}`.toLowerCase();
   const query = String(args.query ?? args.track ?? args.song ?? args.q ?? "").trim();
 
-  // Spotify's API can only control an already-running device — it cannot launch the app. Turn the
-  // "no active device" case into a clear message instead of a hard failure.
-  const noDevice = (extra: Record<string, unknown> = {}): Record<string, unknown> => ({
+  // Spotify's API can only control an already-running device — it cannot launch the app. Player
+  // controls fail in expected ways (no active device, playback restriction, free account), so turn
+  // those into clear guidance instead of the generic connector-failure message.
+  const unavailable = (premium: boolean, extra: Record<string, unknown> = {}): Record<string, unknown> => ({
     played: false,
-    reason: "no_active_device",
-    note: "No active Spotify device — open Spotify on your phone, computer or the web player, then try again.",
+    reason: premium ? "premium_required" : "no_active_device",
+    note: premium
+      ? "Controlling playback from here needs Spotify Premium on this account."
+      : "No active Spotify device — open Spotify on your phone, computer or the web player, then try again.",
     provider: "spotify",
     live: true,
     ...extra,
   });
-  const putPlayer = async (path: string, body?: unknown) => {
+  const putPlayer = async (path: string, body?: unknown): Promise<{ ok: boolean; premium: boolean }> => {
     const res = await fetch(`https://api.spotify.com/v1/me/player/${path}`, {
       method: "PUT",
       headers: body ? { ...auth, "content-type": "application/json" } : auth,
       body: body ? JSON.stringify(body) : undefined,
     });
-    if (res.ok || res.status === 204) return { ok: true, noDevice: false };
+    if (res.ok || res.status === 204) return { ok: true, premium: false };
     const j = (await res.json().catch(() => ({}))) as { error?: { reason?: string; message?: string } };
-    if (res.status === 404 || res.status === 202 || j.error?.reason === "NO_ACTIVE_DEVICE") {
-      return { ok: false, noDevice: true };
-    }
-    throw new Error(j.error?.message ?? `Spotify ${res.status}`);
+    // Only a 5xx is a real fault; every 4xx here (no device, restriction, premium) is expected and
+    // returned as a friendly message rather than thrown.
+    if (res.status >= 500) throw new Error(j.error?.message ?? `Spotify ${res.status}`);
+    return { ok: false, premium: j.error?.reason === "PREMIUM_REQUIRED" };
   };
 
   const nowPlaying = async (): Promise<Record<string, unknown>> => {
@@ -1502,7 +1505,7 @@ async function spotifyControl(
 
   if (/pause|stop/.test(intent)) {
     const r = await putPlayer("pause");
-    return r.noDevice ? noDevice() : { paused: true, provider: "spotify", live: true };
+    return r.ok ? { paused: true, provider: "spotify", live: true } : unavailable(r.premium);
   }
 
   // No track named: "what's playing / current" reports; "play / resume / open / start" resumes.
@@ -1511,7 +1514,7 @@ async function spotifyControl(
       return nowPlaying();
     }
     const r = await putPlayer("play");
-    return r.noDevice ? noDevice() : { resumed: true, provider: "spotify", live: true };
+    return r.ok ? { resumed: true, provider: "spotify", live: true } : unavailable(r.premium);
   }
 
   const s = await fetch(
@@ -1529,9 +1532,9 @@ async function spotifyControl(
   }
   const artist = (track.artists ?? []).map((a) => a.name).join(", ");
   const r = await putPlayer("play", { uris: [track.uri] });
-  return r.noDevice
-    ? noDevice({ wanted: track.name, artist })
-    : { played: true, track: track.name, artist, provider: "spotify", live: true };
+  return r.ok
+    ? { played: true, track: track.name, artist, provider: "spotify", live: true }
+    : unavailable(r.premium, { wanted: track.name, artist });
 }
 
 /** Todoist — add / list / complete tasks (REST v2). */
