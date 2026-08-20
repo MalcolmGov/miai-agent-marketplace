@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { cosineSimilarity, createEmbedderFromEnv, semanticRetrievalEnabled } from "@miai/runtime";
 import { getPool, query } from "@/lib/pg";
 import { ensureMigrations } from "@/lib/migrate";
 
@@ -93,21 +94,11 @@ export function keywordsOf(query: string): string[] {
  * be unit-tested. Items relevant to the current message surface first; the rest fill by recency,
  * all under a bounded item/char budget so long histories can't blow the context.
  */
-export function buildMemoryBlock(memories: MemoryRecord[], userMessage: string): string {
-  if (!memories.length) return "";
-  const words = keywordsOf(userMessage);
-
-  const scored = memories.map((m) => {
-    const hay = m.content.toLowerCase();
-    let relevance = 0;
-    for (const w of words) if (hay.includes(w)) relevance += 1;
-    return { m, relevance, ts: Date.parse(m.updatedAt) || 0 };
-  });
-  scored.sort((a, b) => b.relevance - a.relevance || b.ts - a.ts);
-
+/** Format an already-ranked memory list into the system-prompt block, under the item/char budget. */
+function renderMemoryBlock(ranked: MemoryRecord[]): string {
   const lines: string[] = [];
   let used = 0;
-  for (const { m } of scored) {
+  for (const m of ranked) {
     if (lines.length >= MAX_BLOCK_ITEMS) break;
     const label = m.category && m.category !== DEFAULT_CATEGORY ? `[${m.category}] ` : "";
     const line = `- ${label}${m.content}`;
@@ -125,6 +116,53 @@ export function buildMemoryBlock(memories: MemoryRecord[], userMessage: string):
     "",
     ...lines,
   ].join("\n");
+}
+
+/** Keyword-relevance ranking — the fallback when embeddings aren't available. */
+function rankKeyword(memories: MemoryRecord[], userMessage: string): MemoryRecord[] {
+  const words = keywordsOf(userMessage);
+  return memories
+    .map((m) => {
+      const hay = m.content.toLowerCase();
+      let relevance = 0;
+      for (const w of words) if (hay.includes(w)) relevance += 1;
+      return { m, relevance, ts: Date.parse(m.updatedAt) || 0 };
+    })
+    .sort((a, b) => b.relevance - a.relevance || b.ts - a.ts)
+    .map((x) => x.m);
+}
+
+/**
+ * Rank + trim remembered items into a system-prompt block for one turn, by keyword relevance to the
+ * current message. Pure (no I/O), unit-testable, and the fallback when semantic retrieval is off.
+ */
+export function buildMemoryBlock(memories: MemoryRecord[], userMessage: string): string {
+  if (!memories.length) return "";
+  return renderMemoryBlock(rankKeyword(memories, userMessage));
+}
+
+/**
+ * Rank memories by embedding similarity to the message (recall by meaning, not shared words), or
+ * null when semantic retrieval isn't enabled / no embedder is configured.
+ */
+async function rankSemantic(
+  memories: MemoryRecord[],
+  userMessage: string,
+): Promise<MemoryRecord[] | null> {
+  if (!semanticRetrievalEnabled()) return null;
+  const embedder = createEmbedderFromEnv();
+  if (!embedder) return null;
+  const vecs = await embedder.embed([userMessage, ...memories.map((m) => m.content)]);
+  const query = vecs[0];
+  if (!query) return null;
+  return memories
+    .map((m, i) => ({
+      m,
+      score: cosineSimilarity(query, vecs[i + 1] ?? []),
+      ts: Date.parse(m.updatedAt) || 0,
+    }))
+    .sort((a, b) => b.score - a.score || b.ts - a.ts)
+    .map((x) => x.m);
 }
 
 // ---- file fallback (dev/test; no DATABASE_URL) ----
@@ -282,6 +320,13 @@ export async function getMemoryContext(owner: MemoryOwner, userMessage: string):
   if (!validOwner(owner)) return "";
   try {
     const memories = await listMemories(owner);
+    if (!memories.length) return "";
+    try {
+      const semantic = await rankSemantic(memories, userMessage ?? "");
+      if (semantic) return renderMemoryBlock(semantic);
+    } catch {
+      /* embeddings unavailable/failed — fall back to keyword relevance below */
+    }
     return buildMemoryBlock(memories, userMessage ?? "");
   } catch {
     return "";
