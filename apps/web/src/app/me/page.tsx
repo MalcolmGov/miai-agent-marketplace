@@ -9,6 +9,13 @@ import {
   FIRST_RUN_PROMPTS,
   STARTER_PROMPTS,
 } from "@/lib/assistant-capabilities";
+import {
+  BRANDS,
+  DEFAULT_BRAND_ID,
+  brandThemeVars,
+  getBrand,
+  type Brand,
+} from "@/lib/tenant-brands";
 
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
@@ -16,12 +23,19 @@ type BriefOffer = "hidden" | "shown" | "saving" | "done" | "error";
 
 const ONBOARDED_KEY = "miai:me:onboarded:v1";
 const BRIEF_OFFERED_KEY = "miai:me:briefOffered:v1";
+const BRAND_KEY = "miai:me:brand:v1";
 /** Below this, nudge the user that their prepaid balance is running low. */
 const LOW_BALANCE = 500;
 
+function greetingFor(brand: Brand): string {
+  const who = brand.id === DEFAULT_BRAND_ID ? "your assistant" : `your ${brand.name} assistant`;
+  return `Hi — I'm ${who}. What can I take off your plate today?`;
+}
+
 export default function AssistantHome() {
+  const [brandId, setBrandId] = useState<string>(DEFAULT_BRAND_ID);
   const [messages, setMessages] = useState<Msg[]>([
-    { id: "greet", role: "assistant", text: "Hi — I'm your assistant. What can I take off your plate today?" },
+    { id: "greet", role: "assistant", text: greetingFor(getBrand(DEFAULT_BRAND_ID)) },
   ]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -37,33 +51,67 @@ export default function AssistantHome() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const briefOfferedRef = useRef(false);
 
+  const brand = getBrand(brandId);
   const connectedSet = new Set(connectors.filter((c) => c.connected).map((c) => c.connector));
 
+  // The active brand doubles as the tenant: scope every consumer call to it so memory, wallet and
+  // connectors reflect this brand (and switching brand switches the isolated context, per PR #49).
+  const ws = `?workspaceId=${encodeURIComponent(brandId)}`;
+
   const loadWallet = useCallback(() => {
-    fetch("/api/consumer/wallet")
+    fetch(`/api/consumer/wallet?workspaceId=${encodeURIComponent(brandId)}`)
       .then((r) => r.json())
       .then((d) => setBalance(typeof d.tokens === "number" ? d.tokens : null))
       .catch(() => {});
-  }, []);
+  }, [brandId]);
 
-  useEffect(() => {
-    loadWallet();
-    fetch("/api/consumer/connectors")
+  const loadConnectors = useCallback(() => {
+    fetch(`/api/consumer/connectors?workspaceId=${encodeURIComponent(brandId)}`)
       .then((r) => r.json())
       .then((d) => setConnectors(d.connectors ?? []))
       .catch(() => {});
-    // First-run welcome + one-time brief offer are gated on localStorage (client-only).
+  }, [brandId]);
+
+  // Mount: restore the previewed brand + the one-time onboarding gates (client-only).
+  useEffect(() => {
     try {
+      const stored = localStorage.getItem(BRAND_KEY);
+      if (stored && stored !== DEFAULT_BRAND_ID && getBrand(stored).id === stored) {
+        setBrandId(stored);
+        setMessages([{ id: "greet", role: "assistant", text: greetingFor(getBrand(stored)) }]);
+      }
       if (!localStorage.getItem(ONBOARDED_KEY)) setShowWelcome(true);
       if (localStorage.getItem(BRIEF_OFFERED_KEY)) briefOfferedRef.current = true;
     } catch {
       /* private mode / storage disabled — just skip the one-time gates */
     }
-  }, [loadWallet]);
+  }, []);
+
+  // Reload the per-brand context whenever the brand changes.
+  useEffect(() => {
+    loadWallet();
+    loadConnectors();
+  }, [loadWallet, loadConnectors]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, typing]);
+
+  /** Switch the previewed brand: re-skin, and reset to a clean per-brand conversation + context. */
+  function selectBrand(id: string) {
+    if (id === brandId) return;
+    setBrandId(id);
+    try {
+      localStorage.setItem(BRAND_KEY, id);
+    } catch {
+      /* ignore */
+    }
+    sessionId.current = crypto.randomUUID();
+    setMessages([{ id: "greet", role: "assistant", text: greetingFor(getBrand(id)) }]);
+    setShowSugs(true);
+    setBriefOffer("hidden");
+    setError(null);
+  }
 
   function dismissWelcome() {
     setShowWelcome(false);
@@ -90,7 +138,7 @@ export default function AssistantHome() {
     setBriefOffer("saving");
     try {
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-      const res = await fetch("/api/consumer/brief", {
+      const res = await fetch(`/api/consumer/brief${ws}`, {
         method: "PUT",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ enabled: true, hour: 7, timezone, channel: "app" }),
@@ -126,7 +174,7 @@ export default function AssistantHome() {
     let replied = false;
     try {
       let started = false;
-      await streamChat("/api/consumer/chat", { message: text, sessionId: sessionId.current }, (ev) => {
+      await streamChat(`/api/consumer/chat${ws}`, { message: text, sessionId: sessionId.current }, (ev) => {
         if (ev.type === "tool") {
           setTyping(true);
         } else if (ev.type === "delta") {
@@ -158,15 +206,16 @@ export default function AssistantHome() {
   };
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-4">
+    <div
+      className="brand-scope mx-auto flex max-w-2xl flex-col gap-4"
+      style={brandThemeVars(brand) as React.CSSProperties}
+    >
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="display text-2xl font-semibold tracking-tight text-[var(--text)]">
-            Your assistant
+            <span style={{ color: "var(--accent)" }}>{brand.name}</span> Assistant
           </h1>
-          <p className="mt-1 text-sm text-[var(--muted)]">
-            A personal AI that works with your inbox, calendar, reminders and more.
-          </p>
+          <p className="mt-1 text-sm text-[var(--muted)]">{brand.tagline}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -187,8 +236,37 @@ export default function AssistantHome() {
         </div>
       </header>
 
+      {/* White-label preview: switch the brand this assistant is skinned for (demo affordance —
+          a real carrier deployment fixes the brand by tenant). Each brand has its own memory. */}
+      <div className="flex flex-wrap items-center gap-2 text-xs">
+        <span className="text-[var(--muted)]">Preview brand:</span>
+        {BRANDS.map((b) => {
+          const active = b.id === brandId;
+          return (
+            <button
+              key={b.id}
+              type="button"
+              onClick={() => selectBrand(b.id)}
+              aria-pressed={active}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium transition ${
+                active
+                  ? "border-[color-mix(in_srgb,var(--accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] text-[var(--text)]"
+                  : "border-[var(--line)] text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <span
+                aria-hidden
+                className="inline-block h-2 w-2 rounded-full"
+                style={{ background: b.accent }}
+              />
+              {b.name}
+            </button>
+          );
+        })}
+      </div>
+
       {balance !== null && balance < LOW_BALANCE ? (
-        <p className="-mt-2 text-xs text-[var(--warn)]">
+        <p className="-mt-1 text-xs text-[var(--warn)]">
           Your balance is running low — top up to keep your assistant available.
         </p>
       ) : null}
@@ -267,7 +345,7 @@ export default function AssistantHome() {
               <div
                 className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
                   m.role === "user"
-                    ? "bg-[var(--accent)] text-white"
+                    ? "bg-[var(--accent)] text-[var(--accent-ink)]"
                     : "border border-[var(--line)] bg-[var(--bg-panel)] text-[var(--text)]"
                 }`}
               >
