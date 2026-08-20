@@ -51,11 +51,11 @@ export default function CapabilitiesSheet({ open, onClose, onRun, connected }: P
       <div className="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-[var(--line)] bg-[var(--bg-panel)] shadow-xl sm:rounded-2xl">
         <div className="flex items-center justify-between border-b border-[var(--line)] px-5 py-4">
           <div>
-            <h2 className="display text-lg font-semibold tracking-tight text-[var(--text)]">
+            <h2 className="display text-xl font-semibold tracking-tight text-[var(--text)]">
               What I can do
             </h2>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Tap any example to try it. Nothing in the top two groups needs setup.
+            <p className="mt-1 text-[13px] leading-relaxed text-[var(--card-meta)]">
+              Tap any example to try it. The top two work with nothing connected.
             </p>
           </div>
           <button
@@ -74,7 +74,7 @@ export default function CapabilitiesSheet({ open, onClose, onRun, connected }: P
           ))}
         </div>
 
-        <div className="border-t border-[var(--line)] px-5 py-3 text-[11px] leading-relaxed text-[var(--muted)]">
+        <div className="border-t border-[var(--line)] px-5 py-3.5 text-xs leading-relaxed text-[var(--card-meta)]">
           I confirm with you before sending an email or changing your calendar — and I only use the
           accounts you choose to connect.
         </div>
@@ -96,34 +96,31 @@ function GroupCard({
   const fullyConnected = group.needs.length > 0 && unmet.length === 0;
 
   return (
-    <section className="rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_40%,transparent)] p-4">
-      <div className="flex items-start gap-3">
-        <span aria-hidden className="text-xl leading-none">
+    <section className="rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_45%,transparent)] p-4 sm:p-5">
+      <div className="flex items-start gap-3.5">
+        <span
+          aria-hidden
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--accent)_28%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] text-lg leading-none"
+        >
           {group.icon}
         </span>
-        <div className="min-w-0 flex-1 space-y-2">
+        <div className="min-w-0 flex-1 space-y-2.5">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-semibold text-[var(--text)]">{group.title}</h3>
+            <h3 className="text-[15px] font-semibold tracking-tight text-[var(--text)]">
+              {group.title}
+            </h3>
             {fullyConnected ? (
               <span className="chip chip-live text-[10px]">Connected ✓</span>
             ) : unmet.length > 0 ? (
-              <Link
-                href="/me/connectors"
-                className="chip text-[10px] text-[var(--accent)] underline decoration-1 underline-offset-2 hover:opacity-80"
-              >
+              <Link href="/me/connectors" className="chip text-[10px] hover:opacity-80">
                 Connect {unmet.join(" · ")}
               </Link>
             ) : null}
           </div>
-          <p className="text-xs leading-relaxed text-[var(--muted)]">{group.blurb}</p>
-          <div className="flex flex-wrap gap-2 pt-0.5">
+          <p className="text-[13px] leading-relaxed text-[var(--card-body)]">{group.blurb}</p>
+          <div className="flex flex-wrap gap-2 pt-1">
             {group.examples.map((ex) => (
-              <button
-                key={ex}
-                type="button"
-                onClick={() => onRun(ex)}
-                className="chip cursor-pointer text-left hover:opacity-80"
-              >
+              <button key={ex} type="button" onClick={() => onRun(ex)} className="suggestion">
                 {ex}
               </button>
             ))}

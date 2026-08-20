@@ -122,6 +122,52 @@ body::before {
   background: linear-gradient(180deg, var(--accent-bright), var(--accent));
 }
 
+/*
+ * Suggestion — a readable, tap-to-run prompt. Unlike .chip (a short uppercase tag for filters and
+ * status), this carries whole sentences, so it stays sentence-case at a comfortable size. Used for
+ * starter prompts, the first-run welcome, and the capability sheet's examples.
+ */
+.suggestion {
+  @apply inline-flex items-center text-left text-[13px] font-medium leading-snug;
+  padding: 0.42rem 0.72rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  color: var(--card-body);
+  background: color-mix(in srgb, var(--bg-elev) 55%, transparent);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.suggestion::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-right: 0.55rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 75%, transparent);
+}
+
+.suggestion:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  color: var(--text);
+}
+
+.suggestion:active {
+  transform: translateY(1px);
+}
+
+.suggestion:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
 .btn {
   @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition;
   border-radius: 8px;
