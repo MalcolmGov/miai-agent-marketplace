@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { streamChat } from "@/lib/chat-stream-client";
+import { ConnectorIcon } from "@/components/ConnectorIcon";
 import CapabilitiesSheet from "./CapabilitiesSheet";
 import {
   CONNECTOR_LABEL,
@@ -212,10 +213,19 @@ export default function AssistantHome() {
     >
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="display text-2xl font-semibold tracking-tight text-[var(--text)]">
-            <span style={{ color: "var(--accent)" }}>{brand.name}</span> Assistant
-          </h1>
-          <p className="mt-1 text-sm text-[var(--muted)]">{brand.tagline}</p>
+          <div className="flex items-center gap-2.5">
+            <span
+              aria-hidden
+              className="flex h-9 w-9 items-center justify-center rounded-xl text-base font-bold"
+              style={{ background: "var(--accent)", color: "var(--accent-ink)" }}
+            >
+              {brand.name.charAt(0)}
+            </span>
+            <h1 className="display text-2xl font-semibold tracking-tight text-[var(--text)]">
+              {brand.name} <span className="text-[var(--muted)]">Assistant</span>
+            </h1>
+          </div>
+          <p className="mt-1.5 text-sm text-[var(--muted)]">{brand.tagline}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -278,6 +288,7 @@ export default function AssistantHome() {
         ) : (
           connectors.map((c) => (
             <span key={c.connector} className={`chip ${c.connected ? "chip-live" : "opacity-70"}`}>
+              <ConnectorIcon connector={c.connector} size={13} />
               {CONNECTOR_LABEL[c.connector] ?? c.connector}
               {c.connected ? " ✓" : ""}
             </span>
@@ -285,7 +296,7 @@ export default function AssistantHome() {
         )}
         <Link
           href="/me/connectors"
-          className="ml-1 text-[var(--accent)] underline decoration-1 underline-offset-2"
+          className="ml-1 text-[var(--muted)] underline decoration-1 underline-offset-2 hover:text-[var(--text)]"
         >
           Manage
         </Link>

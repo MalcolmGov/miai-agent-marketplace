@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { ConnectorIcon } from "@/components/ConnectorIcon";
 
 type ConnectorStatus = {
   connector: string;
@@ -177,8 +178,8 @@ export default function ConsumerConnectorsPage() {
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex min-w-0 items-start gap-3">
-                    <span aria-hidden className="text-xl leading-none">
-                      {meta.icon}
+                    <span aria-hidden className="mt-0.5 leading-none">
+                      <ConnectorIcon connector={item.connector} size={22} />
                     </span>
                     <div className="min-w-0 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
