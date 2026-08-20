@@ -302,6 +302,8 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
       "user-modify-playback-state",
       "user-read-currently-playing",
       "playlist-read-private",
+      "playlist-modify-private",
+      "playlist-modify-public",
     ],
     pkce: true,
     authStyle: "basic",

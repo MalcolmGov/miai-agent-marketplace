@@ -1537,6 +1537,86 @@ async function spotifyControl(
     : unavailable(r.premium, { wanted: track.name, artist });
 }
 
+/** Create a Spotify playlist for the user and add tracks to it. Needs the playlist-modify scope. */
+async function spotifyCreatePlaylist(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const auth = { authorization: `Bearer ${token}` };
+  const name = String(args.name ?? args.playlist ?? args.title ?? "").trim() || "New playlist";
+
+  const rawTracks = args.tracks ?? args.songs ?? args.items;
+  const wanted = (
+    Array.isArray(rawTracks)
+      ? rawTracks.map((t) => String(t))
+      : String(rawTracks ?? "").split(/,|;| and /i)
+  )
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 30);
+
+  const meRes = await fetch("https://api.spotify.com/v1/me", { headers: auth });
+  const me = (await meRes.json()) as { id?: string; error?: { message?: string } };
+  if (!meRes.ok || !me.id) throw new Error(me.error?.message ?? `Spotify ${meRes.status}`);
+
+  const createRes = await fetch(
+    `https://api.spotify.com/v1/users/${encodeURIComponent(me.id)}/playlists`,
+    {
+      method: "POST",
+      headers: { ...auth, "content-type": "application/json" },
+      body: JSON.stringify({ name, public: false, description: "Created by your assistant" }),
+    },
+  );
+  const pl = (await createRes.json()) as {
+    id?: string;
+    external_urls?: { spotify?: string };
+    error?: { message?: string };
+  };
+  if (!createRes.ok || !pl.id) {
+    // 403 here means the token predates the playlist-modify scope — guide the user to reconnect.
+    if (createRes.status === 403) {
+      return {
+        created: false,
+        reason: "reconnect_required",
+        note: "I couldn't create the playlist — reconnect Spotify to grant playlist permissions (Disconnect, then Connect again on the accounts page).",
+        provider: "spotify",
+        live: true,
+      };
+    }
+    throw new Error(pl.error?.message ?? `Spotify ${createRes.status}`);
+  }
+
+  const uris: string[] = [];
+  const notFound: string[] = [];
+  for (const q of wanted) {
+    const sr = await fetch(
+      `https://api.spotify.com/v1/search?type=track&limit=1&q=${encodeURIComponent(q)}`,
+      { headers: auth },
+    );
+    const sj = (await sr.json()) as { tracks?: { items?: Array<{ uri?: string }> } };
+    const uri = sj.tracks?.items?.[0]?.uri;
+    if (uri) uris.push(uri);
+    else notFound.push(q);
+  }
+  if (uris.length) {
+    await fetch(`https://api.spotify.com/v1/playlists/${pl.id}/tracks`, {
+      method: "POST",
+      headers: { ...auth, "content-type": "application/json" },
+      body: JSON.stringify({ uris }),
+    });
+  }
+
+  return {
+    created: true,
+    name,
+    playlist_url: pl.external_urls?.spotify,
+    added: uris.length,
+    not_found: notFound,
+    provider: "spotify",
+    live: true,
+  };
+}
+
 /** Todoist — add / list / complete tasks (REST v2). */
 async function todoistTasks(
   token: string,
@@ -1787,7 +1867,9 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         data = await notionSearch(token, call.args);
         break;
       case "spotify":
-        data = await spotifyControl(token, call.tool, call.args);
+        data = /playlist/.test(call.tool.toLowerCase())
+          ? await spotifyCreatePlaylist(token, call.args)
+          : await spotifyControl(token, call.tool, call.args);
         break;
       case "todoist":
         data = await todoistTasks(token, call.args);
