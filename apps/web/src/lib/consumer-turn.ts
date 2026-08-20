@@ -9,6 +9,7 @@ import {
 import { createSessionStore } from "@/lib/channel-sessions";
 import { DEFAULT_CONSUMER_AGENT, isConsumerAgent } from "@/lib/consumer";
 import { getComposedKnowledge } from "@/lib/knowledge";
+import { getMemoryContext, rememberFact } from "@/lib/consumer-memory-store";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 /**
@@ -126,7 +127,11 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
   const replyLanguage: ChatLanguageCode = isChatLanguage(input.replyLanguage)
     ? input.replyLanguage
     : "en";
-  const systemAppend = replyLanguage !== "en" ? replyLanguageSystemAppend(replyLanguage) : "";
+  const langAppend = replyLanguage !== "en" ? replyLanguageSystemAppend(replyLanguage) : "";
+  // Durable memory: fold what we've been asked to remember about this consumer into the system
+  // prompt, relevance-ranked against their message, so the assistant carries facts across sessions.
+  const memoryAppend = await getMemoryContext(input.consumerId, input.message);
+  const systemAppend = [langAppend, memoryAppend].filter(Boolean).join("\n\n");
 
   return {
     ok: true,
@@ -147,12 +152,37 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
   };
 }
 
+/**
+ * Persist any facts the assistant chose to remember this turn. The remember_about_me tool runs in
+ * the runtime/connectors layer, which can't reach the app-layer store — so we durably record it
+ * here from the turn's tool calls. Best-effort: a memory write must never fail the chat turn.
+ */
+async function persistRememberedFacts(
+  consumerId: string,
+  toolCalls: Awaited<ReturnType<typeof runTurn>>["toolCalls"],
+): Promise<void> {
+  if (!consumerId || !toolCalls?.length) return;
+  for (const call of toolCalls) {
+    if (!/remember/i.test(call.name)) continue;
+    const a = (call.args ?? {}) as Record<string, unknown>;
+    const content = String(a.fact ?? a.note ?? a.text ?? a.value ?? a.content ?? "").trim();
+    if (!content) continue;
+    const category = typeof a.category === "string" ? a.category : undefined;
+    try {
+      await rememberFact(consumerId, { content, category, source: "assistant" });
+    } catch {
+      /* best-effort — never fail a turn on a memory write */
+    }
+  }
+}
+
 async function finalize(
   input: ConsumerTurnInput,
   prepared: Prepared,
   result: Awaited<ReturnType<typeof runTurn>>,
 ): Promise<ConsumerTurnOk> {
   await sessionStore.set(prepared.sessionKey, result.messages as ConsumerMessage[]);
+  await persistRememberedFacts(input.consumerId, result.toolCalls);
 
   const correlationId = input.correlationId?.trim() || newCorrelationId();
   const agentId = prepared.turnInput.agentId;
