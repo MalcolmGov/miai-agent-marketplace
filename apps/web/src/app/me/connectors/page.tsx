@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 type ConnectorStatus = {
@@ -123,6 +124,12 @@ export default function ConsumerConnectorsPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
+          <Link
+            href="/me"
+            className="mb-2 inline-flex items-center gap-1 text-sm text-[var(--accent)] underline decoration-1 underline-offset-2 hover:opacity-80"
+          >
+            <span aria-hidden>←</span> Back to assistant
+          </Link>
           <h1 className="display text-2xl font-semibold tracking-tight text-[var(--text)]">
             Connect your accounts
           </h1>
