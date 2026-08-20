@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { streamChat } from "@/lib/chat-stream-client";
 
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
@@ -17,26 +18,6 @@ const CONNECTOR_LABEL: Record<string, string> = {
   google_calendar: "Calendar",
 };
 
-function parseSseBlocks(buffer: string): {
-  events: Array<{ event: string; data: string }>;
-  rest: string;
-} {
-  const events: Array<{ event: string; data: string }> = [];
-  const parts = buffer.split("\n\n");
-  const rest = parts.pop() ?? "";
-  for (const block of parts) {
-    if (!block.trim()) continue;
-    let event = "message";
-    const dataLines: string[] = [];
-    for (const line of block.split("\n")) {
-      if (line.startsWith("event:")) event = line.slice(6).trim();
-      else if (line.startsWith("data:")) dataLines.push(line.slice(5).trim());
-    }
-    events.push({ event, data: dataLines.join("\n") });
-  }
-  return { events, rest };
-}
-
 export default function AssistantHome() {
   const [messages, setMessages] = useState<Msg[]>([
     { id: "greet", role: "assistant", text: "Hi — I'm your assistant. What can I take off your plate today?" },
@@ -48,7 +29,7 @@ export default function AssistantHome() {
   const [balance, setBalance] = useState<number | null>(null);
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
   const [showSugs, setShowSugs] = useState(true);
-  const sessionId = useRef(`me_${Math.random().toString(36).slice(2)}`);
+  const sessionId = useRef(crypto.randomUUID());
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const loadWallet = useCallback(() => {
@@ -82,62 +63,31 @@ export default function AssistantHome() {
     setBusy(true);
     setTyping(true);
 
-    try {
-      const res = await fetch("/api/consumer/chat", {
-        method: "POST",
-        headers: { "content-type": "application/json", accept: "text/event-stream" },
-        body: JSON.stringify({ message: text, sessionId: sessionId.current }),
-      });
-      if (!res.body) {
-        const j = (await res.json().catch(() => null)) as { error?: string; detail?: string } | null;
-        throw new Error(j?.detail || j?.error || `HTTP ${res.status}`);
+    const appendChunk = (chunk: string, started: boolean) => {
+      if (!started) {
+        setTyping(false);
+        setMessages((m) => [...m, { id: asstId, role: "assistant", text: chunk }]);
+      } else {
+        setMessages((m) => m.map((msg) => (msg.id === asstId ? { ...msg, text: msg.text + chunk } : msg)));
       }
+    };
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = "";
+    try {
       let started = false;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const { events, rest } = parseSseBlocks(buf);
-        buf = rest;
-        for (const ev of events) {
-          let data: Record<string, unknown> = {};
-          try {
-            data = JSON.parse(ev.data) as Record<string, unknown>;
-          } catch {
-            continue;
-          }
-          if (ev.event === "error") throw new Error(String(data.detail || data.error || "Chat failed"));
-          if (ev.event === "status" && data.phase === "tool") {
-            setTyping(true);
-            continue;
-          }
-          if (ev.event === "delta" && typeof data.text === "string") {
-            const chunk = data.text;
-            if (!started) {
-              started = true;
-              setTyping(false);
-              setMessages((m) => [...m, { id: asstId, role: "assistant", text: chunk }]);
-            } else {
-              setMessages((m) =>
-                m.map((msg) => (msg.id === asstId ? { ...msg, text: msg.text + chunk } : msg)),
-              );
-            }
-          }
-          if (ev.event === "done" && typeof data.reply === "string" && !started) {
-            setTyping(false);
-            setMessages((m) => [...m, { id: asstId, role: "assistant", text: data.reply as string }]);
+      await streamChat("/api/consumer/chat", { message: text, sessionId: sessionId.current }, (ev) => {
+        if (ev.type === "tool") {
+          setTyping(true);
+        } else if (ev.type === "delta") {
+          appendChunk(ev.text, started);
+          started = true;
+        } else {
+          if (typeof ev.balance === "number") setBalance(ev.balance);
+          if (!started && ev.reply) {
+            appendChunk(ev.reply, false);
             started = true;
           }
-          if (ev.event === "done" && typeof data.balance === "number") {
-            setBalance(data.balance as number);
-          }
         }
-      }
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
