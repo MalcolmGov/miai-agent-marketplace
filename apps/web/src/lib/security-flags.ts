@@ -113,7 +113,7 @@ export function checkProductionRails(): HardeningCheck {
   }
   if (model === "mock") {
     errors.push(
-      `MIAI_MODEL_MODE=mock blocked in production (set openai|anthropic|gateway or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)})`,
+      `MIAI_MODEL_MODE=mock blocked in production (set openai|azure|anthropic|gateway or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)})`,
     );
   }
   return errors.length ? { ok: false, errors } : { ok: true };

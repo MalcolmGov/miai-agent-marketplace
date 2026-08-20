@@ -1785,13 +1785,24 @@ async function fetchProviderWithRetry(
   return lastRes!;
 }
 
+/** Overrides for OpenAI-compatible providers whose endpoint/auth differ (e.g. Azure OpenAI). */
+type ProviderCallOpts = { endpoint?: string; azureAuth?: boolean };
+
+/** Azure OpenAI authenticates with an `api-key` header; everyone else uses `Authorization: Bearer`. */
+function providerAuthHeaders(apiKey: string, azureAuth?: boolean): Record<string, string> {
+  return azureAuth
+    ? { "api-key": apiKey, "content-type": "application/json" }
+    : { authorization: `Bearer ${apiKey}`, "content-type": "application/json" };
+}
+
 async function openAiCompatibleComplete(
   baseUrl: string,
   apiKey: string,
   input: ModelCompleteInput,
   modelId: string,
+  opts?: ProviderCallOpts,
 ): Promise<ModelCompleteResult> {
-  const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
+  const endpoint = opts?.endpoint ?? `${baseUrl.replace(/\/$/, "")}/chat/completions`;
   const temperature = input.temperature ?? 0.4;
   const maxTokens = input.maxOutputTokens ?? 500;
   const candidates = [modelId, input.fallbackModel].filter(
@@ -1802,10 +1813,7 @@ async function openAiCompatibleComplete(
     try {
       const res = await fetchProviderWithRetry(endpoint, {
         method: "POST",
-        headers: {
-          authorization: `Bearer ${apiKey}`,
-          "content-type": "application/json",
-        },
+        headers: providerAuthHeaders(apiKey, opts?.azureAuth),
         body: JSON.stringify({
           model: candidate,
           temperature,
@@ -1856,17 +1864,14 @@ async function* openAiCompatibleStream(
   apiKey: string,
   input: ModelCompleteInput,
   modelId: string,
+  opts?: ProviderCallOpts,
 ): AsyncIterable<StreamChunk> {
-  const endpoint = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
+  const endpoint = opts?.endpoint ?? `${baseUrl.replace(/\/$/, "")}/chat/completions`;
   let res: Response;
   try {
     res = await fetchProviderWithRetry(endpoint, {
       method: "POST",
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json",
-        accept: "text/event-stream",
-      },
+      headers: { ...providerAuthHeaders(apiKey, opts?.azureAuth), accept: "text/event-stream" },
       body: JSON.stringify({
         model: modelId,
         temperature: input.temperature ?? 0.4,
@@ -1887,7 +1892,7 @@ async function* openAiCompatibleStream(
 
   if (!res.ok || !res.body) {
     // Fall back to non-streaming so tool calls / errors still work.
-    const fallback = await openAiCompatibleComplete(baseUrl, apiKey, input, modelId);
+    const fallback = await openAiCompatibleComplete(baseUrl, apiKey, input, modelId, opts);
     if (fallback.content && !fallback.toolCall) {
       yield { type: "delta", text: fallback.content };
     }
@@ -2031,10 +2036,51 @@ export class GatewayModelAdapter implements ModelAdapter {
   }
 }
 
+/**
+ * Azure OpenAI adapter (MIAI_MODEL_MODE=azure) — the migration target for MyInstantAI's Azure
+ * infra. Points at the customer's own Azure OpenAI resource: the endpoint carries the deployment
+ * name + api-version, and auth is the `api-key` header (not Bearer). The marketplace model tiers
+ * map to deployment names via env, so the whole platform runs on Azure by flipping the mode.
+ */
+export class AzureOpenAIModelAdapter implements ModelAdapter {
+  private deployment(input: ModelCompleteInput): string {
+    const large = env("AZURE_OPENAI_DEPLOYMENT_LARGE");
+    const wantsLarge = ["claude-sonnet", "gpt-4o", "claude-opus"].includes(input.model);
+    return (wantsLarge && large) || env("AZURE_OPENAI_DEPLOYMENT") || "gpt-4o-mini";
+  }
+
+  private endpoint(deployment: string): string {
+    const base = (env("AZURE_OPENAI_ENDPOINT") ?? "").replace(/\/$/, "");
+    const version = env("AZURE_OPENAI_API_VERSION") ?? "2024-10-21";
+    return `${base}/openai/deployments/${deployment}/chat/completions?api-version=${version}`;
+  }
+
+  async complete(input: ModelCompleteInput) {
+    const apiKey = env("AZURE_OPENAI_API_KEY") ?? "";
+    const deployment = this.deployment(input);
+    return openAiCompatibleComplete("", apiKey, input, deployment, {
+      endpoint: this.endpoint(deployment),
+      azureAuth: true,
+    });
+  }
+
+  async *streamComplete(input: ModelCompleteInput): AsyncIterable<StreamChunk> {
+    const apiKey = env("AZURE_OPENAI_API_KEY") ?? "";
+    const deployment = this.deployment(input);
+    yield* openAiCompatibleStream("", apiKey, input, deployment, {
+      endpoint: this.endpoint(deployment),
+      azureAuth: true,
+    });
+  }
+}
+
 export function createModelAdapter(): ModelAdapter {
   const mode = env("MIAI_MODEL_MODE") ?? "mock";
   if ((mode === "gateway" || mode === "http") && env("MIAI_MODEL_GATEWAY_URL")) {
     return new GatewayModelAdapter();
+  }
+  if (mode === "azure" && env("AZURE_OPENAI_API_KEY") && env("AZURE_OPENAI_ENDPOINT")) {
+    return new AzureOpenAIModelAdapter();
   }
   if ((mode === "anthropic" || mode === "claude") && env("ANTHROPIC_API_KEY")) {
     return new AnthropicModelAdapter();
