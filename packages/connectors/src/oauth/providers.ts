@@ -16,6 +16,9 @@ export type OAuthConnectorId = Extract<
   | "google_tasks"
   | "google_contacts"
   | "google_drive"
+  | "notion"
+  | "spotify"
+  | "todoist"
 >;
 
 export interface OAuthStartContext {
@@ -275,6 +278,46 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
       if (!sub) throw new Error("Zendesk subdomain required");
       return `https://${sub}.zendesk.com/oauth/tokens`;
     },
+  },
+  notion: {
+    id: "notion",
+    name: "Notion",
+    clientIdEnv: "NOTION_OAUTH_CLIENT_ID",
+    clientSecretEnv: "NOTION_OAUTH_CLIENT_SECRET",
+    // Notion scopes are set on the integration, not requested in the URL.
+    scopes: [],
+    pkce: false,
+    authStyle: "basic",
+    authorizeUrl: () => "https://api.notion.com/v1/oauth/authorize",
+    tokenUrl: () => "https://api.notion.com/v1/oauth/token",
+    extraAuthParams: { owner: "user" },
+  },
+  spotify: {
+    id: "spotify",
+    name: "Spotify",
+    clientIdEnv: "SPOTIFY_OAUTH_CLIENT_ID",
+    clientSecretEnv: "SPOTIFY_OAUTH_CLIENT_SECRET",
+    scopes: [
+      "user-read-playback-state",
+      "user-modify-playback-state",
+      "user-read-currently-playing",
+      "playlist-read-private",
+    ],
+    pkce: true,
+    authStyle: "basic",
+    authorizeUrl: () => "https://accounts.spotify.com/authorize",
+    tokenUrl: () => "https://accounts.spotify.com/api/token",
+  },
+  todoist: {
+    id: "todoist",
+    name: "Todoist",
+    clientIdEnv: "TODOIST_OAUTH_CLIENT_ID",
+    clientSecretEnv: "TODOIST_OAUTH_CLIENT_SECRET",
+    scopes: ["data:read_write"],
+    pkce: false,
+    authStyle: "body",
+    authorizeUrl: () => "https://todoist.com/oauth/authorize",
+    tokenUrl: () => "https://todoist.com/oauth/access_token",
   },
 };
 

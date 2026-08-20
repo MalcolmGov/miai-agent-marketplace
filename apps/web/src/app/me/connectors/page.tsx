@@ -35,6 +35,16 @@ const META: Record<string, { name: string; desc: string; icon: string }> = {
     desc: "Lets your assistant find and read your files and documents. Read-only.",
     icon: "📁",
   },
+  notion: {
+    name: "Notion",
+    desc: "Lets your assistant search your Notion notes, pages and docs. Read-only.",
+    icon: "📝",
+  },
+  spotify: {
+    name: "Spotify",
+    desc: "Lets your assistant play, pause and tell you what's playing on Spotify.",
+    icon: "🎵",
+  },
 };
 
 function labelFor(connector: string) {

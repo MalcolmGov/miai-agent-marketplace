@@ -1392,6 +1392,174 @@ async function googleDrive(
   return { query: q, files, count: files.length, provider: "google_drive", live: true };
 }
 
+/** Pull a human title out of a Notion page/database search result. */
+function notionTitle(r: {
+  title?: Array<{ plain_text?: string }>;
+  properties?: Record<string, { type?: string; title?: Array<{ plain_text?: string }> }>;
+}): string {
+  const join = (arr?: Array<{ plain_text?: string }>) =>
+    Array.isArray(arr) ? arr.map((t) => t.plain_text ?? "").join("") : "";
+  if (Array.isArray(r.title) && r.title.length) return join(r.title) || "(untitled)";
+  for (const p of Object.values(r.properties ?? {})) {
+    if (p?.type === "title") return join(p.title) || "(untitled)";
+  }
+  return "(untitled)";
+}
+
+/** Notion — search the user's pages and databases. Read-only. */
+async function notionSearch(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const query = String(args.query ?? args.q ?? args.title ?? "").trim();
+  const res = await fetch("https://api.notion.com/v1/search", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+      "Notion-Version": "2022-06-28",
+    },
+    body: JSON.stringify({ query, page_size: 10 }),
+  });
+  const j = (await res.json()) as {
+    results?: Array<{
+      object?: string;
+      url?: string;
+      last_edited_time?: string;
+      title?: Array<{ plain_text?: string }>;
+      properties?: Record<string, { type?: string; title?: Array<{ plain_text?: string }> }>;
+    }>;
+    message?: string;
+  };
+  if (!res.ok) throw new Error(j.message ?? `Notion ${res.status}`);
+  const results = (j.results ?? []).map((r) => ({
+    title: notionTitle(r),
+    type: r.object ?? "page",
+    url: r.url,
+    edited: r.last_edited_time,
+  }));
+  return { query, results, count: results.length, provider: "notion", live: true };
+}
+
+/** Spotify playback — play a search query, pause, or report what's playing. */
+async function spotifyControl(
+  token: string,
+  tool: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const auth = { authorization: `Bearer ${token}` };
+  const intent = `${tool} ${String(args.action ?? "")}`.toLowerCase();
+  const query = String(args.query ?? args.track ?? args.song ?? args.q ?? "").trim();
+
+  const nowPlaying = async (): Promise<Record<string, unknown>> => {
+    const res = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+      headers: auth,
+    });
+    if (res.status === 204) return { playing: false, provider: "spotify", live: true };
+    const j = (await res.json()) as {
+      item?: { name?: string; artists?: Array<{ name?: string }> };
+      error?: { message?: string };
+    };
+    if (!res.ok) throw new Error(j.error?.message ?? `Spotify ${res.status}`);
+    return {
+      playing: true,
+      track: j.item?.name,
+      artist: (j.item?.artists ?? []).map((a) => a.name).join(", "),
+      provider: "spotify",
+      live: true,
+    };
+  };
+
+  if (/pause|stop/.test(intent)) {
+    const res = await fetch("https://api.spotify.com/v1/me/player/pause", {
+      method: "PUT",
+      headers: auth,
+    });
+    if (!res.ok && res.status !== 204) {
+      const j = (await res.json().catch(() => ({}))) as { error?: { message?: string } };
+      throw new Error(j.error?.message ?? `Spotify ${res.status}`);
+    }
+    return { paused: true, provider: "spotify", live: true };
+  }
+
+  if (!query) return nowPlaying();
+
+  const s = await fetch(
+    `https://api.spotify.com/v1/search?type=track&limit=1&q=${encodeURIComponent(query)}`,
+    { headers: auth },
+  );
+  const sj = (await s.json()) as {
+    tracks?: { items?: Array<{ uri?: string; name?: string; artists?: Array<{ name?: string }> }> };
+    error?: { message?: string };
+  };
+  if (!s.ok) throw new Error(sj.error?.message ?? `Spotify ${s.status}`);
+  const track = sj.tracks?.items?.[0];
+  if (!track?.uri) {
+    return { played: false, note: `No track found for "${query}".`, provider: "spotify", live: true };
+  }
+  const play = await fetch("https://api.spotify.com/v1/me/player/play", {
+    method: "PUT",
+    headers: { ...auth, "content-type": "application/json" },
+    body: JSON.stringify({ uris: [track.uri] }),
+  });
+  if (!play.ok && play.status !== 204) {
+    const j = (await play.json().catch(() => ({}))) as { error?: { message?: string } };
+    throw new Error(j.error?.message ?? `Spotify ${play.status}`);
+  }
+  return {
+    played: true,
+    track: track.name,
+    artist: (track.artists ?? []).map((a) => a.name).join(", "),
+    provider: "spotify",
+    live: true,
+  };
+}
+
+/** Todoist — add / list / complete tasks (REST v2). */
+async function todoistTasks(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const auth = { authorization: `Bearer ${token}` };
+  const action = String(args.action ?? (args.task ?? args.title ? "add" : "list")).toLowerCase();
+
+  if (action === "add" || action === "create") {
+    const content = String(args.task ?? args.title ?? args.text ?? "").trim();
+    if (!content) throw new Error("Task text required");
+    const res = await fetch("https://api.todoist.com/rest/v2/tasks", {
+      method: "POST",
+      headers: { ...auth, "content-type": "application/json" },
+      body: JSON.stringify({ content }),
+    });
+    const j = (await res.json()) as { id?: string; content?: string; error?: string };
+    if (!res.ok) throw new Error(j.error ?? `Todoist ${res.status}`);
+    return { added: true, id: j.id, task: j.content, provider: "todoist", live: true };
+  }
+  if (action === "complete" || action === "done") {
+    const id = String(args.task_id ?? args.id ?? "").trim();
+    if (!id) throw new Error("task_id required to complete a task");
+    const res = await fetch(`https://api.todoist.com/rest/v2/tasks/${id}/close`, {
+      method: "POST",
+      headers: auth,
+    });
+    if (!res.ok) throw new Error(`Todoist ${res.status}`);
+    return { completed: true, id, provider: "todoist", live: true };
+  }
+
+  const res = await fetch("https://api.todoist.com/rest/v2/tasks", { headers: auth });
+  const j = (await res.json()) as
+    | Array<{ id?: string; content?: string; due?: { date?: string } }>
+    | { error?: string };
+  if (!res.ok) throw new Error((j as { error?: string }).error ?? `Todoist ${res.status}`);
+  const tasks = (Array.isArray(j) ? j : []).map((t) => ({
+    id: t.id,
+    task: t.content,
+    due: t.due?.date,
+    done: false,
+  }));
+  return { tasks, count: tasks.length, provider: "todoist", live: true };
+}
+
 /**
  * Internal personal-assistant tools (tasks / memory / web research) bind to the `webhook`
  * connector, but on the consumer line there is no external sink configured. Rather than hard-fail
@@ -1592,6 +1760,15 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         break;
       case "google_drive":
         data = await googleDrive(token, call.args);
+        break;
+      case "notion":
+        data = await notionSearch(token, call.args);
+        break;
+      case "spotify":
+        data = await spotifyControl(token, call.tool, call.args);
+        break;
+      case "todoist":
+        data = await todoistTasks(token, call.args);
         break;
       case "m365_calendar":
         data = await m365Calendar(token, call.tool, call.args);

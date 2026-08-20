@@ -19,7 +19,10 @@ export type ConnectorId =
   | "weather"
   | "google_tasks"
   | "google_contacts"
-  | "google_drive";
+  | "google_drive"
+  | "notion"
+  | "spotify"
+  | "todoist";
 
 export interface ConnectorMeta {
   id: ConnectorId;

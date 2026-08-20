@@ -38,7 +38,15 @@ describe("consumer connector needs + allowlist", () => {
   it("derives the OAuth connectors the personal assistant needs", () => {
     assert.deepEqual(
       [...cc.consumerOAuthConnectors()].sort(),
-      ["email", "google_calendar", "google_contacts", "google_drive", "google_tasks"],
+      [
+        "email",
+        "google_calendar",
+        "google_contacts",
+        "google_drive",
+        "google_tasks",
+        "notion",
+        "spotify",
+      ],
     );
   });
 
