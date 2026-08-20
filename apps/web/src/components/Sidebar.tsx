@@ -404,18 +404,32 @@ export function Sidebar({
                 </ul>
               </div>
             ))}
-            {mode === "consumer" && consumerAppUrl ? (
-              <a
-                href={consumerAppUrl}
-                className="nav-item text-[var(--muted)]"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span className="nav-item-icon">
-                  <IconPlus />
-                </span>
-                <span className="flex-1 truncate">{t("sidebar.openConsumerApp")}</span>
-              </a>
+            {mode === "consumer" ? (
+              consumerAppUrl ? (
+                <a
+                  href={consumerAppUrl}
+                  className="nav-item text-[var(--muted)]"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span className="nav-item-icon">
+                    <IconPlus />
+                  </span>
+                  <span className="flex-1 truncate">{t("sidebar.openConsumerApp")}</span>
+                </a>
+              ) : (
+                <Link
+                  href="/assistant"
+                  onClick={onClose}
+                  className="nav-item text-[var(--muted)]"
+                  data-testid="sidebar-consumer-assistant"
+                >
+                  <span className="nav-item-icon">
+                    <IconPlus />
+                  </span>
+                  <span className="flex-1 truncate">{t("sidebar.openConsumerApp")}</span>
+                </Link>
+              )
             ) : null}
             {mode === "consumer" ? (
               <Link

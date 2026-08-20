@@ -6,7 +6,7 @@ import {
   CAPABILITY_GROUPS,
   unmetConnectorLabels,
   type CapabilityGroup,
-} from "./capabilities";
+} from "@/lib/assistant-capabilities";
 
 type Props = {
   open: boolean;

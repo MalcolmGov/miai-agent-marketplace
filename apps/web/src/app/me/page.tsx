@@ -8,7 +8,7 @@ import {
   CONNECTOR_LABEL,
   FIRST_RUN_PROMPTS,
   STARTER_PROMPTS,
-} from "./capabilities";
+} from "@/lib/assistant-capabilities";
 
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
