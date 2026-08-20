@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "namePrefix": { "value": "miai-agents" },
-    "containerImage": { "value": "ghcr.io/MalcolmGov/miai-agent-marketplace:main" },
+    "containerImage": { "value": "ghcr.io/malcolmgov/miai-agent-marketplace:main" },
     "appHost": { "value": "agents.staging.myinstantai.com" },
     "oidcIssuer": { "value": "https://login.example.com/..." },
     "oidcAudience": { "value": "miai-agents" },
@@ -13,6 +13,9 @@
     "modelGatewayUrl": { "value": "https://models.myinstantai.com/v1" },
     "modelGatewayKey": { "value": "REPLACE_ME" },
     "embedAllowedOrigins": { "value": "https://*.myinstantai.com,https://myinstantai.com" },
-    "postgresAdminPassword": { "value": "REPLACE_ME_STRONG_PASSWORD" }
+    "postgresAdminPassword": { "value": "REPLACE_ME_STRONG_PASSWORD" },
+    "oauthTokenSecretParam": { "value": "REPLACE_ME_stable_random_min_32_chars__openssl_rand_hex_24" },
+    "oauthStateSecretParam": { "value": "REPLACE_ME_stable_random_min_32_chars__openssl_rand_hex_24" },
+    "embedKeySecretParam": { "value": "REPLACE_ME_stable_random_min_32_chars__openssl_rand_hex_24" }
   }
 }

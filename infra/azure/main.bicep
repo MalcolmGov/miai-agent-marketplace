@@ -41,26 +41,34 @@ param modelGatewayKey string = ''
 @description('Comma-separated origins allowed for embed chat CORS (* = allow all)')
 param embedAllowedOrigins string = '*'
 
+// Signing secrets are REQUIRED and must be stable across deploys. They are not
+// auto-generated: uniqueString() output is only 13 chars (below the app's 16-char
+// boot-hardening floor, so the container crash-loops under OIDC) and is deterministic
+// from the resource-group id, which would make embed publishable keys forgeable.
+// Generate once with e.g. `openssl rand -hex 24` and reuse the SAME values every deploy.
 @secure()
-@description('Optional override; auto-generated when empty')
-param oauthTokenSecretParam string = ''
+@minLength(32)
+@description('OAuth token signing secret — stable random value, >=32 chars (e.g. `openssl rand -hex 24`). Reuse the same value across deploys; changing it invalidates existing embed keys and sessions.')
+param oauthTokenSecretParam string
 
 @secure()
-@description('Optional override; auto-generated when empty')
-param oauthStateSecretParam string = ''
+@minLength(32)
+@description('OAuth state signing secret — stable random value, >=32 chars (e.g. `openssl rand -hex 24`).')
+param oauthStateSecretParam string
 
 @secure()
-@description('Optional override; defaults to oauth token secret')
-param embedKeySecretParam string = ''
+@minLength(32)
+@description('Embed key HMAC secret — stable random value, >=32 chars. Changing it invalidates every tenant embed key.')
+param embedKeySecretParam string
 
 var kvName = take('${namePrefix}-kv', 24)
 var pgName = take('${namePrefix}-pg', 60)
 var caName = take('${namePrefix}-web', 32)
 var storageName = take(toLower(replace('${namePrefix}st', '-', '')), 24)
 var uamiName = take('${namePrefix}-uami', 128)
-var oauthTokenSecret = empty(oauthTokenSecretParam) ? uniqueString(resourceGroup().id, namePrefix, 'oauth') : oauthTokenSecretParam
-var oauthStateSecret = empty(oauthStateSecretParam) ? uniqueString(resourceGroup().id, namePrefix, 'state') : oauthStateSecretParam
-var embedKeySecret = empty(embedKeySecretParam) ? oauthTokenSecret : embedKeySecretParam
+var oauthTokenSecret = oauthTokenSecretParam
+var oauthStateSecret = oauthStateSecretParam
+var embedKeySecret = embedKeySecretParam
 
 // Built-in: Key Vault Secrets User
 var roleKeyVaultSecretsUser = subscriptionResourceId(

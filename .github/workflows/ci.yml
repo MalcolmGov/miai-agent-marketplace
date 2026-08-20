@@ -38,7 +38,7 @@ jobs:
       - name: Lint web
         run: pnpm --filter @miai/web lint
 
-      - name: Unit tests (wallet + connectors + web)
+      - name: Unit tests (wallet + connectors + web + runtime)
         run: pnpm test
 
       - name: Catalogue integrity (100×5 + ZA alias policy)
