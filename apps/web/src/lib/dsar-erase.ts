@@ -10,8 +10,9 @@ export type ErasureCounts = Record<string, number>;
 
 /**
  * Best-effort workspace data erasure for DSAR / offboarding.
- * Audit rows are retained append-only with in-memory detail redaction; tombstones
- * are appended by the API route before/after this call.
+ * Audit rows are retained append-only (type/agent/timestamp) but their personal-data
+ * detail is redacted in both memory and Postgres; tombstones are appended by the API
+ * route before/after this call.
  */
 export async function eraseWorkspaceData(
   workspaceId: string,
@@ -32,7 +33,7 @@ export async function eraseWorkspaceData(
   deleted.oauthTokens = await eraseOAuthTokens(workspaceId);
   deleted.workspaceMembers = await clearWorkspaceMembers(workspaceId);
   deleted.customRequests = await deleteCustomRequestsForWorkspace(workspaceId);
-  deleted.auditDetailsRedacted = redactWorkspaceAuditDetails(workspaceId);
+  deleted.auditDetailsRedacted = await redactWorkspaceAuditDetails(workspaceId);
 
   return { deleted };
 }
