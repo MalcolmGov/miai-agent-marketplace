@@ -7,10 +7,15 @@ import { streamChat } from "@/lib/chat-stream-client";
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
 
+// Starter prompts — one per core capability (inbox, calendar, email drafting, reminders,
+// tasks, memory) so a first-time user can see what the assistant can do at a glance.
 const SUGGESTIONS = [
   "Catch me up on my inbox",
   "What's on my calendar today?",
+  "Draft a reply to my latest email",
   "Remind me to call the pharmacy at 5",
+  "Add 'pick up dry cleaning' to my to-do list",
+  "Remember that I prefer morning meetings",
 ];
 
 const CONNECTOR_LABEL: Record<string, string> = {
