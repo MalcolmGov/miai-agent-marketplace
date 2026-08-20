@@ -29,7 +29,7 @@
       "stt": "whisper"
     },
     "model": {
-      "primary": "gpt-4o-mini",
+      "primary": "gpt-4o",
       "fallback": "gpt-4o-mini",
       "temperature": 0.3,
       "max_output_tokens": 900
