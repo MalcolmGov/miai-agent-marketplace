@@ -19,6 +19,7 @@ export type OAuthConnectorId = Extract<
   | "notion"
   | "spotify"
   | "todoist"
+  | "youtube"
 >;
 
 export interface OAuthStartContext {
@@ -320,6 +321,20 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     authStyle: "body",
     authorizeUrl: () => "https://todoist.com/oauth/authorize",
     tokenUrl: () => "https://todoist.com/oauth/access_token",
+  },
+  youtube: {
+    id: "youtube",
+    name: "YouTube",
+    clientIdEnv: "GOOGLE_OAUTH_CLIENT_ID",
+    clientSecretEnv: "GOOGLE_OAUTH_CLIENT_SECRET",
+    // Reuses the Google OAuth app; the Google Cloud project needs the YouTube Data API v3
+    // enabled and this scope on the consent screen.
+    scopes: ["https://www.googleapis.com/auth/youtube.readonly", "openid", "email"],
+    pkce: true,
+    authStyle: "body",
+    authorizeUrl: () => "https://accounts.google.com/o/oauth2/v2/auth",
+    tokenUrl: () => "https://oauth2.googleapis.com/token",
+    extraAuthParams: { access_type: "offline", prompt: "consent" },
   },
 };
 

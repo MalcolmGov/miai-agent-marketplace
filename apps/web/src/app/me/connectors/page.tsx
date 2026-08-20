@@ -36,6 +36,11 @@ const META: Record<string, { name: string; desc: string; icon: string }> = {
     desc: "Lets your assistant find and read your files and documents. Read-only.",
     icon: "📁",
   },
+  youtube: {
+    name: "YouTube",
+    desc: "Lets your assistant search YouTube for videos, tutorials and clips. Read-only.",
+    icon: "▶️",
+  },
   notion: {
     name: "Notion",
     desc: "Lets your assistant search your Notion notes, pages and docs. Read-only.",

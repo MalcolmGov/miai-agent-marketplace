@@ -46,6 +46,7 @@ describe("consumer connector needs + allowlist", () => {
         "google_tasks",
         "notion",
         "spotify",
+        "youtube",
       ],
     );
   });
