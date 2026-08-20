@@ -858,6 +858,87 @@ async function sendEmail(
   return { sent: true, to, id: json.id, provider: "email", live: true };
 }
 
+/**
+ * Read the user's recent inbox for a triage summary. Uses the gmail.metadata scope the email
+ * connector already requests (sender / subject / date / labels — no message bodies), so it works
+ * with the existing OAuth grant and never needs a reconnect. The metadata scope forbids the `q`
+ * search parameter, so we list by label and filter/flag client-side.
+ */
+async function gmailTriage(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const max = Math.max(1, Math.min(25, Number(args.max ?? args.limit ?? args.count ?? 12) || 12));
+
+  const listUrl = new URL("https://gmail.googleapis.com/gmail/v1/users/me/messages");
+  listUrl.searchParams.set("labelIds", "INBOX");
+  listUrl.searchParams.set("maxResults", String(max));
+  const listRes = await fetch(listUrl, { headers: { authorization: `Bearer ${token}` } });
+  const listJson = (await listRes.json()) as {
+    messages?: Array<{ id: string }>;
+    error?: { message?: string };
+  };
+  if (!listRes.ok) throw new Error(listJson.error?.message ?? `Gmail ${listRes.status}`);
+
+  const ids = (listJson.messages ?? []).map((m) => m.id);
+  if (ids.length === 0) {
+    return { provider: "email", live: true, count: 0, unread: 0, today: 0, messages: [], window: "recent inbox" };
+  }
+
+  const now = Date.now();
+  const header = (
+    headers: Array<{ name: string; value: string }> | undefined,
+    name: string,
+  ): string => headers?.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? "";
+
+  const details = await Promise.all(
+    ids.map(async (id) => {
+      const getUrl = new URL(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}`);
+      getUrl.searchParams.set("format", "metadata");
+      for (const h of ["From", "Subject", "Date"]) getUrl.searchParams.append("metadataHeaders", h);
+      const r = await fetch(getUrl, { headers: { authorization: `Bearer ${token}` } });
+      if (!r.ok) return null;
+      const j = (await r.json()) as {
+        internalDate?: string;
+        labelIds?: string[];
+        payload?: { headers?: Array<{ name: string; value: string }> };
+      };
+      const ts = Number(j.internalDate ?? 0);
+      const labels = j.labelIds ?? [];
+      return {
+        from: header(j.payload?.headers, "From"),
+        subject: header(j.payload?.headers, "Subject") || "(no subject)",
+        date: ts ? new Date(ts).toISOString() : header(j.payload?.headers, "Date"),
+        ageHours: ts ? Math.round((now - ts) / 3.6e6) : null,
+        today: ts ? new Date(ts).toDateString() === new Date(now).toDateString() : false,
+        unread: labels.includes("UNREAD"),
+        important: labels.includes("IMPORTANT") || labels.includes("STARRED"),
+      };
+    }),
+  );
+
+  const messages = details.filter((m): m is NonNullable<typeof m> => m !== null);
+  // Surface the most actionable first: important, then unread, then most recent.
+  messages.sort(
+    (a, b) =>
+      Number(b.important) - Number(a.important) ||
+      Number(b.unread) - Number(a.unread) ||
+      String(b.date).localeCompare(String(a.date)),
+  );
+
+  return {
+    provider: "email",
+    live: true,
+    count: messages.length,
+    unread: messages.filter((m) => m.unread).length,
+    important: messages.filter((m) => m.important).length,
+    today: messages.filter((m) => m.today).length,
+    messages,
+    note: "Header-level inbox view (sender, subject, time). Message bodies aren't available with the current permission.",
+    window: "recent inbox",
+  };
+}
+
 async function teamsHandoff(token: string, args: Record<string, unknown>): Promise<Record<string, unknown>> {
   const teamId = process.env.TEAMS_TEAM_ID ?? "";
   const channelId = process.env.TEAMS_CHANNEL_ID ?? "";
@@ -1165,9 +1246,27 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
       case "m365_calendar":
         data = await m365Calendar(token, call.tool, call.args);
         break;
-      case "email":
-        data = await sendEmail(token, call.args, meta);
+      case "email": {
+        const emailTool = call.tool.toLowerCase();
+        if (/triage|inbox|read|check|summar/.test(emailTool)) {
+          // Read intent (e.g. triage_inbox) — summarise the inbox, never send.
+          data = await gmailTriage(token, call.args);
+        } else if (/draft/.test(emailTool)) {
+          // Draft intent — return the composed message for the user to approve; do NOT send.
+          data = {
+            drafted: true,
+            to: String(call.args.to ?? call.args.contact ?? ""),
+            subject: String(call.args.subject ?? ""),
+            body: String(call.args.body ?? call.args.message ?? call.args.summary ?? ""),
+            provider: "email",
+            live: true,
+            note: "Draft prepared — it has NOT been sent. Confirm to send it.",
+          };
+        } else {
+          data = await sendEmail(token, call.args, meta);
+        }
         break;
+      }
       case "teams":
         data = await teamsHandoff(token, call.args);
         break;
