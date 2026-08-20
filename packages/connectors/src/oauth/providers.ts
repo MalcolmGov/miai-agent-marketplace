@@ -78,11 +78,12 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
     name: "Email (Gmail / Microsoft)",
     clientIdEnv: "GOOGLE_OAUTH_CLIENT_ID", // overridden for microsoft at runtime
     clientSecretEnv: "GOOGLE_OAUTH_CLIENT_SECRET",
-    // gmail.send = live send tool; gmail.metadata = users/me/profile health probe
-    // (send alone cannot call getProfile — probe used to 422 insufficient scopes).
+    // gmail.send = live send tool; gmail.readonly = inbox triage (list/search + snippet
+    // previews) and covers the users/me/profile health probe. readonly supersedes the older
+    // gmail.metadata grant; existing metadata-only tokens still work via gmailTriage's fallback.
     scopes: [
       "https://www.googleapis.com/auth/gmail.send",
-      "https://www.googleapis.com/auth/gmail.metadata",
+      "https://www.googleapis.com/auth/gmail.readonly",
       "openid",
       "email",
     ],
