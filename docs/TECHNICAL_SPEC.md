@@ -270,8 +270,8 @@ Webhook, MCP, WhatsApp Cloud API, WooCommerce, Stripe — credentials via Action
 
 | | Count |
 |---|---:|
-| Families | 55 |
-| Markets | us, eu, africa, asia |
+| Families | 100 |
+| Markets | us, eu, africa, asia, oceania |
 | Agents | 500 (100×5) |
 | Catalogue-ready gate | 500/500 (commercial bar) |
 

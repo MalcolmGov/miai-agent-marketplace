@@ -38,4 +38,4 @@ Completed after P0 so cutover week is runbook-driven, not ad hoc.
 | App Insights depth | `trackException` / `trackDependency` + chat/oauth hooks |
 | Workflow reply language | `wf()` + `replyLanguage` through runTurn / embed |
 | Studio UI i18n | create / request / studio / knowledge / actions |
-| Full catalogue evals | **100%** runtime (`pnpm eval:suite` — 3848/3848); `pnpm eval:smoke` green; heal via `pnpm heal:evals` |
+| Catalogue eval contract | `pnpm eval:suite` runs the **MOCK** runtime — a package-integrity / self-consistency check (~95%), **not** model quality. Real-model evals are `tools/run_evals.py` in the `miai-agents` repo. |
