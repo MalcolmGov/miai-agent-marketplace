@@ -1721,7 +1721,7 @@ function handleInternalAssistantTool(call: ConnectorCall): ConnectorResult | nul
     return wrap({
       remembered: Boolean(fact),
       fact,
-      note: "Noted — I'll keep this in mind for our conversation.",
+      note: "Noted — I'll remember this.",
     });
   }
   if (n.includes("task")) {
