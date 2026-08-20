@@ -7,7 +7,7 @@ Please report security issues **privately** — do not open a public GitHub issu
 | Channel | Use when |
 |---|---|
 | **Email** | [security@myinstantai.com](mailto:security@myinstantai.com) |
-| **GitHub** | [Private security advisory](https://github.com/myinstantai/miai-agent-marketplace/security/advisories/new) on this repository (preferred if you already have repo access) |
+| **GitHub** | [Private security advisory](https://github.com/MalcolmGov/miai-agent-marketplace/security/advisories/new) on this repository (preferred if you already have repo access) |
 
 Include: affected component, reproduction steps, impact assessment, and any suggested fix. We appreciate responsible disclosure.
 

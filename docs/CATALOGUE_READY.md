@@ -32,9 +32,10 @@ Those do **not** block selling the catalogue SKU list; they are Week-1 integrati
 pnpm polish:catalog
 pnpm generate:presets
 pnpm build:packages
-pnpm catalog:ready    # must report 271/271 and 100/100 go-live filter
+pnpm catalog:ready    # catalogue-ready gate: 551/551 and 100/100 go-live filter
 pnpm eval:smoke
-pnpm eval:suite       # full catalogue — expect 100% runtime (3848/3848)
+pnpm eval:suite       # MOCK-runtime contract check (package integrity ~95%), NOT model quality
+                      # real-model evals live in the miai-agents repo: tools/run_evals.py
 pnpm test:wallet
 pnpm validate:azure   # requires az or bicep CLI
 # App channel: Studio → Install → App, or open /app/v1?key=… (see docs/APP_CHANNEL.md)
