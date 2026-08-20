@@ -167,15 +167,43 @@ export type ModelCompleteInput = {
   fallbackModel?: string;
 };
 
+/** Provider-reported token usage for a single model call (used for accurate wallet metering). */
+export type TokenUsage = {
+  promptTokens?: number;
+  completionTokens?: number;
+  totalTokens?: number;
+};
+
 export type ModelCompleteResult = {
   content: string;
   toolCall?: { name: string; args: Record<string, unknown> };
+  /** Present only for live providers that report usage; absent for the mock model. */
+  usage?: TokenUsage;
 };
 
 /** Incremental token/text from the model (OpenAI-style streaming). */
 export type StreamChunk =
   | { type: "delta"; text: string }
-  | { type: "done"; content: string; toolCall?: ModelCompleteResult["toolCall"] };
+  | {
+      type: "done";
+      content: string;
+      toolCall?: ModelCompleteResult["toolCall"];
+      usage?: TokenUsage;
+    };
+
+/** Normalize an OpenAI-compatible `usage` block to TokenUsage (undefined when absent). */
+function mapUsage(u?: {
+  prompt_tokens?: number;
+  completion_tokens?: number;
+  total_tokens?: number;
+}): TokenUsage | undefined {
+  if (!u || (u.prompt_tokens == null && u.completion_tokens == null && u.total_tokens == null)) {
+    return undefined;
+  }
+  const totalTokens =
+    (u.total_tokens ?? (u.prompt_tokens ?? 0) + (u.completion_tokens ?? 0)) || undefined;
+  return { promptTokens: u.prompt_tokens, completionTokens: u.completion_tokens, totalTokens };
+}
 
 export interface ModelAdapter {
   complete(input: ModelCompleteInput): Promise<ModelCompleteResult>;
@@ -200,7 +228,7 @@ async function* streamFromComplete(
     }
     if (buf) yield { type: "delta", text: buf };
   }
-  yield { type: "done", content: result.content, toolCall: result.toolCall };
+  yield { type: "done", content: result.content, toolCall: result.toolCall, usage: result.usage };
 }
 
 async function* iterateModelStream(
@@ -222,21 +250,18 @@ async function modelAnswer(
 ): Promise<ModelCompleteResult> {
   let content = "";
   let toolCall: ModelCompleteResult["toolCall"];
-  let sawDone = false;
+  let usage: TokenUsage | undefined;
   for await (const chunk of iterateModelStream(model, input)) {
     if (chunk.type === "delta") {
       content += chunk.text;
       onDelta?.(chunk.text);
     } else {
-      sawDone = true;
       content = chunk.content || content;
       toolCall = chunk.toolCall;
+      usage = chunk.usage;
     }
   }
-  if (!sawDone) {
-    return { content: content || "…", toolCall };
-  }
-  return { content: content || "…", toolCall };
+  return { content: content || "…", toolCall, usage };
 }
 
 const META_CHUNK =
@@ -1796,6 +1821,7 @@ async function openAiCompatibleComplete(
             tool_calls?: Array<{ function: { name: string; arguments: string } }>;
           };
         }>;
+        usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number };
         error?: { message?: string };
       };
       if (!res.ok) {
@@ -1804,6 +1830,7 @@ async function openAiCompatibleComplete(
         }
         throw new Error(json.error?.message ?? `Model API ${res.status}`);
       }
+      const usage = mapUsage(json.usage);
       const msg = json.choices?.[0]?.message;
       const tc = msg?.tool_calls?.[0];
       if (tc) {
@@ -1813,9 +1840,9 @@ async function openAiCompatibleComplete(
         } catch {
           /* tolerate malformed args */
         }
-        return { content: (msg?.content ?? "").trim(), toolCall: { name: tc.function.name, args } };
+        return { content: (msg?.content ?? "").trim(), toolCall: { name: tc.function.name, args }, usage };
       }
-      return { content: (msg?.content ?? "").trim() || "…" };
+      return { content: (msg?.content ?? "").trim() || "…", usage };
     } catch {
       /* try next candidate */
     }
@@ -1845,6 +1872,7 @@ async function* openAiCompatibleStream(
         temperature: input.temperature ?? 0.4,
         max_tokens: input.maxOutputTokens ?? 500,
         stream: true,
+        stream_options: { include_usage: true },
         messages: openAiMessagesPayload(input),
         tools: openAiToolsPayload(input.tools),
       }),
@@ -1863,7 +1891,7 @@ async function* openAiCompatibleStream(
     if (fallback.content && !fallback.toolCall) {
       yield { type: "delta", text: fallback.content };
     }
-    yield { type: "done", content: fallback.content, toolCall: fallback.toolCall };
+    yield { type: "done", content: fallback.content, toolCall: fallback.toolCall, usage: fallback.usage };
     return;
   }
 
@@ -1873,6 +1901,7 @@ async function* openAiCompatibleStream(
   let content = "";
   let toolName = "";
   let toolArgs = "";
+  let usage: TokenUsage | undefined;
 
   while (true) {
     const { done, value } = await reader.read();
@@ -1896,7 +1925,11 @@ async function* openAiCompatibleStream(
               }>;
             };
           }>;
+          usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number };
         };
+        // With stream_options.include_usage the provider sends a final chunk carrying usage
+        // (and an empty choices array).
+        if (json.usage) usage = mapUsage(json.usage) ?? usage;
         const delta = json.choices?.[0]?.delta;
         if (!delta) continue;
         if (typeof delta.content === "string" && delta.content) {
@@ -1919,10 +1952,10 @@ async function* openAiCompatibleStream(
     } catch {
       /* tolerate partial args */
     }
-    yield { type: "done", content: content.trim(), toolCall: { name: toolName, args } };
+    yield { type: "done", content: content.trim(), toolCall: { name: toolName, args }, usage };
     return;
   }
-  yield { type: "done", content: content.trim() || "…" };
+  yield { type: "done", content: content.trim() || "…", usage };
 }
 
 /** Live OpenAI adapter (MIAI_MODEL_MODE=openai + OPENAI_API_KEY). */
@@ -2521,6 +2554,9 @@ export async function runTurn(
   // Shared hard safety for live + mock (mock also checks inside MockModelAdapter).
   const forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools);
   let completion: ModelCompleteResult;
+  // Sum provider-reported tokens across this turn's model calls (initial + tool-round follow-ups)
+  // for accurate wallet metering; stays 0 for the mock model / providers that omit usage.
+  let turnUsageTotal = 0;
   if (forced) {
     completion = forced;
   } else {
@@ -2529,6 +2565,7 @@ export async function runTurn(
       { ...modelInputBase, messages, tools: req.pkg.tools },
       onDelta,
     );
+    turnUsageTotal += completion.usage?.totalTokens ?? 0;
   }
 
   for (let toolRound = 0; completion.toolCall && toolRound < maxToolRounds; toolRound++) {
@@ -2594,6 +2631,7 @@ export async function runTurn(
         },
         onDelta,
       );
+      turnUsageTotal += follow.usage?.totalTokens ?? 0;
       completion = {
         content:
           follow.content.trim() ||
@@ -2667,6 +2705,7 @@ export async function runTurn(
         },
         onDelta,
       );
+      turnUsageTotal += follow.usage?.totalTokens ?? 0;
       const text = follow.content.trim();
       if (follow.toolCall && allowMoreTools) {
         completion = follow;
@@ -2692,11 +2731,16 @@ export async function runTurn(
 
   messages.push({ role: "assistant", content: completion.content });
 
-  const tokens = estimateTurnTokens(
-    req.model,
-    system.length + req.userMessage.length,
-    completion.content.length,
-  );
+  // Prefer provider-reported usage (summed across the turn's model calls incl. tool rounds);
+  // fall back to the character estimate for the mock model or providers that omit usage.
+  const tokens =
+    turnUsageTotal > 0
+      ? turnUsageTotal
+      : estimateTurnTokens(
+          req.model,
+          system.length + req.userMessage.length,
+          completion.content.length,
+        );
   const debit = skipDebit
     ? { ok: true as const, balance: bal.tokens, paused: false }
     : await wallet.debit({
