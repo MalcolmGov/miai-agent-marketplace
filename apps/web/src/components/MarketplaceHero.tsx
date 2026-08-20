@@ -39,11 +39,11 @@ export function MarketplaceHero({
           MyInstant<span className="text-[var(--accent-bright)]">AI</span>
         </p>
 
-        <h1 className="mt-3 max-w-2xl text-lg font-medium leading-snug tracking-tight text-[var(--muted)] sm:text-2xl">
+        <h1 className="mt-3 max-w-2xl text-xl font-medium leading-snug tracking-tight text-[var(--card-body)] sm:text-2xl">
           {t("hero.headline")}
         </h1>
 
-        <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--muted)] sm:text-[15px]">
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--card-body)] sm:text-[15px]">
           {t("hero.lede", { count: agentsLive })}
         </p>
 
@@ -56,7 +56,7 @@ export function MarketplaceHero({
           </Link>
         </div>
 
-        <div className="mt-5 space-y-2 text-xs text-[var(--muted-dim)] sm:mt-6">
+        <div className="mt-5 space-y-2 text-xs text-[var(--card-body)] sm:mt-6">
           <p className="font-medium text-[var(--muted)]">{t("hero.howItWorks")}</p>
           <ol className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-2 sm:gap-y-1">
             {steps.map((step, i) => (
@@ -82,7 +82,7 @@ export function MarketplaceCTA() {
         <h2 className="display text-lg font-semibold tracking-tight text-[var(--text)] sm:text-xl">
           {t("cta.title")}
         </h2>
-        <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--muted)]">{t("cta.body")}</p>
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--card-body)]">{t("cta.body")}</p>
       </div>
       <div className="flex flex-wrap items-center gap-2.5">
         <Link href="/create" className="btn btn-ghost !text-sm">

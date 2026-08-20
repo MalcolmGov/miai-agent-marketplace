@@ -236,12 +236,7 @@ export default function AssistantHome() {
           <p className="mt-3 text-xs font-medium text-[var(--muted)]">Try one of these to start:</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {FIRST_RUN_PROMPTS.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => runPrompt(s)}
-                className="chip cursor-pointer hover:opacity-80"
-              >
+              <button key={s} type="button" onClick={() => runPrompt(s)} className="suggestion">
                 {s}
               </button>
             ))}
@@ -332,14 +327,9 @@ export default function AssistantHome() {
         ) : null}
 
         {showSugs ? (
-          <div className="flex flex-wrap gap-2 px-4 pb-1">
+          <div className="flex flex-wrap gap-2 px-4 pb-2 pt-1">
             {STARTER_PROMPTS.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => submit(s)}
-                className="chip cursor-pointer hover:opacity-80"
-              >
+              <button key={s} type="button" onClick={() => submit(s)} className="suggestion">
                 {s}
               </button>
             ))}

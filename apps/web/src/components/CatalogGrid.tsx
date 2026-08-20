@@ -826,7 +826,7 @@ function AgentDetailModal({
                   <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
                     {t("catalog.willNot")}
                   </h3>
-                  <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--muted)]">
+                  <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--card-body)]">
                     {caps.willNot.map((line) => (
                       <li key={line}>{line}</li>
                     ))}
@@ -856,7 +856,7 @@ function AgentDetailModal({
                           </span>
                         </div>
                         {tool.description ? (
-                          <p className="mt-1 text-[13px] leading-snug text-[var(--muted)]">
+                          <p className="mt-1 text-[13px] leading-snug text-[var(--card-body)]">
                             {tool.description}
                           </p>
                         ) : null}

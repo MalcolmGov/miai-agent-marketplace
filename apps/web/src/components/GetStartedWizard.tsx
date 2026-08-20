@@ -209,10 +209,10 @@ export function GetStartedWizard() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
           MyInstantAI Agents
         </p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[var(--text)]">
+        <h1 className="display mt-2 text-3xl font-semibold tracking-tight text-[var(--text)]">
           Set up your business workspace
         </h1>
-        <p className="mt-2 text-sm text-[var(--muted)]">
+        <p className="mt-2 text-sm leading-relaxed text-[var(--card-body)]">
           Separate from consumer token signup. Rent pre-built agents, configure knowledge, and go
           live on web or app.
         </p>
@@ -225,10 +225,20 @@ export function GetStartedWizard() {
               You&apos;ll create a workspace, pick your market, and land on the agent catalogue with
               a short checklist — not a personal token wallet flow.
             </p>
-            <ul className="space-y-2 text-sm text-[var(--muted)]">
-              <li>— Browse 500 agents across 5 markets</li>
-              <li>— Try in sandbox, then rent and embed</li>
-              <li>— Invite teammates from Workspace</li>
+            <ul className="space-y-2.5 text-sm text-[var(--card-body)]">
+              {[
+                "Browse 500 agents across 5 markets",
+                "Try in sandbox, then rent and embed",
+                "Invite teammates from Workspace",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5">
+                  <span
+                    aria-hidden
+                    className="mt-[0.4rem] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
             <button
               type="button"
@@ -328,21 +338,19 @@ export function GetStartedWizard() {
 
         {step === "intent" ? (
           <>
-            <p className="text-sm text-[var(--muted)]">What should your first agent help with?</p>
-            <div className="grid gap-2" data-testid="onboarding-intent">
+            <p className="text-sm text-[var(--text)]">What should your first agent help with?</p>
+            <div className="grid gap-2.5" data-testid="onboarding-intent">
               {INTENTS.map((item) => (
                 <button
                   key={item.id}
                   type="button"
-                  className={`rounded-lg border px-3 py-2.5 text-left text-sm transition ${
-                    intent === item.id
-                      ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)]"
-                      : "border-[var(--line)] bg-[var(--bg-elev)] hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)]"
+                  className={`select-card px-3.5 py-3 text-left text-sm ${
+                    intent === item.id ? "select-card-active" : ""
                   }`}
                   onClick={() => setIntent(item.id)}
                 >
                   <span className="font-medium text-[var(--text)]">{item.label}</span>
-                  <span className="mt-0.5 block text-xs text-[var(--muted)]">{item.hint}</span>
+                  <span className="mt-0.5 block text-xs text-[var(--card-meta)]">{item.hint}</span>
                 </button>
               ))}
             </div>
