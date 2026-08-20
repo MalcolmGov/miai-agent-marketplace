@@ -1,6 +1,6 @@
-import { resolveAuth, AuthError } from "@/lib/auth";
 import { runConsumerTurn, runConsumerTurnStream } from "@/lib/consumer-turn";
-import { walletIdForConsumer, DEFAULT_CONSUMER_AGENT } from "@/lib/consumer";
+import { DEFAULT_CONSUMER_AGENT } from "@/lib/consumer";
+import { requireConsumer } from "@/lib/consumer-auth";
 import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
 import { consumerChatBodySchema, formatZodError } from "@/lib/api-schemas";
 import { rateLimit } from "@/lib/security";
@@ -15,14 +15,9 @@ export const dynamic = "force-dynamic";
  *  with live model token deltas; pass Accept: application/json for a one-shot reply. */
 
 export async function POST(req: Request) {
-  let auth;
-  try {
-    auth = await resolveAuth(req);
-  } catch (e) {
-    if (e instanceof AuthError) return apiErrorFromRequest(req, e.status, e.message);
-    throw e;
-  }
-  const walletId = walletIdForConsumer(auth);
+  const c = await requireConsumer(req);
+  if (c instanceof Response) return c;
+  const walletId = c.consumerId;
 
   let raw: unknown;
   try {
@@ -47,7 +42,7 @@ export async function POST(req: Request) {
   const wantJson = accept.includes("application/json") && !accept.includes("text/event-stream");
 
   const turnInput = {
-    consumerId: auth.userId,
+    consumerId: c.consumerId,
     walletId,
     agentId,
     message: body.message.trim(),
