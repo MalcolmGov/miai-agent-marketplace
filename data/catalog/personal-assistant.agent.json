@@ -344,7 +344,7 @@
     },
     {
       "name": "control_music",
-      "description": "Control the user's Spotify: play a song, artist or playlist, pause, or say what's currently playing. Needs an active Spotify device.",
+      "description": "Control the user's Spotify playback: play or resume music, play a specific song or artist, pause, or say what's currently playing. Map 'open Spotify', 'start Spotify' and 'resume' to action 'play'. This controls Spotify on a device that's already open — it cannot launch the app, so if there's no active device, tell the user to open Spotify on a phone, computer or the web player first.",
       "parameters": {
         "type": "object",
         "properties": {

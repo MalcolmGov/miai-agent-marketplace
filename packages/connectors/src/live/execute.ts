@@ -1455,11 +1455,37 @@ async function spotifyControl(
   const intent = `${tool} ${String(args.action ?? "")}`.toLowerCase();
   const query = String(args.query ?? args.track ?? args.song ?? args.q ?? "").trim();
 
+  // Spotify's API can only control an already-running device — it cannot launch the app. Turn the
+  // "no active device" case into a clear message instead of a hard failure.
+  const noDevice = (extra: Record<string, unknown> = {}): Record<string, unknown> => ({
+    played: false,
+    reason: "no_active_device",
+    note: "No active Spotify device — open Spotify on your phone, computer or the web player, then try again.",
+    provider: "spotify",
+    live: true,
+    ...extra,
+  });
+  const putPlayer = async (path: string, body?: unknown) => {
+    const res = await fetch(`https://api.spotify.com/v1/me/player/${path}`, {
+      method: "PUT",
+      headers: body ? { ...auth, "content-type": "application/json" } : auth,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (res.ok || res.status === 204) return { ok: true, noDevice: false };
+    const j = (await res.json().catch(() => ({}))) as { error?: { reason?: string; message?: string } };
+    if (res.status === 404 || res.status === 202 || j.error?.reason === "NO_ACTIVE_DEVICE") {
+      return { ok: false, noDevice: true };
+    }
+    throw new Error(j.error?.message ?? `Spotify ${res.status}`);
+  };
+
   const nowPlaying = async (): Promise<Record<string, unknown>> => {
     const res = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
       headers: auth,
     });
-    if (res.status === 204) return { playing: false, provider: "spotify", live: true };
+    if (res.status === 204) {
+      return { playing: false, note: "Nothing is playing right now.", provider: "spotify", live: true };
+    }
     const j = (await res.json()) as {
       item?: { name?: string; artists?: Array<{ name?: string }> };
       error?: { message?: string };
@@ -1475,18 +1501,18 @@ async function spotifyControl(
   };
 
   if (/pause|stop/.test(intent)) {
-    const res = await fetch("https://api.spotify.com/v1/me/player/pause", {
-      method: "PUT",
-      headers: auth,
-    });
-    if (!res.ok && res.status !== 204) {
-      const j = (await res.json().catch(() => ({}))) as { error?: { message?: string } };
-      throw new Error(j.error?.message ?? `Spotify ${res.status}`);
-    }
-    return { paused: true, provider: "spotify", live: true };
+    const r = await putPlayer("pause");
+    return r.noDevice ? noDevice() : { paused: true, provider: "spotify", live: true };
   }
 
-  if (!query) return nowPlaying();
+  // No track named: "what's playing / current" reports; "play / resume / open / start" resumes.
+  if (!query) {
+    if (/current|playing|what|now/.test(intent) && !/play|resume|open|start|go/.test(intent)) {
+      return nowPlaying();
+    }
+    const r = await putPlayer("play");
+    return r.noDevice ? noDevice() : { resumed: true, provider: "spotify", live: true };
+  }
 
   const s = await fetch(
     `https://api.spotify.com/v1/search?type=track&limit=1&q=${encodeURIComponent(query)}`,
@@ -1501,22 +1527,11 @@ async function spotifyControl(
   if (!track?.uri) {
     return { played: false, note: `No track found for "${query}".`, provider: "spotify", live: true };
   }
-  const play = await fetch("https://api.spotify.com/v1/me/player/play", {
-    method: "PUT",
-    headers: { ...auth, "content-type": "application/json" },
-    body: JSON.stringify({ uris: [track.uri] }),
-  });
-  if (!play.ok && play.status !== 204) {
-    const j = (await play.json().catch(() => ({}))) as { error?: { message?: string } };
-    throw new Error(j.error?.message ?? `Spotify ${play.status}`);
-  }
-  return {
-    played: true,
-    track: track.name,
-    artist: (track.artists ?? []).map((a) => a.name).join(", "),
-    provider: "spotify",
-    live: true,
-  };
+  const artist = (track.artists ?? []).map((a) => a.name).join(", ");
+  const r = await putPlayer("play", { uris: [track.uri] });
+  return r.noDevice
+    ? noDevice({ wanted: track.name, artist })
+    : { played: true, track: track.name, artist, provider: "spotify", live: true };
 }
 
 /** Todoist — add / list / complete tasks (REST v2). */
