@@ -28,15 +28,19 @@ export async function GET() {
         ? process.env.MIAI_MODEL_GATEWAY_URL
           ? "set"
           : "missing"
-        : modelMode === "openai"
-          ? process.env.OPENAI_API_KEY
+        : modelMode === "azure"
+          ? process.env.AZURE_OPENAI_API_KEY && process.env.AZURE_OPENAI_ENDPOINT
             ? "set"
             : "missing"
-          : modelMode === "anthropic" || modelMode === "claude"
-            ? process.env.ANTHROPIC_API_KEY
+          : modelMode === "openai"
+            ? process.env.OPENAI_API_KEY
               ? "set"
               : "missing"
-            : "n/a",
+            : modelMode === "anthropic" || modelMode === "claude"
+              ? process.env.ANTHROPIC_API_KEY
+                ? "set"
+                : "missing"
+              : "n/a",
   };
 
   if (!hardening.ok) {
