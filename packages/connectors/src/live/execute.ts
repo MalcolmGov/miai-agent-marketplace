@@ -1402,9 +1402,15 @@ async function googleDrive(
 }
 
 /** YouTube — search for videos on a topic (read-only). */
+/**
+ * YouTube search (public data). Prefers a server-side API key (YOUTUBE_API_KEY) — public search
+ * needs no user auth and this avoids per-user scope/enablement pitfalls — and falls back to the
+ * user's OAuth token. On the common "API not enabled" / "needs reconnect" failures it returns an
+ * actionable note instead of throwing, so the assistant can tell the user exactly what to fix.
+ */
 async function youtubeSearch(
-  token: string,
   args: Record<string, unknown>,
+  auth: { apiKey?: string; token?: string },
 ): Promise<Record<string, unknown>> {
   const q = String(args.query ?? args.q ?? args.topic ?? "").trim();
   const max = Math.max(1, Math.min(10, Number(args.max ?? args.limit ?? 5) || 5));
@@ -1413,15 +1419,39 @@ async function youtubeSearch(
   url.searchParams.set("type", "video");
   url.searchParams.set("q", q);
   url.searchParams.set("maxResults", String(max));
-  const res = await fetch(url, { headers: { authorization: `Bearer ${token}` } });
+  if (auth.apiKey) url.searchParams.set("key", auth.apiKey);
+  const headers: Record<string, string> = auth.apiKey
+    ? {}
+    : { authorization: `Bearer ${auth.token ?? ""}` };
+
+  const res = await fetch(url, { headers });
   const j = (await res.json()) as {
     items?: Array<{
       id?: { videoId?: string };
       snippet?: { title?: string; channelTitle?: string; publishedAt?: string; description?: string };
     }>;
-    error?: { message?: string };
+    error?: { message?: string; errors?: Array<{ reason?: string }> };
   };
-  if (!res.ok) throw new Error(j.error?.message ?? `YouTube ${res.status}`);
+  if (!res.ok) {
+    const msg = j.error?.message ?? `YouTube ${res.status}`;
+    const reason = j.error?.errors?.[0]?.reason ?? "";
+    const notEnabled = /accessNotConfigured|SERVICE_DISABLED|has not been used|is disabled/i.test(
+      `${msg} ${reason}`,
+    );
+    if (res.status === 403 && notEnabled) {
+      return {
+        query: q, videos: [], count: 0, available: false, provider: "youtube", live: false,
+        note: "YouTube search isn't switched on yet — enable the YouTube Data API v3 in the Google Cloud project, or set a YOUTUBE_API_KEY.",
+      };
+    }
+    if (res.status === 401 || res.status === 403) {
+      return {
+        query: q, videos: [], count: 0, available: false, provider: "youtube", live: false,
+        note: "I need YouTube reconnected before I can search it — reconnect YouTube under Accounts.",
+      };
+    }
+    throw new Error(msg);
+  }
   const videos = (j.items ?? [])
     .filter((it) => it.id?.videoId)
     .map((it) => ({
@@ -1862,6 +1892,15 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         stubbed: true,
       };
     }
+    if (connector === "youtube" && process.env.YOUTUBE_API_KEY) {
+      // Public search needs no user auth — a server-side key works for everyone without OAuth.
+      return {
+        ok: true,
+        data: await youtubeSearch(call.args, { apiKey: process.env.YOUTUBE_API_KEY }),
+        connector,
+        stubbed: false,
+      };
+    }
 
     const stored =
       (await getValidAccessToken(call.workspaceId, connector)) ??
@@ -1918,7 +1957,10 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         data = await googleDrive(token, call.args);
         break;
       case "youtube":
-        data = await youtubeSearch(token, call.args);
+        data = await youtubeSearch(call.args, {
+          apiKey: process.env.YOUTUBE_API_KEY,
+          token,
+        });
         break;
       case "notion":
         data = await notionSearch(token, call.args);
