@@ -35,6 +35,8 @@ export async function POST(req: Request) {
   const body = parsed.data;
 
   const correlationId = correlationFromRequest(req, body.correlationId);
+  const origin = req.headers.get("origin") ?? undefined;
+  const referer = req.headers.get("referer") ?? undefined;
   const limited = await rateLimit(`app:${body.key.slice(0, 48)}`, {
     limit: 30,
     windowMs: 60_000,
@@ -52,6 +54,8 @@ export async function POST(req: Request) {
       sessionId: body.sessionId,
       replyLanguage: body.replyLanguage,
       correlationId,
+      origin,
+      referer,
       rateLimitOk: limited.ok,
       rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
     });
@@ -96,6 +100,8 @@ export async function POST(req: Request) {
           sessionId: body.sessionId,
           replyLanguage: body.replyLanguage,
           correlationId,
+          origin,
+          referer,
           rateLimitOk: limited.ok,
           rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
           onDelta: (text) => send("delta", { text }),
