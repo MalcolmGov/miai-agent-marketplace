@@ -467,6 +467,26 @@ export async function upsertWorkspaceAgent(
   return next;
 }
 
+/** Parse `mia_pk_<id>_<mac10>` with string ops (no ambiguous/backtracking regex on attacker input). */
+function parseEmbedKey(publicKey: string): { id: string; mac: string } | null {
+  const prefix = "mia_pk_";
+  if (!publicKey.startsWith(prefix)) return null;
+  const rest = publicKey.slice(prefix.length);
+  const us = rest.lastIndexOf("_");
+  if (us <= 0) return null;
+  const id = rest.slice(0, us);
+  const mac = rest.slice(us + 1);
+  if (!/^[a-f0-9]{10}$/.test(mac) || !/^[A-Za-z0-9_-]+$/.test(id)) return null;
+  return { id, mac };
+}
+
+function decodeEmbedId(id: string): { workspaceId: string; agentId: string } | null {
+  const decoded = Buffer.from(id, "base64url").toString("utf8");
+  const sep = decoded.indexOf("::");
+  if (sep <= 0) return null;
+  return { workspaceId: decoded.slice(0, sep), agentId: decoded.slice(sep + 2) };
+}
+
 export async function resolveEmbedKey(
   publicKey: string,
 ): Promise<{ workspaceId: string; agentId: string } | null> {
@@ -476,23 +496,15 @@ export async function resolveEmbedKey(
   }
   // Store-aware: a rotated agent verifies against its salt, and a revoked agent is rejected.
   await ensureStoreHydrated();
-  const m = /^mia_pk_([A-Za-z0-9_-]+)_([a-f0-9]{10})$/.exec(publicKey);
-  if (m) {
-    const [, id, mac] = m;
-    const decoded = Buffer.from(id, "base64url").toString("utf8");
-    const sep = decoded.indexOf("::");
-    if (sep > 0) {
-      const workspaceId = decoded.slice(0, sep);
-      const agentId = decoded.slice(sep + 2);
-      const agent = store().workspaces.get(workspaceId)?.agents.get(agentId);
-      if (agent?.embedRevoked) return null;
-      const macInput = agent?.embedSalt ? `${id}.${agent.embedSalt}` : id;
-      const expected = createHmac("sha256", embedSecret()).update(macInput).digest("hex").slice(0, 10);
-      if (mac === expected) {
-        return { workspaceId, agentId };
-      }
-      // A rotated agent (salt set) must not accept the legacy unsalted key.
-    }
+  const parsed = parseEmbedKey(publicKey);
+  const decoded = parsed ? decodeEmbedId(parsed.id) : null;
+  if (parsed && decoded) {
+    const agent = store().workspaces.get(decoded.workspaceId)?.agents.get(decoded.agentId);
+    if (agent?.embedRevoked) return null;
+    const macInput = agent?.embedSalt ? `${parsed.id}.${agent.embedSalt}` : parsed.id;
+    const expected = createHmac("sha256", embedSecret()).update(macInput).digest("hex").slice(0, 10);
+    // A rotated agent (salt set) will not match the legacy unsalted key, which is the point.
+    if (parsed.mac === expected) return decoded;
   }
   // Legacy fallback: explicitly stored keys (still honour revocation).
   for (const [workspaceId, rec] of store().workspaces) {
@@ -549,7 +561,7 @@ export async function setEmbedApprovedDomains(
 
 function normalizeDomains(domains: string[]): string[] {
   return domains
-    .map((d) => d.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, ""))
+    .map((d) => d.trim().toLowerCase().replace(/^https?:\/\//, "").split("/")[0])
     .filter(Boolean);
 }
 
