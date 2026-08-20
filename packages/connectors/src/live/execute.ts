@@ -1229,7 +1229,11 @@ export { stubFor };
 
 /** Live web search via the Brave Search API. Returns null when no API key is configured. */
 async function webSearch(args: Record<string, unknown>): Promise<Record<string, unknown> | null> {
-  const key = process.env.BRAVE_SEARCH_API_KEY || process.env.SEARCH_API_KEY || "";
+  const key =
+    process.env.BRAVE_SEARCH_API_KEY ||
+    process.env.BRAVE_API_KEY ||
+    process.env.SEARCH_API_KEY ||
+    "";
   const query = String(args.query ?? args.q ?? args.topic ?? "").trim();
   if (!key || !query) return null;
   const url = new URL("https://api.search.brave.com/res/v1/web/search");
