@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   CAPABILITY_GROUPS,
@@ -23,31 +24,44 @@ export default function AssistantLandingPage() {
   const connectors = Object.values(CONNECTOR_LABEL);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-14 pb-10">
+    <div className="mx-auto max-w-5xl space-y-14 pb-10">
       {/* Hero */}
-      <section className="rise pt-2 text-center sm:pt-4">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
-          Your personal AI
-        </p>
-        <h1 className="display mx-auto mt-3 max-w-2xl text-[clamp(1.9rem,6vw,3rem)] font-semibold leading-[1.08] tracking-tight text-[var(--text)]">
-          An assistant that knows you and gets things done
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--card-body)]">
-          It handles your inbox, calendar, reminders and the small errands that eat your day — and
-          it remembers your preferences, so you never repeat yourself. Just talk to it normally.
-        </p>
-        <div className="mt-7 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">
-          <Link href="/me" className="btn btn-primary w-full sm:w-auto" data-testid="assistant-start">
-            Start using your assistant
-            <span aria-hidden>→</span>
-          </Link>
-          <Link href="/me/connectors" className="btn btn-ghost w-full sm:w-auto">
-            Connect your accounts
-          </Link>
+      <section className="rise grid items-center gap-8 pt-2 sm:pt-4 md:grid-cols-2 md:gap-10">
+        <div className="text-center md:text-left">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
+            Your personal AI
+          </p>
+          <h1 className="display mt-3 text-[clamp(1.9rem,6vw,3rem)] font-semibold leading-[1.08] tracking-tight text-[var(--text)]">
+            An assistant that knows you and gets things done
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--card-body)] md:mx-0">
+            It handles your inbox, calendar, reminders and the small errands that eat your day — and
+            it remembers your preferences, so you never repeat yourself. Just talk to it normally.
+          </p>
+          <div className="mt-7 flex flex-col items-center gap-2.5 sm:flex-row sm:gap-3 md:justify-start">
+            <Link href="/me" className="btn btn-primary w-full sm:w-auto" data-testid="assistant-start">
+              Start using your assistant
+              <span aria-hidden>→</span>
+            </Link>
+            <Link href="/me/connectors" className="btn btn-ghost w-full sm:w-auto">
+              Connect your accounts
+            </Link>
+          </div>
+          <p className="mt-4 text-xs text-[var(--muted)]">
+            Runs on prepaid credits · confirms with you before sending or changing anything
+          </p>
         </div>
-        <p className="mt-4 text-xs text-[var(--muted)]">
-          Runs on prepaid credits · confirms with you before sending or changing anything
-        </p>
+        <div className="relative overflow-hidden rounded-3xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--accent)_6%,var(--bg-panel))] shadow-[var(--shadow-panel)]">
+          <Image
+            src="/img/assistant-hero.webp"
+            alt="Friendly AI assistants managing a calendar, messages, a to-do list and the weather"
+            width={1200}
+            height={896}
+            priority
+            sizes="(max-width: 768px) 100vw, 480px"
+            className="h-auto w-full"
+          />
+        </div>
       </section>
 
       {/* Capabilities */}
