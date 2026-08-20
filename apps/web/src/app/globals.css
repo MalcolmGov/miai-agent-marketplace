@@ -168,6 +168,36 @@ body::before {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
+/*
+ * Selectable card — a single-choice option tile (setup pickers, intent choices). Softer radius and
+ * surface than a raw bordered box, with a clear accent-lit selected state. Pair with .select-card-active.
+ */
+.select-card {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-elev) 55%, transparent);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.select-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+}
+
+.select-card-active {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.select-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
 .btn {
   @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition;
   border-radius: 8px;

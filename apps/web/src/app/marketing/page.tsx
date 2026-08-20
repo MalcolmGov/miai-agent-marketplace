@@ -109,13 +109,13 @@ export default function MarketingPreviewPage() {
           </li>
         </ul>
 
-        <p className="mt-16 text-xs uppercase tracking-[0.16em] text-white/40">
+        <p className="mt-16 text-xs uppercase tracking-[0.16em] text-white/60">
           Trusted Retail Partners
         </p>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-white/35">
-          <span className="rounded-md border border-white/10 px-4 py-2">pAI</span>
-          <span className="rounded-md border border-white/10 px-4 py-2">ez</span>
-          <span className="rounded-md border border-white/10 px-4 py-2">Bitrefill</span>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-white/55">
+          <span className="rounded-md border border-white/15 px-4 py-2">pAI</span>
+          <span className="rounded-md border border-white/15 px-4 py-2">ez</span>
+          <span className="rounded-md border border-white/15 px-4 py-2">Bitrefill</span>
         </div>
       </main>
     </div>

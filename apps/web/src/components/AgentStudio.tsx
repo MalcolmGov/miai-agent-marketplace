@@ -369,8 +369,8 @@ export function AgentStudio({
             {t(rentalStatusKey(state))}
           </span>
         </div>
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{m.name}</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">{m.summary}</p>
+        <h1 className="display text-2xl font-semibold tracking-tight sm:text-3xl">{m.name}</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--card-body)]">{m.summary}</p>
         {hasWorkflow ? (
           <>
             <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">

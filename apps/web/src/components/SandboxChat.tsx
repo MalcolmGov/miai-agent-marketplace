@@ -295,7 +295,7 @@ export function SandboxChat({
                     type="button"
                     disabled={busy || paused}
                     onClick={() => void send(p)}
-                    className="rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-2 text-left text-sm text-[var(--text)] transition hover:border-[color-mix(in_srgb,var(--accent)_40%,transparent)] hover:text-[var(--accent-bright)] disabled:opacity-50"
+                    className="suggestion disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {p}
                   </button>
