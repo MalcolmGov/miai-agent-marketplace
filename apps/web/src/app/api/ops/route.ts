@@ -15,16 +15,14 @@ export async function GET(req: Request) {
   // was possible via `?workspaceId=` with no role requirement.
   const gate = requireRole(auth, "admin");
   if (gate) return gate;
-  const q = new URL(req.url).searchParams.get("workspaceId");
   // In OIDC mode the workspace is always the verified token's. In mock mode a different
   // workspace may only be inspected by a platform operator; everyone else is pinned to
   // their own, so a workspace admin cannot read another tenant by passing ?workspaceId=.
-  const workspaceId =
-    auth.mode === "oidc"
-      ? auth.workspaceId
-      : q && isOperator(auth)
-        ? q
-        : auth.workspaceId;
+  let workspaceId = auth.workspaceId;
+  const requested = new URL(req.url).searchParams.get("workspaceId");
+  if (auth.mode !== "oidc" && requested && isOperator(auth)) {
+    workspaceId = requested;
+  }
   const wallet = await createWalletAdapter().getBalance(workspaceId);
   const recent = (await listAudit(20)).filter((e) => e.workspaceId === workspaceId);
   return NextResponse.json({
