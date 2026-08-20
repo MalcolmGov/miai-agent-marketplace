@@ -120,6 +120,21 @@ const supportShopify = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => 
   { tool: "handoff_to_human", connector: handoff },
 ];
 
+// Consumer line — a personal assistant's tools bind to the individual's own inbox and calendar,
+// not the generic webhook fallback. Hand-managed (the generator skips consumer agents).
+const personalAssistant = (
+  calendar: "google_calendar" | "m365_calendar" = "google_calendar",
+): ToolBinding[] => [
+  { tool: "triage_inbox", connector: "email" },
+  { tool: "draft_email", connector: "email" },
+  { tool: "send_email", connector: "email" },
+  { tool: "manage_calendar", connector: calendar },
+  { tool: "set_reminder", connector: calendar },
+  { tool: "manage_tasks", connector: "webhook" },
+  { tool: "web_research", connector: "webhook" },
+  { tool: "remember_about_me", connector: "webhook" },
+];
+
 /** Explicit hand overrides — win over generated presets (production marketplace). */
 const HAND_OVERRIDES: AgentPreset[] = [
   {
@@ -407,6 +422,13 @@ const HAND_OVERRIDES: AgentPreset[] = [
     pilot: false,
     phase: 1,
     bindings: onboardingBuddy("teams"),
+  },
+  // Consumer line
+  {
+    agentId: "personal-assistant",
+    pilot: false,
+    phase: 1,
+    bindings: personalAssistant("google_calendar"),
   },
 ];
 

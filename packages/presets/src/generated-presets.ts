@@ -9193,48 +9193,6 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
-    "agentId": "personal-assistant",
-    "phase": 1,
-    "bindings": [
-      {
-        "tool": "triage_inbox",
-        "connector": "webhook"
-      },
-      {
-        "tool": "draft_email",
-        "connector": "webhook"
-      },
-      {
-        "tool": "send_email",
-        "connector": "webhook"
-      },
-      {
-        "tool": "manage_calendar",
-        "connector": "webhook"
-      },
-      {
-        "tool": "set_reminder",
-        "connector": "google_calendar"
-      },
-      {
-        "tool": "manage_tasks",
-        "connector": "webhook"
-      },
-      {
-        "tool": "web_research",
-        "connector": "webhook"
-      },
-      {
-        "tool": "remember_about_me",
-        "connector": "webhook"
-      },
-      {
-        "tool": "handoff_to_human",
-        "connector": "slack"
-      }
-    ]
-  },
-  {
     "agentId": "pharmacy",
     "phase": 1,
     "bindings": [
