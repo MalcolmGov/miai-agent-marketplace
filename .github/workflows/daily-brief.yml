@@ -1,0 +1,32 @@
+name: Daily Brief
+
+# Hourly sweep: the endpoint fans out to consumers whose local brief hour matches now.
+# GitHub's scheduler is best-effort (can drift 10–30 min); the endpoint's per-day guard makes
+# duplicate ticks harmless. No-op unless CONSUMER_APP_URL and CRON_SECRET are configured.
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run-due:
+    name: run-due
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger due consumer briefs
+        env:
+          APP_URL: ${{ secrets.CONSUMER_APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          if [ -z "${APP_URL:-}" ] || [ -z "${CRON_SECRET:-}" ]; then
+            echo "CONSUMER_APP_URL or CRON_SECRET not configured — skipping (no-op)."
+            exit 0
+          fi
+          curl -fsS -X POST "${APP_URL%/}/api/consumer/brief/run-due" \
+            -H "x-cron-secret: ${CRON_SECRET}" \
+            -H "content-type: application/json" \
+            -d '{}'
