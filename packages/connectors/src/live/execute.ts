@@ -631,6 +631,67 @@ async function googleCalendar(
 ): Promise<Record<string, unknown>> {
   const n = tool.toLowerCase();
 
+  const action = String(args.action ?? "").toLowerCase();
+  const wantsCreate =
+    n.includes("schedule") ||
+    n.includes("book") ||
+    n.includes("create") ||
+    Boolean(args.title || args.summary || args.attendees) ||
+    ["create", "schedule", "book", "add", "new"].includes(action);
+
+  // Read: list upcoming events ("what's on my calendar" — manage_calendar with no new-event payload)
+  if (
+    !wantsCreate &&
+    (n.includes("manage_calendar") ||
+      n.includes("list") ||
+      n.includes("agenda") ||
+      n.includes("upcoming") ||
+      n.includes("show") ||
+      action === "list")
+  ) {
+    const nowDate = new Date();
+    const ref = args.date || args.start ? new Date(String(args.date ?? args.start)) : nowDate;
+    if (Number.isNaN(ref.getTime())) ref.setTime(nowDate.getTime());
+    const days = Math.max(1, Math.min(31, Number(args.days ?? 1) || 1));
+    const timeMin = new Date(ref);
+    timeMin.setHours(0, 0, 0, 0);
+    const timeMax = new Date(timeMin.getTime() + days * 24 * 3600 * 1000);
+    const url = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
+    url.searchParams.set("timeMin", timeMin.toISOString());
+    url.searchParams.set("timeMax", timeMax.toISOString());
+    url.searchParams.set("singleEvents", "true");
+    url.searchParams.set("orderBy", "startTime");
+    url.searchParams.set("maxResults", "25");
+    const res = await fetch(url, { headers: { authorization: `Bearer ${token}` } });
+    const json = (await res.json()) as {
+      items?: Array<{
+        summary?: string;
+        location?: string;
+        htmlLink?: string;
+        start?: { dateTime?: string; date?: string };
+        end?: { dateTime?: string; date?: string };
+      }>;
+      error?: { message?: string };
+    };
+    if (!res.ok) throw new Error(json.error?.message ?? `Google ${res.status}`);
+    const events = (json.items ?? []).map((e) => ({
+      title: e.summary ?? "(no title)",
+      start: e.start?.dateTime ?? e.start?.date ?? "",
+      end: e.end?.dateTime ?? e.end?.date ?? "",
+      allDay: Boolean(e.start?.date && !e.start?.dateTime),
+      location: e.location,
+      link: e.htmlLink,
+    }));
+    return {
+      events,
+      count: events.length,
+      timeMin: timeMin.toISOString(),
+      timeMax: timeMax.toISOString(),
+      provider: "google_calendar",
+      live: true,
+    };
+  }
+
   // Read: freeBusy + optional events list for EA check_calendar
   if (
     n.includes("availability") ||
@@ -858,66 +919,91 @@ async function sendEmail(
   return { sent: true, to, id: json.id, provider: "email", live: true };
 }
 
+type InboxItem = {
+  from: string;
+  subject: string;
+  preview?: string;
+  date: string;
+  ageHours: number | null;
+  today: boolean;
+  unread: boolean;
+  important: boolean;
+};
+
+/** Fetch one message's header metadata (+ body snippet, when the scope allows it). */
+async function fetchInboxItem(id: string, token: string, now: number): Promise<InboxItem | null> {
+  const getUrl = new URL(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}`);
+  getUrl.searchParams.set("format", "metadata");
+  for (const h of ["From", "Subject", "Date"]) getUrl.searchParams.append("metadataHeaders", h);
+  const r = await fetch(getUrl, { headers: { authorization: `Bearer ${token}` } });
+  if (!r.ok) return null;
+  const j = (await r.json()) as {
+    internalDate?: string;
+    labelIds?: string[];
+    snippet?: string;
+    payload?: { headers?: Array<{ name: string; value: string }> };
+  };
+  const headers = j.payload?.headers;
+  const header = (name: string): string =>
+    headers?.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? "";
+  const ts = Number(j.internalDate ?? 0);
+  const labels = j.labelIds ?? [];
+  const snippet = (j.snippet ?? "").trim();
+  return {
+    from: header("From"),
+    subject: header("Subject") || "(no subject)",
+    preview: snippet ? snippet.slice(0, 160) : undefined,
+    date: ts ? new Date(ts).toISOString() : header("Date"),
+    ageHours: ts ? Math.round((now - ts) / 3.6e6) : null,
+    today: ts ? new Date(ts).toDateString() === new Date(now).toDateString() : false,
+    unread: labels.includes("UNREAD"),
+    important: labels.includes("IMPORTANT") || labels.includes("STARRED"),
+  };
+}
+
 /**
- * Read the user's recent inbox for a triage summary. Uses the gmail.metadata scope the email
- * connector already requests (sender / subject / date / labels — no message bodies), so it works
- * with the existing OAuth grant and never needs a reconnect. The metadata scope forbids the `q`
- * search parameter, so we list by label and filter/flag client-side.
+ * Read the user's recent inbox for a triage summary. Prefers the gmail.readonly scope
+ * (server-side `q` search + body-snippet previews); if the token only has the older gmail.metadata
+ * grant (which forbids `q`), it falls back to a label listing with headers only — so it keeps
+ * working with existing connections and never forces a reconnect.
  */
 async function gmailTriage(
   token: string,
   args: Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
   const max = Math.max(1, Math.min(25, Number(args.max ?? args.limit ?? args.count ?? 12) || 12));
+  const query = String(args.query ?? args.q ?? "").trim() || "newer_than:2d";
+  const auth = { authorization: `Bearer ${token}` };
+  const base = "https://gmail.googleapis.com/gmail/v1/users/me/messages";
 
-  const listUrl = new URL("https://gmail.googleapis.com/gmail/v1/users/me/messages");
-  listUrl.searchParams.set("labelIds", "INBOX");
-  listUrl.searchParams.set("maxResults", String(max));
-  const listRes = await fetch(listUrl, { headers: { authorization: `Bearer ${token}` } });
+  // Prefer readonly search; a metadata-only token 403s on `q`, so fall back to a label listing.
+  let usedSearch = true;
+  const byQuery = new URL(base);
+  byQuery.searchParams.set("q", query);
+  byQuery.searchParams.set("maxResults", String(max));
+  let listRes = await fetch(byQuery, { headers: auth });
+  if (listRes.status === 403) {
+    usedSearch = false;
+    const byLabel = new URL(base);
+    byLabel.searchParams.set("labelIds", "INBOX");
+    byLabel.searchParams.set("maxResults", String(max));
+    listRes = await fetch(byLabel, { headers: auth });
+  }
   const listJson = (await listRes.json()) as {
     messages?: Array<{ id: string }>;
     error?: { message?: string };
   };
   if (!listRes.ok) throw new Error(listJson.error?.message ?? `Gmail ${listRes.status}`);
 
+  const window = usedSearch ? query : "recent inbox";
   const ids = (listJson.messages ?? []).map((m) => m.id);
   if (ids.length === 0) {
-    return { provider: "email", live: true, count: 0, unread: 0, today: 0, messages: [], window: "recent inbox" };
+    return { provider: "email", live: true, count: 0, unread: 0, today: 0, messages: [], window };
   }
 
   const now = Date.now();
-  const header = (
-    headers: Array<{ name: string; value: string }> | undefined,
-    name: string,
-  ): string => headers?.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? "";
-
-  const details = await Promise.all(
-    ids.map(async (id) => {
-      const getUrl = new URL(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}`);
-      getUrl.searchParams.set("format", "metadata");
-      for (const h of ["From", "Subject", "Date"]) getUrl.searchParams.append("metadataHeaders", h);
-      const r = await fetch(getUrl, { headers: { authorization: `Bearer ${token}` } });
-      if (!r.ok) return null;
-      const j = (await r.json()) as {
-        internalDate?: string;
-        labelIds?: string[];
-        payload?: { headers?: Array<{ name: string; value: string }> };
-      };
-      const ts = Number(j.internalDate ?? 0);
-      const labels = j.labelIds ?? [];
-      return {
-        from: header(j.payload?.headers, "From"),
-        subject: header(j.payload?.headers, "Subject") || "(no subject)",
-        date: ts ? new Date(ts).toISOString() : header(j.payload?.headers, "Date"),
-        ageHours: ts ? Math.round((now - ts) / 3.6e6) : null,
-        today: ts ? new Date(ts).toDateString() === new Date(now).toDateString() : false,
-        unread: labels.includes("UNREAD"),
-        important: labels.includes("IMPORTANT") || labels.includes("STARRED"),
-      };
-    }),
-  );
-
-  const messages = details.filter((m): m is NonNullable<typeof m> => m !== null);
+  const details = await Promise.all(ids.map((id) => fetchInboxItem(id, token, now)));
+  const messages = details.filter((m): m is InboxItem => m !== null);
   // Surface the most actionable first: important, then unread, then most recent.
   messages.sort(
     (a, b) =>
@@ -934,8 +1020,10 @@ async function gmailTriage(
     important: messages.filter((m) => m.important).length,
     today: messages.filter((m) => m.today).length,
     messages,
-    note: "Header-level inbox view (sender, subject, time). Message bodies aren't available with the current permission.",
-    window: "recent inbox",
+    note: usedSearch
+      ? undefined
+      : "Header-level view (sender, subject, time). Reconnect Gmail to enable message previews and search.",
+    window,
   };
 }
 
@@ -1139,6 +1227,50 @@ async function wooOrder(config: Record<string, string>, args: Record<string, unk
 
 export { stubFor };
 
+/**
+ * Internal personal-assistant tools (tasks / memory / web research) bind to the `webhook`
+ * connector, but on the consumer line there is no external sink configured. Rather than hard-fail
+ * on a missing webhook URL, handle them locally: tasks and remembered facts are echoed back so the
+ * model keeps them in the conversation, and web research is deferred to the model's own knowledge.
+ * Returns null for anything that should still go to a real webhook.
+ */
+function handleInternalAssistantTool(call: ConnectorCall): ConnectorResult | null {
+  const n = call.tool.toLowerCase();
+  const a = call.args;
+  const wrap = (data: Record<string, unknown>): ConnectorResult => ({
+    ok: true,
+    data: { ...data, provider: "assistant", live: false },
+    connector: "webhook",
+    stubbed: true,
+  });
+
+  if (n.includes("remember")) {
+    const fact = String(a.fact ?? a.note ?? a.text ?? a.value ?? "").trim();
+    return wrap({
+      remembered: Boolean(fact),
+      fact,
+      note: "Noted — I'll keep this in mind for our conversation.",
+    });
+  }
+  if (n.includes("task")) {
+    const taskAction = String(a.action ?? (a.task ? "add" : "list")).toLowerCase();
+    return wrap({
+      ok: true,
+      action: taskAction,
+      task: a.task ?? a.item ?? a.text ?? null,
+      note: "Task tracked in this conversation. A durable task list isn't set up in this environment yet.",
+    });
+  }
+  if (n.includes("research")) {
+    return wrap({
+      available: false,
+      query: String(a.query ?? a.q ?? a.topic ?? ""),
+      note: "Live web research isn't enabled here — answer from general knowledge and note it may be out of date.",
+    });
+  }
+  return null;
+}
+
 export async function executeLive(call: ConnectorCall): Promise<ConnectorResult> {
   const { connector, config = {} } = call.binding;
 
@@ -1146,11 +1278,20 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
     const keyTok = await getToken(call.workspaceId, connector);
 
     switch (connector) {
-      case "webhook":
+      case "webhook": {
+        // Internal assistant tools (tasks / memory / research) have no external sink on the
+        // consumer line — handle them locally instead of failing on a missing webhook URL. A
+        // configured URL still wins, so B2B agents keep forwarding to the tenant's backend.
+        const webhookUrl = keyTok?.meta.url || config.url;
+        if (!webhookUrl) {
+          const local = handleInternalAssistantTool(call);
+          if (local) return local;
+        }
         // Must await inside this try block — returning the bare promise lets a
         // later rejection (e.g. "Webhook URL missing") escape uncaught past the
         // catch below, instead of degrading gracefully like every other connector.
         return await executeWebhook(call, keyTok, config);
+      }
       case "mcp":
         return await executeMcp(call, keyTok, config);
       default:
