@@ -14,7 +14,12 @@ export type ConnectorId =
   | "quickbooks"
   | "stripe"
   | "calendly"
-  | "zendesk";
+  | "zendesk"
+  | "web_search"
+  | "weather"
+  | "google_tasks"
+  | "google_contacts"
+  | "google_drive";
 
 export interface ConnectorMeta {
   id: ConnectorId;

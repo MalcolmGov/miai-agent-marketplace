@@ -1227,6 +1227,171 @@ async function wooOrder(config: Record<string, string>, args: Record<string, unk
 
 export { stubFor };
 
+/** Live web search via the Brave Search API. Returns null when no API key is configured. */
+async function webSearch(args: Record<string, unknown>): Promise<Record<string, unknown> | null> {
+  const key = process.env.BRAVE_SEARCH_API_KEY || process.env.SEARCH_API_KEY || "";
+  const query = String(args.query ?? args.q ?? args.topic ?? "").trim();
+  if (!key || !query) return null;
+  const url = new URL("https://api.search.brave.com/res/v1/web/search");
+  url.searchParams.set("q", query);
+  url.searchParams.set("count", "5");
+  const res = await fetch(url, {
+    headers: { "X-Subscription-Token": key, accept: "application/json" },
+  });
+  const j = (await res.json()) as {
+    web?: { results?: Array<{ title?: string; url?: string; description?: string }> };
+    error?: { detail?: string };
+  };
+  if (!res.ok) throw new Error(j.error?.detail ?? `Search ${res.status}`);
+  const results = (j.web?.results ?? []).slice(0, 5).map((r) => ({
+    title: r.title ?? "",
+    url: r.url ?? "",
+    snippet: (r.description ?? "").replace(/<[^>]+>/g, ""),
+  }));
+  return { query, results, provider: "web_search", live: true };
+}
+
+/** Current weather via OpenWeather. Returns null when no API key is configured. */
+async function weatherLookup(args: Record<string, unknown>): Promise<Record<string, unknown> | null> {
+  const key = process.env.OPENWEATHER_API_KEY || process.env.WEATHER_API_KEY || "";
+  const loc = String(args.location ?? args.city ?? args.place ?? args.query ?? "").trim();
+  if (!key || !loc) return null;
+  const url = new URL("https://api.openweathermap.org/data/2.5/weather");
+  url.searchParams.set("q", loc);
+  url.searchParams.set("units", "metric");
+  url.searchParams.set("appid", key);
+  const res = await fetch(url);
+  const j = (await res.json()) as {
+    name?: string;
+    weather?: Array<{ description?: string }>;
+    main?: { temp?: number; feels_like?: number; humidity?: number };
+    wind?: { speed?: number };
+    message?: string;
+  };
+  if (!res.ok) throw new Error(j.message ?? `Weather ${res.status}`);
+  return {
+    location: j.name ?? loc,
+    conditions: j.weather?.[0]?.description ?? "",
+    temp_c: j.main?.temp,
+    feels_like_c: j.main?.feels_like,
+    humidity_pct: j.main?.humidity,
+    wind_kph: typeof j.wind?.speed === "number" ? Math.round(j.wind.speed * 3.6) : undefined,
+    provider: "weather",
+    live: true,
+  };
+}
+
+/** Google Tasks — add / list / complete on the user's default task list. */
+async function googleTasks(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const auth = { authorization: `Bearer ${token}` };
+  const base = "https://tasks.googleapis.com/tasks/v1/lists/@default/tasks";
+  const action = String(args.action ?? (args.task ?? args.title ? "add" : "list")).toLowerCase();
+
+  if (action === "add" || action === "create") {
+    const title = String(args.task ?? args.title ?? args.text ?? "").trim();
+    if (!title) throw new Error("Task text required");
+    const res = await fetch(base, {
+      method: "POST",
+      headers: { ...auth, "content-type": "application/json" },
+      body: JSON.stringify({ title }),
+    });
+    const j = (await res.json()) as { id?: string; title?: string; error?: { message?: string } };
+    if (!res.ok) throw new Error(j.error?.message ?? `Tasks ${res.status}`);
+    return { added: true, id: j.id, task: j.title, provider: "google_tasks", live: true };
+  }
+  if (action === "complete" || action === "done") {
+    const id = String(args.task_id ?? args.id ?? "").trim();
+    if (!id) throw new Error("task_id required to complete a task");
+    const res = await fetch(`${base}/${id}`, {
+      method: "PATCH",
+      headers: { ...auth, "content-type": "application/json" },
+      body: JSON.stringify({ status: "completed" }),
+    });
+    const j = (await res.json()) as { error?: { message?: string } };
+    if (!res.ok) throw new Error(j.error?.message ?? `Tasks ${res.status}`);
+    return { completed: true, id, provider: "google_tasks", live: true };
+  }
+
+  const url = new URL(base);
+  url.searchParams.set("showCompleted", "false");
+  url.searchParams.set("maxResults", "50");
+  const res = await fetch(url, { headers: auth });
+  const j = (await res.json()) as {
+    items?: Array<{ id?: string; title?: string; due?: string; status?: string }>;
+    error?: { message?: string };
+  };
+  if (!res.ok) throw new Error(j.error?.message ?? `Tasks ${res.status}`);
+  const tasks = (j.items ?? []).map((t) => ({
+    id: t.id,
+    task: t.title,
+    due: t.due,
+    done: t.status === "completed",
+  }));
+  return { tasks, count: tasks.length, provider: "google_tasks", live: true };
+}
+
+/** Google Contacts (People API) — search the user's contacts by name/email. */
+async function googleContacts(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const q = String(args.query ?? args.name ?? args.contact ?? args.q ?? "").trim();
+  const url = new URL("https://people.googleapis.com/v1/people:searchContacts");
+  url.searchParams.set("query", q);
+  url.searchParams.set("readMask", "names,emailAddresses,phoneNumbers");
+  const res = await fetch(url, { headers: { authorization: `Bearer ${token}` } });
+  const j = (await res.json()) as {
+    results?: Array<{
+      person?: {
+        names?: Array<{ displayName?: string }>;
+        emailAddresses?: Array<{ value?: string }>;
+        phoneNumbers?: Array<{ value?: string }>;
+      };
+    }>;
+    error?: { message?: string };
+  };
+  if (!res.ok) throw new Error(j.error?.message ?? `Contacts ${res.status}`);
+  const contacts = (j.results ?? []).map((r) => ({
+    name: r.person?.names?.[0]?.displayName ?? "",
+    email: r.person?.emailAddresses?.[0]?.value,
+    phone: r.person?.phoneNumbers?.[0]?.value,
+  }));
+  return { query: q, contacts, count: contacts.length, provider: "google_contacts", live: true };
+}
+
+/** Google Drive — search the user's files by name / content. */
+async function googleDrive(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const q = String(args.query ?? args.name ?? args.q ?? "").trim();
+  const esc = q.replace(/'/g, "\\'");
+  const url = new URL("https://www.googleapis.com/drive/v3/files");
+  url.searchParams.set(
+    "q",
+    q ? `(name contains '${esc}' or fullText contains '${esc}') and trashed = false` : "trashed = false",
+  );
+  url.searchParams.set("pageSize", "10");
+  url.searchParams.set("orderBy", "modifiedTime desc");
+  url.searchParams.set("fields", "files(id,name,mimeType,modifiedTime,webViewLink)");
+  const res = await fetch(url, { headers: { authorization: `Bearer ${token}` } });
+  const j = (await res.json()) as {
+    files?: Array<{ name?: string; mimeType?: string; modifiedTime?: string; webViewLink?: string }>;
+    error?: { message?: string };
+  };
+  if (!res.ok) throw new Error(j.error?.message ?? `Drive ${res.status}`);
+  const files = (j.files ?? []).map((f) => ({
+    name: f.name ?? "",
+    type: f.mimeType ?? "",
+    modified: f.modifiedTime ?? "",
+    link: f.webViewLink,
+  }));
+  return { query: q, files, count: files.length, provider: "google_drive", live: true };
+}
+
 /**
  * Internal personal-assistant tools (tasks / memory / web research) bind to the `webhook`
  * connector, but on the consumer line there is no external sink configured. Rather than hard-fail
@@ -1342,6 +1507,37 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         stubbed: false,
       };
     }
+    if (connector === "web_search") {
+      const found = await webSearch(call.args);
+      if (found) return { ok: true, data: found, connector, stubbed: false };
+      // No search key configured — degrade to the model's own knowledge rather than fail.
+      const local = handleInternalAssistantTool(call);
+      if (local) return local;
+      return {
+        ok: true,
+        data: {
+          available: false,
+          query: String(call.args.query ?? ""),
+          note: "Web search isn't configured here — answer from general knowledge and note it may be out of date.",
+        },
+        connector,
+        stubbed: true,
+      };
+    }
+    if (connector === "weather") {
+      const found = await weatherLookup(call.args);
+      if (found) return { ok: true, data: found, connector, stubbed: false };
+      return {
+        ok: true,
+        data: {
+          available: false,
+          location: String(call.args.location ?? call.args.city ?? ""),
+          note: "Weather isn't configured in this environment.",
+        },
+        connector,
+        stubbed: true,
+      };
+    }
 
     const stored =
       (await getValidAccessToken(call.workspaceId, connector)) ??
@@ -1356,6 +1552,10 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         : null);
 
     if (!stored?.accessToken || stored.accessToken === "demo") {
+      // Internal assistant tools (e.g. tasks) degrade to a conversational result rather than a
+      // "complete Connect" stub — so the assistant stays useful before the account is linked.
+      const local = handleInternalAssistantTool(call);
+      if (local) return local;
       return {
         ok: true,
         data: {
@@ -1383,6 +1583,15 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         break;
       case "google_calendar":
         data = await googleCalendar(token, call.tool, call.args);
+        break;
+      case "google_tasks":
+        data = await googleTasks(token, call.args);
+        break;
+      case "google_contacts":
+        data = await googleContacts(token, call.args);
+        break;
+      case "google_drive":
+        data = await googleDrive(token, call.args);
         break;
       case "m365_calendar":
         data = await m365Calendar(token, call.tool, call.args);

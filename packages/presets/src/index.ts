@@ -130,8 +130,11 @@ const personalAssistant = (
   { tool: "send_email", connector: "email" },
   { tool: "manage_calendar", connector: calendar },
   { tool: "set_reminder", connector: calendar },
-  { tool: "manage_tasks", connector: "webhook" },
-  { tool: "web_research", connector: "webhook" },
+  { tool: "manage_tasks", connector: "google_tasks" },
+  { tool: "find_contact", connector: "google_contacts" },
+  { tool: "find_file", connector: "google_drive" },
+  { tool: "check_weather", connector: "weather" },
+  { tool: "web_research", connector: "web_search" },
   { tool: "remember_about_me", connector: "webhook" },
 ];
 

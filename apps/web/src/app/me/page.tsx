@@ -21,6 +21,9 @@ const SUGGESTIONS = [
 const CONNECTOR_LABEL: Record<string, string> = {
   email: "Gmail",
   google_calendar: "Calendar",
+  google_tasks: "Tasks",
+  google_contacts: "Contacts",
+  google_drive: "Drive",
 };
 
 export default function AssistantHome() {
