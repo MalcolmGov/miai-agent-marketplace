@@ -251,7 +251,7 @@ export function GetStartedWizard() {
             <p className="text-center text-xs text-[var(--muted-dim)]">
               Looking for prepaid AI tokens instead?{" "}
               <a
-                href={process.env.NEXT_PUBLIC_MIAI_CONSUMER_APP_URL || "https://myinstantai.com"}
+                href={process.env.NEXT_PUBLIC_MIAI_CONSUMER_APP_URL || "/assistant"}
                 className="text-[var(--accent-bright)] hover:underline"
               >
                 Consumer Get Started

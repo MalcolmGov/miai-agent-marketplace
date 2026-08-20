@@ -7,7 +7,7 @@ import { describe, it, before } from "node:test";
 
 let cap;
 before(async () => {
-  cap = await import("../src/app/me/capabilities.ts");
+  cap = await import("../src/lib/assistant-capabilities.ts");
 });
 
 describe("capability groups", () => {
