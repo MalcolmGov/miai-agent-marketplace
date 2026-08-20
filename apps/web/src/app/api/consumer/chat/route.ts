@@ -42,6 +42,7 @@ export async function POST(req: Request) {
   const wantJson = accept.includes("application/json") && !accept.includes("text/event-stream");
 
   const turnInput = {
+    tenantId: c.auth.workspaceId,
     consumerId: c.consumerId,
     walletId,
     agentId,

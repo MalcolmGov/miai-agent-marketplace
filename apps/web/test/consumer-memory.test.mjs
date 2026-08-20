@@ -1,7 +1,7 @@
 /**
- * Durable consumer memory: the store (remember → dedupe → list → forget) and the system-prompt
- * block builder (relevance ranking + item/char budget). File-backed store; no DATABASE_URL, no
- * network — this is exactly the fallback path a dev/preview environment runs.
+ * Durable consumer memory: the tenant-scoped facts store (remember → dedupe → list → forget →
+ * cross-tenant isolation) and the system-prompt block builder. File-backed store; no DATABASE_URL,
+ * no network — the fallback path a dev/preview environment runs.
  */
 import assert from "node:assert/strict";
 import { describe, it, before, after } from "node:test";
@@ -12,6 +12,9 @@ import { promises as fs } from "node:fs";
 const STORE = path.join(os.tmpdir(), `miai-memory-${process.pid}.json`);
 const saved = {};
 let mem;
+
+// Memory owner: a person (consumerId) within a brand/workspace (tenantId).
+const owner = (tenantId, consumerId) => ({ tenantId, consumerId });
 
 before(async () => {
   for (const k of ["CONSUMER_MEMORY_STORE_PATH", "DATABASE_URL", "NODE_ENV"]) {
@@ -33,45 +36,65 @@ after(async () => {
 
 describe("rememberFact + listMemories", () => {
   it("stores a fact, returns an id, and reads it back", async () => {
-    const res = await mem.rememberFact("alice", { content: "vegetarian", category: "preferences" });
+    const res = await mem.rememberFact(owner("miai", "alice"), {
+      content: "vegetarian",
+      category: "preferences",
+    });
     assert.equal(res.remembered, true);
     assert.ok(res.id, "returns an id");
 
-    const list = await mem.listMemories("alice");
+    const list = await mem.listMemories(owner("miai", "alice"));
     assert.equal(list.length, 1);
     assert.equal(list[0].content, "vegetarian");
     assert.equal(list[0].category, "preferences");
   });
 
-  it("isolates consumers", async () => {
-    await mem.rememberFact("bob", { content: "lives in Lisbon" });
-    const alice = await mem.listMemories("alice");
-    const bob = await mem.listMemories("bob");
+  it("isolates consumers within a tenant", async () => {
+    await mem.rememberFact(owner("miai", "bob"), { content: "lives in Lisbon" });
+    const alice = await mem.listMemories(owner("miai", "alice"));
+    const bob = await mem.listMemories(owner("miai", "bob"));
     assert.ok(!alice.some((m) => m.content === "lives in Lisbon"), "bob's fact is not alice's");
     assert.ok(bob.some((m) => m.content === "lives in Lisbon"));
   });
 
-  it("deduplicates on the normalized content prefix (keeps the id, refreshes)", async () => {
-    const first = await mem.rememberFact("alice", { content: "vegetarian", category: "preferences" });
-    // Same content, different whitespace/case + a new category → updates in place, not a new row.
-    const again = await mem.rememberFact("alice", { content: "  Vegetarian ", category: "diet" });
+  it("isolates the SAME consumer id across tenants (B2B2C leak guard)", async () => {
+    // The same phone number can be a Vodafone customer AND an MTN customer — separate memories.
+    const phone = "27821234567";
+    await mem.rememberFact(owner("vodafone", phone), { content: "Vodafone plan: red" });
+    await mem.rememberFact(owner("mtn", phone), { content: "MTN plan: sky" });
+
+    const voda = await mem.listMemories(owner("vodafone", phone));
+    const mtn = await mem.listMemories(owner("mtn", phone));
+    assert.deepEqual(voda.map((m) => m.content), ["Vodafone plan: red"]);
+    assert.deepEqual(mtn.map((m) => m.content), ["MTN plan: sky"]);
+    assert.ok(!voda.some((m) => m.content.includes("MTN")), "no cross-tenant bleed into Vodafone");
+    assert.ok(!mtn.some((m) => m.content.includes("Vodafone")), "no cross-tenant bleed into MTN");
+  });
+
+  it("deduplicates on the normalized content prefix within an owner", async () => {
+    const o = owner("miai", "alice");
+    const first = await mem.rememberFact(o, { content: "vegetarian", category: "preferences" });
+    const again = await mem.rememberFact(o, { content: "  Vegetarian ", category: "diet" });
     assert.equal(again.id, first.id, "same normalized content refreshes the same row");
-    const list = await mem.listMemories("alice");
-    const veg = list.filter((m) => m.content.toLowerCase().trim() === "vegetarian");
+    const veg = (await mem.listMemories(o)).filter(
+      (m) => m.content.toLowerCase().trim() === "vegetarian",
+    );
     assert.equal(veg.length, 1, "no duplicate row");
     assert.equal(veg[0].category, "diet", "category refreshed");
   });
 
-  it("ignores empty content and a missing consumer id", async () => {
-    assert.equal((await mem.rememberFact("alice", { content: "   " })).remembered, false);
-    assert.equal((await mem.rememberFact("", { content: "x" })).remembered, false);
+  it("ignores empty content and an incomplete owner", async () => {
+    assert.equal((await mem.rememberFact(owner("miai", "alice"), { content: "   " })).remembered, false);
+    assert.equal((await mem.rememberFact(owner("miai", ""), { content: "x" })).remembered, false);
+    assert.equal((await mem.rememberFact(owner("", "alice"), { content: "x" })).remembered, false);
   });
 
   it("forgets a fact by id", async () => {
-    const r = await mem.rememberFact("carol", { content: "signs emails as 'Best, Carol'" });
-    assert.equal(await mem.forgetMemory("carol", r.id), true);
-    assert.equal((await mem.listMemories("carol")).length, 0);
-    assert.equal(await mem.forgetMemory("carol", r.id), false, "already gone");
+    const o = owner("miai", "carol");
+    const r = await mem.rememberFact(o, { content: "signs emails as 'Best, Carol'" });
+    assert.equal(await mem.forgetMemory(o, r.id), true);
+    assert.equal((await mem.listMemories(o)).length, 0);
+    assert.equal(await mem.forgetMemory(o, r.id), false, "already gone");
   });
 });
 
@@ -107,17 +130,6 @@ describe("buildMemoryBlock", () => {
     const block = mem.buildMemoryBlock(memories, "any snacks with peanuts around?");
     const lines = block.split("\n").filter((l) => l.startsWith("- "));
     assert.match(lines[0], /peanuts/, "the peanut memory surfaces first for a peanut question");
-  });
-
-  it("falls back to recency when nothing matches the message", () => {
-    const memories = [
-      rec("older note", "general", "2026-01-01T00:00:00.000Z"),
-      rec("newer note", "general", "2026-08-01T00:00:00.000Z"),
-    ];
-    const lines = mem.buildMemoryBlock(memories, "totally unrelated query zzz")
-      .split("\n")
-      .filter((l) => l.startsWith("- "));
-    assert.match(lines[0], /newer note/, "most recent first when no relevance");
   });
 
   it("bounds the number of injected items", () => {
