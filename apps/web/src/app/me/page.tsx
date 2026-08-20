@@ -3,31 +3,21 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { streamChat } from "@/lib/chat-stream-client";
+import CapabilitiesSheet from "./CapabilitiesSheet";
+import {
+  CONNECTOR_LABEL,
+  FIRST_RUN_PROMPTS,
+  STARTER_PROMPTS,
+} from "./capabilities";
 
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
+type BriefOffer = "hidden" | "shown" | "saving" | "done" | "error";
 
-// Starter prompts — one per core capability (inbox, calendar, email drafting, reminders,
-// tasks, memory) so a first-time user can see what the assistant can do at a glance.
-const SUGGESTIONS = [
-  "Catch me up on my inbox",
-  "What's on my calendar today?",
-  "Draft a reply to my latest email",
-  "Remind me to call the pharmacy at 5",
-  "Add 'pick up dry cleaning' to my to-do list",
-  "Remember that I prefer morning meetings",
-];
-
-const CONNECTOR_LABEL: Record<string, string> = {
-  email: "Gmail",
-  google_calendar: "Calendar",
-  google_tasks: "Tasks",
-  google_contacts: "Contacts",
-  google_drive: "Drive",
-  youtube: "YouTube",
-  notion: "Notion",
-  spotify: "Spotify",
-};
+const ONBOARDED_KEY = "miai:me:onboarded:v1";
+const BRIEF_OFFERED_KEY = "miai:me:briefOffered:v1";
+/** Below this, nudge the user that their prepaid balance is running low. */
+const LOW_BALANCE = 500;
 
 export default function AssistantHome() {
   const [messages, setMessages] = useState<Msg[]>([
@@ -40,8 +30,14 @@ export default function AssistantHome() {
   const [balance, setBalance] = useState<number | null>(null);
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
   const [showSugs, setShowSugs] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [briefOffer, setBriefOffer] = useState<BriefOffer>("hidden");
   const sessionId = useRef(crypto.randomUUID());
   const scrollRef = useRef<HTMLDivElement>(null);
+  const briefOfferedRef = useRef(false);
+
+  const connectedSet = new Set(connectors.filter((c) => c.connected).map((c) => c.connector));
 
   const loadWallet = useCallback(() => {
     fetch("/api/consumer/wallet")
@@ -56,16 +52,60 @@ export default function AssistantHome() {
       .then((r) => r.json())
       .then((d) => setConnectors(d.connectors ?? []))
       .catch(() => {});
+    // First-run welcome + one-time brief offer are gated on localStorage (client-only).
+    try {
+      if (!localStorage.getItem(ONBOARDED_KEY)) setShowWelcome(true);
+      if (localStorage.getItem(BRIEF_OFFERED_KEY)) briefOfferedRef.current = true;
+    } catch {
+      /* private mode / storage disabled — just skip the one-time gates */
+    }
   }, [loadWallet]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, typing]);
 
+  function dismissWelcome() {
+    setShowWelcome(false);
+    try {
+      localStorage.setItem(ONBOARDED_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+  }
+
+  /** Offer the daily brief once, after the user's first real reply — the habit that brings them back. */
+  function maybeOfferBrief() {
+    if (briefOfferedRef.current) return;
+    briefOfferedRef.current = true;
+    try {
+      localStorage.setItem(BRIEF_OFFERED_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    setBriefOffer("shown");
+  }
+
+  async function enableBrief() {
+    setBriefOffer("saving");
+    try {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+      const res = await fetch("/api/consumer/brief", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ enabled: true, hour: 7, timezone, channel: "app" }),
+      });
+      setBriefOffer(res.ok ? "done" : "error");
+    } catch {
+      setBriefOffer("error");
+    }
+  }
+
   async function submit(raw: string) {
     const text = raw.trim();
     if (!text || busy) return;
     setShowSugs(false);
+    setShowWelcome(false);
     setError(null);
     setInput("");
 
@@ -83,6 +123,7 @@ export default function AssistantHome() {
       }
     };
 
+    let replied = false;
     try {
       let started = false;
       await streamChat("/api/consumer/chat", { message: text, sessionId: sessionId.current }, (ev) => {
@@ -91,11 +132,13 @@ export default function AssistantHome() {
         } else if (ev.type === "delta") {
           appendChunk(ev.text, started);
           started = true;
+          replied = true;
         } else {
           if (typeof ev.balance === "number") setBalance(ev.balance);
           if (!started && ev.reply) {
             appendChunk(ev.reply, false);
             started = true;
+            replied = true;
           }
         }
       });
@@ -105,8 +148,14 @@ export default function AssistantHome() {
       setBusy(false);
       setTyping(false);
       loadWallet();
+      if (replied) maybeOfferBrief();
     }
   }
+
+  const runPrompt = (prompt: string) => {
+    setSheetOpen(false);
+    void submit(prompt);
+  };
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4">
@@ -119,12 +168,30 @@ export default function AssistantHome() {
             A personal AI that works with your inbox, calendar, reminders and more.
           </p>
         </div>
-        {balance !== null ? (
-          <span className="chip whitespace-nowrap" title="Your prepaid balance">
-            {balance.toLocaleString()} tokens
-          </span>
-        ) : null}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSheetOpen(true)}
+            className="btn btn-ghost inline-flex h-9 items-center gap-1 px-3 text-xs"
+          >
+            <span aria-hidden>✨</span> What I can do
+          </button>
+          {balance !== null ? (
+            <span
+              className={`chip whitespace-nowrap ${balance < LOW_BALANCE ? "text-[var(--warn)]" : ""}`}
+              title="Your prepaid balance. Each message uses a small amount — you can top up any time."
+            >
+              {balance.toLocaleString()} credits
+            </span>
+          ) : null}
+        </div>
       </header>
+
+      {balance !== null && balance < LOW_BALANCE ? (
+        <p className="-mt-2 text-xs text-[var(--warn)]">
+          Your balance is running low — top up to keep your assistant available.
+        </p>
+      ) : null}
 
       <div className="flex flex-wrap items-center gap-2 text-xs">
         <span className="text-[var(--muted)]">Accounts:</span>
@@ -145,6 +212,58 @@ export default function AssistantHome() {
           Manage
         </Link>
       </div>
+
+      {showWelcome ? (
+        <section className="relative rounded-2xl border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] p-5">
+          <button
+            type="button"
+            onClick={dismissWelcome}
+            aria-label="Dismiss"
+            className="absolute right-3 top-3 text-[var(--muted)] hover:text-[var(--text)]"
+          >
+            ✕
+          </button>
+          <h2 className="display text-lg font-semibold tracking-tight text-[var(--text)]">
+            Welcome — here&apos;s how to think of me
+          </h2>
+          <p className="mt-2 max-w-prose text-sm leading-relaxed text-[var(--text)]">
+            I&apos;m a personal assistant for your everyday life. I can handle your{" "}
+            <strong>email</strong> and <strong>calendar</strong>, keep your{" "}
+            <strong>reminders and to-dos</strong>, <strong>look things up</strong>, and{" "}
+            <strong>remember your preferences</strong> so you never repeat yourself. Just talk to me
+            normally — and I&apos;ll always check with you before sending or changing anything.
+          </p>
+          <p className="mt-3 text-xs font-medium text-[var(--muted)]">Try one of these to start:</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {FIRST_RUN_PROMPTS.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => runPrompt(s)}
+                className="chip cursor-pointer hover:opacity-80"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSheetOpen(true)}
+              className="btn btn-primary inline-flex h-9 items-center px-4 text-sm"
+            >
+              See everything I can do
+            </button>
+            <button
+              type="button"
+              onClick={dismissWelcome}
+              className="text-sm text-[var(--muted)] underline decoration-1 underline-offset-2 hover:text-[var(--text)]"
+            >
+              Got it
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <div className="flex h-[62vh] min-h-[420px] flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)]">
         <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -174,9 +293,47 @@ export default function AssistantHome() {
           ) : null}
         </div>
 
+        {briefOffer !== "hidden" ? (
+          <div className="mx-4 mb-1 rounded-xl border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] p-3 text-sm">
+            {briefOffer === "done" ? (
+              <p className="text-[var(--text)]">
+                Done — I&apos;ll send you a morning catch-up at 7am. You can change or turn it off any time.
+              </p>
+            ) : briefOffer === "error" ? (
+              <p className="text-[var(--warn)]">
+                Couldn&apos;t set that up just now — you can try again later from your settings.
+              </p>
+            ) : (
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-[var(--text)]">
+                  Want a quick <strong>morning catch-up</strong> each day — your schedule, inbox and
+                  what needs attention?
+                </span>
+                <span className="flex shrink-0 items-center gap-2">
+                  <button
+                    type="button"
+                    disabled={briefOffer === "saving"}
+                    onClick={enableBrief}
+                    className="btn btn-primary inline-flex h-8 items-center px-3 text-xs"
+                  >
+                    {briefOffer === "saving" ? "…" : "Yes, 7am"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBriefOffer("hidden")}
+                    className="text-xs text-[var(--muted)] underline decoration-1 underline-offset-2 hover:text-[var(--text)]"
+                  >
+                    No thanks
+                  </button>
+                </span>
+              </div>
+            )}
+          </div>
+        ) : null}
+
         {showSugs ? (
           <div className="flex flex-wrap gap-2 px-4 pb-1">
-            {SUGGESTIONS.map((s) => (
+            {STARTER_PROMPTS.map((s) => (
               <button
                 key={s}
                 type="button"
@@ -222,6 +379,13 @@ export default function AssistantHome() {
         Metered to your prepaid balance. Your assistant confirms with you before sending anything or
         changing your calendar.
       </p>
+
+      <CapabilitiesSheet
+        open={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+        onRun={runPrompt}
+        connected={connectedSet}
+      />
     </div>
   );
 }
