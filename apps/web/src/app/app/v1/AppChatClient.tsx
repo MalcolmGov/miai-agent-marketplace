@@ -1,29 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { streamChat } from "@/lib/chat-stream-client";
 import "./app-chat.css";
 
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 
 function newSession() {
   return `app_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
-}
-
-function parseSseBlocks(buffer: string): { events: Array<{ event: string; data: string }>; rest: string } {
-  const events: Array<{ event: string; data: string }> = [];
-  const parts = buffer.split("\n\n");
-  const rest = parts.pop() ?? "";
-  for (const block of parts) {
-    if (!block.trim()) continue;
-    let event = "message";
-    const dataLines: string[] = [];
-    for (const line of block.split("\n")) {
-      if (line.startsWith("event:")) event = line.slice(6).trim();
-      else if (line.startsWith("data:")) dataLines.push(line.slice(5).trim());
-    }
-    events.push({ event, data: dataLines.join("\n") });
-  }
-  return { events, rest };
 }
 
 const SPARK = (
@@ -153,78 +137,31 @@ export function AppChatClient({
     setTyping(true);
 
     try {
-      const res = await fetch("/api/app/chat", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "text/event-stream",
-        },
-        body: JSON.stringify({
-          key: embedKey,
-          message: text,
-          sessionId: sessionId.current,
-          replyLanguage: lang || "en",
-        }),
-      });
-
-      if (!res.ok && !res.body) {
-        const j = (await res.json().catch(() => null)) as { error?: string; detail?: string } | null;
-        throw new Error(j?.detail || j?.error || `HTTP ${res.status}`);
-      }
-
-      if (!res.body) {
-        throw new Error("No response stream");
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = "";
       let started = false;
       let full = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const { events, rest } = parseSseBlocks(buf);
-        buf = rest;
-        for (const ev of events) {
-          let data: Record<string, unknown> = {};
-          try {
-            data = JSON.parse(ev.data) as Record<string, unknown>;
-          } catch {
-            continue;
-          }
-          if (ev.event === "error") {
-            throw new Error(String(data.detail || data.error || "Chat failed"));
-          }
-          if (ev.event === "status" && data.phase === "tool") {
+      await streamChat(
+        "/api/app/chat",
+        { key: embedKey, message: text, sessionId: sessionId.current, replyLanguage: lang || "en" },
+        (ev) => {
+          if (ev.type === "tool") {
             // Model chose a tool — clear any partial streamed preface, show typing again.
             started = false;
             full = "";
             setTyping(true);
             setMessages((m) => m.filter((msg) => msg.id !== asstId));
-            continue;
-          }
-          if (ev.event === "delta" && typeof data.text === "string") {
+          } else if (ev.type === "delta") {
             if (!started) {
               started = true;
               setTyping(false);
-              setMessages((m) => [...m, { id: asstId, role: "assistant", text: data.text as string }]);
+              setMessages((m) => [...m, { id: asstId, role: "assistant", text: ev.text }]);
             } else {
               setMessages((m) =>
-                m.map((msg) =>
-                  msg.id === asstId ? { ...msg, text: msg.text + (data.text as string) } : msg,
-                ),
+                m.map((msg) => (msg.id === asstId ? { ...msg, text: msg.text + ev.text } : msg)),
               );
             }
-            full += data.text as string;
-          }
-          if (ev.event === "paused" || (ev.event === "done" && data.paused)) {
-            const reply =
-              typeof data.reply === "string"
-                ? data.reply
-                : full || "We're briefly paused — please try again shortly.";
+            full += ev.text;
+          } else if (ev.type === "paused") {
+            const reply = ev.reply || full || "We're briefly paused — please try again shortly.";
             setTyping(false);
             if (!started) {
               setMessages((m) => [...m, { id: asstId, role: "assistant", text: reply }]);
@@ -232,14 +169,13 @@ export function AppChatClient({
               setMessages((m) => m.map((msg) => (msg.id === asstId ? { ...msg, text: reply } : msg)));
             }
             started = true;
-          }
-          if (ev.event === "done" && !data.paused && typeof data.reply === "string" && !started) {
+          } else if (!started && ev.reply) {
             setTyping(false);
-            setMessages((m) => [...m, { id: asstId, role: "assistant", text: data.reply as string }]);
+            setMessages((m) => [...m, { id: asstId, role: "assistant", text: ev.reply }]);
             started = true;
           }
-        }
-      }
+        },
+      );
 
       if (!started) {
         setTyping(false);
