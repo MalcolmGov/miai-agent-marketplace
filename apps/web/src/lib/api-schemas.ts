@@ -25,6 +25,17 @@ export const channelChatBodySchema = z.object({
   correlationId: shortText.optional(),
 });
 
+// Consumer line: the caller is an authenticated individual (no embed key), so identity and
+// wallet come from auth, not the body. agentId is optional and defaults to the flagship
+// consumer agent; only vetted consumer agents are runnable (enforced in the route).
+export const consumerChatBodySchema = z.object({
+  message,
+  agentId: id.optional(),
+  sessionId: shortText.optional(),
+  replyLanguage: z.string().max(32).optional(),
+  correlationId: shortText.optional(),
+});
+
 export const askChatBodySchema = z.object({
   message,
   sessionId: shortText.optional(),

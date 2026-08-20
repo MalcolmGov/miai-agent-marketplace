@@ -6,7 +6,7 @@ import { getPool, query } from "@/lib/pg";
 import { ensureMigrations } from "@/lib/migrate";
 import { redactPii } from "@/lib/pii-redact";
 
-export type TraceChannel = "studio" | "embed" | "app" | "ask" | "whatsapp" | "system";
+export type TraceChannel = "studio" | "embed" | "app" | "ask" | "whatsapp" | "consumer" | "system";
 
 export type TurnTranscript = {
   id: string;

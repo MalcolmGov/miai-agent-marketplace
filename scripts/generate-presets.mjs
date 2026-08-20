@@ -71,9 +71,14 @@ function phaseFor(tools) {
 const files = fs.readdirSync(catalogDir).filter((f) => f.endsWith(".agent.json"));
 const presets = [];
 
+// Consumer-line agents are hand-managed in packages/presets/src/index.ts (HAND_OVERRIDES) so
+// their tools bind to real inbox/calendar connectors; skip them here to avoid a second copy.
+const HAND_MANAGED = new Set(["personal-assistant"]);
+
 for (const file of files.sort()) {
   const pkg = JSON.parse(fs.readFileSync(path.join(catalogDir, file), "utf8"));
   const id = pkg.manifest.id;
+  if (HAND_MANAGED.has(id)) continue;
   const market = marketOf(id, pkg.manifest.market);
   const tools = Array.isArray(pkg.tools) ? pkg.tools : [];
   const toolNames = tools.map((t) => t.name || t).filter(Boolean);
