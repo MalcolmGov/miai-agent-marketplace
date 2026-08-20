@@ -1238,19 +1238,24 @@ async function webSearch(args: Record<string, unknown>): Promise<Record<string, 
   if (!key || !query) return null;
   const url = new URL("https://api.search.brave.com/res/v1/web/search");
   url.searchParams.set("q", query);
-  url.searchParams.set("count", "5");
+  url.searchParams.set("count", "8");
+  url.searchParams.set("extra_snippets", "true");
   const res = await fetch(url, {
     headers: { "X-Subscription-Token": key, accept: "application/json" },
   });
   const j = (await res.json()) as {
-    web?: { results?: Array<{ title?: string; url?: string; description?: string }> };
+    web?: {
+      results?: Array<{ title?: string; url?: string; description?: string; extra_snippets?: string[] }>;
+    };
     error?: { detail?: string };
   };
   if (!res.ok) throw new Error(j.error?.detail ?? `Search ${res.status}`);
-  const results = (j.web?.results ?? []).slice(0, 5).map((r) => ({
+  const strip = (s: string) => s.replace(/<[^>]+>/g, "");
+  const results = (j.web?.results ?? []).slice(0, 8).map((r) => ({
     title: r.title ?? "",
     url: r.url ?? "",
-    snippet: (r.description ?? "").replace(/<[^>]+>/g, ""),
+    snippet: strip(r.description ?? ""),
+    details: (r.extra_snippets ?? []).slice(0, 4).map(strip),
   }));
   return { query, results, provider: "web_search", live: true };
 }
@@ -1394,6 +1399,38 @@ async function googleDrive(
     link: f.webViewLink,
   }));
   return { query: q, files, count: files.length, provider: "google_drive", live: true };
+}
+
+/** YouTube — search for videos on a topic (read-only). */
+async function youtubeSearch(
+  token: string,
+  args: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const q = String(args.query ?? args.q ?? args.topic ?? "").trim();
+  const max = Math.max(1, Math.min(10, Number(args.max ?? args.limit ?? 5) || 5));
+  const url = new URL("https://www.googleapis.com/youtube/v3/search");
+  url.searchParams.set("part", "snippet");
+  url.searchParams.set("type", "video");
+  url.searchParams.set("q", q);
+  url.searchParams.set("maxResults", String(max));
+  const res = await fetch(url, { headers: { authorization: `Bearer ${token}` } });
+  const j = (await res.json()) as {
+    items?: Array<{
+      id?: { videoId?: string };
+      snippet?: { title?: string; channelTitle?: string; publishedAt?: string; description?: string };
+    }>;
+    error?: { message?: string };
+  };
+  if (!res.ok) throw new Error(j.error?.message ?? `YouTube ${res.status}`);
+  const videos = (j.items ?? [])
+    .filter((it) => it.id?.videoId)
+    .map((it) => ({
+      title: it.snippet?.title ?? "",
+      channel: it.snippet?.channelTitle ?? "",
+      published: it.snippet?.publishedAt ?? "",
+      url: `https://www.youtube.com/watch?v=${it.id?.videoId}`,
+    }));
+  return { query: q, videos, count: videos.length, provider: "youtube", live: true };
 }
 
 /** Pull a human title out of a Notion page/database search result. */
@@ -1862,6 +1899,9 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         break;
       case "google_drive":
         data = await googleDrive(token, call.args);
+        break;
+      case "youtube":
+        data = await youtubeSearch(token, call.args);
         break;
       case "notion":
         data = await notionSearch(token, call.args);

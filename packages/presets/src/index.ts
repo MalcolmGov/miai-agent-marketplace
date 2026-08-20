@@ -135,6 +135,7 @@ const personalAssistant = (
   { tool: "find_file", connector: "google_drive" },
   { tool: "check_weather", connector: "weather" },
   { tool: "search_notes", connector: "notion" },
+  { tool: "search_youtube", connector: "youtube" },
   { tool: "control_music", connector: "spotify" },
   { tool: "create_playlist", connector: "spotify" },
   { tool: "web_research", connector: "web_search" },

@@ -24,6 +24,7 @@ const CONNECTOR_LABEL: Record<string, string> = {
   google_tasks: "Tasks",
   google_contacts: "Contacts",
   google_drive: "Drive",
+  youtube: "YouTube",
   notion: "Notion",
   spotify: "Spotify",
 };

@@ -22,7 +22,8 @@ export type ConnectorId =
   | "google_drive"
   | "notion"
   | "spotify"
-  | "todoist";
+  | "todoist"
+  | "youtube";
 
 export interface ConnectorMeta {
   id: ConnectorId;
