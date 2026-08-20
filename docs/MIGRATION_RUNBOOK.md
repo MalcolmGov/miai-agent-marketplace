@@ -66,11 +66,12 @@ Prefer a **stable** hostname (e.g. `agents.myinstantai.com` via Front Door) from
 - [ ] Wallet HTTP debit/balance smoke with real API key
 - [ ] Model gateway tool-calling smoke (`MIAI_MODEL_MODE=gateway`)
 - [ ] Azure RG ready; `az deployment group create` permissions confirmed
-- [ ] Container image pushed (ACR or GHCR) and `containerImage` param set
+- [ ] Container image published (`.github/workflows/publish-image.yml` → GHCR, or ACR) and `containerImage` param set; for a private image also set `registryServer` / `registryUsername` / `registryPassword`
 - [ ] `DATABASE_URL` points at Azure Postgres (or MIAI-owned store)
 - [ ] Custom hostname decided (`APP_BASE_URL` / `NEXT_PUBLIC_APP_URL`) — use this in native configs
 - [ ] OAuth apps updated with `https://<azure-host>/api/oauth/callback` (keep Railway URI until cutover)
-- [ ] Key Vault secrets populated (wallet, model, OAuth clients)
+- [ ] Key Vault secrets populated (wallet, model); connector OAuth client id/secret pairs + `WEBHOOK_SINK_SECRET` / `MCP_SINK_TOKEN` passed as Bicep params (empty ones are simply not wired — that connector stays unconfigured)
+- [ ] Scale: `maxReplicas` stays 1 until Redis is provisioned (chat sessions + rate limits are per-replica otherwise)
 - [ ] Signing secrets generated once, stored, and passed to the deploy (`oauthTokenSecretParam`, `oauthStateSecretParam`, `embedKeySecretParam`, each >=32 chars) — reuse the same values on every deploy
 - [ ] App Insights connection string wired (`APPLICATIONINSIGHTS_CONNECTION_STRING`)
 
