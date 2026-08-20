@@ -567,17 +567,39 @@ export async function clearWorkspaceRentals(workspaceId: string): Promise<number
   return count;
 }
 
-/** Redact audit detail for a workspace in memory; Postgres rows are kept append-only. */
-export function redactWorkspaceAuditDetails(workspaceId: string): number {
+/**
+ * DSAR erasure: redact audit detail for a workspace in BOTH the in-memory store and the
+ * persisted Postgres `miai_audit` rows. The `detail` JSONB (and the denormalized
+ * userId/sessionId/correlationId/channel fields) hold the personal data — tool_error args
+ * can contain customer contact details harvested during handoff — so scrubbing it everywhere
+ * is required for a right-to-erasure request. The append-only `type`/`agent_id`/`at` columns
+ * are kept, so the audit trail still shows that activity occurred, minus the personal data.
+ * Returns the number of rows redacted (Postgres row count when available).
+ */
+export async function redactWorkspaceAuditDetails(workspaceId: string): Promise<number> {
+  await ensureStoreHydrated();
+  const erasedAt = new Date().toISOString();
   let count = 0;
   for (const row of store().audit) {
     if (row.workspaceId !== workspaceId) continue;
-    row.detail = {
-      _erased: true,
-      erasedAt: new Date().toISOString(),
-      priorType: row.type,
-    };
+    row.detail = { _erased: true, erasedAt, priorType: row.type };
+    row.userId = undefined;
+    row.sessionId = undefined;
+    row.correlationId = undefined;
+    row.channel = undefined;
     count++;
+  }
+
+  if (getPool()) {
+    try {
+      const res = await query(
+        "UPDATE miai_audit SET detail = $1::jsonb WHERE workspace_id = $2",
+        [JSON.stringify({ _erased: true, erasedAt }), workspaceId],
+      );
+      count = Math.max(count, res.rowCount ?? 0);
+    } catch (err) {
+      console.error("[store] postgres audit redaction failed", err);
+    }
   }
   return count;
 }
