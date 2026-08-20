@@ -214,6 +214,15 @@ body::before {
   transform: translateY(-1px);
 }
 
+/*
+ * White-label brand scope: .btn-primary hard-codes the teal gradient, so inside a branded region
+ * (the personal assistant re-skinned per carrier) route it through the accent tokens instead, which
+ * the brand overrides on the wrapper. Everything else on the page already themes from var(--accent).
+ */
+.brand-scope .btn-primary {
+  background: linear-gradient(180deg, var(--accent-bright), var(--accent));
+}
+
 .btn-ghost {
   border: 1px solid var(--line-strong);
   color: var(--text);
