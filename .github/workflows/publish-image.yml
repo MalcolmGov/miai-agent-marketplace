@@ -5,6 +5,9 @@ name: Publish image
 # The published image is PRIVATE by default — the Azure deploy pulls it using the Bicep
 # registryServer/registryUsername/registryPassword params (a GHCR PAT with read:packages),
 # or make the GHCR package public and leave those params empty.
+#
+# Uses the docker CLI (pre-installed on the runner) rather than the docker/* marketplace
+# actions, so there are no unpinned third-party actions to vet.
 
 on:
   push:
@@ -23,38 +26,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compute lowercase image name
-        id: img
-        # Docker repository paths must be lowercase; ${GITHUB_REPOSITORY} preserves owner case.
-        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - name: Build and push image to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Docker repository paths must be lowercase; GITHUB_REPOSITORY preserves owner case.
+          image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          sha_tag="sha-${GITHUB_SHA}"
+          ref_tag="$(printf '%s' "${GITHUB_REF_NAME}" | tr '/' '-')"
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
 
-      - name: Docker metadata (tags + labels)
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ steps.img.outputs.name }}
-          tags: |
-            type=sha,format=long
-            type=ref,event=branch
-            type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
+          docker build -t "${image}:${sha_tag}" -t "${image}:${ref_tag}" .
+          docker push "${image}:${sha_tag}"
+          docker push "${image}:${ref_tag}"
 
-      - name: Set up Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # Move the `latest` tag only on the default branch.
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            docker tag "${image}:${sha_tag}" "${image}:latest"
+            docker push "${image}:latest"
+          fi
