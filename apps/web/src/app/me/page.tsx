@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { streamChat } from "@/lib/chat-stream-client";
 import { ConnectorIcon } from "@/components/ConnectorIcon";
+import { renderRichText } from "@/lib/rich-text";
 import CapabilitiesSheet from "./CapabilitiesSheet";
 import {
   CONNECTOR_LABEL,
@@ -360,7 +361,7 @@ export default function AssistantHome() {
                     : "border border-[var(--line)] bg-[var(--bg-panel)] text-[var(--text)]"
                 }`}
               >
-                {m.text}
+                {m.role === "assistant" ? renderRichText(m.text) : m.text}
               </div>
             </div>
           ))}
