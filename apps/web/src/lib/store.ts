@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHmac, randomBytes } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { AgentState, ChatMessage } from "@miai/runtime";
@@ -20,10 +20,16 @@ function embedSecret(): string {
   return s;
 }
 
-/** Deterministic, stateless embed key: survives redeploys, needs no storage. */
-export function embedKeyFor(workspaceId: string, agentId: string): string {
+/**
+ * Embed key: `mia_pk_<base64url(workspaceId::agentId)>_<hmac10>`. Deterministic when no
+ * per-agent `salt` is set (legacy keys survive redeploys with no storage). Once a salt is
+ * assigned (via rotateEmbedKey), the HMAC folds it in, so the previous key stops verifying —
+ * that is what makes rotation/revocation possible without a global secret change.
+ */
+export function embedKeyFor(workspaceId: string, agentId: string, salt?: string): string {
   const id = Buffer.from(`${workspaceId}::${agentId}`, "utf8").toString("base64url");
-  const mac = createHmac("sha256", embedSecret()).update(id).digest("hex").slice(0, 10);
+  const macInput = salt ? `${id}.${salt}` : id;
+  const mac = createHmac("sha256", embedSecret()).update(macInput).digest("hex").slice(0, 10);
   return `mia_pk_${id}_${mac}`;
 }
 
@@ -36,6 +42,12 @@ export interface WorkspaceAgent {
   knowledge: string;
   tier: RentTier;
   publicKey: string;
+  /** Per-agent embed-key salt; present once the key has been rotated. */
+  embedSalt?: string;
+  /** When true, every embed/app request using this agent's key is rejected. */
+  embedRevoked?: boolean;
+  /** When non-empty, embed/app requests must originate from one of these domains. */
+  approvedDomains?: string[];
   bindings: ToolBinding[];
   connectedConnectors: string[];
   messages: ChatMessage[];
@@ -455,28 +467,133 @@ export async function upsertWorkspaceAgent(
   return next;
 }
 
-export function resolveEmbedKey(publicKey: string): { workspaceId: string; agentId: string } | null {
+/** Parse `mia_pk_<id>_<mac10>` with string ops (no ambiguous/backtracking regex on attacker input). */
+function parseEmbedKey(publicKey: string): { id: string; mac: string } | null {
+  const prefix = "mia_pk_";
+  if (!publicKey.startsWith(prefix)) return null;
+  const rest = publicKey.slice(prefix.length);
+  const us = rest.lastIndexOf("_");
+  if (us <= 0) return null;
+  const id = rest.slice(0, us);
+  const mac = rest.slice(us + 1);
+  if (!/^[a-f0-9]{10}$/.test(mac) || !/^[A-Za-z0-9_-]+$/.test(id)) return null;
+  return { id, mac };
+}
+
+function decodeEmbedId(id: string): { workspaceId: string; agentId: string } | null {
+  const decoded = Buffer.from(id, "base64url").toString("utf8");
+  const sep = decoded.indexOf("::");
+  if (sep <= 0) return null;
+  return { workspaceId: decoded.slice(0, sep), agentId: decoded.slice(sep + 2) };
+}
+
+export async function resolveEmbedKey(
+  publicKey: string,
+): Promise<{ workspaceId: string; agentId: string } | null> {
   // Demo keys are local-only — never accept in production.
   if (/_demo$/i.test(publicKey) && process.env.NODE_ENV === "production") {
     return null;
   }
-  const m = /^mia_pk_([A-Za-z0-9_-]+)_([a-f0-9]{10})$/.exec(publicKey);
-  if (m) {
-    const [, id, mac] = m;
-    const expected = createHmac("sha256", embedSecret()).update(id).digest("hex").slice(0, 10);
-    if (mac === expected) {
-      const decoded = Buffer.from(id, "base64url").toString("utf8");
-      const sep = decoded.indexOf("::");
-      if (sep > 0) {
-        return { workspaceId: decoded.slice(0, sep), agentId: decoded.slice(sep + 2) };
-      }
-    }
+  // Store-aware: a rotated agent verifies against its salt, and a revoked agent is rejected.
+  await ensureStoreHydrated();
+  const parsed = parseEmbedKey(publicKey);
+  const decoded = parsed ? decodeEmbedId(parsed.id) : null;
+  if (parsed && decoded) {
+    const agent = store().workspaces.get(decoded.workspaceId)?.agents.get(decoded.agentId);
+    if (agent?.embedRevoked) return null;
+    const macInput = agent?.embedSalt ? `${parsed.id}.${agent.embedSalt}` : parsed.id;
+    const expected = createHmac("sha256", embedSecret()).update(macInput).digest("hex").slice(0, 10);
+    // A rotated agent (salt set) will not match the legacy unsalted key, which is the point.
+    if (parsed.mac === expected) return decoded;
   }
+  // Legacy fallback: explicitly stored keys (still honour revocation).
   for (const [workspaceId, rec] of store().workspaces) {
     const agentId = rec.embedKeys.get(publicKey);
-    if (agentId) return { workspaceId, agentId };
+    if (agentId) {
+      if (rec.agents.get(agentId)?.embedRevoked) return null;
+      return { workspaceId, agentId };
+    }
   }
   return null;
+}
+
+/** Rotate an agent's embed key: assigns a fresh salt so the old key stops verifying. */
+export async function rotateEmbedKey(
+  workspaceId: string,
+  agentId: string,
+): Promise<WorkspaceAgent | null> {
+  await ensureStoreHydrated();
+  const rec = store().workspaces.get(workspaceId);
+  const agent = rec?.agents.get(agentId);
+  if (!rec || !agent) return null;
+  rec.embedKeys.delete(agent.publicKey);
+  const salt = randomBytes(12).toString("base64url");
+  return upsertWorkspaceAgent(workspaceId, agentId, {
+    embedSalt: salt,
+    embedRevoked: false,
+    publicKey: embedKeyFor(workspaceId, agentId, salt),
+  });
+}
+
+/** Revoke (or un-revoke) an agent's embed key without changing it. */
+export async function setEmbedRevoked(
+  workspaceId: string,
+  agentId: string,
+  revoked: boolean,
+): Promise<WorkspaceAgent | null> {
+  await ensureStoreHydrated();
+  if (!store().workspaces.get(workspaceId)?.agents.get(agentId)) return null;
+  return upsertWorkspaceAgent(workspaceId, agentId, { embedRevoked: revoked });
+}
+
+/** Set the approved embed domains for an agent (empty = no restriction). */
+export async function setEmbedApprovedDomains(
+  workspaceId: string,
+  agentId: string,
+  domains: string[],
+): Promise<WorkspaceAgent | null> {
+  await ensureStoreHydrated();
+  if (!store().workspaces.get(workspaceId)?.agents.get(agentId)) return null;
+  return upsertWorkspaceAgent(workspaceId, agentId, {
+    approvedDomains: normalizeDomains(domains),
+  });
+}
+
+function normalizeDomains(domains: string[]): string[] {
+  return domains
+    .map((d) => d.trim().toLowerCase().replace(/^https?:\/\//, "").split("/")[0])
+    .filter(Boolean);
+}
+
+function hostOf(u?: string | null): string | null {
+  if (!u) return null;
+  try {
+    return new URL(u).host.toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Server-side origin check for embed/app requests. Returns true when the request's Origin
+ * (or Referer) host matches one of the approved domains. A missing/unparseable origin is
+ * rejected — that is the point of the lock: a non-browser client that lifts a public key
+ * cannot satisfy it. Supports exact hosts and `*.example.com` wildcards.
+ */
+export function originAllowed(
+  origin: string | null | undefined,
+  referer: string | null | undefined,
+  approvedDomains: string[],
+): boolean {
+  const host = hostOf(origin) ?? hostOf(referer);
+  if (!host) return false;
+  return normalizeDomains(approvedDomains).some((pat) => {
+    if (pat.startsWith("*.")) {
+      const base = pat.slice(2);
+      return host === base || host.endsWith(`.${base}`);
+    }
+    return host === pat;
+  });
 }
 
 export async function appendAudit(event: Omit<AuditEvent, "id" | "at">): Promise<AuditEvent> {

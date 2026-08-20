@@ -38,6 +38,8 @@ export async function handleEmbedChatPost(req: Request): Promise<NextResponse> {
     sessionId: body.sessionId,
     replyLanguage: body.replyLanguage,
     correlationId,
+    origin: req.headers.get("origin") ?? undefined,
+    referer: req.headers.get("referer") ?? undefined,
     rateLimitOk: limited.ok,
     rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
   });

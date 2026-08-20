@@ -8,7 +8,12 @@ import {
 } from "@/lib/chat-languages";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { redisAvailable, redisGet, redisSet } from "@/lib/redis";
-import { getWorkspaceAgent, resolveEmbedKey, upsertWorkspaceAgent } from "@/lib/store";
+import {
+  getWorkspaceAgent,
+  originAllowed,
+  resolveEmbedKey,
+  upsertWorkspaceAgent,
+} from "@/lib/store";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 export type ChannelKind = "embed" | "app";
@@ -125,6 +130,9 @@ type ChannelTurnInput = {
   correlationId?: string;
   rateLimitOk: boolean;
   rateLimitRetryAfterSec?: number;
+  /** Request Origin / Referer, used to enforce per-agent domain locking (when configured). */
+  origin?: string;
+  referer?: string;
   onDelta?: (text: string) => void;
   onToolStart?: () => void;
 };
@@ -151,7 +159,7 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
     };
   }
 
-  const resolved = resolveEmbedKey(input.key);
+  const resolved = await resolveEmbedKey(input.key);
   if (!resolved) return { ok: false, status: 401, error: "Invalid key" };
 
   const { workspaceId, agentId } = resolved;
@@ -165,6 +173,21 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
       status: 403,
       error: `Agent not published for ${input.channel}`,
       detail: "Rent and go live from Agent Studio before deploying this channel.",
+    };
+  }
+
+  // Per-tenant domain lock (opt-in): when the agent has approved domains, the request must
+  // originate from one of them. CORS only constrains browsers; this rejects non-browser
+  // callers that lifted the public key. No approved domains = unrestricted (backward-compatible).
+  if (
+    rental.approvedDomains?.length &&
+    !originAllowed(input.origin, input.referer, rental.approvedDomains)
+  ) {
+    return {
+      ok: false,
+      status: 403,
+      error: "Origin not allowed for this agent",
+      detail: "This agent's embed is locked to approved domains.",
     };
   }
 
