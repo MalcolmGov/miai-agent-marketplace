@@ -36,7 +36,10 @@ after(async () => {
 
 describe("consumer connector needs + allowlist", () => {
   it("derives the OAuth connectors the personal assistant needs", () => {
-    assert.deepEqual([...cc.consumerOAuthConnectors()].sort(), ["email", "google_calendar"]);
+    assert.deepEqual(
+      [...cc.consumerOAuthConnectors()].sort(),
+      ["email", "google_calendar", "google_contacts", "google_drive", "google_tasks"],
+    );
   });
 
   it("allows only OAuth connectors a consumer agent actually uses", () => {
