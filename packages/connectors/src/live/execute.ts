@@ -1716,6 +1716,23 @@ function handleInternalAssistantTool(call: ConnectorCall): ConnectorResult | nul
     stubbed: true,
   });
 
+  // Order matters: "remember_person" also contains "remember", so people/goals are matched first.
+  if (n.includes("person") || n.includes("contact")) {
+    const name = String(a.name ?? a.person ?? a.who ?? "").trim();
+    return wrap({
+      saved: Boolean(name),
+      name,
+      note: "Noted — I'll remember them.",
+    });
+  }
+  if (n.includes("goal")) {
+    const title = String(a.title ?? a.goal ?? a.name ?? "").trim();
+    return wrap({
+      saved: Boolean(title),
+      title,
+      note: "Got it — I'll keep track of that goal.",
+    });
+  }
   if (n.includes("remember")) {
     const fact = String(a.fact ?? a.note ?? a.text ?? a.value ?? "").trim();
     return wrap({

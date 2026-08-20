@@ -140,6 +140,8 @@ const personalAssistant = (
   { tool: "create_playlist", connector: "spotify" },
   { tool: "web_research", connector: "web_search" },
   { tool: "remember_about_me", connector: "webhook" },
+  { tool: "set_goal", connector: "webhook" },
+  { tool: "remember_person", connector: "webhook" },
 ];
 
 /** Explicit hand overrides — win over generated presets (production marketplace). */

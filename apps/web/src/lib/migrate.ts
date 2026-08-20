@@ -10,6 +10,7 @@ const MIGRATIONS: Migration[] = [
   { id: "001_init", file: "001_init.sql" },
   { id: "002_consumer_brief", file: "002_consumer_brief.sql" },
   { id: "003_consumer_memory", file: "003_consumer_memory.sql" },
+  { id: "004_memory_tenant_and_graph", file: "004_memory_tenant_and_graph.sql" },
 ];
 
 let ensuring: Promise<void> | undefined;

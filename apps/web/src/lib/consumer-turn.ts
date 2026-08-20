@@ -9,7 +9,13 @@ import {
 import { createSessionStore } from "@/lib/channel-sessions";
 import { DEFAULT_CONSUMER_AGENT, isConsumerAgent } from "@/lib/consumer";
 import { getComposedKnowledge } from "@/lib/knowledge";
-import { getMemoryContext, rememberFact } from "@/lib/consumer-memory-store";
+import { getMemoryContext, rememberFact, type MemoryOwner } from "@/lib/consumer-memory-store";
+import {
+  getGoalsContext,
+  getPeopleContext,
+  rememberPerson,
+  setGoal,
+} from "@/lib/consumer-lifegraph-store";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 /**
@@ -56,6 +62,8 @@ export type ConsumerTurnErr = {
 export type ConsumerTurnResult = ConsumerTurnOk | ConsumerTurnErr;
 
 export type ConsumerTurnInput = {
+  /** Brand/workspace the consumer belongs to (auth.workspaceId) — the memory tenant boundary. */
+  tenantId: string;
   /** Authenticated consumer identity (for audit + session scoping). */
   consumerId: string;
   /** Wallet the turn debits — from walletIdForConsumer(auth). */
@@ -128,10 +136,17 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
     ? input.replyLanguage
     : "en";
   const langAppend = replyLanguage !== "en" ? replyLanguageSystemAppend(replyLanguage) : "";
-  // Durable memory: fold what we've been asked to remember about this consumer into the system
-  // prompt, relevance-ranked against their message, so the assistant carries facts across sessions.
-  const memoryAppend = await getMemoryContext(input.consumerId, input.message);
-  const systemAppend = [langAppend, memoryAppend].filter(Boolean).join("\n\n");
+  // Durable memory (tenant-scoped): fold what we know about this consumer — facts, goals, and the
+  // people in their life — into the system prompt, so the assistant carries it across sessions.
+  const owner: MemoryOwner = { tenantId: input.tenantId, consumerId: input.consumerId };
+  const [memoryAppend, goalsAppend, peopleAppend] = await Promise.all([
+    getMemoryContext(owner, input.message),
+    getGoalsContext(owner),
+    getPeopleContext(owner),
+  ]);
+  const systemAppend = [langAppend, memoryAppend, goalsAppend, peopleAppend]
+    .filter(Boolean)
+    .join("\n\n");
 
   return {
     ok: true,
@@ -152,24 +167,66 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
   };
 }
 
+function str(v: unknown): string {
+  return typeof v === "string" ? v : v == null ? "" : String(v);
+}
+
+function num(v: unknown): number | undefined {
+  if (typeof v === "number") return v;
+  if (typeof v === "string") {
+    const n = parseInt(v, 10);
+    return Number.isNaN(n) ? undefined : n;
+  }
+  return undefined;
+}
+
 /**
- * Persist any facts the assistant chose to remember this turn. The remember_about_me tool runs in
- * the runtime/connectors layer, which can't reach the app-layer store — so we durably record it
- * here from the turn's tool calls. Best-effort: a memory write must never fail the chat turn.
+ * Persist the durable-memory writes the assistant made this turn — facts, goals, and people. Those
+ * tools run in the runtime/connectors layer, which can't reach the app-layer stores, so we record
+ * them here from the turn's tool calls, scoped to (tenant, consumer). Best-effort: a memory write
+ * must never fail the chat turn. Order matters — remember_person also matches /remember/, so people
+ * and goals are checked before the generic fact branch.
  */
-async function persistRememberedFacts(
-  consumerId: string,
+async function persistMemoryWrites(
+  owner: MemoryOwner,
   toolCalls: Awaited<ReturnType<typeof runTurn>>["toolCalls"],
 ): Promise<void> {
-  if (!consumerId || !toolCalls?.length) return;
+  if (!owner.tenantId || !owner.consumerId || !toolCalls?.length) return;
   for (const call of toolCalls) {
-    if (!/remember/i.test(call.name)) continue;
+    const name = call.name.toLowerCase();
     const a = (call.args ?? {}) as Record<string, unknown>;
-    const content = String(a.fact ?? a.note ?? a.text ?? a.value ?? a.content ?? "").trim();
-    if (!content) continue;
-    const category = typeof a.category === "string" ? a.category : undefined;
     try {
-      await rememberFact(consumerId, { content, category, source: "assistant" });
+      if (/person|contact/.test(name)) {
+        const personName = str(a.name ?? a.person ?? a.who).trim();
+        if (personName) {
+          await rememberPerson(owner, {
+            name: personName,
+            relationship: str(a.relationship ?? a.relation ?? a.role) || undefined,
+            notes: str(a.notes ?? a.note ?? a.detail) || undefined,
+          });
+        }
+      } else if (/goal/.test(name)) {
+        const title = str(a.title ?? a.goal ?? a.name).trim();
+        if (title) {
+          await setGoal(owner, {
+            title,
+            detail: str(a.detail ?? a.description) || undefined,
+            target: str(a.target) || undefined,
+            progress: num(a.progress),
+            deadline: str(a.deadline ?? a.due) || undefined,
+            status: str(a.status) || undefined,
+          });
+        }
+      } else if (/remember/.test(name)) {
+        const content = str(a.fact ?? a.note ?? a.text ?? a.value ?? a.content).trim();
+        if (content) {
+          await rememberFact(owner, {
+            content,
+            category: typeof a.category === "string" ? a.category : undefined,
+            source: "assistant",
+          });
+        }
+      }
     } catch {
       /* best-effort — never fail a turn on a memory write */
     }
@@ -182,7 +239,10 @@ async function finalize(
   result: Awaited<ReturnType<typeof runTurn>>,
 ): Promise<ConsumerTurnOk> {
   await sessionStore.set(prepared.sessionKey, result.messages as ConsumerMessage[]);
-  await persistRememberedFacts(input.consumerId, result.toolCalls);
+  await persistMemoryWrites(
+    { tenantId: input.tenantId, consumerId: input.consumerId },
+    result.toolCalls,
+  );
 
   const correlationId = input.correlationId?.trim() || newCorrelationId();
   const agentId = prepared.turnInput.agentId;

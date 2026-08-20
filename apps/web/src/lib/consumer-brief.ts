@@ -1,5 +1,6 @@
 import { DEFAULT_CONSUMER_AGENT } from "@/lib/consumer";
 import { runConsumerTurn } from "@/lib/consumer-turn";
+import { WORKSPACE_ID } from "@/lib/constants";
 import {
   getBriefRecord,
   listBriefRecords,
@@ -62,6 +63,9 @@ export async function generateDailyBrief(consumerId: string, nowUtc: Date): Prom
   }
 
   const result = await runConsumerTurn({
+    // Brief schedules aren't tenant-scoped yet, so briefs run under the default consumer tenant.
+    // Correct for MyInstantAI-direct consumers; brand-specific brief tenancy is a follow-up.
+    tenantId: WORKSPACE_ID,
     consumerId,
     walletId: consumerId,
     agentId: DEFAULT_CONSUMER_AGENT,
