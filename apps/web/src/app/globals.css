@@ -223,6 +223,17 @@ body::before {
   background: linear-gradient(180deg, var(--accent-bright), var(--accent));
 }
 
+/*
+ * Brand accents are fixed hues (a light yellow, a bright red) that don't adapt to the light theme,
+ * so a brand accent used as TEXT can fall below readable contrast. Inside a branded scope keep the
+ * accent in fills, borders and tints and let text stay on the theme's neutral colour.
+ */
+.brand-scope .chip-live {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
 .btn-ghost {
   border: 1px solid var(--line-strong);
   color: var(--text);
