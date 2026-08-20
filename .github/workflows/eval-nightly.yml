@@ -27,13 +27,34 @@ jobs:
       - name: Full eval suite (mock runtime)
         run: pnpm eval:suite
 
+  # The `secrets` context is NOT allowed in a job- or step-level `if:` — GitHub fails to
+  # evaluate the whole workflow when it is, which is why every prior run errored and the
+  # live jobs never ran. Read the secret into an env var inside a `run` step (that IS
+  # allowed) and expose a boolean output; the live jobs gate on that output instead.
+  preflight:
+    name: preflight
+    runs-on: ubuntu-latest
+    outputs:
+      has_anthropic: ${{ steps.check.outputs.has_anthropic }}
+    steps:
+      - id: check
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$ANTHROPIC_API_KEY" ]; then
+            echo "has_anthropic=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_anthropic=false" >> "$GITHUB_OUTPUT"
+            echo "ANTHROPIC_API_KEY not set — skipping live-LLM jobs (mock nightly still runs)."
+          fi
+
   # Optional live-LLM matrix — runs only when ANTHROPIC_API_KEY is configured.
   # Does not fail the workflow (continue-on-error) so nightly mock eval stays authoritative.
   live-llm-matrix:
     name: live-llm-matrix
     runs-on: ubuntu-latest
-    needs: eval-nightly
-    if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    needs: [eval-nightly, preflight]
+    if: ${{ needs.preflight.outputs.has_anthropic == 'true' }}
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -64,8 +85,8 @@ jobs:
   eval-live-sample:
     name: eval-live-sample
     runs-on: ubuntu-latest
-    needs: eval-nightly
-    if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    needs: [eval-nightly, preflight]
+    if: ${{ needs.preflight.outputs.has_anthropic == 'true' }}
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4

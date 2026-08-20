@@ -1,0 +1,49 @@
+name: Publish image
+
+# Builds the app container from the repo Dockerfile and pushes it to GHCR so there is an
+# image to deploy to Azure Container Apps. Runs on main pushes, version tags, and manually.
+# The published image is PRIVATE by default — the Azure deploy pulls it using the Bicep
+# registryServer/registryUsername/registryPassword params (a GHCR PAT with read:packages),
+# or make the GHCR package public and leave those params empty.
+#
+# Uses the docker CLI (pre-installed on the runner) rather than the docker/* marketplace
+# actions, so there are no unpinned third-party actions to vet.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push image to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Docker repository paths must be lowercase; GITHUB_REPOSITORY preserves owner case.
+          image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          sha_tag="sha-${GITHUB_SHA}"
+          ref_tag="$(printf '%s' "${GITHUB_REF_NAME}" | tr '/' '-')"
+
+          echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
+
+          docker build -t "${image}:${sha_tag}" -t "${image}:${ref_tag}" .
+          docker push "${image}:${sha_tag}"
+          docker push "${image}:${ref_tag}"
+
+          # Move the `latest` tag only on the default branch.
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            docker tag "${image}:${sha_tag}" "${image}:latest"
+            docker push "${image}:latest"
+          fi

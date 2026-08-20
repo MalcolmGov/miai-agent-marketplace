@@ -66,11 +66,13 @@ Prefer a **stable** hostname (e.g. `agents.myinstantai.com` via Front Door) from
 - [ ] Wallet HTTP debit/balance smoke with real API key
 - [ ] Model gateway tool-calling smoke (`MIAI_MODEL_MODE=gateway`)
 - [ ] Azure RG ready; `az deployment group create` permissions confirmed
-- [ ] Container image pushed (ACR or GHCR) and `containerImage` param set
+- [ ] Container image published (`.github/workflows/publish-image.yml` → GHCR, or ACR) and `containerImage` param set; for a private image also set `registryServer` / `registryUsername` / `registryPassword`
 - [ ] `DATABASE_URL` points at Azure Postgres (or MIAI-owned store)
 - [ ] Custom hostname decided (`APP_BASE_URL` / `NEXT_PUBLIC_APP_URL`) — use this in native configs
 - [ ] OAuth apps updated with `https://<azure-host>/api/oauth/callback` (keep Railway URI until cutover)
-- [ ] Key Vault secrets populated (wallet, model, OAuth clients, `OAUTH_TOKEN_SECRET`)
+- [ ] Key Vault secrets populated (wallet, model); connector OAuth client id/secret pairs + `WEBHOOK_SINK_SECRET` / `MCP_SINK_TOKEN` passed as Bicep params (empty ones are simply not wired — that connector stays unconfigured)
+- [ ] Scale: `maxReplicas` stays 1 until Redis is provisioned (chat sessions + rate limits are per-replica otherwise)
+- [ ] Signing secrets generated once, stored, and passed to the deploy (`oauthTokenSecretParam`, `oauthStateSecretParam`, `embedKeySecretParam`, each >=32 chars) — reuse the same values on every deploy
 - [ ] App Insights connection string wired (`APPLICATIONINSIGHTS_CONNECTION_STRING`)
 
 ### Native apps (Phases 2–3)
@@ -89,6 +91,15 @@ Prefer a **stable** hostname (e.g. `agents.myinstantai.com` via Front Door) from
 # From repo root
 az group create -n miai-agents-rg -l eastus
 
+# Generate the three signing secrets ONCE and store them (password manager / pipeline secret).
+# They are required (>=32 chars) and must be REUSED on every subsequent deploy — rotating them
+# invalidates existing embed keys and sessions. The template no longer auto-generates them,
+# because a short/deterministic secret both crash-loops the app (boot-hardening floor) and
+# makes embed keys forgeable.
+OAUTH_TOKEN_SECRET=$(openssl rand -hex 24)
+OAUTH_STATE_SECRET=$(openssl rand -hex 24)
+EMBED_KEY_SECRET=$(openssl rand -hex 24)
+
 az deployment group create \
   -g miai-agents-rg \
   -f infra/azure/main.bicep \
@@ -99,7 +110,10 @@ az deployment group create \
        walletApiUrl='https://...' \
        walletApiKey='***' \
        modelGatewayUrl='https://...' \
-       modelGatewayKey='***'
+       modelGatewayKey='***' \
+       oauthTokenSecretParam="$OAUTH_TOKEN_SECRET" \
+       oauthStateSecretParam="$OAUTH_STATE_SECRET" \
+       embedKeySecretParam="$EMBED_KEY_SECRET"
 ```
 
 Record outputs: `containerAppFqdn`, `postgresFqdn`, `keyVaultName`, `appInsightsConnectionString`.
