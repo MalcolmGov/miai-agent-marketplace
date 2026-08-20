@@ -13,6 +13,9 @@ export type OAuthConnectorId = Extract<
   | "quickbooks"
   | "calendly"
   | "zendesk"
+  | "google_tasks"
+  | "google_contacts"
+  | "google_drive"
 >;
 
 export interface OAuthStartContext {
@@ -97,6 +100,43 @@ export const OAUTH_PROVIDERS: Record<OAuthConnectorId, OAuthProvider> = {
       ctx.emailProvider === "microsoft"
         ? "https://login.microsoftonline.com/common/oauth2/v2.0/token"
         : "https://oauth2.googleapis.com/token",
+    extraAuthParams: { access_type: "offline", prompt: "consent" },
+  },
+  google_tasks: {
+    id: "google_tasks",
+    name: "Google Tasks",
+    clientIdEnv: "GOOGLE_OAUTH_CLIENT_ID",
+    clientSecretEnv: "GOOGLE_OAUTH_CLIENT_SECRET",
+    scopes: ["https://www.googleapis.com/auth/tasks", "openid", "email"],
+    pkce: true,
+    authStyle: "body",
+    authorizeUrl: () => "https://accounts.google.com/o/oauth2/v2/auth",
+    tokenUrl: () => "https://oauth2.googleapis.com/token",
+    extraAuthParams: { access_type: "offline", prompt: "consent" },
+  },
+  google_contacts: {
+    id: "google_contacts",
+    name: "Google Contacts",
+    clientIdEnv: "GOOGLE_OAUTH_CLIENT_ID",
+    clientSecretEnv: "GOOGLE_OAUTH_CLIENT_SECRET",
+    scopes: ["https://www.googleapis.com/auth/contacts.readonly", "openid", "email"],
+    pkce: true,
+    authStyle: "body",
+    authorizeUrl: () => "https://accounts.google.com/o/oauth2/v2/auth",
+    tokenUrl: () => "https://oauth2.googleapis.com/token",
+    extraAuthParams: { access_type: "offline", prompt: "consent" },
+  },
+  google_drive: {
+    id: "google_drive",
+    name: "Google Drive",
+    clientIdEnv: "GOOGLE_OAUTH_CLIENT_ID",
+    clientSecretEnv: "GOOGLE_OAUTH_CLIENT_SECRET",
+    // drive.readonly is a Google restricted scope (verification needed for GA; test users work now).
+    scopes: ["https://www.googleapis.com/auth/drive.readonly", "openid", "email"],
+    pkce: true,
+    authStyle: "body",
+    authorizeUrl: () => "https://accounts.google.com/o/oauth2/v2/auth",
+    tokenUrl: () => "https://oauth2.googleapis.com/token",
     extraAuthParams: { access_type: "offline", prompt: "consent" },
   },
   m365_calendar: {

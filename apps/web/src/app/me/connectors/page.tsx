@@ -20,6 +20,21 @@ const META: Record<string, { name: string; desc: string; icon: string }> = {
     desc: "Lets your assistant see what's on and create or move events you confirm.",
     icon: "📅",
   },
+  google_tasks: {
+    name: "Google Tasks",
+    desc: "Lets your assistant keep your to-do list in Google Tasks — add, list and complete tasks.",
+    icon: "✅",
+  },
+  google_contacts: {
+    name: "Google Contacts",
+    desc: "Lets your assistant look up people by name so it emails or messages the right person.",
+    icon: "👤",
+  },
+  google_drive: {
+    name: "Google Drive",
+    desc: "Lets your assistant find and read your files and documents. Read-only.",
+    icon: "📁",
+  },
 };
 
 function labelFor(connector: string) {
