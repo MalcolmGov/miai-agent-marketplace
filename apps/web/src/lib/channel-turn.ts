@@ -6,8 +6,8 @@ import {
   replyLanguageSystemAppend,
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
+import { createSessionStore } from "@/lib/channel-sessions";
 import { getComposedKnowledge } from "@/lib/knowledge";
-import { redisAvailable, redisGet, redisSet } from "@/lib/redis";
 import {
   getWorkspaceAgent,
   originAllowed,
@@ -73,7 +73,7 @@ const g = globalThis as typeof globalThis & {
   __miaiChannelSessions?: Map<ChannelKind, SessionBag>;
 };
 
-function sessionsFor(channel: ChannelKind): SessionBag {
+function bagFor(channel: ChannelKind): SessionBag {
   if (!g.__miaiChannelSessions) g.__miaiChannelSessions = new Map();
   let map = g.__miaiChannelSessions.get(channel);
   if (!map) {
@@ -83,24 +83,17 @@ function sessionsFor(channel: ChannelKind): SessionBag {
   return map;
 }
 
-const MAX_SESSIONS = 500;
-const MAX_TURNS_KEPT = 24;
-const SESSION_TTL_SEC = 24 * 60 * 60;
+// One store per channel keeps each channel's in-process bag (and eviction cap) independent,
+// while the redis-backed history + trimming/TTL live once in createSessionStore.
+function storeFor(channel: ChannelKind) {
+  return createSessionStore<ChannelMessage>({ redisPrefix: "miai:chan:", bag: bagFor(channel) });
+}
 
 async function getChannelHistory(
   channel: ChannelKind,
   sessionKey: string,
 ): Promise<ChannelMessage[]> {
-  if (redisAvailable()) {
-    const raw = await redisGet(`miai:chan:${sessionKey}`);
-    if (!raw) return [];
-    try {
-      return JSON.parse(raw) as ChannelMessage[];
-    } catch {
-      return [];
-    }
-  }
-  return sessionsFor(channel).get(sessionKey) ?? [];
+  return storeFor(channel).get(sessionKey);
 }
 
 async function setChannelHistory(
@@ -108,17 +101,7 @@ async function setChannelHistory(
   sessionKey: string,
   messages: ChannelMessage[],
 ): Promise<void> {
-  const trimmed = messages.slice(-MAX_TURNS_KEPT);
-  if (redisAvailable()) {
-    await redisSet(`miai:chan:${sessionKey}`, JSON.stringify(trimmed), SESSION_TTL_SEC);
-    return;
-  }
-  const store = sessionsFor(channel);
-  if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
-    const oldest = store.keys().next().value;
-    if (oldest) store.delete(oldest);
-  }
-  store.set(sessionKey, trimmed);
+  await storeFor(channel).set(sessionKey, messages);
 }
 
 type ChannelTurnInput = {

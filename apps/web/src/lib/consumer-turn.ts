@@ -6,9 +6,9 @@ import {
   replyLanguageSystemAppend,
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
+import { createSessionStore } from "@/lib/channel-sessions";
 import { DEFAULT_CONSUMER_AGENT, isConsumerAgent } from "@/lib/consumer";
 import { getComposedKnowledge } from "@/lib/knowledge";
-import { redisAvailable, redisGet, redisSet } from "@/lib/redis";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 /**
@@ -70,46 +70,19 @@ export type ConsumerTurnInput = {
   onToolStart?: () => void;
 };
 
-// ---- session memory (redis when available, else in-process; mirrors channel-turn) ----
+// ---- session memory (shared store: redis when available, else in-process) ----
 
-type SessionBag = Map<string, ConsumerMessage[]>;
-const g = globalThis as typeof globalThis & { __miaiConsumerSessions?: SessionBag };
+const g = globalThis as typeof globalThis & {
+  __miaiConsumerSessions?: Map<string, ConsumerMessage[]>;
+};
+const consumerBag: Map<string, ConsumerMessage[]> =
+  g.__miaiConsumerSessions ?? (g.__miaiConsumerSessions = new Map());
 
-function sessions(): SessionBag {
-  if (!g.__miaiConsumerSessions) g.__miaiConsumerSessions = new Map();
-  return g.__miaiConsumerSessions;
-}
-
-const MAX_SESSIONS = 1000;
-const MAX_TURNS_KEPT = 24;
-const SESSION_TTL_SEC = 24 * 60 * 60;
-
-async function getHistory(sessionKey: string): Promise<ConsumerMessage[]> {
-  if (redisAvailable()) {
-    const raw = await redisGet(`miai:consumer:${sessionKey}`);
-    if (!raw) return [];
-    try {
-      return JSON.parse(raw) as ConsumerMessage[];
-    } catch {
-      return [];
-    }
-  }
-  return sessions().get(sessionKey) ?? [];
-}
-
-async function setHistory(sessionKey: string, messages: ConsumerMessage[]): Promise<void> {
-  const trimmed = messages.slice(-MAX_TURNS_KEPT);
-  if (redisAvailable()) {
-    await redisSet(`miai:consumer:${sessionKey}`, JSON.stringify(trimmed), SESSION_TTL_SEC);
-    return;
-  }
-  const store = sessions();
-  if (!store.has(sessionKey) && store.size >= MAX_SESSIONS) {
-    const oldest = store.keys().next().value;
-    if (oldest) store.delete(oldest);
-  }
-  store.set(sessionKey, trimmed);
-}
+const sessionStore = createSessionStore<ConsumerMessage>({
+  redisPrefix: "miai:consumer:",
+  bag: consumerBag,
+  maxSessions: 1000,
+});
 
 // ---- turn ----
 
@@ -148,7 +121,7 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
   const knowledgeOverride = await getComposedKnowledge(input.walletId, agentId, pkg.knowledge);
 
   const sessionKey = `${input.walletId}::${agentId}::${input.sessionId ?? "default"}`;
-  const history = await getHistory(sessionKey);
+  const history = await sessionStore.get(sessionKey);
 
   const replyLanguage: ChatLanguageCode = isChatLanguage(input.replyLanguage)
     ? input.replyLanguage
@@ -179,7 +152,7 @@ async function finalize(
   prepared: Prepared,
   result: Awaited<ReturnType<typeof runTurn>>,
 ): Promise<ConsumerTurnOk> {
-  await setHistory(prepared.sessionKey, result.messages as ConsumerMessage[]);
+  await sessionStore.set(prepared.sessionKey, result.messages as ConsumerMessage[]);
 
   const correlationId = input.correlationId?.trim() || newCorrelationId();
   const agentId = prepared.turnInput.agentId;
