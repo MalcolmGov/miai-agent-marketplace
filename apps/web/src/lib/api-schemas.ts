@@ -36,6 +36,14 @@ export const consumerChatBodySchema = z.object({
   correlationId: shortText.optional(),
 });
 
+// Consumer daily-brief schedule.
+export const briefConfigSchema = z.object({
+  enabled: z.boolean(),
+  hour: z.number().int().min(0).max(23),
+  timezone: z.string().min(1).max(64),
+  channel: z.enum(["app", "whatsapp", "email"]),
+});
+
 export const askChatBodySchema = z.object({
   message,
   sessionId: shortText.optional(),

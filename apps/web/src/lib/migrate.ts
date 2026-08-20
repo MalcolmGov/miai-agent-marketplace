@@ -3,7 +3,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getPool, query } from "@/lib/pg";
 
-const MIGRATION_ID = "001_init";
+type Migration = { id: string; file: string };
+
+/** Ordered schema migrations. Each is applied once and recorded in miai_schema_migrations. */
+const MIGRATIONS: Migration[] = [
+  { id: "001_init", file: "001_init.sql" },
+  { id: "002_consumer_brief", file: "002_consumer_brief.sql" },
+];
 
 let ensuring: Promise<void> | undefined;
 let applied = false;
@@ -22,24 +28,22 @@ function splitStatements(sql: string): string[] {
     .filter(Boolean);
 }
 
-/** Resolve 001_init.sql whether cwd is apps/web or the monorepo root. */
-async function readMigrationSql(): Promise<string> {
+/** Resolve a migration file whether cwd is apps/web or the monorepo root. */
+async function readMigrationSql(file: string): Promise<string> {
   const here = path.dirname(fileURLToPath(import.meta.url));
   const candidates = [
-    path.resolve(process.cwd(), "migrations", "001_init.sql"),
-    path.resolve(process.cwd(), "apps/web/migrations", "001_init.sql"),
-    path.resolve(here, "../../migrations/001_init.sql"),
+    path.resolve(process.cwd(), "migrations", file),
+    path.resolve(process.cwd(), "apps/web/migrations", file),
+    path.resolve(here, "../../migrations", file),
   ];
-  for (const file of candidates) {
+  for (const candidate of candidates) {
     try {
-      return await fs.readFile(file, "utf8");
+      return await fs.readFile(candidate, "utf8");
     } catch {
       /* try next */
     }
   }
-  throw new Error(
-    `[migrate] could not find migrations/001_init.sql (cwd=${process.cwd()})`,
-  );
+  throw new Error(`[migrate] could not find migrations/${file} (cwd=${process.cwd()})`);
 }
 
 /** Apply pending schema migrations when a Postgres pool is available. Idempotent. */
@@ -57,23 +61,20 @@ export async function ensureMigrations(): Promise<void> {
       )
     `);
 
-    const existing = await query<{ id: string }>(
-      "SELECT id FROM miai_schema_migrations WHERE id = $1",
-      [MIGRATION_ID],
-    );
-    if (existing.rows.length > 0) {
-      applied = true;
-      return;
-    }
+    const existing = await query<{ id: string }>("SELECT id FROM miai_schema_migrations");
+    const done = new Set(existing.rows.map((r) => r.id));
 
-    const sql = await readMigrationSql();
-    for (const stmt of splitStatements(sql)) {
-      await query(stmt);
+    for (const migration of MIGRATIONS) {
+      if (done.has(migration.id)) continue;
+      const sql = await readMigrationSql(migration.file);
+      for (const stmt of splitStatements(sql)) {
+        await query(stmt);
+      }
+      await query(
+        "INSERT INTO miai_schema_migrations (id) VALUES ($1) ON CONFLICT (id) DO NOTHING",
+        [migration.id],
+      );
     }
-
-    await query("INSERT INTO miai_schema_migrations (id) VALUES ($1) ON CONFLICT (id) DO NOTHING", [
-      MIGRATION_ID,
-    ]);
     applied = true;
   })();
 

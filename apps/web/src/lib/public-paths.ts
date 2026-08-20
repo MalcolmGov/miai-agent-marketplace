@@ -23,6 +23,8 @@ const PUBLIC_EXACT = new Set([
   "/api/consent",
   "/api/auth/handoff",
   "/api/v1/openapi",
+  // Cron sweep for consumer daily briefs — authenticated by CRON_SECRET in the route, not OIDC.
+  "/api/consumer/brief/run-due",
 ]);
 
 const PUBLIC_PREFIXES = [
