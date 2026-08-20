@@ -10,6 +10,7 @@ import { createSessionStore } from "@/lib/channel-sessions";
 import { DEFAULT_CONSUMER_AGENT, isConsumerAgent } from "@/lib/consumer";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { getMemoryContext, rememberFact, type MemoryOwner } from "@/lib/consumer-memory-store";
+import { extractDurableFacts } from "@/lib/memory-extract";
 import {
   getGoalsContext,
   getPeopleContext,
@@ -233,16 +234,31 @@ async function persistMemoryWrites(
   }
 }
 
+/**
+ * Passively store durable self-facts the user revealed but didn't explicitly ask to keep (e.g.
+ * "I'm vegetarian", "I live in Lisbon"). High-precision heuristics, no extra model call, so the
+ * assistant remembers things it wasn't told to — the "feels smarter" half of memory. Best-effort.
+ */
+async function persistPassiveFacts(owner: MemoryOwner, message: string): Promise<void> {
+  if (!owner.tenantId || !owner.consumerId) return;
+  for (const fact of extractDurableFacts(message)) {
+    try {
+      await rememberFact(owner, { content: fact.content, category: fact.category, source: "auto" });
+    } catch {
+      /* best-effort — never fail a turn on a memory write */
+    }
+  }
+}
+
 async function finalize(
   input: ConsumerTurnInput,
   prepared: Prepared,
   result: Awaited<ReturnType<typeof runTurn>>,
 ): Promise<ConsumerTurnOk> {
   await sessionStore.set(prepared.sessionKey, result.messages as ConsumerMessage[]);
-  await persistMemoryWrites(
-    { tenantId: input.tenantId, consumerId: input.consumerId },
-    result.toolCalls,
-  );
+  const owner: MemoryOwner = { tenantId: input.tenantId, consumerId: input.consumerId };
+  await persistMemoryWrites(owner, result.toolCalls);
+  await persistPassiveFacts(owner, input.message);
 
   const correlationId = input.correlationId?.trim() || newCorrelationId();
   const agentId = prepared.turnInput.agentId;
