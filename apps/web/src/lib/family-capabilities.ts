@@ -73,8 +73,10 @@ function cleanSummary(summary: string, name: string): string {
   // Drop the fictional example-tenant clause — "… for <Business> (<City>) —" — so the catalog
   // describes the role generically, not an agent built for one made-up company. Packs are resold
   // white-label across industries and markets; the runtime already personalises via {{business_name}},
-  // and only these display summaries carried the sample company name.
-  s = s.replace(/\s+for\s+[A-Z][^]*?\([^)]*\)(?=\s*[—–-])/, "");
+  // and only these display summaries carried the sample company name. The middle class excludes the
+  // separator dashes and "(", so it can't overlap the following group — a linear, backtracking-free
+  // match (no ReDoS).
+  s = s.replace(/\s+for\s+[A-Z][^—–(]*\([^)]*\)(?=\s*[—–-])/, "");
   s = s.replace(/^(US|EU|Asia|Africa|ZA|Oceania)\s*[—–-]\s*/i, "");
   const nameEsc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   s = s.replace(new RegExp(`^(?:${nameEsc}\\s*[—–-]\\s*)+`, "i"), "");

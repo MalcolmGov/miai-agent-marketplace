@@ -109,8 +109,9 @@ function cleanCardSummary(summary: string, name: string): string {
   // Drop trailing multi-step marketing clause (shown as a chip already)
   s = s.replace(/\s*Multi-step workflows?:.*$/i, "").trim();
   // Drop the fictional example-tenant clause — "… for <Business> (<City>) —" — so cards read as a
-  // generic role, not an agent built for one made-up company (packs are resold white-label).
-  s = s.replace(/\s+for\s+[A-Z][^]*?\([^)]*\)(?=\s*[—–-])/, "");
+  // generic role, not an agent built for one made-up company (packs are resold white-label). The
+  // middle class excludes the separator dashes and "(", so the match is linear / backtracking-free.
+  s = s.replace(/\s+for\s+[A-Z][^—–(]*\([^)]*\)(?=\s*[—–-])/, "");
   // Remove leading market labels
   s = s.replace(/^(US|EU|Asia|Africa|ZA)\s*[—–-]\s*/i, "");
   s = s.replace(/^(US|EU|Asia|Africa)\s+/i, "");
