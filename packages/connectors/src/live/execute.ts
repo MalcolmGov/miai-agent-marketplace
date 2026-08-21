@@ -1763,6 +1763,21 @@ function handleInternalAssistantTool(call: ConnectorCall): ConnectorResult | nul
       note: "Got it — I'll keep track of that goal.",
     });
   }
+  // Reminders are app-owned, not a calendar booking. When no calendar is connected this returns a
+  // success (rather than a "connect your calendar" stub) — the reminder is saved in-app (see
+  // consumer-turn persistReminderWrites). A connected calendar still creates the event upstream.
+  // "remind" never matches "remember" above.
+  if (n.includes("remind")) {
+    const text = String(a.text ?? a.summary ?? a.what ?? a.title ?? "").trim();
+    const when = String(a.when ?? a.datetime ?? a.time ?? a.date ?? "").trim();
+    return wrap({
+      set: Boolean(text && when),
+      text,
+      when,
+      channel: "app",
+      note: "Reminder saved — it will show in the user's app (their Reminders list and daily brief) at that time. Delivery is in-app for now: do not tell them you'll text, WhatsApp, or message them.",
+    });
+  }
   if (n.includes("remember")) {
     const fact = String(a.fact ?? a.note ?? a.text ?? a.value ?? "").trim();
     return wrap({

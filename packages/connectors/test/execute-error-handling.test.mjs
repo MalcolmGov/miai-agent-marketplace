@@ -41,4 +41,19 @@ describe("executeLive — webhook/mcp failures degrade gracefully", () => {
     assert.equal(result.stubbed, false);
     assert.match(String(result.data.error), /MCP endpoint missing/);
   });
+
+  it("set_reminder succeeds in-app when no calendar is connected (not a 'connect your calendar' stub)", async () => {
+    const result = await executeLive({
+      workspaceId: `test-ws-${Date.now()}`,
+      agentId: "personal-assistant",
+      tool: "set_reminder",
+      args: { text: "call the pharmacy", when: "at 5pm" },
+      binding: { tool: "set_reminder", connector: "google_calendar", config: {} },
+      mode: "live",
+    });
+    assert.equal(result.ok, true, "reminder succeeds without a calendar token");
+    assert.equal(result.data.set, true);
+    assert.match(String(result.data.note), /app|Reminders/i, "tells the user it's in-app");
+    assert.doesNotMatch(String(result.data._note ?? ""), /OAuth-connected/, "not the connect-first stub");
+  });
 });
