@@ -67,16 +67,29 @@ function extractJob(systemPrompt: string, fallback: string): string {
   return fallback;
 }
 
+/**
+ * Remove a fictional example-tenant clause — "… for <Business> (<City>) —" — from a display summary,
+ * so the catalog describes the role generically, not an agent built for one made-up company. Packs
+ * are resold white-label across industries and markets; the runtime already personalises via
+ * {{business_name}}, and only these display summaries carried the sample company name.
+ *
+ * The clause is the "for …(city)" that sits just before the first " — " separating the role from the
+ * description. Plain string scanning (no backtracking regex) keeps it linear.
+ */
+export function stripExampleTenant(s: string): string {
+  const sep = / [—–] /.exec(s);
+  if (!sep) return s;
+  const head = s.slice(0, sep.index);
+  const forIdx = head.search(/ for [A-Z]/);
+  if (forIdx === -1) return s;
+  if (!head.trimEnd().endsWith(")")) return s; // must end in a "(city)" parenthetical
+  return head.slice(0, forIdx) + s.slice(sep.index);
+}
+
 function cleanSummary(summary: string, name: string): string {
   let s = summary.replace(/\s+/g, " ").trim();
   s = s.replace(/\s*Multi-step workflows?:.*$/i, "").trim();
-  // Drop the fictional example-tenant clause — "… for <Business> (<City>) —" — so the catalog
-  // describes the role generically, not an agent built for one made-up company. Packs are resold
-  // white-label across industries and markets; the runtime already personalises via {{business_name}},
-  // and only these display summaries carried the sample company name. The middle class excludes the
-  // separator dashes and "(", so it can't overlap the following group — a linear, backtracking-free
-  // match (no ReDoS).
-  s = s.replace(/\s+for\s+[A-Z][^—–(]*\([^)]*\)(?=\s*[—–-])/, "");
+  s = stripExampleTenant(s);
   s = s.replace(/^(US|EU|Asia|Africa|ZA|Oceania)\s*[—–-]\s*/i, "");
   const nameEsc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   s = s.replace(new RegExp(`^(?:${nameEsc}\\s*[—–-]\\s*)+`, "i"), "");
