@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useT } from "@/lib/locale";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { sectorAccent } from "@/lib/sectors";
-import type { FamilyCapabilities } from "@/lib/family-capabilities";
+import { stripExampleTenant, type FamilyCapabilities } from "@/lib/family-capabilities";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
@@ -108,6 +108,9 @@ function cleanCardSummary(summary: string, name: string): string {
   let s = summary.replace(/\s+/g, " ").trim();
   // Drop trailing multi-step marketing clause (shown as a chip already)
   s = s.replace(/\s*Multi-step workflows?:.*$/i, "").trim();
+  // Drop the fictional example-tenant clause — "… for <Business> (<City>) —" — so cards read as a
+  // generic role, not an agent built for one made-up company (packs are resold white-label).
+  s = stripExampleTenant(s);
   // Remove leading market labels
   s = s.replace(/^(US|EU|Asia|Africa|ZA)\s*[—–-]\s*/i, "");
   s = s.replace(/^(US|EU|Asia|Africa)\s+/i, "");
@@ -118,8 +121,6 @@ function cleanCardSummary(summary: string, name: string): string {
     "i",
   );
   s = s.replace(repeat, "");
-  // Generic "Label — Label — rest"
-  s = s.replace(/^(?:[\w &/]+?\s*[—–-]\s*){2,}(?=[A-Za-z])/u, "");
   // If we still start with the card title, peel it once
   s = s.replace(new RegExp(`^${nameEsc}\\s*[—–-]\\s*`, "i"), "");
   s = s.replace(/^[\s—–-]+/, "").trim();
