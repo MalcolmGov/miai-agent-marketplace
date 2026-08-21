@@ -70,10 +70,17 @@ function extractJob(systemPrompt: string, fallback: string): string {
 function cleanSummary(summary: string, name: string): string {
   let s = summary.replace(/\s+/g, " ").trim();
   s = s.replace(/\s*Multi-step workflows?:.*$/i, "").trim();
+  // Drop the fictional example-tenant clause — "… for <Business> (<City>) —" — so the catalog
+  // describes the role generically, not an agent built for one made-up company. Packs are resold
+  // white-label across industries and markets; the runtime already personalises via {{business_name}},
+  // and only these display summaries carried the sample company name.
+  s = s.replace(/\s+for\s+[A-Z][^]*?\([^)]*\)(?=\s*[—–-])/, "");
   s = s.replace(/^(US|EU|Asia|Africa|ZA|Oceania)\s*[—–-]\s*/i, "");
   const nameEsc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   s = s.replace(new RegExp(`^(?:${nameEsc}\\s*[—–-]\\s*)+`, "i"), "");
-  s = s.replace(/^(?:[\w &/]+?\s*[—–-]\s*){2,}(?=[A-Za-z])/u, "");
+  // Collapse a repeated "Label — Label — rest" prefix. Separators are em/en dashes only — a plain
+  // hyphen must not count, or a role like "non-clinical …" would be mis-split and dropped.
+  s = s.replace(/^(?:[\w &/]+?\s*[—–]\s*){2,}(?=[A-Za-z])/u, "");
   s = s.replace(/^[\s—–-]+/, "").trim();
   if (s.length) s = s.charAt(0).toUpperCase() + s.slice(1);
   return s || summary;

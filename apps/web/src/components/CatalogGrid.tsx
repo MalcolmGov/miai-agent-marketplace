@@ -108,6 +108,9 @@ function cleanCardSummary(summary: string, name: string): string {
   let s = summary.replace(/\s+/g, " ").trim();
   // Drop trailing multi-step marketing clause (shown as a chip already)
   s = s.replace(/\s*Multi-step workflows?:.*$/i, "").trim();
+  // Drop the fictional example-tenant clause — "… for <Business> (<City>) —" — so cards read as a
+  // generic role, not an agent built for one made-up company (packs are resold white-label).
+  s = s.replace(/\s+for\s+[A-Z][^]*?\([^)]*\)(?=\s*[—–-])/, "");
   // Remove leading market labels
   s = s.replace(/^(US|EU|Asia|Africa|ZA)\s*[—–-]\s*/i, "");
   s = s.replace(/^(US|EU|Asia|Africa)\s+/i, "");
@@ -118,8 +121,9 @@ function cleanCardSummary(summary: string, name: string): string {
     "i",
   );
   s = s.replace(repeat, "");
-  // Generic "Label — Label — rest"
-  s = s.replace(/^(?:[\w &/]+?\s*[—–-]\s*){2,}(?=[A-Za-z])/u, "");
+  // Generic "Label — Label — rest" — em/en dashes only as separators, never a plain hyphen
+  // (else a role like "non-clinical …" gets mis-split and dropped).
+  s = s.replace(/^(?:[\w &/]+?\s*[—–]\s*){2,}(?=[A-Za-z])/u, "");
   // If we still start with the card title, peel it once
   s = s.replace(new RegExp(`^${nameEsc}\\s*[—–-]\\s*`, "i"), "");
   s = s.replace(/^[\s—–-]+/, "").trim();
