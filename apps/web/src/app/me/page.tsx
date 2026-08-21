@@ -22,6 +22,31 @@ import {
 type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
 type BriefOffer = "hidden" | "shown" | "saving" | "done" | "error";
+type ReminderItem = {
+  id: string;
+  text: string;
+  firesAt: string;
+  recurring: string;
+  channel: string;
+};
+
+/** Friendly, timezone-local label for when a reminder fires, and whether it's already due. */
+function formatWhen(iso: string): { label: string; due: boolean } {
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return { label: "", due: false };
+  const diff = t - Date.now();
+  if (diff <= 0) return { label: "Due now", due: true };
+  const min = Math.round(diff / 60000);
+  if (min < 60) return { label: `in ${min}m`, due: false };
+  const hr = Math.round(min / 60);
+  if (hr < 24) return { label: `in ${hr}h`, due: false };
+  const d = new Date(t);
+  const time = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const days = Math.round(hr / 24);
+  if (days === 1) return { label: `tomorrow ${time}`, due: false };
+  if (days < 7) return { label: `${d.toLocaleDateString([], { weekday: "short" })} ${time}`, due: false };
+  return { label: `${d.toLocaleDateString([], { month: "short", day: "numeric" })} ${time}`, due: false };
+}
 
 const ONBOARDED_KEY = "miai:me:onboarded:v1";
 const BRIEF_OFFERED_KEY = "miai:me:briefOffered:v1";
@@ -45,6 +70,7 @@ export default function AssistantHome() {
   const [error, setError] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
+  const [reminders, setReminders] = useState<ReminderItem[]>([]);
   const [showSugs, setShowSugs] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -74,6 +100,27 @@ export default function AssistantHome() {
       .catch(() => {});
   }, [brandId]);
 
+  const loadReminders = useCallback(() => {
+    fetch(`/api/consumer/reminders?workspaceId=${encodeURIComponent(brandId)}`)
+      .then((r) => r.json())
+      .then((d) => setReminders(Array.isArray(d.reminders) ? d.reminders : []))
+      .catch(() => {});
+  }, [brandId]);
+
+  async function dismissReminderItem(id: string) {
+    setReminders((rs) => rs.filter((r) => r.id !== id)); // optimistic
+    try {
+      await fetch(`/api/consumer/reminders/dismiss${ws}`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+    } catch {
+      /* ignore — a failed dismiss just reappears on next load */
+    }
+    loadReminders();
+  }
+
   // Mount: restore the previewed brand + the one-time onboarding gates (client-only).
   useEffect(() => {
     try {
@@ -93,7 +140,8 @@ export default function AssistantHome() {
   useEffect(() => {
     loadWallet();
     loadConnectors();
-  }, [loadWallet, loadConnectors]);
+    loadReminders();
+  }, [loadWallet, loadConnectors, loadReminders]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
@@ -198,6 +246,7 @@ export default function AssistantHome() {
       setBusy(false);
       setTyping(false);
       loadWallet();
+      loadReminders();
       if (replied) maybeOfferBrief();
     }
   }
@@ -302,6 +351,44 @@ export default function AssistantHome() {
           Manage
         </Link>
       </div>
+
+      {reminders.length > 0 ? (
+        <section className="rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)] p-3">
+          <div className="mb-2 flex items-center justify-between">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+              Reminders
+            </h2>
+            <span className="text-[11px] text-[var(--muted)]">
+              In your app{connectedSet.has("google_calendar") ? " + calendar" : ""}
+            </span>
+          </div>
+          <ul className="space-y-1.5">
+            {reminders.map((r) => {
+              const w = formatWhen(r.firesAt);
+              return (
+                <li
+                  key={r.id}
+                  className="flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] px-3 py-2 text-sm"
+                >
+                  <span className="min-w-0 flex-1 truncate text-[var(--text)]">{r.text}</span>
+                  <span className={`chip shrink-0 text-[11px] ${w.due ? "chip-live" : ""}`}>
+                    {w.label}
+                    {r.recurring ? " · repeats" : ""}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => dismissReminderItem(r.id)}
+                    aria-label="Dismiss reminder"
+                    className="shrink-0 text-[var(--muted)] transition hover:text-[var(--text)]"
+                  >
+                    ✓
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
 
       {showWelcome ? (
         <section className="relative rounded-2xl border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] p-5">

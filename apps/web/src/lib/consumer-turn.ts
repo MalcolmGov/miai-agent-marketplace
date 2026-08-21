@@ -17,6 +17,7 @@ import {
   rememberPerson,
   setGoal,
 } from "@/lib/consumer-lifegraph-store";
+import { setReminder } from "@/lib/consumer-reminders-store";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 /**
@@ -235,6 +236,32 @@ async function persistMemoryWrites(
 }
 
 /**
+ * Persist reminders the assistant set this turn. set_reminder runs in the connectors layer (and, if
+ * the user's calendar is connected, also drops a calendar event there), but the in-app reminder is
+ * owned here so it works regardless of which channels are connected — scoped to (tenant, consumer).
+ * Best-effort: a reminder write must never fail the chat turn. Matches /remind/ so it never collides
+ * with remember_about_me (which is /remember/).
+ */
+async function persistReminderWrites(
+  owner: MemoryOwner,
+  toolCalls: Awaited<ReturnType<typeof runTurn>>["toolCalls"],
+): Promise<void> {
+  if (!owner.tenantId || !owner.consumerId || !toolCalls?.length) return;
+  for (const call of toolCalls) {
+    if (!/remind/.test(call.name.toLowerCase())) continue;
+    const a = (call.args ?? {}) as Record<string, unknown>;
+    const text = str(a.text ?? a.summary ?? a.what ?? a.title).trim();
+    const when = str(a.when ?? a.datetime ?? a.time ?? a.date).trim();
+    if (!text || !when) continue;
+    try {
+      await setReminder(owner, { text, when, channel: str(a.channel) || undefined });
+    } catch {
+      /* best-effort — never fail a turn on a reminder write */
+    }
+  }
+}
+
+/**
  * Passively store durable self-facts the user revealed but didn't explicitly ask to keep (e.g.
  * "I'm vegetarian", "I live in Lisbon"). High-precision heuristics, no extra model call, so the
  * assistant remembers things it wasn't told to — the "feels smarter" half of memory. Best-effort.
@@ -258,6 +285,7 @@ async function finalize(
   await sessionStore.set(prepared.sessionKey, result.messages as ConsumerMessage[]);
   const owner: MemoryOwner = { tenantId: input.tenantId, consumerId: input.consumerId };
   await persistMemoryWrites(owner, result.toolCalls);
+  await persistReminderWrites(owner, result.toolCalls);
   await persistPassiveFacts(owner, input.message);
 
   const correlationId = input.correlationId?.trim() || newCorrelationId();
