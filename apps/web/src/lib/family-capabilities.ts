@@ -80,9 +80,6 @@ function cleanSummary(summary: string, name: string): string {
   s = s.replace(/^(US|EU|Asia|Africa|ZA|Oceania)\s*[—–-]\s*/i, "");
   const nameEsc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   s = s.replace(new RegExp(`^(?:${nameEsc}\\s*[—–-]\\s*)+`, "i"), "");
-  // Collapse a repeated "Label — Label — rest" prefix. Separators are em/en dashes only — a plain
-  // hyphen must not count, or a role like "non-clinical …" would be mis-split and dropped.
-  s = s.replace(/^(?:[\w &/]+?\s*[—–]\s*){2,}(?=[A-Za-z])/u, "");
   s = s.replace(/^[\s—–-]+/, "").trim();
   if (s.length) s = s.charAt(0).toUpperCase() + s.slice(1);
   return s || summary;

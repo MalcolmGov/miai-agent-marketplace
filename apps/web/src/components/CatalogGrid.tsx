@@ -122,9 +122,6 @@ function cleanCardSummary(summary: string, name: string): string {
     "i",
   );
   s = s.replace(repeat, "");
-  // Generic "Label — Label — rest" — em/en dashes only as separators, never a plain hyphen
-  // (else a role like "non-clinical …" gets mis-split and dropped).
-  s = s.replace(/^(?:[\w &/]+?\s*[—–]\s*){2,}(?=[A-Za-z])/u, "");
   // If we still start with the card title, peel it once
   s = s.replace(new RegExp(`^${nameEsc}\\s*[—–-]\\s*`, "i"), "");
   s = s.replace(/^[\s—–-]+/, "").trim();
