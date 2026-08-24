@@ -29,7 +29,8 @@
       "Study Coach \u2014 100 tutoring sessions",
       "Study Coach \u2014 a full school term, daily",
       "Exam Sprint \u2014 30 days unlimited revision"
-    ]
+    ],
+    "certified": true
   },
   {
     "id": "english-coach",
@@ -61,7 +62,8 @@
       "English Coach \u2014 100 practice sessions",
       "English Coach \u2014 a full month, daily",
       "Interview Prep Sprint \u2014 14 days focused practice"
-    ]
+    ],
+    "certified": true
   },
   {
     "id": "exam-prep-coach",
@@ -93,7 +95,8 @@
       "Exam Prep Coach \u2014 100 revision sessions",
       "Exam Prep Coach \u2014 prelims to finals",
       "Final Countdown \u2014 30 days unlimited revision"
-    ]
+    ],
+    "certified": true
   },
   {
     "id": "private-confidant",
@@ -125,6 +128,436 @@
       "Private Confidant \u2014 100 listening sessions",
       "Private Confidant \u2014 a month of daily check-ins",
       "Private Confidant \u2014 300 listening sessions"
+    ],
+    "certified": true
+  },
+  {
+    "id": "matchday-companion",
+    "name": "Matchday Companion",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Football stats, fixtures, fantasy and banter \u2014 for the love of the game, never betting or tipping.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "No betting",
+      "Fantasy & stats",
+      "Family workspace"
+    ],
+    "skus": [
+      "Matchday Companion \u2014 100 sessions",
+      "Matchday Companion \u2014 a full football season",
+      "Matchday Companion \u2014 30 days unlimited fixtures & banter"
+    ]
+  },
+  {
+    "id": "learning-advisor",
+    "name": "Learning Advisor",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Courses, bursaries and application-essay coaching \u2014 coaches your own essay and choices, never ghostwrites.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "No ghostwriting",
+      "Bursary-aware",
+      "Family workspace"
+    ],
+    "skus": [
+      "Learning Advisor \u2014 60 coaching sessions",
+      "Learning Advisor \u2014 one application season",
+      "Learning Advisor \u2014 family pack, 300 sessions"
+    ]
+  },
+  {
+    "id": "health-navigator",
+    "name": "Health Q&A Navigator",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Anonymous, non-diagnostic health information and 'should I see someone?' triage. Routes emergencies; never diagnoses.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 2,
+    "evals": 18,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "Non-diagnostic",
+      "Emergency-aware",
+      "Anonymous"
+    ],
+    "skus": [
+      "Health Q&A Navigator \u2014 100 health Q&A sessions",
+      "Health Q&A Navigator \u2014 a month of daily check-ins",
+      "Health Q&A Navigator \u2014 300 health Q&A sessions"
+    ]
+  },
+  {
+    "id": "money-coach",
+    "name": "Money Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Payout-week budgeting, debt-payoff and savings challenges \u2014 coaches on your own numbers. No bank link, no regulated advice.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 17,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "No bank link",
+      "FAIS-safe",
+      "Family workspace"
+    ],
+    "skus": [
+      "Money Coach \u2014 100 coaching sessions",
+      "Money Coach \u2014 a month of payout-week check-ins",
+      "Money Coach \u2014 300 coaching sessions"
+    ]
+  },
+  {
+    "id": "faith-companion",
+    "name": "Faith Companion",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Devotionals, scripture Q&A and sermon prep \u2014 Christian and Muslim variants. Complements your clergy; never issues rulings.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "Christian & Muslim",
+      "No rulings",
+      "Family workspace"
+    ],
+    "skus": [
+      "Faith Companion \u2014 100 devotional sessions",
+      "Faith Companion \u2014 a month of daily devotionals",
+      "Faith Companion \u2014 300 devotional sessions"
+    ]
+  },
+  {
+    "id": "paperwork-navigator",
+    "name": "Paperwork Navigator",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Understand and draft official paperwork \u2014 SASSA grants, affidavits, letters. Information, not legal advice; never abets fraud.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 17,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "Not legal advice",
+      "No fraud",
+      "Family workspace"
+    ],
+    "skus": [
+      "Paperwork Navigator \u2014 50 document sessions",
+      "Paperwork Navigator \u2014 150 document sessions",
+      "Paperwork Navigator \u2014 20 completed drafts"
+    ]
+  },
+  {
+    "id": "job-hunt-coach",
+    "name": "Job Hunt Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "CV feedback, cover letters and interview practice \u2014 coaches your own CV, never fabricates experience or references.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "No fabrication",
+      "Interview drills",
+      "Family workspace"
+    ],
+    "skus": [
+      "Job Hunt Coach \u2014 100 coaching sessions",
+      "Job Hunt Coach \u2014 30 days of active job-search support",
+      "Job Hunt Coach \u2014 250 coaching sessions (full job-search sprint)"
+    ]
+  },
+  {
+    "id": "everyday-companion",
+    "name": "Everyday Companion",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "A friendly daily companion \u2014 banter, check-ins, light games, and it remembers what you tell it. Strictly SFW, and honest about being an AI.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 2,
+    "evals": 19,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "SFW",
+      "Remembers you",
+      "Family workspace"
+    ],
+    "skus": [
+      "Everyday Companion \u2014 100 chat sessions",
+      "Everyday Companion \u2014 300 chat sessions",
+      "Everyday Companion \u2014 30 days unlimited chat"
+    ]
+  },
+  {
+    "id": "topup-concierge",
+    "name": "Top-Up & Deals Concierge",
+    "tier": "standard",
+    "category": "commerce",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Compare airtime, data and gift-card deals and remittance corridors, and buy in chat \u2014 card details are never typed here.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 4,
+    "evals": 18,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "Card-safe",
+      "In-chat VAS",
+      "Family workspace"
+    ],
+    "skus": [
+      "Top-Up Concierge \u2014 100 shopping sessions",
+      "Top-Up Concierge \u2014 a month of daily deals",
+      "Top-Up Concierge \u2014 300 sessions, heavy use"
+    ]
+  },
+  {
+    "id": "story-studio",
+    "name": "Story Studio",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "A creative co-writer for interactive fiction \u2014 characters, worldbuilding, co-writing a story. Co-writes with you; never ghostwrites homework.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 17,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "Co-write, not homework",
+      "SFW",
+      "Family workspace"
+    ],
+    "skus": [
+      "Story Studio \u2014 50 co-writing sessions",
+      "Story Studio \u2014 200 co-writing sessions",
+      "Novel Marathon \u2014 60 days unlimited co-writing"
+    ]
+  },
+  {
+    "id": "trip-planner",
+    "name": "Trip Planner",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Destination research and day-by-day itineraries \u2014 research only, hands booking off to you. No payments.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 17,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "Research only",
+      "No payments",
+      "Family workspace"
+    ],
+    "skus": [
+      "Trip Planner \u2014 100 planning sessions",
+      "Trip Planner \u2014 one trip, start to finish",
+      "Trip Planner \u2014 a year of trip planning"
+    ]
+  },
+  {
+    "id": "fitness-meal-coach",
+    "name": "Fitness & Meal Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Workout plans, meal ideas and photo-based logging \u2014 no crash diets, and never a substitute for medical advice.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 17,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "No crash diets",
+      "Not medical advice",
+      "Family workspace"
+    ],
+    "skus": [
+      "Fitness & Meal Coach \u2014 100 coaching sessions",
+      "Fitness & Meal Coach \u2014 a month of daily logging",
+      "Fitness & Meal Coach \u2014 350 coaching sessions"
+    ]
+  },
+  {
+    "id": "star-guide",
+    "name": "Star Guide",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Daily horoscopes, tarot pulls and star-sign compatibility \u2014 for fun, never a basis for real-life decisions.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 17,
+    "readiness": "in-certification",
+    "certified": false,
+    "badges": [
+      "For entertainment",
+      "No real directives",
+      "Family workspace"
+    ],
+    "skus": [
+      "Star Guide \u2014 30 daily readings",
+      "Star Guide \u2014 100 readings",
+      "Star Guide \u2014 10 deep tarot readings"
     ]
   }
 ]

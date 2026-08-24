@@ -47,7 +47,10 @@ export default async function PersonalMarketplacePage() {
 
       {/* The families */}
       {agents.length > 0 ? (
-        <section className="space-y-5" data-testid="personal-marketplace">
+        <section className="space-y-4" data-testid="personal-marketplace">
+          <p className="text-center text-xs text-[var(--muted)]">
+            {agents.filter((a) => a.certified).length} tested &amp; live · {agents.filter((a) => !a.certified).length} in certification
+          </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {agents.map((agent) => (
               <article key={agent.id} className="panel flex flex-col gap-3 p-5 text-left">
@@ -55,7 +58,17 @@ export default async function PersonalMarketplacePage() {
                   <h2 className="display text-lg font-semibold tracking-tight text-[var(--text)]">
                     {agent.name}
                   </h2>
-                  <span className="chip shrink-0">Prepaid</span>
+                  {agent.certified ? (
+                    <span className="chip shrink-0">✓ Tested</span>
+                  ) : (
+                    <span
+                      className="chip shrink-0"
+                      style={{ color: "var(--muted)", borderColor: "var(--line)" }}
+                      data-testid="in-certification"
+                    >
+                      In certification
+                    </span>
+                  )}
                 </div>
                 <p className="text-sm leading-relaxed text-[var(--card-body)]">{agent.summary}</p>
                 <div className="flex flex-wrap gap-1.5">
@@ -76,7 +89,7 @@ export default async function PersonalMarketplacePage() {
                   </ul>
                 )}
                 <p className="mt-auto border-t border-[var(--line)] pt-3 text-xs text-[var(--muted)]">
-                  {agent.evals} behavioural tests · {agent.languages.join(" · ")}
+                  {agent.evals} behavioural tests{agent.certified ? "" : " authored"} · {agent.languages.join(" · ")}
                 </p>
               </article>
             ))}
