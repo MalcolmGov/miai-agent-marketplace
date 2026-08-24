@@ -30,6 +30,20 @@ describe("consumer catalog (personal agents space)", () => {
     }
   });
 
+  it("carries a boolean certified flag: 4 certified live + the rest in certification", async () => {
+    const items = await listPersonalAgents();
+    for (const e of items) assert.equal(typeof e.certified, "boolean", `${e.id} certified must be boolean`);
+    const certified = items.filter((e) => e.certified).map((e) => e.id);
+    const inCert = items.filter((e) => !e.certified);
+    for (const id of ["study-coach", "english-coach", "exam-prep-coach", "private-confidant"])
+      assert.ok(certified.includes(id), `${id} should be certified`);
+    assert.ok(inCert.length >= 1, "expected some in-certification families");
+    // certified families sort ahead of in-certification ones
+    const firstUncertIdx = items.findIndex((e) => !e.certified);
+    const lastCertIdx = items.map((e) => e.certified).lastIndexOf(true);
+    if (firstUncertIdx !== -1) assert.ok(lastCertIdx < firstUncertIdx, "certified must lead the list");
+  });
+
   it("getPersonalAgent returns null for unknown ids", async () => {
     assert.equal(await getPersonalAgent("does-not-exist"), null);
     const sc = await getPersonalAgent("study-coach");

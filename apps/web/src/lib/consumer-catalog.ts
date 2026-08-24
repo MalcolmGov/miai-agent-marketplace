@@ -23,6 +23,8 @@ export interface PersonalAgentEntry {
   tools: number;
   evals: number;
   readiness: string;
+  /** true = behaviourally certified (3x-majority eval pass); false = authored, in certification. */
+  certified: boolean;
   badges: string[];
   skus: string[];
 }
