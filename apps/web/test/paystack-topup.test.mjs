@@ -11,7 +11,9 @@ import os from "node:os";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 
-const SECRET = "sk_test_paystack_secret_key";
+// Deliberately NOT shaped like a real Paystack/Stripe key (no sk_/pk_ prefix) so the
+// secret scanner never flags this test fixture. Any string works — it's only the HMAC key.
+const SECRET = "test-hmac-key-not-a-real-secret-0123456789";
 const STORE = path.join(os.tmpdir(), `miai-topup-${process.pid}.json`);
 const saved = {};
 let paystack;
