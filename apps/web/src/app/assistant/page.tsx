@@ -5,6 +5,7 @@ import {
   CAPABILITY_GROUPS,
   CONNECTOR_LABEL,
 } from "@/lib/assistant-capabilities";
+import { listPersonalAgents } from "@/lib/consumer-catalog";
 
 export const metadata: Metadata = {
   title: "Your personal AI assistant — MyInstantAI",
@@ -20,8 +21,9 @@ export const metadata: Metadata = {
  * live assistant at /me. It reuses the same capability data the in-app onboarding does, so the
  * pitch and the product never drift.
  */
-export default function AssistantLandingPage() {
+export default async function AssistantLandingPage() {
   const connectors = Object.values(CONNECTOR_LABEL);
+  const personalAgents = await listPersonalAgents();
 
   return (
     <div className="mx-auto max-w-5xl space-y-14 pb-10">
@@ -121,6 +123,49 @@ export default function AssistantLandingPage() {
           the moment you close the tab.
         </p>
       </section>
+
+      {/* Personal agents — specialist coaches for the household */}
+      {personalAgents.length > 0 && (
+        <section className="space-y-5" data-testid="personal-agents">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
+              For you &amp; your family
+            </p>
+            <h2 className="display mt-2 text-2xl font-semibold tracking-tight text-[var(--text)]">
+              Specialist coaches, on the same balance
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[var(--card-body)]">
+              Beyond your everyday assistant: focused agents the whole household shares — each one
+              fenced to its job, priced in sessions, and covered by the family workspace&apos;s
+              per-member limits.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {personalAgents.map((agent) => (
+              <article key={agent.id} className="panel flex flex-col gap-3 p-5 text-left">
+                <div>
+                  <h3 className="display text-lg font-semibold tracking-tight text-[var(--text)]">
+                    {agent.name}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--card-body)]">
+                    {agent.summary}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {agent.badges.map((b) => (
+                    <span key={b} className="chip">
+                      {b}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-auto text-xs text-[var(--muted)]">
+                  {agent.evals} behavioural tests · {agent.languages.join(" · ")}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Works with your apps */}
       <section className="space-y-4 text-center">

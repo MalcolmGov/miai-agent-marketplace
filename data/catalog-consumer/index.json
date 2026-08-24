@@ -1,0 +1,130 @@
+[
+  {
+    "id": "study-coach",
+    "name": "Study Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "A patient homework tutor for the whole family \u2014 maths, science and languages, step by step, in English, Afrikaans or isiZulu. Kid-safe by design; guides, never does the homework.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "catalogue-ready",
+    "badges": [
+      "Kid-safe",
+      "Family workspace",
+      "Teaches, never does the homework"
+    ],
+    "skus": [
+      "Study Coach \u2014 100 tutoring sessions",
+      "Study Coach \u2014 a full school term, daily",
+      "Exam Sprint \u2014 30 days unlimited revision"
+    ]
+  },
+  {
+    "id": "english-coach",
+    "name": "English Conversation Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "Daily English conversation practice \u2014 talk freely, get gentle corrections, build vocabulary and interview confidence. In English, with support in Afrikaans and isiZulu.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "catalogue-ready",
+    "badges": [
+      "Practice, not correction-shaming",
+      "Family workspace",
+      "Streaks"
+    ],
+    "skus": [
+      "English Coach \u2014 100 practice sessions",
+      "English Coach \u2014 a full month, daily",
+      "Interview Prep Sprint \u2014 14 days focused practice"
+    ]
+  },
+  {
+    "id": "exam-prep-coach",
+    "name": "Exam Prep Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "A revision partner for matric and school-leaving exams \u2014 countdown study plans, past-paper practice, honest memo-marking and exam technique. Kid-safe; no shortcuts, no leaked papers.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "catalogue-ready",
+    "badges": [
+      "Honest marking",
+      "Past-paper drills",
+      "Exam-day ready"
+    ],
+    "skus": [
+      "Exam Prep Coach \u2014 100 revision sessions",
+      "Exam Prep Coach \u2014 prelims to finals",
+      "Final Countdown \u2014 30 days unlimited revision"
+    ]
+  },
+  {
+    "id": "private-confidant",
+    "name": "Private Confidant",
+    "tier": "standard",
+    "category": "front-office",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "A private, judgment-free space to talk through a hard day, stress or a decision \u2014 with simple techniques and honest limits. Support, never therapy; routes real crises to help.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 2,
+    "evals": 19,
+    "readiness": "catalogue-ready",
+    "badges": [
+      "Private to you",
+      "Not therapy \u2014 routes to help",
+      "Crisis-safe"
+    ],
+    "skus": [
+      "Private Confidant \u2014 100 listening sessions",
+      "Private Confidant \u2014 a month of daily check-ins",
+      "Private Confidant \u2014 300 listening sessions"
+    ]
+  }
+]
