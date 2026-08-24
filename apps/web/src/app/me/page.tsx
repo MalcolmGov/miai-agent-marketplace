@@ -262,21 +262,7 @@ export default function AssistantHome() {
       style={brandThemeVars(brand) as React.CSSProperties}
     >
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span
-              aria-hidden
-              className="flex h-9 w-9 items-center justify-center rounded-xl text-base font-bold"
-              style={{ background: "var(--accent)", color: "var(--accent-ink)" }}
-            >
-              {brand.name.charAt(0)}
-            </span>
-            <h1 className="display text-2xl font-semibold tracking-tight text-[var(--text)]">
-              {brand.name} <span className="text-[var(--muted)]">Assistant</span>
-            </h1>
-          </div>
-          <p className="mt-1.5 text-sm text-[var(--muted)]">{brand.tagline}</p>
-        </div>
+        <p className="text-sm text-[var(--muted)]">{brand.tagline}</p>
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -290,7 +276,7 @@ export default function AssistantHome() {
               className={`chip whitespace-nowrap ${balance < LOW_BALANCE ? "text-[var(--warn)]" : ""}`}
               title="Your prepaid balance. Each message uses a small amount — you can top up any time."
             >
-              {balance.toLocaleString()} credits
+              {balance.toLocaleString()} tokens
             </span>
           ) : null}
         </div>

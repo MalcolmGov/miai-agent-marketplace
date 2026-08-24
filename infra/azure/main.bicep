@@ -127,6 +127,8 @@ param mcpSinkToken string = ''
 @secure()
 @description('Telegram Bot API token for the consumer chatbot (from @BotFather)')
 param telegramBotToken string = ''
+@description('Telegram bot username (without @), for building the connect deep-link')
+param telegramBotUsername string = ''
 @secure()
 @description('Optional Telegram webhook secret (set with setWebhook?secret_token=…)')
 param telegramBotSecret string = ''
@@ -186,6 +188,7 @@ var connectorPlainEnvAll = [
   { name: 'CALENDLY_OAUTH_CLIENT_ID', value: calendlyOauthClientId }
   { name: 'ZENDESK_OAUTH_CLIENT_ID', value: zendeskOauthClientId }
   { name: 'WHATSAPP_PHONE_NUMBER_ID', value: whatsappPhoneNumberId }
+  { name: 'TELEGRAM_BOT_USERNAME', value: telegramBotUsername }
 ]
 var connectorPlainEnv = filter(connectorPlainEnvAll, e => !empty(e.value))
 

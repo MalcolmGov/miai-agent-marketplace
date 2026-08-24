@@ -33,6 +33,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const isHome = pathname === "/";
   /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
   const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
+  /** Consumer surface (/me/*) — white-label "my assistant" home, no B2B marketplace chrome. */
+  const isConsumerSurface = pathname === "/me" || pathname.startsWith("/me/");
   /** Business onboarding / login / marketing preview — focused full-page, no sidebar. */
   const isAuthEntry =
     pathname === "/get-started" ||
@@ -44,7 +46,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   /** Full-page Ask AI — skip floating FAB duplicate. */
   const isAskPage = pathname === "/ask" || pathname.startsWith("/ask/");
 
-  if (isAppChannel || isAuthEntry) {
+  if (isAppChannel || isAuthEntry || isConsumerSurface) {
     return <>{children}</>;
   }
 
