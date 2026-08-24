@@ -1808,6 +1808,16 @@ function handleInternalAssistantTool(call: ConnectorCall): ConnectorResult | nul
 export async function executeLive(call: ConnectorCall): Promise<ConnectorResult> {
   const { connector, config = {} } = call.binding;
 
+  // Reminders are app-owned (Phase 1) — the in-app reminder is saved from the turn, not created as a
+  // calendar event. Handle them BEFORE any connector/token routing so they always succeed, whatever
+  // the calendar state: no calendar connected, OR a Google token that only carries Drive scope
+  // (which 403s on a calendar write and surfaces as "couldn't reach the connected system"). Optional
+  // calendar mirroring can return later behind a proper scope check.
+  if (call.tool.toLowerCase().includes("remind")) {
+    const local = handleInternalAssistantTool(call);
+    if (local) return local;
+  }
+
   try {
     const keyTok = await getToken(call.workspaceId, connector);
 
