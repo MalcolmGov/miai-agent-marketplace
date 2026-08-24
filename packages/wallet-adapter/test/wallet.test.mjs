@@ -8,6 +8,9 @@ import {
   MockWalletAdapter,
   HttpWalletAdapter,
   estimateTurnTokens,
+  TOPUP_PACKAGES,
+  TOPUP_TOKENS,
+  usdForPackage,
 } from "../dist/index.js";
 
 test("mock debit insufficient → paused", async () => {
@@ -76,4 +79,41 @@ test("estimateTurnTokens scales by model", () => {
   const flash = estimateTurnTokens("gemini-flash", 400, 400);
   const opus = estimateTurnTokens("claude-opus", 400, 400);
   assert.ok(opus > flash);
+});
+
+test("top-up packages cover all six USD tiers, ascending", () => {
+  assert.deepEqual(
+    TOPUP_PACKAGES.map((p) => p.id),
+    ["5", "10", "20", "50", "100", "200"],
+  );
+  // The numeric id IS the USD amount.
+  for (const p of TOPUP_PACKAGES) {
+    assert.equal(p.usd, usdForPackage(p.id));
+    assert.equal(p.tokens, TOPUP_TOKENS[p.id]);
+    assert.ok(p.tokens > 0);
+  }
+  // Bigger packages give a strictly better token-per-dollar rate (volume bonus).
+  const rates = TOPUP_PACKAGES.map((p) => p.tokens / p.usd);
+  for (let i = 1; i < rates.length; i++) assert.ok(rates[i] > rates[i - 1]);
+});
+
+test("mock top-up credits the package's tokens", async () => {
+  const w = new MockWalletAdapter(0);
+  for (const p of TOPUP_PACKAGES) {
+    const before = (await w.getBalance("ws")).tokens;
+    const after = await w.topUp({ workspaceId: "ws", packageId: p.id, usdAmount: p.usd });
+    assert.equal(after.tokens - before, p.tokens);
+  }
+});
+
+test("mock top-up is idempotent on the payment reference", async () => {
+  const w = new MockWalletAdapter(0);
+  const ref = "wtu_abc123";
+  const a = await w.topUp({ workspaceId: "ws", packageId: "20", usdAmount: 20, idempotencyKey: ref });
+  const b = await w.topUp({ workspaceId: "ws", packageId: "20", usdAmount: 20, idempotencyKey: ref });
+  assert.equal(a.tokens, TOPUP_TOKENS["20"], "credited once");
+  assert.equal(b.tokens, a.tokens, "retry with same reference does not double-credit");
+  // A different reference still credits.
+  const c = await w.topUp({ workspaceId: "ws", packageId: "20", usdAmount: 20, idempotencyKey: "wtu_other" });
+  assert.equal(c.tokens, a.tokens + TOPUP_TOKENS["20"]);
 });

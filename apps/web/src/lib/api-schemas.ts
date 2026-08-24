@@ -89,10 +89,20 @@ export const dsarEraseBodySchema = z.object({
   confirm: z.literal(true),
 });
 
+export const topUpPackageId = z.enum(["5", "10", "20", "50", "100", "200"]);
+
 export const walletTopUpBodySchema = z.object({
   workspaceId: shortText.optional(),
-  packageId: z.enum(["10", "20", "100", "200"]),
+  packageId: topUpPackageId,
   usdAmount: z.number().positive().max(10_000).optional(),
+});
+
+// Start a Paystack checkout for a prepaid token top-up. No amount from the client —
+// the package id fixes the price server-side. `scope` picks which wallet is credited:
+// the workspace (B2B setup flow) or the signed-in consumer.
+export const paystackInitBodySchema = z.object({
+  packageId: topUpPackageId,
+  scope: z.enum(["workspace", "consumer"]).optional(),
 });
 
 export const connectorsBodySchema = z.object({

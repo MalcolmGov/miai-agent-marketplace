@@ -19,10 +19,19 @@ export interface DebitResult {
   error?: string;
 }
 
+/** Prepaid top-up tiers (USD). No subscription/rental — one-time credit only. */
+export type TopUpPackageId = "5" | "10" | "20" | "50" | "100" | "200";
+
 export interface TopUpRequest {
   workspaceId: string;
   usdAmount: number;
-  packageId: "10" | "20" | "100" | "200";
+  packageId: TopUpPackageId;
+  /**
+   * Optional idempotency key (e.g. the Paystack transaction reference). A repeat
+   * with the same key returns the current balance WITHOUT crediting again — so a
+   * webhook retry and the return-URL verifier can both fire safely.
+   */
+  idempotencyKey?: string;
 }
 
 export interface WalletAdapter {
@@ -31,12 +40,34 @@ export interface WalletAdapter {
   topUp(req: TopUpRequest): Promise<WalletBalance>;
 }
 
-const TOPUP_TOKENS: Record<TopUpRequest["packageId"], number> = {
+/**
+ * Tokens granted per USD package. Larger packages carry a better token/$ rate
+ * (volume bonus), same curve as the prototype: 13k/$ at $5 rising to 34.5k/$ at $200.
+ */
+export const TOPUP_TOKENS: Record<TopUpPackageId, number> = {
+  "5": 65_000,
   "10": 150_000,
-  "20": 420_000, // includes +5% bonus like prototype
+  "20": 420_000, // +5% bonus
+  "50": 1_250_000,
   "100": 2_750_000,
   "200": 6_900_000,
 };
+
+export interface TopUpPackage {
+  id: TopUpPackageId;
+  usd: number;
+  tokens: number;
+}
+
+/** Single source of truth for the top-up package menu — shared by UI and payment routes. */
+export const TOPUP_PACKAGES: TopUpPackage[] = (
+  Object.keys(TOPUP_TOKENS) as TopUpPackageId[]
+).map((id) => ({ id, usd: Number(id), tokens: TOPUP_TOKENS[id] }));
+
+/** Resolve a package id → USD amount (the numeric id IS the USD amount). */
+export function usdForPackage(packageId: TopUpPackageId): number {
+  return Number(packageId);
+}
 
 /** In-memory mock wallet — swap for MyInstantAI HTTP client when APIs exist. */
 export class MockWalletAdapter implements WalletAdapter {
@@ -79,9 +110,15 @@ export class MockWalletAdapter implements WalletAdapter {
   }
 
   async topUp(req: TopUpRequest): Promise<WalletBalance> {
+    // Idempotent on the payment reference: a webhook retry (or the return-URL
+    // verifier racing the webhook) must not credit twice.
+    if (req.idempotencyKey && this.seen.has(req.idempotencyKey)) {
+      return this.getBalance(req.workspaceId);
+    }
     const add = TOPUP_TOKENS[req.packageId];
     const current = (await this.getBalance(req.workspaceId)).tokens;
     this.balances.set(req.workspaceId, current + add);
+    if (req.idempotencyKey) this.seen.add(req.idempotencyKey);
     return this.getBalance(req.workspaceId);
   }
 }
@@ -149,6 +186,8 @@ export class HttpWalletAdapter implements WalletAdapter {
   topUp(req: TopUpRequest) {
     return this.json<WalletBalance>(`/v1/wallets/${req.workspaceId}/topup`, {
       method: "POST",
+      // The backend dedupes on this header so a webhook retry never double-credits.
+      headers: req.idempotencyKey ? { "idempotency-key": req.idempotencyKey } : undefined,
       body: JSON.stringify(req),
     });
   }
