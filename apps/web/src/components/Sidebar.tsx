@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { MessageKey } from "@/lib/i18n";
 import { useT } from "@/lib/locale";
@@ -227,6 +227,7 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const t = useT();
   const [mode, setMode] = useState<ShellMode>("business");
   const [showAdmin, setShowAdmin] = useState(false);
@@ -285,6 +286,8 @@ export function Sidebar({
     } catch {
       /* ignore */
     }
+    // Land on the mode's home: consumer marketplace vs business catalogue.
+    router.push(next === "consumer" ? "/personal" : "/");
   }
 
   const visibleGroups = useMemo(() => {
@@ -303,11 +306,11 @@ export function Sidebar({
 
   /** Consumer home is Ask AI — catalogue `/` is Business-only. */
   function navHref(item: NavItem): string {
-    if (mode === "consumer" && item.id === "home") return "/ask";
+    if (mode === "consumer" && item.id === "home") return "/personal";
     return item.href;
   }
 
-  const logoHref = mode === "consumer" ? "/ask" : "/";
+  const logoHref = mode === "consumer" ? "/personal" : "/";
 
   return (
     <>
