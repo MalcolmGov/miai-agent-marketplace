@@ -10,6 +10,7 @@ import {
   type TelegramUpdate,
   type TelegramMessage,
 } from "@/lib/consumer-telegram";
+import { bindTelegramConsumer, consumerIdForChat } from "@/lib/consumer-telegram-store";
 import { newCorrelationId } from "@/lib/traceability";
 import { rateLimit } from "@/lib/security";
 
@@ -21,15 +22,16 @@ const SECRET = process.env.TELEGRAM_BOT_SECRET;
 /**
  * POST /api/consumer/telegram/webhook
  *
- * Receives inbound Telegram messages and routes them through the consumer turn
- * pipeline. A Telegram user's chat_id becomes their consumer identity — no OIDC
- * needed. Every reply is metered onto their own wallet, and durable memory
- * (facts, goals, people) persists across sessions just like the web app surface.
+ * Receives inbound Telegram messages and routes them through the consumer turn pipeline.
  *
- * Telegram calls this webhook once per message; we must return 200 quickly and
- * do the LLM turn asynchronously, or Telegram will retry/timeout. We fire the
- * turn and reply in the same request but within Telegram's ~10s window — for
- * longer turns we'd move to a queue + edit-message pattern later.
+ * Identity is resolved in this order:
+ *   1. A `/start setup_<consumerId>` deep link binds this chat_id to a signed-in consumer
+ *      account (so Telegram reaches the SAME wallet + memory as the web app).
+ *   2. A previously-bound chat_id resolves to its consumer account.
+ *   3. Otherwise the chat_id auto-provisions an isolated `telegram:<chat_id>` identity.
+ *
+ * Every reply is metered onto the consumer's own wallet, and durable memory persists across
+ * sessions — identical to the web/app surface.
  */
 export async function POST(req: Request) {
   if (!TOKEN) {
@@ -45,7 +47,6 @@ export async function POST(req: Request) {
     return new NextResponse("Invalid JSON", { status: 400 });
   }
 
-  // Optional webhook secret verification (set via Bot API setWebhook?secret_token=…)
   if (SECRET) {
     const headerSecret = req.headers.get("x-telegram-bot-api-secret-token") ?? "";
     if (!verifyTelegramWebhook(SECRET, raw, headerSecret)) {
@@ -55,8 +56,6 @@ export async function POST(req: Request) {
 
   const msg: TelegramMessage | undefined = update.message;
   if (!msg?.text || !msg.chat?.id) {
-    // Not a text message (could be a photo, sticker, join/leave event, etc.) —
-    // acknowledge silently so Telegram doesn't retry, but don't process.
     return new NextResponse("OK");
   }
 
@@ -69,11 +68,26 @@ export async function POST(req: Request) {
     return new NextResponse("OK");
   }
 
-  const consumerId = consumerIdForTelegram(chatId);
+  // 1) Deep-link setup: /start setup_<consumerId>
+  const setupMatch = text.match(/^\/start\s+setup_([A-Za-z0-9._-]+)$/);
+  if (setupMatch) {
+    const consumerId = setupMatch[1];
+    await bindTelegramConsumer(chatId, consumerId);
+    await sendTelegramMessage(
+      TOKEN,
+      chatId,
+      "✅ You're connected! Your MyInstantAI assistant is now linked to this chat.\n\n" +
+        "You can start chatting right away — or head back to the app to explore more agents.",
+    );
+    return new NextResponse("OK");
+  }
+
+  // 2) Resolve identity: bound consumer → auto-provisioned telegram:<chat_id>
+  const boundConsumerId = await consumerIdForChat(chatId);
+  const consumerId = boundConsumerId ?? consumerIdForTelegram(chatId);
   const tenantId = DEFAULT_TELEGRAM_TENANT;
   const agentId = DEFAULT_TELEGRAM_AGENT;
 
-  // Rate limit: 30 messages / minute per Telegram consumer
   const limited = await rateLimit(`consumer:tg:${chatId}:${agentId}`, {
     limit: 30,
     windowMs: 60_000,
@@ -95,10 +109,8 @@ export async function POST(req: Request) {
     msg.from?.language_code?.slice(0, 2) === "de" ? "de" :
     "en";
 
-  // Show typing indicator while the turn runs
   await sendTelegramTyping(TOKEN, chatId);
 
-  // Run the same consumer turn pipeline as the web/app surface
   const result = await runConsumerTurn({
     tenantId,
     consumerId,
@@ -114,7 +126,6 @@ export async function POST(req: Request) {
   if (result.ok && result.assistantMessage) {
     await sendTelegramMessage(TOKEN, chatId, result.assistantMessage);
   } else if (!result.ok) {
-    // Don't leak error details to the Telegram user
     await sendTelegramMessage(
       TOKEN,
       chatId,
