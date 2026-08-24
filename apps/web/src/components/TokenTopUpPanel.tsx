@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { TOPUP_PACKAGES } from "@miai/wallet-adapter";
-import { beginTopUp } from "@/lib/topup-client";
+import { TokenPackageGrid } from "./TokenPackageGrid";
 
 /**
  * Setup-flow payment step. No rental, no subscription (MVP): the agent activates for
@@ -27,18 +25,6 @@ export function TokenTopUpPanel({
   /** Dev/mock fallback credited without leaving the page — refresh balance. */
   onCredited: (tokens: number) => void;
 }) {
-  const [busy, setBusy] = useState<string | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-
-  async function buy(packageId: string) {
-    setBusy(packageId);
-    setErr(null);
-    const result = await beginTopUp(packageId, "workspace");
-    if (result.kind === "credited") onCredited(result.tokens);
-    else if (result.kind === "error") setErr(result.message);
-    setBusy(null);
-  }
-
   return (
     <div id="token-topup" className="panel mx-auto max-w-lg space-y-4 p-5 scroll-mt-24">
       <div>
@@ -59,27 +45,9 @@ export function TokenTopUpPanel({
         <p className="mt-1">Shared prepaid wallet across your workspace. Empty balance pauses replies.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2" role="group" aria-label="Token packages">
-        {TOPUP_PACKAGES.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            disabled={busy !== null || saving}
-            className="flex items-center justify-between rounded-lg border border-[var(--line)] px-3 py-3 text-left transition hover:border-[var(--accent-dim)] disabled:opacity-60"
-            onClick={() => void buy(p.id)}
-          >
-            <span>
-              <span className="block font-medium">${p.usd}</span>
-              <span className="text-xs text-[var(--muted)]">{p.tokens.toLocaleString()} tokens</span>
-            </span>
-            <span className="text-sm text-[var(--accent)]">{busy === p.id ? "…" : "Buy"}</span>
-          </button>
-        ))}
-      </div>
+      <TokenPackageGrid scope="workspace" disabled={saving} onCredited={onCredited} />
 
-      {(err || message?.kind === "err") && (
-        <p className="text-xs text-red-400">{err ?? message?.text}</p>
-      )}
+      {message?.kind === "err" ? <p className="text-xs text-red-400">{message.text}</p> : null}
       {message?.kind === "ok" ? <p className="text-xs text-[var(--accent)]">{message.text}</p> : null}
 
       <p className="text-[11px] text-[var(--muted)]">Secure checkout by Paystack. You’ll return here once payment completes.</p>
