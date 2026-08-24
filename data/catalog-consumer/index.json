@@ -1,0 +1,34 @@
+[
+  {
+    "id": "study-coach",
+    "name": "Study Coach",
+    "tier": "standard",
+    "category": "vertical",
+    "market": "africa",
+    "audience": "personal",
+    "summary": "A patient homework tutor for the whole family \u2014 maths, science and languages, step by step, in English, Afrikaans or isiZulu. Kid-safe by design; guides, never does the homework.",
+    "channels": [
+      "app",
+      "web",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu"
+    ],
+    "tools": 3,
+    "evals": 18,
+    "readiness": "catalogue-ready",
+    "badges": [
+      "Kid-safe",
+      "Family workspace",
+      "Teaches, never does the homework"
+    ],
+    "skus": [
+      "Study Coach \u2014 100 tutoring sessions",
+      "Study Coach \u2014 a full school term, daily",
+      "Exam Sprint \u2014 30 days unlimited revision"
+    ]
+  }
+]
