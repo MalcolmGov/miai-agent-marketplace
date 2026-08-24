@@ -1,4 +1,4 @@
-import type { ToolBinding } from "@miai/connectors";
+import type { ToolBinding, ConnectorId } from "@miai/connectors";
 import { GENERATED_PRESETS } from "./generated-presets.js";
 
 export interface AgentPreset {
@@ -143,6 +143,36 @@ const personalAssistant = (
   { tool: "set_goal", connector: "webhook" },
   { tool: "remember_person", connector: "webhook" },
 ];
+
+/** Consumer "life agents" (Wave A) share the personal assistant's connector bindings for the
+ *  tools they reuse. This maps a consumer agent's tool names to the same connectors, so the
+ *  connectors layer executes them identically regardless of which consumer agent called them. */
+const CONSUMER_TOOL_CONNECTOR: Record<string, ConnectorId> = {
+  triage_inbox: "email",
+  draft_email: "email",
+  send_email: "email",
+  manage_calendar: "google_calendar",
+  set_reminder: "google_calendar",
+  manage_tasks: "google_tasks",
+  find_contact: "google_contacts",
+  find_file: "google_drive",
+  check_weather: "weather",
+  search_notes: "notion",
+  search_youtube: "youtube",
+  control_music: "spotify",
+  create_playlist: "spotify",
+  web_research: "web_search",
+  remember_about_me: "webhook",
+  set_goal: "webhook",
+  remember_person: "webhook",
+};
+
+function consumerBindings(toolNames: string[]): ToolBinding[] {
+  return toolNames.map((tool) => ({
+    tool,
+    connector: CONSUMER_TOOL_CONNECTOR[tool] ?? "webhook",
+  }));
+}
 
 /** Explicit hand overrides — win over generated presets (production marketplace). */
 const HAND_OVERRIDES: AgentPreset[] = [
@@ -438,6 +468,44 @@ const HAND_OVERRIDES: AgentPreset[] = [
     pilot: false,
     phase: 1,
     bindings: personalAssistant("google_calendar"),
+  },
+  // Consumer line — Wave A "life agents" (tool-reuse; bindings via the shared consumer map).
+  {
+    agentId: "travel-planner",
+    pilot: false,
+    phase: 1,
+    bindings: consumerBindings([
+      "web_research", "check_weather", "manage_calendar", "set_reminder",
+      "manage_tasks", "set_goal", "remember_about_me", "search_youtube",
+    ]),
+  },
+  {
+    agentId: "learning-tutor",
+    pilot: false,
+    phase: 1,
+    bindings: consumerBindings([
+      "web_research", "search_youtube", "search_notes", "set_reminder",
+      "manage_tasks", "set_goal", "remember_about_me", "manage_calendar",
+    ]),
+  },
+  {
+    agentId: "career-coach",
+    pilot: false,
+    phase: 1,
+    bindings: consumerBindings([
+      "web_research", "draft_email", "find_file", "manage_calendar",
+      "set_reminder", "manage_tasks", "set_goal", "remember_about_me",
+    ]),
+  },
+  {
+    agentId: "family-organizer",
+    pilot: false,
+    phase: 1,
+    bindings: consumerBindings([
+      "manage_calendar", "set_reminder", "manage_tasks", "find_contact",
+      "remember_person", "remember_about_me", "check_weather", "draft_email",
+      "web_research",
+    ]),
   },
 ];
 

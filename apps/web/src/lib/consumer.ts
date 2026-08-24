@@ -18,7 +18,14 @@ export const DEFAULT_CONSUMER_AGENT = "personal-assistant";
  * purpose: a consumer must not be able to invoke an arbitrary tenant/B2B agent id just by passing
  * it in the request body. Grows as the consumer catalogue (app-store) does.
  */
-const CONSUMER_AGENTS = new Set<string>([DEFAULT_CONSUMER_AGENT]);
+const CONSUMER_AGENTS = new Set<string>([
+  DEFAULT_CONSUMER_AGENT,
+  // Wave A — consumer "life agents" (tool-reuse; share the personal assistant's connectors).
+  "travel-planner",
+  "learning-tutor",
+  "career-coach",
+  "family-organizer",
+]);
 
 export function isConsumerAgent(agentId: string): boolean {
   return CONSUMER_AGENTS.has(agentId);

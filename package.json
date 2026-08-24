@@ -58,7 +58,8 @@
     "proof:webhook": "node scripts/proof-webhook.mjs",
     "proof:mcp": "node scripts/proof-mcp.mjs",
     "smoke:live-llm": "node scripts/live-llm-smoke.mjs",
-    "smoke:live-llm:matrix": "node scripts/live-llm-smoke.mjs --matrix"
+    "smoke:live-llm:matrix": "node scripts/live-llm-smoke.mjs --matrix",
+    "smoke:consumer": "node scripts/consumer-live-smoke.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",

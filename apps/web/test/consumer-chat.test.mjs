@@ -51,9 +51,14 @@ describe("consumer identity + wallet mapping", () => {
 
   it("only vetted consumer agents are runnable", () => {
     assert.equal(consumer.isConsumerAgent("personal-assistant"), true);
+    assert.equal(consumer.isConsumerAgent("travel-planner"), true);
+    assert.equal(consumer.isConsumerAgent("learning-tutor"), true);
+    assert.equal(consumer.isConsumerAgent("career-coach"), true);
+    assert.equal(consumer.isConsumerAgent("family-organizer"), true);
     assert.equal(consumer.isConsumerAgent("front-desk"), false);
     assert.equal(consumer.isConsumerAgent("us-customer-support"), false);
     assert.ok(consumer.consumerAgentIds().includes("personal-assistant"));
+    assert.ok(consumer.consumerAgentIds().includes("travel-planner"));
     assert.equal(consumer.DEFAULT_CONSUMER_AGENT, "personal-assistant");
   });
 });
