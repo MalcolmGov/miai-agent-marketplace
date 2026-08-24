@@ -8,6 +8,7 @@ import { MarketplaceAssistant } from "./marketplace-assistant/MarketplaceAssista
 import { OnboardingChecklist } from "./OnboardingChecklist";
 import { Sidebar } from "./Sidebar";
 import { ThemeToggle } from "./ThemeToggle";
+import { ConsumerNav } from "./ConsumerNav";
 import { TopUpModal } from "./TopUpModal";
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -33,6 +34,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const isHome = pathname === "/";
   /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
   const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
+  /** Consumer surface — white-label "my assistant" home, no B2B marketplace chrome. */
+  const isConsumerSurface =
+    pathname === "/me" || pathname.startsWith("/me/") ||
+    pathname === "/personal" || pathname.startsWith("/personal/");
   /** Business onboarding / login / marketing preview — focused full-page, no sidebar. */
   const isAuthEntry =
     pathname === "/get-started" ||
@@ -46,6 +51,15 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   if (isAppChannel || isAuthEntry) {
     return <>{children}</>;
+  }
+
+  if (isConsumerSurface) {
+    return (
+      <div className="flex min-h-screen flex-col bg-[var(--bg-panel)]">
+        <ConsumerNav />
+        <main className="flex-1">{children}</main>
+      </div>
+    );
   }
 
   return (
