@@ -21,19 +21,24 @@ const SECRET = process.env.TELEGRAM_BOT_SECRET;
 /**
  * POST /api/consumer/telegram/webhook
  *
- * Receives inbound Telegram messages and routes them through the consumer turn
- * pipeline. A Telegram user's chat_id becomes their consumer identity — no OIDC
- * needed. Every reply is metered onto their own wallet, and durable memory
- * (facts, goals, people) persists across sessions just like the web app surface.
+ * Receives inbound Telegram messages and routes them through the consumer turn pipeline.
  *
- * Telegram calls this webhook once per message; we must return 200 quickly and
- * do the LLM turn asynchronously, or Telegram will retry/timeout. We fire the
- * turn and reply in the same request but within Telegram's ~10s window — for
- * longer turns we'd move to a queue + edit-message pattern later.
+ * Identity: each Telegram chat auto-provisions an isolated `telegram:<chat_id>` identity.
+ * No OIDC, no cross-account binding — the Telegram user IS the identity. Same wallet,
+ * memory, and reminders as any consumer, but scoped to that one chat.
+ *
+ * Security:
+ *  - Webhook secret is MANDATORY (fails closed if unset).
+ *  - Private chats only (groups/channels are silently ignored).
+ *  - Rate-limited per chat_id.
  */
 export async function POST(req: Request) {
   if (!TOKEN) {
     return new NextResponse("Telegram bot not configured", { status: 503 });
+  }
+
+  if (!SECRET) {
+    return new NextResponse("Telegram webhook secret not configured", { status: 503 });
   }
 
   let raw: string;
@@ -45,18 +50,13 @@ export async function POST(req: Request) {
     return new NextResponse("Invalid JSON", { status: 400 });
   }
 
-  // Optional webhook secret verification (set via Bot API setWebhook?secret_token=…)
-  if (SECRET) {
-    const headerSecret = req.headers.get("x-telegram-bot-api-secret-token") ?? "";
-    if (!verifyTelegramWebhook(SECRET, raw, headerSecret)) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+  const headerSecret = req.headers.get("x-telegram-bot-api-secret-token") ?? "";
+  if (!verifyTelegramWebhook(SECRET, headerSecret)) {
+    return new NextResponse("Unauthorized", { status: 401 });
   }
 
   const msg: TelegramMessage | undefined = update.message;
   if (!msg?.text || !msg.chat?.id) {
-    // Not a text message (could be a photo, sticker, join/leave event, etc.) —
-    // acknowledge silently so Telegram doesn't retry, but don't process.
     return new NextResponse("OK");
   }
 
@@ -73,7 +73,6 @@ export async function POST(req: Request) {
   const tenantId = DEFAULT_TELEGRAM_TENANT;
   const agentId = DEFAULT_TELEGRAM_AGENT;
 
-  // Rate limit: 30 messages / minute per Telegram consumer
   const limited = await rateLimit(`consumer:tg:${chatId}:${agentId}`, {
     limit: 30,
     windowMs: 60_000,
@@ -93,12 +92,12 @@ export async function POST(req: Request) {
     msg.from?.language_code?.slice(0, 2) === "es" ? "es" :
     msg.from?.language_code?.slice(0, 2) === "fr" ? "fr" :
     msg.from?.language_code?.slice(0, 2) === "de" ? "de" :
+    msg.from?.language_code?.slice(0, 2) === "af" ? "af" :
+    msg.from?.language_code?.slice(0, 2) === "zu" ? "zu" :
     "en";
 
-  // Show typing indicator while the turn runs
   await sendTelegramTyping(TOKEN, chatId);
 
-  // Run the same consumer turn pipeline as the web/app surface
   const result = await runConsumerTurn({
     tenantId,
     consumerId,
@@ -114,7 +113,6 @@ export async function POST(req: Request) {
   if (result.ok && result.assistantMessage) {
     await sendTelegramMessage(TOKEN, chatId, result.assistantMessage);
   } else if (!result.ok) {
-    // Don't leak error details to the Telegram user
     await sendTelegramMessage(
       TOKEN,
       chatId,

@@ -1,13 +1,20 @@
 /**
  * Telegram consumer channel — library unit tests.
- * Identity mapping, webhook verification, and messaging helpers.
- * Pure functions; no network or LLM.
+ * Identity mapping, webhook verification (raw token, not HMAC), nonce mint/verify,
+ * and messaging helpers. Pure functions; no network or LLM.
  */
 import assert from "node:assert/strict";
-import { describe, it, beforeEach } from "node:test";
-import { createHmac } from "node:crypto";
+import { describe, it, beforeEach, afterEach } from "node:test";
 
 let tg;
+
+beforeEach(() => {
+  process.env.TELEGRAM_BOT_SECRET = "test-sx5xVnZQ7pKx3m9w";
+});
+
+afterEach(() => {
+  delete process.env.TELEGRAM_BOT_SECRET;
+});
 
 beforeEach(async () => {
   tg = await import("../src/lib/consumer-telegram.ts");
@@ -15,17 +22,11 @@ beforeEach(async () => {
 
 describe("consumerIdForTelegram", () => {
   it("maps a numeric chat id to a namespaced consumer id", () => {
-    assert.equal(
-      tg.consumerIdForTelegram(123456789),
-      "telegram:123456789",
-    );
+    assert.equal(tg.consumerIdForTelegram(123456789), "telegram:123456789");
   });
 
   it("maps a string chat id the same way", () => {
-    assert.equal(
-      tg.consumerIdForTelegram("987654321"),
-      "telegram:987654321",
-    );
+    assert.equal(tg.consumerIdForTelegram("987654321"), "telegram:987654321");
   });
 
   it("never collides with an OIDC userId", () => {
@@ -36,24 +37,26 @@ describe("consumerIdForTelegram", () => {
 });
 
 describe("verifyTelegramWebhook", () => {
-  const body = '{"update_id":1,"message":{"text":"hi"}}';
-  const secret = "my-secret-token";
+  const secret = "my-webhook-token-abc123";
 
-  it("returns true when no secret is configured", () => {
-    assert.equal(tg.verifyTelegramWebhook("", body, "anything"), true);
+  it("returns false when no secret is configured (fail closed)", () => {
+    assert.equal(tg.verifyTelegramWebhook("", "anything"), false);
   });
 
-  it("returns true for a valid HMAC header", () => {
-    const expected = createHmac("sha256", secret).update(body).digest("hex");
-    assert.equal(tg.verifyTelegramWebhook(secret, body, expected), true);
+  it("returns false when header is empty", () => {
+    assert.equal(tg.verifyTelegramWebhook(secret, ""), false);
   });
 
-  it("returns false for a wrong secret", () => {
-    assert.equal(tg.verifyTelegramWebhook(secret, body, "deadbeef"), false);
+  it("returns true when header matches the raw secret", () => {
+    assert.equal(tg.verifyTelegramWebhook(secret, secret), true);
   });
 
-  it("returns false when header is empty but secret is set", () => {
-    assert.equal(tg.verifyTelegramWebhook(secret, body, ""), false);
+  it("returns false for a wrong token", () => {
+    assert.equal(tg.verifyTelegramWebhook(secret, "wrong-token"), false);
+  });
+
+  it("returns false for a prefix-only match (different length)", () => {
+    assert.equal(tg.verifyTelegramWebhook("abcdefghij", "abcdef"), false);
   });
 });
 
@@ -69,6 +72,42 @@ describe("escapeTelegramHtml", () => {
   it("passes through safe text unchanged", () => {
     const safe = "Hello, world! It's a nice day — no markup needed.";
     assert.equal(tg.escapeTelegramHtml(safe), safe);
+  });
+});
+
+describe("setup nonce — signed, single-use, short-TTL", () => {
+  it("mints a nonce for a consumer and verifies it", () => {
+    const nonce = tg.mintSetupNonce("usr_abc");
+    assert.ok(nonce.length > 20, "nonce is non-trivial");
+    assert.equal(tg.verifySetupNonce(nonce), "usr_abc");
+  });
+
+  it("returns null for a tampered nonce", () => {
+    const nonce = tg.mintSetupNonce("usr_abc");
+    const tampered = nonce.slice(0, -2) + "xx";
+    assert.equal(tg.verifySetupNonce(tampered), null);
+  });
+
+  it("returns null for garbage input", () => {
+    assert.equal(tg.verifySetupNonce("not-a-nonce"), null);
+    assert.equal(tg.verifySetupNonce(""), null);
+  });
+
+  it("returns null for an empty-string nonce", () => {
+    assert.equal(tg.verifySetupNonce(""), null);
+  });
+
+  it("produces different nonces each call", () => {
+    const n1 = tg.mintSetupNonce("usr_one");
+    const n2 = tg.mintSetupNonce("usr_one");
+    assert.notEqual(n1, n2);
+  });
+
+  it("a nonce minted for one consumer does not verify for another", () => {
+    const nonce = tg.mintSetupNonce("usr_a");
+    const result = tg.verifySetupNonce(nonce);
+    assert.equal(result, "usr_a");
+    assert.notEqual(result, "usr_b");
   });
 });
 
