@@ -124,6 +124,13 @@ param webhookSinkSecret string = ''
 @description('Bearer token for the MCP sink (MCP_SINK_TOKEN)')
 param mcpSinkToken string = ''
 
+@secure()
+@description('Telegram Bot API token for the consumer chatbot (from @BotFather)')
+param telegramBotToken string = ''
+@secure()
+@description('Optional Telegram webhook secret (set with setWebhook?secret_token=…)')
+param telegramBotSecret string = ''
+
 // --- Private image registry (for pulling the container image) ---
 // Empty registryServer = the image is public (no credentials needed). For a private GHCR or
 // ACR image, set all three so the Container App can authenticate the pull.
@@ -160,6 +167,8 @@ var connectorSecretDefs = [
   { kv: 'stripe-secret-key', env: 'STRIPE_SECRET_KEY', value: stripeSecretKey }
   { kv: 'webhook-sink-secret', env: 'WEBHOOK_SINK_SECRET', value: webhookSinkSecret }
   { kv: 'mcp-sink-token', env: 'MCP_SINK_TOKEN', value: mcpSinkToken }
+  { kv: 'telegram-bot-token', env: 'TELEGRAM_BOT_TOKEN', value: telegramBotToken }
+  { kv: 'telegram-bot-secret', env: 'TELEGRAM_BOT_SECRET', value: telegramBotSecret }
 ]
 var activeConnectorSecrets = filter(connectorSecretDefs, s => !empty(s.value))
 
