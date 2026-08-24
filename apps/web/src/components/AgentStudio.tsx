@@ -3,7 +3,7 @@
 import { KnowledgePanel } from "./KnowledgePanel";
 import { ActionsPanel } from "./ActionsPanel";
 import { InstallPanel } from "./InstallPanel";
-import { RentPayPanel } from "./RentPayPanel";
+import { TokenTopUpPanel } from "./TokenTopUpPanel";
 import { SandboxChat } from "./SandboxChat";
 import {
   SetupGuide,
@@ -68,6 +68,7 @@ function stepFromUrl(): SetupStepId | null {
   const params = new URLSearchParams(window.location.search);
   const step = params.get("step");
   if (isSetupStepId(step)) return step;
+  if (step === "rent") return "tokens"; // back-compat: the old rent step is now tokens
   const tab = params.get("tab");
   if (tab === "actions") return "connect";
   if (tab === "install") return "install";
@@ -109,6 +110,7 @@ export function AgentStudio({
   const [tryMode, setTryMode] = useState(false);
   const [flagsReady, setFlagsReady] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [balanceTokens, setBalanceTokens] = useState<number | null>(null);
 
   const hasWorkflow = isWorkflowFamilyId(agentId);
 
@@ -124,8 +126,21 @@ export function AgentStudio({
     setConnected(json.rental?.connectedConnectors ?? []);
   }
 
+  async function loadBalance() {
+    try {
+      const res = await fetch("/api/wallet");
+      if (res.ok) {
+        const json = await res.json();
+        setBalanceTokens(typeof json.tokens === "number" ? json.tokens : null);
+      }
+    } catch {
+      /* wallet read is best-effort — the tokens step still renders */
+    }
+  }
+
   useEffect(() => {
     void load();
+    void loadBalance();
     const wantTry = new URLSearchParams(window.location.search).get("try") === "1";
     setTryMode(wantTry);
     setTriedChat(readSetupFlag(agentId, "tried"));
@@ -148,7 +163,6 @@ export function AgentStudio({
       setHydrated(true);
       return;
     }
-    const rentedNow = (data.rental?.state ?? "selected") !== "selected";
     const connectedNow = data.rental?.connectedConnectors ?? [];
     const toolsOk = hasWorkflow
       ? connectedNow.some((id) => id === "google_calendar" || id === "slack" || id === "calendar")
@@ -157,7 +171,7 @@ export function AgentStudio({
       resolveSetupStep({
         hasKnowledge: readSetupFlag(agentId, "knowledge"),
         connectDone: toolsOk || readSetupFlag(agentId, "skip-connect"),
-        rented: rentedNow,
+        hasTokens: (balanceTokens ?? 0) > 0,
         triedChat: readSetupFlag(agentId, "tried"),
         visitedInstall: readSetupFlag(agentId, "install"),
       }),
@@ -193,11 +207,11 @@ export function AgentStudio({
   }, []);
 
   const snippet = useMemo(() => {
-    // Demo keys only in local/dev — production requires a real rented publicKey.
+    // Demo keys only in local/dev — production requires a real activated publicKey.
     const allowDemo = process.env.NODE_ENV !== "production";
     const key = publicKey || (allowDemo ? `mia_pk_${agentId}_demo` : "");
     if (!key) {
-      return `<!-- Rent this agent to get an embed key, then paste the Install snippet. -->`;
+      return `<!-- Activate this agent (free) to get an embed key, then paste the Install snippet. -->`;
     }
     const base = origin || "";
     return buildEmbedScriptTag({
@@ -262,7 +276,9 @@ export function AgentStudio({
     return true;
   }
 
-  async function rent(): Promise<boolean> {
+  // Activation is free now (no rental/subscription) — create the workspace record +
+  // embed key so the agent can go live. Tokens are bought separately (Paystack).
+  async function activate(): Promise<boolean> {
     setSaving(true);
     setConfigMsg(null);
     try {
@@ -270,7 +286,6 @@ export function AgentStudio({
       if (!ok) return false;
       setConfigMsg({ kind: "ok", text: t("studio.okRented") });
       await load();
-      setActiveStep("install");
       return true;
     } finally {
       setSaving(false);
@@ -401,6 +416,7 @@ export function AgentStudio({
         agentId={agentId}
         isWorkflow={hasWorkflow}
         rented={rented}
+        hasTokens={(balanceTokens ?? 0) > 0}
         hasKnowledge={hasKnowledge}
         toolsConnected={toolsConnected}
         triedChat={triedChat}
@@ -464,15 +480,15 @@ export function AgentStudio({
           />
         ) : null}
 
-        {activeStep === "rent" ? (
-          <RentPayPanel
-            tier={tier}
-            onTierChange={setTier}
-            rented={rented}
+        {activeStep === "tokens" ? (
+          <TokenTopUpPanel
+            activated={rented}
+            balanceTokens={balanceTokens}
             saving={saving}
             message={configMsg}
-            onPayAndActivate={() => rent()}
+            onActivate={() => activate()}
             onContinueLive={() => goStep("install")}
+            onCredited={(tokens) => setBalanceTokens(tokens)}
           />
         ) : null}
 
@@ -507,7 +523,7 @@ export function AgentStudio({
               copiedApp={copiedApp}
               onCopySnippet={() => void copySnippet()}
               onCopyAppUrl={() => void copyAppUrl()}
-              onRent={() => goStep("rent")}
+              onRent={() => goStep("tokens")}
             />
           </div>
         ) : null}

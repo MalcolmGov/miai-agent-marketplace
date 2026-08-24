@@ -239,8 +239,8 @@ export function SandboxChat({
         </div>
         {(freeTry || highlightTry) && (
           <p className="mt-2 rounded-lg border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-3 py-2 text-xs text-[var(--text)]">
-            Free sandbox try — rent to go live on your website or app. No tokens charged until you
-            rent.
+            Free sandbox try — activate (free) to go live on your website or app. No tokens charged
+            until you go live.
           </p>
         )}
         {capabilityChips.length > 0 ? (

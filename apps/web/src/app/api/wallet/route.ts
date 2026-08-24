@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { createWalletAdapter } from "@miai/wallet-adapter";
+import { createWalletAdapter, usdForPackage } from "@miai/wallet-adapter";
 import { appendAudit } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
+import { mockRailsAllowed } from "@/lib/security-flags";
 import { parseJsonBody, walletTopUpBodySchema } from "@/lib/api-schemas";
 
 export const dynamic = "force-dynamic";
@@ -24,15 +25,26 @@ export async function POST(req: Request) {
   const forbidden = requireRole(auth, "admin");
   if (forbidden) return forbidden;
 
+  // This endpoint credits tokens WITHOUT taking payment — a mock rail. Real money
+  // must go through Paystack (/api/payments/paystack/init → signature-verified
+  // webhook credits the wallet). So block the free credit anywhere real rails run.
+  if (!mockRailsAllowed()) {
+    return NextResponse.json(
+      {
+        error:
+          "Direct top-up is disabled on live rails. Start a Paystack checkout at /api/payments/paystack/init.",
+      },
+      { status: 403 },
+    );
+  }
+
   const parsed = await parseJsonBody(req, walletTopUpBodySchema);
   if (!parsed.ok) return parsed.response;
   const body = parsed.data;
   const workspaceId =
     auth.mode === "oidc" ? auth.workspaceId : (body.workspaceId ?? auth.workspaceId);
   const wallet = createWalletAdapter();
-  const usd =
-    body.usdAmount ??
-    ({ "10": 10, "20": 20, "100": 100, "200": 200 } as const)[body.packageId];
+  const usd = body.usdAmount ?? usdForPackage(body.packageId);
   const bal = await wallet.topUp({
     workspaceId,
     packageId: body.packageId,

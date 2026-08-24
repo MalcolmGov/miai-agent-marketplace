@@ -26,6 +26,12 @@ const PUBLIC_EXACT = new Set([
   "/api/v1/openapi",
   // Cron sweep for consumer daily briefs — authenticated by CRON_SECRET in the route, not OIDC.
   "/api/consumer/brief/run-due",
+  // Paystack top-up webhook — authenticated by its HMAC-SHA512 signature, not OIDC.
+  "/api/payments/paystack/webhook",
+  // Paystack browser return — verifies the reference with Paystack and credits the
+  // wallet named in the VERIFIED metadata, not the caller. (Its sibling
+  // /api/payments/paystack/init stays behind the bearer gate.)
+  "/api/payments/paystack/return",
 ]);
 
 const PUBLIC_PREFIXES = [

@@ -1,12 +1,12 @@
 "use client";
 
-export type SetupStepId = "knowledge" | "connect" | "try" | "rent" | "install";
+export type SetupStepId = "knowledge" | "connect" | "try" | "tokens" | "install";
 
 export const SETUP_STEPS: SetupStepId[] = [
   "knowledge",
   "connect",
   "try",
-  "rent",
+  "tokens",
   "install",
 ];
 
@@ -50,18 +50,18 @@ export function isSetupStepId(v: string | null | undefined): v is SetupStepId {
 export function resolveSetupStep(flags: {
   hasKnowledge: boolean;
   connectDone: boolean;
-  rented: boolean;
+  hasTokens: boolean;
   triedChat: boolean;
   visitedInstall: boolean;
 }): SetupStepId {
-  if (!flags.hasKnowledge && !flags.rented && !flags.triedChat && !flags.visitedInstall) {
+  if (!flags.hasKnowledge && !flags.hasTokens && !flags.triedChat && !flags.visitedInstall) {
     return "knowledge";
   }
   if (!flags.hasKnowledge) return "knowledge";
   // Connect tools is optional — never block the path
   if (!flags.triedChat) return "try";
-  if (!flags.rented) return "rent";
-  if (!(flags.visitedInstall && flags.rented)) return "install";
+  // Nudge toward buying tokens (activation itself is free); never hard-block install.
+  if (!flags.hasTokens) return "tokens";
   return "install";
 }
 
@@ -88,6 +88,7 @@ export function SetupGuide({
   agentId,
   isWorkflow,
   rented,
+  hasTokens,
   hasKnowledge,
   toolsConnected,
   triedChat,
@@ -100,7 +101,10 @@ export function SetupGuide({
 }: {
   agentId: string;
   isWorkflow: boolean;
+  /** Agent is activated (free) — has a workspace record + embed key. Gates going live. */
   rented: boolean;
+  /** Workspace has a positive prepaid token balance. */
+  hasTokens: boolean;
   hasKnowledge: boolean;
   toolsConnected: boolean;
   triedChat: boolean;
@@ -140,27 +144,27 @@ export function SetupGuide({
       id: "try",
       title: "Sandbox",
       detail:
-        "Try a real customer scenario before you pay. Free while not rented — no live API writes.",
+        "Try a real customer scenario first. Sandbox is free — no live API writes, no tokens spent.",
       done: triedChat,
       requirement: "recommended",
       requirementLabel: "Recommended",
     },
     {
-      id: "rent",
-      title: rented ? "Paid" : "Rent + Pay",
-      detail: rented
-        ? "Plan is active — continue to go live and activate on your website or app."
-        : "Pick a plan and complete mock card payment to unlock Install and live channels.",
-      done: rented,
-      requirement: "required",
-      requirementLabel: "Required to go live",
+      id: "tokens",
+      title: hasTokens ? "Tokens added" : "Add tokens",
+      detail: hasTokens
+        ? "Your prepaid balance is funded — continue to go live and activate."
+        : "No subscription. Pick a prepaid token package (Paystack) so your live agent can reply. Activation is free.",
+      done: hasTokens,
+      requirement: "recommended",
+      requirementLabel: "Recommended before live",
     },
     {
       id: "install",
       title: "Go live and activate",
       detail: rented
         ? "Copy website embed or App link — once installed, you’re running."
-        : "Complete Rent + Pay first, then copy website embed or App link.",
+        : "Activate this agent (free) to get your embed key, then copy the website embed or App link.",
       done: visitedInstall && rented,
       requirement: "required",
       requirementLabel: "Required",
@@ -184,12 +188,12 @@ export function SetupGuide({
       onSkipConnect();
       return;
     }
-    if (activeStep === "rent" && !rented) {
-      document.getElementById("rent-pay")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (activeStep === "tokens") {
+      document.getElementById("token-topup")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
     if (activeStep === "install" && !rented) {
-      onStepChange("rent");
+      onStepChange("tokens");
       return;
     }
     if (nxt) onStepChange(nxt);
@@ -198,12 +202,12 @@ export function SetupGuide({
   const primaryLabel =
     activeStep === "knowledge"
       ? "Save & continue"
-      : activeStep === "rent" && !rented
-        ? "Continue to payment form"
+      : activeStep === "tokens"
+        ? "Add tokens"
         : activeStep === "install" && !rented
-          ? "Rent + Pay first"
+          ? "Activate to go live"
           : activeStep === "try"
-            ? "Continue — Rent + Pay"
+            ? "Continue — Add tokens"
             : activeStep === "install"
               ? "Setup complete"
               : nxt
@@ -216,8 +220,8 @@ export function SetupGuide({
         <div>
           <h2 className="text-sm font-semibold text-[var(--text)]">Setup</h2>
           <p className="mt-0.5 max-w-xl text-xs text-[var(--muted)]">
-            One step at a time. Add knowledge, optionally connect tools, try sandbox, then rent &amp;
-            pay before you go live and activate.
+            One step at a time. Add knowledge, optionally connect tools, try sandbox, then add
+            prepaid tokens before you go live and activate.
           </p>
         </div>
         <div className="text-right">
@@ -332,7 +336,7 @@ export function SetupGuide({
                   Skip tools — continue
                 </button>
               ) : null}
-              {activeStep === "rent" && rented && nxt ? (
+              {activeStep === "tokens" && nxt ? (
                 <button
                   type="button"
                   className="btn btn-ghost text-xs"
@@ -348,7 +352,7 @@ export function SetupGuide({
 
       <p className="text-[11px] text-[var(--muted)]">
         <span className="font-medium text-[var(--text)]">Minimum path:</span> add your knowledge →
-        try sandbox → rent &amp; pay → go live and activate.
+        try sandbox → add tokens → go live and activate.
         {isWorkflow ? (
           <>
             {" "}

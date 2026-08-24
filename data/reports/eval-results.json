@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T10:12:39.652Z",
+  "generatedAt": "2026-08-24T07:29:42.729Z",
   "mode": "static-only",
   "qualityLane": "mock-contract",
   "tokenCost": 0,
@@ -6061,6 +6061,20 @@
       "market": "africa",
       "category": "operations",
       "evalCount": 18,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
+      "id": "personal-assistant",
+      "family": "personal-assistant",
+      "market": "global",
+      "category": "vertical",
+      "evalCount": 13,
       "staticIssues": [],
       "driftCount": 0,
       "runtimeFailed": 0,
