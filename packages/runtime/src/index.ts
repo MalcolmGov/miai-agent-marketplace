@@ -128,6 +128,10 @@ export interface TurnRequest {
   systemAppend?: string;
   /** BCP-47-ish reply language for deterministic workflow strings (en, es, fr, …). */
   replyLanguage?: string;
+  /** Consumer line: the turn runs for a single person (first-party), not a business tenant.
+   *  Skips the cross-tenant data-access guardrail so benign family references ("my daughter
+   *  Aya") are not misread as cross-tenant probes. All other safety checks still apply. */
+  consumerLine?: boolean;
 }
 
 export interface TurnResult {
@@ -165,6 +169,8 @@ export type ModelCompleteInput = {
   maxOutputTokens?: number;
   /** From manifest.model.fallback — tried once after primary provider failure. */
   fallbackModel?: string;
+  /** Consumer line — skips the cross-tenant input guardrail (see TurnRequest.consumerLine). */
+  consumerLine?: boolean;
 };
 
 /** Provider-reported token usage for a single model call (used for accurate wallet metering). */
@@ -633,7 +639,9 @@ export class MockModelAdapter implements ModelAdapter {
       "I can help with orders, products, appointments, bookings, treatments, policies, accounts, and related questions for this business.";
 
     // Shared hard safety (also applied for live models in runTurn).
-    const forced = checkInputGuardrails(last, input.system, tools);
+    const forced = checkInputGuardrails(last, input.system, tools, {
+      consumerLine: input.consumerLine,
+    });
     if (forced) return forced;
 
     // After a tool ran, answer from knowledge + tool payload instead of echoing JSON.
@@ -2595,10 +2603,13 @@ export async function runTurn(
     temperature: modelOpts.temperature,
     maxOutputTokens: modelOpts.maxOutputTokens,
     fallbackModel: modelOpts.fallbackModel,
+    consumerLine: req.consumerLine,
   };
 
   // Shared hard safety for live + mock (mock also checks inside MockModelAdapter).
-  const forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools);
+  const forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools, {
+    consumerLine: req.consumerLine,
+  });
   let completion: ModelCompleteResult;
   // Sum provider-reported tokens across this turn's model calls (initial + tool-round follow-ups)
   // for accurate wallet metering; stays 0 for the mock model / providers that omit usage.

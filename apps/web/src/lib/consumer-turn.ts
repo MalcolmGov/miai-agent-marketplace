@@ -165,6 +165,7 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
       state: "live",
       systemAppend,
       replyLanguage,
+      consumerLine: true,
     },
   };
 }
