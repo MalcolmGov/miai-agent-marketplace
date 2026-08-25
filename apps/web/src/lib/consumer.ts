@@ -1,4 +1,5 @@
 import type { AuthContext } from "@/lib/auth";
+import { getPersonalAgent } from "@/lib/consumer-catalog";
 
 /**
  * Consumer line — the individual-facing side of the platform.
@@ -20,8 +21,17 @@ export const DEFAULT_CONSUMER_AGENT = "personal-assistant";
  */
 const CONSUMER_AGENTS = new Set<string>([DEFAULT_CONSUMER_AGENT]);
 
-export function isConsumerAgent(agentId: string): boolean {
-  return CONSUMER_AGENTS.has(agentId);
+/**
+ * Runtime allowlist for the consumer line: the flagship assistant, plus any *certified* personal
+ * agent from the consumer catalogue. Certification — not mere authoring — is the gate, so an
+ * in-certification agent stays browsable but not runnable, matching the marketplace UI. This is
+ * async because it consults the catalogue; it auto-includes new agents as they pass certification,
+ * with no code change here.
+ */
+export async function isRunnableConsumerAgent(agentId: string): Promise<boolean> {
+  if (CONSUMER_AGENTS.has(agentId)) return true;
+  const entry = await getPersonalAgent(agentId);
+  return entry?.certified === true;
 }
 
 export function consumerAgentIds(): string[] {

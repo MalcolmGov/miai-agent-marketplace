@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listPersonalAgents } from "@/lib/consumer-catalog";
+import { AgentIcon } from "@/components/AgentIcon";
+
+/** Friendly one-word label for the consumer taxonomy (vertical/front-office/commerce). */
+function audienceLabel(category: string): string {
+  if (category === "front-office") return "Companion";
+  if (category === "commerce") return "Concierge";
+  return "Specialist";
+}
 
 export const metadata: Metadata = {
   title: "For you & your family — MyInstantAI",
@@ -53,44 +61,82 @@ export default async function PersonalMarketplacePage() {
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {agents.map((agent) => (
-              <article key={agent.id} className="panel flex flex-col gap-3 p-5 text-left">
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="display text-lg font-semibold tracking-tight text-[var(--text)]">
-                    {agent.name}
-                  </h2>
+              <article
+                key={agent.id}
+                data-testid="personal-agent-card"
+                className={`panel flex flex-col gap-4 p-5 text-left ${agent.certified ? "panel-interactive" : ""}`}
+              >
+                {/* Header: icon · label + name · status */}
+                <div className="flex items-start gap-3.5">
+                  <AgentIcon familyId={agent.id} category={agent.category} className="h-11 w-11" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-[var(--accent-bright)]">
+                      {audienceLabel(agent.category)}
+                    </p>
+                    <h2 className="display mt-0.5 text-[1.05rem] font-semibold leading-tight tracking-tight text-[var(--text)]">
+                      {agent.name}
+                    </h2>
+                  </div>
+                  {agent.certified && (
+                    <span className="chip chip-live shrink-0 whitespace-nowrap">✓ Tested</span>
+                  )}
+                </div>
+
+                <p className="text-sm leading-relaxed text-[var(--card-body)]">{agent.summary}</p>
+
+                {agent.badges.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {agent.badges.map((b) => (
+                      <span key={b} className="chip">
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {agent.skus.length > 0 && (
+                  <ul className="space-y-1.5 text-xs text-[var(--card-body)]">
+                    {agent.skus.map((sku) => (
+                      <li key={sku} className="flex items-start gap-2">
+                        <svg
+                          aria-hidden
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.2}
+                          className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent-bright)]"
+                        >
+                          <path d="m4.5 10.5 3.2 3.2L15.5 6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span>{sku}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* Footer: meta · action */}
+                <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3.5">
+                  <span className="text-[11px] leading-tight text-[var(--muted)]">
+                    {agent.evals} tests{agent.certified ? "" : " authored"} · {agent.languages.join(" · ")}
+                  </span>
                   {agent.certified ? (
-                    <span className="chip shrink-0">✓ Tested</span>
+                    <Link
+                      href={`/me?agent=${encodeURIComponent(agent.id)}&label=${encodeURIComponent(agent.name)}`}
+                      className="btn btn-primary shrink-0 px-3.5 py-2 text-[13px]"
+                      data-testid="personal-try"
+                    >
+                      Try free
+                      <span aria-hidden>→</span>
+                    </Link>
                   ) : (
                     <span
-                      className="chip shrink-0"
-                      style={{ color: "var(--muted)", borderColor: "var(--line)" }}
+                      className="shrink-0 whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--muted)]"
                       data-testid="in-certification"
                     >
                       In certification
                     </span>
                   )}
                 </div>
-                <p className="text-sm leading-relaxed text-[var(--card-body)]">{agent.summary}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {agent.badges.map((b) => (
-                    <span key={b} className="chip">
-                      {b}
-                    </span>
-                  ))}
-                </div>
-                {agent.skus.length > 0 && (
-                  <ul className="space-y-1 text-xs text-[var(--card-body)]">
-                    {agent.skus.map((sku) => (
-                      <li key={sku} className="flex items-start gap-1.5">
-                        <span aria-hidden className="text-[var(--accent-bright)]">•</span>
-                        <span>{sku}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <p className="mt-auto border-t border-[var(--line)] pt-3 text-xs text-[var(--muted)]">
-                  {agent.evals} behavioural tests{agent.certified ? "" : " authored"} · {agent.languages.join(" · ")}
-                </p>
               </article>
             ))}
           </div>
