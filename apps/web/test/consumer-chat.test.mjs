@@ -14,17 +14,19 @@ const TMP = path.join(os.tmpdir(), `miai-consumer-test-${process.pid}.json`);
 // Repo-root/data/catalog, resolved from this file so the test is cwd-independent (catalogDir()
 // otherwise assumes cwd is apps/web via a relative ../../data/catalog).
 const CATALOG = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../data/catalog");
+const CONSUMER_CAT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../data/catalog-consumer");
 const saved = {};
 let consumer;
 let turn;
 let wallet;
 
 before(async () => {
-  for (const k of ["RENTAL_STORE_PATH", "DATABASE_URL", "MIAI_MODEL_MODE", "MIAI_WALLET_MODE", "NODE_ENV", "CATALOG_DIR"]) {
+  for (const k of ["RENTAL_STORE_PATH", "DATABASE_URL", "MIAI_MODEL_MODE", "MIAI_WALLET_MODE", "NODE_ENV", "CATALOG_DIR", "CONSUMER_CATALOG_DIR"]) {
     saved[k] = process.env[k];
   }
   process.env.RENTAL_STORE_PATH = TMP;
   process.env.CATALOG_DIR = CATALOG;
+  process.env.CONSUMER_CATALOG_DIR = CONSUMER_CAT;
   delete process.env.DATABASE_URL;
   delete process.env.MIAI_MODEL_MODE; // mock model
   delete process.env.MIAI_WALLET_MODE; // mock wallet
@@ -49,10 +51,14 @@ describe("consumer identity + wallet mapping", () => {
     assert.equal(consumer.walletIdForConsumer({ userId: "usr_123" }), "usr_123");
   });
 
-  it("only vetted consumer agents are runnable", () => {
-    assert.equal(consumer.isConsumerAgent("personal-assistant"), true);
-    assert.equal(consumer.isConsumerAgent("front-desk"), false);
-    assert.equal(consumer.isConsumerAgent("us-customer-support"), false);
+  it("only vetted consumer agents are runnable", async () => {
+    // The flagship assistant and *certified* personal agents run; business agents and
+    // still-in-certification personal agents do not.
+    assert.equal(await consumer.isRunnableConsumerAgent("personal-assistant"), true);
+    assert.equal(await consumer.isRunnableConsumerAgent("study-coach"), true); // certified
+    assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), false); // in certification
+    assert.equal(await consumer.isRunnableConsumerAgent("front-desk"), false); // business agent
+    assert.equal(await consumer.isRunnableConsumerAgent("us-customer-support"), false);
     assert.ok(consumer.consumerAgentIds().includes("personal-assistant"));
     assert.equal(consumer.DEFAULT_CONSUMER_AGENT, "personal-assistant");
   });
@@ -64,6 +70,21 @@ describe("runConsumerTurn: gates", () => {
       consumerId: "u1",
       walletId: "u1",
       agentId: "front-desk",
+      message: "hi",
+      rateLimitOk: true,
+    });
+    assert.equal(r.ok, false);
+    assert.equal(r.status, 403);
+  });
+
+  it("rejects an in-certification personal agent with 403 (package resolves, gate blocks)", async () => {
+    // learning-advisor has a package in data/catalog-consumer, so getAgentPackage's fallback WOULD
+    // load it — the certification gate, not a missing package, is the sole thing blocking it. This
+    // locks that invariant so a future prepare() refactor can't silently make in-cert agents run.
+    const r = await turn.runConsumerTurn({
+      consumerId: "u1",
+      walletId: "u1",
+      agentId: "learning-advisor",
       message: "hi",
       rateLimitOk: true,
     });
@@ -133,6 +154,25 @@ describe("runConsumerTurn: meters onto the consumer's wallet", () => {
     assert.equal(r2.ok, true);
     const afterTwo = (await wallet.createWalletAdapter().getBalance(walletId)).tokens;
     assert.ok(afterTwo < afterOne, "second turn debited the wallet again");
+  });
+
+  it("runs a certified specialist by id (gate + consumer-catalog package resolve)", async () => {
+    // A "Try free" card sends agentId=study-coach. The turn must pass the certification gate AND
+    // load the package from data/catalog-consumer (getAgentPackage's fallback), then reply.
+    wallet.resetWalletAdapterForTests();
+    const walletId = "dana";
+    const r = await turn.runConsumerTurn({
+      consumerId: walletId,
+      walletId,
+      agentId: "study-coach",
+      message: "Can you help me plan tonight's revision?",
+      sessionId: "sc1",
+      rateLimitOk: true,
+    });
+    assert.equal(r.ok, true, r.ok ? "" : `specialist turn failed: ${r.error}`);
+    assert.equal(r.agentId, "study-coach");
+    assert.ok(r.assistantMessage.length > 0, "specialist produced a reply");
+    assert.ok(r.tokensDebited > 0, "specialist usage was metered");
   });
 
   it("keeps two consumers' wallets independent", async () => {

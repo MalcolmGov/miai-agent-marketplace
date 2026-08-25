@@ -7,7 +7,7 @@ import {
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
 import { createSessionStore } from "@/lib/channel-sessions";
-import { DEFAULT_CONSUMER_AGENT, isConsumerAgent } from "@/lib/consumer";
+import { DEFAULT_CONSUMER_AGENT, isRunnableConsumerAgent } from "@/lib/consumer";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { getMemoryContext, rememberFact, type MemoryOwner } from "@/lib/consumer-memory-store";
 import { extractDurableFacts } from "@/lib/memory-extract";
@@ -117,7 +117,7 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
   }
 
   const agentId = input.agentId || DEFAULT_CONSUMER_AGENT;
-  if (!isConsumerAgent(agentId)) {
+  if (!(await isRunnableConsumerAgent(agentId))) {
     return {
       ok: false,
       status: 403,

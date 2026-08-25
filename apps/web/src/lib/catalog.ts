@@ -300,6 +300,17 @@ export async function getAgentPackage(id: string): Promise<AgentPackage | null> 
     const raw = await fs.readFile(path.join(catalogDir(), `${id}.agent.json`), "utf8");
     return loadAgentPackage(JSON.parse(raw));
   } catch {
-    return null;
+    // Not in the business catalogue — try the consumer section (personal agents live there and
+    // are run by the consumer line). Same package format; different directory.
+    try {
+      const dir = path.resolve(
+        process.cwd(),
+        process.env.CONSUMER_CATALOG_DIR ?? "../../data/catalog-consumer",
+      );
+      const raw = await fs.readFile(path.join(dir, `${id}.agent.json`), "utf8");
+      return loadAgentPackage(JSON.parse(raw));
+    } catch {
+      return null;
+    }
   }
 }

@@ -130,6 +130,11 @@ type IconKind =
   | "pill"
   | "flask"
   | "trophy"
+  | "chat"
+  | "book"
+  | "compass"
+  | "dumbbell"
+  | "sun"
   | "default";
 
 type ToneName = keyof typeof TONES_DARK;
@@ -235,6 +240,24 @@ const FAMILY_ICONS: Record<string, { kind: IconKind; tone: ToneName }> = {
   "veterinary": { kind: "paw", tone: "amber" },
   "warehouse-operations": { kind: "box", tone: "teal" },
   "wealth-management": { kind: "chart", tone: "teal" },
+  // Consumer (personal) line — data/catalog-consumer ids.
+  "study-coach": { kind: "book", tone: "indigo" },
+  "english-coach": { kind: "chat", tone: "sky" },
+  "exam-prep-coach": { kind: "graduation", tone: "amber" },
+  "private-confidant": { kind: "heart", tone: "rose" },
+  "matchday-companion": { kind: "trophy", tone: "teal" },
+  "learning-advisor": { kind: "compass", tone: "sky" },
+  "health-navigator": { kind: "heart", tone: "mint" },
+  "money-coach": { kind: "chart", tone: "teal" },
+  "faith-companion": { kind: "sun", tone: "amber" },
+  "paperwork-navigator": { kind: "receipt", tone: "slate" },
+  "job-hunt-coach": { kind: "briefcase", tone: "indigo" },
+  "everyday-companion": { kind: "chat", tone: "teal" },
+  "topup-concierge": { kind: "creditcard", tone: "sky" },
+  "story-studio": { kind: "book", tone: "rose" },
+  "trip-planner": { kind: "compass", tone: "amber" },
+  "fitness-meal-coach": { kind: "dumbbell", tone: "coral" },
+  "star-guide": { kind: "sun", tone: "indigo" },
 };
 
 const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: ToneName }> = {
@@ -522,6 +545,41 @@ function Glyph({ kind }: { kind: IconKind }) {
       return (
         <svg {...common}>
           <path d="M8 4h8v3.5a4 4 0 0 1-8 0V4Z" strokeLinejoin="round" /><path d="M8 5.5H5.2v1.3a3 3 0 0 0 3 3M16 5.5h2.8v1.3a3 3 0 0 1-3 3M11 12.4v2.6M13 12.4v2.6M8.6 20h6.8L14.4 16H9.6L8.6 20Z" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "chat":
+      return (
+        <svg {...common}>
+          <path d="M6.5 4h11A2.5 2.5 0 0 1 20 6.5v6a2.5 2.5 0 0 1-2.5 2.5H10l-4 3v-3H6.5A2.5 2.5 0 0 1 4 12.5v-6A2.5 2.5 0 0 1 6.5 4Z" strokeLinejoin="round" />
+          <path d="M8 8.5h8M8 11.5h5" strokeLinecap="round" />
+        </svg>
+      );
+    case "book":
+      return (
+        <svg {...common}>
+          <path d="M12 6.5C10.5 5 8 4.5 4 5v12c4-.5 6.5 0 8 1.5 1.5-1.5 4-2 8-1.5V5c-4-.5-6.5 0-8 1.5Z" strokeLinejoin="round" />
+          <path d="M12 6.5v12" strokeLinecap="round" />
+        </svg>
+      );
+    case "compass":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="8.5" />
+          <path d="m15.5 8.5-2.2 5.2L8 15.5l2.2-5.2 5.3-1.8Z" strokeLinejoin="round" />
+          <circle cx="12" cy="12" r="0.9" fill="currentColor" stroke="none" />
+        </svg>
+      );
+    case "dumbbell":
+      return (
+        <svg {...common}>
+          <path d="M4 9v6M7 7.5v9M17 7.5v9M20 9v6M7 12h10" strokeLinecap="round" />
+        </svg>
+      );
+    case "sun":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7" strokeLinecap="round" />
         </svg>
       );
     default:
