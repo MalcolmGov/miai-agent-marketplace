@@ -241,6 +241,72 @@ function BookmarkButton({ saved, onToggle }: { saved: boolean; onToggle: () => v
   );
 }
 
+/** A count-badged filter pill that toggles a boolean facet (Workflows / Go-live). */
+function ToggleFacet({
+  label,
+  active,
+  count,
+  title,
+  onToggle,
+}: {
+  label: string;
+  active: boolean;
+  count: number;
+  title: string;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onToggle}
+      className={`facet ${active ? "facet-active" : ""}`}
+      title={title}
+    >
+      {label}
+      <span className="cat-count">{count}</span>
+    </button>
+  );
+}
+
+/** A labelled, icon-led dropdown used for the market / industry facets. */
+function FacetSelect({
+  id,
+  label,
+  icon,
+  value,
+  widthClass,
+  onSelect,
+  children,
+}: {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  value: string;
+  widthClass: string;
+  onSelect: (value: string) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <label className="sr-only" htmlFor={id}>
+        {label}
+      </label>
+      <div className="biz-select">
+        {icon}
+        <select
+          id={id}
+          className={`input !w-auto ${widthClass} !py-2 !pl-9 text-xs font-semibold`}
+          value={value}
+          onChange={(e) => onSelect(e.target.value)}
+        >
+          {children}
+        </select>
+      </div>
+    </>
+  );
+}
+
 export function CatalogGrid({
   initialFamilies,
 }: {
@@ -546,9 +612,12 @@ export function CatalogGrid({
                 {t(a.labelKey)}
               </button>
             ))}
-            <button
-              type="button"
-              onClick={() => {
+            <ToggleFacet
+              label={t("catalog.workflows")}
+              active={workflowsOnly}
+              count={workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
+              title={t("catalog.workflowHint")}
+              onToggle={() => {
                 setSmartFilter(false);
                 setWorkflowsOnly((v) => {
                   const next = !v;
@@ -560,18 +629,13 @@ export function CatalogGrid({
                   return next;
                 });
               }}
-              aria-pressed={workflowsOnly}
-              className={`facet ${workflowsOnly ? "facet-active" : ""}`}
-              title={t("catalog.workflowHint")}
-            >
-              {t("catalog.workflows")}
-              <span className="cat-count">
-                {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
+            />
+            <ToggleFacet
+              label={t("catalog.demo6")}
+              active={pilotOnly}
+              count={pilotOnly ? familyCount : 100}
+              title={t("catalog.goliveHint")}
+              onToggle={() => {
                 setSmartFilter(false);
                 setPilotOnly((v) => {
                   const next = !v;
@@ -581,60 +645,46 @@ export function CatalogGrid({
                   return next;
                 });
               }}
-              aria-pressed={pilotOnly}
-              className={`facet ${pilotOnly ? "facet-active" : ""}`}
-              title={t("catalog.goliveHint")}
+            />
+
+            <FacetSelect
+              id="market-filter"
+              label={t("catalog.market")}
+              icon={<IconGlobe />}
+              value={market}
+              widthClass="!min-w-[8.5rem]"
+              onSelect={(v) => {
+                setSmartFilter(false);
+                setMarket(v);
+              }}
             >
-              {t("catalog.demo6")}
-              <span className="cat-count">{pilotOnly ? familyCount : 100}</span>
-            </button>
+              {MARKETS.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {"labelKey" in m ? t(m.labelKey) : m.label}
+                </option>
+              ))}
+            </FacetSelect>
 
-            <label className="sr-only" htmlFor="market-filter">
-              {t("catalog.market")}
-            </label>
-            <div className="biz-select">
-              <IconGlobe />
-              <select
-                id="market-filter"
-                className="input !w-auto !min-w-[8.5rem] !py-2 !pl-9 text-xs font-semibold"
-                value={market}
-                onChange={(e) => {
-                  setSmartFilter(false);
-                  setMarket(e.target.value);
-                }}
-              >
-                {MARKETS.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {"labelKey" in m ? t(m.labelKey) : m.label}
+            <FacetSelect
+              id="category-filter"
+              label={t("catalog.industry")}
+              icon={<IconGridSq />}
+              value={category}
+              widthClass="!min-w-[9.5rem] max-w-[230px]"
+              onSelect={(v) => {
+                setSmartFilter(false);
+                setCategory(v);
+              }}
+            >
+              {categories.map((c) => {
+                const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
+                return (
+                  <option key={c} value={c}>
+                    {c === "all" ? `${t("catalog.allIndustries")} (${count})` : `${c} (${count})`}
                   </option>
-                ))}
-              </select>
-            </div>
-
-            <label className="sr-only" htmlFor="category-filter">
-              {t("catalog.industry")}
-            </label>
-            <div className="biz-select">
-              <IconGridSq />
-              <select
-                id="category-filter"
-                className="input !w-auto !min-w-[9.5rem] max-w-[230px] !py-2 !pl-9 text-xs font-semibold"
-                value={category}
-                onChange={(e) => {
-                  setSmartFilter(false);
-                  setCategory(e.target.value);
-                }}
-              >
-                {categories.map((c) => {
-                  const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
-                  return (
-                    <option key={c} value={c}>
-                      {c === "all" ? `${t("catalog.allIndustries")} (${count})` : `${c} (${count})`}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
+                );
+              })}
+            </FacetSelect>
           </div>
         </div>
 
