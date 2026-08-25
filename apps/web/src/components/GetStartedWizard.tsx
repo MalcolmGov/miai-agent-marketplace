@@ -12,6 +12,13 @@ function resumeFlag(): boolean {
   return new URLSearchParams(window.location.search).get("resume") === "1";
 }
 
+/** Post-onboarding return path, e.g. an agent the user tried to set up. Internal paths only. */
+function nextTarget(): string | null {
+  if (typeof window === "undefined") return null;
+  const n = new URLSearchParams(window.location.search).get("next");
+  return n && n.startsWith("/") && !n.startsWith("//") ? n : null;
+}
+
 const MARKETS: Array<{ id: OnboardingMarket; label: string }> = [
   { id: "us", label: "United States" },
   { id: "eu", label: "Europe" },
@@ -84,6 +91,27 @@ export function GetStartedWizard() {
   }, []);
 
   useEffect(() => {
+    // Already-onboarded workspace sent here to set up an agent → skip the wizard and forward.
+    const target = nextTarget();
+    if (!target || resumeFlag()) return;
+    let cancelled = false;
+    void fetch("/api/onboarding")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled) return;
+        if (d && (d.profile?.wizardCompleted || d.me?.product === "agents")) {
+          router.replace(target);
+        }
+      })
+      .catch(() => {
+        /* ignore — show the wizard */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
+
+  useEffect(() => {
     void fetch("/api/auth/handoff?return_to=" + encodeURIComponent(window.location.origin + "/"))
       .then((r) => r.json())
       .then((d) =>
@@ -129,7 +157,7 @@ export function GetStartedWizard() {
     } catch {
       /* ignore */
     }
-    router.push(data.redirect || "/?onboarding=1");
+    router.push(nextTarget() || data.redirect || "/?onboarding=1");
   }
 
   async function complete() {
@@ -191,7 +219,7 @@ export function GetStartedWizard() {
         } catch {
           /* ignore */
         }
-        router.push(data.redirect || "/?onboarding=1");
+        router.push(nextTarget() || data.redirect || "/?onboarding=1");
       })
       .catch((err: unknown) => {
         setError(err instanceof Error ? err.message : "Setup failed");
