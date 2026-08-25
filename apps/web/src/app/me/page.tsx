@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { streamChat } from "@/lib/chat-stream-client";
 import { ConnectorIcon } from "@/components/ConnectorIcon";
-import { renderRichText } from "@/lib/rich-text";
+import { ConsumerChatWindow } from "@/components/ConsumerChatWindow";
+import { useConsumerChat } from "@/lib/use-consumer-chat";
 import CapabilitiesSheet from "./CapabilitiesSheet";
 import {
   CONNECTOR_LABEL,
@@ -19,7 +19,6 @@ import {
   type Brand,
 } from "@/lib/tenant-brands";
 
-type Msg = { id: string; role: "user" | "assistant"; text: string };
 type ConnectorStatus = { connector: string; connected: boolean };
 type BriefOffer = "hidden" | "shown" | "saving" | "done" | "error";
 type ReminderItem = {
@@ -61,23 +60,23 @@ function greetingFor(brand: Brand): string {
 
 export default function AssistantHome() {
   const [brandId, setBrandId] = useState<string>(DEFAULT_BRAND_ID);
-  const [messages, setMessages] = useState<Msg[]>([
-    { id: "greet", role: "assistant", text: greetingFor(getBrand(DEFAULT_BRAND_ID)) },
-  ]);
-  const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [typing, setTyping] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [balance, setBalance] = useState<number | null>(null);
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
   const [reminders, setReminders] = useState<ReminderItem[]>([]);
-  const [showSugs, setShowSugs] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [briefOffer, setBriefOffer] = useState<BriefOffer>("hidden");
-  const sessionId = useRef(crypto.randomUUID());
-  const scrollRef = useRef<HTMLDivElement>(null);
   const briefOfferedRef = useRef(false);
+
+  // The chat loop (messages, prepaid balance, streaming turn) is shared with the specialist pages.
+  // The assistant layers its own chrome — brand switcher, connectors, reminders, welcome — around it.
+  const chat = useConsumerChat({
+    workspaceId: brandId,
+    initialGreeting: greetingFor(getBrand(DEFAULT_BRAND_ID)),
+    onSubmitStart: () => setShowWelcome(false),
+    onSettled: () => loadReminders(),
+    onReplied: () => maybeOfferBrief(),
+  });
+  const { balance, submit, setMessages, resetConversation, loadWallet } = chat;
 
   const brand = getBrand(brandId);
   const connectedSet = new Set(connectors.filter((c) => c.connected).map((c) => c.connector));
@@ -85,13 +84,6 @@ export default function AssistantHome() {
   // The active brand doubles as the tenant: scope every consumer call to it so memory, wallet and
   // connectors reflect this brand (and switching brand switches the isolated context, per PR #49).
   const ws = `?workspaceId=${encodeURIComponent(brandId)}`;
-
-  const loadWallet = useCallback(() => {
-    fetch(`/api/consumer/wallet?workspaceId=${encodeURIComponent(brandId)}`)
-      .then((r) => r.json())
-      .then((d) => setBalance(typeof d.tokens === "number" ? d.tokens : null))
-      .catch(() => {});
-  }, [brandId]);
 
   const loadConnectors = useCallback(() => {
     fetch(`/api/consumer/connectors?workspaceId=${encodeURIComponent(brandId)}`)
@@ -134,7 +126,8 @@ export default function AssistantHome() {
     } catch {
       /* private mode / storage disabled — just skip the one-time gates */
     }
-  }, []);
+    // setMessages is a stable state setter, so this still runs only once on mount.
+  }, [setMessages]);
 
   // Reload the per-brand context whenever the brand changes.
   useEffect(() => {
@@ -142,10 +135,6 @@ export default function AssistantHome() {
     loadConnectors();
     loadReminders();
   }, [loadWallet, loadConnectors, loadReminders]);
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [messages, typing]);
 
   /** Switch the previewed brand: re-skin, and reset to a clean per-brand conversation + context. */
   function selectBrand(id: string) {
@@ -156,11 +145,8 @@ export default function AssistantHome() {
     } catch {
       /* ignore */
     }
-    sessionId.current = crypto.randomUUID();
-    setMessages([{ id: "greet", role: "assistant", text: greetingFor(getBrand(id)) }]);
-    setShowSugs(true);
+    resetConversation(greetingFor(getBrand(id)));
     setBriefOffer("hidden");
-    setError(null);
   }
 
   function dismissWelcome() {
@@ -196,58 +182,6 @@ export default function AssistantHome() {
       setBriefOffer(res.ok ? "done" : "error");
     } catch {
       setBriefOffer("error");
-    }
-  }
-
-  async function submit(raw: string) {
-    const text = raw.trim();
-    if (!text || busy) return;
-    setShowSugs(false);
-    setShowWelcome(false);
-    setError(null);
-    setInput("");
-
-    const asstId = `a_${Date.now()}`;
-    setMessages((m) => [...m, { id: `u_${Date.now()}`, role: "user", text }]);
-    setBusy(true);
-    setTyping(true);
-
-    const appendChunk = (chunk: string, started: boolean) => {
-      if (!started) {
-        setTyping(false);
-        setMessages((m) => [...m, { id: asstId, role: "assistant", text: chunk }]);
-      } else {
-        setMessages((m) => m.map((msg) => (msg.id === asstId ? { ...msg, text: msg.text + chunk } : msg)));
-      }
-    };
-
-    let replied = false;
-    try {
-      let started = false;
-      await streamChat(`/api/consumer/chat${ws}`, { message: text, sessionId: sessionId.current }, (ev) => {
-        if (ev.type === "tool") {
-          setTyping(true);
-        } else if (ev.type === "delta") {
-          appendChunk(ev.text, started);
-          started = true;
-          replied = true;
-        } else {
-          if (typeof ev.balance === "number") setBalance(ev.balance);
-          if (!started && ev.reply) {
-            appendChunk(ev.reply, false);
-            started = true;
-            replied = true;
-          }
-        }
-      });
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong");
-    } finally {
-      setBusy(false);
-      setTyping(false);
-      loadWallet();
-      loadReminders();
-      if (replied) maybeOfferBrief();
     }
   }
 
@@ -437,110 +371,52 @@ export default function AssistantHome() {
         </section>
       ) : null}
 
-      <div className="flex h-[62vh] min-h-[420px] flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)]">
-        <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
-          {messages.map((m) => (
-            <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
-                  m.role === "user"
-                    ? "bg-[var(--accent)] text-[var(--accent-ink)]"
-                    : "border border-[var(--line)] bg-[var(--bg-panel)] text-[var(--text)]"
-                }`}
-              >
-                {m.role === "assistant" ? renderRichText(m.text) : m.text}
-              </div>
+      <ConsumerChatWindow
+        chat={chat}
+        starters={STARTER_PROMPTS}
+        placeholder="Message your assistant…"
+        ariaLabel="Message your assistant"
+        className="h-[62vh] min-h-[420px]"
+        footer={
+          briefOffer !== "hidden" ? (
+            <div className="mx-4 mb-1 rounded-xl border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] p-3 text-sm">
+              {briefOffer === "done" ? (
+                <p className="text-[var(--text)]">
+                  Done — I&apos;ll send you a morning catch-up at 7am. You can change or turn it off any time.
+                </p>
+              ) : briefOffer === "error" ? (
+                <p className="text-[var(--warn)]">
+                  Couldn&apos;t set that up just now — you can try again later from your settings.
+                </p>
+              ) : (
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-[var(--text)]">
+                    Want a quick <strong>morning catch-up</strong> each day — your schedule, inbox and
+                    what needs attention?
+                  </span>
+                  <span className="flex shrink-0 items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={briefOffer === "saving"}
+                      onClick={enableBrief}
+                      className="btn btn-primary inline-flex h-8 items-center px-3 text-xs"
+                    >
+                      {briefOffer === "saving" ? "…" : "Yes, 7am"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBriefOffer("hidden")}
+                      className="text-xs text-[var(--muted)] underline decoration-1 underline-offset-2 hover:text-[var(--text)]"
+                    >
+                      No thanks
+                    </button>
+                  </span>
+                </div>
+              )}
             </div>
-          ))}
-          {typing ? (
-            <div className="flex justify-start">
-              <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] px-3.5 py-2 text-sm text-[var(--muted)]">
-                <span className="inline-flex gap-1">
-                  <span className="animate-pulse">●</span>
-                  <span className="animate-pulse [animation-delay:150ms]">●</span>
-                  <span className="animate-pulse [animation-delay:300ms]">●</span>
-                </span>
-              </div>
-            </div>
-          ) : null}
-        </div>
-
-        {briefOffer !== "hidden" ? (
-          <div className="mx-4 mb-1 rounded-xl border border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] p-3 text-sm">
-            {briefOffer === "done" ? (
-              <p className="text-[var(--text)]">
-                Done — I&apos;ll send you a morning catch-up at 7am. You can change or turn it off any time.
-              </p>
-            ) : briefOffer === "error" ? (
-              <p className="text-[var(--warn)]">
-                Couldn&apos;t set that up just now — you can try again later from your settings.
-              </p>
-            ) : (
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-[var(--text)]">
-                  Want a quick <strong>morning catch-up</strong> each day — your schedule, inbox and
-                  what needs attention?
-                </span>
-                <span className="flex shrink-0 items-center gap-2">
-                  <button
-                    type="button"
-                    disabled={briefOffer === "saving"}
-                    onClick={enableBrief}
-                    className="btn btn-primary inline-flex h-8 items-center px-3 text-xs"
-                  >
-                    {briefOffer === "saving" ? "…" : "Yes, 7am"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBriefOffer("hidden")}
-                    className="text-xs text-[var(--muted)] underline decoration-1 underline-offset-2 hover:text-[var(--text)]"
-                  >
-                    No thanks
-                  </button>
-                </span>
-              </div>
-            )}
-          </div>
-        ) : null}
-
-        {showSugs ? (
-          <div className="flex flex-wrap gap-2 px-4 pb-2 pt-1">
-            {STARTER_PROMPTS.map((s) => (
-              <button key={s} type="button" onClick={() => submit(s)} className="suggestion">
-                {s}
-              </button>
-            ))}
-          </div>
-        ) : null}
-
-        {error ? (
-          <p className="px-4 pb-1 text-xs text-[var(--warn)]">{error}</p>
-        ) : null}
-
-        <form
-          className="flex items-end gap-2 border-t border-[var(--line)] p-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            void submit(input);
-          }}
-        >
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Message your assistant…"
-            className="input min-w-0 flex-1 text-sm"
-            disabled={busy}
-            aria-label="Message your assistant"
-          />
-          <button
-            type="submit"
-            disabled={busy || !input.trim()}
-            className="btn btn-primary inline-flex h-10 items-center justify-center px-4 text-sm"
-          >
-            {busy ? "…" : "Send"}
-          </button>
-        </form>
-      </div>
+          ) : null
+        }
+      />
 
       <p className="text-[11px] leading-relaxed text-[var(--muted)]">
         Metered to your prepaid balance. Your assistant confirms with you before sending anything or
