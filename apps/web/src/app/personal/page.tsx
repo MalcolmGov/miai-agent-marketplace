@@ -121,7 +121,7 @@ export default async function PersonalMarketplacePage() {
                   </span>
                   {agent.certified ? (
                     <Link
-                      href={`/me?agent=${encodeURIComponent(agent.id)}&label=${encodeURIComponent(agent.name)}`}
+                      href={`/personal/${agent.id}`}
                       className="btn btn-primary shrink-0 px-3.5 py-2 text-[13px]"
                       data-testid="personal-try"
                     >

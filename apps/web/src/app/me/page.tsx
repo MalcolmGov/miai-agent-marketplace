@@ -78,9 +78,6 @@ export default function AssistantHome() {
   const sessionId = useRef(crypto.randomUUID());
   const scrollRef = useRef<HTMLDivElement>(null);
   const briefOfferedRef = useRef(false);
-  // Specialist pinned via /me?agent=<id> (a "Try free" card). Kept in a ref so it rides along on
-  // every send without re-rendering; undefined = the general assistant.
-  const agentIdRef = useRef<string | undefined>(undefined);
 
   const brand = getBrand(brandId);
   const connectedSet = new Set(connectors.filter((c) => c.connected).map((c) => c.connector));
@@ -137,32 +134,6 @@ export default function AssistantHome() {
     } catch {
       /* private mode / storage disabled — just skip the one-time gates */
     }
-    // Pin a specialist when arriving from a "Try free" card (/me?agent=<id>&label=<name>) so this
-    // conversation runs that agent, and confirm it in the greeting.
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const a = params.get("agent");
-      if (a) {
-        agentIdRef.current = a;
-        // Sanitize the reflected display label before it goes into an assistant message: those are
-        // rendered through the markdown-aware rich-text renderer, so a raw ?label= could smuggle a
-        // clickable link or a remote image into the trusted assistant bubble. Whitelist name-safe
-        // characters only — this removes every markdown metacharacter, so no markup can form.
-        const label = (params.get("label") ?? "").replace(/[^\p{L}\p{N} '&-]/gu, "").trim().slice(0, 40);
-        setMessages([
-          {
-            id: "greet",
-            role: "assistant",
-            text: label
-              ? `You're set up with your ${label}. What would you like to work on?`
-              : "You're set up with your specialist. What would you like to work on?",
-          },
-        ]);
-        setShowSugs(false);
-      }
-    } catch {
-      /* no URL / SSR guard — fall back to the general assistant */
-    }
   }, []);
 
   // Reload the per-brand context whenever the brand changes.
@@ -186,7 +157,6 @@ export default function AssistantHome() {
       /* ignore */
     }
     sessionId.current = crypto.randomUUID();
-    agentIdRef.current = undefined; // drop any pinned specialist so sends match the clean general greeting
     setMessages([{ id: "greet", role: "assistant", text: greetingFor(getBrand(id)) }]);
     setShowSugs(true);
     setBriefOffer("hidden");
@@ -254,7 +224,7 @@ export default function AssistantHome() {
     let replied = false;
     try {
       let started = false;
-      await streamChat(`/api/consumer/chat${ws}`, { message: text, sessionId: sessionId.current, agentId: agentIdRef.current }, (ev) => {
+      await streamChat(`/api/consumer/chat${ws}`, { message: text, sessionId: sessionId.current }, (ev) => {
         if (ev.type === "tool") {
           setTyping(true);
         } else if (ev.type === "delta") {
