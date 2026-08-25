@@ -51,9 +51,7 @@ describe("consumer identity + wallet mapping", () => {
     assert.equal(consumer.walletIdForConsumer({ userId: "usr_123" }), "usr_123");
   });
 
-  it("only vetted consumer agents are runnable", async () => {
-    // The flagship assistant and *certified* personal agents run; business agents and
-    // still-in-certification personal agents do not.
+  it("gates the consumer line: flagship + certified run; in-cert and business refused (production)", async () => {
     assert.equal(await consumer.isRunnableConsumerAgent("personal-assistant"), true);
     assert.equal(await consumer.isRunnableConsumerAgent("study-coach"), true); // certified
     assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), false); // in certification
@@ -61,6 +59,17 @@ describe("consumer identity + wallet mapping", () => {
     assert.equal(await consumer.isRunnableConsumerAgent("us-customer-support"), false);
     assert.ok(consumer.consumerAgentIds().includes("personal-assistant"));
     assert.equal(consumer.DEFAULT_CONSUMER_AGENT, "personal-assistant");
+  });
+
+  it("sandbox mode makes every catalogued specialist runnable — but never a business id", async () => {
+    process.env.SANDBOX_MODE = "1";
+    try {
+      assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), true); // in-cert now runs
+      assert.equal(await consumer.isRunnableConsumerAgent("study-coach"), true);
+      assert.equal(await consumer.isRunnableConsumerAgent("front-desk"), false); // boundary still holds
+    } finally {
+      delete process.env.SANDBOX_MODE;
+    }
   });
 });
 
@@ -77,10 +86,9 @@ describe("runConsumerTurn: gates", () => {
     assert.equal(r.status, 403);
   });
 
-  it("rejects an in-certification personal agent with 403 (package resolves, gate blocks)", async () => {
-    // learning-advisor has a package in data/catalog-consumer, so getAgentPackage's fallback WOULD
-    // load it — the certification gate, not a missing package, is the sole thing blocking it. This
-    // locks that invariant so a future prepare() refactor can't silently make in-cert agents run.
+  it("refuses an in-certification specialist on the production line (403)", async () => {
+    // learning-advisor is authored-but-not-certified; on production only certified specialists run,
+    // even though its package resolves via the consumer-catalog fallback.
     const r = await turn.runConsumerTurn({
       consumerId: "u1",
       walletId: "u1",
@@ -90,6 +98,23 @@ describe("runConsumerTurn: gates", () => {
     });
     assert.equal(r.ok, false);
     assert.equal(r.status, 403);
+  });
+
+  it("runs an in-certification specialist in sandbox mode (all specialists usable there)", async () => {
+    process.env.SANDBOX_MODE = "1";
+    try {
+      const r = await turn.runConsumerTurn({
+        consumerId: "u1",
+        walletId: "u1",
+        agentId: "learning-advisor",
+        message: "hi",
+        rateLimitOk: true,
+      });
+      assert.equal(r.ok, true, r.ok ? "" : `sandbox in-cert failed: ${r.error}`);
+      assert.equal(r.agentId, "learning-advisor");
+    } finally {
+      delete process.env.SANDBOX_MODE;
+    }
   });
 
   it("rejects an empty message with 400", async () => {

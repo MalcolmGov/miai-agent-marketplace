@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listPersonalAgents } from "@/lib/consumer-catalog";
+import { listPersonalAgents, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { AgentIcon } from "@/components/AgentIcon";
+
+// Rendered per request: the "Try" CTA depends on SANDBOX_MODE (all specialists run in the sandbox,
+// only certified ones on production) and the prod/sandbox images are identical.
+export const dynamic = "force-dynamic";
 
 /** Friendly one-word label for the consumer taxonomy (vertical/front-office/commerce). */
 function audienceLabel(category: string): string {
@@ -77,8 +81,15 @@ export default async function PersonalMarketplacePage() {
                       {agent.name}
                     </h2>
                   </div>
-                  {agent.certified && (
+                  {agent.certified ? (
                     <span className="chip chip-live shrink-0 whitespace-nowrap">✓ Tested</span>
+                  ) : (
+                    <span
+                      className="chip shrink-0 whitespace-nowrap"
+                      data-testid="in-certification"
+                    >
+                      In certification
+                    </span>
                   )}
                 </div>
 
@@ -119,21 +130,21 @@ export default async function PersonalMarketplacePage() {
                   <span className="text-[11px] leading-tight text-[var(--muted)]">
                     {agent.evals} tests{agent.certified ? "" : " authored"} · {agent.languages.join(" · ")}
                   </span>
-                  {agent.certified ? (
+                  {personalAgentRunnable(agent) ? (
                     <Link
                       href={`/personal/${agent.id}`}
                       className="btn btn-primary shrink-0 px-3.5 py-2 text-[13px]"
                       data-testid="personal-try"
                     >
-                      Try free
+                      Try
                       <span aria-hidden>→</span>
                     </Link>
                   ) : (
                     <span
                       className="shrink-0 whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--muted)]"
-                      data-testid="in-certification"
+                      data-testid="personal-comingsoon"
                     >
-                      In certification
+                      Coming soon
                     </span>
                   )}
                 </div>

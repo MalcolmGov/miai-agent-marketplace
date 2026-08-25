@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPersonalAgent } from "@/lib/consumer-catalog";
+import { getPersonalAgent, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { AgentIcon } from "@/components/AgentIcon";
 import { specialistStarters } from "@/lib/consumer-specialist-starters";
 import SpecialistChat from "./SpecialistChat";
+
+// Rendered per request: whether the chat runs depends on SANDBOX_MODE (all specialists in the
+// sandbox, only certified on production), and the prod/sandbox images are identical.
+export const dynamic = "force-dynamic";
 
 /** Friendly one-word label for the consumer taxonomy (vertical/front-office/commerce). */
 function audienceLabel(category: string): string {
@@ -33,8 +37,6 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
   const { id } = await params;
   const agent = await getPersonalAgent(id);
   if (!agent) notFound();
-
-  const runnable = agent.certified;
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 pb-10">
@@ -105,12 +107,23 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
         </section>
       )}
 
-      {/* Chat, or an in-certification notice */}
-      {runnable ? (
+      {/* Chat when this specialist is runnable here (certified on prod; all in the sandbox);
+          otherwise an honest in-certification notice. */}
+      {personalAgentRunnable(agent) ? (
         <section className="flex flex-col gap-2.5" data-testid="specialist-chat">
           <h2 className="display text-base font-semibold tracking-tight text-[var(--text)]">
             Chat with your {agent.name}
           </h2>
+          {!agent.certified && (
+            <p
+              className="rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)] px-3.5 py-2.5 text-xs leading-relaxed text-[var(--muted)]"
+              data-testid="in-certification-note"
+            >
+              <span className="font-semibold text-[var(--card-body)]">In certification.</span> This
+              specialist is authored and safety-guardrailed, but hasn&apos;t finished behavioural
+              testing yet — you can use it now, just expect the rough edges we&apos;re still ironing out.
+            </p>
+          )}
           <SpecialistChat
             agentId={agent.id}
             agentName={agent.name}

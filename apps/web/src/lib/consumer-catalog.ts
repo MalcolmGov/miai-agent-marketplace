@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { isSandbox } from "@/lib/sandbox";
 
 /**
  * Personal (consumer) agent catalogue — the space for agents an individual or household
@@ -57,4 +58,15 @@ export async function listPersonalAgents(): Promise<PersonalAgentEntry[]> {
 export async function getPersonalAgent(id: string): Promise<PersonalAgentEntry | null> {
   const all = await listPersonalAgents();
   return all.find((e) => e.id === id) ?? null;
+}
+
+/**
+ * Whether a person can run this specialist in the current deployment: certified agents run on
+ * production; in the sandbox every catalogued specialist runs (so a partner can evaluate them all).
+ * The UI (card CTA, specialist chat vs. notice) uses this so it never offers a run that the runtime
+ * gate (isRunnableConsumerAgent) would refuse. Because it reads SANDBOX_MODE at request time, the
+ * pages that call it must render dynamically (the prod and sandbox images are identical).
+ */
+export function personalAgentRunnable(agent: PersonalAgentEntry): boolean {
+  return agent.certified || isSandbox();
 }
