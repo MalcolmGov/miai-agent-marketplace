@@ -5,7 +5,7 @@ import { listConnectors } from "@miai/connectors";
 import { getAgentPackage } from "@/lib/catalog";
 import { getWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
-import { isSandbox, redactAgentPackage } from "@/lib/sandbox";
+import { redactAgentPackage } from "@/lib/agent-ip";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +21,9 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
   const preset = getPreset(id);
   const rental = await getWorkspaceAgent(workspaceId, id);
   return NextResponse.json({
-    package: isSandbox() ? redactAgentPackage(pkg) : pkg,
+    // Crown-jewel IP is never sent to a client — the studio uses manifest/tools/knowledge,
+    // and the agent runs server-side with the full package. Locks down prod and sandbox alike.
+    package: redactAgentPackage(pkg),
     marketplaceCategory: marketplaceCategory(pkg.manifest),
     rentUsd: RENT_USD[pkg.manifest.tier] ?? 349,
     preset: preset ?? null,
