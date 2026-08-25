@@ -12,7 +12,7 @@ type ShellMode = "business" | "consumer";
 
 const BUSINESS_HIDDEN = new Set(["learn"]);
 /** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
-const CONSUMER_ALLOWED = new Set(["home", "ask"]);
+const CONSUMER_ALLOWED = new Set(["home", "ask", "ai-agents-hub"]);
 /** Entire nav groups hidden in consumer mode (Agents is business-only). */
 const CONSUMER_HIDDEN_GROUPS = new Set(["agents", "growth"]);
 
@@ -157,6 +157,13 @@ const GROUPS: NavGroup[] = [
     items: [
       { id: "home", href: "/", labelKey: "nav.home", icon: <IconHome />, exact: true },
       { id: "ask", href: "/ask", labelKey: "nav.askAi", icon: <IconSpark /> },
+      {
+        id: "ai-agents-hub",
+        href: "/agents",
+        labelKey: "nav.aiAgents",
+        icon: <IconAgents />,
+        badge: { labelKey: "nav.badgeNew", tone: "new" },
+      },
       { id: "search", href: "/#catalogue", labelKey: "nav.search", icon: <IconSearch /> },
       { id: "history", href: "/history", labelKey: "nav.history", icon: <IconHistory /> },
       { id: "workspace", href: "/workspace", labelKey: "nav.workspace", icon: <IconAdmin /> },
@@ -166,14 +173,6 @@ const GROUPS: NavGroup[] = [
     id: "agents",
     titleKey: "nav.agents",
     items: [
-      {
-        id: "ai-agents",
-        href: "/",
-        labelKey: "nav.aiAgents",
-        icon: <IconAgents />,
-        badge: { labelKey: "nav.badgeNew", tone: "new" },
-        exact: true,
-      },
       { id: "my-agents", href: "/my-agents", labelKey: "nav.myAgents", icon: <IconGrid /> },
       {
         id: "live-ops",

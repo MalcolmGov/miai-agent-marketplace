@@ -21,6 +21,11 @@ html[data-theme="dark"] {
   --accent-bright: #6aefe0;
   --accent-dim: #1f9e92;
   --accent-ink: #041614;
+  /* Business lane accent (AI Agents hub) — distinct from the teal consumer accent */
+  --biz: #7f97f6;
+  --biz-bright: #a3b6f9;
+  --biz-dim: #4f69da;
+  --biz-ink: #060b1f;
   --warn: #f0b429;
   --danger: #f07178;
   --live: #5eead4;
@@ -49,6 +54,10 @@ html[data-theme="light"] {
   --accent-bright: #0d7a70;
   --accent-dim: #2bb8a8;
   --accent-ink: #03201c;
+  --biz: #3f57cf;
+  --biz-bright: #2f45bd;
+  --biz-dim: #6076e0;
+  --biz-ink: #eef1ff;
   --warn: #c9870a;
   --danger: #d64550;
   --live: #14968a;
