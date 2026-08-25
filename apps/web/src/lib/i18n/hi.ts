@@ -57,7 +57,7 @@ export const hi: Dictionary = {
   "catalog.customer": "ग्राहक",
   "catalog.internal": "आंतरिक",
   "catalog.workflows": "वर्कफ़्लो",
-  "catalog.demo6": "Go-live 100",
+  "catalog.demo6": "Go-live",
   "catalog.goliveHint": "वे परिवार जिन्हें हम ग्राहक प्रोडक्शन के लिए खड़े रहते हैं। लाइसेंस अभी भी सभी 500 को कवर करता है।",
   "catalog.market": "बाज़ार",
   "catalog.allMarkets": "सभी बाज़ार",
@@ -95,7 +95,8 @@ export const hi: Dictionary = {
   "catalog.workflowHint":
     "अगला कदम प्लान करता है, आपसे पुष्टि करता है, फिर काम करता है — सिर्फ जवाब नहीं।",
 
-  "hero.headline": "अपने व्यवसाय के लिए AI एजेंट किराये पर लें",
+  "hero.headline": "AI एजेंट नियुक्त करें. अपना व्यवसाय बढ़ाएँ.",
+  "hero.headlineAccent": "AI एजेंट",
   "hero.lede":
     "WhatsApp, वेब और ऐप के लिए {count} तैयार एजेंट — सेटअप करें, कॉन्फ़िगर करें, लाइव जाएँ।",
   "hero.browse": "एजेंट ब्राउज़ करें",

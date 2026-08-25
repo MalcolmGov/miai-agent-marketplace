@@ -57,7 +57,7 @@ export const zh: Dictionary = {
   "catalog.customer": "客户",
   "catalog.internal": "内部",
   "catalog.workflows": "工作流",
-  "catalog.demo6": "Go-live 100",
+  "catalog.demo6": "Go-live",
   "catalog.goliveHint": "我们为客户生产背书的家族。许可仍覆盖全部 500。",
   "catalog.market": "市场",
   "catalog.allMarkets": "全部市场",
@@ -94,7 +94,8 @@ export const zh: Dictionary = {
   "catalog.updating": "更新中…",
   "catalog.workflowHint": "规划下一步、与您确认后再执行 — 不是简单问答。",
 
-  "hero.headline": "为您的业务聘用 AI 智能体",
+  "hero.headline": "雇佣 AI 智能体，扩展你的业务。",
+  "hero.headlineAccent": "AI 智能体",
   "hero.lede": "{count} 个现成智能体，覆盖 WhatsApp、网页与应用 — 搭建、配置、上线。",
   "hero.browse": "浏览智能体",
   "hero.mondayDemo": "周一演示包",

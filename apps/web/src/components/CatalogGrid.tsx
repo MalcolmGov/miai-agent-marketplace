@@ -11,11 +11,9 @@ import { AgentIcon } from "./AgentIcon";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
 import {
   MarketBadge,
-  MarketFlagIcon,
   PACK_ORDER,
   type PackId,
   isPackId,
-  packLabel,
 } from "./CatalogMarketBadge";
 
 type SpeechRecognitionLike = {
@@ -129,6 +127,186 @@ function cleanCardSummary(summary: string, name: string): string {
   return s || summary;
 }
 
+/** Sparkle mark for the Smart toggle. */
+function IconSparkle() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5" aria-hidden>
+      <path d="M12 2l1.6 4.9L18.5 8.5 13.6 10 12 15l-1.6-5L5.5 8.5l4.9-1.6L12 2z" />
+      <path d="M19 13l.7 2.1 2.1.7-2.1.7L19 19l-.7-2.5-2.1-.7 2.1-.7L19 13z" opacity="0.7" />
+    </svg>
+  );
+}
+
+/** Waveform mark for the Voice toggle. */
+function IconWave() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-3.5 w-3.5" aria-hidden>
+      <path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2" />
+    </svg>
+  );
+}
+
+function IconGlobe() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-4 w-4" aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" />
+    </svg>
+  );
+}
+
+function IconGridSq() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-4 w-4" aria-hidden>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+    </svg>
+  );
+}
+
+type ChannelGlyph = "chat" | "globe" | "mail" | "mic" | "plug";
+function channelGlyph(name: string): ChannelGlyph {
+  const n = name.toLowerCase();
+  if (/mail|email/.test(n)) return "mail";
+  if (/voice|call|phone|ivr/.test(n)) return "mic";
+  if (/web|site|widget|embed|portal/.test(n)) return "globe";
+  if (/whats|telegram|messenger|insta|sms|chat|message|slack|dm/.test(n)) return "chat";
+  return "plug";
+}
+const CHANNEL_TINTS = ["var(--accent)", "var(--biz)", "var(--warn)"] as const;
+
+function ChannelGlyphSvg({ kind }: { kind: ChannelGlyph }) {
+  const paths: Record<ChannelGlyph, React.ReactNode> = {
+    chat: <path d="M4 5h16v10H9l-4 3v-3H4z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />,
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M4 12h16M12 4c2.2 2.4 2.2 13.6 0 16M12 4c-2.2 2.4-2.2 13.6 0 16" fill="none" stroke="currentColor" strokeWidth="1.4" />
+      </>
+    ),
+    mail: <path d="M4 6h16v12H4z M4 6l8 6 8-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />,
+    mic: <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4zM6 11a6 6 0 0 0 12 0M12 17v3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />,
+    plug: <path d="M9 3v5m6-5v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />,
+  };
+  return (
+    <svg viewBox="0 0 24 24" className="h-[13px] w-[13px]">
+      {paths[kind]}
+    </svg>
+  );
+}
+
+/** Compact row of channel/tool badges + overflow count — the card's "works with" strip. */
+function ChannelBadges({ channels }: { channels: string[] }) {
+  const list = channels.filter(Boolean);
+  if (list.length === 0) return null;
+  const shown = list.slice(0, 3);
+  const extra = list.length - shown.length;
+  return (
+    <div className="mt-2.5 flex items-center gap-1.5" aria-label="Channels">
+      {shown.map((c, i) => (
+        <span
+          key={c}
+          title={c}
+          className="flex h-6 w-6 items-center justify-center rounded-md ring-1 ring-[var(--line)]"
+          style={{
+            color: CHANNEL_TINTS[i % CHANNEL_TINTS.length],
+            background: `color-mix(in srgb, ${CHANNEL_TINTS[i % CHANNEL_TINTS.length]} 12%, var(--bg-panel))`,
+          }}
+        >
+          <ChannelGlyphSvg kind={channelGlyph(c)} />
+        </span>
+      ))}
+      {extra > 0 ? (
+        <span className="text-[11px] font-semibold text-[var(--muted-dim)]">+{extra}</span>
+      ) : null}
+    </div>
+  );
+}
+
+function BookmarkButton({ saved, onToggle }: { saved: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-pressed={saved}
+      aria-label={saved ? "Saved" : "Save agent"}
+      className={`biz-bookmark ${saved ? "biz-bookmark-on" : ""}`}
+    >
+      <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8">
+        <path d="M6 4h12v16l-6-4-6 4z" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
+/** A count-badged filter pill that toggles a boolean facet (Workflows / Go-live). */
+function ToggleFacet({
+  label,
+  active,
+  count,
+  title,
+  onToggle,
+}: {
+  label: string;
+  active: boolean;
+  count: number;
+  title: string;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onToggle}
+      className={`facet ${active ? "facet-active" : ""}`}
+      title={title}
+    >
+      {label}
+      <span className="cat-count">{count}</span>
+    </button>
+  );
+}
+
+/** A labelled, icon-led dropdown used for the market / industry facets. */
+function FacetSelect({
+  id,
+  label,
+  icon,
+  value,
+  widthClass,
+  onSelect,
+  children,
+}: {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  value: string;
+  widthClass: string;
+  onSelect: (value: string) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <label className="sr-only" htmlFor={id}>
+        {label}
+      </label>
+      <div className="biz-select">
+        {icon}
+        <select
+          id={id}
+          className={`input !w-auto ${widthClass} !py-2 !pl-9 text-xs font-semibold`}
+          value={value}
+          onChange={(e) => onSelect(e.target.value)}
+        >
+          {children}
+        </select>
+      </div>
+    </>
+  );
+}
+
 export function CatalogGrid({
   initialFamilies,
 }: {
@@ -165,7 +343,31 @@ export function CatalogGrid({
   const [speechHint, setSpeechHint] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [detail, setDetail] = useState<FamilyItem | null>(null);
+  const [saved, setSaved] = useState<Set<string>>(new Set());
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("miai.savedAgents");
+      if (raw) setSaved(new Set(JSON.parse(raw) as string[]));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  function toggleSaved(id: string) {
+    setSaved((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      try {
+        localStorage.setItem("miai.savedAgents", JSON.stringify([...next]));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }
 
   const smartParsed = useMemo(
     () => (smartFilter && q.trim() ? parseSmartCatalogQuery(q) : null),
@@ -323,7 +525,7 @@ export function CatalogGrid({
     (q ? 1 : 0);
 
   return (
-    <div className="space-y-8">
+    <div className="biz-market space-y-8">
       <MarketplaceHero
         familyCount={totalFamilies || familyCount || 100}
         agentCount={500}
@@ -333,49 +535,48 @@ export function CatalogGrid({
 
       <section id="catalogue" className="scroll-mt-24 space-y-4">
         {/* One control strip — search + primary facets */}
-        <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-          <div className="relative min-w-0 flex-1">
-            <svg
-              aria-hidden
-              className="pointer-events-none absolute left-3.5 top-1/2 z-[1] h-4 w-4 -translate-y-1/2 text-[var(--muted-dim)]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
-            </svg>
-            <input
-              className="input !pl-11 !pr-[7.25rem] sm:!pr-[12.25rem]"
-              placeholder={t("catalog.searchPlaceholder")}
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              aria-label={t("catalog.searchPlaceholder")}
-            />
-            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5 sm:gap-1">
+        <div className="biz-toolbar flex flex-col gap-3 xl:flex-row xl:flex-wrap xl:items-center">
+          <div className="flex min-w-0 flex-1 items-center gap-2 xl:min-w-[340px]">
+            <div className="relative min-w-0 flex-1">
+              <svg
+                aria-hidden
+                className="pointer-events-none absolute left-3.5 top-1/2 z-[1] h-4 w-4 -translate-y-1/2 text-[var(--muted-dim)]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+              </svg>
+              <input
+                className="input !pl-11 !pr-16"
+                placeholder={t("catalog.searchPlaceholder")}
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                aria-label={t("catalog.searchPlaceholder")}
+              />
+              <kbd
+                className="biz-kbd pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
+                aria-hidden
+              >
+                &#8984;K
+              </kbd>
+            </div>
+            <div className="seg" role="group" aria-label="Search mode">
               <button
                 type="button"
-                className={`inline-flex h-8 items-center gap-1 rounded-lg px-1.5 text-[10px] font-semibold uppercase tracking-[0.06em] transition sm:px-2 sm:text-[11px] ${
-                  smartFilter
-                    ? "text-[var(--accent-bright)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--accent)_28%,transparent)]"
-                    : "text-[var(--muted-dim)] hover:text-[var(--text)]"
-                }`}
+                className={`seg-btn ${smartFilter ? "seg-btn-active" : ""}`}
                 aria-pressed={smartFilter}
                 title={t("catalog.smartTitle")}
                 onClick={() => setSmartFilter((v) => !v)}
               >
-                {t("catalog.smart")}
+                <IconSparkle />
+                <span className="hidden sm:inline">{t("catalog.smart")}</span>
               </button>
               <button
                 type="button"
-                className={`group relative inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-2.5 sm:px-3 text-[11px] font-semibold uppercase tracking-[0.07em] transition duration-200 ${
-                  listening
-                    ? "text-[var(--accent-ink)] bg-[var(--accent-bright)] shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_35%,transparent),0_8px_20px_-8px_color-mix(in_srgb,var(--accent)_70%,transparent)]"
-                    : speechSupported
-                      ? "text-[var(--accent-ink)] bg-gradient-to-b from-[var(--accent-bright)] to-[var(--accent)] shadow-[0_6px_16px_-8px_color-mix(in_srgb,var(--accent)_80%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--accent-bright)_55%,transparent)] hover:brightness-110 hover:shadow-[0_8px_22px_-8px_color-mix(in_srgb,var(--accent)_90%,transparent)] active:scale-[0.98]"
-                      : "cursor-not-allowed text-[var(--muted-dim)] bg-[var(--bg-panel)] opacity-50 ring-1 ring-[var(--line)]"
-                }`}
+                className={`seg-btn ${listening ? "seg-btn-active" : ""}`}
                 aria-label={listening ? t("catalog.voiceStop") : t("catalog.voiceTitle")}
                 aria-pressed={listening}
                 disabled={!speechSupported}
@@ -388,27 +589,8 @@ export function CatalogGrid({
                 }
                 onClick={toggleVoiceSearch}
               >
-                {listening ? (
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 rounded-lg animate-ping bg-[color-mix(in_srgb,var(--accent)_28%,transparent)] opacity-60"
-                  />
-                ) : null}
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className={`relative h-[15px] w-[15px] ${listening ? "animate-pulse" : ""}`}
-                  aria-hidden
-                >
-                  <path
-                    d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"
-                    strokeLinejoin="round"
-                  />
-                  <path d="M5 11a7 7 0 0 0 14 0M12 18v3" strokeLinecap="round" />
-                </svg>
-                <span className="relative hidden sm:inline">
+                <IconWave />
+                <span className="hidden sm:inline">
                   {listening ? t("catalog.listening") : t("catalog.voice")}
                 </span>
               </button>
@@ -416,70 +598,64 @@ export function CatalogGrid({
           </div>
 
           <div className="catalog-filter-scroll" role="group" aria-label={t("catalog.audience")}>
-              {AUDIENCES.map((a) => (
-                <button
-                  key={a.id}
-                  type="button"
-                  onClick={() => {
-                    setSmartFilter(false);
-                    setAudience(a.id);
-                  }}
-                  className={`chip ${audience === a.id ? "filter-active" : ""}`}
-                >
-                  {t(a.labelKey)}
-                </button>
-              ))}
+            {AUDIENCES.map((a) => (
               <button
+                key={a.id}
                 type="button"
                 onClick={() => {
                   setSmartFilter(false);
-                  setWorkflowsOnly((v) => {
-                    const next = !v;
-                    // Show the full workflow set when enabling — don't keep a stacked audience filter.
-                    if (next) {
-                      setAudience("all");
-                      setPilotOnly(false);
-                    }
-                    return next;
-                  });
+                  setAudience(a.id);
                 }}
-                className={`chip ${workflowsOnly ? "filter-active chip-live" : ""}`}
-                title={t("catalog.workflowHint")}
+                aria-pressed={audience === a.id}
+                className={`facet ${audience === a.id ? "facet-active" : ""}`}
               >
-                {t("catalog.workflows")}
-                <span className="cat-count">
-                  {workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
-                </span>
+                {t(a.labelKey)}
               </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setSmartFilter(false);
-                  setPilotOnly((v) => {
-                    const next = !v;
-                    if (next) {
-                      setWorkflowsOnly(false);
-                    }
-                    return next;
-                  });
-                }}
-                className={`chip ${pilotOnly ? "filter-active chip-live" : ""}`}
-                title={t("catalog.goliveHint")}
-              >
-                {t("catalog.demo6")}
-                <span className="cat-count">{pilotOnly ? familyCount : 100}</span>
-              </button>
-
-            <label className="sr-only" htmlFor="market-filter">
-              {t("catalog.market")}
-            </label>
-            <select
-              id="market-filter"
-              className="input !w-auto !min-w-[6.5rem] !py-2 text-xs font-semibold uppercase tracking-wide"
-              value={market}
-              onChange={(e) => {
+            ))}
+            <ToggleFacet
+              label={t("catalog.workflows")}
+              active={workflowsOnly}
+              count={workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
+              title={t("catalog.workflowHint")}
+              onToggle={() => {
                 setSmartFilter(false);
-                setMarket(e.target.value);
+                setWorkflowsOnly((v) => {
+                  const next = !v;
+                  // Show the full workflow set when enabling — don't keep a stacked audience filter.
+                  if (next) {
+                    setAudience("all");
+                    setPilotOnly(false);
+                  }
+                  return next;
+                });
+              }}
+            />
+            <ToggleFacet
+              label={t("catalog.demo6")}
+              active={pilotOnly}
+              count={pilotOnly ? familyCount : 100}
+              title={t("catalog.goliveHint")}
+              onToggle={() => {
+                setSmartFilter(false);
+                setPilotOnly((v) => {
+                  const next = !v;
+                  if (next) {
+                    setWorkflowsOnly(false);
+                  }
+                  return next;
+                });
+              }}
+            />
+
+            <FacetSelect
+              id="market-filter"
+              label={t("catalog.market")}
+              icon={<IconGlobe />}
+              value={market}
+              widthClass="!min-w-[8.5rem]"
+              onSelect={(v) => {
+                setSmartFilter(false);
+                setMarket(v);
               }}
             >
               {MARKETS.map((m) => (
@@ -487,18 +663,17 @@ export function CatalogGrid({
                   {"labelKey" in m ? t(m.labelKey) : m.label}
                 </option>
               ))}
-            </select>
+            </FacetSelect>
 
-            <label className="sr-only" htmlFor="category-filter">
-              {t("catalog.industry")}
-            </label>
-            <select
+            <FacetSelect
               id="category-filter"
-              className="input !w-auto !min-w-[8rem] max-w-[220px] !py-2 text-xs font-semibold"
+              label={t("catalog.industry")}
+              icon={<IconGridSq />}
               value={category}
-              onChange={(e) => {
+              widthClass="!min-w-[9.5rem] max-w-[230px]"
+              onSelect={(v) => {
                 setSmartFilter(false);
-                setCategory(e.target.value);
+                setCategory(v);
               }}
             >
               {categories.map((c) => {
@@ -509,7 +684,7 @@ export function CatalogGrid({
                   </option>
                 );
               })}
-            </select>
+            </FacetSelect>
           </div>
         </div>
 
@@ -571,58 +746,33 @@ export function CatalogGrid({
                 : `/agents/${item.defaultAgentId}`;
             const packs = familyPacks(item);
             const activePack = isPackId(market) ? market : null;
-            const showPacks = activePack
-              ? packs.includes(activePack)
-                ? [activePack]
-                : []
-              : packs;
 
             return (
               <article
                 key={item.id}
-                className="panel panel-interactive group rise flex flex-col p-0"
+                className="panel panel-interactive group rise relative flex flex-col p-0"
                 style={{ animationDelay: `${Math.min(idx, 15) * 28}ms` }}
               >
-                <div
-                  className="cat-rail"
-                  style={{ background: categoryAccent(item.marketplaceCategory) }}
-                />
+                <BookmarkButton saved={saved.has(item.id)} onToggle={() => toggleSaved(item.id)} />
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
                   <div className="flex items-start gap-3.5">
                     <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
-                          {item.name}
-                        </h3>
-                        {activePack && packs.includes(activePack) ? (
-                          <div className="flex shrink-0 flex-col items-end gap-1.5">
-                            <MarketBadge market={activePack} prominent />
-                          </div>
-                        ) : null}
-                      </div>
-                      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
+                    <div className="min-w-0 flex-1 pr-7">
+                      <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
+                        {item.name}
+                      </h3>
+                      <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                         <span>{item.marketplaceCategory}</span>
                         {hasWorkflow ? (
                           <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
                             {t("catalog.multiStep")}
                           </span>
                         ) : null}
+                        {activePack && packs.includes(activePack) ? (
+                          <MarketBadge market={activePack} prominent />
+                        ) : null}
                       </p>
-                      {!activePack && showPacks.length > 0 ? (
-                        <div className="mt-2 flex flex-wrap items-center gap-1" aria-label={t("catalog.marketPacks")}>
-                          {showPacks.map((p) => (
-                            <span
-                              key={p}
-                              className="inline-flex items-center rounded-[4px] ring-1 ring-[var(--line)]"
-                              title={`${packLabel(p)} pack`}
-                            >
-                              <MarketFlagIcon market={p} className="h-2.5 w-[15px]" />
-                              <span className="sr-only">{packLabel(p)}</span>
-                            </span>
-                          ))}
-                        </div>
-                      ) : null}
+                      <ChannelBadges channels={item.channels} />
                     </div>
                   </div>
 
@@ -639,7 +789,7 @@ export function CatalogGrid({
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
                     >
                       {t("catalog.rentSetup")}
-                      <span aria-hidden>→</span>
+                      <span aria-hidden>&#8594;</span>
                     </Link>
                   </div>
                 </div>

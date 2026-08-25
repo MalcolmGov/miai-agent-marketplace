@@ -1157,3 +1157,187 @@ html[data-theme="light"] .how-step-icon {
   transform: translateX(1.1rem);
   background: var(--accent-bright);
 }
+
+/* ============================================================================
+ * Business Marketplace ("Hire AI agents") — professional light-first redesign.
+ * Scoped under .biz-market so it never leaks into other surfaces. An emerald
+ * green (fixed hue, white text) reads correctly on both light and dark grounds,
+ * matching the real MyInstantAI marketplace.
+ * ========================================================================== */
+
+/* Hero illustration — gentle float */
+@media (prefers-reduced-motion: no-preference) {
+  .biz-hero-art svg {
+    animation: bizFloat 6s ease-in-out infinite;
+  }
+}
+@keyframes bizFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Emerald primary CTA (Browse agents) — overrides the global teal gradient */
+.biz-market .btn-primary {
+  background: linear-gradient(180deg, #0f8055 0%, #0b6e49 100%);
+  color: #ffffff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 12px 26px -14px rgba(16, 135, 92, 0.7);
+}
+.biz-market .btn-primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+/* ⌘K hint inside the search field */
+.biz-kbd {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted-dim);
+}
+
+/* Segmented Smart | Voice control */
+.seg {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+}
+.seg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: transparent;
+  white-space: nowrap;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+.seg-btn:hover:not(:disabled) {
+  color: var(--text);
+}
+.seg-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.seg-btn-active {
+  color: #ffffff;
+  background: linear-gradient(180deg, #0f8055, #0b6e49);
+  box-shadow: 0 4px 12px -6px rgba(16, 135, 92, 0.55);
+}
+
+/* Sentence-case facet pills (All / Customer / Internal / Workflows / Go-live) */
+.facet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  white-space: nowrap;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+.facet:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+.facet .cat-count {
+  margin-left: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent-bright);
+}
+.facet-active {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(180deg, #0f8055, #0b6e49);
+  box-shadow: 0 4px 12px -7px rgba(16, 135, 92, 0.55);
+}
+.facet-active .cat-count {
+  background: rgba(4, 44, 30, 0.42);
+  color: #ffffff;
+}
+
+/* Dropdowns with a leading icon (markets / industries) */
+.biz-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.biz-select > svg:first-child {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted-dim);
+}
+.biz-select select {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Card bookmark / save toggle */
+.biz-bookmark {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--muted-dim);
+  background: transparent;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+.biz-bookmark:hover {
+  color: var(--accent-bright);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.biz-bookmark-on {
+  color: var(--accent-bright);
+}

@@ -55,7 +55,7 @@ export const en = {
   "catalog.customer": "Customer",
   "catalog.internal": "Internal",
   "catalog.workflows": "Workflows",
-  "catalog.demo6": "Go-live 100",
+  "catalog.demo6": "Go-live",
   "catalog.goliveHint":
     "Families we stand behind for customer production. License still covers all 500.",
   "catalog.market": "Market",
@@ -94,9 +94,10 @@ export const en = {
   "catalog.workflowHint":
     "Plans the next step, confirms with you, then acts — instead of a single reply.",
 
-  "hero.headline": "Hire an AI agent for your business",
+  "hero.headline": "Hire AI agents. Scale your business.",
+  "hero.headlineAccent": "AI agents.",
   "hero.lede":
-    "{count} ready-made agents across US, EU, Africa, Asia, and Oceania — set one up, configure, go live.",
+    "{count}+ ready-made agents across US, EU, Africa, Asia, and Oceania — set one up, configure, and go live in minutes.",
   "hero.browse": "Browse agents",
   "hero.mondayDemo": "Production pack",
   "hero.businessSetup": "Business setup",

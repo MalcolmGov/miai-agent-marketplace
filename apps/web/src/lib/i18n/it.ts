@@ -57,7 +57,7 @@ export const it: Dictionary = {
   "catalog.customer": "Cliente",
   "catalog.internal": "Interno",
   "catalog.workflows": "Workflow",
-  "catalog.demo6": "Go-live 100",
+  "catalog.demo6": "Go-live",
   "catalog.goliveHint": "Famiglie che supportiamo per la produzione del cliente. La licenza copre ancora tutti i 500.",
   "catalog.market": "Mercato",
   "catalog.allMarkets": "Tutti i mercati",
@@ -95,7 +95,8 @@ export const it: Dictionary = {
   "catalog.workflowHint":
     "Pianifica il passo successivo, conferma con te e poi agisce — non solo una risposta.",
 
-  "hero.headline": "Assumi un agente IA per la tua azienda",
+  "hero.headline": "Assumi agenti IA. Fai crescere la tua attività.",
+  "hero.headlineAccent": "agenti IA",
   "hero.lede":
     "{count} agenti pronti per WhatsApp, web e app — impostane uno, configura, vai live.",
   "hero.browse": "Sfoglia agenti",
