@@ -308,6 +308,17 @@ function FacetSelect({
   );
 }
 
+/**
+ * Agent "Set up" must run business onboarding first. Until the workspace has
+ * completed the business wizard, route the CTA through /get-started (which
+ * forwards back to the agent via ?next once setup is done). Onboarded workspaces
+ * go straight to the agent studio.
+ */
+function gatedSetupHref(agentHref: string, onboarded: boolean | null): string {
+  if (onboarded === true) return agentHref;
+  return `/get-started?next=${encodeURIComponent(agentHref)}`;
+}
+
 export function CatalogGrid({
   initialFamilies,
 }: {
@@ -345,6 +356,7 @@ export function CatalogGrid({
   const [pending, startTransition] = useTransition();
   const [detail, setDetail] = useState<FamilyItem | null>(null);
   const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [agentsOnboarded, setAgentsOnboarded] = useState<boolean | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   useEffect(() => {
@@ -354,6 +366,24 @@ export function CatalogGrid({
     } catch {
       /* ignore */
     }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/onboarding")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled) return;
+        setAgentsOnboarded(
+          Boolean(d && (d.profile?.wizardCompleted || d.me?.product === "agents")),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setAgentsOnboarded(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   function toggleSaved(id: string) {
@@ -793,7 +823,7 @@ export function CatalogGrid({
                       {t("catalog.learnMore")}
                     </button>
                     <Link
-                      href={href}
+                      href={gatedSetupHref(href, agentsOnboarded)}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
                     >
                       {t("catalog.rentSetup")}
@@ -810,6 +840,7 @@ export function CatalogGrid({
           <AgentDetailModal
             item={detail}
             market={market}
+            onboarded={agentsOnboarded}
             onClose={() => setDetail(null)}
           />
         ) : null}
@@ -844,10 +875,12 @@ export function CatalogGrid({
 function AgentDetailModal({
   item,
   market,
+  onboarded,
   onClose,
 }: {
   item: FamilyItem;
   market: string;
+  onboarded: boolean | null;
   onClose: () => void;
 }) {
   const t = useT();
@@ -1092,7 +1125,7 @@ function AgentDetailModal({
           </dl>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href={href} className="btn btn-primary" onClick={onClose}>
+            <Link href={gatedSetupHref(href, onboarded)} className="btn btn-primary" onClick={onClose}>
               {t("catalog.rentSetup")}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={onClose}>
