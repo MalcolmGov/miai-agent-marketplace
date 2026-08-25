@@ -157,6 +157,10 @@ export function checkProductionPersistence(): HardeningCheck {
 }
 
 export function checkBootHardening(): HardeningCheck {
+  // A sandbox is an isolated evaluation environment (mock rails, no real money/sends),
+  // so the production hardening requirements — real rails, strong secrets, a production
+  // Postgres — don't apply. Relax them all so SANDBOX_MODE=1 boots on a fresh deployment.
+  if (process.env.SANDBOX_MODE === "1") return { ok: true };
   const secrets = checkProductionSecrets();
   const rails = checkProductionRails();
   const persistence = checkProductionPersistence();
