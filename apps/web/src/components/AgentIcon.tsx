@@ -113,89 +113,151 @@ type IconKind =
   | "cart"
   | "phone"
   | "users"
+  | "leaf"
+  | "code"
+  | "database"
+  | "lock"
+  | "bolt"
+  | "signal"
+  | "factory"
+  | "scale"
+  | "landmark"
+  | "megaphone"
+  | "receipt"
+  | "key"
+  | "box"
+  | "creditcard"
+  | "pill"
+  | "flask"
+  | "trophy"
   | "default";
 
 type ToneName = keyof typeof TONES_DARK;
 
 const FAMILY_ICONS: Record<string, { kind: IconKind; tone: ToneName }> = {
-  "dental-front-desk": { kind: "tooth", tone: "mint" },
-  "dental-practice": { kind: "tooth", tone: "mint" },
+  "accounting-practice": { kind: "receipt", tone: "amber" },
+  "admissions": { kind: "graduation", tone: "indigo" },
+  "agency-studio": { kind: "megaphone", tone: "rose" },
+  "agri-advisory": { kind: "leaf", tone: "mint" },
+  "ai-coding-assistant": { kind: "code", tone: "indigo" },
+  "airtime-bundles": { kind: "signal", tone: "sky" },
+  "bank-branch": { kind: "landmark", tone: "sky" },
+  "bi-analyst": { kind: "database", tone: "sky" },
+  "bookkeeping": { kind: "receipt", tone: "coral" },
+  "building-management": { kind: "key", tone: "coral" },
+  "case-management": { kind: "scale", tone: "indigo" },
+  "citizen-services": { kind: "landmark", tone: "teal" },
   "clinic-front-desk": { kind: "heart", tone: "rose" },
-  pharmacy: { kind: "heart", tone: "rose" },
-  veterinary: { kind: "paw", tone: "amber" },
-  "gym-membership": { kind: "heart", tone: "coral" },
-  "executive-assistant": { kind: "briefcase", tone: "slate" },
-  "it-helpdesk": { kind: "headset", tone: "sky" },
-  "hr-helpdesk": { kind: "users", tone: "indigo" },
-  "onboarding-buddy": { kind: "users", tone: "indigo" },
-  "payroll-queries": { kind: "chart", tone: "slate" },
-  "home-services": { kind: "home", tone: "sky" },
-  "trades-receptionist": { kind: "wrench", tone: "amber" },
-  "field-service": { kind: "wrench", tone: "amber" },
-  "fleet-driver": { kind: "truck", tone: "sky" },
-  "delivery-tracking": { kind: "truck", tone: "sky" },
-  "order-tracking": { kind: "truck", tone: "teal" },
-  "hotel-guest": { kind: "hotel", tone: "amber" },
-  "hotel-concierge": { kind: "hotel", tone: "amber" },
-  "travel-desk": { kind: "hotel", tone: "coral" },
-  "events-venue": { kind: "calendar", tone: "coral" },
-  "salon-booking": { kind: "scissors", tone: "rose" },
-  "restaurant-takeaway": { kind: "utensils", tone: "coral" },
-  "sales-qualifier": { kind: "chart", tone: "teal" },
+  "contract-review": { kind: "scale", tone: "sky" },
+  "course-advisor": { kind: "graduation", tone: "sky" },
+  "credit-cards": { kind: "creditcard", tone: "teal" },
   "customer-support": { kind: "headset", tone: "teal" },
+  "cybersecurity-desk": { kind: "lock", tone: "coral" },
+  "data-quality": { kind: "database", tone: "teal" },
+  "delivery-tracking": { kind: "box", tone: "sky" },
+  "dental-front-desk": { kind: "tooth", tone: "mint" },
+  "dental-practice": { kind: "tooth", tone: "teal" },
+  "device-upgrades": { kind: "signal", tone: "teal" },
+  "devops-assistant": { kind: "code", tone: "sky" },
+  "documentation-assistant": { kind: "code", tone: "indigo" },
+  "energy-operations": { kind: "bolt", tone: "amber" },
+  "enterprise-connectivity": { kind: "signal", tone: "sky" },
+  "events-venue": { kind: "calendar", tone: "coral" },
+  "executive-assistant": { kind: "briefcase", tone: "slate" },
+  "executive-dashboards": { kind: "database", tone: "sky" },
+  "factory-operations": { kind: "factory", tone: "slate" },
+  "farm-operations": { kind: "leaf", tone: "teal" },
+  "fibre-support": { kind: "signal", tone: "teal" },
+  "field-service": { kind: "box", tone: "teal" },
+  "financial-reporting": { kind: "receipt", tone: "amber" },
+  "fleet-driver": { kind: "truck", tone: "sky" },
+  "fraud-investigations": { kind: "shield", tone: "slate" },
   "front-desk": { kind: "building", tone: "slate" },
-  admissions: { kind: "graduation", tone: "indigo" },
-  "course-advisor": { kind: "graduation", tone: "indigo" },
-  "student-helpdesk": { kind: "graduation", tone: "sky" },
+  "grant-stock-planner": { kind: "box", tone: "sky" },
+  "gym-membership": { kind: "trophy", tone: "amber" },
+  "home-services": { kind: "truck", tone: "teal" },
+  "hotel-concierge": { kind: "hotel", tone: "amber" },
+  "hotel-guest": { kind: "hotel", tone: "coral" },
+  "hr-helpdesk": { kind: "users", tone: "indigo" },
+  "insurance-broker": { kind: "shield", tone: "indigo" },
   "insurance-claims": { kind: "shield", tone: "slate" },
-  "insurance-broker": { kind: "shield", tone: "slate" },
+  "interview-scheduling": { kind: "users", tone: "sky" },
+  "investment-advisor": { kind: "chart", tone: "sky" },
+  "it-helpdesk": { kind: "headset", tone: "sky" },
+  "law-firm-intake": { kind: "scale", tone: "indigo" },
+  "learning-development": { kind: "users", tone: "indigo" },
+  "legal-research": { kind: "scale", tone: "sky" },
+  "licensing": { kind: "landmark", tone: "sky" },
+  "loan-prequalifier": { kind: "receipt", tone: "coral" },
+  "loyalty-rewards": { kind: "trophy", tone: "coral" },
+  "maintenance-desk": { kind: "wrench", tone: "amber" },
+  "marketing-assistant": { kind: "megaphone", tone: "coral" },
+  "media-content-desk": { kind: "megaphone", tone: "rose" },
+  "mobile-money": { kind: "creditcard", tone: "sky" },
+  "mortgage-advisor": { kind: "receipt", tone: "amber" },
+  "municipality-desk": { kind: "landmark", tone: "teal" },
+  "network-faults": { kind: "signal", tone: "sky" },
+  "onboarding-buddy": { kind: "users", tone: "sky" },
+  "order-tracking": { kind: "box", tone: "teal" },
+  "passport-visa": { kind: "landmark", tone: "sky" },
+  "payment-disputes": { kind: "creditcard", tone: "teal" },
+  "payroll-queries": { kind: "users", tone: "indigo" },
+  "performance-reviews": { kind: "users", tone: "sky" },
+  "pharmacy": { kind: "pill", tone: "rose" },
   "policy-compliance": { kind: "shield", tone: "indigo" },
-  "loan-prequalifier": { kind: "chart", tone: "amber" },
-  "bank-branch": { kind: "building", tone: "slate" },
-  "accounting-practice": { kind: "chart", tone: "slate" },
-  bookkeeping: { kind: "chart", tone: "slate" },
-  "utility-billing": { kind: "building", tone: "sky" },
-  "payment-disputes": { kind: "shield", tone: "coral" },
-  "mobile-money": { kind: "phone", tone: "mint" },
-  remittance: { kind: "phone", tone: "mint" },
-  "property-enquiries": { kind: "home", tone: "amber" },
-  "rental-enquiries": { kind: "home", tone: "amber" },
-  "building-management": { kind: "building", tone: "slate" },
+  "procurement": { kind: "box", tone: "sky" },
   "product-finder": { kind: "cart", tone: "teal" },
-  "returns-exchanges": { kind: "cart", tone: "coral" },
+  "production-planning": { kind: "factory", tone: "indigo" },
+  "prompt-engineering": { kind: "code", tone: "sky" },
+  "property-enquiries": { kind: "key", tone: "amber" },
+  "qa-testing": { kind: "flask", tone: "mint" },
+  "quality-assurance": { kind: "flask", tone: "teal" },
+  "recruitment": { kind: "users", tone: "indigo" },
+  "remittance": { kind: "creditcard", tone: "sky" },
+  "rental-enquiries": { kind: "key", tone: "coral" },
+  "restaurant-takeaway": { kind: "utensils", tone: "coral" },
+  "returns-exchanges": { kind: "cart", tone: "sky" },
+  "sales-forecasting": { kind: "database", tone: "teal" },
+  "sales-qualifier": { kind: "briefcase", tone: "indigo" },
+  "salon-booking": { kind: "scissors", tone: "rose" },
+  "security-incident": { kind: "lock", tone: "amber" },
+  "sim-registration": { kind: "signal", tone: "teal" },
+  "social-services": { kind: "briefcase", tone: "slate" },
+  "spaza-merchant": { kind: "cart", tone: "teal" },
   "stock-availability": { kind: "cart", tone: "sky" },
-  "loyalty-rewards": { kind: "spark", tone: "amber" },
-  "spaza-merchant": { kind: "cart", tone: "mint" },
-  "grant-stock-planner": { kind: "chart", tone: "mint" },
-  "marketing-assistant": { kind: "spark", tone: "rose" },
-  "agency-studio": { kind: "spark", tone: "indigo" },
-  procurement: { kind: "cart", tone: "slate" },
-  "law-firm-intake": { kind: "briefcase", tone: "indigo" },
-  "vas-concierge": { kind: "spark", tone: "teal" },
-  "tour-activity": { kind: "calendar", tone: "coral" },
+  "student-helpdesk": { kind: "graduation", tone: "indigo" },
+  "tax-office": { kind: "receipt", tone: "coral" },
+  "tour-activity": { kind: "hotel", tone: "amber" },
+  "trades-receptionist": { kind: "truck", tone: "sky" },
+  "travel-desk": { kind: "hotel", tone: "coral" },
+  "utility-billing": { kind: "receipt", tone: "amber" },
+  "vas-concierge": { kind: "hotel", tone: "amber" },
+  "veterinary": { kind: "paw", tone: "amber" },
+  "warehouse-operations": { kind: "box", tone: "teal" },
+  "wealth-management": { kind: "chart", tone: "teal" },
 };
 
 const CATEGORY_FALLBACK: Record<string, { kind: IconKind; tone: ToneName }> = {
   "Health & wellness": { kind: "heart", tone: "mint" },
-  "HR & internal ops": { kind: "briefcase", tone: "slate" },
+  "HR & internal ops": { kind: "users", tone: "indigo" },
   "Internal & back office": { kind: "briefcase", tone: "slate" },
-  "Logistics & field ops": { kind: "truck", tone: "sky" },
+  "Logistics & field ops": { kind: "box", tone: "sky" },
   "Hospitality & travel": { kind: "hotel", tone: "amber" },
-  "Financial services": { kind: "chart", tone: "amber" },
+  "Financial services": { kind: "receipt", tone: "amber" },
   "Retail & e-commerce": { kind: "cart", tone: "teal" },
   Education: { kind: "graduation", tone: "indigo" },
-  Property: { kind: "home", tone: "coral" },
-  "Professional services": { kind: "briefcase", tone: "slate" },
+  Property: { kind: "key", tone: "coral" },
+  "Professional services": { kind: "scale", tone: "indigo" },
   "Customer & front office": { kind: "headset", tone: "teal" },
-  Telecommunications: { kind: "headset", tone: "sky" },
-  "Government & public sector": { kind: "briefcase", tone: "slate" },
-  "Manufacturing & industrial": { kind: "truck", tone: "amber" },
-  "AI & developer tools": { kind: "spark", tone: "indigo" },
-  "Data & analytics": { kind: "chart", tone: "sky" },
-  Cybersecurity: { kind: "briefcase", tone: "coral" },
-  "Energy & utilities": { kind: "spark", tone: "amber" },
-  Agriculture: { kind: "home", tone: "mint" },
-  "Media & entertainment": { kind: "spark", tone: "rose" },
+  Telecommunications: { kind: "signal", tone: "sky" },
+  "Government & public sector": { kind: "landmark", tone: "sky" },
+  "Manufacturing & industrial": { kind: "factory", tone: "slate" },
+  "AI & developer tools": { kind: "code", tone: "indigo" },
+  "Data & analytics": { kind: "database", tone: "sky" },
+  Cybersecurity: { kind: "lock", tone: "coral" },
+  "Energy & utilities": { kind: "bolt", tone: "amber" },
+  Agriculture: { kind: "leaf", tone: "mint" },
+  "Media & entertainment": { kind: "megaphone", tone: "rose" },
 };
 
 function Glyph({ kind }: { kind: IconKind }) {
@@ -358,6 +420,108 @@ function Glyph({ kind }: { kind: IconKind }) {
           <path d="M3.5 19c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" strokeLinecap="round" />
           <circle cx="17" cy="9" r="2.2" />
           <path d="M20.5 19c0-2-1.5-3.5-3.5-4" strokeLinecap="round" />
+        </svg>
+      );
+    case "leaf":
+      return (
+        <svg {...common}>
+          <path d="M4 20c0-9 6-15 16-16 1 10-5 16-16 16Z" strokeLinejoin="round" /><path d="M8.5 15.5c2.4-3 5-4.6 8-5.6" strokeLinecap="round" />
+        </svg>
+      );
+    case "code":
+      return (
+        <svg {...common}>
+          <path d="M8.5 8 4 12l4.5 4M15.5 8 20 12l-4.5 4M13.5 5l-3 14" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "database":
+      return (
+        <svg {...common}>
+          <ellipse cx="12" cy="6" rx="7" ry="3" /><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" strokeLinecap="round" />
+        </svg>
+      );
+    case "lock":
+      return (
+        <svg {...common}>
+          <rect x="5" y="10.5" width="14" height="9.5" rx="2" /><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" strokeLinecap="round" /><circle cx="12" cy="15" r="1.35" fill="currentColor" stroke="none" />
+        </svg>
+      );
+    case "bolt":
+      return (
+        <svg {...common}>
+          <path d="M13 2 5 13h5l-1 9 8-12h-5l1-8Z" strokeLinejoin="round" />
+        </svg>
+      );
+    case "signal":
+      return (
+        <svg {...common}>
+          <path d="M4.5 12.5a10.5 10.5 0 0 1 15 0M7.5 15.5a6 6 0 0 1 9 0" strokeLinecap="round" /><circle cx="12" cy="18.6" r="1.3" fill="currentColor" stroke="none" />
+        </svg>
+      );
+    case "factory":
+      return (
+        <svg {...common}>
+          <path d="M3 20V10l5 3.5V10l5 3.5V7l6 4v9H3Z" strokeLinejoin="round" /><path d="M7.5 20v-3.4M12 20v-3.4M16.5 20v-3.4" strokeLinecap="round" />
+        </svg>
+      );
+    case "scale":
+      return (
+        <svg {...common}>
+          <path d="M12 5.5v14.5M7.5 20h9M4 8.5h16" strokeLinecap="round" /><path d="M4 8.5 1.8 13.5h4.4L4 8.5ZM20 8.5l-2.2 5h4.4L20 8.5Z" strokeLinejoin="round" /><path d="M1.8 13.5a2.2 2.2 0 0 0 4.4 0M17.8 13.5a2.2 2.2 0 0 0 4.4 0" strokeLinecap="round" /><circle cx="12" cy="5.2" r="1.15" fill="currentColor" stroke="none" />
+        </svg>
+      );
+    case "landmark":
+      return (
+        <svg {...common}>
+          <path d="m3 10 9-5 9 5" strokeLinejoin="round" /><path d="M4 10h16M4 20h16M6.5 10v10M11 10v10M15.5 10v10M19.5 10v10" strokeLinecap="round" />
+        </svg>
+      );
+    case "megaphone":
+      return (
+        <svg {...common}>
+          <path d="M4 10v4l11 5V5L4 10Z" strokeLinejoin="round" /><path d="M15.5 8.5a4 4 0 0 1 0 7M6 14.2l1 4.8h3l-1-4.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "receipt":
+      return (
+        <svg {...common}>
+          <path d="M6 3h12v18l-2.2-1.4-2 1.4-2-1.4-2 1.4L7.2 20 6 21V3Z" strokeLinejoin="round" /><path d="M9 8h6M9 12h6M9 16h4" strokeLinecap="round" />
+        </svg>
+      );
+    case "key":
+      return (
+        <svg {...common}>
+          <circle cx="8.2" cy="8.2" r="3.7" /><path d="m10.8 10.8 8.4 8.4M18.7 19.3l1.6-1.6M16.2 16.8l1.6-1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "box":
+      return (
+        <svg {...common}>
+          <path d="M12 3 20 7v10l-8 4-8-4V7l8-4Z" strokeLinejoin="round" /><path d="M4 7l8 4 8-4M12 11v10" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "creditcard":
+      return (
+        <svg {...common}>
+          <rect x="3" y="6" width="18" height="12" rx="2" /><path d="M3 10h18M6.5 14h4" strokeLinecap="round" />
+        </svg>
+      );
+    case "pill":
+      return (
+        <svg {...common}>
+          <g transform="rotate(45 12 12)"><rect x="3" y="9" width="18" height="6" rx="3" /><path d="M12 9v6" strokeLinecap="round" /></g>
+        </svg>
+      );
+    case "flask":
+      return (
+        <svg {...common}>
+          <path d="M9 3v6.2L4.6 17a1.6 1.6 0 0 0 1.4 2.4h12a1.6 1.6 0 0 0 1.4-2.4L15 9.2V3" strokeLinejoin="round" /><path d="M8 3h8M7.2 14.5h9.6" strokeLinecap="round" />
+        </svg>
+      );
+    case "trophy":
+      return (
+        <svg {...common}>
+          <path d="M8 4h8v3.5a4 4 0 0 1-8 0V4Z" strokeLinejoin="round" /><path d="M8 5.5H5.2v1.3a3 3 0 0 0 3 3M16 5.5h2.8v1.3a3 3 0 0 1-3 3M11 12.4v2.6M13 12.4v2.6M8.6 20h6.8L14.4 16H9.6L8.6 20Z" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
     default:

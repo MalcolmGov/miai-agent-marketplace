@@ -8,6 +8,7 @@ import { sectorAccent } from "@/lib/sectors";
 import { stripExampleTenant, type FamilyCapabilities } from "@/lib/family-capabilities";
 import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
+import { CARD_BLURBS } from "@/lib/card-blurbs";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
 import {
   MarketBadge,
@@ -746,6 +747,8 @@ export function CatalogGrid({
                 : `/agents/${item.defaultAgentId}`;
             const packs = familyPacks(item);
             const activePack = isPackId(market) ? market : null;
+            const blurb =
+              CARD_BLURBS[item.id] ?? cleanCardSummary(item.summary, item.name);
 
             return (
               <article
@@ -772,9 +775,13 @@ export function CatalogGrid({
                           <MarketBadge market={activePack} prominent />
                         ) : null}
                       </p>
-                      <ChannelBadges channels={item.channels} />
                     </div>
                   </div>
+
+                  <p className="mt-3 line-clamp-2 text-[13px] leading-relaxed text-[var(--card-body)]">
+                    {blurb}
+                  </p>
+                  <ChannelBadges channels={item.channels} />
 
                   <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
                     <button
