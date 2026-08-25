@@ -1,14 +1,18 @@
-import { AuthError, resolveAuth, type AuthContext } from "@/lib/auth";
+import { AuthError, type AuthContext } from "@/lib/auth";
 import { walletIdForConsumer } from "@/lib/consumer";
 import { apiErrorFromRequest } from "@/lib/api-error";
+import { resolveConsumerAuth } from "@/lib/consumer-identity";
 
 export type ResolvedConsumer = { consumerId: string; auth: AuthContext };
+
+export { resolveConsumerAuth };
 
 /**
  * Resolve the signed-in consumer (identity + wallet id) for a consumer API route, or a
  * ready-to-return auth error Response. Every consumer endpoint starts with this, so the auth
  * handling lives in one place. `consumerId` is the account id their usage and connector tokens
- * are keyed by.
+ * are keyed by. In oidc mode the identity comes from the verified session cookie (Sign in with
+ * Google); in mock mode it is the shared demo identity.
  *
  * Kept out of `consumer.ts` on purpose: this pulls in `next/server` (via api-error), and
  * `consumer.ts` is imported by the plain-Node-tested runtime path (`consumer-turn.ts`), which
@@ -16,7 +20,7 @@ export type ResolvedConsumer = { consumerId: string; auth: AuthContext };
  */
 export async function requireConsumer(req: Request): Promise<ResolvedConsumer | Response> {
   try {
-    const auth = await resolveAuth(req);
+    const auth = await resolveConsumerAuth(req);
     return { consumerId: walletIdForConsumer(auth), auth };
   } catch (e) {
     if (e instanceof AuthError) return apiErrorFromRequest(req, e.status, e.message);

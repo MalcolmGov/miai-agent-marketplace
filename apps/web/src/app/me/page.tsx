@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorIcon } from "@/components/ConnectorIcon";
+import { ConsumerAuthGate } from "@/components/ConsumerAuthGate";
 import { ConsumerChatWindow } from "@/components/ConsumerChatWindow";
 import { useConsumerChat } from "@/lib/use-consumer-chat";
 import CapabilitiesSheet from "./CapabilitiesSheet";
@@ -58,7 +59,7 @@ function greetingFor(brand: Brand): string {
   return `Hi — I'm ${who}. What can I take off your plate today?`;
 }
 
-export default function AssistantHome() {
+function AssistantHome() {
   const [brandId, setBrandId] = useState<string>(DEFAULT_BRAND_ID);
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
   const [reminders, setReminders] = useState<ReminderItem[]>([]);
@@ -430,5 +431,18 @@ export default function AssistantHome() {
         connected={connectedSet}
       />
     </div>
+  );
+}
+
+/**
+ * Gate the assistant behind sign-in when real (oidc) auth is on: the gate renders a sign-in card
+ * instead of mounting AssistantHome, so its per-brand wallet/connector/reminder fetches never fire
+ * for a signed-out person. In mock mode the gate is transparent.
+ */
+export default function MePage() {
+  return (
+    <ConsumerAuthGate>
+      <AssistantHome />
+    </ConsumerAuthGate>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPersonalAgent, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { AgentIcon } from "@/components/AgentIcon";
+import { ConsumerAuthGate } from "@/components/ConsumerAuthGate";
 import { specialistStarters } from "@/lib/consumer-specialist-starters";
 import SpecialistChat from "./SpecialistChat";
 
@@ -124,11 +125,13 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
               testing yet — you can use it now, just expect the rough edges we&apos;re still ironing out.
             </p>
           )}
-          <SpecialistChat
-            agentId={agent.id}
-            agentName={agent.name}
-            starters={specialistStarters(agent.id)}
-          />
+          <ConsumerAuthGate>
+            <SpecialistChat
+              agentId={agent.id}
+              agentName={agent.name}
+              starters={specialistStarters(agent.id)}
+            />
+          </ConsumerAuthGate>
         </section>
       ) : (
         <section className="panel p-6 text-center" data-testid="specialist-incert">
