@@ -11,6 +11,7 @@ import {
   toMinorUnits,
 } from "@/lib/paystack";
 import { newTopupReference, type TopUpMetadata } from "@/lib/topup";
+import { isSandbox } from "@/lib/sandbox";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,6 +25,14 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
+
+  // Sandbox: no real-money checkout. Use the free mock-credit rail (/api/wallet) instead.
+  if (isSandbox()) {
+    return NextResponse.json(
+      { error: "Payments are disabled in the sandbox — use the free demo credit." },
+      { status: 503 },
+    );
+  }
 
   const parsed = await parseJsonBody(req, paystackInitBodySchema);
   if (!parsed.ok) return parsed.response;

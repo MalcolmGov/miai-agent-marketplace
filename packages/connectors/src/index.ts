@@ -99,7 +99,8 @@ export const CONNECTORS: ConnectorMeta[] = [
 
 /** Execute a tool via its connector binding. Sandbox always stubs. */
 export async function executeConnector(call: ConnectorCall): Promise<ConnectorResult> {
-  if (call.mode === "sandbox") {
+  // Sandbox: never actuate live connectors, whatever the caller passed — no real sends/writes.
+  if (call.mode === "sandbox" || process.env.SANDBOX_MODE === "1") {
     return {
       ok: true,
       data: stubFor(call.tool, call.args),

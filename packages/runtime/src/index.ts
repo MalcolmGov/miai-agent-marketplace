@@ -2082,8 +2082,16 @@ export class AzureOpenAIModelAdapter implements ModelAdapter {
   }
 }
 
+let sandboxModelTurns = 0;
 export function createModelAdapter(): ModelAdapter {
   const mode = env("MIAI_MODEL_MODE") ?? "mock";
+  // Sandbox cost backstop: after a capped number of real-provider turns per process,
+  // fall back to the mock model so an evaluation cannot run up an unbounded bill.
+  if (env("SANDBOX_MODE") === "1" && mode !== "mock") {
+    const cap = Number(env("SANDBOX_MODEL_TURN_CAP") ?? "") || 1000;
+    if (sandboxModelTurns >= cap) return new MockModelAdapter();
+    sandboxModelTurns++;
+  }
   if ((mode === "gateway" || mode === "http") && env("MIAI_MODEL_GATEWAY_URL")) {
     return new GatewayModelAdapter();
   }

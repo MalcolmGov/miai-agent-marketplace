@@ -22,6 +22,8 @@ function envFlag(name: string): boolean {
  * ALLOW_MOCK_RAILS=1 and I_UNDERSTAND_MOCK_RAILS_IN_PROD=1.
  */
 export function mockRailsAllowed(): boolean {
+  // A sandbox is an explicitly acknowledged mock-rails evaluation environment.
+  if (process.env.SANDBOX_MODE === "1") return true;
   if (!isProductionRuntime()) return true;
   return envFlag("ALLOW_MOCK_RAILS") && envFlag(MOCK_RAILS_ACK_ENV);
 }

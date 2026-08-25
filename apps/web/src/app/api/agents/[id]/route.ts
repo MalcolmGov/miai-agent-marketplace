@@ -5,6 +5,7 @@ import { listConnectors } from "@miai/connectors";
 import { getAgentPackage } from "@/lib/catalog";
 import { getWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { isSandbox, redactAgentPackage } from "@/lib/sandbox";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
   const preset = getPreset(id);
   const rental = await getWorkspaceAgent(workspaceId, id);
   return NextResponse.json({
-    package: pkg,
+    package: isSandbox() ? redactAgentPackage(pkg) : pkg,
     marketplaceCategory: marketplaceCategory(pkg.manifest),
     rentUsd: RENT_USD[pkg.manifest.tier] ?? 349,
     preset: preset ?? null,

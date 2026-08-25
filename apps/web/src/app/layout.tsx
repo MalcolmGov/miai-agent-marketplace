@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Manrope, JetBrains_Mono } from "next/font/google";
 import { Shell } from "@/components/Shell";
+import { SandboxBanner } from "@/components/SandboxBanner";
 import { LocaleProvider } from "@/lib/locale";
 import { LOCALE_BOOT_SCRIPT } from "@/lib/locale-boot";
 import { ThemeProvider } from "@/lib/theme";
@@ -44,6 +45,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <script nonce={nonce} dangerouslySetInnerHTML={{ __html: LOCALE_BOOT_SCRIPT }} />
       </head>
       <body className={`${sans.variable} ${mono.variable} antialiased`}>
+        <SandboxBanner />
         <div id="app-root">
           <ThemeProvider>
             <LocaleProvider>
