@@ -51,12 +51,12 @@ describe("consumer identity + wallet mapping", () => {
     assert.equal(consumer.walletIdForConsumer({ userId: "usr_123" }), "usr_123");
   });
 
-  it("only vetted consumer agents are runnable", async () => {
-    // The flagship assistant and *certified* personal agents run; business agents and
-    // still-in-certification personal agents do not.
+  it("every catalogued consumer agent is runnable; business agents are not", async () => {
+    // Access is gated by prepaid balance, not certification — the flagship plus every personal
+    // agent (certified or still-in-certification) runs. Only non-consumer/business ids are refused.
     assert.equal(await consumer.isRunnableConsumerAgent("personal-assistant"), true);
     assert.equal(await consumer.isRunnableConsumerAgent("study-coach"), true); // certified
-    assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), false); // in certification
+    assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), true); // in certification
     assert.equal(await consumer.isRunnableConsumerAgent("front-desk"), false); // business agent
     assert.equal(await consumer.isRunnableConsumerAgent("us-customer-support"), false);
     assert.ok(consumer.consumerAgentIds().includes("personal-assistant"));
@@ -77,10 +77,10 @@ describe("runConsumerTurn: gates", () => {
     assert.equal(r.status, 403);
   });
 
-  it("rejects an in-certification personal agent with 403 (package resolves, gate blocks)", async () => {
-    // learning-advisor has a package in data/catalog-consumer, so getAgentPackage's fallback WOULD
-    // load it — the certification gate, not a missing package, is the sole thing blocking it. This
-    // locks that invariant so a future prepare() refactor can't silently make in-cert agents run.
+  it("runs an in-certification personal agent too (certification is a label, not a lock)", async () => {
+    // learning-advisor is authored-but-not-certified. Every catalogued specialist is runnable; the
+    // wallet (balance) is the gate, not certification. Its package resolves via the consumer-catalog
+    // fallback and the run succeeds.
     const r = await turn.runConsumerTurn({
       consumerId: "u1",
       walletId: "u1",
@@ -88,8 +88,8 @@ describe("runConsumerTurn: gates", () => {
       message: "hi",
       rateLimitOk: true,
     });
-    assert.equal(r.ok, false);
-    assert.equal(r.status, 403);
+    assert.equal(r.ok, true, r.ok ? "" : `in-cert specialist failed: ${r.error}`);
+    assert.equal(r.agentId, "learning-advisor");
   });
 
   it("rejects an empty message with 400", async () => {

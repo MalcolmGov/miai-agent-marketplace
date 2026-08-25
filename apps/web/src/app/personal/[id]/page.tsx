@@ -34,8 +34,6 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
   const agent = await getPersonalAgent(id);
   if (!agent) notFound();
 
-  const runnable = agent.certified;
-
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 pb-10">
       <Link
@@ -105,30 +103,27 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
         </section>
       )}
 
-      {/* Chat, or an in-certification notice */}
-      {runnable ? (
-        <section className="flex flex-col gap-2.5" data-testid="specialist-chat">
-          <h2 className="display text-base font-semibold tracking-tight text-[var(--text)]">
-            Chat with your {agent.name}
-          </h2>
-          <SpecialistChat
-            agentId={agent.id}
-            agentName={agent.name}
-            starters={specialistStarters(agent.id)}
-          />
-        </section>
-      ) : (
-        <section className="panel p-6 text-center" data-testid="specialist-incert">
-          <h2 className="display text-lg font-semibold text-[var(--text)]">In certification</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--card-body)]">
-            This specialist is still being certified and isn&apos;t live to chat yet. Browse the ones
-            that are ready in the meantime.
+      {/* Chat — every specialist is usable; certification is a quality label, not a lock. */}
+      <section className="flex flex-col gap-2.5" data-testid="specialist-chat">
+        <h2 className="display text-base font-semibold tracking-tight text-[var(--text)]">
+          Chat with your {agent.name}
+        </h2>
+        {!agent.certified && (
+          <p
+            className="rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)] px-3.5 py-2.5 text-xs leading-relaxed text-[var(--muted)]"
+            data-testid="in-certification-note"
+          >
+            <span className="font-semibold text-[var(--card-body)]">In certification.</span> This
+            specialist is authored and safety-guardrailed, but hasn&apos;t finished behavioural
+            testing yet — you can use it now, just expect the rough edges we&apos;re still ironing out.
           </p>
-          <Link href="/personal" className="btn btn-primary mt-4 inline-flex">
-            See live specialists
-          </Link>
-        </section>
-      )}
+        )}
+        <SpecialistChat
+          agentId={agent.id}
+          agentName={agent.name}
+          starters={specialistStarters(agent.id)}
+        />
+      </section>
     </div>
   );
 }

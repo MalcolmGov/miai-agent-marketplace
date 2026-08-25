@@ -22,16 +22,17 @@ export const DEFAULT_CONSUMER_AGENT = "personal-assistant";
 const CONSUMER_AGENTS = new Set<string>([DEFAULT_CONSUMER_AGENT]);
 
 /**
- * Runtime allowlist for the consumer line: the flagship assistant, plus any *certified* personal
- * agent from the consumer catalogue. Certification — not mere authoring — is the gate, so an
- * in-certification agent stays browsable but not runnable, matching the marketplace UI. This is
- * async because it consults the catalogue; it auto-includes new agents as they pass certification,
- * with no code change here.
+ * Runtime allowlist for the consumer line: the flagship assistant, plus any personal agent that
+ * exists in the consumer catalogue. Access is gated by the person's prepaid balance (enforced by
+ * the wallet), not by certification — so every catalogued specialist is runnable, and certification
+ * (`entry.certified`) is a quality label surfaced in the UI, not a lock. The security boundary still
+ * holds: getPersonalAgent only resolves consumer-catalogue ids, so a business/tenant agent id is
+ * never runnable here.
  */
 export async function isRunnableConsumerAgent(agentId: string): Promise<boolean> {
   if (CONSUMER_AGENTS.has(agentId)) return true;
   const entry = await getPersonalAgent(agentId);
-  return entry?.certified === true;
+  return entry !== null;
 }
 
 export function consumerAgentIds(): string[] {

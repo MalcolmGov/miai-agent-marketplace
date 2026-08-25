@@ -77,8 +77,15 @@ export default async function PersonalMarketplacePage() {
                       {agent.name}
                     </h2>
                   </div>
-                  {agent.certified && (
+                  {agent.certified ? (
                     <span className="chip chip-live shrink-0 whitespace-nowrap">✓ Tested</span>
+                  ) : (
+                    <span
+                      className="chip shrink-0 whitespace-nowrap"
+                      data-testid="in-certification"
+                    >
+                      In certification
+                    </span>
                   )}
                 </div>
 
@@ -119,23 +126,14 @@ export default async function PersonalMarketplacePage() {
                   <span className="text-[11px] leading-tight text-[var(--muted)]">
                     {agent.evals} tests{agent.certified ? "" : " authored"} · {agent.languages.join(" · ")}
                   </span>
-                  {agent.certified ? (
-                    <Link
-                      href={`/personal/${agent.id}`}
-                      className="btn btn-primary shrink-0 px-3.5 py-2 text-[13px]"
-                      data-testid="personal-try"
-                    >
-                      Try free
-                      <span aria-hidden>→</span>
-                    </Link>
-                  ) : (
-                    <span
-                      className="shrink-0 whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--muted)]"
-                      data-testid="in-certification"
-                    >
-                      In certification
-                    </span>
-                  )}
+                  <Link
+                    href={`/personal/${agent.id}`}
+                    className="btn btn-primary shrink-0 px-3.5 py-2 text-[13px]"
+                    data-testid="personal-try"
+                  >
+                    Try
+                    <span aria-hidden>→</span>
+                  </Link>
                 </div>
               </article>
             ))}
