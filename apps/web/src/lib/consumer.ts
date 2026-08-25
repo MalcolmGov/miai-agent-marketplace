@@ -1,5 +1,6 @@
 import type { AuthContext } from "@/lib/auth";
 import { getPersonalAgent } from "@/lib/consumer-catalog";
+import { isSandbox } from "@/lib/sandbox";
 
 /**
  * Consumer line — the individual-facing side of the platform.
@@ -22,17 +23,18 @@ export const DEFAULT_CONSUMER_AGENT = "personal-assistant";
 const CONSUMER_AGENTS = new Set<string>([DEFAULT_CONSUMER_AGENT]);
 
 /**
- * Runtime allowlist for the consumer line: the flagship assistant, plus any personal agent that
- * exists in the consumer catalogue. Access is gated by the person's prepaid balance (enforced by
- * the wallet), not by certification — so every catalogued specialist is runnable, and certification
- * (`entry.certified`) is a quality label surfaced in the UI, not a lock. The security boundary still
- * holds: getPersonalAgent only resolves consumer-catalogue ids, so a business/tenant agent id is
- * never runnable here.
+ * Runtime allowlist for the consumer line. On production, the flagship assistant plus any *certified*
+ * personal agent runs; in-certification specialists stay browse-only. In the SANDBOX (SANDBOX_MODE=1)
+ * every catalogued specialist runs, so a partner's team can evaluate all of them. Either way the
+ * security boundary holds: getPersonalAgent only resolves consumer-catalogue ids, so a business/tenant
+ * agent id is never runnable here. Access is additionally gated by the person's prepaid balance, which
+ * the wallet enforces.
  */
 export async function isRunnableConsumerAgent(agentId: string): Promise<boolean> {
   if (CONSUMER_AGENTS.has(agentId)) return true;
   const entry = await getPersonalAgent(agentId);
-  return entry !== null;
+  if (!entry) return false;
+  return entry.certified === true || isSandbox();
 }
 
 export function consumerAgentIds(): string[] {

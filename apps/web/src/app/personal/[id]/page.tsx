@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPersonalAgent } from "@/lib/consumer-catalog";
+import { getPersonalAgent, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { AgentIcon } from "@/components/AgentIcon";
 import { specialistStarters } from "@/lib/consumer-specialist-starters";
 import SpecialistChat from "./SpecialistChat";
+
+// Rendered per request: whether the chat runs depends on SANDBOX_MODE (all specialists in the
+// sandbox, only certified on production), and the prod/sandbox images are identical.
+export const dynamic = "force-dynamic";
 
 /** Friendly one-word label for the consumer taxonomy (vertical/front-office/commerce). */
 function audienceLabel(category: string): string {
@@ -103,27 +107,41 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
         </section>
       )}
 
-      {/* Chat — every specialist is usable; certification is a quality label, not a lock. */}
-      <section className="flex flex-col gap-2.5" data-testid="specialist-chat">
-        <h2 className="display text-base font-semibold tracking-tight text-[var(--text)]">
-          Chat with your {agent.name}
-        </h2>
-        {!agent.certified && (
-          <p
-            className="rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)] px-3.5 py-2.5 text-xs leading-relaxed text-[var(--muted)]"
-            data-testid="in-certification-note"
-          >
-            <span className="font-semibold text-[var(--card-body)]">In certification.</span> This
-            specialist is authored and safety-guardrailed, but hasn&apos;t finished behavioural
-            testing yet — you can use it now, just expect the rough edges we&apos;re still ironing out.
+      {/* Chat when this specialist is runnable here (certified on prod; all in the sandbox);
+          otherwise an honest in-certification notice. */}
+      {personalAgentRunnable(agent) ? (
+        <section className="flex flex-col gap-2.5" data-testid="specialist-chat">
+          <h2 className="display text-base font-semibold tracking-tight text-[var(--text)]">
+            Chat with your {agent.name}
+          </h2>
+          {!agent.certified && (
+            <p
+              className="rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)] px-3.5 py-2.5 text-xs leading-relaxed text-[var(--muted)]"
+              data-testid="in-certification-note"
+            >
+              <span className="font-semibold text-[var(--card-body)]">In certification.</span> This
+              specialist is authored and safety-guardrailed, but hasn&apos;t finished behavioural
+              testing yet — you can use it now, just expect the rough edges we&apos;re still ironing out.
+            </p>
+          )}
+          <SpecialistChat
+            agentId={agent.id}
+            agentName={agent.name}
+            starters={specialistStarters(agent.id)}
+          />
+        </section>
+      ) : (
+        <section className="panel p-6 text-center" data-testid="specialist-incert">
+          <h2 className="display text-lg font-semibold text-[var(--text)]">In certification</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--card-body)]">
+            This specialist is still being certified and isn&apos;t live to chat yet. Browse the ones
+            that are ready in the meantime.
           </p>
-        )}
-        <SpecialistChat
-          agentId={agent.id}
-          agentName={agent.name}
-          starters={specialistStarters(agent.id)}
-        />
-      </section>
+          <Link href="/personal" className="btn btn-primary mt-4 inline-flex">
+            See live specialists
+          </Link>
+        </section>
+      )}
     </div>
   );
 }

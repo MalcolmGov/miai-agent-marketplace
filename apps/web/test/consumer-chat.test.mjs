@@ -51,16 +51,25 @@ describe("consumer identity + wallet mapping", () => {
     assert.equal(consumer.walletIdForConsumer({ userId: "usr_123" }), "usr_123");
   });
 
-  it("every catalogued consumer agent is runnable; business agents are not", async () => {
-    // Access is gated by prepaid balance, not certification — the flagship plus every personal
-    // agent (certified or still-in-certification) runs. Only non-consumer/business ids are refused.
+  it("gates the consumer line: flagship + certified run; in-cert and business refused (production)", async () => {
     assert.equal(await consumer.isRunnableConsumerAgent("personal-assistant"), true);
     assert.equal(await consumer.isRunnableConsumerAgent("study-coach"), true); // certified
-    assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), true); // in certification
+    assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), false); // in certification
     assert.equal(await consumer.isRunnableConsumerAgent("front-desk"), false); // business agent
     assert.equal(await consumer.isRunnableConsumerAgent("us-customer-support"), false);
     assert.ok(consumer.consumerAgentIds().includes("personal-assistant"));
     assert.equal(consumer.DEFAULT_CONSUMER_AGENT, "personal-assistant");
+  });
+
+  it("sandbox mode makes every catalogued specialist runnable — but never a business id", async () => {
+    process.env.SANDBOX_MODE = "1";
+    try {
+      assert.equal(await consumer.isRunnableConsumerAgent("learning-advisor"), true); // in-cert now runs
+      assert.equal(await consumer.isRunnableConsumerAgent("study-coach"), true);
+      assert.equal(await consumer.isRunnableConsumerAgent("front-desk"), false); // boundary still holds
+    } finally {
+      delete process.env.SANDBOX_MODE;
+    }
   });
 });
 
@@ -77,10 +86,9 @@ describe("runConsumerTurn: gates", () => {
     assert.equal(r.status, 403);
   });
 
-  it("runs an in-certification personal agent too (certification is a label, not a lock)", async () => {
-    // learning-advisor is authored-but-not-certified. Every catalogued specialist is runnable; the
-    // wallet (balance) is the gate, not certification. Its package resolves via the consumer-catalog
-    // fallback and the run succeeds.
+  it("refuses an in-certification specialist on the production line (403)", async () => {
+    // learning-advisor is authored-but-not-certified; on production only certified specialists run,
+    // even though its package resolves via the consumer-catalog fallback.
     const r = await turn.runConsumerTurn({
       consumerId: "u1",
       walletId: "u1",
@@ -88,8 +96,25 @@ describe("runConsumerTurn: gates", () => {
       message: "hi",
       rateLimitOk: true,
     });
-    assert.equal(r.ok, true, r.ok ? "" : `in-cert specialist failed: ${r.error}`);
-    assert.equal(r.agentId, "learning-advisor");
+    assert.equal(r.ok, false);
+    assert.equal(r.status, 403);
+  });
+
+  it("runs an in-certification specialist in sandbox mode (all specialists usable there)", async () => {
+    process.env.SANDBOX_MODE = "1";
+    try {
+      const r = await turn.runConsumerTurn({
+        consumerId: "u1",
+        walletId: "u1",
+        agentId: "learning-advisor",
+        message: "hi",
+        rateLimitOk: true,
+      });
+      assert.equal(r.ok, true, r.ok ? "" : `sandbox in-cert failed: ${r.error}`);
+      assert.equal(r.agentId, "learning-advisor");
+    } finally {
+      delete process.env.SANDBOX_MODE;
+    }
   });
 
   it("rejects an empty message with 400", async () => {
