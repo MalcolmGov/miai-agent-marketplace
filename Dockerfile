@@ -35,6 +35,15 @@ ENV CATALOG_DIR=/app/data/catalog
 ENV OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json
 ENV KNOWLEDGE_STORE_PATH=/data/knowledge-sources.json
 ENV RENTAL_STORE_PATH=/data/rentals.json
+# Consumer memory (facts, life-graph goals/people, reminders, daily brief). When DATABASE_URL is
+# set these use Postgres and the paths are ignored; in file-store mode (e.g. the sandbox) they MUST
+# live on the mounted /data volume, otherwise `next start` (cwd /app/apps/web) resolves the default
+# to /app/data — inside the image — and a person's memory is wiped on every redeploy.
+ENV CONSUMER_MEMORY_STORE_PATH=/data/consumer-memory.json
+ENV CONSUMER_GOALS_STORE_PATH=/data/consumer-goals.json
+ENV CONSUMER_PEOPLE_STORE_PATH=/data/consumer-people.json
+ENV CONSUMER_REMINDERS_STORE_PATH=/data/consumer-reminders.json
+ENV BRIEF_STORE_PATH=/data/consumer-brief.json
 # Modes default to mock for local/Railway; set http/gateway/oidc + secrets in Azure
 ENV MIAI_AUTH_MODE=mock
 ENV MIAI_WALLET_MODE=mock
