@@ -43,6 +43,12 @@ const PUBLIC_PREFIXES = [
   "/agents/v1/",
   "/api/webhook/sink",
   "/api/mcp",
+  // Consumer line — the individual-facing surface. It is authenticated by the consumer SESSION
+  // COOKIE (Sign in with Google), not the B2B OIDC Bearer: /api/consumer/auth/* runs the login
+  // flow, and every data route enforces the session in-route via requireConsumer(). (The telegram
+  // webhook and the brief cron under here carry their own shared secrets.) So it is public to the
+  // Bearer gate, exactly like the embed/app publishable-key routes above.
+  "/api/consumer/",
 ];
 
 /** True when `pathname` should skip the OIDC Bearer check. */
