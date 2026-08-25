@@ -781,7 +781,8 @@ export function CatalogGrid({
                   <p className="mt-3 line-clamp-2 text-[13px] leading-relaxed text-[var(--card-body)]">
                     {blurb}
                   </p>
-                  <ChannelBadges channels={item.channels} />
+                  {/* Channel badges are shown only when a specific market is selected; hidden in the default "All markets" view. */}
+                  {market !== "all" ? <ChannelBadges channels={item.channels} /> : null}
 
                   <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
                     <button
