@@ -5,29 +5,56 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { MessageKey } from "@/lib/i18n";
 import { useT } from "@/lib/locale";
-import { LanguageSelect } from "./LanguageSelect";
-import { ThemeToggle } from "./ThemeToggle";
 
 type ShellMode = "business" | "consumer";
 
 const BUSINESS_HIDDEN = new Set(["learn"]);
 /** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
-const CONSUMER_ALLOWED = new Set(["home", "ask", "ai-agents-hub"]);
-/** Entire nav groups hidden in consumer mode (Agents is business-only). */
-const CONSUMER_HIDDEN_GROUPS = new Set(["agents", "growth"]);
+const CONSUMER_ALLOWED = new Set([
+  "home", "ask", "ai-agents-hub", "search", "history",
+  "learn", "my-tokens", "redeem-epin", "consultants", "settings", "help",
+]);
+/** Entire nav groups hidden in consumer mode (Agents ops are a Business product). */
+const CONSUMER_HIDDEN_GROUPS = new Set(["agents"]);
 
 type NavBadge = { labelKey: MessageKey; tone: "new" | "live" };
 
 type NavItem = {
   href: string;
   id: string;
-  labelKey: MessageKey;
+  labelKey?: MessageKey;
+  label?: string;
   icon: ReactNode;
   badge?: NavBadge;
   exact?: boolean;
 };
 
-type NavGroup = { titleKey: MessageKey; id: string; items: NavItem[] };
+type NavGroup = { titleKey?: MessageKey; title?: string; id: string; items: NavItem[] };
+
+function IconGear() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 2.5v2.4M12 19.1v2.4M4.2 7l2 1.2M17.8 15.8l2 1.2M4.2 17l2-1.2M17.8 8.2l2-1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconGift() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8ZM3 8h18v3H3V8ZM12 8v12" strokeLinejoin="round" />
+      <path d="M12 8S9.5 4.5 7.5 5.5 8.5 8 12 8Zm0 0s2.5-3.5 4.5-2.5S15.5 8 12 8Z" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function IconTokens() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <ellipse cx="12" cy="6.5" rx="7" ry="3" />
+      <path d="M5 6.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5M5 11.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5" />
+    </svg>
+  );
+}
 
 function IconHome() {
   return (
@@ -197,6 +224,22 @@ const GROUPS: NavGroup[] = [
       { id: "create", href: "/create", labelKey: "nav.create", icon: <IconPlus /> },
     ],
   },
+  {
+    id: "tokens",
+    title: "Tokens",
+    items: [
+      { id: "my-tokens", href: "/tokens", label: "My Tokens", icon: <IconTokens /> },
+      { id: "redeem-epin", href: "/redeem", label: "Redeem e-PIN", icon: <IconGift /> },
+    ],
+  },
+  {
+    id: "system",
+    items: [
+      { id: "consultants", href: "/consultants", label: "Consultants", icon: <IconSpark /> },
+      { id: "settings", href: "/settings", label: "Settings", icon: <IconGear /> },
+      { id: "help", href: "/support", label: "Help & Support", icon: <IconSupport /> },
+    ],
+  },
 ];
 
 function resolveActive(pathname: string, item: NavItem, groupId: string) {
@@ -228,9 +271,11 @@ export function Sidebar({
   const pathname = usePathname();
   const router = useRouter();
   const t = useT();
-  const [mode, setMode] = useState<ShellMode>("business");
+  const [mode, setMode] = useState<ShellMode>(() =>
+    pathname === "/personal" || pathname.startsWith("/personal/") ? "consumer" : "business",
+  );
   const [showAdmin, setShowAdmin] = useState(false);
-  const [consumerAppUrl, setConsumerAppUrl] = useState<string | null>(null);
+  const [, setConsumerAppUrl] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -250,10 +295,6 @@ export function Sidebar({
         const roles: string[] = data.me?.roles ?? [];
         const isOp = Boolean(data.me?.isOperator) || platformOperator(roles);
         setShowAdmin(isOp);
-        const agentsProduct =
-          data.me?.product === "agents" ||
-          data.profile?.wizardCompleted ||
-          data.profile?.product === "agents";
         let stored: string | null = null;
         try {
           stored = sessionStorage.getItem("miai.shellMode");
@@ -263,10 +304,10 @@ export function Sidebar({
         } catch {
           /* ignore */
         }
+        // A stored preference wins; otherwise keep the mount-time default computed
+        // in useState (consumer on /personal, business elsewhere).
         if (stored === "consumer" || stored === "business") {
           setMode(stored);
-        } else {
-          setMode(agentsProduct || isOp ? "business" : "business");
         }
       } catch {
         /* keep defaults */
@@ -303,7 +344,7 @@ export function Sidebar({
     }).filter((g) => g.items.length > 0);
   }, [mode, showAdmin]);
 
-  /** Consumer home is Ask AI — catalogue `/` is Business-only. */
+  /** Consumer home is the /personal marketplace — catalogue `/` is Business-only. */
   function navHref(item: NavItem): string {
     if (mode === "consumer" && item.id === "home") return "/personal";
     return item.href;
@@ -346,7 +387,7 @@ export function Sidebar({
                 onClick={() => changeMode("business")}
                 data-testid="shell-mode-business"
               >
-                {t("sidebar.business")}
+                {t("sidebar.workspaces")}
               </button>
             </div>
 
@@ -366,16 +407,25 @@ export function Sidebar({
 
           <nav className="flex-1 overflow-y-auto px-3 py-4" data-testid="sidebar-nav">
             {visibleGroups.map((group) => (
-              <div key={group.id} className="mb-5">
-                <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-dim)]">
-                  {t(group.titleKey)}
-                </p>
+              <div
+                key={group.id}
+                className={
+                  group.title || group.titleKey
+                    ? "mb-5"
+                    : "mb-5 border-t border-[var(--line)] pt-4"
+                }
+              >
+                {group.title || group.titleKey ? (
+                  <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-dim)]">
+                    {group.title ?? (group.titleKey ? t(group.titleKey) : "")}
+                  </p>
+                ) : null}
                 <ul className="space-y-0.5">
                   {group.items.map((item) => {
                     const href = navHref(item);
                     const active =
                       mode === "consumer" && item.id === "home"
-                        ? pathname === "/ask" || pathname.startsWith("/ask/")
+                        ? pathname === "/personal" || pathname.startsWith("/personal/")
                         : resolveActive(pathname, item, group.id);
                     return (
                       <li key={`${group.id}-${item.id}`}>
@@ -386,7 +436,7 @@ export function Sidebar({
                           data-nav-id={item.id}
                         >
                           <span className="nav-item-icon">{item.icon}</span>
-                          <span className="flex-1 truncate">{t(item.labelKey)}</span>
+                          <span className="flex-1 truncate">{item.label ?? (item.labelKey ? t(item.labelKey) : "")}</span>
                           {item.badge ? (
                             <span
                               className={`nav-badge ${
@@ -406,59 +456,27 @@ export function Sidebar({
                 </ul>
               </div>
             ))}
-            {mode === "consumer" ? (
-              consumerAppUrl ? (
-                <a
-                  href={consumerAppUrl}
-                  className="nav-item text-[var(--muted)]"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span className="nav-item-icon">
-                    <IconPlus />
-                  </span>
-                  <span className="flex-1 truncate">{t("sidebar.openConsumerApp")}</span>
-                </a>
-              ) : (
-                <Link
-                  href="/assistant"
-                  onClick={onClose}
-                  className="nav-item text-[var(--muted)]"
-                  data-testid="sidebar-consumer-assistant"
-                >
-                  <span className="nav-item-icon">
-                    <IconPlus />
-                  </span>
-                  <span className="flex-1 truncate">{t("sidebar.openConsumerApp")}</span>
-                </Link>
-              )
-            ) : null}
-            {mode === "consumer" ? (
-              <Link
-                href="/get-started"
-                onClick={onClose}
-                className="nav-item mt-1 text-[var(--accent-bright)]"
-                data-testid="sidebar-business-setup"
-              >
-                <span className="nav-item-icon">
-                  <IconAgents />
-                </span>
-                <span className="flex-1 truncate">{t("sidebar.businessSetup")}</span>
-              </Link>
-            ) : null}
           </nav>
 
-          <div className="space-y-2 border-t border-[var(--line)] px-4 py-3">
-            <LanguageSelect />
-            <ThemeToggle />
-            {mode === "business" ? (
-              <Link href="/install" onClick={onClose} className="nav-item text-[var(--muted)]">
-                <span className="nav-item-icon">
-                  <IconPlus />
+          <div className="border-t border-[var(--line)] px-3 py-3">
+            <button
+              type="button"
+              className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-[var(--bg-panel-hover)]"
+              data-testid="sidebar-account"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)] text-sm font-bold text-[var(--accent-ink)]">
+                M
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-semibold text-[var(--text)]">Your account</span>
+                <span className="block truncate text-[11px] text-[var(--muted)]">
+                  {mode === "consumer" ? "Consumer plan" : "Workspaces plan"}
                 </span>
-                <span>{t("sidebar.installEmbed")}</span>
-              </Link>
-            ) : null}
+              </span>
+              <span className="text-[var(--muted)]" aria-hidden>
+                &#8943;
+              </span>
+            </button>
           </div>
         </div>
       </aside>
