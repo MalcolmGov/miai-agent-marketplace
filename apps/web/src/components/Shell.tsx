@@ -34,10 +34,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const isHome = pathname === "/";
   /** App channel hosted chat — no marketplace chrome (WebView / in-app). */
   const isAppChannel = pathname === "/app/v1" || pathname.startsWith("/app/v1/");
-  /** Consumer surface — white-label "my assistant" home, no B2B marketplace chrome. */
+  /** White-label embed ("my assistant") — bare, no marketplace chrome.
+   *  Note: /personal (the consumer marketplace) renders WITH the sidebar so the
+   *  full MyInstantAI consumer nav is present, matching the real product. */
   const isConsumerSurface =
-    pathname === "/me" || pathname.startsWith("/me/") ||
-    pathname === "/personal" || pathname.startsWith("/personal/");
+    pathname === "/me" || pathname.startsWith("/me/");
   /** Business onboarding / login / marketing preview — focused full-page, no sidebar. */
   const isAuthEntry =
     pathname === "/get-started" ||
