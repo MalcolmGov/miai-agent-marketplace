@@ -25,11 +25,13 @@ and `CRON_SECRET` **unset**, and connect **no real** OAuth/API tokens in the san
 
 ## Stand it up (≈15 min, your infra)
 
-1. **Separate database** — create a new **Neon branch** (or a fresh Postgres); migrations self-apply on boot.
-2. **New Railway service** — deploy this repo's `Dockerfile` as a **second service** (do *not* reuse the production service).
-3. **Env group** — copy `apps/web/.env.sandbox.example`, fill in the sandbox DB URL, the sandbox's own URL, and fresh secrets. Keep `MIAI_MODEL_MODE=mock` for zero cost, **or** set `openai` + a **separate, hard-capped** OpenAI key if they want to judge real agent quality.
-4. **Deploy** and open the sandbox URL — you should see the SANDBOX banner and be able to log in with no account (mock auth).
-5. **Smoke-check**: browse the catalogue, open an agent → **Set up**, chat with it, top up with the free demo credit. Confirm connector actions come back **stubbed**.
+No external database is needed — this app stores state as JSON files on a Railway **volume**, and the agents are baked into the image.
+
+1. **New Railway service** — deploy this repo's `Dockerfile` as a **second service** (not the production one). Give it its **own volume mounted at `/data`** — a separate service means separate storage, so it's isolated from production automatically. *(Optional: to use Postgres instead, add a Railway Postgres service and set `DATABASE_URL`.)*
+2. **Public domain** — under the service's Networking settings, generate a domain — that's the sandbox URL.
+3. **Env** — copy `apps/web/.env.sandbox.example` into the service's variables: set `SANDBOX_MODE=1`, `APP_BASE_URL`/`NEXT_PUBLIC_APP_URL` to the sandbox URL, and a fresh `OAUTH_TOKEN_SECRET`. Keep `MIAI_MODEL_MODE=mock` for zero cost, **or** set `openai` + a **separate, hard-capped** key to judge real agent quality. (The Dockerfile already sets the `/data` store paths and mock modes.)
+4. **Deploy** and open the URL — you should see the SANDBOX banner and be able to log in with no account (mock auth).
+5. **Smoke-check**: browse the catalogue, open an agent → **Set up**, chat with it, top up with the free demo credit, and confirm connector actions come back **stubbed**.
 
 ## Give the partner access
 
