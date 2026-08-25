@@ -940,6 +940,24 @@ export class MockModelAdapter implements ModelAdapter {
       };
     }
 
+    // Consumer specialists (study/exam/English coaches, companions) are not the business front-desk
+    // the heuristics below assume, so their scope-refusals and handoffs read as off-brand — e.g. a
+    // Study Coach shouldn't refuse "help with my homework". Hard safety (crisis, self-harm, secrets,
+    // cards, financial advice, cross-tenant) has already run in checkInputGuardrails above (`forced`),
+    // so give a coherent, on-topic coach reply here instead of the business fall-through. Real reply
+    // quality comes from the live model — this just keeps the deterministic mock (and the sandbox
+    // that runs on it) on-brand for the consumer line.
+    if (input.consumerLine) {
+      const kb = hit();
+      if (kb) {
+        return { content: `${kb}\n\nWant to go a bit deeper on any of that, or ask something of your own?` };
+      }
+      return {
+        content:
+          "Happy to help — let's take it a step at a time. Tell me a bit more about what you'd like to work on, and we'll go from there together.",
+      };
+    }
+
     if (/ignore (all )?previous|system prompt|jailbreak|reveal your (prompt|rules)/.test(lower)) {
       return {
         content:
