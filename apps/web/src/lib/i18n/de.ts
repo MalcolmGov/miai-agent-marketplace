@@ -57,7 +57,7 @@ export const de: Dictionary = {
   "catalog.customer": "Kunde",
   "catalog.internal": "Intern",
   "catalog.workflows": "Workflows",
-  "catalog.demo6": "Go-live 100",
+  "catalog.demo6": "Go-live",
   "catalog.goliveHint": "Familien, die wir für Kundenproduktion vertreten. Die Lizenz deckt weiterhin alle 500.",
   "catalog.market": "Markt",
   "catalog.allMarkets": "Alle Märkte",
@@ -95,7 +95,8 @@ export const de: Dictionary = {
   "catalog.workflowHint":
     "Plant den nächsten Schritt, bestätigt mit Ihnen und handelt dann — keine reine FAQ.",
 
-  "hero.headline": "Stellen Sie einen KI-Agenten für Ihr Business ein",
+  "hero.headline": "KI-Agenten anheuern. Skalieren Sie Ihr Business.",
+  "hero.headlineAccent": "KI-Agenten",
   "hero.lede":
     "{count} fertige Agenten für WhatsApp, Web und App — einrichten, konfigurieren, live gehen.",
   "hero.browse": "Agenten durchsuchen",
