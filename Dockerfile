@@ -27,6 +27,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm --filter @miai/web build
 
 FROM base AS runner
+# gosu lets the entrypoint drop from root to the node user after fixing the mounted-volume owner.
+RUN apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/*
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
@@ -51,9 +53,12 @@ ENV MIAI_MODEL_MODE=mock
 
 WORKDIR /app
 COPY --from=builder /app ./
-RUN mkdir -p /data && chown -R node:node /data /app
-USER node
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN mkdir -p /data && chown -R node:node /data /app && chmod +x /usr/local/bin/docker-entrypoint.sh
+# No `USER node`: the entrypoint starts as root only to chown the mounted /data volume (which is
+# mounted root-owned at runtime), then drops to the node user via gosu before running the server.
 
 EXPOSE 3000
 # Azure Container Apps / Railway set PORT; health at /api/health
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sh", "-c", "pnpm --filter @miai/web exec next start -H 0.0.0.0 -p ${PORT:-3000}"]
