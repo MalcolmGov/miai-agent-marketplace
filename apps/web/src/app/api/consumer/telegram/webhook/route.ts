@@ -5,6 +5,7 @@ import {
   DEFAULT_TELEGRAM_AGENT,
   DEFAULT_TELEGRAM_TENANT,
   escapeTelegramHtml,
+  mdToTelegramHtml,
   sendTelegramMessage,
   sendTelegramTyping,
   verifySetupNonce,
@@ -203,7 +204,9 @@ export async function POST(req: Request) {
   });
 
   if (result.ok && result.assistantMessage) {
-    await sendTelegramMessage(TOKEN, chatId, result.assistantMessage);
+    // Model replies are Markdown; convert to Telegram's HTML subset so headings,
+    // bold, and lists render instead of showing raw ## / ** in the chat.
+    await sendTelegramMessage(TOKEN, chatId, mdToTelegramHtml(result.assistantMessage));
   } else if (!result.ok) {
     await sendTelegramMessage(
       TOKEN,
