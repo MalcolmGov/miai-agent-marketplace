@@ -40,6 +40,10 @@ const jobs = [
     html: "azure-deployment.html",
     pdf: "MyInstantAI-x-MoveDigital-Azure-Deployment-Config.pdf",
   },
+  {
+    html: "cutover-checklist.html",
+    pdf: "MyInstantAI-x-MoveDigital-Production-Cutover-Checklist.pdf",
+  },
 ];
 
 if (!existsSync(chrome)) {
