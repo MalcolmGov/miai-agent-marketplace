@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { listPersonalAgents, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { AgentIcon } from "@/components/AgentIcon";
+import { ConsumerAccountBar } from "@/components/ConsumerAccountBar";
 
 // Rendered per request: the "Try" CTA depends on SANDBOX_MODE (all specialists run in the sandbox,
 // only certified ones on production) and the prod/sandbox images are identical.
@@ -23,10 +24,11 @@ export const metadata: Metadata = {
 /**
  * Consumer marketplace — the CONSUMER-mode landing surface.
  *
- * Leads with the prepaid specialist families (the flagship consumer line), each browsable as a
- * card. The general personal assistant is demoted to a single "or just chat" entry at the foot.
- * Data comes from the same loader/section the /api/catalog/personal route and the assistant rail
- * use (data/catalog-consumer), so the marketplace never drifts from the catalogue.
+ * Leads with the general everyday assistant as a featured "start here" card, then the prepaid
+ * specialist families as focused tools — all sharing one account, wallet and memory (the shared
+ * ConsumerAccountBar sits above the grid with credits · accounts · Telegram). Specialist data comes
+ * from the same loader/section the /api/catalog/personal route and the assistant rail use
+ * (data/catalog-consumer), so the marketplace never drifts from the catalogue.
  */
 export default async function PersonalMarketplacePage() {
   const agents = await listPersonalAgents();
@@ -57,7 +59,44 @@ export default async function PersonalMarketplacePage() {
         </div>
       </section>
 
-      {/* The families */}
+      {/* Shared account controls — credits · accounts · Telegram — apply to every assistant below. */}
+      <ConsumerAccountBar />
+
+      {/* Featured: the everyday general assistant — the front door, ahead of the specialists. */}
+      <section>
+        <article className="panel panel-interactive flex flex-col gap-4 p-5 text-left sm:flex-row sm:items-center sm:gap-5">
+          <span
+            aria-hidden
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-bold"
+            style={{ background: "var(--accent)", color: "var(--accent-ink)" }}
+          >
+            M
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-[var(--accent-bright)]">
+              Start here · Everyday assistant
+            </p>
+            <h2 className="display mt-0.5 text-[1.15rem] font-semibold leading-tight tracking-tight text-[var(--text)]">
+              Your MyInstantAI Assistant
+            </h2>
+            <p className="mt-1 text-sm leading-relaxed text-[var(--card-body)]">
+              The all-rounder for everyday life — email, calendar, reminders, quick lookups, and it
+              remembers your preferences. Switch to a specialist below any time; they all share this
+              account and memory.
+            </p>
+          </div>
+          <Link
+            href="/me"
+            className="btn btn-primary shrink-0 px-4 py-2 text-[13px]"
+            data-testid="featured-assistant"
+          >
+            Open assistant
+            <span aria-hidden>→</span>
+          </Link>
+        </article>
+      </section>
+
+      {/* The specialists */}
       {agents.length > 0 ? (
         <section className="space-y-4" data-testid="personal-marketplace">
           <p className="text-center text-xs text-[var(--muted)]">
