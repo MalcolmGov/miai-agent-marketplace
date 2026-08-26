@@ -148,20 +148,75 @@ async function tgApi(
   });
 }
 
-/** Send a plain-text message to a Telegram chat. Returns true if the message was sent. */
+/**
+ * Convert a Markdown assistant reply into the small HTML subset Telegram's
+ * `parse_mode:"HTML"` supports (`<b> <i> <code> <pre> <a>`). Telegram has no
+ * headings or lists, so `## H` becomes bold and `- item` becomes `• item`.
+ *
+ * HTML-special chars are escaped FIRST, so the model's text can never inject a
+ * tag, and only balanced pairs are emitted — the output never has an unclosed
+ * tag (the common cause of a Telegram 400). Model output is Markdown, so
+ * without this the raw `##`/`**` render literally in the chat.
+ */
+export function mdToTelegramHtml(md: string): string {
+  let s = (md ?? "").replace(/\r\n/g, "\n");
+  // 1) Escape HTML specials before we insert any tags of our own.
+  s = s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  // Every rule below uses a greedy negated character class rather than a lazy
+  // quantifier, so none can backtrack across its delimiter — the whole pass is
+  // linear in input length (no ReDoS on a crafted message).
+  // 2) Fenced code blocks ```lang\n…``` → <pre>. The tempered token
+  //    `(?:[^`]|`(?!``))*` matches any non-backtick, or a backtick that doesn't
+  //    open the closing fence — linear, and it tolerates single backticks inside.
+  s = s.replace(/```[^\n]*\n?((?:[^`]|`(?!``))*)```/g, (_m, code: string) => `<pre>${code.replace(/\n+$/, "")}</pre>`);
+  // 3) Inline code `x` → <code>
+  s = s.replace(/`([^`\n]+)`/g, (_m, c: string) => `<code>${c}</code>`);
+  // 4) Links [text](http…) → <a>
+  s = s.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, t: string, u: string) => `<a href="${u}">${t}</a>`);
+  // 5) Headings (# … ######) → bold (Telegram has no headings). Greedy capture,
+  //    trailing #'s/spaces trimmed in code so there's no lazy quantifier.
+  s = s.replace(/^ {0,3}#{1,6}[ \t]+(.+)$/gm, (_m, h: string) => `<b>${h.replace(/[ \t]*#*[ \t]*$/, "")}</b>`);
+  // 6) Bold **x** / __x__ (before single-char italic so ** is consumed first).
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");
+  s = s.replace(/__([^_\n]+)__/g, "<b>$1</b>");
+  // 7) Bullets "- " / "* " / "+ " at line start → "• "
+  s = s.replace(/^ {0,3}[-*+][ \t]+/gm, "• ");
+  // 8) Italic *x* / _x_ (single marker, not touching a word char on the far side).
+  s = s.replace(/(^|[^\w*])\*(?!\s)([^*\n]+)\*(?!\w)/g, "$1<i>$2</i>");
+  s = s.replace(/(^|[^\w])_(?!\s)([^_\n]+)_(?!\w)/g, "$1<i>$2</i>");
+  // 9) Tidy excess blank lines.
+  return s.replace(/\n{3,}/g, "\n\n").trim();
+}
+
+/**
+ * Send a message to a Telegram chat as HTML. Returns true if it was sent.
+ * If the HTML is rejected (e.g. malformed tags → HTTP 400), it retries once as
+ * plain text with the tags stripped, so a formatting slip never drops the reply.
+ * Callers pass already-HTML text (menus) or run model Markdown through
+ * `mdToTelegramHtml` first.
+ */
 export async function sendTelegramMessage(
   token: string,
   chatId: number,
   text: string,
 ): Promise<boolean> {
+  const body = text.slice(0, 4096); // Telegram message cap
   try {
     const res = await tgApi(token, "sendMessage", {
       chat_id: chatId,
-      text: text.slice(0, 4096), // Telegram message cap
+      text: body,
       parse_mode: "HTML",
       disable_web_page_preview: true,
     });
-    return res.ok;
+    if (res.ok) return true;
+    // HTML parse error (or similar) → resend as plain text so the user still gets it.
+    const plain = body.replace(/<[^>]+>/g, "");
+    const res2 = await tgApi(token, "sendMessage", {
+      chat_id: chatId,
+      text: plain,
+      disable_web_page_preview: true,
+    });
+    return res2.ok;
   } catch {
     return false;
   }

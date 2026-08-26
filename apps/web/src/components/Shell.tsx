@@ -18,9 +18,17 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [mobileNav, setMobileNav] = useState(false);
 
   async function refreshWallet() {
-    const res = await fetch("/api/wallet");
-    const data = await res.json();
-    setTokens(data.tokens);
+    // Keep `tokens` honest to its number|null type: a non-numeric/absent balance
+    // (e.g. the signed-out wallet response) must become null, not undefined —
+    // otherwise `tokens.toLocaleString()` below throws and the layout (rendered on
+    // every page) blanks with a client-side exception. Never fail on a bad fetch.
+    try {
+      const res = await fetch("/api/wallet");
+      const data = await res.json();
+      setTokens(typeof data?.tokens === "number" ? data.tokens : null);
+    } catch {
+      setTokens(null);
+    }
   }
 
   useEffect(() => {
