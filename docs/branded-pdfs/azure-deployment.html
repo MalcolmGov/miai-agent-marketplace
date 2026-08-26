@@ -4,6 +4,74 @@
     <meta charset="utf-8" />
     <title>MyInstantAI Agents — Azure deployment config</title>
     <link rel="stylesheet" href="./shared.css" />
+    <style>
+      /* ─────────────────────────────────────────────────────────────────────
+         Azure handover — scoped overrides (this doc only; shared.css untouched).
+         · Cards drop the negative-spread box-shadow: some PDF viewers (Preview,
+           older Acrobat) rasterize it as a solid grey block. A hairline border
+           renders identically everywhere.
+         · Everything is opened up — padding, line-height, row and section rhythm
+           — and the content is spread across five pages so nothing is cramped
+           or clipped by the fixed-height A4 page.
+         ───────────────────────────────────────────────────────────────────── */
+      .page.airy .card {
+        box-shadow: none;
+        border: 1px solid var(--line);
+        padding: 5mm 5.5mm;
+      }
+      .page.airy .content {
+        padding: 13mm 17mm 7mm;
+      }
+      .page.airy .hero + .content {
+        padding-top: 8mm; /* page 1 sits directly under the hero band */
+      }
+      .page.airy .footer {
+        margin-left: 17mm;
+        margin-right: 17mm;
+      }
+      .page.airy .section {
+        margin-bottom: 8.5mm;
+      }
+      .page.airy h2 {
+        font-size: 12.5px;
+        margin-bottom: 5mm;
+      }
+      .page.airy h3 {
+        font-size: 11px;
+        margin: 7mm 0 3mm;
+      }
+      .page.airy h3:first-child {
+        margin-top: 0;
+      }
+      .page.airy table {
+        margin-top: 1.5mm;
+      }
+      .page.airy th {
+        font-size: 8px;
+        padding: 2.6mm 3mm;
+      }
+      .page.airy td {
+        font-size: 9.8px;
+        line-height: 1.6;
+        padding: 3.6mm 3mm;
+      }
+      .page.airy .callout {
+        padding: 4mm 4.5mm;
+        line-height: 1.6;
+        margin-top: 3.5mm;
+      }
+      .page.airy .check li {
+        font-size: 10px;
+        line-height: 1.55;
+        margin-bottom: 2.8mm;
+      }
+      .page.airy .hero .lede {
+        line-height: 1.6;
+      }
+      .page.airy .grid-2 {
+        gap: 5mm;
+      }
+    </style>
   </head>
   <body>
     <!-- ============================ PAGE 1 ============================ -->
@@ -94,7 +162,17 @@
             </tbody>
           </table>
         </div>
+      </div>
 
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Deployment handover · 1 / 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content">
         <div class="section">
           <h2><span class="n">03</span> The mock → prod switch, at a glance</h2>
           <table>
@@ -111,20 +189,10 @@
             </tbody>
           </table>
         </div>
-      </div>
 
-      <footer class="footer">
-        <span><strong>Move Digital</strong> · Delivery partner</span>
-        <span>Confidential · Deployment handover · 1 / 3</span>
-      </footer>
-    </section>
-
-    <!-- ============================ PAGE 2 ============================ -->
-    <section class="page airy">
-      <div class="content" style="padding-top: 10mm">
         <div class="section">
           <h2><span class="n">04</span> Environment variables</h2>
-          <p style="color: var(--muted); font-size: 10px; margin: 0 0 3mm">
+          <p style="color: var(--muted); font-size: 10px; margin: 0 0 4mm">
             Grouped by function. Set the "Prod value" column and leave the mock defaults behind;
             secrets go to Key Vault. Every var below is one the code actually reads.
           </p>
@@ -141,7 +209,7 @@
             </tbody>
           </table>
 
-          <h3 style="margin-top:4mm">4.2 · Data store</h3>
+          <h3>4.2 · Data store</h3>
           <table>
             <thead><tr><th style="width:34%">Var</th><th style="width:24%">Prod value</th><th>Purpose</th></tr></thead>
             <tbody>
@@ -150,8 +218,20 @@
               <tr><td class="mono">UPSTASH_REDIS_REST_URL<br />UPSTASH_REDIS_REST_TOKEN</td><td><span style="color:var(--muted)">if using Redis</span></td><td>Multi-replica session store</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
 
-          <h3 style="margin-top:4mm">4.3 · Model — Azure OpenAI <span style="color:var(--muted);font-weight:400">(<span class="mono">MIAI_MODEL_MODE=azure</span>)</span></h3>
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Deployment handover · 2 / 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h3 style="margin-top:0">4.3 · Model — Azure OpenAI <span style="color:var(--muted);font-weight:400">(<span class="mono">MIAI_MODEL_MODE=azure</span>)</span></h3>
           <table>
             <thead><tr><th style="width:40%">Var</th><th>Purpose</th></tr></thead>
             <tbody>
@@ -163,13 +243,15 @@
               <tr><td class="mono">EMBEDDING_API_KEY · _BASE_URL · _MODEL</td><td>if using real semantic retrieval</td></tr>
             </tbody>
           </table>
-          <div class="callout" style="margin-top:2.5mm">
+          <div class="callout">
             <strong>Alternative — their model gateway</strong> (<span class="mono">MIAI_MODEL_MODE=gateway</span>):
             <span class="mono">MIAI_MODEL_GATEWAY_URL</span>, <span class="mono">MIAI_MODEL_GATEWAY_KEY</span>
             (or <span class="mono">MIAI_MODEL_API_KEY</span>), optional <span class="mono">MIAI_MODEL_PASSTHROUGH=1</span>.
           </div>
+        </div>
 
-          <h3 style="margin-top:4mm">4.4 · Identity / auth <span style="color:var(--muted);font-weight:400">(<span class="mono">MIAI_AUTH_MODE=oidc</span>)</span></h3>
+        <div class="section">
+          <h3 style="margin-top:0">4.4 · Identity / auth <span style="color:var(--muted);font-weight:400">(<span class="mono">MIAI_AUTH_MODE=oidc</span>)</span></h3>
           <table>
             <thead><tr><th style="width:40%">Var</th><th>Purpose</th></tr></thead>
             <tbody>
@@ -185,24 +267,24 @@
 
       <footer class="footer">
         <span><strong>Move Digital</strong> · Delivery partner</span>
-        <span>Confidential · Deployment handover · 2 / 3</span>
+        <span>Confidential · Deployment handover · 3 / 5</span>
       </footer>
     </section>
 
-    <!-- ============================ PAGE 3 ============================ -->
+    <!-- ============================ PAGE 4 ============================ -->
     <section class="page airy">
-      <div class="content" style="padding-top: 10mm">
+      <div class="content">
         <div class="section">
           <div class="grid-2">
             <div>
-              <h3>4.5 · Wallet / billing <span style="color:var(--muted);font-weight:400">(<span class="mono">http</span>)</span></h3>
+              <h3 style="margin-top:0">4.5 · Wallet / billing <span style="color:var(--muted);font-weight:400">(<span class="mono">http</span>)</span></h3>
               <table>
                 <tbody>
                   <tr><td class="mono" style="width:45%">MIAI_WALLET_API_URL</td><td>Billing / wallet gateway base URL</td></tr>
                   <tr><td class="mono">MIAI_WALLET_API_KEY</td><td>Gateway key</td></tr>
                 </tbody>
               </table>
-              <h3 style="margin-top:4mm">4.6 · Channels</h3>
+              <h3>4.6 · Channels</h3>
               <table>
                 <tbody>
                   <tr><td class="mono" style="width:45%">TELEGRAM_BOT_TOKEN · _SECRET · _USERNAME</td><td>Telegram (secret = webhook token + nonce signing; charset <span class="mono">[A-Za-z0-9_-]</span>)</td></tr>
@@ -211,7 +293,7 @@
               </table>
             </div>
             <div>
-              <h3>4.7 · App host &amp; URLs</h3>
+              <h3 style="margin-top:0">4.7 · App host &amp; URLs</h3>
               <table>
                 <tbody>
                   <tr><td class="mono" style="width:45%">APP_BASE_URL · NEXT_PUBLIC_APP_URL</td><td>Public origin (deep links, webhooks)</td></tr>
@@ -222,7 +304,7 @@
             </div>
           </div>
 
-          <h3 style="margin-top:4mm">4.8 · Telemetry &amp; platform secrets <span style="color:var(--muted);font-weight:400">— required once OIDC/prod, or boot fails</span></h3>
+          <h3>4.8 · Telemetry &amp; platform secrets <span style="color:var(--muted);font-weight:400">— required once OIDC/prod, or boot fails</span></h3>
           <table>
             <tbody>
               <tr><td class="mono" style="width:40%">APPLICATIONINSIGHTS_CONNECTION_STRING</td><td>Azure App Insights</td></tr>
@@ -231,7 +313,17 @@
             </tbody>
           </table>
         </div>
+      </div>
 
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Deployment handover · 4 / 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 5 ============================ -->
+    <section class="page airy">
+      <div class="content">
         <div class="section">
           <h2><span class="n">05</span> Deployment flow</h2>
           <div class="card">
@@ -251,7 +343,7 @@
           <div class="grid-2">
             <div class="card">
               <div class="stat"><div class="label">White-label model</div></div>
-              <p style="margin:1.5mm 0 0; font-size:9.5px; color:var(--ink); line-height:1.5">
+              <p style="margin:2.5mm 0 0; font-size:9.8px; color:var(--ink); line-height:1.6">
                 Per-tenant, <strong>not</strong> per-fork: <span class="mono">workspaceId = brand = tenant</span>,
                 and every consumer call is scoped to it — so each partner gets isolated memory, wallet and
                 connectors off the one deployment. Registry: <span class="mono">apps/web/src/lib/tenant-brands.ts</span>.
@@ -260,7 +352,7 @@
             </div>
             <div class="card">
               <div class="stat"><div class="label">Decisions still open — config, not code</div></div>
-              <ul class="check" style="margin-top:1.5mm">
+              <ul class="check" style="margin-top:2.5mm">
                 <li><span class="box"></span> <strong>Model path:</strong> Azure OpenAI direct vs their gateway</li>
                 <li><span class="box"></span> <strong>Identity:</strong> their OIDC issuer vs Google</li>
                 <li><span class="box"></span> <strong>Whose Azure subscription</strong> hosts it; tenant→partner map</li>
@@ -268,7 +360,7 @@
               </ul>
             </div>
           </div>
-          <p style="text-align:center; color:var(--muted); font-size:9px; margin-top:3mm">
+          <p style="text-align:center; color:var(--muted); font-size:9.5px; margin-top:5mm">
             None of these require code changes — they select which env values go in §4.
           </p>
         </div>
@@ -276,7 +368,7 @@
 
       <footer class="footer">
         <span><strong>Move Digital</strong> · Delivery partner</span>
-        <span>Confidential · Deployment handover · 3 / 3</span>
+        <span>Confidential · Deployment handover · 5 / 5</span>
       </footer>
     </section>
   </body>
