@@ -101,10 +101,25 @@ export async function GET(req: Request) {
       agentId: payload.agentId,
     });
 
+    // Verify the connection actually works (read-only probe) and record it, so the user sees a
+    // "working / reconnect" status instead of a false green. Best-effort — a probe failure must
+    // never fail the OAuth connect itself.
+    let verify = "unknown";
+    try {
+      const { verifyConnector } = await import("@miai/connectors");
+      const probe = await verifyConnector(payload.workspaceId, payload.connectorId);
+      verify = probe.error === "probe_not_supported" ? "unsupported" : probe.ok ? "ok" : "failed";
+    } catch {
+      /* verification is best-effort */
+    }
+
     const dest =
       payload.returnTo ??
       `/agents/${payload.agentId}?tab=actions&oauth=${payload.connectorId}`;
-    return NextResponse.redirect(`${base}${dest.startsWith("/") ? dest : `/${dest}`}`);
+    const destUrl = new URL(dest.startsWith("/") ? `${base}${dest}` : `${base}/${dest}`);
+    destUrl.searchParams.set("oauth", payload.connectorId);
+    destUrl.searchParams.set("verify", verify);
+    return NextResponse.redirect(destUrl.toString());
   } catch (e) {
     trackDependency({
       name: "oauth.exchangeCode",

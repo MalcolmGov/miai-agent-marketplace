@@ -32,6 +32,10 @@ export interface TokenMeta {
   meta: Record<string, string>;
   updatedAt: string;
   expiresAt?: number;
+  /** Last read-only verification (verifyConnector): true = working, false = broken, undefined = never checked. */
+  verified?: boolean;
+  verifiedAt?: string;
+  verifyError?: string;
 }
 
 function env(name: string): string | undefined {
@@ -334,6 +338,14 @@ export async function listTokenMeta(workspaceId: string): Promise<TokenMeta[]> {
       meta: { ...t.meta },
       updatedAt: t.updatedAt,
       expiresAt: t.expiresAt,
+      verified:
+        t.meta.verify_status === "ok"
+          ? true
+          : t.meta.verify_status === "failed"
+            ? false
+            : undefined,
+      verifiedAt: t.meta.verify_at || undefined,
+      verifyError: t.meta.verify_error || undefined,
     }));
 }
 

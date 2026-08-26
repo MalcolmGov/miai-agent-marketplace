@@ -3,6 +3,7 @@
  * Confirms the stored token still works — no writes / no side-effect messages.
  */
 import { getValidAccessToken } from "./flow.js";
+import { getToken, updateTokenFields } from "./tokens.js";
 
 export type ProbeResult = {
   ok: boolean;
@@ -132,4 +133,34 @@ export async function probeOAuthConnector(
 
 export function probeSupportedConnectors(): string[] {
   return Object.keys(PROBERS);
+}
+
+/**
+ * Verify a connected connector with the read-only probe AND record the outcome on the token's meta,
+ * so status listings can show "working / reconnect" without re-probing on every request. Called at
+ * connect-time (the OAuth callback) and on an explicit re-check. Best-effort persistence — a probe
+ * for a connector with no prober, or with no stored token, is returned but not recorded.
+ */
+export async function verifyConnector(
+  workspaceId: string,
+  connectorId: string,
+): Promise<ProbeResult> {
+  const result = await probeOAuthConnector(workspaceId, connectorId);
+  if (result.error === "not_connected" || result.error === "probe_not_supported") {
+    return result;
+  }
+  // getToken AFTER the probe so we pick up any token refresh it triggered.
+  const cur = await getToken(workspaceId, connectorId);
+  if (cur) {
+    await updateTokenFields(workspaceId, connectorId, {
+      meta: {
+        ...cur.meta,
+        verify_status: result.ok ? "ok" : "failed",
+        verify_at: new Date().toISOString(),
+        verify_account: result.account ?? "",
+        verify_error: result.ok ? "" : (result.error ?? "probe_failed"),
+      },
+    });
+  }
+  return result;
 }

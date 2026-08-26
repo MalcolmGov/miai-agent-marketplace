@@ -16,11 +16,18 @@ export async function GET(req: Request) {
   const meta = await listTokenMeta(consumerId);
   const byId = new Map(meta.map((m) => [m.connectorId, m]));
 
-  const connectors = needed.map((connector) => ({
-    connector,
-    connected: byId.has(connector),
-    updatedAt: byId.get(connector)?.updatedAt ?? null,
-  }));
+  const connectors = needed.map((connector) => {
+    const m = byId.get(connector);
+    return {
+      connector,
+      connected: byId.has(connector),
+      // Last read-only verification: true = working, false = connected-but-broken (reconnect),
+      // null = connected but never checked / no probe for this connector.
+      working: m?.verified ?? null,
+      verifiedAt: m?.verifiedAt ?? null,
+      updatedAt: m?.updatedAt ?? null,
+    };
+  });
 
   return apiOk({
     connectors,

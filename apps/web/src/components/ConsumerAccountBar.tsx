@@ -6,7 +6,12 @@ import { ConnectorIcon } from "@/components/ConnectorIcon";
 import { CONNECTOR_LABEL } from "@/lib/assistant-capabilities";
 import { DEFAULT_BRAND_ID } from "@/lib/tenant-brands";
 
-type ConnectorStatus = { connector: string; connected: boolean };
+type ConnectorStatus = {
+  connector: string;
+  connected: boolean;
+  /** Last verification: true = working, false = connected-but-broken, null = connected/unverified. */
+  working?: boolean | null;
+};
 
 /**
  * Shared consumer account bar — connected accounts · Telegram channel.
@@ -82,13 +87,24 @@ export function ConsumerAccountBar() {
         {connectors.length === 0 ? (
           <span className="text-[var(--muted)]">—</span>
         ) : (
-          connectors.map((c) => (
-            <span key={c.connector} className={`chip ${c.connected ? "chip-live" : "opacity-70"}`}>
-              <ConnectorIcon connector={c.connector} size={13} />
-              {CONNECTOR_LABEL[c.connector] ?? c.connector}
-              {c.connected ? " ✓" : ""}
-            </span>
-          ))
+          connectors.map((c) => {
+            // A connected connector whose last live check failed → prompt a reconnect instead of a
+            // false green. working null (never checked / no probe) still shows as connected.
+            const broken = c.connected && c.working === false;
+            return (
+              <span
+                key={c.connector}
+                className={`chip ${broken ? "" : c.connected ? "chip-live" : "opacity-70"}`}
+                title={
+                  broken ? "Connected, but the last check failed — reconnect this account" : undefined
+                }
+              >
+                <ConnectorIcon connector={c.connector} size={13} />
+                {CONNECTOR_LABEL[c.connector] ?? c.connector}
+                {broken ? " ⚠ reconnect" : c.connected ? " ✓" : ""}
+              </span>
+            );
+          })
         )}
         <Link
           href="/me/connectors"
