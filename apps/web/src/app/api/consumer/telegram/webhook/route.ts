@@ -4,6 +4,7 @@ import {
   consumerIdForTelegram,
   DEFAULT_TELEGRAM_AGENT,
   DEFAULT_TELEGRAM_TENANT,
+  escapeTelegramHtml,
   sendTelegramMessage,
   sendTelegramTyping,
   verifySetupNonce,
@@ -11,7 +12,8 @@ import {
   type TelegramUpdate,
   type TelegramMessage,
 } from "@/lib/consumer-telegram";
-import { bindTelegram, getBoundConsumer } from "@/lib/consumer-telegram-store";
+import { bindTelegram, getActiveAgent, getBoundConsumer, setActiveAgent } from "@/lib/consumer-telegram-store";
+import { getPersonalAgent, listPersonalAgents, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { newCorrelationId } from "@/lib/traceability";
 import { rateLimit } from "@/lib/security";
 
@@ -19,6 +21,37 @@ export const dynamic = "force-dynamic";
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const SECRET = process.env.TELEGRAM_BOT_SECRET;
+
+/** A Telegram slash-command is an agent id with hyphens → underscores (study-coach → study_coach). */
+const agentCommand = (id: string) => id.replace(/-/g, "_");
+
+async function runnableSpecialists() {
+  return (await listPersonalAgents()).filter(personalAgentRunnable);
+}
+
+async function agentDisplayName(id: string): Promise<string> {
+  if (id === DEFAULT_TELEGRAM_AGENT) return "Personal Assistant";
+  return (await getPersonalAgent(id))?.name ?? id;
+}
+
+/** The switch menu: the general assistant + every runnable specialist, marking the active one. */
+async function agentMenuText(activeId: string): Promise<string> {
+  const row = (id: string, name: string) =>
+    `${id === activeId ? "▶️ " : ""}<b>${escapeTelegramHtml(name)}</b> — /${agentCommand(id)}`;
+  const specialists = await runnableSpecialists();
+  const lines = [
+    row(DEFAULT_TELEGRAM_AGENT, "Personal Assistant (general)"),
+    ...specialists.map((a) => row(a.id, a.name)),
+  ];
+  return `🤖 <b>Your assistants</b> — tap one to switch:\n\n${lines.join("\n")}\n\nWe share the same memory across all of them.`;
+}
+
+/** Resolve a bare command (no leading slash) to an agent id, or null if it isn't one. */
+async function resolveAgentCommand(cmd: string): Promise<string | null> {
+  if (cmd === agentCommand(DEFAULT_TELEGRAM_AGENT)) return DEFAULT_TELEGRAM_AGENT;
+  const specialists = await runnableSpecialists();
+  return specialists.find((a) => agentCommand(a.id) === cmd)?.id ?? null;
+}
 
 /**
  * POST /api/consumer/telegram/webhook
@@ -103,11 +136,34 @@ export async function POST(req: Request) {
     return new NextResponse("OK");
   }
 
+  // Agent menu + switching (no metered turn). "/agents" lists the assistants; "/<agent>" switches.
+  if (text === "/agents" || text === "/menu" || text === "/help") {
+    const active = (await getActiveAgent(chatId)) ?? DEFAULT_TELEGRAM_AGENT;
+    await sendTelegramMessage(TOKEN, chatId, await agentMenuText(active));
+    return new NextResponse("OK");
+  }
+  if (text.startsWith("/")) {
+    const cmd = text.slice(1).split(/\s+/)[0].split("@")[0].toLowerCase();
+    const switched = await resolveAgentCommand(cmd);
+    if (switched) {
+      await setActiveAgent(chatId, switched);
+      await sendTelegramMessage(
+        TOKEN,
+        chatId,
+        `Now talking to <b>${escapeTelegramHtml(await agentDisplayName(switched))}</b>. Go ahead — what do you need?`,
+      );
+    } else {
+      await sendTelegramMessage(TOKEN, chatId, "Unknown command. Send /agents to see your assistants.");
+    }
+    return new NextResponse("OK");
+  }
+
   // A linked chat uses its web identity; an unlinked chat stays a standalone telegram:<id> identity.
+  // The active agent is per-chat (switched via /agents); default is the general personal-assistant.
   const bound = await getBoundConsumer(chatId);
   const consumerId = bound?.consumerId ?? consumerIdForTelegram(chatId);
   const tenantId = bound?.tenantId ?? DEFAULT_TELEGRAM_TENANT;
-  const agentId = DEFAULT_TELEGRAM_AGENT;
+  const agentId = (await getActiveAgent(chatId)) ?? DEFAULT_TELEGRAM_AGENT;
 
   const limited = await rateLimit(`consumer:tg:${chatId}:${agentId}`, {
     limit: 30,
@@ -140,7 +196,7 @@ export async function POST(req: Request) {
     walletId: consumerId,
     agentId,
     message: text,
-    sessionId: `tg:${chatId}`,
+    sessionId: `tg:${chatId}:${agentId}`,
     replyLanguage,
     correlationId,
     rateLimitOk: true,
