@@ -21,7 +21,40 @@ type ChatState = { tenantId?: string; consumerId?: string; agentId?: string };
 const g = globalThis as typeof globalThis & {
   __miaiTgState?: Map<string, ChatState>;
   __miaiTgStateHydrated?: boolean;
+  __miaiTgConsumedNonce?: Map<string, number>;
 };
+
+function nonceMem(): Map<string, number> {
+  return g.__miaiTgConsumedNonce ?? (g.__miaiTgConsumedNonce = new Map());
+}
+
+/**
+ * Record a setup nonce as consumed and report whether this is its FIRST use. Returns true on first
+ * use (proceed with the bind), false if it was already consumed (a replay — reject). Postgres-backed
+ * so it holds across replicas, with an in-process fallback for the file-store deployment.
+ *
+ * This is the single-use enforcement the signed, stateless `/start setup_<nonce>` deep link cannot
+ * provide on its own — closing the replay → Telegram account-takeover window.
+ */
+export async function consumeSetupNonce(nonceId: string, expiresAt: number): Promise<boolean> {
+  if (!nonceId) return false;
+  const now = Date.now();
+  if (getPool()) {
+    await ensureMigrations();
+    await query(`DELETE FROM miai_telegram_setup_nonce WHERE expires_at < $1`, [now]);
+    const res = await query<{ nonce_id: string }>(
+      `INSERT INTO miai_telegram_setup_nonce (nonce_id, expires_at) VALUES ($1, $2)
+       ON CONFLICT (nonce_id) DO NOTHING RETURNING nonce_id`,
+      [nonceId, expiresAt],
+    );
+    return res.rows.length > 0; // a returned row means we inserted → first use
+  }
+  const seen = nonceMem();
+  for (const [k, exp] of seen) if (exp < now) seen.delete(k);
+  if (seen.has(nonceId)) return false;
+  seen.set(nonceId, expiresAt);
+  return true;
+}
 
 function storePath(): string {
   return process.env.CONSUMER_TELEGRAM_STORE_PATH

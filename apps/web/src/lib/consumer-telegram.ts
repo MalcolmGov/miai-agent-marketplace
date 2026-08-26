@@ -26,7 +26,9 @@ export function consumerIdForTelegram(chatId: number | string): string {
 // ---- Setup nonce — secure deep-link binding (prevents account takeover) --------
 
 const SETUP_SECRET = process.env.TELEGRAM_BOT_SECRET;
-const SETUP_TTL_MS = 5 * 60 * 1000; // 5 minutes
+/** Setup-nonce validity window. Short on purpose — it caps the deep-link replay window; single-use
+ *  (see consumeSetupNonce in the store) is the real defence, this just narrows the exposure. */
+export const SETUP_TTL_MS = 2 * 60 * 1000; // 2 minutes (was 5)
 
 const g = globalThis as typeof globalThis & {
   __miaiTgSetupNonces?: Map<string, { consumerId: string; expiresAt: number }>;
@@ -68,23 +70,27 @@ export function mintSetupNonce(consumerId: string): string {
 }
 
 /**
- * Verify a setup nonce received as `/start setup_<token>` and return the
- * consumerId it was minted for, or null if invalid/expired.
+ * Verify a setup nonce received as `/start setup_<token>`. Returns the consumerId it was minted for
+ * and the nonce's unique id, or null if invalid/expired.
+ *
+ * IMPORTANT: the signed path is stateless (HMAC + TTL), so verification alone does NOT prevent
+ * replay within the TTL. The caller MUST enforce single-use via `consumeSetupNonce(nonceId)` before
+ * acting on the result — otherwise a leaked deep link binds an attacker's chat to the victim.
  */
-export function verifySetupNonce(token: string): string | null {
+export function verifySetupNonce(token: string): { consumerId: string; nonceId: string } | null {
   if (!SETUP_SECRET) {
-    // Server-stored fallback path
+    // Server-stored fallback path (in-process; single-use via delete-on-read).
     const store = getNonceStore();
     const entry = store.get(token);
     if (!entry || Date.now() > entry.expiresAt) {
       store.delete(token);
       return null;
     }
-    store.delete(token); // single-use
-    return entry.consumerId;
+    store.delete(token);
+    return { consumerId: entry.consumerId, nonceId: token };
   }
 
-  // Signed path: decode, verify HMAC, check expiry
+  // Signed path: decode, verify HMAC, check expiry. Single-use is enforced by the caller.
   const parts = token.split(".");
   if (parts.length !== 2) return null;
   try {
@@ -93,11 +99,12 @@ export function verifySetupNonce(token: string): string | null {
     const expected = createHmac("sha256", SETUP_SECRET).update(raw).digest("base64url");
     if (!timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
     const fields = raw.split(".");
+    const nonceId = fields[0];
     const consumerId = fields[1];
     const ts = fields[2];
-    if (!consumerId || !ts) return null;
+    if (!nonceId || !consumerId || !ts) return null;
     if (Date.now() - Number(ts) > SETUP_TTL_MS) return null;
-    return consumerId;
+    return { consumerId, nonceId };
   } catch {
     return null;
   }
