@@ -53,9 +53,6 @@ export default async function PersonalMarketplacePage() {
             Get started
             <span aria-hidden>→</span>
           </Link>
-          <Link href="/assistant" className="btn btn-ghost" data-testid="personal-just-chat">
-            Or just chat with the assistant
-          </Link>
         </div>
       </section>
 
