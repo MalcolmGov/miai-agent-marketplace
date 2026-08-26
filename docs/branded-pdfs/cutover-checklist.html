@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyInstantAI Agents — Production Cutover Checklist</title>
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      /* Scoped to this doc (shared.css untouched). Cards drop the negative-spread box-shadow that
+         some PDF viewers rasterize as grey blocks; spacing opened up; content paginated so nothing
+         is clipped by the fixed-height A4 page. */
+      .page.airy .card {
+        box-shadow: none;
+        border: 1px solid var(--line);
+        padding: 5mm 5.5mm;
+      }
+      .page.airy .content {
+        padding: 13mm 16mm 7mm;
+      }
+      .page.airy .hero + .content {
+        padding-top: 8mm;
+      }
+      .page.airy .footer {
+        margin-left: 16mm;
+        margin-right: 16mm;
+      }
+      .page.airy .section {
+        margin-bottom: 7mm;
+      }
+      .page.airy h2 {
+        font-size: 12.5px;
+        margin-bottom: 4.5mm;
+      }
+      .page.airy h3 {
+        font-size: 10.5px;
+        margin: 5mm 0 2mm;
+        color: var(--teal-deep);
+        letter-spacing: 0.01em;
+      }
+      .page.airy h3:first-child {
+        margin-top: 0;
+      }
+      .page.airy table {
+        margin-top: 1.5mm;
+      }
+      .page.airy th {
+        font-size: 8px;
+        padding: 2.4mm 2.6mm;
+      }
+      .page.airy td {
+        font-size: 9.2px;
+        line-height: 1.5;
+        padding: 2.8mm 2.6mm;
+      }
+      .page.airy .callout {
+        padding: 3.5mm 4mm;
+        line-height: 1.55;
+        margin-top: 2.5mm;
+      }
+      /* Block flow (NOT the shared flex) so an item with several inline elements — <strong>, <span
+         class="mono">, <em> — reads as one wrapping line instead of scattering into flex columns.
+         The checkbox is absolutely positioned at the left with a hanging indent. */
+      .page.airy .check li {
+        display: block;
+        position: relative;
+        padding-left: 5.5mm;
+        font-size: 9.6px;
+        line-height: 1.5;
+        margin-bottom: 2mm;
+      }
+      .page.airy .check .box {
+        position: absolute;
+        left: 0;
+        top: 1.4mm;
+        margin-top: 0;
+        border-color: var(--teal);
+      }
+      .page.airy .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3mm 7mm;
+        align-items: start;
+      }
+      .page.airy pre {
+        background: var(--navy);
+        color: #bfe9e0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        line-height: 1.55;
+        padding: 2.6mm 3mm;
+        border-radius: 6px;
+        margin: 1.5mm 0 2.5mm;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .page.airy .nogo {
+        color: #b4322a;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================ PAGE 1 ============================ -->
+    <section class="page airy">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Production cutover · Move Digital → MyInstantAI</p>
+        <h1>Production Cutover Checklist</h1>
+        <p class="lede">
+          The <strong style="color:#fff">go / no-go</strong> for the first real production-config boot —
+          the last hard blocker from the readiness audit (P0-5). Work top to bottom; do not open to
+          customers until every GO condition is green. Grounded in the code
+          (<span class="mono" style="color:#8fd8ce">security-flags.ts</span>,
+          <span class="mono" style="color:#8fd8ce">/api/health</span>,
+          <span class="mono" style="color:#8fd8ce">cutover-smoke.mjs</span>).
+        </p>
+        <div class="meta-row">
+          <span class="pill">Go / No-Go</span>
+          <span class="pill">Grounded in code</span>
+          <span class="pill muted">Blocker P0-5</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">01</span> The gate</h2>
+          <div class="callout">
+            The app <strong>fails closed at boot</strong> (<span class="mono">instrumentation.ts → assertBootHardening</span>)
+            when production hardening is wrong — a misconfigured deploy won't start, or
+            <span class="mono">/api/health</span> returns <strong>503 <span class="mono">hardening:fail</span></strong>.
+            This checklist confirms it booted <em>correctly</em>, not just that it booted.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">02</span> Environment — must SET</h2>
+          <div class="cols">
+            <div>
+              <h3>Core mode switches</h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">MIAI_AUTH_MODE=oidc</span></li>
+                <li><span class="box"></span> <span class="mono">MIAI_WALLET_MODE=http</span></li>
+                <li><span class="box"></span> <span class="mono">MIAI_MODEL_MODE=azure</span> <span style="color:var(--muted)">(or gateway)</span></li>
+                <li><span class="box"></span> <span class="mono">NODE_ENV=production</span></li>
+                <li><span class="box"></span> <span class="mono">APP_BASE_URL</span> / <span class="mono">NEXT_PUBLIC_APP_URL</span> = real public origin</li>
+              </ul>
+              <h3>Data</h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">DATABASE_URL</span> = Azure Postgres</li>
+                <li><span class="box"></span> <span class="mono">PG_SSL_REJECT_UNAUTHORIZED=true</span> (or unset — defaults to verify-TLS)</li>
+                <li><span class="box"></span> <span class="mono">UPSTASH_REDIS_REST_URL</span> + <span class="mono">_TOKEN</span> — required before &gt; 1 replica</li>
+              </ul>
+              <h3>Identity (OIDC)</h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">MIAI_OIDC_ISSUER · CLIENT_ID · CLIENT_SECRET</span></li>
+                <li><span class="box"></span> <span class="mono">MIAI_OIDC_AUDIENCE · JWKS_URL</span></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Model — Azure OpenAI</h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">AZURE_OPENAI_ENDPOINT · API_KEY · API_VERSION</span></li>
+                <li><span class="box"></span> <span class="mono">AZURE_OPENAI_DEPLOYMENT</span> + <span class="mono">_DEPLOYMENT_LARGE</span></li>
+                <li><span class="box"></span> <span style="color:var(--muted)">gateway path:</span> <span class="mono">MIAI_MODEL_GATEWAY_URL · KEY</span></li>
+              </ul>
+              <h3>Wallet — MyInstantAI gateway <span style="color:var(--muted);font-weight:400">(the P0-4 decision)</span></h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">MIAI_WALLET_API_URL · API_KEY</span></li>
+                <li><span class="box"></span> ⚠️ Confirm the gateway is <strong>live, durable &amp; idempotent</strong> — the outstanding MyInstantAI-side dependency</li>
+              </ul>
+              <h3>Secrets — strong (≥16, not a default), from Key Vault</h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">OAUTH_TOKEN_SECRET · OAUTH_STATE_SECRET · EMBED_KEY_SECRET</span></li>
+                <li><span class="box"></span> <span class="mono">MIAI_SESSION_SECRET · WEBHOOK_SINK_SECRET · CRON_SECRET</span> <span style="color:var(--muted)">(set-but-weak now fails boot)</span></li>
+              </ul>
+              <h3>Telemetry</h3>
+              <ul class="check">
+                <li><span class="box"></span> <span class="mono">APPLICATIONINSIGHTS_CONNECTION_STRING</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Production cutover · 1 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">03</span> Environment — must UNSET <span style="color:var(--muted);font-size:9px;font-weight:400">(these silently weaken prod)</span></h2>
+          <div class="card">
+            <ul class="check">
+              <li><span class="box"></span> <span class="mono">SANDBOX_MODE</span> — <strong>unset.</strong> If set alongside real rails, boot now <strong>refuses</strong> (PR #97). The #1 thing to verify.</li>
+              <li><span class="box"></span> <span class="mono">ALLOW_MOCK_RAILS</span> / <span class="mono">I_UNDERSTAND_MOCK_RAILS_IN_PROD</span> — unset (they force mock auth/wallet)</li>
+              <li><span class="box"></span> <span class="mono">ALLOW_SANDBOX_IN_PROD</span> / <span class="mono">I_UNDERSTAND_SANDBOX_IN_PROD</span> — unset</li>
+              <li><span class="box"></span> <span class="mono">ALLOW_EMBED_ORIGIN_STAR</span> / <span class="mono">I_UNDERSTAND_EMBED_ORIGIN_STAR</span> — unset</li>
+              <li><span class="box"></span> <span class="mono">ALLOW_FILE_FALLBACK_IN_PROD</span> / <span class="mono">I_UNDERSTAND_FILE_FALLBACK_IN_PROD</span> — unset</li>
+              <li><span class="box"></span> <span class="mono">PG_SSL_REJECT_UNAUTHORIZED</span> <strong>not</strong> <span class="mono">0</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">04</span> <span class="mono" style="font-size:11px">GET /api/health</span> — the go / no-go table</h2>
+          <p style="color:var(--muted);font-size:9px;margin:0 0 2mm">
+            <span class="mono">curl -s https://&lt;fqdn&gt;/api/health | jq</span> — GO requires HTTP <strong>200</strong> and <span class="mono">status:"ok"</span>.
+          </p>
+          <table>
+            <thead>
+              <tr><th style="width:26%">Field</th><th style="width:26%">Required prod value</th><th>Why it matters</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">status</td><td class="mono">ok (200)</td><td><span class="mono">degraded</span> = incomplete config / Redis down; <span class="mono">failing</span> (503) = hardening failed</td></tr>
+              <tr><td class="mono">hardening</td><td class="mono">ok</td><td><span class="mono">fail</span> ⇒ 503; the boot gate rejected the config</td></tr>
+              <tr><td class="mono">mockRailsAllowed</td><td class="mono nogo">false</td><td><span class="nogo">NO-GO if true</span> — mock auth/wallet or a leaked SANDBOX flag</td></tr>
+              <tr><td class="mono">sandboxMode</td><td class="mono nogo">false</td><td><span class="nogo">NO-GO if true</span> — <span class="mono">SANDBOX_MODE=1</span> on prod (surfaced by #97)</td></tr>
+              <tr><td class="mono">nodeEnv</td><td class="mono nogo">production</td><td><span class="nogo">NO-GO otherwise</span> — anything else disables hardening</td></tr>
+              <tr><td class="mono">authMode</td><td class="mono">oidc</td><td>real per-user identity</td></tr>
+              <tr><td class="mono">walletMode</td><td class="mono">http</td><td>real billing gateway</td></tr>
+              <tr><td class="mono">modelMode</td><td class="mono">azure / gateway</td><td>real model</td></tr>
+              <tr><td class="mono">database</td><td class="mono">configured</td><td>Postgres wired, not the file fallback</td></tr>
+              <tr><td class="mono">storeBackend</td><td class="mono">postgres</td><td>the store is actually Postgres</td></tr>
+              <tr><td class="mono">storePing / store</td><td class="mono">ok / hydrated</td><td>DB reachable + migrations applied</td></tr>
+              <tr><td class="mono">oidcIssuer / walletUrl / modelUrl</td><td class="mono">set</td><td>⚠️ <strong>presence only, not reachability</strong> — §06 proves reachability</td></tr>
+              <tr><td class="mono">redisConfigured / redisPing</td><td class="mono">true / ok</td><td>required before &gt; 1 replica</td></tr>
+              <tr><td class="mono">config</td><td class="mono">absent</td><td><span class="mono">incomplete</span> ⇒ a required partner URL is missing</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Production cutover · 2 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">05</span> Cutover smoke — <span class="mono" style="font-size:11px">pnpm smoke:cutover</span></h2>
+          <h3 style="margin-top:0">Anonymous pass (health + catalog + embed-401)</h3>
+          <pre>BASE=https://&lt;fqdn&gt; pnpm smoke:cutover</pre>
+          <ul class="check">
+            <li><span class="box"></span> All checks <span class="rec">✓</span>; the logged line reads <span class="mono">auth=oidc wallet=http model=azure store=postgres/ok</span></li>
+          </ul>
+          <h3>Authenticated pass — after a real OIDC login, with the Bearer token</h3>
+          <pre>BASE=https://&lt;fqdn&gt; TOKEN=&lt;real-oidc-jwt&gt; pnpm smoke:cutover</pre>
+          <ul class="check">
+            <li><span class="box"></span> <span class="mono">wallet</span>, <span class="mono">rent &lt;agent&gt;</span>, <span class="mono">agent &lt;id&gt;</span> all ✓ — the OIDC → wallet → rent → agent path end-to-end</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">06</span> Live end-to-end proof <span style="color:var(--muted);font-size:9px;font-weight:400">(what /api/health can't confirm)</span></h2>
+          <div class="card">
+            <ul class="check">
+              <li><span class="box"></span> <strong>Real OIDC login</strong> in a browser → authenticated (not the mock/demo identity)</li>
+              <li><span class="box"></span> <strong>One real chat turn</strong> returns a genuine model answer, <strong>not</strong> a deterministic mock line. Guards the known gap: the rails check verifies <span class="mono">MIAI_MODEL_MODE≠mock</span> but not that the key is present — a missing/rotated key silently falls back to mock</li>
+              <li><span class="box"></span> <strong>One live connector action</strong> (real Slack post / calendar booking on a <em>connected</em> connector) succeeds — and an <em>unconnected</em> one returns the honest "couldn't complete" (PR #99), never a fake confirmation</li>
+              <li><span class="box"></span> <strong>One real wallet debit</strong> reflected in the MyInstantAI gateway ledger (billing is durable, not the mock wallet)</li>
+            </ul>
+          </div>
+          <h3>Optional — costs model tokens</h3>
+          <pre>BASE=https://&lt;fqdn&gt; pnpm smoke:live-llm          # single live-LLM smoke
+BASE=https://&lt;fqdn&gt; pnpm smoke:live-llm:matrix   # broader matrix</pre>
+          <ul class="check">
+            <li><span class="box"></span> Live-LLM smoke passes — also the start of closing the still-open live-model eval gap</li>
+          </ul>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Production cutover · 3 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 4 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">07</span> Known gaps to handle during cutover</h2>
+          <div class="card">
+            <ul class="check">
+              <li><span class="box"></span> <strong>Migrations run on first request, not at boot</strong> (<span class="mono">ensureMigrations</span> fires on first Postgres access; the first <span class="mono">/api/health</span> triggers it). A failure shows as degraded health / 500, not a failed deploy — hit <span class="mono">/api/health</span> and confirm <span class="mono">store:hydrated</span> before traffic. See <span class="mono">MIGRATION_RUNBOOK.md</span>.</li>
+              <li><span class="box"></span> <strong>Bicep hard-wires <span class="mono">MIAI_MODEL_MODE=gateway</span></strong> — for the azure model path, edit <span class="mono">infra/azure/main.bicep</span> to add the <span class="mono">AZURE_OPENAI_*</span> env + toggle first.</li>
+              <li><span class="box"></span> <strong>No gated/audited prod release yet</strong> — put the <span class="mono">az deployment</span> behind a reviewer-gated GitHub Environment on a pinned image SHA, and <strong>verify a rollback</strong> (redeploy the previous GHCR tag) before real traffic.</li>
+              <li><span class="box"></span> <strong>Redis before scale</strong> — the Bicep caps <span class="mono">maxReplicas</span> at 1; provision Upstash/Azure Cache + set <span class="mono">UPSTASH_*</span> before raising it, or rate limits/sessions aren't shared.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">08</span> Go / No-Go summary</h2>
+          <div class="grid-2">
+            <div class="card">
+              <div class="stat"><div class="label">GO — only when</div></div>
+              <p style="margin:2mm 0 0;font-size:9.4px;line-height:1.6;color:var(--ink)">
+                §02 set · §03 unset · §04 every row green (<span class="mono">mockRailsAllowed:false</span>,
+                <span class="mono">sandboxMode:false</span>, <span class="mono">hardening:ok</span>,
+                <span class="mono">storeBackend:postgres</span>) · §05 both smoke passes · §06 real login +
+                real chat + live connector + real debit all proven.
+              </p>
+            </div>
+            <div class="card">
+              <div class="stat"><div class="label" style="color:#b4322a">Immediate NO-GO</div></div>
+              <ul class="check" style="margin-top:2mm">
+                <li><span class="box" style="border-color:#b4322a"></span> <span class="mono">mockRailsAllowed:true</span></li>
+                <li><span class="box" style="border-color:#b4322a"></span> <span class="mono">sandboxMode:true</span></li>
+                <li><span class="box" style="border-color:#b4322a"></span> <span class="mono">nodeEnv≠production</span> · <span class="mono">hardening:fail</span></li>
+                <li><span class="box" style="border-color:#b4322a"></span> a chat turn that returns a canned/mock answer</li>
+                <li><span class="box" style="border-color:#b4322a"></span> the MyInstantAI wallet gateway not yet durable</li>
+              </ul>
+            </div>
+          </div>
+          <p style="text-align:center;color:var(--muted);font-size:9px;margin-top:3mm">
+            Companion docs: <span class="mono">AZURE_DEPLOYMENT.md</span> · <span class="mono">MIGRATION_RUNBOOK.md</span> · <span class="mono">RAILWAY_DEPLOY.md</span>
+          </p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Production cutover · 4 / 4</span>
+      </footer>
+    </section>
+  </body>
+</html>
