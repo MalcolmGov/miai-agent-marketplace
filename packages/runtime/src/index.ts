@@ -2141,6 +2141,37 @@ function bindingFor(tool: string, bindings: ToolBinding[]): ToolBinding {
   );
 }
 
+/** A requested reply language that is (some form of) English. */
+export function isEnglishLang(lang?: string): boolean {
+  if (!lang) return false;
+  return /^(en|eng|english|anglais|ingl[eé]s)\b/i.test(lang.trim());
+}
+
+/**
+ * Heuristic: does this text look like it is NOT English? Accented Latin letters, inverted
+ * punctuation, or common non-English function words (es/fr/pt/de/it). Deliberately conservative:
+ * a false positive only triggers a redundant model call (which still replies in the user's
+ * language), and a false negative simply falls back to prior behaviour.
+ */
+export function looksNonEnglish(text: string): boolean {
+  if (/[àâäáãçéèêëíîïñóòôöõúùûüÿœæ¿¡]/i.test(text)) return true;
+  return /\b(qu[eé]|c[oó]mo|cu[aá]ndo|d[oó]nde|cu[aá]nto|gracias|usted|nuestro|tienen|comment|pourquoi|quand|combien|merci|votre|proposez|obrigado|voc[eê]|bitte|danke|k[oö]nnen|perch[eé]|quando|grazie)\b/i.test(
+    text,
+  );
+}
+
+/**
+ * Should a deterministic (English) grounded-workflow answer be re-voiced in the user's language?
+ * Triggers on an explicit non-English replyLanguage, otherwise when the user's message looks
+ * non-English. We deliberately do NOT inspect the answer: grounded workflows return English KB
+ * (the whole reason this exists), and the re-voice call keys off the real user message, so a
+ * misclassified English turn still comes back in English — the only cost is a redundant call.
+ */
+export function shouldLocalizeReply(replyLanguage: string | undefined, userMessage: string): boolean {
+  if (replyLanguage) return !isEnglishLang(replyLanguage);
+  return looksNonEnglish(userMessage);
+}
+
 export async function runTurn(
   req: TurnRequest,
   deps?: {
@@ -2292,10 +2323,47 @@ export async function runTurn(
           reason: "agent_turn",
           agentId: req.agentId,
         });
-    const assistantMessage = scrubLeakedPlaceholders(
+    let assistantMessage = scrubLeakedPlaceholders(
       handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
       templateVars,
     );
+    // Grounded workflows above answer deterministically from the (English) knowledge base and
+    // never call the model — so a non-English user can receive the raw English KB verbatim
+    // (e.g. hotel amenity queries in French). When a real model is configured and the user is
+    // not writing English, re-voice that grounded answer in the user's language with the facts
+    // preserved, instead of dumping the English source. English turns keep the zero-cost path.
+    if (
+      assistantMessage &&
+      !(model instanceof MockModelAdapter) &&
+      shouldLocalizeReply(req.replyLanguage, req.userMessage)
+    ) {
+      try {
+        const localized = await model.complete({
+          system:
+            "You are the assistant replying to the user. Rewrite the reference answer as your reply, written in the SAME language the user wrote in" +
+            (req.replyLanguage ? ` (the user's language is ${req.replyLanguage})` : "") +
+            ". Preserve every fact, number, name, date, time and price exactly as given. Do not add, remove, or invent information. Write natural prose — do not copy markdown section headings verbatim. Output only the reply.",
+          messages: [
+            {
+              role: "user",
+              content: `User message:\n${req.userMessage}\n\nReference answer (may be in English):\n${assistantMessage}`,
+            },
+          ],
+          tools: [],
+          model: req.model,
+          temperature: 0,
+          maxOutputTokens: req.pkg.manifest.model?.max_output_tokens ?? 700,
+        });
+        const out = (localized.content || "").trim();
+        if (out) assistantMessage = out;
+      } catch (err) {
+        // Best-effort: on any model error keep the grounded answer rather than failing the turn.
+        console.warn(
+          "[runtime] grounded-reply localization skipped:",
+          err instanceof Error ? err.message : err,
+        );
+      }
+    }
     if (onDelta && assistantMessage) {
       const parts = assistantMessage.split(/(\s+)/).filter(Boolean);
       let buf = "";
