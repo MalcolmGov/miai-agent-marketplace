@@ -1,0 +1,253 @@
+/* Move Digital brand system for the platform documents — matched to the
+ * Move Digital × Blu Label proposal deck: dark rounded logo tile, navy cover,
+ * royal-blue + green accents, blue letter-spaced eyebrows, tinted rounded cards,
+ * gradient-dot footer, "Move" (ink) / "Digital" (blue) wordmark.
+ * A flowing, auto-paginated portrait document (running header/footer via
+ * table thead/tfoot; full-bleed navy cover on page 1). */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  --ink: #0f1724;         /* headings / near-black */
+  --body: #46556a;        /* body text */
+  --muted: #64748b;       /* secondary */
+  --faint: #8a99ad;       /* captions, footer */
+  --line: #e2e8f2;
+  --line-soft: #eef2f8;
+  --paper: #ffffff;
+  --blue: #2563eb;        /* royal blue accent */
+  --blue-bright: #3b82f6;
+  --blue-deep: #1d4ed8;
+  --green: #16a34a;       /* secondary highlight */
+  --green-deep: #15803d;
+  --navy: #0d1b2e;        /* cover ground */
+  --navy-2: #0a1728;
+  --tile: #0e1420;        /* dark logo tile */
+  --wash-blue: #eef3fc;
+  --wash-green: #eefaf0;
+  --wash-purple: #f5eefb;
+  --wash-gray: #f5f7fb;
+}
+
+* { box-sizing: border-box; }
+
+@page { size: A4; margin: 15mm 16mm 16mm; }
+@page :first { margin: 0; }   /* full-bleed navy cover */
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  margin: 0; padding: 0;
+  background: var(--paper);
+  color: var(--body);
+  font-family: Manrope, "Segoe UI", sans-serif;
+  font-size: 9.7pt;
+  line-height: 1.55;
+}
+
+/* ---- Logo tile (the signature mark treatment) ------------------------------ */
+.logo-tile {
+  display: inline-grid; place-items: center;
+  background: var(--tile);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px -10px rgba(6, 12, 24, 0.55);
+}
+.logo-tile img { display: block; }
+
+/* ---- Running header / footer (repeat every page via table head/foot) ------- */
+table.frame { width: 100%; border-collapse: collapse; }
+table.frame > thead { display: table-header-group; }
+table.frame > tfoot { display: table-footer-group; }
+table.frame > thead > tr > td,
+table.frame > tfoot > tr > td,
+table.frame > tbody > tr > td { padding: 0; border: 0; vertical-align: top; }
+
+.running-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 3mm; margin-bottom: 6mm;
+  border-bottom: 1px solid var(--line-soft);
+}
+.rh-brand { display: flex; align-items: center; gap: 8px; }
+.rh-brand .logo-tile { width: 26px; height: 26px; border-radius: 8px; }
+.rh-brand .logo-tile img { width: 19px; height: 19px; }
+.rh-brand .wm { font-size: 12.5px; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
+.rh-brand .wm b { color: var(--blue); font-weight: 800; }
+.running-header .rh-r { font-size: 9px; font-weight: 600; letter-spacing: 0.02em; color: var(--faint); }
+
+.running-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 3mm; margin-top: 6mm;
+  border-top: 1px solid var(--line-soft);
+  font-size: 8pt; color: var(--faint);
+}
+.running-footer .rf-l { display: flex; align-items: center; gap: 7px; }
+.running-footer .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: linear-gradient(135deg, #2ee6c0, #3b82f6 45%, #8b5cf6 72%, #ec4899);
+}
+.running-footer .rf-r {
+  font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-size: 7pt;
+  color: var(--blue-deep); background: var(--wash-blue);
+  border-radius: 999px; padding: 2.5px 9px;
+}
+
+/* ---- Cover (full-bleed navy, matched to the deck cover) -------------------- */
+.cover {
+  break-after: page;
+  position: relative;
+  width: 210mm; min-height: 297mm;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(59, 130, 246, 0.14), transparent 55%),
+    radial-gradient(90% 80% at 100% 100%, rgba(139, 92, 246, 0.10), transparent 55%),
+    linear-gradient(155deg, var(--navy-2) 0%, var(--navy) 55%, #10233f 100%);
+  color: #e8eef9;
+  padding: 20mm 22mm 15mm;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.cover-lockup { display: flex; align-items: center; gap: 13px; }
+.cover-lockup .logo-tile { width: 56px; height: 56px; border-radius: 15px; }
+.cover-lockup .logo-tile img { width: 43px; height: 43px; }
+.cover-lockup .wm { font-size: 23px; font-weight: 800; letter-spacing: -0.02em; color: #ffffff; }
+.cover-lockup .co {
+  margin-left: 4px; padding-left: 16px; border-left: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9db4d6;
+}
+
+.cover-main { margin-top: 24mm; }   /* deliberate gap below the logo, headline in the upper-middle */
+.cover-pill {
+  display: inline-block;
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #a9c2ea; border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04); border-radius: 999px; padding: 6px 15px;
+}
+.cover h1 {
+  margin: 9mm 0 0; font-size: 40px; font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1.06; color: #ffffff; max-width: 168mm;
+}
+.cover h1 .hl { color: var(--blue-bright); }
+.cover-rule { width: 62px; height: 5px; border-radius: 3px; background: var(--blue-bright); margin: 7mm 0 0; }
+.cover-lede {
+  margin: 7mm 0 0; max-width: 158mm; color: #a9b8ce; font-size: 11.5px; line-height: 1.6;
+}
+
+.cover-panel {
+  margin-top: auto;   /* anchor the meta card + sign-off to the lower area */
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 6mm 7mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4.5mm 10mm;
+}
+.cover-panel .m { font-size: 9.2px; color: #b4c2d6; line-height: 1.55; }
+.cover-panel .m .k {
+  display: block; font-size: 7.6px; font-weight: 800; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #7fb0ff; margin-bottom: 1.5mm;
+}
+.cover-panel .m strong { color: #eef3fb; font-weight: 700; }
+.cover-panel .m code {
+  color: #cde0ff; background: rgba(255,255,255,0.06); border: 0; border-radius: 4px; padding: 0.5px 4px;
+  font-family: "JetBrains Mono", monospace; font-size: 8.2pt;
+}
+
+.cover-foot {
+  margin-top: 9mm; padding-top: 5mm; border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex; justify-content: space-between; align-items: center; gap: 8mm;
+}
+.cover-foot .prepared { font-size: 9px; color: #9fb0c8; line-height: 1.6; display: flex; align-items: center; gap: 8px; }
+.cover-foot .prepared .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: linear-gradient(135deg, #2ee6c0, #3b82f6 45%, #8b5cf6 72%, #ec4899);
+}
+.cover-foot .prepared strong { color: #eef3fb; font-weight: 700; }
+.cover-confidential {
+  font-size: 8px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #cfe0ff; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 999px; padding: 5px 13px;
+}
+
+/* ---- Body typography ------------------------------------------------------- */
+main { display: block; }
+
+h2 {
+  font-size: 17px; font-weight: 800; letter-spacing: -0.025em;
+  color: var(--ink); margin: 0 0 4mm; padding-bottom: 2.5mm;
+  border-bottom: 2px solid var(--blue);
+  display: flex; align-items: center; gap: 10px;
+  break-before: page; break-after: avoid;
+}
+h2:first-of-type { break-before: avoid; }
+h2 .n {
+  display: inline-grid; place-items: center;
+  min-width: 24px; height: 24px; border-radius: 8px;
+  background: var(--blue); color: #fff;
+  font-size: 10.5px; font-weight: 800; font-family: "JetBrains Mono", monospace;
+}
+h3 { font-size: 12px; font-weight: 800; color: var(--blue-deep); margin: 6mm 0 2mm; break-after: avoid; }
+h4 {
+  font-size: 9.5px; font-weight: 800; color: var(--green-deep);
+  margin: 4mm 0 1.5mm; break-after: avoid; text-transform: uppercase; letter-spacing: 0.06em;
+}
+p { margin: 0 0 2.8mm; color: var(--body); }
+a { color: var(--blue-deep); text-decoration: none; border-bottom: 0.5pt solid rgba(29, 78, 216, 0.28); }
+strong { color: var(--ink); font-weight: 700; }
+em { font-style: italic; }
+hr { border: 0; border-top: 1px solid var(--line-soft); margin: 6mm 0; }
+
+ul, ol { margin: 0 0 3mm; padding-left: 5.5mm; }
+li { margin: 0 0 1.6mm; color: var(--body); }
+li::marker { color: var(--blue); font-weight: 700; }
+ul ul, ol ol, ul ol, ol ul { margin: 1.2mm 0; }
+
+/* Inline + block code */
+code {
+  font-family: "JetBrains Mono", monospace; font-size: 8.4pt;
+  color: var(--blue-deep); background: var(--wash-blue);
+  border: 1px solid #dbe6fb; border-radius: 5px; padding: 0.5px 4px; word-break: break-word;
+}
+pre.code {
+  background: var(--wash-gray); color: var(--ink);
+  border: 1px solid var(--line); border-left: 3px solid var(--blue);
+  border-radius: 10px; padding: 3.5mm 4mm; margin: 0 0 3.5mm;
+  overflow-x: auto; break-inside: avoid;
+}
+pre.code code {
+  font-family: "JetBrains Mono", monospace; font-size: 8.1pt; line-height: 1.55;
+  color: #14233a; background: none; border: 0; padding: 0; white-space: pre-wrap; word-break: break-word;
+}
+.diagram-note {
+  font-size: 8px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--faint); margin: 0 0 1.5mm;
+}
+
+/* Architecture / solution diagrams (inline SVG) */
+svg.arch { width: 100%; height: auto; display: block; margin: 4mm 0 2mm; break-inside: avoid; }
+.fig-caption { font-size: 8pt; color: var(--faint); text-align: center; margin: 0 0 5mm; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 8.7pt; margin: 0 0 4mm; break-inside: auto; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th, td { border-bottom: 1px solid var(--line); padding: 2mm 2.2mm; text-align: left; vertical-align: top; }
+th {
+  font-size: 7.5pt; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--blue-deep); font-weight: 800; border-bottom: 1.5px solid var(--blue); background: var(--wash-blue);
+}
+td code { font-size: 7.9pt; }
+td strong { color: var(--ink); }
+tbody tr:nth-child(even) { background: var(--wash-gray); }
+
+/* Blockquote → tinted rounded card (the deck's card look) */
+blockquote {
+  margin: 0 0 4mm; border: 1px solid #dbe6fb; border-left: 4px solid var(--blue);
+  background: var(--wash-blue); padding: 3.5mm 4.5mm; border-radius: 12px;
+  color: var(--ink); font-size: 9.3pt; line-height: 1.55;
+}
+blockquote p:last-child { margin-bottom: 0; }
+
+/* Contents block */
+.toc-block ul { list-style: none; padding-left: 0; columns: 2; column-gap: 10mm; }
+.toc-block li { margin-bottom: 1.6mm; font-size: 9pt; break-inside: avoid; }
+.toc-block a { border: 0; color: var(--body); }
+.toc-block a::before { content: "▸  "; color: var(--blue); font-weight: 800; }
+
+/* Keep intros with their heading */
+h2 + p, h2 + table, h2 + blockquote, h3 + p, h3 + ul, h3 + table { break-before: avoid; }
