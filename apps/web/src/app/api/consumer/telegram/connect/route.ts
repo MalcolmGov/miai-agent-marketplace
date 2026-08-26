@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireConsumer } from "@/lib/consumer-auth";
 import { mintSetupNonce } from "@/lib/consumer-telegram";
+import { isConsumerLinked } from "@/lib/consumer-telegram-store";
 
 export const dynamic = "force-dynamic";
 
@@ -12,15 +13,23 @@ const enabled = () => BOT_CONFIGURED && Boolean(BOT_USERNAME);
 /**
  * Consumer Telegram connect.
  *
- * GET  → availability only: `{ enabled, botUsername }`. Public (no secrets); the UI
- *        uses it to decide whether to show the "Connect Telegram" control.
+ * GET  → availability + this consumer's link status: `{ enabled, botUsername, connected }`.
+ *        No secrets; the UI uses it to show "Connect Telegram" vs a "Connected · Disconnect"
+ *        state. `connected` is best-effort (false when no consumer can be resolved).
  * POST → mint a short-TTL, single-use setup nonce for the signed-in consumer and return
  *        the deep link `https://t.me/<bot>?start=setup_<nonce>`. Opening it binds that
  *        Telegram chat to this consumer, so Telegram shares the web memory / wallet.
  *        The nonce carries `<tenant>::<consumer>` so the webhook binds the exact identity.
  */
-export async function GET() {
-  return NextResponse.json({ enabled: enabled(), botUsername: BOT_USERNAME ?? null });
+export async function GET(req: Request) {
+  let connected = false;
+  if (enabled()) {
+    const resolved = await requireConsumer(req);
+    if (!(resolved instanceof Response)) {
+      connected = await isConsumerLinked(resolved.auth.workspaceId, resolved.consumerId);
+    }
+  }
+  return NextResponse.json({ enabled: enabled(), botUsername: BOT_USERNAME ?? null, connected });
 }
 
 export async function POST(req: Request) {

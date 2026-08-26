@@ -13,7 +13,6 @@ import {
   STARTER_PROMPTS,
 } from "@/lib/assistant-capabilities";
 import {
-  BRANDS,
   DEFAULT_BRAND_ID,
   brandThemeVars,
   getBrand,
@@ -50,7 +49,6 @@ function formatWhen(iso: string): { label: string; due: boolean } {
 
 const ONBOARDED_KEY = "miai:me:onboarded:v1";
 const BRIEF_OFFERED_KEY = "miai:me:briefOffered:v1";
-const BRAND_KEY = "miai:me:brand:v1";
 /** Below this, nudge the user that their prepaid balance is running low. */
 const LOW_BALANCE = 500;
 
@@ -60,13 +58,18 @@ function greetingFor(brand: Brand): string {
 }
 
 function AssistantHome() {
-  const [brandId, setBrandId] = useState<string>(DEFAULT_BRAND_ID);
+  // Single tenant: MyInstantAI. (The white-label brand switcher was removed; a real deployment
+  // fixes the brand by tenant. Every consumer call is still scoped to this workspace id.)
+  const brandId = DEFAULT_BRAND_ID;
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
   const [reminders, setReminders] = useState<ReminderItem[]>([]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [briefOffer, setBriefOffer] = useState<BriefOffer>("hidden");
-  const [telegram, setTelegram] = useState<{ enabled: boolean; botUsername?: string | null }>({ enabled: false });
+  const [telegram, setTelegram] = useState<{ enabled: boolean; botUsername?: string | null; connected: boolean }>({
+    enabled: false,
+    connected: false,
+  });
   const [tgBusy, setTgBusy] = useState(false);
   const briefOfferedRef = useRef(false);
 
@@ -79,7 +82,7 @@ function AssistantHome() {
     onSettled: () => loadReminders(),
     onReplied: () => maybeOfferBrief(),
   });
-  const { balance, submit, setMessages, resetConversation, loadWallet } = chat;
+  const { balance, submit, loadWallet } = chat;
 
   const brand = getBrand(brandId);
   const connectedSet = new Set(connectors.filter((c) => c.connected).map((c) => c.connector));
@@ -116,21 +119,15 @@ function AssistantHome() {
     loadReminders();
   }
 
-  // Mount: restore the previewed brand + the one-time onboarding gates (client-only).
+  // Mount: restore the one-time onboarding gates (client-only).
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(BRAND_KEY);
-      if (stored && stored !== DEFAULT_BRAND_ID && getBrand(stored).id === stored) {
-        setBrandId(stored);
-        setMessages([{ id: "greet", role: "assistant", text: greetingFor(getBrand(stored)) }]);
-      }
       if (!localStorage.getItem(ONBOARDED_KEY)) setShowWelcome(true);
       if (localStorage.getItem(BRIEF_OFFERED_KEY)) briefOfferedRef.current = true;
     } catch {
       /* private mode / storage disabled — just skip the one-time gates */
     }
-    // setMessages is a stable state setter, so this still runs only once on mount.
-  }, [setMessages]);
+  }, []);
 
   // Reload the per-brand context whenever the brand changes.
   useEffect(() => {
@@ -139,21 +136,37 @@ function AssistantHome() {
     loadReminders();
   }, [loadWallet, loadConnectors, loadReminders]);
 
-  // Telegram channel availability (server env-gated) — checked once on mount.
-  useEffect(() => {
-    fetch("/api/consumer/telegram/connect")
+  // Telegram channel availability + this consumer's link status (server env-gated).
+  const refreshTelegram = useCallback(() => {
+    fetch(`/api/consumer/telegram/connect${ws}`)
       .then((r) => r.json())
-      .then((d) => setTelegram({ enabled: Boolean(d?.enabled), botUsername: d?.botUsername ?? null }))
+      .then((d) =>
+        setTelegram({
+          enabled: Boolean(d?.enabled),
+          botUsername: d?.botUsername ?? null,
+          connected: Boolean(d?.connected),
+        }),
+      )
       .catch(() => {});
-  }, []);
+  }, [ws]);
 
-  /** Link this consumer to Telegram: mint a setup deep-link and open it. */
+  useEffect(() => {
+    refreshTelegram();
+  }, [refreshTelegram]);
+
+  /** Link this consumer to Telegram: mint a setup deep-link and open it, then poll for ~30s so the
+   *  control flips to "Connected" once they press Start in Telegram. */
   async function connectTelegram() {
     setTgBusy(true);
     try {
       const r = await fetch(`/api/consumer/telegram/connect${ws}`, { method: "POST" });
       const d = await r.json();
       if (d?.url) window.open(d.url, "_blank", "noopener,noreferrer");
+      let tries = 0;
+      const iv = setInterval(() => {
+        if (++tries > 10) return clearInterval(iv);
+        refreshTelegram();
+      }, 3000);
     } catch {
       /* ignore — the user can retry */
     } finally {
@@ -161,17 +174,17 @@ function AssistantHome() {
     }
   }
 
-  /** Switch the previewed brand: re-skin, and reset to a clean per-brand conversation + context. */
-  function selectBrand(id: string) {
-    if (id === brandId) return;
-    setBrandId(id);
+  /** Disconnect Telegram: unlink every chat bound to this consumer (they revert to standalone). */
+  async function disconnectTelegram() {
+    setTgBusy(true);
     try {
-      localStorage.setItem(BRAND_KEY, id);
+      await fetch(`/api/consumer/telegram/disconnect${ws}`, { method: "POST" });
+      setTelegram((t) => ({ ...t, connected: false }));
     } catch {
-      /* ignore */
+      /* ignore — the user can retry */
+    } finally {
+      setTgBusy(false);
     }
-    resetConversation(greetingFor(getBrand(id)));
-    setBriefOffer("hidden");
   }
 
   function dismissWelcome() {
@@ -255,35 +268,6 @@ function AssistantHome() {
         </div>
       </header>
 
-      {/* White-label preview: switch the brand this assistant is skinned for (demo affordance —
-          a real carrier deployment fixes the brand by tenant). Each brand has its own memory. */}
-      <div className="flex flex-wrap items-center gap-2 text-xs">
-        <span className="text-[var(--muted)]">Preview brand:</span>
-        {BRANDS.map((b) => {
-          const active = b.id === brandId;
-          return (
-            <button
-              key={b.id}
-              type="button"
-              onClick={() => selectBrand(b.id)}
-              aria-pressed={active}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-medium transition ${
-                active
-                  ? "border-[color-mix(in_srgb,var(--accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] text-[var(--text)]"
-                  : "border-[var(--line)] text-[var(--muted)] hover:text-[var(--text)]"
-              }`}
-            >
-              <span
-                aria-hidden
-                className="inline-block h-2 w-2 rounded-full"
-                style={{ background: b.accent }}
-              />
-              {b.name}
-            </button>
-          );
-        })}
-      </div>
-
       {balance !== null && balance < LOW_BALANCE ? (
         <p className="-mt-1 text-xs text-[var(--warn)]">
           Your balance is running low — top up to keep your assistant available.
@@ -314,17 +298,35 @@ function AssistantHome() {
       {telegram.enabled ? (
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <span className="text-[var(--muted)]">Channels:</span>
-          <button
-            type="button"
-            onClick={connectTelegram}
-            disabled={tgBusy}
-            className="chip inline-flex items-center gap-1.5 transition hover:text-[var(--text)] disabled:opacity-60"
-          >
-            <span aria-hidden>✈️</span> {tgBusy ? "Opening Telegram…" : "Connect Telegram"}
-          </button>
-          <span className="text-[var(--muted)]">
-            — chat on Telegram; it shares this assistant&apos;s memory.
-          </span>
+          {telegram.connected ? (
+            <>
+              <span className="chip chip-live inline-flex items-center gap-1.5">
+                <span aria-hidden>✈️</span> Telegram connected ✓
+              </span>
+              <button
+                type="button"
+                onClick={disconnectTelegram}
+                disabled={tgBusy}
+                className="text-[var(--muted)] underline decoration-1 underline-offset-2 transition hover:text-[var(--text)] disabled:opacity-60"
+              >
+                {tgBusy ? "…" : "Disconnect"}
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={connectTelegram}
+                disabled={tgBusy}
+                className="chip inline-flex items-center gap-1.5 transition hover:text-[var(--text)] disabled:opacity-60"
+              >
+                <span aria-hidden>✈️</span> {tgBusy ? "Opening Telegram…" : "Connect Telegram"}
+              </button>
+              <span className="text-[var(--muted)]">
+                — chat on Telegram; it shares your assistant&apos;s memory.
+              </span>
+            </>
+          )}
         </div>
       ) : null}
 
