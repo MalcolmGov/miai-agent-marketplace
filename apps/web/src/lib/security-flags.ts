@@ -71,6 +71,17 @@ export function checkProductionSecrets(): HardeningCheck {
   if (isWeakSecret(embed)) {
     errors.push("EMBED_KEY_SECRET missing or weak (or set a strong OAUTH_TOKEN_SECRET)");
   }
+
+  // These have safe behaviour when UNSET (MIAI_SESSION_SECRET falls back to OAUTH_TOKEN_SECRET; the
+  // sink/cron routes fail closed with 503/401), so they are not required. But a SET-but-weak value
+  // would boot "green" while being under-protected — flag that so it fails closed at boot, not at
+  // the first request.
+  for (const name of ["MIAI_SESSION_SECRET", "WEBHOOK_SINK_SECRET", "CRON_SECRET"] as const) {
+    const v = process.env[name];
+    if (v !== undefined && isWeakSecret(v)) {
+      errors.push(`${name} is set but weak (min 16 chars, not a default) — set a strong value or unset it`);
+    }
+  }
   return errors.length ? { ok: false, errors } : { ok: true };
 }
 
@@ -267,6 +278,28 @@ function logEmbedStarAlert(): void {
   );
 }
 
+/**
+ * Warn (do not fail) when a real production deployment is running WITHOUT Upstash/Redis: rate limits
+ * then live in a per-instance Map and are not shared across replicas / serverless instances —
+ * largely bypassable at scale. Skipped for the sandbox (mock rails) and non-production, which are
+ * single-instance by design.
+ */
+function logRateLimitDegradedAlert(): void {
+  if (!isProductionRuntime() || mockRailsAllowed()) return;
+  const redisConfigured = Boolean(
+    process.env.UPSTASH_REDIS_REST_URL?.trim() && process.env.UPSTASH_REDIS_REST_TOKEN?.trim(),
+  );
+  if (redisConfigured) return;
+  console.warn(
+    JSON.stringify({
+      level: "warn",
+      event: "miai.rate_limit_per_instance",
+      message:
+        "No Upstash/Redis configured — rate limiting is per-instance and NOT shared across replicas; largely bypassable at scale. Set UPSTASH_REDIS_REST_URL/TOKEN before running more than one replica.",
+    }),
+  );
+}
+
 /** Called from instrumentation.ts on Node server start. */
 export function assertBootHardening(): void {
   const check = checkBootHardening();
@@ -284,6 +317,7 @@ export function assertBootHardening(): void {
   }
   logMockRailsAlert();
   logEmbedStarAlert();
+  logRateLimitDegradedAlert();
 }
 
 /**
