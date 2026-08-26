@@ -6,6 +6,7 @@
 
 import { wf } from "./i18n.js";
 import { handleStopSuppression } from "./stop-suppression.js";
+import { userFacingNote } from "./tool-notes.js";
 
 export type RxStepStatus = "pending" | "done" | "skipped" | "failed";
 
@@ -280,7 +281,8 @@ export async function runPharmacyWorkflow(input: {
     if (result.ok && typeof data.available === "boolean") {
       const stateWord = data.level === "low_stock" ? "low in stock" : data.available ? "in stock" : "out of stock";
       const priceNote = data.price ? ` — **${data.price}**` : "";
-      const extra = data.note ? ` ${data.note}` : "";
+      const safeNote = userFacingNote(data.note);
+      const extra = safeNote ? ` ${safeNote}` : "";
       assistantMessage = `${capitalize(product)} is **${stateWord}**${priceNote}.${extra}`.trim();
       if (!data.available) {
         assistantMessage +=
