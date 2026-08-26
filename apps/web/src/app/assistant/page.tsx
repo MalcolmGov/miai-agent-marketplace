@@ -152,6 +152,7 @@ export default async function AssistantLandingPage() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
+                  <span className="chip">Multilingual</span>
                   {agent.badges.map((b) => (
                     <span key={b} className="chip">
                       {b}
@@ -159,7 +160,7 @@ export default async function AssistantLandingPage() {
                   ))}
                 </div>
                 <p className="mt-auto text-xs text-[var(--muted)]">
-                  {agent.evals} behavioural tests · {agent.languages.join(" · ")}
+                  {agent.evals} behavioural tests
                 </p>
               </article>
             ))}

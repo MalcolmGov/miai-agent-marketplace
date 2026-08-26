@@ -131,40 +131,19 @@ export default async function PersonalMarketplacePage() {
 
                 <p className="text-sm leading-relaxed text-[var(--card-body)]">{agent.summary}</p>
 
-                {agent.badges.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {agent.badges.map((b) => (
-                      <span key={b} className="chip">
-                        {b}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {agent.skus.length > 0 && (
-                  <ul className="space-y-1.5 text-xs text-[var(--card-body)]">
-                    {agent.skus.map((sku) => (
-                      <li key={sku} className="flex items-start gap-2">
-                        <svg
-                          aria-hidden
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2.2}
-                          className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent-bright)]"
-                        >
-                          <path d="m4.5 10.5 3.2 3.2L15.5 6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span>{sku}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="chip">Multilingual</span>
+                  {agent.badges.map((b) => (
+                    <span key={b} className="chip">
+                      {b}
+                    </span>
+                  ))}
+                </div>
 
                 {/* Footer: meta · action */}
                 <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3.5">
                   <span className="text-[11px] leading-tight text-[var(--muted)]">
-                    {agent.evals} tests{agent.certified ? "" : " authored"} · {agent.languages.join(" · ")}
+                    {agent.evals} tests{agent.certified ? "" : " authored"}
                   </span>
                   {personalAgentRunnable(agent) ? (
                     <Link
