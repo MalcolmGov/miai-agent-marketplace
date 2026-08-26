@@ -2654,6 +2654,11 @@ export async function runTurn(
     turnUsageTotal += completion.usage?.totalTokens ?? 0;
   }
 
+  // A stubbed connector result on a genuine live turn — not the sandbox, and not a pre-rent "try" —
+  // means the bound connector isn't actually configured. Such a stub must NEVER be presented to a
+  // real customer as a completed booking/order/application/payment (audit P0-3). In the sandbox,
+  // stubs are the intended demo, so this stays false and the demo confirmations are unchanged.
+  const realLiveTurn = req.mode === "live" && env("SANDBOX_MODE") !== "1";
   for (let toolRound = 0; completion.toolCall && toolRound < maxToolRounds; toolRound++) {
     onToolStart?.();
     const { name, args } = completion.toolCall;
@@ -2754,22 +2759,36 @@ export async function runTurn(
         );
       }
       break;
+    } else if (realLiveTurn && result.stubbed) {
+      // Genuine live turn, but the bound connector returned a stub — it isn't actually connected.
+      // Never claim a booking/order/application/payment succeeded; be honest and route to a human.
+      emitStatic(
+        isReadTool
+          ? "I can't pull that up live just now — that connection isn't fully set up on our side yet. I've flagged it so a teammate can help."
+          : "I couldn't complete that just now — the system it connects to isn't fully set up on our side yet. I've flagged it so a teammate can finish it and follow up with you.",
+      );
+      break;
     } else if (name === "get_order_status") {
       const status = String((result.data as { status?: string }).status ?? "processing");
       emitStatic(
         `Your order is currently **${status.replace(/_/g, " ")}**. ${(result.data as { eta?: string }).eta ? `ETA: ${(result.data as { eta?: string }).eta}.` : ""}`,
       );
       break;
-    } else if (name.includes("book")) {
-      const ref = (result.data as { booking_ref?: string }).booking_ref ?? "BK-3391";
+    } else if (name.startsWith("book_")) {
+      // Exact "book_" prefix so a ledger tool like credit_book is NOT mistaken for an appointment.
+      const ref = (result.data as { booking_ref?: string }).booking_ref;
       emitStatic(
-        `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`,
+        ref
+          ? `You're booked — reference **${ref}**. You'll get a confirmation on your contact details.`
+          : "You're booked. You'll get a confirmation on your contact details.",
       );
       break;
-    } else if (name.includes("capture_application") || name.includes("application")) {
-      const ref = String((result.data as { reference?: string }).reference ?? "APP-4821");
+    } else if (name === "capture_application" || name === "capture_job_application") {
+      // Exact write-tool ids only — a read/status lookup or a licence-application tool must not be
+      // mislabelled as a captured hiring application, and we never invent a reference number.
+      const ref = (result.data as { reference?: string }).reference;
       emitStatic(
-        `Thanks — your application is captured under reference **${ref}**. The hiring team will follow up; this is not a hiring decision.`,
+        `Thanks — your application is captured${ref ? ` under reference **${ref}**` : ""}. The hiring team will follow up; this is not a hiring decision.`,
       );
       break;
     } else {
