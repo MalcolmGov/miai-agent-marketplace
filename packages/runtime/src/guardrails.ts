@@ -48,7 +48,9 @@ export function checkInputGuardrails(
   opts?: { consumerLine?: boolean },
 ): GuardrailResult | null {
   const last = userMessage;
-  const lower = last.toLowerCase().replace(/##[\s\S]*$/g, " ");
+  // Scan the FULL user message. Do not truncate at "##": that let an attacker hide unsafe content
+  // (card/OTP, cross-tenant probe, emergency) after a "##" marker so no safety rule below would fire.
+  const lower = last.toLowerCase();
 
   if (/ignore (all )?previous|system prompt|jailbreak|reveal your (prompt|rules)/.test(lower)) {
     return {
@@ -57,18 +59,63 @@ export function checkInputGuardrails(
     };
   }
 
-  if (/card (number|details)|cvv|4111|debit card|credit card|charge my card|take my levy off/.test(lower)) {
+  if (
+    // Language-agnostic: a PAN-like 13–19 digit sequence (mirrors the output scrub) catches a card
+    // number in ANY language, plus en/es/fr keyword forms.
+    /card (number|details)|cvv|4111|debit card|credit card|charge my card|take my levy off|tarjeta de (cr[eé]dito|d[eé]bito)|carte bancaire|num[eé]ro de (carte|tarjeta)|\b(?:\d[ -]*?){13,19}\b/.test(
+      lower,
+    )
+  ) {
     return {
       content:
         "I can't take card details in chat — please use the secure payment link or pay at the practice. Never share full card numbers or CVV / OTP here.",
     };
   }
 
-  if (/\botp\b|one-?time (pin|password)|share.*(pin|password)/.test(lower)) {
+  if (/\botp\b|one-?time (pin|password)|share.*(pin|password)|c[oó]digo de un solo uso|clave (de un solo uso|temporal)|code (à|a) usage unique/.test(lower)) {
     return {
       content:
         "Never share OTP, PIN, or passwords with me — I will never ask for them. If someone asks, don't share.",
     };
+  }
+
+  // ── Multilingual safety net (es / fr) ──────────────────────────────────────────────────────────
+  // The keyword blocks in this file are English-only, but agents now reply in the user's language
+  // (#96 `## Language`), so a card/emergency written in Spanish/French could otherwise bypass them.
+  // This adds high-confidence es/fr coverage for the highest-risk categories: self-harm, medical /
+  // physical emergencies, gas/electrical/fire, and break-ins. NOTE: en/es/fr keyword coverage only —
+  // robust safety for arbitrary languages the model may reply in needs a model-based safety
+  // classifier (tracked as a follow-up); do not treat this as complete multilingual safety.
+  {
+    const num = emergencyNumber(system);
+    if (
+      /no puedo respirar|me estoy ahogando|dolor.{0,8}pecho|inconsciente|se desmay|sobredosis|envenen|veneno|sangrando mucho|quiero (morir|suicidarme|suicidar)|me voy a matar/.test(lower) ||
+      /ne peux (pas|plus) respirer|[ée]touffe|douleur.{0,8}poitrine|inconscient|[ée]vanoui|surdose|overdose|empoison|veux mourir|me suicider/.test(lower)
+    ) {
+      return handoff(
+        tools,
+        "emergency",
+        last,
+        `If this is life-threatening or an emergency, call **${num}** / local emergency services now — I'm handing you to a human teammate urgently. ` +
+          `Si es una emergencia, llame al **${num}** ahora. En cas d'urgence, appelez le **${num}** maintenant.`,
+      );
+    }
+    if (/fuga de gas|huele a gas|olor a gas|olor a quemado|chispas|fuite de gaz|odeur de gaz|odeur de br[ûu]l[ée]|[ée]tincelle/.test(lower)) {
+      return handoff(
+        tools,
+        "safety_emergency",
+        last,
+        `This is a safety emergency — leave the area if needed and call **${num}** / local emergency services now. I'm connecting you to a human urgently, and I won't say it's safe or fixed.`,
+      );
+    }
+    if (/hay un intruso|entraron a robar|forzando la (puerta|reja)|intrus|cambriolage|on force la porte/.test(lower)) {
+      return handoff(
+        tools,
+        "emergency",
+        last,
+        `This is a security emergency — call **${num}** / local emergency services and your security line now. I'm handing you to a human urgently.`,
+      );
+    }
   }
 
   if (/^\s*stop\b|unsubscribe|don't (text|message|contact) me|remove me/.test(lower)) {
