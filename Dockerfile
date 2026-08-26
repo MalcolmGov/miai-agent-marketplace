@@ -45,6 +45,7 @@ ENV CONSUMER_MEMORY_STORE_PATH=/data/consumer-memory.json
 ENV CONSUMER_GOALS_STORE_PATH=/data/consumer-goals.json
 ENV CONSUMER_PEOPLE_STORE_PATH=/data/consumer-people.json
 ENV CONSUMER_REMINDERS_STORE_PATH=/data/consumer-reminders.json
+ENV CONSUMER_TELEGRAM_STORE_PATH=/data/telegram-bindings.json
 ENV BRIEF_STORE_PATH=/data/consumer-brief.json
 # Modes default to mock for local/Railway; set http/gateway/oidc + secrets in Azure
 ENV MIAI_AUTH_MODE=mock
