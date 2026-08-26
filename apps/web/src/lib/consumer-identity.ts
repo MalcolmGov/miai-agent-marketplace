@@ -1,6 +1,6 @@
-import { AuthError, resolveAuth, type AuthContext } from "@/lib/auth";
+import { AuthError, type AuthContext } from "@/lib/auth";
 import { readConsumerSession } from "@/lib/consumer-session";
-import { WORKSPACE_ID } from "@/lib/constants";
+import { WORKSPACE_ID, DEMO_CONSUMER_ID } from "@/lib/constants";
 
 /**
  * Consumer identity resolution — kept free of `next/server` so it can be unit-tested and imported
@@ -16,16 +16,25 @@ function consumerBrand(req: Request): string {
 
 /**
  * Resolve the consumer's identity for a consumer API route.
- * - mock mode: the shared demo identity (frictionless sandbox), via resolveAuth.
+ * - mock mode: a FIXED shared demo identity (DEMO_CONSUMER_ID) — never client-controlled.
  * - oidc mode: the person is identified by their signed session cookie (Sign in with Google) —
  *   `userId` = the verified subject (Google `sub`), tenant = the brand. No session ⇒ 401, so a
  *   signed-out person is prompted to sign in rather than sharing the demo memory bucket.
  *
- * The consumer line is Bearer-gate-public (see public-paths); this IS the enforcement for it.
+ * The consumer line is Bearer-gate-public (see public-paths); this IS the enforcement for it, so
+ * it must be fail-closed on identity in BOTH modes. In mock mode we deliberately do NOT call the
+ * generic resolveAuth: that reads `?userId` / `x-user-id`, which on this public surface would let
+ * any anonymous caller impersonate another consumer's wallet + memory (both keyed on this id).
+ * Only the brand namespace (consumerBrand) varies in mock mode; the person is pinned.
  */
 export async function resolveConsumerAuth(req: Request): Promise<AuthContext> {
   if (process.env.MIAI_AUTH_MODE !== "oidc") {
-    return resolveAuth(req);
+    return {
+      mode: "mock",
+      workspaceId: consumerBrand(req),
+      userId: DEMO_CONSUMER_ID,
+      roles: [],
+    };
   }
   const session = await readConsumerSession(req);
   if (!session) {
