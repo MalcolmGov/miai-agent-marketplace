@@ -9,16 +9,15 @@ import { DEFAULT_BRAND_ID } from "@/lib/tenant-brands";
 type ConnectorStatus = { connector: string; connected: boolean };
 
 /**
- * Shared consumer account bar — prepaid credits · connected accounts · Telegram channel.
+ * Shared consumer account bar — connected accounts · Telegram channel.
  *
- * These are all ACCOUNT-level (shared across every agent, not tied to any one assistant), so this
+ * These are ACCOUNT-level (shared across every agent, not tied to any one assistant), so this
  * renders consistently above the assistants grid rather than being buried inside a single agent.
- * Self-contained: fetches its own wallet / connectors / Telegram status, scoped to the fixed
- * tenant. Reused wherever the consumer surfaces need the account controls.
+ * Self-contained: fetches its own connectors / Telegram status, scoped to the fixed tenant. The
+ * prepaid balance lives in the sidebar, so it's intentionally not duplicated here.
  */
 export function ConsumerAccountBar() {
   const ws = `?workspaceId=${encodeURIComponent(DEFAULT_BRAND_ID)}`;
-  const [tokens, setTokens] = useState<number | null>(null);
   const [connectors, setConnectors] = useState<ConnectorStatus[]>([]);
   const [telegram, setTelegram] = useState<{ enabled: boolean; connected: boolean }>({
     enabled: false,
@@ -27,10 +26,6 @@ export function ConsumerAccountBar() {
   const [tgBusy, setTgBusy] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/wallet${ws}`)
-      .then((r) => r.json())
-      .then((d) => setTokens(typeof d?.tokens === "number" ? d.tokens : null))
-      .catch(() => {});
     fetch(`/api/consumer/connectors${ws}`)
       .then((r) => r.json())
       .then((d) => setConnectors(Array.isArray(d?.connectors) ? d.connectors : []))
@@ -82,13 +77,6 @@ export function ConsumerAccountBar() {
 
   return (
     <div className="panel flex flex-wrap items-center gap-x-5 gap-y-2.5 p-3.5 text-xs">
-      <span
-        className="chip whitespace-nowrap"
-        title="Your shared prepaid balance — every assistant draws from it."
-      >
-        {tokens === null ? "…" : tokens.toLocaleString()} credits
-      </span>
-
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-[var(--muted)]">Accounts:</span>
         {connectors.length === 0 ? (
