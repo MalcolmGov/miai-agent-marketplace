@@ -162,22 +162,28 @@ export function mdToTelegramHtml(md: string): string {
   let s = (md ?? "").replace(/\r\n/g, "\n");
   // 1) Escape HTML specials before we insert any tags of our own.
   s = s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  // 2) Fenced code blocks ```lang\n…``` → <pre> (before other inline rules).
-  s = s.replace(/```[^\n]*\n?([\s\S]*?)```/g, (_m, code: string) => `<pre>${code.replace(/\n+$/, "")}</pre>`);
+  // Every rule below uses a greedy negated character class rather than a lazy
+  // quantifier, so none can backtrack across its delimiter — the whole pass is
+  // linear in input length (no ReDoS on a crafted message).
+  // 2) Fenced code blocks ```lang\n…``` → <pre>. The tempered token
+  //    `(?:[^`]|`(?!``))*` matches any non-backtick, or a backtick that doesn't
+  //    open the closing fence — linear, and it tolerates single backticks inside.
+  s = s.replace(/```[^\n]*\n?((?:[^`]|`(?!``))*)```/g, (_m, code: string) => `<pre>${code.replace(/\n+$/, "")}</pre>`);
   // 3) Inline code `x` → <code>
   s = s.replace(/`([^`\n]+)`/g, (_m, c: string) => `<code>${c}</code>`);
   // 4) Links [text](http…) → <a>
   s = s.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, t: string, u: string) => `<a href="${u}">${t}</a>`);
-  // 5) Headings (# … ######) → bold (Telegram has no headings).
-  s = s.replace(/^\s{0,3}#{1,6}\s+(.+?)\s*#*$/gm, "<b>$1</b>");
-  // 6) Bold **x** / __x__  (before single-char italic so ** is consumed first).
-  s = s.replace(/\*\*([^\n]+?)\*\*/g, "<b>$1</b>");
-  s = s.replace(/__([^\n]+?)__/g, "<b>$1</b>");
+  // 5) Headings (# … ######) → bold (Telegram has no headings). Greedy capture,
+  //    trailing #'s/spaces trimmed in code so there's no lazy quantifier.
+  s = s.replace(/^ {0,3}#{1,6}[ \t]+(.+)$/gm, (_m, h: string) => `<b>${h.replace(/[ \t]*#*[ \t]*$/, "")}</b>`);
+  // 6) Bold **x** / __x__ (before single-char italic so ** is consumed first).
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");
+  s = s.replace(/__([^_\n]+)__/g, "<b>$1</b>");
   // 7) Bullets "- " / "* " / "+ " at line start → "• "
-  s = s.replace(/^\s{0,3}[-*+]\s+/gm, "• ");
-  // 8) Italic *x* / _x_  (single marker, not touching a word char on the far side).
-  s = s.replace(/(^|[^\w*])\*(?!\s)([^*\n]+?)\*(?!\w)/g, "$1<i>$2</i>");
-  s = s.replace(/(^|[^\w_])_(?!\s)([^_\n]+?)_(?!\w)/g, "$1<i>$2</i>");
+  s = s.replace(/^ {0,3}[-*+][ \t]+/gm, "• ");
+  // 8) Italic *x* / _x_ (single marker, not touching a word char on the far side).
+  s = s.replace(/(^|[^\w*])\*(?!\s)([^*\n]+)\*(?!\w)/g, "$1<i>$2</i>");
+  s = s.replace(/(^|[^\w])_(?!\s)([^_\n]+)_(?!\w)/g, "$1<i>$2</i>");
   // 9) Tidy excess blank lines.
   return s.replace(/\n{3,}/g, "\n\n").trim();
 }
