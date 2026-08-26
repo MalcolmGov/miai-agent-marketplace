@@ -8,6 +8,8 @@ export const EMBED_STAR_ACK_ENV = "I_UNDERSTAND_EMBED_ORIGIN_STAR";
 export const FILE_FALLBACK_ACK_ENV = "I_UNDERSTAND_FILE_FALLBACK_IN_PROD";
 /** Second confirmation required when PG_SSL_REJECT_UNAUTHORIZED=0 in production. */
 export const PG_SSL_INSECURE_ACK_ENV = "I_UNDERSTAND_PG_SSL_INSECURE";
+/** Second confirmation required to run SANDBOX_MODE=1 alongside real production rails. */
+export const SANDBOX_IN_PROD_ACK_ENV = "I_UNDERSTAND_SANDBOX_IN_PROD";
 
 export function isProductionRuntime(): boolean {
   return process.env.NODE_ENV === "production";
@@ -156,10 +158,62 @@ export function checkProductionPersistence(): HardeningCheck {
   return errors.length ? { ok: false, errors } : { ok: true };
 }
 
+/**
+ * Real-production rail signals that must never coexist with SANDBOX_MODE=1.
+ *
+ * SANDBOX_MODE=1 relaxes ALL boot hardening (mock auth/wallet, weak secrets, file store), so if it
+ * is ever inherited onto a genuine customer deployment the app would boot wide open with no warning.
+ * We detect that by rails a real deployment configures but a sandbox never does.
+ * NOTE: NODE_ENV and MIAI_MODEL_MODE are deliberately NOT signals — the demo sandbox runs
+ * NODE_ENV=production and a real model (e.g. openai), so neither distinguishes it from prod. A live
+ * payment key means real money; a remote DATABASE_URL / oidc auth / http wallet mean a real backend —
+ * none of which a sandbox has.
+ */
+export function productionRailSignals(): string[] {
+  const signals: string[] = [];
+  if ((process.env.MIAI_AUTH_MODE ?? "mock") === "oidc") signals.push("MIAI_AUTH_MODE=oidc");
+  if ((process.env.MIAI_WALLET_MODE ?? "mock") === "http") signals.push("MIAI_WALLET_MODE=http");
+  const dbUrl = (process.env.DATABASE_URL || process.env.MIAI_DATABASE_URL)?.trim();
+  if (dbUrl && !/localhost|127\.0\.0\.1/.test(dbUrl)) signals.push("DATABASE_URL (remote)");
+  if ((process.env.PAYSTACK_SECRET_KEY ?? "").startsWith("sk_live_")) {
+    signals.push("PAYSTACK_SECRET_KEY (live)");
+  }
+  return signals;
+}
+
+/** Explicit dual-ack to run SANDBOX_MODE=1 alongside real rails (e.g. a persistent staging sandbox). */
+export function sandboxInProdAllowed(): boolean {
+  return envFlag("ALLOW_SANDBOX_IN_PROD") && envFlag(SANDBOX_IN_PROD_ACK_ENV);
+}
+
+/**
+ * SANDBOX_MODE=1 disables every hardening check, so it must only run on a genuine sandbox. If it is
+ * set while real production rails are configured, that is a leaked flag — refuse to boot (unless
+ * explicitly dual-acked). Closes the single-flag master-bypass where a stray SANDBOX_MODE on the
+ * production deployment would silently run mock auth/wallet with weak secrets and no real database.
+ */
+export function checkSandboxModeSafety(): HardeningCheck {
+  if (process.env.SANDBOX_MODE !== "1") return { ok: true };
+  if (sandboxInProdAllowed()) return { ok: true };
+  const signals = productionRailSignals();
+  if (signals.length === 0) return { ok: true };
+  return {
+    ok: false,
+    errors: [
+      `SANDBOX_MODE=1 disables all production hardening, but real rails are configured (${signals.join(", ")}). ` +
+        `A leaked SANDBOX_MODE would boot this deployment on mock auth/wallet with weak secrets and no real database. ` +
+        `Unset SANDBOX_MODE for production, or ${dualFlagHint("ALLOW_SANDBOX_IN_PROD", SANDBOX_IN_PROD_ACK_ENV)}.`,
+    ],
+  };
+}
+
 export function checkBootHardening(): HardeningCheck {
-  // A sandbox is an isolated evaluation environment (mock rails, no real money/sends),
-  // so the production hardening requirements — real rails, strong secrets, a production
-  // Postgres — don't apply. Relax them all so SANDBOX_MODE=1 boots on a fresh deployment.
+  // A sandbox is an isolated evaluation environment (mock rails, no real money/sends), so the
+  // production hardening requirements — real rails, strong secrets, a production Postgres — don't
+  // apply, and SANDBOX_MODE=1 relaxes them all. But FIRST confirm this really is a sandbox: a
+  // SANDBOX_MODE flag leaked onto a deployment with real rails must fail closed, not relax.
+  const sandbox = checkSandboxModeSafety();
+  if (!sandbox.ok) return sandbox;
   if (process.env.SANDBOX_MODE === "1") return { ok: true };
   const secrets = checkProductionSecrets();
   const rails = checkProductionRails();
@@ -218,7 +272,10 @@ export function assertBootHardening(): void {
   const check = checkBootHardening();
   if (!check.ok) {
     for (const e of check.errors) console.error(`[security] ${e}`);
-    if (isProductionRuntime()) {
+    // Throw in production — and whenever SANDBOX_MODE=1 has failed the safety check, regardless of
+    // NODE_ENV: a sandbox flag leaked onto a deployment with real rails must never boot. (A genuine
+    // sandbox passes checkBootHardening, so this only fires on the contradiction.)
+    if (isProductionRuntime() || process.env.SANDBOX_MODE === "1") {
       throw new Error(
         `[security] Refusing to start — fix env or ${dualFlagHint("ALLOW_MOCK_RAILS", MOCK_RAILS_ACK_ENV)} for staging demos.\n- ${check.errors.join("\n- ")}`,
       );

@@ -7,6 +7,9 @@ import {
   checkProductionSecrets,
   checkProductionPersistence,
   checkBootHardening,
+  checkSandboxModeSafety,
+  productionRailSignals,
+  sandboxInProdAllowed,
   isWeakSecret,
   timingSafeEqualString,
   assertBootHardening,
@@ -14,10 +17,12 @@ import {
   EMBED_STAR_ACK_ENV,
   FILE_FALLBACK_ACK_ENV,
   PG_SSL_INSECURE_ACK_ENV,
+  SANDBOX_IN_PROD_ACK_ENV,
 } from "../src/lib/security-flags.ts";
 
 const ENV_KEYS = [
   "NODE_ENV",
+  "SANDBOX_MODE",
   "ALLOW_MOCK_RAILS",
   MOCK_RAILS_ACK_ENV,
   "ALLOW_EMBED_ORIGIN_STAR",
@@ -26,11 +31,14 @@ const ENV_KEYS = [
   FILE_FALLBACK_ACK_ENV,
   "PG_SSL_REJECT_UNAUTHORIZED",
   PG_SSL_INSECURE_ACK_ENV,
+  "ALLOW_SANDBOX_IN_PROD",
+  SANDBOX_IN_PROD_ACK_ENV,
   "DATABASE_URL",
   "MIAI_DATABASE_URL",
   "MIAI_AUTH_MODE",
   "MIAI_WALLET_MODE",
   "MIAI_MODEL_MODE",
+  "PAYSTACK_SECRET_KEY",
   "OAUTH_TOKEN_SECRET",
   "OAUTH_STATE_SECRET",
   "EMBED_KEY_SECRET",
@@ -218,5 +226,87 @@ describe("security boot hardening / dual flags", () => {
     if (!result.ok) {
       assert.ok(result.errors.some((e) => e.includes("PG_SSL_REJECT_UNAUTHORIZED=0")));
     }
+  });
+
+  describe("SANDBOX_MODE leak guard", () => {
+    // The demo sandbox legitimately runs SANDBOX_MODE=1 with mock rails, NODE_ENV=production, and a
+    // REAL model (openai) — it must still boot. A SANDBOX_MODE flag leaked onto a deployment with
+    // real rails (oidc / http wallet / remote db / live payment key) must fail closed.
+    const cleanSandbox = {
+      SANDBOX_MODE: "1",
+      NODE_ENV: "production",
+      MIAI_AUTH_MODE: "mock",
+      MIAI_WALLET_MODE: "mock",
+      MIAI_MODEL_MODE: "openai", // real model — must NOT count as a prod signal
+      DATABASE_URL: undefined,
+      MIAI_DATABASE_URL: undefined,
+      PAYSTACK_SECRET_KEY: undefined,
+      ALLOW_SANDBOX_IN_PROD: undefined,
+      [SANDBOX_IN_PROD_ACK_ENV]: undefined,
+    };
+
+    it("a genuine sandbox (mock rails, real model, no db) still boots", () => {
+      setEnv(cleanSandbox);
+      assert.deepEqual(productionRailSignals(), []);
+      assert.equal(checkSandboxModeSafety().ok, true);
+      assert.equal(checkBootHardening().ok, true);
+      assert.doesNotThrow(() => assertBootHardening());
+    });
+
+    it("SANDBOX_MODE=1 + oidc auth fails closed", () => {
+      setEnv({ ...cleanSandbox, MIAI_AUTH_MODE: "oidc" });
+      const r = checkSandboxModeSafety();
+      assert.equal(r.ok, false);
+      if (!r.ok) {
+        assert.ok(r.errors.some((e) => e.includes("SANDBOX_MODE=1 disables all production hardening")));
+      }
+      assert.equal(checkBootHardening().ok, false);
+    });
+
+    it("SANDBOX_MODE=1 + http wallet fails closed", () => {
+      setEnv({ ...cleanSandbox, MIAI_WALLET_MODE: "http" });
+      assert.equal(checkSandboxModeSafety().ok, false);
+    });
+
+    it("SANDBOX_MODE=1 + remote DATABASE_URL fails closed", () => {
+      setEnv({ ...cleanSandbox, DATABASE_URL: "postgresql://db.example.com:5432/app" });
+      assert.equal(checkSandboxModeSafety().ok, false);
+    });
+
+    it("SANDBOX_MODE=1 + live Paystack key fails closed", () => {
+      // built by concatenation so the literal isn't a scannable secret pattern
+      setEnv({ ...cleanSandbox, PAYSTACK_SECRET_KEY: "sk_live_" + "0".repeat(24) });
+      assert.equal(checkSandboxModeSafety().ok, false);
+    });
+
+    it("a test Paystack key does NOT trip the guard", () => {
+      setEnv({ ...cleanSandbox, PAYSTACK_SECRET_KEY: "sk_test_" + "0".repeat(24) });
+      assert.deepEqual(productionRailSignals(), []);
+      assert.equal(checkSandboxModeSafety().ok, true);
+    });
+
+    it("throws regardless of NODE_ENV — a leaked sandbox flag on non-prod must not boot", () => {
+      setEnv({ ...cleanSandbox, NODE_ENV: "development", MIAI_AUTH_MODE: "oidc" });
+      assert.throws(() => assertBootHardening(), /Refusing to start/);
+    });
+
+    it("explicit dual-ack lets SANDBOX_MODE run alongside real rails", () => {
+      setEnv({
+        ...cleanSandbox,
+        MIAI_AUTH_MODE: "oidc",
+        ALLOW_SANDBOX_IN_PROD: "1",
+        [SANDBOX_IN_PROD_ACK_ENV]: "1",
+      });
+      assert.equal(sandboxInProdAllowed(), true);
+      assert.equal(checkSandboxModeSafety().ok, true);
+      assert.equal(checkBootHardening().ok, true);
+    });
+
+    it("half-configured ack does not enable the override", () => {
+      setEnv({ ...cleanSandbox, MIAI_AUTH_MODE: "oidc", ALLOW_SANDBOX_IN_PROD: "1" });
+      delete process.env[SANDBOX_IN_PROD_ACK_ENV];
+      assert.equal(sandboxInProdAllowed(), false);
+      assert.equal(checkSandboxModeSafety().ok, false);
+    });
   });
 });

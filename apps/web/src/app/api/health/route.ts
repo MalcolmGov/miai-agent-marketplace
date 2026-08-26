@@ -18,6 +18,8 @@ export async function GET() {
     walletMode,
     modelMode,
     mockRailsAllowed: mockRailsAllowed(),
+    sandboxMode: process.env.SANDBOX_MODE === "1",
+    nodeEnv: process.env.NODE_ENV ?? "unset",
     hardening: hardening.ok ? "ok" : "fail",
     database: process.env.DATABASE_URL || process.env.MIAI_DATABASE_URL ? "configured" : "file-fallback",
     telemetry: telemetryMode(),
