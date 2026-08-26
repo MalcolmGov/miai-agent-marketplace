@@ -10,6 +10,7 @@
     "channels": [
       "app",
       "web",
+      "telegram",
       "whatsapp"
     ],
     "languages": [

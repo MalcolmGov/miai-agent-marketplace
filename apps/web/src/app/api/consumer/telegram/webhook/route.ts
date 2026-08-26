@@ -6,10 +6,12 @@ import {
   DEFAULT_TELEGRAM_TENANT,
   sendTelegramMessage,
   sendTelegramTyping,
+  verifySetupNonce,
   verifyTelegramWebhook,
   type TelegramUpdate,
   type TelegramMessage,
 } from "@/lib/consumer-telegram";
+import { bindTelegram, getBoundConsumer } from "@/lib/consumer-telegram-store";
 import { newCorrelationId } from "@/lib/traceability";
 import { rateLimit } from "@/lib/security";
 
@@ -69,8 +71,42 @@ export async function POST(req: Request) {
     return new NextResponse("OK");
   }
 
-  const consumerId = consumerIdForTelegram(chatId);
-  const tenantId = DEFAULT_TELEGRAM_TENANT;
+  // "/start setup_<nonce>" links this chat to a signed-in web consumer (shared memory /
+  // wallet); a bare "/start" just greets. Neither runs a metered turn.
+  if (text.startsWith("/start")) {
+    const arg = text.slice("/start".length).trim();
+    const nonce = arg.startsWith("setup_") ? arg.slice("setup_".length) : "";
+    if (nonce) {
+      const linked = verifySetupNonce(nonce);
+      const [linkedTenant, linkedConsumer] = linked ? linked.split("::") : [];
+      if (linkedTenant && linkedConsumer) {
+        await bindTelegram(chatId, { tenantId: linkedTenant, consumerId: linkedConsumer });
+        await sendTelegramMessage(
+          TOKEN,
+          chatId,
+          "✅ Connected. I'll remember our conversations here and in your app. What can I help with?",
+        );
+      } else {
+        await sendTelegramMessage(
+          TOKEN,
+          chatId,
+          "That connection link has expired. Open your app and tap “Connect Telegram” again.",
+        );
+      }
+      return new NextResponse("OK");
+    }
+    await sendTelegramMessage(
+      TOKEN,
+      chatId,
+      "👋 Hi — I'm your assistant. Ask me anything, or link your account from the app to share memory across web and Telegram.",
+    );
+    return new NextResponse("OK");
+  }
+
+  // A linked chat uses its web identity; an unlinked chat stays a standalone telegram:<id> identity.
+  const bound = await getBoundConsumer(chatId);
+  const consumerId = bound?.consumerId ?? consumerIdForTelegram(chatId);
+  const tenantId = bound?.tenantId ?? DEFAULT_TELEGRAM_TENANT;
   const agentId = DEFAULT_TELEGRAM_AGENT;
 
   const limited = await rateLimit(`consumer:tg:${chatId}:${agentId}`, {

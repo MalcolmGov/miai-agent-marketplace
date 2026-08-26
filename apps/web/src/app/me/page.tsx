@@ -66,6 +66,8 @@ function AssistantHome() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [briefOffer, setBriefOffer] = useState<BriefOffer>("hidden");
+  const [telegram, setTelegram] = useState<{ enabled: boolean; botUsername?: string | null }>({ enabled: false });
+  const [tgBusy, setTgBusy] = useState(false);
   const briefOfferedRef = useRef(false);
 
   // The chat loop (messages, prepaid balance, streaming turn) is shared with the specialist pages.
@@ -136,6 +138,28 @@ function AssistantHome() {
     loadConnectors();
     loadReminders();
   }, [loadWallet, loadConnectors, loadReminders]);
+
+  // Telegram channel availability (server env-gated) — checked once on mount.
+  useEffect(() => {
+    fetch("/api/consumer/telegram/connect")
+      .then((r) => r.json())
+      .then((d) => setTelegram({ enabled: Boolean(d?.enabled), botUsername: d?.botUsername ?? null }))
+      .catch(() => {});
+  }, []);
+
+  /** Link this consumer to Telegram: mint a setup deep-link and open it. */
+  async function connectTelegram() {
+    setTgBusy(true);
+    try {
+      const r = await fetch(`/api/consumer/telegram/connect${ws}`, { method: "POST" });
+      const d = await r.json();
+      if (d?.url) window.open(d.url, "_blank", "noopener,noreferrer");
+    } catch {
+      /* ignore — the user can retry */
+    } finally {
+      setTgBusy(false);
+    }
+  }
 
   /** Switch the previewed brand: re-skin, and reset to a clean per-brand conversation + context. */
   function selectBrand(id: string) {
@@ -286,6 +310,23 @@ function AssistantHome() {
           Manage
         </Link>
       </div>
+
+      {telegram.enabled ? (
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-[var(--muted)]">Channels:</span>
+          <button
+            type="button"
+            onClick={connectTelegram}
+            disabled={tgBusy}
+            className="chip inline-flex items-center gap-1.5 transition hover:text-[var(--text)] disabled:opacity-60"
+          >
+            <span aria-hidden>✈️</span> {tgBusy ? "Opening Telegram…" : "Connect Telegram"}
+          </button>
+          <span className="text-[var(--muted)]">
+            — chat on Telegram; it shares this assistant&apos;s memory.
+          </span>
+        </div>
+      ) : null}
 
       {reminders.length > 0 ? (
         <section className="rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)] p-3">

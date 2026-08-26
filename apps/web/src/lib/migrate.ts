@@ -12,6 +12,7 @@ const MIGRATIONS: Migration[] = [
   { id: "003_consumer_memory", file: "003_consumer_memory.sql" },
   { id: "004_memory_tenant_and_graph", file: "004_memory_tenant_and_graph.sql" },
   { id: "005_consumer_reminders", file: "005_consumer_reminders.sql" },
+  { id: "006_telegram_binding", file: "006_telegram_binding.sql" },
 ];
 
 let ensuring: Promise<void> | undefined;
