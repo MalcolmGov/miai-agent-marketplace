@@ -10,10 +10,17 @@ import {
   sendTelegramTyping,
   verifySetupNonce,
   verifyTelegramWebhook,
+  SETUP_TTL_MS,
   type TelegramUpdate,
   type TelegramMessage,
 } from "@/lib/consumer-telegram";
-import { bindTelegram, getActiveAgent, getBoundConsumer, setActiveAgent } from "@/lib/consumer-telegram-store";
+import {
+  bindTelegram,
+  consumeSetupNonce,
+  getActiveAgent,
+  getBoundConsumer,
+  setActiveAgent,
+} from "@/lib/consumer-telegram-store";
 import { getPersonalAgent, listPersonalAgents, personalAgentRunnable } from "@/lib/consumer-catalog";
 import { newCorrelationId } from "@/lib/traceability";
 import { rateLimit } from "@/lib/security";
@@ -112,8 +119,13 @@ export async function POST(req: Request) {
     const nonce = arg.startsWith("setup_") ? arg.slice("setup_".length) : "";
     if (nonce) {
       const linked = verifySetupNonce(nonce);
-      const [linkedTenant, linkedConsumer] = linked ? linked.split("::") : [];
-      if (linkedTenant && linkedConsumer) {
+      const [linkedTenant, linkedConsumer] = linked ? linked.consumerId.split("::") : [];
+      // Enforce single-use: a stateless signed nonce is otherwise replayable within its TTL, so a
+      // leaked deep link could bind an attacker's chat to the victim's identity (memory + wallet).
+      const fresh = linked
+        ? await consumeSetupNonce(linked.nonceId, Date.now() + SETUP_TTL_MS)
+        : false;
+      if (linkedTenant && linkedConsumer && fresh) {
         await bindTelegram(chatId, { tenantId: linkedTenant, consumerId: linkedConsumer });
         await sendTelegramMessage(
           TOKEN,
@@ -124,7 +136,7 @@ export async function POST(req: Request) {
         await sendTelegramMessage(
           TOKEN,
           chatId,
-          "That connection link has expired. Open your app and tap “Connect Telegram” again.",
+          "That connection link has expired or was already used. Open your app and tap “Connect Telegram” again.",
         );
       }
       return new NextResponse("OK");

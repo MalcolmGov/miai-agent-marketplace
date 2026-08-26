@@ -5,6 +5,7 @@
  */
 import assert from "node:assert/strict";
 import { describe, it, beforeEach, afterEach } from "node:test";
+import { consumeSetupNonce } from "../src/lib/consumer-telegram-store.ts";
 
 let tg;
 
@@ -79,7 +80,9 @@ describe("setup nonce — signed, single-use, short-TTL", () => {
   it("mints a nonce for a consumer and verifies it", () => {
     const nonce = tg.mintSetupNonce("usr_abc");
     assert.ok(nonce.length > 20, "nonce is non-trivial");
-    assert.equal(tg.verifySetupNonce(nonce), "usr_abc");
+    const v = tg.verifySetupNonce(nonce);
+    assert.equal(v?.consumerId, "usr_abc");
+    assert.ok(v?.nonceId, "verify returns the nonce id for single-use enforcement");
   });
 
   it("returns null for a tampered nonce", () => {
@@ -106,8 +109,27 @@ describe("setup nonce — signed, single-use, short-TTL", () => {
   it("a nonce minted for one consumer does not verify for another", () => {
     const nonce = tg.mintSetupNonce("usr_a");
     const result = tg.verifySetupNonce(nonce);
-    assert.equal(result, "usr_a");
-    assert.notEqual(result, "usr_b");
+    assert.equal(result?.consumerId, "usr_a");
+    assert.notEqual(result?.consumerId, "usr_b");
+  });
+});
+
+describe("setup nonce — single-use enforcement (replay / account-takeover)", () => {
+  it("consumeSetupNonce: first use true, replay false, distinct nonce true", async () => {
+    const exp = Date.now() + tg.SETUP_TTL_MS;
+    assert.equal(await consumeSetupNonce("nonce-A1", exp), true);
+    assert.equal(await consumeSetupNonce("nonce-A1", exp), false); // replay rejected
+    assert.equal(await consumeSetupNonce("nonce-B1", exp), true); // independent nonce
+  });
+
+  it("end-to-end: a verified nonce binds once; replaying the same nonceId is rejected", async () => {
+    const token = tg.mintSetupNonce("myinstantai::demo-user");
+    const v = tg.verifySetupNonce(token);
+    assert.ok(v, "fresh nonce verifies");
+    assert.equal(v.consumerId, "myinstantai::demo-user");
+    const exp = Date.now() + tg.SETUP_TTL_MS;
+    assert.equal(await consumeSetupNonce(v.nonceId, exp), true); // first bind proceeds
+    assert.equal(await consumeSetupNonce(v.nonceId, exp), false); // leaked-link replay rejected
   });
 });
 
