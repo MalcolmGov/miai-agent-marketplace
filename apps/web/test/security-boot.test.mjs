@@ -42,6 +42,9 @@ const ENV_KEYS = [
   "OAUTH_TOKEN_SECRET",
   "OAUTH_STATE_SECRET",
   "EMBED_KEY_SECRET",
+  "MIAI_SESSION_SECRET",
+  "WEBHOOK_SINK_SECRET",
+  "CRON_SECRET",
 ];
 
 /** @type {Record<string, string | undefined>} */
@@ -307,6 +310,48 @@ describe("security boot hardening / dual flags", () => {
       delete process.env[SANDBOX_IN_PROD_ACK_ENV];
       assert.equal(sandboxInProdAllowed(), false);
       assert.equal(checkSandboxModeSafety().ok, false);
+    });
+  });
+
+  describe("checkProductionSecrets — session / sink / cron secrets", () => {
+    // Long enough + not a dev default → strong per isWeakSecret; low entropy so it isn't a scannable secret.
+    const STRONG = "strong-enough-secret-for-tests";
+
+    it("flags each of them when SET but weak", () => {
+      setEnv({
+        MIAI_AUTH_MODE: "oidc",
+        OAUTH_TOKEN_SECRET: STRONG,
+        MIAI_SESSION_SECRET: "dev-only-change-me",
+        WEBHOOK_SINK_SECRET: "short",
+        CRON_SECRET: "dev-only-change-me",
+      });
+      const r = checkProductionSecrets();
+      assert.equal(r.ok, false);
+      if (!r.ok) {
+        assert.ok(r.errors.some((e) => e.includes("MIAI_SESSION_SECRET")));
+        assert.ok(r.errors.some((e) => e.includes("WEBHOOK_SINK_SECRET")));
+        assert.ok(r.errors.some((e) => e.includes("CRON_SECRET")));
+      }
+    });
+
+    it("does NOT require them when unset (safe fallbacks), given a strong OAUTH_TOKEN_SECRET", () => {
+      setEnv({ MIAI_AUTH_MODE: "oidc", OAUTH_TOKEN_SECRET: STRONG });
+      for (const k of ["MIAI_SESSION_SECRET", "WEBHOOK_SINK_SECRET", "CRON_SECRET", "OAUTH_STATE_SECRET", "EMBED_KEY_SECRET"]) {
+        delete process.env[k];
+      }
+      assert.equal(checkProductionSecrets().ok, true);
+    });
+
+    it("passes when they are set and strong", () => {
+      setEnv({
+        MIAI_AUTH_MODE: "oidc",
+        OAUTH_TOKEN_SECRET: STRONG,
+        MIAI_SESSION_SECRET: STRONG,
+        WEBHOOK_SINK_SECRET: STRONG,
+        CRON_SECRET: STRONG,
+      });
+      for (const k of ["OAUTH_STATE_SECRET", "EMBED_KEY_SECRET"]) delete process.env[k];
+      assert.equal(checkProductionSecrets().ok, true);
     });
   });
 });
