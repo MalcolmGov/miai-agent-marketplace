@@ -68,45 +68,18 @@ export default async function SpecialistPage({ params }: { params: Promise<{ id:
           )}
         </div>
         <p className="text-[15px] leading-relaxed text-[var(--card-body)]">{agent.summary}</p>
-        {agent.badges.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {agent.badges.map((b) => (
-              <span key={b} className="chip">
-                {b}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-wrap gap-1.5">
+          <span className="chip">Multilingual</span>
+          {agent.badges.map((b) => (
+            <span key={b} className="chip">
+              {b}
+            </span>
+          ))}
+        </div>
         <p className="border-t border-[var(--line)] pt-3 text-xs text-[var(--muted)]">
-          {agent.evals} behavioural tests · {agent.languages.join(" · ")} · metered on your prepaid balance
+          {agent.evals} behavioural tests · metered on your prepaid balance
         </p>
       </section>
-
-      {/* What's inside */}
-      {agent.skus.length > 0 && (
-        <section className="panel p-6">
-          <h2 className="display text-base font-semibold tracking-tight text-[var(--text)]">
-            What&apos;s inside
-          </h2>
-          <ul className="mt-3 space-y-2 text-sm text-[var(--card-body)]">
-            {agent.skus.map((sku) => (
-              <li key={sku} className="flex items-start gap-2.5">
-                <svg
-                  aria-hidden
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2.2}
-                  className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent-bright)]"
-                >
-                  <path d="m4.5 10.5 3.2 3.2L15.5 6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span>{sku}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       {/* Chat when this specialist is runnable here (certified on prod; all in the sandbox);
           otherwise an honest in-certification notice. */}
