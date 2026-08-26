@@ -119,3 +119,50 @@ export async function getActiveAgent(chatId: number | string): Promise<string | 
   const s = await getState(chatId);
   return s?.agentId ?? null;
 }
+
+/** True if any Telegram chat is currently linked to this consumer's identity. */
+export async function isConsumerLinked(tenantId: string, consumerId: string): Promise<boolean> {
+  if (!tenantId || !consumerId) return false;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query(
+      `SELECT 1 FROM miai_telegram_binding WHERE tenant_id = $1 AND consumer_id = $2 LIMIT 1`,
+      [tenantId, consumerId],
+    );
+    return res.rows.length > 0;
+  }
+  const map = await stateMem();
+  for (const v of map.values()) {
+    if (v.tenantId === tenantId && v.consumerId === consumerId) return true;
+  }
+  return false;
+}
+
+/**
+ * Disconnect Telegram for a consumer: drop the identity binding from every chat linked to them, so
+ * those chats revert to a standalone telegram:<chat_id> identity. Keeps each chat's active-agent
+ * choice. Returns how many chats were unlinked (0 if none).
+ */
+export async function unbindTelegramForConsumer(tenantId: string, consumerId: string): Promise<number> {
+  if (!tenantId || !consumerId) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query<{ chat_id: string }>(
+      `UPDATE miai_telegram_binding SET tenant_id = NULL, consumer_id = NULL
+       WHERE tenant_id = $1 AND consumer_id = $2 RETURNING chat_id`,
+      [tenantId, consumerId],
+    );
+    return res.rows.length;
+  }
+  const map = await stateMem();
+  let n = 0;
+  for (const [k, v] of map) {
+    if (v.tenantId === tenantId && v.consumerId === consumerId) {
+      if (v.agentId) map.set(k, { agentId: v.agentId });
+      else map.delete(k);
+      n++;
+    }
+  }
+  if (n) await writeState(map);
+  return n;
+}
