@@ -33,6 +33,20 @@ describe("extractDurableFacts — captures durable self-facts", () => {
   it("my X is Y attribute", () => {
     assert.deepEqual(contents("my dentist is Dr Khan"), ["my dentist is Dr Khan"]);
   });
+  it("what they're studying (subject only, not the target)", () => {
+    assert.ok(contents("I'm studying biology this year").includes("studying biology"));
+    assert.ok(contents("I'm studying calculus for an exam").includes("studying calculus"));
+  });
+  it("explicit 'remember …' request (imperative)", () => {
+    assert.ok(
+      contents("Remember I'm studying calculus for an exam next week.").some((c) =>
+        c.includes("studying calculus"),
+      ),
+    );
+  });
+  it("preparing / training for a goal", () => {
+    assert.ok(contents("I'm training for a marathon").includes("preparing for marathon"));
+  });
   it("tags each fact with a category", () => {
     const facts = ex.extractDurableFacts("I'm vegan");
     assert.equal(facts[0].category, "preferences");
@@ -55,6 +69,12 @@ describe("extractDurableFacts — precision guards (does NOT extract)", () => {
   });
   it("plain generic role claims (kept out to avoid noise)", () => {
     assert.deepEqual(contents("I'm a bit tired today"), []);
+  });
+  it("negated 'I don't remember …' does not trigger", () => {
+    assert.deepEqual(contents("I don't remember the meeting time"), []);
+  });
+  it("'remember to …' is a task, left to reminders not memory", () => {
+    assert.deepEqual(contents("Remember to buy milk"), []);
   });
   it("ignores empty and overly long input", () => {
     assert.deepEqual(contents(""), []);

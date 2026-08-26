@@ -1,6 +1,7 @@
 /**
- * Passive memory extraction — pull durable self-facts out of a user message that they revealed but
- * didn't explicitly ask the assistant to remember. Conservative and high-precision on purpose:
+ * Passive memory extraction — pull durable self-facts out of a user message: both things revealed
+ * in passing (diet, location, allergies, what they're studying) and things the user explicitly asks
+ * us to remember ("remember I'm studying calculus …"). Conservative and high-precision on purpose:
  * only a handful of clear "this is a lasting fact about me" patterns, so auto-memory stays trustworthy
  * rather than noisy. Pure + deterministic (no LLM call, no cost) so it's cheap and unit-testable.
  *
@@ -53,6 +54,18 @@ export function extractDurableFacts(text: string): ExtractedFact[] {
     out.push({ content: c, category });
   };
 
+  // Explicit request to remember (imperative) — the strongest signal of intent, so capture the
+  // clause the user asked us to keep. Anchored to a sentence start / "please" so "I don't remember
+  // …" and questions don't trigger; a leading "I'm/I am" is dropped so it reads as a fact, and
+  // "remember to …" (a task, handled by reminders) plus interrogatives are skipped.
+  const remember = raw.match(
+    /(?:^|[.!?]\s+|please\s+)(?:remember|note|keep in mind|don'?t forget)\s+(?:that\s+)?(.{3,100}?)(?=[.!?]|$)/i,
+  );
+  if (remember) {
+    const v = tidy(remember[1]).replace(/^(?:i'?m|i am)\s+/i, "");
+    if (v && !/^(?:when|how|why|what|where|who|if|to)\b/i.test(v)) add(v, "note");
+  }
+
   // Dietary preference — a clear, lasting fact.
   const diet = raw.match(DIET);
   if (diet) add(diet[1].toLowerCase(), "preferences");
@@ -73,6 +86,20 @@ export function extractDurableFacts(text: string): ExtractedFact[] {
   // Allergies — "I'm allergic to <x>".
   const allergy = raw.match(/\bI(?:'m| am)\s+allergic\s+to\s+([a-zA-Z][\w'’ -]{1,30}?)(?=[.,!?]|$)/i);
   if (allergy) add(`allergic to ${tidy(allergy[1]).toLowerCase()}`, "health");
+
+  // What they're studying / learning — a durable "what I'm working on" fact. The (?!for|to) guard
+  // leaves "studying for <goal>" / "learning to <skill>" to the goal pattern, so we capture the
+  // subject not the target.
+  const study = raw.match(
+    /\bI(?:'m| am)\s+(?:studying|learning|revising)\s+(?!(?:for|to)\b)([a-zA-Z][\w'’ &-]{1,40}?)(?=\s+(?:for|at|in|to|because|so|this|next|right|now|and|,)\b|[.,!?]|$)/i,
+  );
+  if (study) add(`studying ${tidy(study[1]).toLowerCase()}`, "education");
+
+  // Preparing / training for something — a durable goal.
+  const prep = raw.match(
+    /\bI(?:'m| am)\s+(?:preparing|studying|training|revising|prepping)\s+for\s+(?:an?\s+|the\s+|my\s+)?([a-zA-Z][\w'’ &-]{2,40}?)(?=[.,!?]|$)/i,
+  );
+  if (prep) add(`preparing for ${tidy(prep[1]).toLowerCase()}`, "goals");
 
   // Attribute — "my <thing> is/are <value>", guarded against rhetoric and clauses.
   const myX = raw.match(/\bmy\s+([a-z][a-z ]{1,24}?)\s+(?:is|are)\s+([\w'’.,&()\/ -]{2,60}?)(?=[.!?]|$)/i);
