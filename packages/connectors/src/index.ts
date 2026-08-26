@@ -48,6 +48,7 @@ export {
 export {
   probeOAuthConnector,
   probeSupportedConnectors,
+  verifyConnector,
   type ProbeResult,
 } from "./oauth/probe.js";
 
