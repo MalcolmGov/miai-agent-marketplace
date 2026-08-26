@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyInstantAI Agents — Azure deployment config</title>
+    <link rel="stylesheet" href="./shared.css" />
+  </head>
+  <body>
+    <!-- ============================ PAGE 1 ============================ -->
+    <section class="page airy">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Deployment handover · Move Digital → your Azure</p>
+        <h1>Deploying on your Azure — one image, config-only</h1>
+        <p class="lede">
+          The Railway sandbox and your Azure production run the
+          <strong style="color:#fff">same container image</strong> built from this repo. Azure is
+          turned on entirely by <strong style="color:#fff">environment variables</strong> — no fork,
+          no code branch. The adapters for Azure OpenAI, OIDC, an HTTP wallet gateway, Postgres, Redis
+          and Application Insights are already in the codebase. Deployment is provisioning + wiring,
+          not a rewrite.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Same image</span>
+          <span class="pill">Config-only switch</span>
+          <span class="pill muted">Already Azure-aware</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">01</span> The principle</h2>
+          <div class="card">
+            One image, promoted by config. Nothing is Railway-specific and nothing is Azure-specific
+            in the code — the same build runs in both places, and each mode adapter is chosen by an
+            env var at boot. Verify any deployment at
+            <span class="mono">GET /api/health</span> → it returns
+            <span class="mono">{ authMode, modelMode, walletMode, mockRailsAllowed, database,
+            storeBackend, redisConfigured, oidcIssuer }</span>, so you can confirm prod is wired
+            correctly without reading a log.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">02</span> Azure resources to provision</h2>
+          <table>
+            <thead>
+              <tr><th style="width:32%">Resource</th><th style="width:30%">Purpose</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Azure Container Registry</strong></td>
+                <td>Store the built image</td>
+                <td><span class="mono">az acr build</span> from the repo <span class="mono">Dockerfile</span></td>
+              </tr>
+              <tr>
+                <td><strong>Azure Container Apps</strong><br /><span style="color:var(--muted)">(or App Service for Containers)</span></td>
+                <td>Run the container</td>
+                <td>Min 1 replica; scale on HTTP. Health probe → <span class="mono">/api/health</span>. Also reads <span class="mono">WEBSITE_SITE_NAME</span> on App Service</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Database for PostgreSQL</strong><br /><span style="color:var(--muted)">Flexible Server</span></td>
+                <td>Durable store (replaces the file-store)</td>
+                <td>Once <span class="mono">DATABASE_URL</span> is set, the <span class="mono">*_STORE_PATH</span> file fallbacks are ignored. Migrations run on boot</td>
+              </tr>
+              <tr>
+                <td><strong>Azure OpenAI</strong></td>
+                <td>The model</td>
+                <td>Create <strong>two deployments</strong>: a "large" (gpt-4o-class) and a "small/cheap" one — the tier map routes to them</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Cache for Redis</strong><br /><span style="color:var(--muted)">(or Upstash)</span></td>
+                <td>Shared session store across replicas</td>
+                <td>Optional but recommended for &gt; 1 replica</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Key Vault</strong></td>
+                <td>Secrets — keys, tokens, connection strings</td>
+                <td>Reference into Container Apps as secret env vars</td>
+              </tr>
+              <tr>
+                <td><strong>Application Insights</strong></td>
+                <td>Telemetry / logs</td>
+                <td>App reads <span class="mono">APPLICATIONINSIGHTS_CONNECTION_STRING</span> natively</td>
+              </tr>
+              <tr>
+                <td><strong>Identity provider</strong><br /><span style="color:var(--muted)">Entra ID / partner OIDC</span></td>
+                <td>Consumer sign-in</td>
+                <td>Supplies the <span class="mono">MIAI_OIDC_*</span> values</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">03</span> The mock → prod switch, at a glance</h2>
+          <table>
+            <thead>
+              <tr><th>Concern</th><th>Sandbox</th><th>Azure prod</th><th>Flipped by</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Model</strong></td><td><span class="mono">mock</span> → <span class="mono">openai</span></td><td><span class="mono">azure</span></td><td><span class="mono">MIAI_MODEL_MODE</span> + <span class="mono">AZURE_OPENAI_*</span></td></tr>
+              <tr><td><strong>Identity</strong></td><td><span class="mono">mock</span></td><td><span class="mono">oidc</span></td><td><span class="mono">MIAI_AUTH_MODE</span> + <span class="mono">MIAI_OIDC_*</span></td></tr>
+              <tr><td><strong>Wallet</strong></td><td><span class="mono">mock</span></td><td><span class="mono">http</span></td><td><span class="mono">MIAI_WALLET_MODE</span> + <span class="mono">MIAI_WALLET_API_*</span></td></tr>
+              <tr><td><strong>Store</strong></td><td>file on <span class="mono">/data</span></td><td>Azure Postgres</td><td>presence of <span class="mono">DATABASE_URL</span></td></tr>
+              <tr><td><strong>Sessions</strong></td><td>in-process</td><td>Redis</td><td><span class="mono">UPSTASH_REDIS_*</span></td></tr>
+              <tr><td><strong>Mock rails</strong></td><td>allowed</td><td><span class="rec">blocked</span></td><td>leave <span class="mono">ALLOW_MOCK_RAILS</span> unset</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Deployment handover · 1 / 3</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content" style="padding-top: 10mm">
+        <div class="section">
+          <h2><span class="n">04</span> Environment variables</h2>
+          <p style="color: var(--muted); font-size: 10px; margin: 0 0 3mm">
+            Grouped by function. Set the "Prod value" column and leave the mock defaults behind;
+            secrets go to Key Vault. Every var below is one the code actually reads.
+          </p>
+
+          <h3>4.1 · Core modes — the mock → real switches</h3>
+          <table>
+            <thead><tr><th style="width:34%">Var</th><th style="width:24%">Prod value</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">MIAI_AUTH_MODE</td><td><span class="mono">oidc</span></td><td>Real per-user identity (was <span class="mono">mock</span>)</td></tr>
+              <tr><td class="mono">MIAI_MODEL_MODE</td><td><span class="mono">azure</span> <span style="color:var(--muted)">or <span class="mono">gateway</span></span></td><td>Route to Azure OpenAI (was <span class="mono">mock</span>)</td></tr>
+              <tr><td class="mono">MIAI_WALLET_MODE</td><td><span class="mono">http</span></td><td>Real billing gateway (was <span class="mono">mock</span>)</td></tr>
+              <tr><td class="mono">SANDBOX_MODE</td><td><span style="color:var(--muted)">unset</span></td><td>Turns off the sandbox turn-cap + banner</td></tr>
+              <tr><td class="mono">ALLOW_MOCK_RAILS<br />I_UNDERSTAND_MOCK_RAILS_IN_PROD</td><td><span class="rec">leave unset</span></td><td>Safety: the app <strong>refuses to run mock rails in production</strong> unless <em>both</em> are set. Unset ⇒ forces real rails + strong secrets</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:4mm">4.2 · Data store</h3>
+          <table>
+            <thead><tr><th style="width:34%">Var</th><th style="width:24%">Prod value</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">DATABASE_URL</td><td>Azure Postgres conn string</td><td>Enables Postgres; disables the <span class="mono">/data</span> file store</td></tr>
+              <tr><td class="mono">PG_SSL_REJECT_UNAUTHORIZED</td><td><span class="mono">true</span></td><td>Azure Postgres requires SSL</td></tr>
+              <tr><td class="mono">UPSTASH_REDIS_REST_URL<br />UPSTASH_REDIS_REST_TOKEN</td><td><span style="color:var(--muted)">if using Redis</span></td><td>Multi-replica session store</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:4mm">4.3 · Model — Azure OpenAI <span style="color:var(--muted);font-weight:400">(<span class="mono">MIAI_MODEL_MODE=azure</span>)</span></h3>
+          <table>
+            <thead><tr><th style="width:40%">Var</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">AZURE_OPENAI_ENDPOINT</td><td><span class="mono">https://&lt;resource&gt;.openai.azure.com</span></td></tr>
+              <tr><td class="mono">AZURE_OPENAI_API_KEY</td><td>Azure OpenAI key</td></tr>
+              <tr><td class="mono">AZURE_OPENAI_API_VERSION</td><td>e.g. <span class="mono">2024-08-01-preview</span></td></tr>
+              <tr><td class="mono">AZURE_OPENAI_DEPLOYMENT</td><td>small / cheap deployment name</td></tr>
+              <tr><td class="mono">AZURE_OPENAI_DEPLOYMENT_LARGE</td><td>large deployment name (the <span class="mono">claude-sonnet</span>/<span class="mono">gpt-4o</span>/<span class="mono">opus</span> tiers)</td></tr>
+              <tr><td class="mono">EMBEDDING_API_KEY · _BASE_URL · _MODEL</td><td>if using real semantic retrieval</td></tr>
+            </tbody>
+          </table>
+          <div class="callout" style="margin-top:2.5mm">
+            <strong>Alternative — their model gateway</strong> (<span class="mono">MIAI_MODEL_MODE=gateway</span>):
+            <span class="mono">MIAI_MODEL_GATEWAY_URL</span>, <span class="mono">MIAI_MODEL_GATEWAY_KEY</span>
+            (or <span class="mono">MIAI_MODEL_API_KEY</span>), optional <span class="mono">MIAI_MODEL_PASSTHROUGH=1</span>.
+          </div>
+
+          <h3 style="margin-top:4mm">4.4 · Identity / auth <span style="color:var(--muted);font-weight:400">(<span class="mono">MIAI_AUTH_MODE=oidc</span>)</span></h3>
+          <table>
+            <thead><tr><th style="width:40%">Var</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">MIAI_OIDC_ISSUER</td><td>Consumer OIDC issuer</td></tr>
+              <tr><td class="mono">MIAI_OIDC_CLIENT_ID · _CLIENT_SECRET</td><td>Consumer OIDC client</td></tr>
+              <tr><td class="mono">MIAI_OIDC_AUDIENCE · _JWKS_URL</td><td>Agents / API token validation</td></tr>
+              <tr><td class="mono">MIAI_SESSION_SECRET</td><td>Signs the consumer session cookie — <strong>strong, required in prod</strong></td></tr>
+              <tr><td class="mono">GOOGLE_OAUTH_CLIENT_ID · _SECRET</td><td><span style="color:var(--muted)">or</span> Google as the consumer IdP instead</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Deployment handover · 2 / 3</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content" style="padding-top: 10mm">
+        <div class="section">
+          <div class="grid-2">
+            <div>
+              <h3>4.5 · Wallet / billing <span style="color:var(--muted);font-weight:400">(<span class="mono">http</span>)</span></h3>
+              <table>
+                <tbody>
+                  <tr><td class="mono" style="width:45%">MIAI_WALLET_API_URL</td><td>Billing / wallet gateway base URL</td></tr>
+                  <tr><td class="mono">MIAI_WALLET_API_KEY</td><td>Gateway key</td></tr>
+                </tbody>
+              </table>
+              <h3 style="margin-top:4mm">4.6 · Channels</h3>
+              <table>
+                <tbody>
+                  <tr><td class="mono" style="width:45%">TELEGRAM_BOT_TOKEN · _SECRET · _USERNAME</td><td>Telegram (secret = webhook token + nonce signing; charset <span class="mono">[A-Za-z0-9_-]</span>)</td></tr>
+                  <tr><td class="mono">WHATSAPP_TOKEN · _PHONE_NUMBER_ID</td><td>WhatsApp channel (if enabled)</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <h3>4.7 · App host &amp; URLs</h3>
+              <table>
+                <tbody>
+                  <tr><td class="mono" style="width:45%">APP_BASE_URL · NEXT_PUBLIC_APP_URL</td><td>Public origin (deep links, webhooks)</td></tr>
+                  <tr><td class="mono">MIAI_AGENTS_AUTH_URL · MIAI_CONSUMER_APP_URL</td><td>Cross-service URLs, if split (+ <span class="mono">NEXT_PUBLIC_</span> twins)</td></tr>
+                  <tr><td class="mono">CATALOG_DIR · CONSUMER_CATALOG_DIR</td><td>Baked into the image; override only if externalising the catalogue</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h3 style="margin-top:4mm">4.8 · Telemetry &amp; platform secrets <span style="color:var(--muted);font-weight:400">— required once OIDC/prod, or boot fails</span></h3>
+          <table>
+            <tbody>
+              <tr><td class="mono" style="width:40%">APPLICATIONINSIGHTS_CONNECTION_STRING</td><td>Azure App Insights</td></tr>
+              <tr><td class="mono">MIAI_SESSION_SECRET · OAUTH_TOKEN_SECRET · OAUTH_STATE_SECRET · EMBED_KEY_SECRET · WEBHOOK_SINK_SECRET · CRON_SECRET</td><td>Strong secrets — the hardening check fails boot otherwise</td></tr>
+              <tr><td class="mono">BRAVE_API_KEY / SEARCH_API_KEY · OPENWEATHER_API_KEY · YOUTUBE_API_KEY · PAYSTACK_* / STRIPE_SECRET_KEY</td><td><span style="color:var(--muted)">Optional</span> — only if those tools/connectors are switched on</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">05</span> Deployment flow</h2>
+          <div class="card">
+            <ul class="check">
+              <li><span class="box"></span> <strong>Build &amp; push</strong> — <span class="mono">az acr build -r &lt;acr&gt; -t miai-web:&lt;sha&gt; .</span> (repo <span class="mono">Dockerfile</span>, health at <span class="mono">/api/health</span>)</li>
+              <li><span class="box"></span> <strong>Provision</strong> the §2 resources; create the two Azure OpenAI deployments; load all secrets into Key Vault</li>
+              <li><span class="box"></span> <strong>Create the Container App</strong> with the image + §4 env (secrets as Key Vault refs). Target port <span class="mono">3000</span> (or <span class="mono">PORT</span>)</li>
+              <li><span class="box"></span> <strong>Migrations</strong> run automatically on first boot when <span class="mono">DATABASE_URL</span> is set — no separate step</li>
+              <li><span class="box"></span> <strong>Register webhooks</strong> against the prod host: Telegram <span class="mono">setWebhook?url=…/api/consumer/telegram/webhook&amp;secret_token=$TELEGRAM_BOT_SECRET</span></li>
+              <li><span class="box"></span> <strong>Verify</strong> <span class="mono">GET /api/health</span> → expect <span class="mono">authMode:oidc · modelMode:azure · walletMode:http · database:postgres · mockRailsAllowed:false</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">06</span> Multi-tenant &amp; open decisions</h2>
+          <div class="grid-2">
+            <div class="card">
+              <div class="stat"><div class="label">White-label model</div></div>
+              <p style="margin:1.5mm 0 0; font-size:9.5px; color:var(--ink); line-height:1.5">
+                Per-tenant, <strong>not</strong> per-fork: <span class="mono">workspaceId = brand = tenant</span>,
+                and every consumer call is scoped to it — so each partner gets isolated memory, wallet and
+                connectors off the one deployment. Registry: <span class="mono">apps/web/src/lib/tenant-brands.ts</span>.
+                The sandbox is pinned to a single brand for a clean demo; the multi-tenant capability is intact.
+              </p>
+            </div>
+            <div class="card">
+              <div class="stat"><div class="label">Decisions still open — config, not code</div></div>
+              <ul class="check" style="margin-top:1.5mm">
+                <li><span class="box"></span> <strong>Model path:</strong> Azure OpenAI direct vs their gateway</li>
+                <li><span class="box"></span> <strong>Identity:</strong> their OIDC issuer vs Google</li>
+                <li><span class="box"></span> <strong>Whose Azure subscription</strong> hosts it; tenant→partner map</li>
+                <li><span class="box"></span> <strong>Regions / residency:</strong> Postgres + Azure OpenAI co-located per market</li>
+              </ul>
+            </div>
+          </div>
+          <p style="text-align:center; color:var(--muted); font-size:9px; margin-top:3mm">
+            None of these require code changes — they select which env values go in §4.
+          </p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Deployment handover · 3 / 3</span>
+      </footer>
+    </section>
+  </body>
+</html>

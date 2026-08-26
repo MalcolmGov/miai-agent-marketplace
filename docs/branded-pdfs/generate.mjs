@@ -36,6 +36,10 @@ const jobs = [
     html: "demo-pilot-pack.html",
     pdf: "MyInstantAI-Agents-Monday-Demo-Pilot6.pdf",
   },
+  {
+    html: "azure-deployment.html",
+    pdf: "MyInstantAI-x-MoveDigital-Azure-Deployment-Config.pdf",
+  },
 ];
 
 if (!existsSync(chrome)) {
