@@ -14,13 +14,26 @@ import { executeWebhook } from "./handlers/webhook.js";
  * connector is unconnected (e.g. an emergency handoff), so they keep their stub behaviour; reads
  * fall back to the knowledge base.
  */
-function isActionTool(tool: string): boolean {
+export function isActionTool(tool: string): boolean {
   const n = tool.toLowerCase();
   if (/^(get_|list_|search_|find_|lookup_|read_|fetch_|check_|explain_|show_)/.test(n)) return false;
   if (/_status\b|_info\b|availability|_details\b/.test(n)) return false;
   // Internal routing / escalation — must never be blocked as "not connected".
   if (/handoff|hand_off|to_human|escalat|route_to|take_message/.test(n)) return false;
   return true;
+}
+
+/**
+ * The internal personal-assistant tools that `handleInternalAssistantTool()` degrades LOCALLY
+ * (tasks / memory / people / goals / reminders / web research). These NEVER require a connected
+ * connector: when the bound connector is unconnected, the not-connected branch below calls
+ * `handleInternalAssistantTool()` FIRST (and reminders are handled even earlier, at executeLive's
+ * top), so they always return ok:true without an external call. A connector-readiness preflight must
+ * therefore not count them as "needs setup". Keep this in sync with the branches in
+ * `handleInternalAssistantTool()`.
+ */
+export function isInAppAssistantTool(tool: string): boolean {
+  return /(person|contact|goal|remind|remember|task|research)/.test(tool.toLowerCase());
 }
 
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {

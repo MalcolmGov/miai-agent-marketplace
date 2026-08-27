@@ -1,6 +1,7 @@
 import { runTurn, type AgentState } from "@miai/runtime";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
+import { agentReadiness } from "@/lib/connector-preflight";
 import {
   isChatLanguage,
   replyLanguageSystemAppend,
@@ -89,6 +90,11 @@ export async function POST(req: Request) {
       ? body.replyLanguage
       : "en";
 
+    // P0-6: connector preflight — on a live turn, tell the model which of this agent's connectors
+    // aren't set up (so it stays honest and doesn't claim actions succeeded) and hand the client a
+    // notice so the owner can connect them. Inert in sandbox (helper short-circuits on mode).
+    const preflight = await agentReadiness(workspaceId, pkg, rental.bindings, mode);
+
     const result = await runTurn(
       {
         workspaceId,
@@ -101,7 +107,7 @@ export async function POST(req: Request) {
         knowledgeOverride,
         bindings: rental.bindings,
         state: rental.state as AgentState,
-        systemAppend: replyLanguageSystemAppend(replyLanguage),
+        systemAppend: replyLanguageSystemAppend(replyLanguage) + preflight.systemAppend,
         replyLanguage,
       },
       { wallet: createWalletAdapter(), skipDebit: freeTry },
@@ -167,6 +173,7 @@ export async function POST(req: Request) {
       correlationId,
       sessionId,
       freeTry,
+      connectorNotice: preflight.connectorNotice,
     });
   } catch (err) {
     trackException(err, { route: "api/chat", durationMs: Date.now() - started });
