@@ -40,6 +40,10 @@ test("mock debit idempotent", async () => {
   assert.equal(b.ok, true);
   assert.equal(a.balance, b.balance);
   assert.equal((await w.getBalance("ws")).tokens, 900);
+  // The fresh debit did not flag deduped; the replay does, so the caller can report tokensDebited:0
+  // instead of overstating a charge the wallet never applied.
+  assert.notEqual(a.deduped, true, "the first debit is a real charge, not a dedup");
+  assert.equal(b.deduped, true, "the replay is flagged deduped (balance unchanged)");
 });
 
 test("http debit 402 → paused DebitResult (no throw)", async () => {

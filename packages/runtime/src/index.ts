@@ -141,9 +141,14 @@ export interface TurnRequest {
    *  Skips the cross-tenant data-access guardrail so benign family references ("my daughter
    *  Aya") are not misread as cross-tenant probes. All other safety checks still apply. */
   consumerLine?: boolean;
+  /** Conversation/session id, when the turn belongs to a multi-message session. Folded into the
+   *  DERIVED idempotency key (below) so two DISTINCT sessions that happen to share the same
+   *  workspace, agent, position and user message do not collide onto ONE debit key — which would
+   *  serve the second turn free. Ignored when idempotencyKey is supplied. */
+  sessionId?: string;
   /** Caller-provided per-turn idempotency key for the wallet debit — stable across retries of the
    *  same turn and unique per turn. When absent, a deterministic key is derived from the turn
-   *  content so re-processed requests still dedup instead of double-charging. */
+   *  content (and sessionId) so re-processed requests still dedup instead of double-charging. */
   idempotencyKey?: string;
 }
 
@@ -2313,7 +2318,11 @@ export function turnDebitKey(req: TurnRequest): string {
     h = Math.imul(h, 0x01000193);
   }
   const digest = (h >>> 0).toString(16).padStart(8, "0");
-  return `${req.workspaceId}:${req.agentId}:${req.messages.length}:${digest}`;
+  // Scope by sessionId so two DISTINCT conversations with an identical position + message get
+  // different keys (a fresh session resending the same first message is charged, not served free);
+  // omitted when absent, keeping the key byte-identical to the pre-session-scope form.
+  const sessionSeg = req.sessionId ? `${req.sessionId}:` : "";
+  return `${req.workspaceId}:${req.agentId}:${sessionSeg}${req.messages.length}:${digest}`;
 }
 
 /**
@@ -2327,7 +2336,7 @@ async function debitOrServe(
   wallet: WalletAdapter,
   params: Parameters<WalletAdapter["debit"]>[0],
   fallbackBalance: number,
-): Promise<{ ok: boolean; balance: number; paused: boolean }> {
+): Promise<{ ok: boolean; balance: number; paused: boolean; deduped?: boolean }> {
   try {
     return await wallet.debit(params);
   } catch (err) {
@@ -2342,7 +2351,7 @@ async function debitOrServe(
         message: err instanceof Error ? err.message : String(err),
       }),
     );
-    return { ok: true, balance: fallbackBalance, paused: false };
+    return { ok: true, balance: fallbackBalance, paused: false, deduped: false };
   }
 }
 
@@ -2599,7 +2608,7 @@ export async function runTurn(
         assistantMessage.length,
       ) + localizeTokens;
     const debit = skipDebit
-      ? { ok: true as const, balance: bal.tokens, paused: false }
+      ? { ok: true as const, balance: bal.tokens, paused: false, deduped: false }
       : await debitOrServe(
           wallet,
           {
@@ -2630,7 +2639,7 @@ export async function runTurn(
       assistantMessage,
       messages,
       toolCalls,
-      tokensDebited: skipDebit ? 0 : debit.ok ? tokens : 0,
+      tokensDebited: skipDebit ? 0 : debit.ok && !debit.deduped ? tokens : 0,
       balance: debit.balance,
       state: paused ? "paused_no_tokens" : req.state,
       paused,
@@ -3215,7 +3224,7 @@ export async function runTurn(
   const noCharge = modelFailed && turnUsageTotal === 0;
   const debit =
     skipDebit || noCharge
-      ? { ok: true as const, balance: bal.tokens, paused: false }
+      ? { ok: true as const, balance: bal.tokens, paused: false, deduped: false }
       : await debitOrServe(
           wallet,
           {
@@ -3238,7 +3247,7 @@ export async function runTurn(
     assistantMessage,
     messages,
     toolCalls,
-    tokensDebited: skipDebit || noCharge ? 0 : debit.ok ? tokens : 0,
+    tokensDebited: skipDebit || noCharge ? 0 : debit.ok && !debit.deduped ? tokens : 0,
     balance: debit.balance,
     state: paused ? "paused_no_tokens" : req.state === "rented" ? "live" : req.state,
     paused,
