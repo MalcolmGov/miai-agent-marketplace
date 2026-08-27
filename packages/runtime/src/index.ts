@@ -1,5 +1,5 @@
 import type { AgentPackage } from "@miai/agent-protocol";
-import { executeConnector, type ToolBinding } from "@miai/connectors";
+import { executeConnector, backoffWithJitter, type ToolBinding } from "@miai/connectors";
 import { defaultBindingsForTools, getPreset } from "@miai/presets";
 import {
   createWalletAdapter,
@@ -1843,9 +1843,9 @@ function isRetryableProviderStatus(status: number): boolean {
 
 function providerBackoffMs(attempt: number): number {
   // Full-jitter exponential backoff (P2-8): random wait in [0, min(20s, 400·2^attempt)) so many
-  // turns failing against the same gateway at once don't synchronize their retries.
-  const cap = Math.min(20_000, 400 * 2 ** attempt);
-  return Math.floor(Math.random() * cap);
+  // turns failing against the same gateway at once don't synchronize their retries. Reuses the
+  // connectors' CSPRNG-backed helper (the runtime package has no node:crypto types of its own).
+  return backoffWithJitter(attempt, 400, 20_000);
 }
 
 /** Retry fetch on 429/5xx and transient network errors; do not retry other 4xx. */

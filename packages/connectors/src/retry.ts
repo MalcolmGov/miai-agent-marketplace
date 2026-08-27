@@ -1,3 +1,5 @@
+import { randomInt } from "node:crypto";
+
 /** HTTP statuses worth retrying (429 rate-limit, 5xx server errors). */
 export function isRetryableHttpStatus(status: number): boolean {
   return status === 429 || status >= 500;
@@ -45,8 +47,8 @@ export interface WithRetryOptions {
  * upstream (gateway / connector / DB).
  */
 export function backoffWithJitter(attempt: number, baseDelayMs: number, maxDelayMs: number): number {
-  const cap = Math.min(maxDelayMs, baseDelayMs * 2 ** attempt);
-  return Math.floor(Math.random() * cap);
+  const cap = Math.floor(Math.min(maxDelayMs, baseDelayMs * 2 ** attempt));
+  return cap > 0 ? randomInt(cap) : 0; // CSPRNG (not Math.random) — jitter, but keeps Sonar S2245 clean
 }
 
 /**

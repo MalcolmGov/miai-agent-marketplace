@@ -13,7 +13,8 @@ describe("backoffWithJitter (P2-8)", () => {
     const samples = Array.from({ length: 200 }, () => backoffWithJitter(3, 400, 20_000));
     const cap = Math.min(20_000, 400 * 2 ** 3); // 3200
     for (const s of samples) {
-      assert.ok(s >= 0 && s < cap, `sample ${s} out of [0, ${cap})`);
+      assert.ok(s >= 0, `sample ${s} below 0`);
+      assert.ok(s < cap, `sample ${s} not below cap ${cap}`);
     }
     assert.ok(new Set(samples).size > 1, "jitter should not produce a constant delay");
   });

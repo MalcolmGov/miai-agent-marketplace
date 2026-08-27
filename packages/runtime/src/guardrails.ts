@@ -137,7 +137,7 @@ function luhnValid(digits: string): boolean {
   let sum = 0;
   let alt = false;
   for (let i = digits.length - 1; i >= 0; i--) {
-    let d = digits.charCodeAt(i) - 48;
+    let d = (digits.codePointAt(i) ?? 48) - 48;
     if (alt) {
       d *= 2;
       if (d > 9) d -= 9;
@@ -156,7 +156,7 @@ function luhnValid(digits: string): boolean {
  */
 export function containsLikelyPan(text: string): boolean {
   if (!text) return false;
-  for (const m of text.matchAll(/(?<!\d)(?:\d[ .\-]?){13,19}(?!\d)/g)) {
+  for (const m of text.matchAll(/(?<!\d)(?:\d[ .-]?){13,19}(?!\d)/g)) {
     const digits = m[0].replace(/\D/g, "");
     if (digits.length >= 13 && digits.length <= 19 && luhnValid(digits)) return true;
   }
