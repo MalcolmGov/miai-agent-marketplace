@@ -1,4 +1,5 @@
 import { runTurn, type ChatMessage } from "@miai/runtime";
+import { agentReadiness } from "@/lib/connector-preflight";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import { getAgentPackage } from "@/lib/catalog";
 import {
@@ -186,9 +187,14 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
   const replyLanguage: ChatLanguageCode = isChatLanguage(input.replyLanguage)
     ? input.replyLanguage
     : "en";
+  // P0-6: keep the model honest about unconnected connectors on embed/widget turns too. The embed
+  // end-user can't connect them (that's the owner's job), so we inject only the system notice, not a
+  // UI payload. Inert in sandbox via the helper's mode short-circuit.
+  const preflight = await agentReadiness(workspaceId, pkg, rental.bindings, "live");
   const systemAppend = [
     HANDOFF_POLICY[input.channel],
     replyLanguage !== "en" ? replyLanguageSystemAppend(replyLanguage) : "",
+    preflight.systemAppend,
   ]
     .filter(Boolean)
     .join("\n\n");

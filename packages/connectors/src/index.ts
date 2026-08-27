@@ -52,7 +52,16 @@ export {
   type ProbeResult,
 } from "./oauth/probe.js";
 
-export { executeLive, stubFor } from "./live/execute.js";
+export { executeLive, stubFor, isActionTool, isInAppAssistantTool } from "./live/execute.js";
+
+export {
+  computeConnectorReadiness,
+  requiredExternalConnectors,
+  requiredConnectorMap,
+  type ConnectorReadiness,
+  type ConnectorKind,
+  type MissingConnector,
+} from "./preflight.js";
 
 export {
   assertSafeOutboundUrl,

@@ -1,5 +1,6 @@
 import { getPreset, defaultBindingsForTools } from "@miai/presets";
 import { getAgentPackage } from "@/lib/catalog";
+import { agentReadiness } from "@/lib/connector-preflight";
 import { appendAudit, upsertWorkspaceAgent } from "@/lib/store";
 import { TIER_PRICES } from "@/lib/constants";
 import type { RentTier } from "@/lib/store";
@@ -59,5 +60,15 @@ export async function POST(req: Request) {
     },
   });
 
-  return apiOk({ ok: true, rental, priceUsd: TIER_PRICES[tier] });
+  // P0-6: report connector readiness so the activation UI can prompt "Connect X to finish setup".
+  // Never blocks the rental — the row exists so connections have something to attach to.
+  const preflight = await agentReadiness(workspaceId, pkg, bindings);
+
+  return apiOk({
+    ok: true,
+    rental,
+    priceUsd: TIER_PRICES[tier],
+    readiness: preflight.readiness,
+    connectorNotice: preflight.connectorNotice,
+  });
 }

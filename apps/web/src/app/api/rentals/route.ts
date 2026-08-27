@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAgentPackage } from "@/lib/catalog";
+import { agentReadiness } from "@/lib/connector-preflight";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { listWorkspaceAgents } from "@/lib/store";
 
@@ -16,6 +17,9 @@ export async function GET(req: Request) {
       .filter((r) => r.state !== "selected")
       .map(async (r) => {
         const pkg = await getAgentPackage(r.agentId);
+        // P0-6: recompute connector readiness per rental (catches tokens revoked/expired AFTER rent,
+        // which the rent-time check can't). Labeled `missing` drives a "needs setup" badge.
+        const preflight = pkg ? await agentReadiness(workspaceId, pkg, r.bindings) : null;
         return {
           agentId: r.agentId,
           name: pkg?.manifest.name ?? r.agentId,
@@ -26,6 +30,9 @@ export async function GET(req: Request) {
           connectedConnectors: r.connectedConnectors ?? [],
           rentedAt: r.rentedAt ?? null,
           publicKey: r.publicKey,
+          readiness: preflight
+            ? { ready: preflight.readiness.ready, missing: preflight.connectorNotice?.missing ?? [] }
+            : { ready: true, missing: [] },
         };
       }),
   );
