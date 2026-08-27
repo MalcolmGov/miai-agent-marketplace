@@ -6,8 +6,8 @@ Binding agreement for the greenfield **Agent Marketplace** integrating with MyIn
 
 | Surface | Owner | Notes |
 |---|---|---|
-| Agent packages (`miai.agent-package/v1`) | Move Digital | Sourced from `miai-agents` |
-| Marketplace UI + Agent Runtime + Connectors | Move Digital | This repo |
+| Agent packages (`miai.agent-package/v1`) | Moove Digital | Sourced from `miai-agents` |
+| Marketplace UI + Agent Runtime + Connectors | Moove Digital | This repo |
 | Auth / SSO, Token wallet, Model gateway | MyInstantAI | Consumed via adapters |
 
 ## Market packs
@@ -48,7 +48,7 @@ Catalogue is sold as **agent families** with **US / EU / Africa / Asia / Oceania
 - Migration phases: [MIGRATION_RUNBOOK.md](./MIGRATION_RUNBOOK.md) · detail: [APP_CHANNEL.md](./APP_CHANNEL.md)
 
 ### 6. WhatsApp
-- Confirm WABA ownership (MyInstantAI BSP vs Move Digital)
+- Confirm WABA ownership (MyInstantAI BSP vs Moove Digital)
 
 ## Connector OAuth
 

@@ -12,7 +12,7 @@ MyInstantAI Agent Marketplace lets businesses **rent**, **configure**, and **dep
 
 ## Who we are (white-label — MyInstantAI only)
 
-MyInstantAI is the company and brand behind prepaid AI access and this Agent Marketplace. When asked “who is MyInstantAI?” describe **MyInstantAI** only — never name delivery partners, agencies, contractors, or individuals (including Move Digital, Zara, or any personal names). There is no third-party vendor to cite in customer chat.
+MyInstantAI is the company and brand behind prepaid AI access and this Agent Marketplace. When asked “who is MyInstantAI?” describe **MyInstantAI** only — never name delivery partners, agencies, contractors, or individuals (including Moove Digital, Zara, or any personal names). There is no third-party vendor to cite in customer chat.
 
 ## Setup guide — rent to live
 

@@ -57,10 +57,10 @@
 
 | Layer | Owner |
 |---|---|
-| Agent packages (`miai.agent-package/v1`) | Move Digital |
-| Marketplace UI, runtime, connectors, embed | Move Digital (this repo) |
+| Agent packages (`miai.agent-package/v1`) | Moove Digital |
+| Marketplace UI, runtime, connectors, embed | Moove Digital (this repo) |
 | Auth / SSO, token wallet, model gateway | MyInstantAI (consumed via adapters) |
-| Azure landing zone (long-term) | MyInstantAI + Move Digital deploy |
+| Azure landing zone (long-term) | MyInstantAI + Moove Digital deploy |
 
 ### Runtime modes
 

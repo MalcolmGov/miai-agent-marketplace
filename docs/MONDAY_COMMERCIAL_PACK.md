@@ -9,7 +9,7 @@ Leave-behind for **commercial finalisation and go-live**. Product staging: `/dem
 | Annual platform license | **$200,000 / year** (~$400 / agent / year) |
 | Monthly retainer (4 FTE pod) | **$30,000 / month** |
 | Agent rental (end-customer) | **None** — agents offered free |
-| Token top-up revenue | **20% Move Digital · 80% MyInstantAI** |
+| Token top-up revenue | **20% Moove Digital · 80% MyInstantAI** |
 
 **Branded PDFs:** `docs/branded-pdfs/output/`  
 - `MyInstantAI-x-MoveDigital-Partnership-Proposal.pdf` ← primary leave-behind  
@@ -69,7 +69,7 @@ Cutover onto OIDC / wallet / gateway / Azure is delivered under the partnership 
 
 **Included:**
 - Bug fixes for licensed Agents runtime, catalogue defects, connector regressions
-- Security/patch maintenance for Move Digital–owned Agents codebase
+- Security/patch maintenance for Moove Digital–owned Agents codebase
 - Compatibility upkeep with MIAI OIDC / wallet / gateway **interfaces** (MIAI owns core platform)
 - Keep CI / catalog integrity / go-live certification green for in-scope packs
 - Monthly status report: incidents, fixes, backlog, agent-factory output
@@ -107,7 +107,7 @@ Over-capacity → change order or credit top-up pack.
 ### 2.6 Paste-ready commercial wording
 
 > **Monthly Retainer — $30,000**  
-> Includes a dedicated Move Digital Agents pod of **4.0 FTE** (**2× Customer ops / onboarding** + **2× Engineering**). Ops own customer setup, training, and go-live enablement under fair-use caps. Engineering covers **integrations** (OAuth/Actions, webhook/MCP, Install, cutover onto MIAI rails), production support/maintenance, and an Agent Factory of **10 credits per month** (typically **6–10 catalogue improvements/SKUs**). End-customer agents are free; upside is via token rev-share only. Excludes MyInstantAI core platform engineering and work beyond monthly credit/fair-use caps.
+> Includes a dedicated Moove Digital Agents pod of **4.0 FTE** (**2× Customer ops / onboarding** + **2× Engineering**). Ops own customer setup, training, and go-live enablement under fair-use caps. Engineering covers **integrations** (OAuth/Actions, webhook/MCP, Install, cutover onto MIAI rails), production support/maintenance, and an Agent Factory of **10 credits per month** (typically **6–10 catalogue improvements/SKUs**). End-customer agents are free; upside is via token rev-share only. Excludes MyInstantAI core platform engineering and work beyond monthly credit/fair-use caps.
 
 ---
 
@@ -119,7 +119,7 @@ Over-capacity → change order or credit top-up pack.
 | 2 | License term | Annual / multi-year | **Annual**, renewable |
 | 3 | End-customer monetisation | Rent + tokens vs **tokens only** | **Tokens only** — agents free |
 | 4 | Exclusivity | None / market / vertical | Define if exclusive Agents marketplace for MIAI |
-| 5 | IP | License vs assignment | **License** to MyInstantAI; Move Digital retains reusable IP |
+| 5 | IP | License vs assignment | **License** to MyInstantAI; Moove Digital retains reusable IP |
 | 6 | Operations | MD / MIAI / joint | **Joint** 90 days post-cutover, then named primary |
 | 7 | SLAs | Hours + uptime on Azure | Draft after Azure owner named |
 | 8 | Public launch date | — | Set target; staging credentials unblock Week 1 |
@@ -225,4 +225,4 @@ A MyInstantAI user can **SSO in → activate / configure an agent from the licen
 - [ ] Next working session booked  
 
 —
-**Move Digital** · Agent Marketplace delivery partner
+**Moove Digital** · Agent Marketplace delivery partner

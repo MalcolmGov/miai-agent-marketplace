@@ -6,7 +6,7 @@ import { requireOperator } from "@/lib/security";
 export const dynamic = "force-dynamic";
 
 /**
- * MyInstantAI / Move Digital operator view — live marketplace aggregation.
+ * MyInstantAI / Moove Digital operator view — live marketplace aggregation.
  * Requires admin/operator role. Pass ?narrative=1 for pitch-deck scale figures only.
  */
 export async function GET(req: Request) {

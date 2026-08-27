@@ -1,7 +1,7 @@
-# MyInstantAI × Move Digital — Agents Marketplace Partnership Kickoff Brief
+# MyInstantAI × Moove Digital — Agents Marketplace Partnership Kickoff Brief
 
 **Date:** 31 July 2026  
-**From:** Move Digital  
+**From:** Moove Digital  
 **To:** MyInstantAI leadership / product / platform  
 **Purpose:** Convert partnership interest into a scoped 30-day integration kickoff.
 
@@ -9,7 +9,7 @@
 
 ## 1. What’s already delivered
 
-Move Digital has built a production-oriented **Agent Marketplace** ready to plug into MyInstantAI rails:
+Moove Digital has built a production-oriented **Agent Marketplace** ready to plug into MyInstantAI rails:
 
 | Capability | Status |
 |---|---|
@@ -30,10 +30,10 @@ Supporting packs (can share on request): Platform Integration Contract, Technica
 
 | Topic | Proposal for discussion |
 |---|---|
-| Role | Move Digital delivers & integrates the Agents Marketplace; MyInstantAI owns customer auth, wallet, models, and primary Azure tenancy |
+| Role | Moove Digital delivers & integrates the Agents Marketplace; MyInstantAI owns customer auth, wallet, models, and primary Azure tenancy |
 | Product home | Agents live under MyInstantAI domain (e.g. `app.myinstantai.com/agents`) as a first-party surface |
-| Catalogue IP | Agent packages remain Move Digital deliverables under agreed license / assignment (TBD in term sheet) |
-| Connectors | OAuth apps can sit under MyInstantAI orgs for production; Move Digital operates staging |
+| Catalogue IP | Agent packages remain Moove Digital deliverables under agreed license / assignment (TBD in term sheet) |
+| Connectors | OAuth apps can sit under MyInstantAI orgs for production; Moove Digital operates staging |
 | Go-live | Staging on your rails → production cutover per Migration Runbook |
 
 ---
@@ -47,7 +47,7 @@ Please nominate owners and target dates for:
 3. **Model gateway** — base URL, auth, tool-calling support, model alias map  
 4. **Azure** — subscription / resource group, who runs `az deployment`, Key Vault access model  
 5. **DNS / TLS** — production hostname for Agents + embed (`agent.js`)  
-6. **WhatsApp** — WABA / BSP ownership (MyInstantAI vs Move Digital)  
+6. **WhatsApp** — WABA / BSP ownership (MyInstantAI vs Moove Digital)  
 7. **Commercial** — term sheet principles (see §5) and target partnership / go-live dates  
 8. **B2B entry (separate from consumer)** — marketing CTA **For business / Agents** → `{agentsHost}/get-started` (do **not** reuse consumer Get Started → token signup)  
 9. **Agents auth URL** — supports `product=agents` + `return_to`; workspace provision API (company → `workspace_id`)  
@@ -79,7 +79,7 @@ Please indicate preferred position(s) — hybrid models are welcome:
 | Option | How it works | Best when |
 |---|---|---|
 | **A. Fixed delivery fee** | One-time (or phased) build/integration fee for v1 cutover onto your rails | You want a clean capex-style engagement |
-| **B. Monthly retainer** | Ongoing platform + catalogue ops / support after go-live | You want Move Digital to operate / co-operate production |
+| **B. Monthly retainer** | Ongoing platform + catalogue ops / support after go-live | You want Moove Digital to operate / co-operate production |
 | **C. Rev-share on agent rent** | % of monthly agent entitlement / rent revenue | Agents become a material SKU on your price list |
 | **D. Share of token spend** | % of prepaid token wallet consumption attributed to Agents | Token economics are the primary monetisation |
 | **E. Hybrid (recommended)** | Smaller delivery fee + retainer and/or rev-share (rent and/or tokens) | Aligns delivery risk with long-term upside |
@@ -89,7 +89,7 @@ Also confirm:
 1. **v1 scope** — full 500-SKU catalogue at launch vs pilot bundle first?  
 2. **Exclusivity** — exclusive Agents marketplace for MyInstantAI in defined markets/verticals?  
 3. **IP** — license vs assignment of agent packages and connector presets?  
-4. **Operations** — who runs production after cutover (Move Digital / MyInstantAI / joint)?  
+4. **Operations** — who runs production after cutover (Moove Digital / MyInstantAI / joint)?  
 5. **SLAs** — uptime and support hours once on Azure?  
 6. **Timeline** — desired public launch date?
 
@@ -113,7 +113,7 @@ Please reply with:
 - Preferred commercial option(s) from §5 (even provisional)  
 - Any red lines on IP, exclusivity, or launch date  
 
-Move Digital is ready to start Week 1 as soon as staging credentials and commercial principles are confirmed.
+Moove Digital is ready to start Week 1 as soon as staging credentials and commercial principles are confirmed.
 
 —
-**Move Digital** · Agent Marketplace delivery partner
+**Moove Digital** · Agent Marketplace delivery partner
