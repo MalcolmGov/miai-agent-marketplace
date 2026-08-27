@@ -393,8 +393,15 @@ export function checkOutputGuardrails(
         "I can't handle CVV / security codes in chat — please use the secure payment page only.",
     };
   }
+  // OTP/one-time-code leak: the keyword net covers common bank synonyms (verification / security /
+  // login / access / auth code, passcode, 2FA code), not just the literal "otp" / "one-time …" — a
+  // model-drafted example phrased "your verification code is 123456" previously streamed through the
+  // live output guard un-redacted (E2E journey #6). Still gated on a 4-8 digit run within 40 chars of
+  // the keyword, so bare order / confirmation numbers are not over-redacted.
   if (
-    /\b(otp|one-?time (pin|password|code))\b.{0,40}\b\d{4,8}\b/i.test(text) ||
+    /\b(otp|one-?time (pin|password|code|passcode)|passcode|verification code|security code|login code|access code|auth(?:entication)? code|2fa code)\b.{0,40}\b\d{4,8}\b/i.test(
+      text,
+    ) ||
     /\b(pin|password)\b\s*[:=]\s*\S+/i.test(text)
   ) {
     return {
