@@ -5,6 +5,20 @@ import { executeMcp } from "./handlers/mcp.js";
 import { slackHandoff } from "./handlers/slack.js";
 import { executeWebhook } from "./handlers/webhook.js";
 
+/**
+ * A tool is an ACTION (state-changing: places an order, books, creates a ticket, submits an
+ * application, sends a message) rather than a READ. We must NEVER fabricate a successful action for
+ * a connector that isn't actually connected — an order "placed" / booking "confirmed" / ticket
+ * "created" tells a real customer something happened when nothing did (P0-5). Reads are safe to stub
+ * with placeholder data (the workflow / model falls back to the knowledge base).
+ */
+function isActionTool(tool: string): boolean {
+  const n = tool.toLowerCase();
+  if (/^(get_|list_|search_|find_|lookup_|read_|fetch_|check_|explain_|show_)/.test(n)) return false;
+  if (/_status\b|_info\b|availability|_details\b/.test(n)) return false;
+  return true;
+}
+
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
   if (n.includes("place_order") || n === "place_order") {
@@ -1944,6 +1958,19 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
       // "complete Connect" stub — so the assistant stays useful before the account is linked.
       const local = handleInternalAssistantTool(call);
       if (local) return local;
+      // P0-5: fail honestly on an ACTION for a connector that isn't connected — no fabricated
+      // "placed" / "confirmed" / reference. Only reads keep stubbing with placeholder data.
+      if (isActionTool(call.tool)) {
+        return {
+          ok: false,
+          data: {
+            error: "not_connected",
+            _note: `${connector} not OAuth-connected — complete Connect in Actions`,
+          },
+          connector,
+          stubbed: true,
+        };
+      }
       return {
         ok: true,
         data: {
