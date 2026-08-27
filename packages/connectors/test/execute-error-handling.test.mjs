@@ -103,4 +103,28 @@ describe("executeLive — unconnected connector never fabricates an ACTION (P0-5
     assert.equal(r.ok, true, "reads keep stubbing so the assistant stays useful");
     assert.equal(r.stubbed, true);
   });
+
+  it("routing/handoff tools are NOT blocked as not_connected (an emergency handoff must reach a human)", async () => {
+    for (const tool of ["handoff_to_human", "route_to_department", "take_message"]) {
+      const r = await executeLive({
+        workspaceId: `test-ws-p05h-${tool}-${Date.now()}`,
+        agentId: "agent",
+        tool,
+        args: { reason: "emergency", summary: "help" },
+        binding: { tool, connector: "slack", config: {} },
+        mode: "live",
+      });
+      assert.notEqual(String(r.data.error), "not_connected", `${tool} must still route, not fail closed`);
+    }
+    // handoff specifically routes to a human desk.
+    const h = await executeLive({
+      workspaceId: `test-ws-p05h2-${Date.now()}`,
+      agentId: "agent",
+      tool: "handoff_to_human",
+      args: { reason: "emergency" },
+      binding: { tool: "handoff_to_human", connector: "slack", config: {} },
+      mode: "live",
+    });
+    assert.equal(h.ok, true, "handoff must succeed (route to human) even unconnected");
+  });
 });
