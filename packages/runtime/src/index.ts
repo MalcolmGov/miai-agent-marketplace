@@ -2198,6 +2198,36 @@ export function turnDebitKey(req: TurnRequest): string {
   return `${req.workspaceId}:${req.agentId}:${req.messages.length}:${digest}`;
 }
 
+/**
+ * Debit the wallet, failing OPEN on an unexpected gateway error. wallet.debit() already returns a
+ * non-throwing paused result for the normal insufficient-balance case (402/409); it only THROWS when
+ * the gateway itself is unavailable (5xx / timeout). By that point the model has usually already
+ * produced the answer, so crashing the turn would discard BOTH the answer and the charge and 500 the
+ * user. Instead we serve the answer and emit an unreconciled-charge record for ops to true up later.
+ */
+async function debitOrServe(
+  wallet: WalletAdapter,
+  params: Parameters<WalletAdapter["debit"]>[0],
+  fallbackBalance: number,
+): Promise<{ ok: boolean; balance: number; paused: boolean }> {
+  try {
+    return await wallet.debit(params);
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        level: "error",
+        event: "miai.wallet_debit_unreconciled",
+        workspaceId: params.workspaceId,
+        agentId: params.agentId,
+        amount: params.amount,
+        idempotencyKey: params.idempotencyKey,
+        message: err instanceof Error ? err.message : String(err),
+      }),
+    );
+    return { ok: true, balance: fallbackBalance, paused: false };
+  }
+}
+
 export async function runTurn(
   req: TurnRequest,
   deps?: {
@@ -2234,7 +2264,7 @@ export async function runTurn(
       messages: req.messages,
       toolCalls: [],
       tokensDebited: 0,
-      balance: (await wallet.getBalance(req.workspaceId)).tokens,
+      balance: (await wallet.getBalance(req.workspaceId).catch(() => ({ tokens: 0 }))).tokens,
       state: "paused_no_tokens",
       paused: true,
     };
@@ -2285,8 +2315,23 @@ export async function runTurn(
     { role: "user", content: req.userMessage },
   ];
 
-  const bal = await wallet.getBalance(req.workspaceId);
-  if (!skipDebit && bal.tokens <= 0) {
+  // Fail safely around the partner wallet gateway: a transient getBalance error must not crash the
+  // turn. Treat the balance as unknown and proceed (the per-turn debit is the real gate); only a
+  // KNOWN zero/negative balance pauses up front.
+  let balanceKnown = true;
+  const bal = await wallet.getBalance(req.workspaceId).catch((err) => {
+    balanceKnown = false;
+    console.error(
+      JSON.stringify({
+        level: "error",
+        event: "miai.wallet_balance_unavailable",
+        workspaceId: req.workspaceId,
+        message: err instanceof Error ? err.message : String(err),
+      }),
+    );
+    return { workspaceId: req.workspaceId, tokens: 0, currencyLabel: "tokens" };
+  });
+  if (!skipDebit && balanceKnown && bal.tokens <= 0) {
     return {
       assistantMessage: wf(req.replyLanguage, "paused_no_tokens"),
       messages,
@@ -2335,23 +2380,7 @@ export async function runTurn(
     if (!handled.handled) return null;
     toolCalls.push(...handled.toolCalls);
     messages.push({ role: "assistant", content: handled.assistantMessage });
-    const tokens = estimateTurnTokens(
-      req.model,
-      system.length + req.userMessage.length,
-      handled.assistantMessage.length,
-    );
-    const debit = skipDebit
-      ? { ok: true as const, balance: bal.tokens, paused: false }
-      : await wallet.debit({
-          workspaceId: req.workspaceId,
-          amount: tokens,
-          idempotencyKey: turnDebitKey(req),
-          reason: "agent_turn",
-          agentId: req.agentId,
-        });
-    // Honor the debit outcome exactly like the main (non-workflow) path: an insufficient-balance
-    // debit deducts nothing (ok:false) and must pause the agent, not silently serve the turn free.
-    const paused = !skipDebit && (!debit.ok || debit.paused);
+    let localizeTokens = 0;
     let assistantMessage = scrubLeakedPlaceholders(
       handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
       templateVars,
@@ -2385,6 +2414,9 @@ export async function runTurn(
         });
         const out = (localized.content || "").trim();
         if (out) assistantMessage = out;
+        // Meter this re-voice: a real model call whose usage would otherwise be discarded,
+        // under-billing every non-English grounded turn by ~one model call.
+        localizeTokens = localized.usage?.totalTokens ?? 0;
       } catch (err) {
         // Best-effort: on any model error keep the grounded answer rather than failing the turn.
         console.warn(
@@ -2393,6 +2425,35 @@ export async function runTurn(
         );
       }
     }
+    // Reflect the final (possibly re-voiced) answer in history before metering.
+    {
+      const lastMsg = messages[messages.length - 1];
+      if (lastMsg?.role === "assistant") lastMsg.content = assistantMessage;
+    }
+    // Meter on the FINAL answer plus the re-voice call, then debit — failing open around the wallet
+    // gateway (a blip after we already produced the answer must not 500 the turn).
+    const tokens =
+      estimateTurnTokens(
+        req.model,
+        system.length + req.userMessage.length,
+        assistantMessage.length,
+      ) + localizeTokens;
+    const debit = skipDebit
+      ? { ok: true as const, balance: bal.tokens, paused: false }
+      : await debitOrServe(
+          wallet,
+          {
+            workspaceId: req.workspaceId,
+            amount: tokens,
+            idempotencyKey: turnDebitKey(req),
+            reason: "agent_turn",
+            agentId: req.agentId,
+          },
+          bal.tokens,
+        );
+    // Honor the debit outcome like the main path: an insufficient-balance debit (ok:false) deducts
+    // nothing and must pause the agent, not silently serve the turn free.
+    const paused = !skipDebit && (!debit.ok || debit.paused);
     if (onDelta && assistantMessage) {
       const parts = assistantMessage.split(/(\s+)/).filter(Boolean);
       let buf = "";
@@ -2945,13 +3006,17 @@ export async function runTurn(
         );
   const debit = skipDebit
     ? { ok: true as const, balance: bal.tokens, paused: false }
-    : await wallet.debit({
-        workspaceId: req.workspaceId,
-        amount: tokens,
-        idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
-        reason: "agent_turn",
-        agentId: req.agentId,
-      });
+    : await debitOrServe(
+        wallet,
+        {
+          workspaceId: req.workspaceId,
+          amount: tokens,
+          idempotencyKey: turnDebitKey(req),
+          reason: "agent_turn",
+          agentId: req.agentId,
+        },
+        bal.tokens,
+      );
 
   const paused = !skipDebit && (!debit.ok || debit.paused);
   const assistantMessage = scrubLeakedPlaceholders(completion.content, templateVars);
