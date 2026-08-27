@@ -132,6 +132,10 @@ export interface TurnRequest {
    *  Skips the cross-tenant data-access guardrail so benign family references ("my daughter
    *  Aya") are not misread as cross-tenant probes. All other safety checks still apply. */
   consumerLine?: boolean;
+  /** Caller-provided per-turn idempotency key for the wallet debit — stable across retries of the
+   *  same turn and unique per turn. When absent, a deterministic key is derived from the turn
+   *  content so re-processed requests still dedup instead of double-charging. */
+  idempotencyKey?: string;
 }
 
 export interface TurnResult {
@@ -2172,6 +2176,28 @@ export function shouldLocalizeReply(replyLanguage: string | undefined, userMessa
   return looksNonEnglish(userMessage);
 }
 
+/**
+ * Deterministic, retry-safe wallet-debit idempotency key for a turn. Derived from the turn's
+ * content (prior message count + this turn's user message), so a re-processed request — a webhook
+ * double-invoke, a serverless double-fire, a client resend — produces the SAME key and the wallet
+ * dedups the charge instead of double-billing. (The previous key embedded Date.now(), so it changed
+ * on every call and the adapter dedup never fired.) Callers with a globally-unique per-turn id can
+ * override via req.idempotencyKey for exactness.
+ */
+export function turnDebitKey(req: TurnRequest): string {
+  const explicit = req.idempotencyKey?.trim();
+  if (explicit) return explicit;
+  // FNV-1a over the stable turn signature — cheap, pure-JS, no crypto import.
+  const sig = `${req.messages.length} ${req.userMessage}`;
+  let h = 0x811c9dc5;
+  for (let i = 0; i < sig.length; i++) {
+    h ^= sig.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  const digest = (h >>> 0).toString(16).padStart(8, "0");
+  return `${req.workspaceId}:${req.agentId}:${req.messages.length}:${digest}`;
+}
+
 export async function runTurn(
   req: TurnRequest,
   deps?: {
@@ -2319,10 +2345,13 @@ export async function runTurn(
       : await wallet.debit({
           workspaceId: req.workspaceId,
           amount: tokens,
-          idempotencyKey: `${req.workspaceId}:${req.agentId}:${Date.now()}:${messages.length}`,
+          idempotencyKey: turnDebitKey(req),
           reason: "agent_turn",
           agentId: req.agentId,
         });
+    // Honor the debit outcome exactly like the main (non-workflow) path: an insufficient-balance
+    // debit deducts nothing (ok:false) and must pause the agent, not silently serve the turn free.
+    const paused = !skipDebit && (!debit.ok || debit.paused);
     let assistantMessage = scrubLeakedPlaceholders(
       handled.assistantMessage.replace(/<!--miai-workflow:[\s\S]*?-->/g, "").trim(),
       templateVars,
@@ -2380,10 +2409,10 @@ export async function runTurn(
       assistantMessage,
       messages,
       toolCalls,
-      tokensDebited: skipDebit ? 0 : tokens,
+      tokensDebited: skipDebit ? 0 : debit.ok ? tokens : 0,
       balance: debit.balance,
-      state: req.state,
-      paused: false,
+      state: paused ? "paused_no_tokens" : req.state,
+      paused,
       workflow: handled.plan
         ? {
             id: handled.plan.id,
