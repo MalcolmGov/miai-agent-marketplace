@@ -7,7 +7,7 @@
 | Role | Entity | Notes |
 |---|---|---|
 | **Controller** | Customer (workspace owner) | Determines purposes for agent chat, knowledge, connector use |
-| **Processor** | MyInstantAI / Move Digital (platform operator) | Processes data on customer instructions via marketplace runtime |
+| **Processor** | MyInstantAI / Moove Digital (platform operator) | Processes data on customer instructions via marketplace runtime |
 | **Sub-processors** | See [Subprocessors](../TRUST_AND_COMPLIANCE.md#subprocessors-staging--production) in `docs/TRUST_AND_COMPLIANCE.md` |
 
 ---

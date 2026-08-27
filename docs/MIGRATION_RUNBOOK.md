@@ -8,7 +8,7 @@ App channel detail: [APP_CHANNEL.md](./APP_CHANNEL.md). Platform contract: [PLAT
 
 | Role | Owns |
 |---|---|
-| Move Digital | Image build, app config, OAuth redirect updates, Agents smokes, App channel URL contract |
+| Moove Digital | Image build, app config, OAuth redirect updates, Agents smokes, App channel URL contract |
 | MyInstantAI | Azure subscription / RG, DNS / Front Door, OIDC / wallet / model keys, Key Vault, **native app release** (WebView / deep links / optional native chat client) |
 
 ## Phased migration plan

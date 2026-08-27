@@ -1,6 +1,6 @@
 # Information Request — MyInstantAI Technical Team
-### Production cutover (P0-5) · MyInstantAI Agent Marketplace × Move Digital
-**Date:** 2026-08-26 · **Prepared by:** Move Digital
+### Production cutover (P0-5) · MyInstantAI Agent Marketplace × Moove Digital
+**Date:** 2026-08-26 · **Prepared by:** Moove Digital
 
 ---
 
@@ -19,7 +19,7 @@ The app **fails closed at boot** if production config is incomplete, so every it
 ## Ownership at a glance
 *(from `docs/MIGRATION_RUNBOOK.md` / `docs/B2B_ONBOARDING.md`)*
 
-| MyInstantAI owns | Move Digital owns |
+| MyInstantAI owns | Moove Digital owns |
 |---|---|
 | Azure subscription/RG, DNS/Front Door, OIDC identity + workspace minting, wallet/billing gateway, model keys, Key Vault, native app release | The marketplace app, onboarding UX, catalogue, verification — **✅ complete** |
 
@@ -120,7 +120,7 @@ Once the above are wired, `GET /api/health` on the production host must return:
 
 Then the authenticated cutover smoke + **one real OIDC login** + **one real wallet debit** prove reachability (health confirms presence, not liveness). Full go/no-go: `docs/CUTOVER_CHECKLIST.md`.
 
-## What Move Digital provides in return
+## What Moove Digital provides in return
 
 So the handoff is two-sided, on our side we supply:
 - The container image (pinned SHA) + the complete env map (`docs/AZURE_DEPLOYMENT.md`).
@@ -129,4 +129,4 @@ So the handoff is two-sided, on our side we supply:
 - Boot-hardening preflight + cutover smoke verification on the day.
 
 ---
-*Move Digital · MyInstantAI Agent Marketplace production cutover · respond per section above.*
+*Moove Digital · MyInstantAI Agent Marketplace production cutover · respond per section above.*

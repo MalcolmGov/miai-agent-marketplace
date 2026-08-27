@@ -16,7 +16,7 @@ That means every variant:
 
 Catalogue-ready is **not** the same as full MyInstantAI platform production. Platform rails are **adapter-ready** in-repo; live credentials are the remaining gate:
 
-| Platform rail | Move Digital status | Blocked on MyInstantAI |
+| Platform rail | Moove Digital status | Blocked on MyInstantAI |
 |---|---|---|
 | Auth / SSO | OIDC adapter + middleware (`MIAI_AUTH_MODE=oidc`) | Issuer, audience, sample JWT |
 | Wallet | HTTP adapter + pause-on-402 (`MIAI_WALLET_MODE=http`) | Base URL, API key, debit contract |
