@@ -101,9 +101,13 @@ describe("P0-3 — unconnected live connectors don't fabricate confirmations", (
       { wallet: fakeWallet(), model: toolThenText({ name: "book_table", args: { time: "7pm" } }, "unused") },
     );
     assert.doesNotMatch(r.assistantMessage, /you're booked|reference \*\*|BK-3391/i);
-    // Specifically the stub-gate message (not the pre-existing !ok "couldn't reach" fallback),
-    // confirming result.stubbed drove the honest reply.
-    assert.match(r.assistantMessage, /couldn't complete that just now|flagged it so a teammate|fully set up/i);
+    // Honest decline. P0-5 makes an unconnected ACTION connector return ok:false at the source, so
+    // the "couldn't reach the connected system" fallback fires (rather than the ok:true stub-gate
+    // message) — both are honest and neither claims the booking happened.
+    assert.match(
+      r.assistantMessage,
+      /couldn't complete that just now|flagged it so a teammate|fully set up|couldn't reach the connected system|hand this to a teammate/i,
+    );
   });
 
   it("sandbox: the demo booking confirmation is preserved (gate is off)", async () => {

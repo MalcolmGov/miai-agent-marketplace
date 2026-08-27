@@ -5,6 +5,24 @@ import { executeMcp } from "./handlers/mcp.js";
 import { slackHandoff } from "./handlers/slack.js";
 import { executeWebhook } from "./handlers/webhook.js";
 
+/**
+ * A tool is an ACTION (external customer-facing commitment: places an order, books, creates a
+ * ticket, submits an application) rather than a READ or an INTERNAL routing tool. We must NEVER
+ * fabricate a successful action for a connector that isn't connected — an order "placed" / booking
+ * "confirmed" tells a real customer something happened when nothing did (P0-5). Reads and internal
+ * routing/handoff tools are NOT actions: routing/handoff MUST still reach a human even when the
+ * connector is unconnected (e.g. an emergency handoff), so they keep their stub behaviour; reads
+ * fall back to the knowledge base.
+ */
+function isActionTool(tool: string): boolean {
+  const n = tool.toLowerCase();
+  if (/^(get_|list_|search_|find_|lookup_|read_|fetch_|check_|explain_|show_)/.test(n)) return false;
+  if (/_status\b|_info\b|availability|_details\b/.test(n)) return false;
+  // Internal routing / escalation — must never be blocked as "not connected".
+  if (/handoff|hand_off|to_human|escalat|route_to|take_message/.test(n)) return false;
+  return true;
+}
+
 function stubFor(tool: string, args: Record<string, unknown>): Record<string, unknown> {
   const n = tool.toLowerCase();
   if (n.includes("place_order") || n === "place_order") {
@@ -1944,6 +1962,19 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
       // "complete Connect" stub — so the assistant stays useful before the account is linked.
       const local = handleInternalAssistantTool(call);
       if (local) return local;
+      // P0-5: fail honestly on an ACTION for a connector that isn't connected — no fabricated
+      // "placed" / "confirmed" / reference. Only reads keep stubbing with placeholder data.
+      if (isActionTool(call.tool)) {
+        return {
+          ok: false,
+          data: {
+            error: "not_connected",
+            _note: `${connector} not OAuth-connected — complete Connect in Actions`,
+          },
+          connector,
+          stubbed: true,
+        };
+      }
       return {
         ok: true,
         data: {
