@@ -1834,7 +1834,7 @@ function openAiToolsPayload(tools: AgentPackage["tools"]) {
   }));
 }
 
-const MODEL_PROVIDER_SOFT_ERROR =
+export const MODEL_PROVIDER_SOFT_ERROR =
   "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.";
 
 function isRetryableProviderStatus(status: number): boolean {
@@ -2931,6 +2931,12 @@ export async function runTurn(
   // Sum provider-reported tokens across this turn's model calls (initial + tool-round follow-ups)
   // for accurate wallet metering; stays 0 for the mock model / providers that omit usage.
   let turnUsageTotal = 0;
+  // Did the initial model call produce a zero-usage provider soft-error (401 / network / exhausted
+  // fallbacks)? Captured here from the PRISTINE completion — before the output-guardrail and
+  // placeholder scrubs below can rewrite `completion.content` — so the debit site can bill nothing
+  // AND skip claiming the idempotency slot (a same-message retry that reaches the model must still
+  // bill its real usage).
+  let modelFailed = false;
   if (forced) {
     completion = forced;
   } else {
@@ -2940,6 +2946,7 @@ export async function runTurn(
       streamDelta,
     );
     turnUsageTotal += completion.usage?.totalTokens ?? 0;
+    modelFailed = !completion.toolCall && completion.content === MODEL_PROVIDER_SOFT_ERROR;
   }
 
   // A stubbed connector result on a genuine live turn — not the sandbox, and not a pre-rent "try" —
@@ -3142,21 +3149,28 @@ export async function runTurn(
           system.length + req.userMessage.length,
           completion.content.length,
         );
-  const debit = skipDebit
-    ? { ok: true as const, balance: bal.tokens, paused: false }
-    : await debitOrServe(
-        wallet,
-        {
-          workspaceId: req.workspaceId,
-          amount: tokens,
-          idempotencyKey: turnDebitKey(req),
-          reason: "agent_turn",
-          agentId: req.agentId,
-        },
-        bal.tokens,
-      );
+  // A zero-usage provider soft-error delivered nothing: bill it nothing, and — critically — do NOT
+  // call debitOrServe at all. A 0-amount debit would still claim the content-derived idempotency slot
+  // (turnDebitKey), so a same-message retry that DOES reach the model would be deduped to free. The
+  // `turnUsageTotal === 0` guard keeps a partial turn (initial call had usage, a later tool round
+  // soft-errored) billed on its real usage rather than zeroed.
+  const noCharge = modelFailed && turnUsageTotal === 0;
+  const debit =
+    skipDebit || noCharge
+      ? { ok: true as const, balance: bal.tokens, paused: false }
+      : await debitOrServe(
+          wallet,
+          {
+            workspaceId: req.workspaceId,
+            amount: tokens,
+            idempotencyKey: turnDebitKey(req),
+            reason: "agent_turn",
+            agentId: req.agentId,
+          },
+          bal.tokens,
+        );
 
-  const paused = !skipDebit && (!debit.ok || debit.paused);
+  const paused = !skipDebit && !noCharge && (!debit.ok || debit.paused);
   const assistantMessage = scrubLeakedPlaceholders(completion.content, templateVars);
   if (assistantMessage !== completion.content) {
     const last = messages[messages.length - 1];
@@ -3166,7 +3180,7 @@ export async function runTurn(
     assistantMessage,
     messages,
     toolCalls,
-    tokensDebited: skipDebit ? 0 : debit.ok ? tokens : 0,
+    tokensDebited: skipDebit || noCharge ? 0 : debit.ok ? tokens : 0,
     balance: debit.balance,
     state: paused ? "paused_no_tokens" : req.state === "rented" ? "live" : req.state,
     paused,
