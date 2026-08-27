@@ -12,13 +12,27 @@
  *
  * Exit 0 when every gate passes; 1 when any fails; 2 on usage / unreachable.
  */
-const base = (process.argv[2] || process.env.BASE_URL || process.env.APP_BASE_URL || "").replace(/\/+$/, "");
-if (!base) {
+let raw = (process.argv[2] || process.env.BASE_URL || process.env.APP_BASE_URL || "").trim();
+while (raw.endsWith("/")) raw = raw.slice(0, -1);
+if (!raw) {
   console.error("Usage: node scripts/prod-e2e-gate.mjs <BASE_URL>");
   process.exit(2);
 }
 
-const url = `${base}/api/health`;
+// Validate the operator-supplied URL before any network use (http/https origin only).
+let origin;
+try {
+  const parsed = new URL(raw);
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("protocol must be http or https");
+  }
+  origin = parsed.origin;
+} catch (err) {
+  console.error(`Invalid BASE_URL "${raw}": ${err instanceof Error ? err.message : err}`);
+  process.exit(2);
+}
+
+const url = `${origin}/api/health`;
 let res, body;
 try {
   res = await fetch(url, { headers: { accept: "application/json" } });
@@ -52,7 +66,8 @@ const checks = [
 console.log(`\nProduction-config boot gate\n  ${url}\n`);
 let failed = 0;
 for (const [name, ok, detail] of checks) {
-  console.log(`  ${ok ? "✓" : "✗"} ${name}${ok ? "" : `  — ${detail}`}`);
+  const suffix = ok ? "" : `  — ${detail}`;
+  console.log(`  ${ok ? "✓" : "✗"} ${name}${suffix}`);
   if (!ok) failed += 1;
 }
 console.log("");
