@@ -74,7 +74,16 @@ import {
   materializePackage,
   scrubLeakedPlaceholders,
 } from "./templates.js";
-import { checkInputGuardrails, checkOutputGuardrails } from "./guardrails.js";
+import {
+  checkInputGuardrails,
+  checkOutputGuardrails,
+  guardForSafetyCategory,
+  looksLikelyEnglish,
+  parseSafetyCategory,
+  SAFETY_CLASSIFIER_INSTRUCTION,
+  type GuardrailResult,
+  type GuardrailTool,
+} from "./guardrails.js";
 import {
   createEmbedderFromEnv,
   semanticRetrievalEnabled,
@@ -2241,6 +2250,41 @@ async function debitOrServe(
   }
 }
 
+/**
+ * P0-8 — language-agnostic safety backstop. The keyword net (checkInputGuardrails) only covers
+ * en/es/fr, so a self-harm / medical / gas-leak / OTP message in another language passes through.
+ * When the keyword net cleared a non-English message and a real model is available, classify it and
+ * force the SAME handoff/refusal on a safety category. Best-effort: any classifier error returns
+ * null (the keyword net already ran, and we do not want the safety check to break a normal turn).
+ */
+async function classifyInputSafety(
+  userMessage: string,
+  system: string,
+  guardrailTools: GuardrailTool[],
+  model: ModelAdapter,
+  modelId: string,
+): Promise<GuardrailResult | null> {
+  try {
+    const res = await model.complete({
+      system: SAFETY_CLASSIFIER_INSTRUCTION,
+      messages: [{ role: "user", content: userMessage.slice(0, 2000) }],
+      tools: [],
+      model: modelId,
+      temperature: 0,
+      maxOutputTokens: 8,
+    });
+    return guardForSafetyCategory(
+      parseSafetyCategory(res.content || ""),
+      userMessage,
+      system,
+      guardrailTools,
+    );
+  } catch (err) {
+    console.warn("[runtime] safety classifier skipped:", err instanceof Error ? err.message : err);
+    return null;
+  }
+}
+
 export async function runTurn(
   req: TurnRequest,
   deps?: {
@@ -2807,9 +2851,15 @@ export async function runTurn(
   };
 
   // Shared hard safety for live + mock (mock also checks inside MockModelAdapter).
-  const forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools, {
+  let forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools, {
     consumerLine: req.consumerLine,
   });
+  // P0-8: language-agnostic backstop. The keyword net only covers en/es/fr, so for a non-English
+  // message it cleared, ask a real model to classify it (self-harm / medical / physical-hazard /
+  // secret-disclosure) and force the same handoff/refusal if it fires.
+  if (!forced && !(model instanceof MockModelAdapter) && !looksLikelyEnglish(req.userMessage)) {
+    forced = await classifyInputSafety(req.userMessage, system, req.pkg.tools, model, req.model);
+  }
   let completion: ModelCompleteResult;
   // Sum provider-reported tokens across this turn's model calls (initial + tool-round follow-ups)
   // for accurate wallet metering; stays 0 for the mock model / providers that omit usage.
