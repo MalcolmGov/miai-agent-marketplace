@@ -38,6 +38,102 @@ function handoff(
 }
 
 /**
+ * Safety categories for the model-based classifier (P0-8) — a language-agnostic backstop behind the
+ * en/es/fr keyword net, so a crisis written in ANY language still routes to a human. The runtime
+ * runs the classifier only when the keyword net found nothing and the message looks non-English.
+ */
+export type SafetyCategory =
+  | "none"
+  | "self_harm"
+  | "medical_emergency"
+  | "physical_hazard"
+  | "secret_disclosure";
+
+/** System instruction for the safety classifier — output is a single category word. */
+export const SAFETY_CLASSIFIER_INSTRUCTION =
+  "You are a safety classifier for a customer-service assistant. Read the user's message in ANY " +
+  "language and output EXACTLY ONE category word and nothing else:\n" +
+  "- self_harm: the user expresses suicidal thoughts, intent to harm themselves, or a self-harm crisis.\n" +
+  "- medical_emergency: a life-threatening medical situation (e.g. chest pain, can't breathe, unconscious, severe bleeding, overdose).\n" +
+  "- physical_hazard: imminent physical danger (e.g. gas leak, fire, flooding, electrical hazard, intruder/break-in, a violent threat).\n" +
+  "- secret_disclosure: the user is sharing, or about to share, a full card number, CVV, one-time code (OTP), PIN, or password.\n" +
+  "- none: anything else.\n" +
+  "If a message fits more than one, choose the most safety-critical. If you are unsure between a " +
+  "category and none and there is any real risk, choose the category. Output only the category word.";
+
+/** Parse the classifier's raw output into a category (robust to extra words / punctuation). */
+export function parseSafetyCategory(raw: string): SafetyCategory {
+  const t = (raw || "").toLowerCase();
+  for (const c of ["self_harm", "medical_emergency", "physical_hazard", "secret_disclosure"] as const) {
+    if (t.includes(c) || t.includes(c.replace("_", " "))) return c;
+  }
+  return "none";
+}
+
+/**
+ * Build the forced response for a classifier verdict, reusing the same handoff/refusal paths as the
+ * keyword net. Returns null for "none" (continue to the model).
+ */
+export function guardForSafetyCategory(
+  category: SafetyCategory,
+  userMessage: string,
+  system: string,
+  tools: GuardrailTool[],
+): GuardrailResult | null {
+  switch (category) {
+    case "self_harm":
+    case "medical_emergency": {
+      const num = emergencyNumber(system);
+      return handoff(
+        tools,
+        "emergency",
+        userMessage,
+        `If this is life-threatening or an emergency, call **${num}** / local emergency services now. I'm also handing you to a human teammate urgently.`,
+      );
+    }
+    case "physical_hazard": {
+      const num = emergencyNumber(system);
+      return handoff(
+        tools,
+        "safety_emergency",
+        userMessage,
+        `This is a safety emergency — leave the area if needed and call **${num}** / local emergency services now. I'm connecting you to a human teammate urgently, and I won't say it's safe or that it has been fixed.`,
+      );
+    }
+    case "secret_disclosure":
+      return {
+        content:
+          "For your security, please don't share full card numbers, one-time codes (OTP), PINs, or passwords here. I can help without them, and a human teammate can assist with anything that needs verification.",
+      };
+    default:
+      return null;
+  }
+}
+
+/**
+ * Rough "is this confidently English?" check, used to gate the model classifier so it runs only on
+ * messages the en/es/fr keyword net can't confidently cover. Deliberately errs toward NOT-English
+ * (i.e. run the classifier) for ambiguous input — a missed safety signal is worse than an extra
+ * check. Non-Latin scripts and accented Latin are treated as non-English; otherwise we require a
+ * common English function word.
+ */
+export function looksLikelyEnglish(text: string): boolean {
+  // Non-Latin script (Greek/Cyrillic/Arabic/Hebrew/Devanagari/CJK/Hangul/Thai) → not English.
+  if (/[Ͱ-᳿฀-๿぀-鿿가-힯]/.test(text)) return false;
+  // Accented Latin / inverted punctuation → treat as non-English.
+  if (/[àâäáãçéèêëíîïñóòôöõúùûüÿœæ¿¡]/i.test(text)) return false;
+  // Require at least TWO common English function words — one alone is too weak (cognates like the
+  // German "will"/"is" would otherwise read as English and skip the classifier). "will"/"am" are
+  // deliberately omitted as high-frequency false friends.
+  const matches = text
+    .toLowerCase()
+    .match(
+      /\b(the|an|are|to|of|and|or|for|my|your|you|we|it|this|that|please|help|need|want|how|what|when|where|why|can|do|does|did|have|has|would|should|order|account|password|reset)\b/g,
+    );
+  return (matches?.length ?? 0) >= 2;
+}
+
+/**
  * Pre-model input policy. Returns a forced response when the user message
  * hits a hard safety rule; otherwise null (continue to the model).
  */
