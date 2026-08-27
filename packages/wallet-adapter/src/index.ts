@@ -17,6 +17,10 @@ export interface DebitResult {
   balance: number;
   paused: boolean;
   error?: string;
+  /** True when this debit was an idempotent REPLAY (same key already seen) and the balance was
+   *  NOT reduced. Lets the caller report tokensDebited:0 instead of overstating a charge that
+   *  never landed. Absent/false on a fresh debit. */
+  deduped?: boolean;
 }
 
 /** Prepaid top-up tiers (USD). No subscription/rental — one-time credit only. */
@@ -92,7 +96,7 @@ export class MockWalletAdapter implements WalletAdapter {
   async debit(req: DebitRequest): Promise<DebitResult> {
     if (this.seen.has(req.idempotencyKey)) {
       const bal = (await this.getBalance(req.workspaceId)).tokens;
-      return { ok: true, balance: bal, paused: bal <= 0 };
+      return { ok: true, balance: bal, paused: bal <= 0, deduped: true };
     }
     const current = (await this.getBalance(req.workspaceId)).tokens;
     if (current < req.amount) {

@@ -34,6 +34,9 @@ export const consumerChatBodySchema = z.object({
   sessionId: shortText.optional(),
   replyLanguage: z.string().max(32).optional(),
   correlationId: shortText.optional(),
+  // Per-submit wallet-debit idempotency key: unique per distinct send, reused only when the SAME
+  // send is retried, so a network/serverless replay dedups while a fresh message is charged.
+  idempotencyKey: shortText.optional(),
 });
 
 // Consumer daily-brief schedule.

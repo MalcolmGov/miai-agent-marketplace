@@ -85,12 +85,17 @@ export function useConsumerChat({
         }
       };
 
+      // One idempotency key per distinct send. The busy-guard above blocks a double-fire, so each
+      // send gets a fresh key (charged), while an infra/network replay of THIS request carries the
+      // same key and dedups. If a client-side retry is ever added, it must reuse this same value.
+      const idempotencyKey = crypto.randomUUID();
+
       let replied = false;
       try {
         let started = false;
         await streamChat(
           `/api/consumer/chat${ws}`,
-          { message: text, sessionId: sessionId.current, agentId },
+          { message: text, sessionId: sessionId.current, agentId, idempotencyKey },
           (ev) => {
             if (ev.type === "tool") {
               setTyping(true);

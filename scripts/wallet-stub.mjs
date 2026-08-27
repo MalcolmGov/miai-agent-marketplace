@@ -93,9 +93,10 @@ const server = createServer(async (req, res) => {
     const amount = Number(body.amount) || 0;
     const key = body.idempotencyKey || req.headers["idempotency-key"];
     const current = balanceOf(ws);
-    // Idempotent replay: return current balance without re-debiting.
+    // Idempotent replay: return current balance without re-debiting. `deduped:true` lets the caller
+    // report tokensDebited:0 instead of overstating a charge that never landed.
     if (key && seen.has(key)) {
-      return send(res, 200, { ok: true, balance: current, paused: current <= 0 });
+      return send(res, 200, { ok: true, balance: current, paused: current <= 0, deduped: true });
     }
     // Insufficient funds -> 402 (adapter maps 402/409 to a paused, non-throwing result).
     if (current < amount) {

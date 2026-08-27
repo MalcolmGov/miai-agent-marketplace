@@ -56,6 +56,61 @@ describe("turnDebitKey — deterministic, retry-safe debit key (P0-1)", () => {
   });
 });
 
+describe("turnDebitKey — session scope (Finding B: no cross-session free-turn leak)", () => {
+  const base = {
+    workspaceId: "ws1",
+    agentId: "a1",
+    messages: [],
+    userMessage: "hi",
+  };
+
+  it("differs across DISTINCT sessions with an identical position + message", () => {
+    // The core leak: two fresh sessions each sending 'hi' as the first message must be charged
+    // separately, not collide onto one key that serves the second free.
+    assert.notEqual(turnDebitKey({ ...base, sessionId: "s1" }), turnDebitKey({ ...base, sessionId: "s2" }));
+  });
+  it("re-processing the SAME session/turn re-derives the SAME key (retry/double-submit dedups)", () => {
+    assert.equal(turnDebitKey({ ...base, sessionId: "s1" }), turnDebitKey({ ...base, sessionId: "s1" }));
+  });
+  it("a keyless request (no sessionId) keeps the pre-session-scope key shape — no empty segment", () => {
+    const bare = turnDebitKey(base);
+    assert.doesNotMatch(bare, /::/, "no empty session segment when sessionId is absent");
+    assert.notEqual(bare, turnDebitKey({ ...base, sessionId: "s1" }), "a scoped key differs from the bare key");
+  });
+  it("an explicit idempotencyKey overrides session scoping entirely", () => {
+    assert.equal(turnDebitKey({ ...base, sessionId: "s1", idempotencyKey: "k" }), "k");
+    assert.equal(turnDebitKey({ ...base, sessionId: "s2", idempotencyKey: "k" }), "k");
+  });
+});
+
+describe("deduped debit reports tokensDebited:0 (Finding A: no overstated charge on a replay)", () => {
+  function wallet(debitResult, balance = 900) {
+    return {
+      async getBalance() { return { workspaceId: "ws", tokens: balance, currencyLabel: "tokens" }; },
+      async debit(p) { return typeof debitResult === "function" ? debitResult(p) : debitResult; },
+      async topUp() { return { workspaceId: "ws", tokens: balance, currencyLabel: "tokens" }; },
+    };
+  }
+
+  it("a wallet dedup hit (deduped:true, balance unchanged) reports 0 charged and does not pause", async () => {
+    const r = await runTurn(hotelReq(), {
+      wallet: wallet({ ok: true, balance: 900, paused: false, deduped: true }),
+      model: stubModel,
+    });
+    assert.match(r.assistantMessage, /breakfast/i, "the duplicate turn is still answered");
+    assert.equal(r.tokensDebited, 0, "a replay subtracted nothing → report 0, not the full amount");
+    assert.equal(r.paused, false, "a dedup hit with a positive balance must not pause");
+    assert.equal(r.balance, 900, "reports the unchanged post-first-charge balance");
+  });
+  it("a fresh debit (no deduped flag) still reports the metered charge", async () => {
+    const r = await runTurn(hotelReq(), {
+      wallet: wallet((p) => ({ ok: true, balance: 1000 - p.amount, paused: false })),
+      model: stubModel,
+    });
+    assert.ok(r.tokensDebited > 0, "a genuine first charge is still reported");
+  });
+});
+
 describe("workflow debit path honors debit.ok — no free-turn leak (P0-2)", () => {
   function wallet(debitResult, balance = 1000) {
     return {
