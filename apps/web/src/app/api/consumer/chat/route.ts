@@ -1,7 +1,7 @@
 import { runConsumerTurn, runConsumerTurnStream } from "@/lib/consumer-turn";
 import { DEFAULT_CONSUMER_AGENT } from "@/lib/consumer";
 import { requireConsumer } from "@/lib/consumer-auth";
-import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
+import { apiError, apiErrorFromRequest, apiOk } from "@/lib/api-error";
 import { consumerChatBodySchema, formatZodError } from "@/lib/api-schemas";
 import { rateLimit } from "@/lib/security";
 import { sseStreamResponse } from "@/lib/sse";
@@ -56,7 +56,25 @@ export async function POST(req: Request) {
   };
 
   if (wantJson) {
-    const result = await runConsumerTurn(turnInput);
+    let result;
+    try {
+      result = await runConsumerTurn(turnInput);
+    } catch (err) {
+      // A store/persistence outage (session store, memory, audit recorder) can throw here. The SSE
+      // path catches this in streamChatTurn and degrades to an in-stream error frame; mirror that on
+      // the JSON path so a dependency blip returns a structured, traceable 500 (with correlationId)
+      // instead of a raw unhandled Next.js crash with no body.
+      console.error(
+        JSON.stringify({
+          level: "error",
+          event: "miai.consumer_turn_failed",
+          correlationId,
+          agentId,
+          message: err instanceof Error ? err.message : String(err),
+        }),
+      );
+      return apiError(500, "Chat failed", { correlationId });
+    }
     if (!result.ok) {
       const headers: Record<string, string> = {};
       if (result.retryAfterSec != null) headers["retry-after"] = String(result.retryAfterSec);
