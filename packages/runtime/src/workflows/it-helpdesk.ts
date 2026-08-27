@@ -5,6 +5,7 @@
  */
 
 import { wf } from "./i18n.js";
+import { userFacingNote } from "./tool-notes.js";
 
 export type ItStepStatus = "pending" | "done" | "skipped" | "failed";
 
@@ -339,7 +340,7 @@ export async function runItHelpdeskWorkflow(input: {
         toolCalls,
         assistantMessage: `Ticket **${reference}** status: **${data.status ?? "in_progress"}**${
           data.assignee ? ` (assignee: ${data.assignee})` : ""
-        }. ${data.note ?? "IT will update you when it moves."}`,
+        }. ${userFacingNote(data.note) ?? "IT will update you when it moves."}`,
       };
     }
   }

@@ -6,6 +6,7 @@
 
 import { wf } from "./i18n.js";
 import { handleStopSuppression } from "./stop-suppression.js";
+import { userFacingNote } from "./tool-notes.js";
 
 export type ApStepStatus = "pending" | "done" | "skipped" | "failed";
 
@@ -292,7 +293,7 @@ export async function runAccountingPracticeWorkflow(input: {
     let blob: string;
     if (result.ok && Array.isArray(data.documents) && data.documents.length > 0) {
       const lines = data.documents.map((doc) => `- ${doc}`);
-      blob = [`**${data.service ?? service}:**`, lines.join("\n"), data.note].filter(Boolean).join("\n");
+      blob = [`**${data.service ?? service}:**`, lines.join("\n"), userFacingNote(data.note)].filter(Boolean).join("\n");
     } else {
       blob =
         stripInternalNotes(section(input.knowledge, /## Required documents[\s\S]*?(?=\n## )/i)) ||
