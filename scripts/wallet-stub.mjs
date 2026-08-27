@@ -10,7 +10,7 @@
  *   GET  /v1/wallets/:workspaceId          -> { workspaceId, tokens, currencyLabel }
  *   POST /v1/wallets/:workspaceId/debit    -> { ok, balance, paused }  (402 on insufficient)
  *   POST /v1/wallets/:workspaceId/topup    -> { workspaceId, tokens, currencyLabel }
- *   GET  /health                           -> { ok: true }
+ *   GET  /health  (and /api/health)        -> { ok: true }
  *
  * Auth: every /v1 call must carry `Authorization: Bearer <WALLET_STUB_TOKEN>`
  * (set WALLET_STUB_TOKEN to the same value you put in MIAI_WALLET_API_KEY).
@@ -67,7 +67,9 @@ const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const path = url.pathname;
 
-  if (req.method === "GET" && (path === "/health" || path === "/")) {
+  // `/api/health` mirrors the app's health path so the stub can deploy under the repo's
+  // railway.toml healthcheck (healthcheckPath = "/api/health") without any per-service override.
+  if (req.method === "GET" && (path === "/health" || path === "/api/health" || path === "/")) {
     return send(res, 200, { ok: true, service: "wallet-stub" });
   }
 
