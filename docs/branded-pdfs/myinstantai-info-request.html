@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyInstantAI Agents — Information Request (Production Cutover)</title>
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      /* Scoped to this doc (shared.css untouched). Fixed-height A4 pages, cards without the
+         negative-spread shadow that some PDF viewers rasterize grey, fill-in tables with a tinted
+         response column. */
+      .page.airy .card {
+        box-shadow: none;
+        border: 1px solid var(--line);
+        padding: 4mm 4.5mm;
+      }
+      .page.airy .content {
+        padding: 11mm 16mm 6mm;
+      }
+      .page.airy .hero + .content {
+        padding-top: 8mm;
+      }
+      .page.airy .footer {
+        margin-left: 16mm;
+        margin-right: 16mm;
+      }
+      .page.airy .section {
+        margin-bottom: 6mm;
+      }
+      .page.airy h2 {
+        font-size: 12.5px;
+        margin-bottom: 3.5mm;
+      }
+      .page.airy h2 .sub {
+        font-weight: 400;
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+      .page.airy .lead {
+        color: var(--muted);
+        font-size: 9.2px;
+        margin: -1.5mm 0 2.5mm;
+      }
+      .page.airy .lead .mono {
+        font-size: 8.6px;
+      }
+      /* Fixed layout so long env-var strings wrap inside their column instead of overflowing. */
+      .page.airy table {
+        table-layout: fixed;
+        margin-top: 1mm;
+      }
+      .page.airy th {
+        font-size: 7.6px;
+        padding: 2.2mm 2.4mm;
+      }
+      .page.airy td {
+        font-size: 9px;
+        line-height: 1.45;
+        padding: 2.6mm 2.4mm;
+        word-break: break-word;
+      }
+      .page.airy td .mono {
+        font-size: 8.4px;
+      }
+      /* The blank the partner fills in — subtle teal wash so it reads as a writable field. */
+      .page.airy td.resp,
+      .page.airy th.resp {
+        background: color-mix(in srgb, var(--teal) 6%, white);
+        border-left: 1px solid var(--line);
+      }
+      .page.airy .callout {
+        padding: 3mm 3.5mm;
+        line-height: 1.5;
+        margin-top: 2.5mm;
+        font-size: 9.2px;
+      }
+      .page.airy .callout.warn {
+        border-left-color: var(--warn);
+        background: color-mix(in srgb, var(--warn) 9%, white);
+      }
+      .page.airy pre {
+        background: var(--navy);
+        color: #bfe9e0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        line-height: 1.55;
+        padding: 2.6mm 3mm;
+        border-radius: 6px;
+        margin: 1.5mm 0 2mm;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .page.airy .own {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3mm;
+      }
+      .page.airy .own .card .label {
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--teal-deep);
+        margin-bottom: 1.5mm;
+      }
+      .page.airy .own .card p {
+        margin: 0;
+        font-size: 9px;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+      .page.airy .crit {
+        color: #b4322a;
+        font-weight: 700;
+      }
+      .page.airy .check li {
+        display: block;
+        position: relative;
+        padding-left: 5.5mm;
+        font-size: 9.2px;
+        line-height: 1.5;
+        margin-bottom: 1.8mm;
+        color: var(--ink);
+      }
+      .page.airy .check .box {
+        position: absolute;
+        left: 0;
+        top: 1.2mm;
+        margin-top: 0;
+        border-color: var(--teal);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================ PAGE 1 ============================ -->
+    <section class="page airy">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Information request · Move Digital → MyInstantAI</p>
+        <h1>Production Cutover — Information Request</h1>
+        <p class="lede">
+          Everything the MyInstantAI technical team needs to provide so the marketplace can boot on
+          hardened production (P0-5). The application is <strong style="color:#fff">built and verified</strong>;
+          this is a configuration handoff — each item maps to an environment variable the code reads.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Fill-in &amp; return</span>
+          <span class="pill">Grounded in code</span>
+          <span class="pill muted">Blocker P0-5</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">00</span> Purpose &amp; how to respond</h2>
+          <div class="callout">
+            The app <strong>fails closed at boot</strong> if production config is incomplete — so every
+            row below is a specific value or confirmation we need from your side (Azure, identity, billing,
+            model, Key Vault, DNS). Fill the <strong>“Your response”</strong> column or mark
+            <span class="mono">⏳ pending</span> / <span class="mono">✅ ready</span>.
+          </div>
+          <div class="callout warn">
+            ⚠️ <strong>Do not paste live secrets into this document.</strong> Load secret values (client
+            secrets, API keys, connection strings) <strong>directly into the deployment’s Azure Key Vault</strong>
+            and mark the row <span class="mono">loaded → &lt;name&gt;</span>, or share via a secure channel.
+            Non-secret values (URLs, issuer, deployment names, regions) can be filled in here directly.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">01</span> Ownership at a glance
+            <span class="sub">— from <span class="mono">MIGRATION_RUNBOOK.md</span> / <span class="mono">B2B_ONBOARDING.md</span></span>
+          </h2>
+          <div class="own">
+            <div class="card">
+              <div class="label">MyInstantAI owns</div>
+              <p>Azure subscription/RG, DNS/Front Door, OIDC identity + workspace minting, the wallet/billing
+              gateway, model keys, Key Vault, and the native app release.</p>
+            </div>
+            <div class="card">
+              <div class="label">Move Digital owns</div>
+              <p>The marketplace app, onboarding UX, catalogue, and verification — <strong>✅ complete.</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">02</span> Decisions to confirm first
+            <span class="sub">— these cascade into several rows below</span>
+          </h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:9%">#</th>
+                <th style="width:31%">Decision</th>
+                <th style="width:32%">Options</th>
+                <th class="resp" style="width:28%">Your choice</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">D1</td><td><strong>Model path</strong></td><td>Azure OpenAI direct (<span class="mono">azure</span>) · or your model gateway (<span class="mono">gateway</span>)</td><td class="resp"></td></tr>
+              <tr><td class="mono">D2</td><td><strong>Consumer identity</strong></td><td>Your OIDC issuer · or Google as the IdP</td><td class="resp"></td></tr>
+              <tr><td class="mono">D3</td><td><strong>Azure subscription</strong> + tenant→partner mapping</td><td>Which subscription hosts it; how tenants map to partners</td><td class="resp"></td></tr>
+              <tr><td class="mono">D4</td><td><strong>Region / data residency</strong></td><td>Per market — Postgres + model co-located</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Information request · 1 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">03</span> Identity / OIDC</h2>
+          <p class="lead">You own identity + workspace minting → <span class="mono">MIAI_AUTH_MODE=oidc</span></p>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34%">Item &amp; env var</th>
+                <th style="width:38%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Issuer</strong><br /><span class="mono">MIAI_OIDC_ISSUER</span></td><td>OIDC issuer URL</td><td class="resp"></td></tr>
+              <tr><td><strong>Client</strong><br /><span class="mono">MIAI_OIDC_CLIENT_ID / _SECRET</span></td><td>App registration (secret → Key Vault)</td><td class="resp"></td></tr>
+              <tr><td><strong>Token validation</strong><br /><span class="mono">MIAI_OIDC_AUDIENCE / _JWKS_URL</span></td><td>Audience + JWKS URL</td><td class="resp"></td></tr>
+              <tr><td><strong>Sample token</strong></td><td>A <strong>sample JWT containing <span class="mono">workspace_id</span></strong> so we can verify the token → tenant mapping against staging</td><td class="resp"></td></tr>
+              <tr><td><strong>Redirect URIs</strong></td><td>Confirm you’ll register our prod callback URL(s) — we supply the exact URLs once the FQDN is set (§06)</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">04</span> Wallet / billing gateway
+            <span class="sub crit">— ⚠️ critical path (P0-4)</span>
+          </h2>
+          <p class="lead">Real billing runs through your gateway, not Paystack → <span class="mono">MIAI_WALLET_MODE=http</span></p>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34%">Item &amp; env var</th>
+                <th style="width:38%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Gateway URL</strong><br /><span class="mono">MIAI_WALLET_API_URL</span></td><td>Base URL</td><td class="resp"></td></tr>
+              <tr><td><strong>Auth</strong><br /><span class="mono">MIAI_WALLET_API_KEY</span></td><td>API key (→ Key Vault)</td><td class="resp"></td></tr>
+              <tr><td><strong>API contract</strong></td><td>Debit + credit + balance/ledger-read endpoints, with request/response shapes</td><td class="resp"></td></tr>
+              <tr><td><strong>Idempotency</strong></td><td>How idempotency keys are honoured (we send one per turn)</td><td class="resp"></td></tr>
+              <tr><td><strong>Liveness</strong></td><td>✅ confirm the gateway is <strong>live, durable, and idempotent</strong> in production</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+          <div class="callout warn">
+            <strong>The single hardest dependency.</strong> Everything else is a value we wire in; this one
+            is a build-status confirmation on your side. The cutover checklist treats “gateway not yet
+            durable” as an <span class="crit">immediate NO-GO</span>.
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Information request · 2 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">05</span> Model access
+            <span class="sub">— per Decision D1</span>
+          </h2>
+          <p class="lead">If Azure OpenAI → <span class="mono">MIAI_MODEL_MODE=azure</span></p>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34%">Item &amp; env var</th>
+                <th style="width:38%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Endpoint</strong><br /><span class="mono">AZURE_OPENAI_ENDPOINT</span></td><td>Endpoint URL</td><td class="resp"></td></tr>
+              <tr><td><strong>Key</strong><br /><span class="mono">AZURE_OPENAI_API_KEY</span></td><td>Key (→ Key Vault)</td><td class="resp"></td></tr>
+              <tr><td><strong>Deployments</strong></td><td><strong>Two</strong> deployment names: a <strong>large</strong> (gpt-4o-class) + a <strong>small/cheap</strong> one — we map model tiers to them</td><td class="resp"></td></tr>
+              <tr><td><strong>Region</strong></td><td>Azure region (per D4)</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+          <p class="lead" style="margin-top:3mm">Or, if your model gateway → <span class="mono">MIAI_MODEL_MODE=gateway</span></p>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34%">Item &amp; env var</th>
+                <th style="width:38%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Gateway</strong><br /><span class="mono">MIAI_MODEL_GATEWAY_URL / _KEY</span></td><td>URL + key (→ Key Vault)</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">06</span> Infrastructure
+            <span class="sub">— your Azure subscription</span>
+          </h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34%">Item &amp; env var</th>
+                <th style="width:38%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Database</strong><br /><span class="mono">DATABASE_URL</span></td><td>Azure Postgres connection string, SSL required (→ Key Vault)</td><td class="resp"></td></tr>
+              <tr><td><strong>Redis</strong><br /><span class="mono">UPSTASH_REDIS_REST_URL / _TOKEN</span></td><td>Redis URL + token (or Azure Cache) — required once &gt;1 replica for shared rate-limits</td><td class="resp"></td></tr>
+              <tr><td><strong>FQDN / domain</strong><br /><span class="mono">APP_URL</span></td><td>Production hostname + TLS (DNS/Front Door) — <strong>also needed for OIDC + connector redirect URIs</strong></td><td class="resp"></td></tr>
+              <tr><td><strong>Key Vault</strong></td><td>Confirm the Vault exists and the Container App can reference secrets from it</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Information request · 3 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 4 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">07</span> Connectors
+            <span class="sub">— optional per end-customer, needed for any live at launch</span>
+          </h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:26%">Item</th>
+                <th style="width:46%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>In-scope list</strong></td><td>Which connectors go live at launch (Slack, Google Calendar/Gmail, HubSpot, M365, Shopify, …)</td><td class="resp"></td></tr>
+              <tr><td><strong>OAuth apps + branding</strong></td><td>Whose OAuth apps back them (consent-screen branding). If yours → client ID/secret per connector (→ Key Vault)</td><td class="resp"></td></tr>
+              <tr><td><strong>Redirect URIs</strong></td><td>We provide the exact callback URLs to register once the FQDN (§06) is set</td><td class="resp"></td></tr>
+              <tr><td><strong>Staging test creds</strong></td><td>So your team can exercise the <strong>live</strong> connector path on staging before cutover</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            Note: <span class="mono">GOOGLE_OAUTH_CLIENT_ID / _SECRET</span> is <strong>dual-use</strong> — it
+            powers both Google sign-in and the Google Calendar/Gmail connectors.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">08</span> Release &amp; ops</h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:26%">Item</th>
+                <th style="width:46%">What we need</th>
+                <th class="resp" style="width:28%">Your response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Azure / pipeline access</strong></td><td>Who runs <span class="mono">az deployment</span> / holds the reviewer role on the release</td><td class="resp"></td></tr>
+              <tr><td><strong>Native app</strong></td><td>WebView / deep-link (or native chat client) release plan + timing</td><td class="resp"></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="own">
+            <div class="card">
+              <div class="label">Acceptance — “green” looks like</div>
+              <p style="margin-bottom:1.5mm">Wired correctly, <span class="mono">GET /api/health</span> returns:</p>
+              <pre>{ status:"ok", hardening:"ok",
+  mockRailsAllowed:false, sandboxMode:false,
+  authMode:"oidc", walletMode:"http",
+  modelMode:"azure", storeBackend:"postgres" }</pre>
+              <p style="font-size:8.6px">Then one real OIDC login + one real wallet debit prove reachability. Full go/no-go: <span class="mono">CUTOVER_CHECKLIST.md</span>.</p>
+            </div>
+            <div class="card">
+              <div class="label">What Move Digital provides in return</div>
+              <ul class="check">
+                <li><span class="box"></span> The container image (pinned SHA) + full env map (<span class="mono">AZURE_DEPLOYMENT.md</span>).</li>
+                <li><span class="box"></span> Strong random values for the app-level secrets (<span class="mono">OAUTH_TOKEN_SECRET</span>, <span class="mono">MIAI_SESSION_SECRET</span>, …) for you to load into Key Vault.</li>
+                <li><span class="box"></span> The exact prod redirect URIs (OIDC + connectors) once the FQDN is set.</li>
+                <li><span class="box"></span> Boot-hardening preflight + cutover smoke verification on the day.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Move Digital</strong> · Delivery partner</span>
+        <span>Confidential · Information request · 4 / 4</span>
+      </footer>
+    </section>
+  </body>
+</html>

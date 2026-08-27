@@ -44,6 +44,10 @@ const jobs = [
     html: "cutover-checklist.html",
     pdf: "MyInstantAI-x-MoveDigital-Production-Cutover-Checklist.pdf",
   },
+  {
+    html: "myinstantai-info-request.html",
+    pdf: "MyInstantAI-x-MoveDigital-Production-Cutover-Info-Request.pdf",
+  },
 ];
 
 if (!existsSync(chrome)) {
