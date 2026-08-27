@@ -1792,15 +1792,28 @@ function providerBackoffMs(attempt: number): number {
 }
 
 /** Retry fetch on 429/5xx and transient network errors; do not retry other 4xx. */
+/** Combine an optional caller signal with a fresh timeout so a hung upstream can't block forever. */
+function withTimeoutSignal(existing: AbortSignal | null | undefined, ms: number): AbortSignal {
+  const timeout = AbortSignal.timeout(ms);
+  return existing ? AbortSignal.any([existing, timeout]) : timeout;
+}
+
 async function fetchProviderWithRetry(
   url: string,
   init: RequestInit,
   maxAttempts = 3,
 ): Promise<Response> {
+  // Bound each attempt so a hung provider (Azure OpenAI / gateway) cannot pin the request slot —
+  // without this a stall blocks up to maxAttempts x forever. Env-overridable; a fresh timeout per
+  // attempt also aborts the prior attempt's socket before the next retry.
+  const timeoutMs = Number(env("MIAI_MODEL_TIMEOUT_MS")) || 30000;
   let lastRes: Response | undefined;
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const res = await fetch(url, init);
+      const res = await fetch(url, {
+        ...init,
+        signal: withTimeoutSignal(init.signal, timeoutMs),
+      });
       if (res.ok || !isRetryableProviderStatus(res.status)) {
         return res;
       }

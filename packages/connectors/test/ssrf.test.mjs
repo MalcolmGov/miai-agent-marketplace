@@ -4,6 +4,7 @@ import {
   assertSafeOutboundUrl,
   isBlockedIp,
   safeFetch,
+  withTimeoutSignal,
 } from "../dist/ssrf.js";
 
 describe("ssrf", () => {
@@ -40,5 +41,28 @@ describe("ssrf", () => {
 
   it("exports safeFetch as a function", () => {
     assert.equal(typeof safeFetch, "function");
+  });
+});
+
+describe("withTimeoutSignal — bounds a hung fetch (P0-11)", () => {
+  it("aborts after the timeout so a hung endpoint can't block forever", async () => {
+    const s = withTimeoutSignal(undefined, 20);
+    assert.equal(s.aborted, false);
+    await new Promise((r) => setTimeout(r, 45));
+    assert.equal(s.aborted, true);
+  });
+
+  it("also aborts when the caller's own signal fires first", () => {
+    const ctrl = new AbortController();
+    const s = withTimeoutSignal(ctrl.signal, 60_000); // long timeout that should not be reached
+    assert.equal(s.aborted, false);
+    ctrl.abort();
+    assert.equal(s.aborted, true); // AbortSignal.any propagates a source abort synchronously
+  });
+
+  it("does not abort a fast operation", async () => {
+    const s = withTimeoutSignal(undefined, 60_000);
+    await new Promise((r) => setTimeout(r, 10));
+    assert.equal(s.aborted, false);
   });
 });

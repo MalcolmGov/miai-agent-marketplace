@@ -116,6 +116,12 @@ export async function assertSafeOutboundUrlOrThrow(raw: string): Promise<URL> {
   return result.url;
 }
 
+/** Combine an optional caller signal with a fresh timeout so a hung endpoint can't block forever. */
+export function withTimeoutSignal(existing: AbortSignal | null | undefined, ms: number): AbortSignal {
+  const timeout = AbortSignal.timeout(ms);
+  return existing ? AbortSignal.any([existing, timeout]) : timeout;
+}
+
 /**
  * Fetch after SSRF checks, pinning DNS to a validated address (mitigates rebinding).
  * Uses undici's connect.lookup override when available; otherwise fetch with redirect:manual.
@@ -156,8 +162,12 @@ export async function safeFetch(raw: string, init?: RequestInit): Promise<Respon
       },
     },
   });
+  // Bound the connector call so a hung endpoint (customer webhook / MCP / vendor API) cannot pin the
+  // request slot forever. Env-overridable.
+  const timeoutMs = Number(process.env.MIAI_CONNECTOR_TIMEOUT_MS) || 10000;
   return (await undici.fetch(url.toString(), {
     ...merged,
     dispatcher: agent,
+    signal: withTimeoutSignal(merged.signal, timeoutMs),
   })) as Response;
 }
