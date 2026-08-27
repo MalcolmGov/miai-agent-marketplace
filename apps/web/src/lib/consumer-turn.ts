@@ -132,6 +132,9 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
   const pkg = await getAgentPackage(agentId);
   if (!pkg) return { ok: false, status: 404, error: "Agent missing" };
 
+  // Knowledge is scoped to the AUTHENTICATED person (walletId = userId), NOT input.tenantId (the
+  // client-supplied ?workspaceId= brand). Do NOT "fix" this to pass tenantId: that would make brand
+  // knowledge a client-controlled cross-tenant read. See getComposedKnowledge's ownerId contract.
   const knowledgeOverride = await getComposedKnowledge(input.walletId, agentId, pkg.knowledge);
 
   const sessionKey = `${input.walletId}::${agentId}::${input.sessionId ?? "default"}`;
