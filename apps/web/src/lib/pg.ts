@@ -43,12 +43,22 @@ export function getPool(): Pool | null {
     return null;
   }
   const pg = loadPgSync();
-  g.__miaiPgPool = new pg.Pool({
+  const pool = new pg.Pool({
     connectionString: url,
     ssl: sslFor(url),
     max: 10,
   });
-  return g.__miaiPgPool;
+  // node-postgres emits 'error' on IDLE clients when managed Postgres (Neon/Railway/Azure) drops or
+  // fails over an idle connection — routine behaviour. With NO listener, Node treats the EventEmitter
+  // 'error' as unhandled and re-throws it, crashing the whole process. Log it and let the pool evict
+  // and recreate the connection instead.
+  pool.on("error", (err: Error) => {
+    console.error(
+      JSON.stringify({ level: "error", event: "miai.pg_pool_error", message: err.message }),
+    );
+  });
+  g.__miaiPgPool = pool;
+  return pool;
 }
 
 /** Run a parameterized query against the shared pool. */
