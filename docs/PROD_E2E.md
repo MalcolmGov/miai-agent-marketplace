@@ -23,6 +23,29 @@ endpoints/keys, or data residency — those are validated in the Azure dress reh
 > Claude never sets secrets or deploys — those steps are yours. This runbook and the harness make
 > the run push-button once the environment is up.
 
+## Stand-ins — run without waiting on MyInstantAI
+
+For the dress rehearsal you can substitute the two MyInstantAI-side pieces:
+
+- **OIDC**: any provider works (Auth0, Entra, Google) since the platform uses OIDC discovery. You
+  set `MIAI_OIDC_ISSUER` (the provider's base URL) and `MIAI_OIDC_AUDIENCE` (the client id).
+  **Register this redirect/callback URL with the provider:** `<APP_BASE_URL>/api/consumer/auth/callback`.
+- **Wallet**: `scripts/wallet-stub.mjs` implements the exact `HttpWalletAdapter` contract
+  (`GET /v1/wallets/:ws`, `POST …/debit` with `402` on insufficient, `POST …/topup`, Bearer auth).
+  Run it as a small separate service and point the app at it:
+
+  ```bash
+  PORT=8787 WALLET_STUB_TOKEN=<a-secret> pnpm wallet:stub
+  # then set on the app:
+  #   MIAI_WALLET_API_URL=https://<wallet-stub-url>
+  #   MIAI_WALLET_API_KEY=<the same WALLET_STUB_TOKEN>
+  ```
+
+  It is in-memory (balances reset on restart) — a test stand-in only, never real money. Swap
+  `MIAI_WALLET_API_URL` to MyInstantAI's real gateway later with no other change.
+
+Only the model key is yours regardless (a spend-capped OpenAI / Azure OpenAI key).
+
 ## Step 1 — stand up the production-config environment
 
 Copy `apps/web/.env.prod-e2e.example`, fill in the real values, and set them on the environment.
