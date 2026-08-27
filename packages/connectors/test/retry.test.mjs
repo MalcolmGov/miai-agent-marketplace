@@ -5,7 +5,25 @@ import {
   isRetryableHttpStatus,
   isRetryableError,
   withRetry,
+  backoffWithJitter,
 } from "../dist/retry.js";
+
+describe("backoffWithJitter (P2-8)", () => {
+  it("stays within [0, min(maxDelay, base·2^attempt)) and spreads (not constant)", () => {
+    const samples = Array.from({ length: 200 }, () => backoffWithJitter(3, 400, 20_000));
+    const cap = Math.min(20_000, 400 * 2 ** 3); // 3200
+    for (const s of samples) {
+      assert.ok(s >= 0 && s < cap, `sample ${s} out of [0, ${cap})`);
+    }
+    assert.ok(new Set(samples).size > 1, "jitter should not produce a constant delay");
+  });
+
+  it("honours the max cap at high attempt counts", () => {
+    for (let i = 0; i < 100; i++) {
+      assert.ok(backoffWithJitter(20, 400, 5_000) < 5_000);
+    }
+  });
+});
 
 describe("retry", () => {
   it("isRetryableHttpStatus matches 429 and 5xx only", () => {

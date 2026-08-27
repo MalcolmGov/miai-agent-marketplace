@@ -2082,7 +2082,19 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
         data = await quickbooksRead(token, meta.realmId ?? "", call.args);
         break;
       default:
-        data = { ...stubFor(call.tool, call.args), provider: connector, live: true };
+        // A connected connector with no live handler: don't fabricate a successful live action.
+        // Return an honest stub — not ok, clearly stubbed, live:false (P2-4, reinforces P0-5).
+        return {
+          ok: false,
+          data: {
+            ...stubFor(call.tool, call.args),
+            provider: connector,
+            live: false,
+            _note: `No live handler for ${connector} — action not performed.`,
+          },
+          connector,
+          stubbed: true,
+        };
     }
 
     // Ensure token file stays warm
@@ -2090,7 +2102,8 @@ export async function executeLive(call: ConnectorCall): Promise<ConnectorResult>
 
     return {
       ok: true,
-      data: { ...data, live: true, provider: connector },
+      // Preserve a handler's deliberate live flag (e.g. youtubeSearch's live:false); default true.
+      data: { ...data, live: typeof data.live === "boolean" ? data.live : true, provider: connector },
       connector,
       stubbed: false,
     };

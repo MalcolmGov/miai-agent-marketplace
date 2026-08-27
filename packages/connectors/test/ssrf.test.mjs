@@ -39,6 +39,16 @@ describe("ssrf", () => {
     assert.equal(isBlockedIp("::1"), true);
   });
 
+  it("isBlockedIp blocks IPv6 transition prefixes that can embed a private/metadata IPv4 (P2-3)", () => {
+    // NAT64 64:ff9b::/96 embedding 169.254.169.254 (cloud metadata) and 192.168.0.1.
+    assert.equal(isBlockedIp("64:ff9b::a9fe:a9fe"), true);
+    assert.equal(isBlockedIp("64:ff9b::c0a8:1"), true);
+    // 6to4 2002::/16 embedding a private v4.
+    assert.equal(isBlockedIp("2002:c0a8:0001::"), true);
+    // A genuine public IPv6 is still allowed.
+    assert.equal(isBlockedIp("2606:4700:4700::1111"), false);
+  });
+
   it("exports safeFetch as a function", () => {
     assert.equal(typeof safeFetch, "function");
   });

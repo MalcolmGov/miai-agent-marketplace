@@ -133,6 +133,36 @@ export function looksLikelyEnglish(text: string): boolean {
   return (matches?.length ?? 0) >= 2;
 }
 
+function luhnValid(digits: string): boolean {
+  let sum = 0;
+  let alt = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let d = digits.charCodeAt(i) - 48;
+    if (alt) {
+      d *= 2;
+      if (d > 9) d -= 9;
+    }
+    sum += d;
+    alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+
+/**
+ * P2-6: a real card number — a 13–19 digit run (optionally separated by spaces / dashes / dots)
+ * that passes the Luhn checksum. The bare `{13,19}` digit regex over-fired on long order / reference
+ * / tracking numbers (which almost never satisfy Luhn) and missed dot-separated PANs; requiring Luhn
+ * cuts the false positives and the separator class catches `4111.1111.1111.1111`.
+ */
+export function containsLikelyPan(text: string): boolean {
+  if (!text) return false;
+  for (const m of text.matchAll(/(?<!\d)(?:\d[ .\-]?){13,19}(?!\d)/g)) {
+    const digits = m[0].replace(/\D/g, "");
+    if (digits.length >= 13 && digits.length <= 19 && luhnValid(digits)) return true;
+  }
+  return false;
+}
+
 /**
  * Pre-model input policy. Returns a forced response when the user message
  * hits a hard safety rule; otherwise null (continue to the model).
@@ -156,11 +186,12 @@ export function checkInputGuardrails(
   }
 
   if (
-    // Language-agnostic: a PAN-like 13–19 digit sequence (mirrors the output scrub) catches a card
-    // number in ANY language, plus en/es/fr keyword forms.
-    /card (number|details)|cvv|4111|debit card|credit card|charge my card|take my levy off|tarjeta de (cr[eé]dito|d[eé]bito)|carte bancaire|num[eé]ro de (carte|tarjeta)|\b(?:\d[ -]*?){13,19}\b/.test(
+    // Explicit card keywords (en/es/fr) OR a Luhn-valid PAN in any language (P2-6). The bare-number
+    // path is now Luhn-gated so long order/reference numbers no longer trip the card refusal.
+    /card (number|details)|cvv|4111|debit card|credit card|charge my card|take my levy off|tarjeta de (cr[eé]dito|d[eé]bito)|carte bancaire|num[eé]ro de (carte|tarjeta)/.test(
       lower,
-    )
+    ) ||
+    containsLikelyPan(last)
   ) {
     return {
       content:
@@ -349,8 +380,8 @@ export function checkOutputGuardrails(
   tools: GuardrailTool[],
 ): GuardrailResult | null {
   const text = draft || "";
-  // Full PAN-like sequences in the model reply
-  if (/\b(?:\d[ -]*?){13,19}\b/.test(text.replace(/\s/g, " "))) {
+  // A Luhn-valid PAN in the model reply (P2-6 — no longer trips on long order/tracking numbers).
+  if (containsLikelyPan(text)) {
     return {
       content:
         "I can't take or repeat card numbers in chat — please use the secure payment link. Never share full card details here.",
