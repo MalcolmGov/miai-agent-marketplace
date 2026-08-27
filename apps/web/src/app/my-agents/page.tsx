@@ -13,6 +13,7 @@ interface RentalItem {
   market: string | null;
   connectedConnectors: string[];
   rentedAt: string | null;
+  readiness?: { ready: boolean; missing: { connector: string; name: string; tools: string[] }[] };
 }
 
 export default function MyAgentsPage() {
@@ -75,9 +76,18 @@ export default function MyAgentsPage() {
                     {item.market ? (
                       <span className="chip">{String(item.market).toUpperCase()}</span>
                     ) : null}
+                    {item.readiness && !item.readiness.ready ? (
+                      <span className="rounded-md bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--warn)]">
+                        Needs setup
+                      </span>
+                    ) : null}
                   </div>
                   <p className="mt-1 line-clamp-2 text-xs text-[var(--muted)]">{item.summary}</p>
-                  {item.connectedConnectors.length > 0 ? (
+                  {item.readiness && !item.readiness.ready ? (
+                    <p className="mt-1 text-[11px] font-medium text-[var(--warn)]">
+                      Connect to go live: {item.readiness.missing.map((m) => m.name).join(", ")}
+                    </p>
+                  ) : item.connectedConnectors.length > 0 ? (
                     <p className="mt-1 text-[11px] text-[var(--muted-dim)]">
                       Connected: {item.connectedConnectors.join(", ")}
                     </p>

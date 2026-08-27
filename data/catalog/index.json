@@ -14,7 +14,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-admissions",
@@ -31,7 +34,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-agency-studio",
@@ -48,7 +54,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-agri-advisory",
@@ -65,7 +74,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-ai-coding-assistant",
@@ -82,7 +94,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-airtime-bundles",
@@ -99,7 +114,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-bank-branch",
@@ -116,7 +134,10 @@
     ],
     "tools": 4,
     "evals": 15,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-bi-analyst",
@@ -218,7 +239,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-contract-review",
@@ -235,7 +259,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-course-advisor",
@@ -252,7 +279,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-credit-cards",
@@ -286,7 +316,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-cybersecurity-desk",
@@ -354,7 +387,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-dental-practice",
@@ -371,7 +407,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-device-upgrades",
@@ -388,7 +427,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-devops-assistant",
@@ -456,7 +498,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-events-venue",
@@ -473,7 +518,11 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-executive-assistant",
@@ -490,7 +539,11 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "africa-executive-dashboards",
@@ -541,7 +594,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "africa-fibre-support",
@@ -643,7 +699,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-grant-stock-planner",
@@ -660,7 +719,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "africa-gym-membership",
@@ -677,7 +739,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-home-services",
@@ -694,7 +759,12 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "africa-hotel-concierge",
@@ -745,7 +815,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-insurance-broker",
@@ -762,7 +835,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-insurance-claims",
@@ -796,7 +872,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-investment-advisor",
@@ -813,7 +892,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-it-helpdesk",
@@ -830,7 +912,11 @@
     ],
     "tools": 5,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "africa-law-firm-intake",
@@ -847,7 +933,11 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-learning-development",
@@ -915,7 +1005,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-loyalty-rewards",
@@ -949,7 +1042,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "africa-marketing-assistant",
@@ -966,7 +1062,11 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-media-content-desk",
@@ -1017,7 +1117,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-municipality-desk",
@@ -1051,7 +1154,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-onboarding-buddy",
@@ -1068,7 +1174,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "slack"
+    ]
   },
   {
     "id": "africa-order-tracking",
@@ -1085,7 +1194,10 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-passport-visa",
@@ -1204,7 +1316,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-product-finder",
@@ -1272,7 +1387,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-qa-testing",
@@ -1323,7 +1441,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-remittance",
@@ -1340,7 +1461,10 @@
     ],
     "tools": 5,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-rental-enquiries",
@@ -1357,7 +1481,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-restaurant-takeaway",
@@ -1374,7 +1501,12 @@
     ],
     "tools": 6,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "shopify",
+      "slack"
+    ]
   },
   {
     "id": "africa-returns-exchanges",
@@ -1425,7 +1557,12 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "africa-salon-booking",
@@ -1442,7 +1579,11 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "africa-security-incident",
@@ -1510,7 +1651,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "shopify"
+    ]
   },
   {
     "id": "africa-stock-availability",
@@ -1578,7 +1723,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-trades-receptionist",
@@ -1595,7 +1743,12 @@
     ],
     "tools": 6,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "africa-travel-desk",
@@ -1612,7 +1765,10 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "africa-utility-billing",
@@ -1663,7 +1819,10 @@
     ],
     "tools": 5,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "africa-warehouse-operations",
@@ -1697,7 +1856,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-accounting-practice",
@@ -1713,7 +1875,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-admissions",
@@ -1729,7 +1894,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-agency-studio",
@@ -1745,7 +1913,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-agri-advisory",
@@ -1761,7 +1932,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-ai-coding-assistant",
@@ -1777,7 +1951,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-airtime-bundles",
@@ -1793,7 +1970,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-bank-branch",
@@ -1809,7 +1989,10 @@
     ],
     "tools": 4,
     "evals": 15,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-bi-analyst",
@@ -1905,7 +2088,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-contract-review",
@@ -1921,7 +2107,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-course-advisor",
@@ -1937,7 +2126,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-credit-cards",
@@ -1969,7 +2161,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-cybersecurity-desk",
@@ -2033,7 +2228,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-dental-practice",
@@ -2049,7 +2247,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-device-upgrades",
@@ -2065,7 +2266,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-devops-assistant",
@@ -2129,7 +2333,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-events-venue",
@@ -2145,7 +2352,11 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-executive-assistant",
@@ -2161,7 +2372,11 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "asia-executive-dashboards",
@@ -2209,7 +2424,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "asia-fibre-support",
@@ -2305,7 +2523,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-grant-stock-planner",
@@ -2321,7 +2542,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "asia-gym-membership",
@@ -2337,7 +2561,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-home-services",
@@ -2353,7 +2580,12 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "asia-hotel-concierge",
@@ -2401,7 +2633,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-insurance-broker",
@@ -2417,7 +2652,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-insurance-claims",
@@ -2449,7 +2687,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-investment-advisor",
@@ -2465,7 +2706,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-it-helpdesk",
@@ -2481,7 +2725,11 @@
     ],
     "tools": 5,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "asia-law-firm-intake",
@@ -2497,7 +2745,11 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-learning-development",
@@ -2561,7 +2813,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-loyalty-rewards",
@@ -2593,7 +2848,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "asia-marketing-assistant",
@@ -2609,7 +2867,11 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-media-content-desk",
@@ -2657,7 +2919,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-municipality-desk",
@@ -2689,7 +2954,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-onboarding-buddy",
@@ -2705,7 +2973,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "asia-order-tracking",
@@ -2721,7 +2993,10 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-passport-visa",
@@ -2833,7 +3108,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-product-finder",
@@ -2897,7 +3175,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-qa-testing",
@@ -2945,7 +3226,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-remittance",
@@ -2961,7 +3245,10 @@
     ],
     "tools": 5,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-rental-enquiries",
@@ -2977,7 +3264,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-restaurant-takeaway",
@@ -2993,7 +3283,11 @@
     ],
     "tools": 6,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "asia-returns-exchanges",
@@ -3041,7 +3335,12 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "asia-salon-booking",
@@ -3057,7 +3356,11 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "asia-security-incident",
@@ -3121,7 +3424,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "shopify"
+    ]
   },
   {
     "id": "asia-stock-availability",
@@ -3185,7 +3492,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-trades-receptionist",
@@ -3201,7 +3511,12 @@
     ],
     "tools": 6,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "asia-travel-desk",
@@ -3217,7 +3532,10 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "asia-utility-billing",
@@ -3265,7 +3583,10 @@
     ],
     "tools": 5,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "asia-warehouse-operations",
@@ -3297,7 +3618,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-accounting-practice",
@@ -3313,7 +3637,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-admissions",
@@ -3329,7 +3656,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-agency-studio",
@@ -3345,7 +3675,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-agri-advisory",
@@ -3361,7 +3694,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-ai-coding-assistant",
@@ -3377,7 +3713,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-airtime-bundles",
@@ -3393,7 +3732,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-bank-branch",
@@ -3409,7 +3751,10 @@
     ],
     "tools": 4,
     "evals": 15,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-bi-analyst",
@@ -3505,7 +3850,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-contract-review",
@@ -3521,7 +3869,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-course-advisor",
@@ -3537,7 +3888,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-credit-cards",
@@ -3569,7 +3923,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-cybersecurity-desk",
@@ -3633,7 +3990,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-dental-practice",
@@ -3649,7 +4009,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-device-upgrades",
@@ -3665,7 +4028,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-devops-assistant",
@@ -3729,7 +4095,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-events-venue",
@@ -3745,7 +4114,11 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-executive-assistant",
@@ -3761,7 +4134,11 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar",
+      "teams"
+    ]
   },
   {
     "id": "eu-executive-dashboards",
@@ -3809,7 +4186,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "eu-fibre-support",
@@ -3905,7 +4285,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-grant-stock-planner",
@@ -3921,7 +4304,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "eu-gym-membership",
@@ -3937,7 +4323,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-home-services",
@@ -3953,7 +4342,12 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar",
+      "hubspot",
+      "teams"
+    ]
   },
   {
     "id": "eu-hotel-concierge",
@@ -4001,7 +4395,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-insurance-broker",
@@ -4017,7 +4414,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-insurance-claims",
@@ -4049,7 +4449,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-investment-advisor",
@@ -4065,7 +4468,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-it-helpdesk",
@@ -4081,7 +4487,11 @@
     ],
     "tools": 5,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "teams"
+    ]
   },
   {
     "id": "eu-law-firm-intake",
@@ -4097,7 +4507,11 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-learning-development",
@@ -4161,7 +4575,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-loyalty-rewards",
@@ -4193,7 +4610,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "eu-marketing-assistant",
@@ -4209,7 +4629,11 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-media-content-desk",
@@ -4257,7 +4681,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-municipality-desk",
@@ -4289,7 +4716,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-onboarding-buddy",
@@ -4305,7 +4735,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "teams"
+    ]
   },
   {
     "id": "eu-order-tracking",
@@ -4321,7 +4755,10 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-passport-visa",
@@ -4433,7 +4870,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-product-finder",
@@ -4497,7 +4937,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-qa-testing",
@@ -4545,7 +4988,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-remittance",
@@ -4561,7 +5007,10 @@
     ],
     "tools": 5,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-rental-enquiries",
@@ -4577,7 +5026,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-restaurant-takeaway",
@@ -4593,7 +5045,11 @@
     ],
     "tools": 6,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar",
+      "teams"
+    ]
   },
   {
     "id": "eu-returns-exchanges",
@@ -4641,7 +5097,12 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "m365_calendar",
+      "teams"
+    ]
   },
   {
     "id": "eu-salon-booking",
@@ -4657,7 +5118,11 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar",
+      "teams"
+    ]
   },
   {
     "id": "eu-security-incident",
@@ -4721,7 +5186,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar",
+      "shopify"
+    ]
   },
   {
     "id": "eu-stock-availability",
@@ -4785,7 +5254,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-trades-receptionist",
@@ -4801,7 +5273,12 @@
     ],
     "tools": 6,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar",
+      "hubspot",
+      "teams"
+    ]
   },
   {
     "id": "eu-travel-desk",
@@ -4817,7 +5294,10 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "eu-utility-billing",
@@ -4865,7 +5345,10 @@
     ],
     "tools": 5,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "m365_calendar"
+    ]
   },
   {
     "id": "eu-warehouse-operations",
@@ -4897,7 +5380,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-accounting-practice",
@@ -4913,7 +5399,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-admissions",
@@ -4929,7 +5418,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-agency-studio",
@@ -4945,7 +5437,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-agri-advisory",
@@ -4961,7 +5456,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-ai-coding-assistant",
@@ -4977,7 +5475,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-airtime-bundles",
@@ -4993,7 +5494,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-bank-branch",
@@ -5009,7 +5513,10 @@
     ],
     "tools": 4,
     "evals": 15,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-bi-analyst",
@@ -5105,7 +5612,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-contract-review",
@@ -5121,7 +5631,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-course-advisor",
@@ -5137,7 +5650,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-credit-cards",
@@ -5169,7 +5685,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-cybersecurity-desk",
@@ -5233,7 +5752,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-dental-practice",
@@ -5249,7 +5771,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-device-upgrades",
@@ -5265,7 +5790,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-devops-assistant",
@@ -5329,7 +5857,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-events-venue",
@@ -5345,7 +5876,11 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-executive-assistant",
@@ -5361,7 +5896,11 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "oceania-executive-dashboards",
@@ -5409,7 +5948,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "oceania-fibre-support",
@@ -5505,7 +6047,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-grant-stock-planner",
@@ -5521,7 +6066,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "oceania-gym-membership",
@@ -5537,7 +6085,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-home-services",
@@ -5553,7 +6104,11 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "oceania-hotel-concierge",
@@ -5601,7 +6156,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-insurance-broker",
@@ -5617,7 +6175,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-insurance-claims",
@@ -5649,7 +6210,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-investment-advisor",
@@ -5665,7 +6229,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-it-helpdesk",
@@ -5681,7 +6248,11 @@
     ],
     "tools": 5,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "oceania-law-firm-intake",
@@ -5697,7 +6268,11 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-learning-development",
@@ -5761,7 +6336,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-loyalty-rewards",
@@ -5793,7 +6371,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "oceania-marketing-assistant",
@@ -5809,7 +6390,11 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-media-content-desk",
@@ -5857,7 +6442,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-municipality-desk",
@@ -5889,7 +6477,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-onboarding-buddy",
@@ -5905,7 +6496,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "slack"
+    ]
   },
   {
     "id": "oceania-order-tracking",
@@ -5921,7 +6515,10 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-passport-visa",
@@ -6033,7 +6630,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-product-finder",
@@ -6097,7 +6697,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-qa-testing",
@@ -6145,7 +6748,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-remittance",
@@ -6161,7 +6767,10 @@
     ],
     "tools": 5,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-rental-enquiries",
@@ -6177,7 +6786,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-restaurant-takeaway",
@@ -6193,7 +6805,12 @@
     ],
     "tools": 6,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "shopify",
+      "slack"
+    ]
   },
   {
     "id": "oceania-returns-exchanges",
@@ -6241,7 +6858,12 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "oceania-salon-booking",
@@ -6257,7 +6879,11 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "oceania-security-incident",
@@ -6321,7 +6947,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "shopify"
+    ]
   },
   {
     "id": "oceania-stock-availability",
@@ -6385,7 +7015,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-trades-receptionist",
@@ -6401,7 +7034,11 @@
     ],
     "tools": 6,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "oceania-travel-desk",
@@ -6417,7 +7054,10 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "oceania-utility-billing",
@@ -6465,7 +7105,10 @@
     ],
     "tools": 5,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "oceania-warehouse-operations",
@@ -6497,7 +7140,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-accounting-practice",
@@ -6513,7 +7159,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-admissions",
@@ -6529,7 +7178,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-agency-studio",
@@ -6545,7 +7197,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-agri-advisory",
@@ -6561,7 +7216,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-ai-coding-assistant",
@@ -6577,7 +7235,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-airtime-bundles",
@@ -6593,7 +7254,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-bank-branch",
@@ -6609,7 +7273,10 @@
     ],
     "tools": 4,
     "evals": 15,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-bi-analyst",
@@ -6705,7 +7372,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-contract-review",
@@ -6721,7 +7391,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-course-advisor",
@@ -6737,7 +7410,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-credit-cards",
@@ -6769,7 +7445,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-cybersecurity-desk",
@@ -6833,7 +7512,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-dental-practice",
@@ -6849,7 +7531,10 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-device-upgrades",
@@ -6865,7 +7550,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-devops-assistant",
@@ -6929,7 +7617,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-events-venue",
@@ -6945,7 +7636,11 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "us-executive-assistant",
@@ -6961,7 +7656,11 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "us-executive-dashboards",
@@ -7009,7 +7708,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "us-fibre-support",
@@ -7105,7 +7807,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-grant-stock-planner",
@@ -7121,7 +7826,10 @@
     ],
     "tools": 4,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "us-gym-membership",
@@ -7137,7 +7845,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-home-services",
@@ -7153,7 +7864,12 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "us-hotel-concierge",
@@ -7201,7 +7917,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-insurance-broker",
@@ -7217,7 +7936,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-insurance-claims",
@@ -7249,7 +7971,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-investment-advisor",
@@ -7265,7 +7990,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-it-helpdesk",
@@ -7281,7 +8009,11 @@
     ],
     "tools": 5,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "us-law-firm-intake",
@@ -7297,7 +8029,11 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "us-learning-development",
@@ -7361,7 +8097,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-loyalty-rewards",
@@ -7393,7 +8132,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "shopify"
+    ]
   },
   {
     "id": "us-marketing-assistant",
@@ -7409,7 +8151,11 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar"
+    ]
   },
   {
     "id": "us-media-content-desk",
@@ -7457,7 +8203,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-municipality-desk",
@@ -7489,7 +8238,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-onboarding-buddy",
@@ -7505,7 +8257,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "us-order-tracking",
@@ -7521,7 +8277,10 @@
     ],
     "tools": 5,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-passport-visa",
@@ -7633,7 +8392,10 @@
     ],
     "tools": 4,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-product-finder",
@@ -7697,7 +8459,10 @@
     ],
     "tools": 4,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-qa-testing",
@@ -7745,7 +8510,10 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-remittance",
@@ -7761,7 +8529,10 @@
     ],
     "tools": 5,
     "evals": 16,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-rental-enquiries",
@@ -7777,7 +8548,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-restaurant-takeaway",
@@ -7793,7 +8567,11 @@
     ],
     "tools": 6,
     "evals": 22,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "us-returns-exchanges",
@@ -7841,7 +8619,12 @@
     ],
     "tools": 5,
     "evals": 23,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "us-salon-booking",
@@ -7857,7 +8640,11 @@
     ],
     "tools": 6,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "slack"
+    ]
   },
   {
     "id": "us-security-incident",
@@ -7921,7 +8708,11 @@
     ],
     "tools": 5,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "shopify"
+    ]
   },
   {
     "id": "us-stock-availability",
@@ -7985,7 +8776,10 @@
     ],
     "tools": 4,
     "evals": 17,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-trades-receptionist",
@@ -8001,7 +8795,12 @@
     ],
     "tools": 6,
     "evals": 18,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack"
+    ]
   },
   {
     "id": "us-travel-desk",
@@ -8017,7 +8816,10 @@
     ],
     "tools": 4,
     "evals": 19,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   },
   {
     "id": "us-utility-billing",
@@ -8065,7 +8867,10 @@
     ],
     "tools": 5,
     "evals": 20,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar"
+    ]
   },
   {
     "id": "us-warehouse-operations",
@@ -8097,6 +8902,9 @@
     ],
     "tools": 3,
     "evals": 12,
-    "readiness": "catalogue-ready"
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot"
+    ]
   }
 ]
