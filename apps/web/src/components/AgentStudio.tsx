@@ -92,6 +92,10 @@ export function AgentStudio({
   const [publicKey, setPublicKey] = useState("");
   const [state, setState] = useState("selected");
   const [connected, setConnected] = useState<string[]>([]);
+  const [rentReadiness, setRentReadiness] = useState<{
+    ready: boolean;
+    missing: { connector: string; name: string; tools: string[] }[];
+  } | null>(null);
   const [saving, setSaving] = useState(false);
   const [configMsg, setConfigMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -273,6 +277,8 @@ export function AgentStudio({
     }
     setPublicKey(json.rental.publicKey);
     setState(json.rental.state);
+    // P0-6: surface which connectors this agent needs so the connect step can guide the user.
+    setRentReadiness(json.readiness ?? null);
     return true;
   }
 
@@ -472,12 +478,27 @@ export function AgentStudio({
         ) : null}
 
         {activeStep === "connect" ? (
-          <ActionsPanel
-            agentId={agentId}
-            connectors={data.connectors}
-            connected={connected}
-            onConnected={(ids) => setConnected(ids)}
-          />
+          <div className="space-y-4">
+            {rentReadiness && !rentReadiness.ready ? (
+              <div className="rounded-lg border border-[color-mix(in_srgb,var(--warn)_45%,transparent)] bg-[color-mix(in_srgb,var(--warn)_10%,transparent)] px-4 py-3">
+                <p className="text-sm font-semibold text-[var(--warn)]">
+                  Connect to take live actions
+                </p>
+                <p className="mt-1 text-[13px] text-[var(--card-body)]">
+                  This agent needs{" "}
+                  <strong>{rentReadiness.missing.map((m) => m.name).join(", ")}</strong> to actually
+                  book, order, or send. Until connected it still answers and hands off — and stays
+                  honest, never claiming those actions happened.
+                </p>
+              </div>
+            ) : null}
+            <ActionsPanel
+              agentId={agentId}
+              connectors={data.connectors}
+              connected={connected}
+              onConnected={(ids) => setConnected(ids)}
+            />
+          </div>
         ) : null}
 
         {activeStep === "tokens" ? (

@@ -32,6 +32,7 @@ export default async function HomePage() {
     liveReady: f.liveReady,
     catalogueReady: f.catalogueReady,
     defaultAgentId: f.defaultAgentId,
+    requiresConnectors: f.requiresConnectors,
   }));
 
   return (

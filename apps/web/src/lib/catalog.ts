@@ -18,6 +18,8 @@ export interface CatalogEntry {
   channels: string[];
   tools: number;
   evals: number;
+  /** P0-6: gated (oauth/mcp) connectors this agent's action tools need — for the "Needs setup" badge. */
+  requiresConnectors: string[];
   marketplaceCategory: string;
   audience: AgentAudience;
   pilot: boolean;
@@ -42,6 +44,8 @@ export interface FamilyEntry {
   liveReady: boolean;
   catalogueReady: boolean;
   defaultAgentId: string;
+  /** P0-6: union of gated connectors across the family's agents — for the "Needs setup" badge. */
+  requiresConnectors: string[];
 }
 
 export interface MarketPack {
@@ -132,6 +136,7 @@ function parseCatalogIndex(
     tools: number;
     evals: number;
     readiness?: string;
+    requiresConnectors?: string[];
   }>,
 ): CatalogEntry[] {
   return index.map((e) => {
@@ -146,6 +151,7 @@ function parseCatalogIndex(
       channels: e.channels ?? [],
       tools: e.tools,
       evals: e.evals,
+      requiresConnectors: e.requiresConnectors ?? [],
       marketplaceCategory: marketplaceCategory({
         id: e.id,
         name: e.name,
@@ -291,6 +297,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
       liveReady: variants.some((v) => v.liveReady),
       catalogueReady,
       defaultAgentId,
+      requiresConnectors: [...new Set(variants.flatMap((v) => v.requiresConnectors ?? []))],
     };
   });
 }

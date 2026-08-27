@@ -73,6 +73,26 @@ interface FamilyItem {
   liveReady: boolean;
   catalogueReady: boolean;
   defaultAgentId: string;
+  requiresConnectors?: string[];
+}
+
+/** Human labels for the gated connectors surfaced on the "Needs setup" badge. */
+const CONNECTOR_LABELS: Record<string, string> = {
+  google_calendar: "Google Calendar",
+  m365_calendar: "Microsoft 365 Calendar",
+  slack: "Slack",
+  hubspot: "HubSpot",
+  shopify: "Shopify",
+  teams: "Microsoft Teams",
+  zendesk: "Zendesk",
+  xero: "Xero",
+  quickbooks: "QuickBooks",
+  calendly: "Calendly",
+  email: "Email",
+  mcp: "MCP server",
+};
+function connectorLabel(id: string): string {
+  return CONNECTOR_LABELS[id] ?? id;
 }
 
 function familyPacks(item: FamilyItem): PackId[] {
@@ -801,6 +821,16 @@ export function CatalogGrid({
                             {t("catalog.multiStep")}
                           </span>
                         ) : null}
+                        {item.requiresConnectors?.length ? (
+                          <span
+                            className="rounded-md bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--warn)]"
+                            title={`Connect ${item.requiresConnectors
+                              .map(connectorLabel)
+                              .join(", ")} to take live actions`}
+                          >
+                            Needs setup
+                          </span>
+                        ) : null}
                         {activePack && packs.includes(activePack) ? (
                           <MarketBadge market={activePack} prominent />
                         ) : null}
@@ -1023,6 +1053,28 @@ function AgentDetailModal({
                       <li key={line}>{line}</li>
                     ))}
                   </ul>
+                </section>
+              ) : null}
+
+              {item.requiresConnectors?.length ? (
+                <section>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
+                    Connections needed
+                  </h3>
+                  <p className="mt-1 text-[13px] leading-snug text-[var(--card-body)]">
+                    To take live actions (not just answer), connect these after setup — until then the
+                    agent stays honest and won&apos;t claim those actions succeeded:
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {item.requiresConnectors.map((c) => (
+                      <span
+                        key={c}
+                        className="rounded-md bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--warn)]"
+                      >
+                        {connectorLabel(c)}
+                      </span>
+                    ))}
+                  </div>
                 </section>
               ) : null}
 
