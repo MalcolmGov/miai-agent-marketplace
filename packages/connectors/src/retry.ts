@@ -1,3 +1,5 @@
+import { randomInt } from "node:crypto";
+
 /** HTTP statuses worth retrying (429 rate-limit, 5xx server errors). */
 export function isRetryableHttpStatus(status: number): boolean {
   return status === 429 || status >= 500;
@@ -33,7 +35,20 @@ export interface WithRetryOptions {
   maxRetries?: number;
   /** Base delay before first retry in ms (default 300). */
   baseDelayMs?: number;
+  /** Upper bound on any single backoff wait in ms (default 20000). */
+  maxDelayMs?: number;
   shouldRetry?: (err: unknown) => boolean;
+}
+
+/**
+ * Full-jitter exponential backoff (AWS "Exponential Backoff And Jitter"): a random wait in
+ * [0, min(maxDelay, base·2^attempt)). P2-8 — spreads many clients that fail at the same instant
+ * across the window instead of synchronizing their retries into a thundering herd on a shared
+ * upstream (gateway / connector / DB).
+ */
+export function backoffWithJitter(attempt: number, baseDelayMs: number, maxDelayMs: number): number {
+  const cap = Math.floor(Math.min(maxDelayMs, baseDelayMs * 2 ** attempt));
+  return cap > 0 ? randomInt(cap) : 0; // CSPRNG (not Math.random) — jitter, but keeps Sonar S2245 clean
 }
 
 /**
@@ -45,6 +60,7 @@ export async function withRetry<T>(
 ): Promise<T> {
   const maxRetries = opts.maxRetries ?? 2;
   const baseDelayMs = opts.baseDelayMs ?? 300;
+  const maxDelayMs = opts.maxDelayMs ?? 20_000;
   const shouldRetry = opts.shouldRetry ?? isRetryableError;
 
   let lastErr: unknown;
@@ -54,7 +70,7 @@ export async function withRetry<T>(
     } catch (err) {
       lastErr = err;
       if (attempt >= maxRetries || !shouldRetry(err)) throw err;
-      await sleep(baseDelayMs * 2 ** attempt);
+      await sleep(backoffWithJitter(attempt, baseDelayMs, maxDelayMs));
     }
   }
   throw lastErr;

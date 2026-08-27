@@ -47,6 +47,11 @@ export function getPool(): Pool | null {
     connectionString: url,
     ssl: sslFor(url),
     max: 10,
+    // P2-7: bound the worst case around managed Postgres. Fast-fail on acquisition rather than
+    // hanging the request; recycle idle conns before Neon/Railway/Azure kills them; cap query time.
+    connectionTimeoutMillis: Number(process.env.PG_CONNECT_TIMEOUT_MS) || 10_000,
+    idleTimeoutMillis: Number(process.env.PG_IDLE_TIMEOUT_MS) || 30_000,
+    statement_timeout: Number(process.env.PG_STATEMENT_TIMEOUT_MS) || 15_000,
   });
   // node-postgres emits 'error' on IDLE clients when managed Postgres (Neon/Railway/Azure) drops or
   // fails over an idle connection — routine behaviour. With NO listener, Node treats the EventEmitter

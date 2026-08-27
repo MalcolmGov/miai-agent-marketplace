@@ -82,6 +82,7 @@ export {
   isRetryableHttpStatus,
   isRetryableError,
   withRetry,
+  backoffWithJitter,
   type WithRetryOptions,
 } from "./retry.js";
 

@@ -43,6 +43,11 @@ export function isBlockedIp(ip: string): boolean {
   if (lower.startsWith("fc") || lower.startsWith("fd")) return true; // ULA
   if (lower.startsWith("fe80")) return true; // link-local
   if (lower.startsWith("ff")) return true; // multicast
+  // IPv6 transition prefixes that embed an IPv4 address (which may be private/metadata, e.g.
+  // 169.254.169.254) and would otherwise slip past the v4 rules above — deny outright; server-side
+  // egress never legitimately needs NAT64 or 6to4. P2-3.
+  if (lower.startsWith("64:ff9b:")) return true; // NAT64 64:ff9b::/96 (and 64:ff9b:1::/48)
+  if (lower.startsWith("2002:")) return true; // 6to4 2002::/16
   return false;
 }
 
