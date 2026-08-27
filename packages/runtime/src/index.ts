@@ -1837,6 +1837,54 @@ function openAiToolsPayload(tools: AgentPackage["tools"]) {
 export const MODEL_PROVIDER_SOFT_ERROR =
   "I'm having trouble reaching my knowledge right now — please try again in a moment, or say you'd like a human and I'll connect you.";
 
+/** Friendly label for a consumer's OWN connector, for the "not connected — connect it" nudge. */
+export function consumerConnectorLabel(connector: string | undefined): string {
+  switch (connector) {
+    case "email":
+      return "email (Gmail)";
+    case "google_calendar":
+      return "Google Calendar";
+    case "google_tasks":
+      return "Google Tasks";
+    case "google_contacts":
+      return "Google Contacts";
+    case "google_drive":
+      return "Google Drive";
+    case "m365_calendar":
+      return "Outlook Calendar";
+    case "notion":
+      return "Notion";
+    case "youtube":
+      return "YouTube";
+    case "spotify":
+      return "Spotify";
+    default:
+      return connector ? connector.replace(/_/g, " ") : "account";
+  }
+}
+
+/**
+ * The reply when a connector ACTION couldn't run. On the CONSUMER line the connector is the person's
+ * OWN account, so a not-connected action gets a self-serve "connect it" nudge (they can fix it in one
+ * step) instead of the neutral "flag a teammate" wording — which stays right for the business /
+ * embedded surface, where a third-party end-user can't connect the merchant's account. A genuine
+ * transient failure (the connector IS connected but the call errored) keeps the neutral retry message
+ * on both surfaces.
+ */
+export function connectorActionFailureMessage(args: {
+  consumerLine?: boolean;
+  notConnected: boolean;
+  connector?: string;
+}): string {
+  if (args.consumerLine && args.notConnected) {
+    return (
+      `Your ${consumerConnectorLabel(args.connector)} isn't connected yet, so I couldn't do that. ` +
+      `Open **Accounts → Manage** to connect it, then ask me again and I'll take care of it.`
+    );
+  }
+  return "I couldn't reach the connected system just now. I can hand this to a teammate, or we can retry shortly.";
+}
+
 function isRetryableProviderStatus(status: number): boolean {
   return status === 429 || status >= 500;
 }
@@ -3032,8 +3080,18 @@ export async function runTurn(
       }
       break;
     } else if (!result.ok) {
+      // Distinguish "not connected" (setup needed) from a genuine transient failure. On the consumer
+      // line the connector is the person's own account, so a not-connected action nudges them to
+      // connect it themselves rather than framing it as a temporary outage to retry.
+      const notConnected =
+        result.stubbed ||
+        (result.data as { error?: string } | undefined)?.error === "not_connected";
       emitStatic(
-        "I couldn't reach the connected system just now. I can hand this to a teammate, or we can retry shortly.",
+        connectorActionFailureMessage({
+          consumerLine: req.consumerLine,
+          notConnected,
+          connector: result.connector,
+        }),
       );
       break;
     } else if (name === "handoff_to_human" || /handoff/.test(name)) {
