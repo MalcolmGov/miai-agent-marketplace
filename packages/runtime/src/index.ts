@@ -283,6 +283,51 @@ async function modelAnswer(
   return { content: content || "…", toolCall, usage };
 }
 
+/**
+ * P0-9 — incremental scrub for the streaming path. The authoritative output check
+ * (checkOutputGuardrails) runs only on the FULL reply, so without this a leaked card
+ * number / OTP / secret would already have been streamed to the user token-by-token
+ * before that final scrub can redact it. This wraps onDelta so it (a) withholds a short
+ * trailing window — a sensitive token may still be forming at the tail — and (b) stops
+ * streaming entirely the moment a leak pattern completes in the accumulated text. The
+ * caller's final checkOutputGuardrails then replaces the whole message with the redacted
+ * version, which is what the returned result carries.
+ */
+function makeStreamingGuard(
+  onDelta: (text: string) => void,
+  ctx: { userMessage: string; tools: GuardrailTool[] },
+) {
+  // Wider than the longest single leak match (a 19-digit PAN with separators, or an
+  // "OTP is 1234" phrase) so the complete pattern is still fully withheld when it trips.
+  const HOLD = 64;
+  let acc = "";
+  let emitted = 0;
+  let tripped = false;
+  const wrapped = (text: string): void => {
+    acc += text;
+    if (tripped) return;
+    if (checkOutputGuardrails(ctx.userMessage, acc, ctx.tools)) {
+      tripped = true; // a full leak pattern formed — withhold it and everything after it
+      return;
+    }
+    const safeUntil = Math.max(0, acc.length - HOLD);
+    if (safeUntil > emitted) {
+      onDelta(acc.slice(emitted, safeUntil));
+      emitted = safeUntil;
+    }
+  };
+  // Release the withheld safe tail once the stream ends clean. On a trip we emit nothing
+  // further; the redacted full message is delivered via the turn's return value instead.
+  const flush = (): { tripped: boolean } => {
+    if (!tripped && acc.length > emitted) {
+      onDelta(acc.slice(emitted));
+      emitted = acc.length;
+    }
+    return { tripped };
+  };
+  return { wrapped, flush };
+}
+
 const META_CHUNK =
   /grounding|honesty|how this file works|template vs tenant|market operations|compliance notes|response rules|guardrails|stay in role|prompt-injection|what the agent does not know|citation policy|record format — what/i;
 
@@ -2482,7 +2527,14 @@ export async function runTurn(
         );
       }
     }
-    // Reflect the final (possibly re-voiced) answer in history before metering.
+    // P0-7: apply the same output scrub the main path uses (card / OTP / secret leakage).
+    // Grounded workflows answer from the KB and skip the model, so a leak in the KB — or in a
+    // re-voiced localization — would otherwise reach the customer unscrubbed and get streamed below.
+    {
+      const scrubbed = checkOutputGuardrails(req.userMessage, assistantMessage, req.pkg.tools);
+      if (scrubbed) assistantMessage = scrubbed.content;
+    }
+    // Reflect the final (possibly re-voiced / scrubbed) answer in history before metering.
     {
       const lastMsg = messages[messages.length - 1];
       if (lastMsg?.role === "assistant") lastMsg.content = assistantMessage;
@@ -2548,8 +2600,23 @@ export async function runTurn(
     };
   };
 
+  // P0-7: run hard-safety input guardrails BEFORE the grounded-workflow dispatches below. The ~20
+  // workflows answer deterministically and used to bypass every safety check, so a self-harm or
+  // secret-disclosure message routed to one (pharmacy, mobile-money, …) was never seen by the
+  // guardrail net. When a guardrail fires we skip the workflow (each dispatch is `!forced && …`)
+  // and fall through to the shared completion path, which serves `forced` as the reply.
+  let forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools, {
+    consumerLine: req.consumerLine,
+  });
+  // Language-agnostic backstop (P0-8): the keyword net only covers en/es/fr, so for a non-English
+  // message that cleared, ask a real model to classify it (self-harm / medical / physical-hazard /
+  // secret-disclosure) and force the same handoff/refusal if it fires.
+  if (!forced && !(model instanceof MockModelAdapter) && !looksLikelyEnglish(req.userMessage)) {
+    forced = await classifyInputSafety(req.userMessage, system, req.pkg.tools, model, req.model);
+  }
+
   // First-party marketplace Ask AI (product guide + leads)
-  if (isMarketplaceAssistant(req.agentId)) {
+  if (!forced && isMarketplaceAssistant(req.agentId)) {
     const handled = await finishWorkflow(
       await runMarketplaceAssistantWorkflow({
         userMessage: req.userMessage,
@@ -2561,7 +2628,7 @@ export async function runTurn(
   }
 
   // Executive Assistant multi-step workflow
-  if (isExecutiveAssistant(req.agentId)) {
+  if (!forced && isExecutiveAssistant(req.agentId)) {
     const ea = await runExecutiveAssistantWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2575,7 +2642,7 @@ export async function runTurn(
   }
 
   // IT Helpdesk multi-step workflow
-  if (isItHelpdesk(req.agentId)) {
+  if (!forced && isItHelpdesk(req.agentId)) {
     const it = await runItHelpdeskWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2590,7 +2657,7 @@ export async function runTurn(
   }
 
   // Salon / Trades / Home-services booking workflow
-  if (isBookingFrontDesk(req.agentId)) {
+  if (!forced && isBookingFrontDesk(req.agentId)) {
     const bk = await runBookingFrontDeskWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2605,7 +2672,7 @@ export async function runTurn(
   }
 
   // Sales Qualifier multi-step workflow
-  if (isSalesQualifier(req.agentId)) {
+  if (!forced && isSalesQualifier(req.agentId)) {
     const sq = await runSalesQualifierWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2620,7 +2687,7 @@ export async function runTurn(
   }
 
   // Restaurant & Takeaway multi-step workflow
-  if (isRestaurantTakeaway(req.agentId)) {
+  if (!forced && isRestaurantTakeaway(req.agentId)) {
     const rt = await runRestaurantTakeawayWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2635,7 +2702,7 @@ export async function runTurn(
   }
 
   // Onboarding Buddy multi-step workflow
-  if (isOnboardingBuddy(req.agentId)) {
+  if (!forced && isOnboardingBuddy(req.agentId)) {
     const ob = await runOnboardingBuddyWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2650,7 +2717,7 @@ export async function runTurn(
   }
 
   // Dental Front Desk multi-step workflow (non-clinical booking)
-  if (isDentalFrontDesk(req.agentId)) {
+  if (!forced && isDentalFrontDesk(req.agentId)) {
     const df = await runDentalFrontDeskWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2665,7 +2732,7 @@ export async function runTurn(
   }
 
   // Hotel Guest Concierge multi-step workflow
-  if (isHotelGuest(req.agentId)) {
+  if (!forced && isHotelGuest(req.agentId)) {
     const hg = await runHotelGuestWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2680,7 +2747,7 @@ export async function runTurn(
   }
 
   // Flagship depth Phase 1a — Go-live 18 gap close (orchestration only)
-  if (isAccountingPractice(req.agentId)) {
+  if (!forced && isAccountingPractice(req.agentId)) {
     const ap = await runAccountingPracticeWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2694,7 +2761,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isEventsVenue(req.agentId)) {
+  if (!forced && isEventsVenue(req.agentId)) {
     const ev = await runEventsVenueWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2708,7 +2775,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isBuildingManagement(req.agentId)) {
+  if (!forced && isBuildingManagement(req.agentId)) {
     const bm = await runBuildingManagementWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2722,7 +2789,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isPharmacy(req.agentId)) {
+  if (!forced && isPharmacy(req.agentId)) {
     const rx = await runPharmacyWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2736,7 +2803,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isGymMembership(req.agentId)) {
+  if (!forced && isGymMembership(req.agentId)) {
     const gym = await runGymMembershipWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2751,7 +2818,7 @@ export async function runTurn(
   }
 
   // Flagship depth Phase 2 — financial services (+ optional veterinary)
-  if (isMobileMoney(req.agentId)) {
+  if (!forced && isMobileMoney(req.agentId)) {
     const mm = await runMobileMoneyWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2765,7 +2832,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isWealthManagement(req.agentId)) {
+  if (!forced && isWealthManagement(req.agentId)) {
     const wm = await runWealthManagementWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2779,7 +2846,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isTaxOffice(req.agentId)) {
+  if (!forced && isTaxOffice(req.agentId)) {
     const tax = await runTaxOfficeWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2793,7 +2860,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isVeterinary(req.agentId)) {
+  if (!forced && isVeterinary(req.agentId)) {
     const vet = await runVeterinaryWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2808,7 +2875,7 @@ export async function runTurn(
   }
 
   // Flagship depth Phase 1b — Cluster B runtime-only (catalogue untouched)
-  if (isCustomerSupport(req.agentId)) {
+  if (!forced && isCustomerSupport(req.agentId)) {
     const cs = await runCustomerSupportWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2822,7 +2889,7 @@ export async function runTurn(
     if (done) return done;
   }
 
-  if (isDeliveryTracking(req.agentId)) {
+  if (!forced && isDeliveryTracking(req.agentId)) {
     const dt = await runDeliveryTrackingWorkflow({
       agentId: req.agentId,
       userMessage: req.userMessage,
@@ -2850,16 +2917,13 @@ export async function runTurn(
     consumerLine: req.consumerLine,
   };
 
-  // Shared hard safety for live + mock (mock also checks inside MockModelAdapter).
-  let forced = checkInputGuardrails(req.userMessage, system, req.pkg.tools, {
-    consumerLine: req.consumerLine,
-  });
-  // P0-8: language-agnostic backstop. The keyword net only covers en/es/fr, so for a non-English
-  // message it cleared, ask a real model to classify it (self-harm / medical / physical-hazard /
-  // secret-disclosure) and force the same handoff/refusal if it fires.
-  if (!forced && !(model instanceof MockModelAdapter) && !looksLikelyEnglish(req.userMessage)) {
-    forced = await classifyInputSafety(req.userMessage, system, req.pkg.tools, model, req.model);
-  }
+  // P0-9: guard the live token stream — wrap onDelta so a leaked card / OTP / secret can't be shown
+  // token-by-token before the final full-content scrub (checkOutputGuardrails, below) can redact it.
+  // `forced` (the input guardrails) is now computed above, before the workflow dispatches (P0-7).
+  const streamGuard = onDelta
+    ? makeStreamingGuard(onDelta, { userMessage: req.userMessage, tools: req.pkg.tools })
+    : null;
+  const streamDelta = streamGuard?.wrapped;
   let completion: ModelCompleteResult;
   // Sum provider-reported tokens across this turn's model calls (initial + tool-round follow-ups)
   // for accurate wallet metering; stays 0 for the mock model / providers that omit usage.
@@ -2870,7 +2934,7 @@ export async function runTurn(
     completion = await modelAnswer(
       model,
       { ...modelInputBase, messages, tools: req.pkg.tools },
-      onDelta,
+      streamDelta,
     );
     turnUsageTotal += completion.usage?.totalTokens ?? 0;
   }
@@ -2911,17 +2975,20 @@ export async function runTurn(
 
     const emitStatic = (t: string) => {
       completion = { content: t };
-      if (onDelta && t) {
+      // Route through the P0-9 stream guard (falls back to raw onDelta) so canned/model-derived
+      // static replies get the same incremental leak scrub as the live token stream.
+      const emit = streamDelta ?? onDelta;
+      if (emit && t) {
         const parts = t.split(/(\s+)/).filter(Boolean);
         let buf = "";
         for (const p of parts) {
           buf += p;
           if (buf.length >= 8 || /\n$/.test(buf)) {
-            onDelta(buf);
+            emit(buf);
             buf = "";
           }
         }
-        if (buf) onDelta(buf);
+        if (buf) emit(buf);
       }
     };
 
@@ -2941,7 +3008,7 @@ export async function runTurn(
           ],
           tools: [],
         },
-        onDelta,
+        streamDelta,
       );
       turnUsageTotal += follow.usage?.totalTokens ?? 0;
       completion = {
@@ -3029,7 +3096,7 @@ export async function runTurn(
           ],
           tools: allowMoreTools ? req.pkg.tools : [],
         },
-        onDelta,
+        streamDelta,
       );
       turnUsageTotal += follow.usage?.totalTokens ?? 0;
       const text = follow.content.trim();
@@ -3049,7 +3116,12 @@ export async function runTurn(
     }
   }
 
-  // Post-model scrub for live replies (card/OTP leakage).
+  // P0-9: release the stream guard's withheld safe tail (no-op if it tripped on a leak — then the
+  // withheld text is never streamed and the redacted full message goes out via the return below).
+  streamGuard?.flush();
+
+  // Post-model scrub for live replies (card/OTP leakage). This is the authoritative check; the
+  // stream guard above only limits token-by-token exposure before we reach here.
   if (!completion.toolCall) {
     const scrubbed = checkOutputGuardrails(req.userMessage, completion.content, req.pkg.tools);
     if (scrubbed) completion = scrubbed;
