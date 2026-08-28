@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { buildContentSecurityPolicy } from "@/lib/csp";
-import { isPublicApiPath } from "@/lib/public-paths";
+import { isGatedBusinessPage, isPublicApiPath } from "@/lib/public-paths";
 
 /** Default 1 MiB — override with MIAI_MAX_BODY_BYTES. */
 function maxBodyBytes(): number {
@@ -41,13 +41,33 @@ export function middleware(req: NextRequest) {
   if (process.env.MIAI_AUTH_MODE === "oidc" && pathname.startsWith("/api/")) {
     if (!isPublicApiPath(pathname)) {
       const auth = req.headers.get("authorization") || "";
-      if (!auth.startsWith("Bearer ")) {
+      const hasBearer = auth.startsWith("Bearer ");
+      // A first-party business session cookie is verified cryptographically IN-ROUTE (resolveAuth ->
+      // readBusinessSession, HS256). The edge only decides "may this reach the verifier", never "is
+      // this authorized" — so admit a request carrying EITHER credential. A request with neither still
+      // 401s here exactly as before; a forged/expired cookie passes this presence check but is then
+      // rejected by the in-route verifier (401). Presence-only keeps jose/Node out of the edge.
+      const hasSession = Boolean(req.cookies.get("miai_business_session")?.value);
+      if (!hasBearer && !hasSession) {
         return applySecurityHeaders(
           NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
           nonce,
         );
       }
     }
+  }
+
+  // Page-level gate: bounce signed-out visitors from business console PAGES to /login (presence-only
+  // here — the cookie is cryptographically verified in-route, which stays the hard boundary). Only
+  // fires under OIDC; mock/dev is ungated. Opt-in page list, so it can never trap a public page.
+  if (
+    process.env.MIAI_AUTH_MODE === "oidc" &&
+    isGatedBusinessPage(pathname) &&
+    !req.cookies.get("miai_business_session")?.value
+  ) {
+    const loginUrl = new URL("/login", req.url);
+    loginUrl.searchParams.set("return_to", `${pathname}${req.nextUrl.search}`);
+    return applySecurityHeaders(NextResponse.redirect(loginUrl), nonce);
   }
 
   return applySecurityHeaders(

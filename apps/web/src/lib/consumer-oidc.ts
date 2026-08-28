@@ -122,12 +122,14 @@ export async function buildAuthorizationUrl(args: {
   state: string;
   nonce: string;
   codeChallenge: string;
+  /** Override the callback redirect_uri (e.g. the business flow). Defaults to the consumer callback. */
+  redirectUri?: string;
 }): Promise<string> {
   const { authorization_endpoint } = await discovery();
   const url = new URL(authorization_endpoint);
   url.searchParams.set("response_type", "code");
   url.searchParams.set("client_id", clientId());
-  url.searchParams.set("redirect_uri", consumerRedirectUri());
+  url.searchParams.set("redirect_uri", args.redirectUri ?? consumerRedirectUri());
   url.searchParams.set("scope", CONSUMER_OIDC_SCOPE);
   url.searchParams.set("state", args.state);
   url.searchParams.set("nonce", args.nonce);
@@ -145,6 +147,8 @@ export async function exchangeCodeForIdentity(args: {
   code: string;
   codeVerifier: string;
   nonce: string;
+  /** Must match the redirect_uri used in buildAuthorizationUrl. Defaults to the consumer callback. */
+  redirectUri?: string;
 }): Promise<ConsumerIdentity> {
   const { token_endpoint, jwks_uri } = await discovery();
   const body = new URLSearchParams({
@@ -152,7 +156,7 @@ export async function exchangeCodeForIdentity(args: {
     code: args.code,
     client_id: clientId(),
     client_secret: clientSecret(),
-    redirect_uri: consumerRedirectUri(),
+    redirect_uri: args.redirectUri ?? consumerRedirectUri(),
     code_verifier: args.codeVerifier,
   });
   const res = await fetch(token_endpoint, {
