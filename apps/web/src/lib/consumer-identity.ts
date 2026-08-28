@@ -8,7 +8,15 @@ import { WORKSPACE_ID, DEMO_CONSUMER_ID } from "@/lib/constants";
  * HTTP Response.
  */
 
-/** The brand/tenant a consumer's memory + wallet are scoped to (the person is scoped within it). */
+/**
+ * The brand/tenant namespace for a consumer's MEMORY (key `${tenantId}::${consumerId}`). It is
+ * CLIENT-SUPPLIED (x-workspace-id header / ?workspaceId query) and trusted with NO membership check.
+ * That is safe ONLY because it scopes just the memory namespace PREFIX: the wallet re-keys off the
+ * auth-pinned consumerId and knowledge off the auth-pinned walletId, so a foreign workspaceId reaches
+ * only a different namespace of the SAME person's own memory — never another person's data.
+ * INVARIANT: any NEW resource keyed off this value ALONE (without the consumerId dimension) becomes a
+ * client-controlled cross-tenant read — always compound-key it with the authenticated identity.
+ */
 function consumerBrand(req: Request): string {
   const url = new URL(req.url);
   return req.headers.get("x-workspace-id") || url.searchParams.get("workspaceId") || WORKSPACE_ID;

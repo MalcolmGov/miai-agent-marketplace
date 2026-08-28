@@ -252,11 +252,21 @@ export function composeKnowledge(base: string, sources: KnowledgeSource[]): stri
   return joined.length > max ? joined.slice(0, max) + "\n\n[…truncated for length]" : joined;
 }
 
+/**
+ * Compose an agent's base knowledge with the extra sources registered for a given OWNER.
+ *
+ * `ownerId` is the ACCESS BOUNDARY for knowledge — sources are keyed by it. Callers MUST pass an
+ * AUTH-DERIVED id, never a client-supplied tenant: the business / embed paths pass their verified
+ * workspaceId; the CONSUMER path passes the authenticated person's walletId (= userId), NOT the
+ * client-supplied `?workspaceId=` brand. Passing a client-controlled id here would turn brand
+ * knowledge into a cross-tenant read. (Journey #10 hardening — the param was previously named
+ * `workspaceId`, which invited exactly that mistake on the consumer path.)
+ */
 export async function getComposedKnowledge(
-  workspaceId: string,
+  ownerId: string,
   agentId: string,
   base: string,
 ): Promise<string> {
-  const sources = await listKnowledgeSources(workspaceId, agentId);
+  const sources = await listKnowledgeSources(ownerId, agentId);
   return composeKnowledge(base, sources);
 }
