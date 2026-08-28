@@ -231,6 +231,7 @@ export const AGENT_JS_SCRIPT = String.raw`
     })();
   }
 
+  var UNAVAIL = "We're briefly unavailable — please try again in a moment.";
   function finish() { busy = false; send.disabled = false; input.focus(); }
   function submit(text) {
     text = (text || "").trim();
@@ -238,17 +239,43 @@ export const AGENT_JS_SCRIPT = String.raw`
     busy = true; sugs.innerHTML = "";
     addUser(text);
     send.disabled = true; showTyping(true);
+    var bubble = null, got = false;
+    function open() { if (!got) { showTyping(false); bubble = botRow(); got = true; } }
     fetch(origin + "/api/embed/chat", {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", "accept": "text/event-stream" },
       body: JSON.stringify({ key: key, message: text, sessionId: sessionId })
     })
-      .then(function (r) { return r.json().catch(function () { return {}; }); })
-      .then(function (data) {
-        showTyping(false);
-        reveal((data && data.reply) || "We're briefly unavailable — please try again in a moment.", finish);
+      .then(function (res) {
+        var ct = res.headers.get("content-type") || "";
+        // Fallback to one-shot JSON: an older server (no SSE yet) or a browser without stream reads.
+        if (ct.indexOf("text/event-stream") === -1 || !res.body || !res.body.getReader) {
+          return res.json().catch(function () { return {}; }).then(function (d) {
+            showTyping(false); reveal((d && d.reply) || UNAVAIL, finish);
+          });
+        }
+        // Live token streaming: append each delta to the bubble as it arrives.
+        var reader = res.body.getReader(), dec = new TextDecoder(), buf = "";
+        function pump() {
+          return reader.read().then(function (o) {
+            if (o.done) { if (!got) { showTyping(false); addBot(UNAVAIL); } finish(); return; }
+            buf += dec.decode(o.value, { stream: true });
+            var parts = buf.split("\n\n"); buf = parts.pop();
+            for (var i = 0; i < parts.length; i++) {
+              var fr = parts[i]; if (!fr.replace(/\s/g, "")) continue;
+              var em = fr.match(/^event:\s*(.*)$/m), dm = fr.match(/^data:\s*([\s\S]*)$/m);
+              var ev = em ? em[1].trim() : "", data = {};
+              try { data = JSON.parse(dm ? dm[1] : "{}"); } catch (e) {}
+              if (ev === "delta" && data.text != null) { open(); bubble.textContent += data.text; msgs.scrollTop = msgs.scrollHeight; }
+              else if (ev === "done") { if (!got) addBot(data.reply || UNAVAIL); finish(); return; }
+              else if (ev === "error") { showTyping(false); if (!got) addBot(data.detail || data.error || UNAVAIL); finish(); return; }
+            }
+            return pump();
+          });
+        }
+        return pump();
       })
-      .catch(function () { showTyping(false); addBot("Connection issue — please try again."); finish(); });
+      .catch(function () { showTyping(false); if (!got) addBot("Connection issue — please try again."); finish(); });
   }
 
   form.addEventListener("submit", function (e) { e.preventDefault(); var t = input.value; input.value = ""; submit(t); });
