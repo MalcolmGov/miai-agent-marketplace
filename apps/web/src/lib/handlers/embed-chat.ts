@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
-import { runChannelTurn } from "@/lib/channel-turn";
+import { runChannelTurn, runChannelTurnStream } from "@/lib/channel-turn";
 import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
 import { channelChatBodySchema, formatZodError } from "@/lib/api-schemas";
 import { embedCorsHeaders } from "@/lib/embed-cors";
 import { rateLimit } from "@/lib/security";
+import { sseStreamResponse } from "@/lib/sse";
+import { streamChatTurn } from "@/lib/chat-stream";
 import { correlationFromRequest } from "@/lib/traceability";
 
 export function handleEmbedChatOptions(req: Request): NextResponse {
   return new NextResponse(null, { status: 204, headers: embedCorsHeaders(req) });
 }
 
-export async function handleEmbedChatPost(req: Request): Promise<NextResponse> {
+export async function handleEmbedChatPost(req: Request): Promise<Response> {
   const cors = embedCorsHeaders(req);
   let raw: unknown;
   try {
@@ -31,8 +33,8 @@ export async function handleEmbedChatPost(req: Request): Promise<NextResponse> {
     windowMs: 60_000,
   });
 
-  const result = await runChannelTurn({
-    channel: "embed",
+  const turn = {
+    channel: "embed" as const,
     key: body.key,
     message: body.message.trim(),
     sessionId: body.sessionId,
@@ -42,7 +44,21 @@ export async function handleEmbedChatPost(req: Request): Promise<NextResponse> {
     referer: req.headers.get("referer") ?? undefined,
     rateLimitOk: limited.ok,
     rateLimitRetryAfterSec: limited.ok ? undefined : limited.retryAfterSec,
-  });
+  };
+
+  // Opt-in SSE token streaming (Accept: text/event-stream). The default stays one-shot JSON so
+  // widgets already deployed on customer sites (which don't set Accept) keep working unchanged.
+  if ((req.headers.get("accept") || "").includes("text/event-stream")) {
+    return sseStreamResponse(
+      (send) =>
+        streamChatTurn(send, { channel: "embed" }, (hooks) =>
+          runChannelTurnStream({ ...turn, ...hooks }),
+        ),
+      cors,
+    );
+  }
+
+  const result = await runChannelTurn(turn);
 
   if (!result.ok) {
     const headers: Record<string, string> = { ...cors };
