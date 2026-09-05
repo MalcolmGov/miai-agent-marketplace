@@ -5,6 +5,7 @@ import type { AgentState, ChatMessage } from "@miai/runtime";
 import type { ToolBinding } from "@miai/connectors";
 import { getPool, pingPool, query } from "@/lib/pg";
 import { ensureMigrations } from "@/lib/migrate";
+import { timingSafeEqualString } from "@/lib/security-flags";
 
 /** Secret for deriving embed keys. Falls back to OAUTH_TOKEN_SECRET so no extra
  *  config is needed; set EMBED_KEY_SECRET separately if you ever rotate the OAuth
@@ -504,7 +505,8 @@ export async function resolveEmbedKey(
     const macInput = agent?.embedSalt ? `${parsed.id}.${agent.embedSalt}` : parsed.id;
     const expected = createHmac("sha256", embedSecret()).update(macInput).digest("hex").slice(0, 10);
     // A rotated agent (salt set) will not match the legacy unsalted key, which is the point.
-    if (parsed.mac === expected) return decoded;
+    // Constant-time compare so the MAC can't be recovered byte-by-byte via response timing.
+    if (timingSafeEqualString(parsed.mac, expected)) return decoded;
   }
   // Legacy fallback: explicitly stored keys (still honour revocation).
   for (const [workspaceId, rec] of store().workspaces) {
