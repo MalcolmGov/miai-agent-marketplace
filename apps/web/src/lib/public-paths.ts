@@ -49,10 +49,31 @@ const PUBLIC_PREFIXES = [
   // webhook and the brief cron under here carry their own shared secrets.) So it is public to the
   // Bearer gate, exactly like the embed/app publishable-key routes above.
   "/api/consumer/",
+  // Business "Sign in with Google" — login/callback/me/logout run BEFORE a session exists, so they
+  // are authenticated by the provider redirect (signed state cookie), not the OIDC Bearer, exactly
+  // like the consumer auth line. Scoped to the /auth subtree only — business DATA routes (rent,
+  // configure, workspace/*, …) stay behind the gate and enforce the session cookie in-route via
+  // resolveAuth -> readBusinessSession.
+  "/api/business/auth/",
 ];
 
 /** True when `pathname` should skip the OIDC Bearer check. */
 export function isPublicApiPath(pathname: string): boolean {
   if (PUBLIC_EXACT.has(pathname)) return true;
   return PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
+}
+
+/**
+ * Business console PAGES (not /api) that require a signed-in session under OIDC — used by the
+ * middleware to bounce signed-out visitors to /login. This is an OPT-IN list: an unlisted page is
+ * simply not redirected (its API calls still 401 without a session), so a missed entry can never
+ * break a public page — the safe failure direction. The studio lives at /agents/<id>; the /agents
+ * hub and the /agents/v1/* embed asset deliberately stay open.
+ */
+const GATED_PAGE_PREFIXES = ["/my-agents", "/workspace", "/ops", "/insights", "/create"];
+
+export function isGatedBusinessPage(pathname: string): boolean {
+  if (pathname.startsWith("/api/")) return false;
+  if (pathname.startsWith("/agents/") && !pathname.startsWith("/agents/v1/")) return true;
+  return GATED_PAGE_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }

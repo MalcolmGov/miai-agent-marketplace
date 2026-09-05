@@ -146,7 +146,11 @@ function seedOwner(_workspaceId: string): WorkspaceMember {
 async function ensureSeeded(workspaceId: string): Promise<WorkspaceMember[]> {
   await hydrate();
   const ws = mem().data.workspaces;
-  if (!ws[workspaceId]?.length) {
+  // The demo-owner auto-seed is a MOCK-mode convenience only. Under OIDC, real per-user workspaces
+  // are provisioned explicitly (ensureOwnerProvisioned) and an unknown workspace must stay empty so
+  // roleFromMembers fails closed for a stranger who names a workspace they don't belong to.
+  const demoSeedAllowed = process.env.MIAI_AUTH_MODE !== "oidc";
+  if (demoSeedAllowed && !ws[workspaceId]?.length) {
     ws[workspaceId] = [seedOwner(workspaceId)];
     // Also seed default demo workspace if calling another id first
     if (workspaceId !== WORKSPACE_ID && !ws[WORKSPACE_ID]?.length) {
@@ -159,7 +163,7 @@ async function ensureSeeded(workspaceId: string): Promise<WorkspaceMember[]> {
     }
     await persist();
   }
-  return ws[workspaceId]!;
+  return ws[workspaceId] ?? [];
 }
 
 export async function listMembers(workspaceId: string): Promise<WorkspaceMember[]> {
@@ -280,4 +284,42 @@ export async function roleFromMembers(
     (m) => m.status === "active" && (m.userId === userId || m.email === userId),
   );
   return hit?.role ?? null;
+}
+
+/**
+ * Stable, deterministic per-user workspace id derived from the verified Google `sub`. Opaque and
+ * stable across email changes; no DB lookup, collision-free. This is what gives each business
+ * Google user their OWN isolated workspace.
+ */
+export function businessWorkspaceId(sub: string): string {
+  return `ws_${sub}`;
+}
+
+/**
+ * Ensure the verified Google identity is an active `owner` of its own workspace. Idempotent: a
+ * no-op if the owner row already exists. Called authoritatively at the OIDC callback (first login)
+ * and again on every request from resolveAuth as a cold-store safety net (Railway in-memory wipes).
+ */
+export async function ensureOwnerProvisioned(input: {
+  workspaceId: string;
+  identity: { sub: string; email?: string; name?: string };
+}): Promise<WorkspaceMember> {
+  await hydrate();
+  const ws = mem().data.workspaces;
+  const rows = ws[input.workspaceId] ?? (ws[input.workspaceId] = []);
+  const existing = rows.find((m) => m.userId === input.identity.sub);
+  if (existing) return existing;
+
+  const member: WorkspaceMember = {
+    userId: input.identity.sub,
+    email: input.identity.email ?? `${input.identity.sub}@miai.local`,
+    displayName: input.identity.name,
+    role: "owner",
+    status: "active",
+    invitedAt: new Date().toISOString(),
+  };
+  rows.push(member);
+  await upsertMemberPostgres(input.workspaceId, member);
+  await persist();
+  return member;
 }

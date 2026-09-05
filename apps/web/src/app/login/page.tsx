@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function safeReturnTo(raw: string | null): string {
   if (!raw) return "/";
@@ -18,141 +18,214 @@ function safeReturnTo(raw: string | null): string {
   return "/";
 }
 
-function MockLoginForm() {
+/** Client-side shell flags the Sidebar reads to render business (vs consumer) chrome. */
+function setBusinessShellFlags(displayName?: string) {
+  try {
+    sessionStorage.setItem("miai.product", "agents");
+    sessionStorage.setItem("miai.shellMode", "business");
+    if (displayName) sessionStorage.setItem("miai.mockUser", displayName);
+    sessionStorage.setItem("miai.mockSignedIn", "1");
+  } catch {
+    /* sessionStorage unavailable — non-fatal */
+  }
+}
+
+type Phase = "loading" | "google" | "mock" | "completing" | "denied" | "error";
+
+function Shell({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-4 py-10">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
+        MyInstantAI Agents
+      </p>
+      {children}
+    </div>
+  );
+}
+
+function BusinessLogin() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [checking, setChecking] = useState(true);
+  const [phase, setPhase] = useState<Phase>("loading");
+  const [loginUrl, setLoginUrl] = useState<string | null>(null);
+
+  const returnTo = safeReturnTo(searchParams.get("return_to"));
 
   useEffect(() => {
     let cancelled = false;
-    const returnTo = safeReturnTo(searchParams.get("return_to"));
+
+    // Post-callback landing: the callback set the HttpOnly session cookie and bounced here so we can
+    // set the client shell flags (read by the Sidebar) before forwarding to the destination.
+    if (searchParams.get("complete") === "1") {
+      setPhase("completing");
+      (async () => {
+        try {
+          const res = await fetch("/api/business/auth/me");
+          const data = await res.json();
+          if (cancelled) return;
+          if (data.signedIn) {
+            setBusinessShellFlags(data.email || data.name || undefined);
+            router.replace(returnTo);
+            return;
+          }
+          setPhase("error");
+        } catch {
+          if (!cancelled) setPhase("error");
+        }
+      })();
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    // Otherwise resolve the sign-in mode (and the first-party login URL) from the handoff.
     const absoluteReturn =
       typeof window !== "undefined"
         ? `${window.location.origin}${returnTo.startsWith("/") ? returnTo : `/${returnTo}`}`
         : returnTo;
 
     (async () => {
+      let data: { mode?: string; loginUrl?: string } = {};
       try {
-        const res = await fetch(
-          `/api/auth/handoff?return_to=${encodeURIComponent(absoluteReturn)}`,
-        );
-        const data = await res.json();
-        if (cancelled) return;
-        if (data.requiresExternalLogin && data.loginUrl) {
-          window.location.href = data.loginUrl as string;
-          return;
-        }
+        const res = await fetch(`/api/auth/handoff?return_to=${encodeURIComponent(absoluteReturn)}`);
+        data = await res.json();
       } catch {
-        if (!cancelled) setError("Could not load auth handoff.");
-      } finally {
-        if (!cancelled) setChecking(false);
+        /* leave data empty → error/mock fallback below */
       }
+      if (cancelled) return;
+      setLoginUrl(typeof data.loginUrl === "string" ? data.loginUrl : null);
+      if (searchParams.get("denied") === "1") setPhase("denied");
+      else if (searchParams.get("auth_error") === "1") setPhase("error");
+      else if (data.mode === "oidc" && data.loginUrl) setPhase("google");
+      else setPhase("mock");
     })();
 
     return () => {
       cancelled = true;
     };
-  }, [searchParams]);
+  }, [searchParams, returnTo, router]);
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    // Demo mock: any username + password succeeds (including empty for partner click-through).
-    setBusy(true);
-    try {
-      const name = username.trim() || "demo@company.com";
-      sessionStorage.setItem("miai.product", "agents");
-      sessionStorage.setItem("miai.shellMode", "business");
-      sessionStorage.setItem("miai.mockUser", name);
-      sessionStorage.setItem("miai.mockSignedIn", "1");
-      const dest = safeReturnTo(searchParams.get("return_to"));
-      router.push(dest);
-    } catch {
-      setError("Could not start demo session.");
-      setBusy(false);
-    }
-  }
-
-  if (checking) {
+  if (phase === "loading" || phase === "completing") {
     return (
-      <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-4 py-10">
-        <p className="text-sm text-[var(--muted)]">Preparing sign-in…</p>
-      </div>
+      <Shell>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight">
+          {phase === "completing" ? "Signing you in…" : "Sign in"}
+        </h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          {phase === "completing" ? "Setting up your workspace…" : "Preparing sign-in…"}
+        </p>
+      </Shell>
     );
   }
 
+  if (phase === "denied") {
+    return (
+      <Shell>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight">You&apos;re not on the invite list</h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          Access to the Agents workspace is invitation-only right now. Ask your workspace owner to add
+          your work email, or sign in with a different account.
+        </p>
+        <div className="panel mt-6 space-y-3 p-5">
+          <button
+            type="button"
+            className="btn btn-primary w-full"
+            onClick={() => loginUrl && window.location.assign(loginUrl)}
+            disabled={!loginUrl}
+          >
+            Try a different Google account
+          </button>
+          <p className="text-center text-xs text-[var(--muted-dim)]">
+            Need access? Contact your MyInstantAI workspace owner.
+          </p>
+        </div>
+      </Shell>
+    );
+  }
+
+  if (phase === "error") {
+    return (
+      <Shell>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight">Sign-in didn&apos;t complete</h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          Something interrupted the sign-in. Please try again.
+        </p>
+        <div className="panel mt-6 p-5">
+          <button
+            type="button"
+            className="btn btn-primary w-full"
+            onClick={() => (loginUrl ? window.location.assign(loginUrl) : window.location.reload())}
+          >
+            Try again
+          </button>
+        </div>
+      </Shell>
+    );
+  }
+
+  if (phase === "mock") {
+    // Local/staging without OIDC configured — no fake password field, just a click-through.
+    return (
+      <Shell>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight">Sign in</h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          This is a staging workspace. Continue to explore the console.
+        </p>
+        <div className="panel mt-6 p-5">
+          <button
+            type="button"
+            className="btn btn-primary w-full"
+            data-testid="login-submit"
+            onClick={() => {
+              setBusinessShellFlags("demo@company.com");
+              router.push(returnTo);
+            }}
+          >
+            Continue to workspace (staging)
+          </button>
+        </div>
+        <p className="mt-6 text-center text-xs text-[var(--muted-dim)]">
+          New to Agents?{" "}
+          <Link href="/get-started" className="text-[var(--accent-bright)] hover:underline">
+            Set up a business workspace
+          </Link>
+        </p>
+      </Shell>
+    );
+  }
+
+  // phase === "google"
   return (
-    <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-4 py-10">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
-        MyInstantAI Agents
-      </p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight">Sign in</h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">
-        Access your business workspace. Staging accepts any username and password.
-      </p>
-
-      <form
-        className="panel mt-6 space-y-4 p-5"
-        onSubmit={onSubmit}
-        data-testid="mock-login-form"
-      >
-        <label className="block space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-            Username or email
-          </span>
-          <input
-            className="input"
-            type="text"
-            name="username"
-            autoComplete="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="you@company.com"
-            data-testid="login-username"
-          />
-        </label>
-        <label className="block space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-            Password
-          </span>
-          <input
-            className="input"
-            type="password"
-            name="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            data-testid="login-password"
-          />
-        </label>
-        {error ? <p className="text-sm text-[var(--warn,#fb923c)]">{error}</p> : null}
+    <Shell>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight">Sign in to your business workspace</h1>
+      <p className="mt-2 text-sm text-[var(--muted)]">Access is limited to invited teams.</p>
+      <div className="panel mt-6 space-y-3 p-5">
         <button
-          type="submit"
+          type="button"
           className="btn btn-primary w-full"
-          disabled={busy}
-          data-testid="login-submit"
+          data-testid="login-google"
+          onClick={() => loginUrl && window.location.assign(loginUrl)}
+          disabled={!loginUrl}
         >
-          {busy ? "Signing in…" : "Sign in"}
+          Continue with Google
         </button>
-      </form>
-
+        <p className="text-center text-xs text-[var(--muted-dim)]">
+          We use your Google account to sign you in.
+        </p>
+      </div>
       <p className="mt-6 text-center text-xs text-[var(--muted-dim)]">
         New to Agents?{" "}
         <Link href="/get-started" className="text-[var(--accent-bright)] hover:underline">
           Set up a business workspace
         </Link>
       </p>
-    </div>
+    </Shell>
   );
 }
 
 /**
- * Agents login — OIDC when configured; otherwise mock form (any credentials).
+ * Agents login — first-party "Continue with Google" when business OIDC is configured (with an
+ * invite allowlist enforced at the callback); a click-through staging fallback otherwise.
  */
 export default function LoginPage() {
   return (
@@ -163,7 +236,7 @@ export default function LoginPage() {
         </div>
       }
     >
-      <MockLoginForm />
+      <BusinessLogin />
     </Suspense>
   );
 }

@@ -2,21 +2,24 @@ import { SignJWT, jwtVerify } from "jose";
 import type { ConsumerIdentity } from "@/lib/consumer-oidc";
 
 /**
- * Consumer session — a signed, HttpOnly cookie holding the verified person's identity after a
- * successful "Sign in with Google" flow. The consumer API routes then resolve `userId` from this
- * cookie (see resolveConsumerAuth), so memory is keyed to the real person.
+ * Business session — a signed, HttpOnly cookie holding the verified Google identity after a
+ * successful business "Sign in with Google". `resolveAuth` reads this cookie (before the Bearer
+ * path) and resolves the caller to the owner of their own per-user workspace.
+ *
+ * Mirrors consumer-session.ts but with distinct cookie names, so a person can be signed in to the
+ * consumer and business surfaces independently. Each token purpose has a distinct validated
+ * audience; cookie names alone do not prevent cross-surface token replay.
  *
  * Two cookies, both signed (HS256) with the session secret:
  *  - the session cookie (long-lived): the signed-in identity.
- *  - the login-state cookie (short-lived): the CSRF `state`, OIDC `nonce` and PKCE `code_verifier`
- *    carried across the redirect to the provider and read back at the callback.
+ *  - the login-state cookie (short-lived): CSRF `state`, OIDC `nonce`, PKCE `code_verifier`.
  */
 
-export const SESSION_COOKIE = "miai_consumer_session";
-export const LOGIN_STATE_COOKIE = "miai_consumer_login";
+export const BUSINESS_SESSION_COOKIE = "miai_business_session";
+export const BUSINESS_LOGIN_STATE_COOKIE = "miai_business_login";
 
-const SESSION_AUDIENCE = "miai:consumer:session";
-const LOGIN_STATE_AUDIENCE = "miai:consumer:login-state";
+const SESSION_AUDIENCE = "miai:business:session";
+const LOGIN_STATE_AUDIENCE = "miai:business:login-state";
 
 const SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const LOGIN_STATE_MAX_AGE = 60 * 10; // 10 minutes
@@ -25,7 +28,7 @@ function secretKey(): Uint8Array {
   const secret = process.env.MIAI_SESSION_SECRET || process.env.OAUTH_TOKEN_SECRET || "";
   if (secret.length < 16) {
     throw new Error(
-      "MIAI_SESSION_SECRET (or OAUTH_TOKEN_SECRET) of >=16 chars required for consumer sessions",
+      "MIAI_SESSION_SECRET (or OAUTH_TOKEN_SECRET) of >=16 chars required for business sessions",
     );
   }
   return new TextEncoder().encode(secret);
@@ -33,7 +36,7 @@ function secretKey(): Uint8Array {
 
 const isProd = () => process.env.NODE_ENV === "production";
 
-/** Cookie options for NextResponse.cookies.set — secure in production, HttpOnly, lax same-site. */
+/** Cookie options for the long-lived session cookie — secure in production, HttpOnly, lax same-site. */
 export function sessionCookieOptions() {
   return {
     httpOnly: true,
@@ -44,17 +47,18 @@ export function sessionCookieOptions() {
   };
 }
 
+/** Cookie options for the short-lived login-state cookie — scoped to the business auth subtree. */
 export function loginStateCookieOptions() {
   return {
     httpOnly: true,
     secure: isProd(),
     sameSite: "lax" as const,
-    path: "/api/consumer/auth",
+    path: "/api/business/auth",
     maxAge: LOGIN_STATE_MAX_AGE,
   };
 }
 
-export async function signSession(identity: ConsumerIdentity): Promise<string> {
+export async function signBusinessSession(identity: ConsumerIdentity): Promise<string> {
   return new SignJWT({ email: identity.email, name: identity.name })
     .setProtectedHeader({ alg: "HS256" })
     .setAudience(SESSION_AUDIENCE)
@@ -64,9 +68,14 @@ export async function signSession(identity: ConsumerIdentity): Promise<string> {
     .sign(secretKey());
 }
 
-export type LoginState = { state: string; nonce: string; verifier: string; returnTo: string };
+export type BusinessLoginState = {
+  state: string;
+  nonce: string;
+  verifier: string;
+  returnTo: string;
+};
 
-export async function signLoginState(data: LoginState): Promise<string> {
+export async function signBusinessLoginState(data: BusinessLoginState): Promise<string> {
   return new SignJWT({ ...data })
     .setProtectedHeader({ alg: "HS256" })
     .setAudience(LOGIN_STATE_AUDIENCE)
@@ -86,10 +95,10 @@ function readCookie(req: Request, name: string): string | null {
   return null;
 }
 
-/** The signed-in person, or null if there is no valid session cookie. Never throws. */
-export async function readConsumerSession(req: Request): Promise<ConsumerIdentity | null> {
+/** The signed-in business person, or null if there is no valid session cookie. Never throws. */
+export async function readBusinessSession(req: Request): Promise<ConsumerIdentity | null> {
   try {
-    const token = readCookie(req, SESSION_COOKIE);
+    const token = readCookie(req, BUSINESS_SESSION_COOKIE);
     if (!token) return null;
     const { payload } = await jwtVerify(token, secretKey(), {
       algorithms: ["HS256"],
@@ -108,9 +117,9 @@ export async function readConsumerSession(req: Request): Promise<ConsumerIdentit
   }
 }
 
-export async function readLoginState(req: Request): Promise<LoginState | null> {
+export async function readBusinessLoginState(req: Request): Promise<BusinessLoginState | null> {
   try {
-    const token = readCookie(req, LOGIN_STATE_COOKIE);
+    const token = readCookie(req, BUSINESS_LOGIN_STATE_COOKIE);
     if (!token) return null;
     const { payload } = await jwtVerify(token, secretKey(), {
       algorithms: ["HS256"],
