@@ -171,7 +171,7 @@ export class HttpWalletAdapter implements WalletAdapter {
 
     // Insufficient funds / pause-on-zero — do not throw; mirror MockWalletAdapter.
     if (res.status === 402 || res.status === 409) {
-      let balance = 0;
+      let balance: number | undefined;
       let error = `Wallet API ${res.status}`;
       try {
         const body = (await res.json()) as Partial<DebitResult> & { message?: string };
@@ -179,6 +179,16 @@ export class HttpWalletAdapter implements WalletAdapter {
         error = body.error ?? body.message ?? error;
       } catch {
         /* ignore body parse */
+      }
+      if (typeof balance !== "number") {
+        // The gateway signalled insufficient funds but didn't include the balance. Fetch the TRUE
+        // remaining balance rather than defaulting to 0 — a misleading 0 flows into the consumer
+        // pause marker, which then reads the real dust balance as "topped up" and serves free again.
+        try {
+          balance = (await this.getBalance(req.workspaceId)).tokens;
+        } catch {
+          balance = 0;
+        }
       }
       return { ok: false, balance, paused: true, error };
     }

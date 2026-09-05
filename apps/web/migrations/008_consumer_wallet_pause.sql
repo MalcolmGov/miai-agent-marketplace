@@ -3,7 +3,7 @@
 -- The runtime only auto-pauses a turn at balance <= 0. A prepaid wallet's natural end-state is a
 -- positive-but-insufficient "dust" balance (e.g. 300 tokens with the next turn costing ~2000): the
 -- debit fails, deducts nothing, and the answer is still served once. The B2B channel bounds that to
--- a single free answer by persisting `paused_no_tokens` on the rental and re-feeding it; the consumer
+-- a single free answer by persisting `paused_no_tokens` on the rental and re-feeding it. The consumer
 -- line had no equivalent, so every subsequent turn at that dust balance was served free forever.
 --
 -- This table is that missing marker. `paused_at_balance` records the wallet balance at the moment we

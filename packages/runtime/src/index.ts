@@ -2320,8 +2320,10 @@ export function turnDebitKey(req: TurnRequest): string {
   const digest = (h >>> 0).toString(16).padStart(8, "0");
   // Scope by sessionId so two DISTINCT conversations with an identical position + message get
   // different keys (a fresh session resending the same first message is charged, not served free);
-  // omitted when absent, keeping the key byte-identical to the pre-session-scope form.
-  const sessionSeg = req.sessionId ? `${req.sessionId}:` : "";
+  // omitted when absent, keeping the key byte-identical to the pre-session-scope form. Trimmed so a
+  // blank/whitespace sessionId can't masquerade as scoping while collapsing to the unscoped form.
+  const session = req.sessionId?.trim();
+  const sessionSeg = session ? `${session}:` : "";
   return `${req.workspaceId}:${req.agentId}:${sessionSeg}${req.messages.length}:${digest}`;
 }
 

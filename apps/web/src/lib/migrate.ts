@@ -20,17 +20,18 @@ const MIGRATIONS: Migration[] = [
 let ensuring: Promise<void> | undefined;
 let applied = false;
 
-/** Split migration SQL on semicolons (ignores blank lines and line comments). */
-function splitStatements(sql: string): string[] {
+/**
+ * Split migration SQL into statements. Full-line `--` comments are stripped FIRST, then the SQL is
+ * split on semicolons — so a `;` that appears inside a comment can never break a statement in two
+ * (a comment's tail after the `;` would otherwise leak in front of the next statement as invalid SQL).
+ */
+export function splitStatements(sql: string): string[] {
   return sql
+    .split("\n")
+    .filter((line) => !/^\s*--/.test(line))
+    .join("\n")
     .split(";")
-    .map((chunk) =>
-      chunk
-        .split("\n")
-        .filter((line) => !/^\s*--/.test(line))
-        .join("\n")
-        .trim(),
-    )
+    .map((s) => s.trim())
     .filter(Boolean);
 }
 

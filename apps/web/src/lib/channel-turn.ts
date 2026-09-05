@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { runTurn, type ChatMessage } from "@miai/runtime";
 import { agentReadiness } from "@/lib/connector-preflight";
 import { createWalletAdapter } from "@miai/wallet-adapter";
@@ -220,8 +221,11 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
       // Scope the DERIVED wallet-debit idempotency key per visitor session. Without this, two
       // different embed/app visitors whose first message is identical (e.g. a suggested opening
       // prompt) derive the same key, and the gateway dedups the second to a free turn. The consumer
-      // wrapper already forwards this; the B2B channel must too.
+      // wrapper already forwards this; the B2B channel must too. Our embed widget always sends a
+      // sessionId; if a caller sends none, bill each turn on its own key rather than let session-less
+      // turns collide into a free dedup.
       sessionId: input.sessionId,
+      ...(input.sessionId?.trim() ? {} : { idempotencyKey: randomUUID() }),
     },
   };
 }
