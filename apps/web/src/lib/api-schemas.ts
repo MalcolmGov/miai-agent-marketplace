@@ -216,3 +216,9 @@ export async function parseJsonBody<T>(
   }
   return { ok: true, data: parsed.data };
 }
+
+/** PUT /api/agents/[id]/domains — the approved-domains lock for the embed/app channel. */
+export const agentDomainsBodySchema = z.object({
+  workspaceId: shortText.optional(),
+  domains: z.array(z.string().trim().max(200)).max(20),
+});

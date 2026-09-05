@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useT } from "@/lib/locale";
 
 type Channel = "web" | "app";
@@ -23,6 +23,10 @@ export function InstallPanel({
   onCopySnippet,
   onCopyAppUrl,
   onRent,
+  approvedDomains,
+  savingDomains,
+  domainsMsg,
+  onSaveDomains,
 }: {
   ready: boolean;
   publicKey: string;
@@ -41,9 +45,21 @@ export function InstallPanel({
   onCopySnippet: () => void;
   onCopyAppUrl: () => void;
   onRent: () => void;
+  /** Approved-domains lock for the embed key; empty = unlocked (anyone with the key can use it). */
+  approvedDomains: string[];
+  savingDomains: boolean;
+  domainsMsg: { kind: "ok" | "err"; text: string } | null;
+  onSaveDomains: (domains: string[]) => void;
 }) {
   const t = useT();
   const [channel, setChannel] = useState<Channel>("web");
+  const locked = approvedDomains.length > 0;
+  const domainsKey = approvedDomains.join(", ");
+  const [domainsInput, setDomainsInput] = useState(domainsKey);
+  // Keep the field in sync once the rental (and its lock) finishes loading or is saved.
+  useEffect(() => {
+    setDomainsInput(domainsKey);
+  }, [domainsKey]);
 
   return (
     <div className="space-y-4">
@@ -110,7 +126,55 @@ export function InstallPanel({
                 {copied ? t("studio.copied") : t("install.copyCode")}
               </button>
             </Step>
-            <Step n={2} title={t("install.webStep2Title")} body={t("install.webStep2Body")}>
+            <Step n={2} title={t("install.lockHeading")} body={t("install.lockBody")}>
+              {locked ? (
+                <p className="mt-3 text-sm font-medium text-[var(--accent-bright)]" data-testid="install-domains-locked">
+                  {t("install.lockLockedTo", { domains: approvedDomains.join(", ") })}
+                </p>
+              ) : (
+                <div
+                  className="mt-3 rounded-xl border border-[color-mix(in_srgb,var(--warn)_35%,var(--line))] bg-[color-mix(in_srgb,var(--warn)_8%,transparent)] px-4 py-3"
+                  data-testid="install-domains-warning"
+                >
+                  <p className="text-sm font-medium text-[var(--text)]">{t("install.lockWarn")}</p>
+                </div>
+              )}
+              <label className="mt-3 block text-sm text-[var(--muted)]">
+                {t("install.lockField")}
+                <input
+                  className="input mt-1.5 w-full max-w-md text-sm"
+                  value={domainsInput}
+                  onChange={(e) => setDomainsInput(e.target.value)}
+                  placeholder={t("install.lockPlaceholder")}
+                  disabled={!ready || savingDomains}
+                  data-testid="install-domains"
+                />
+              </label>
+              <p className="mt-1 text-xs text-[var(--muted-dim)]">{t("install.lockHint")}</p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  className="btn btn-primary text-sm"
+                  disabled={!ready || savingDomains}
+                  onClick={() => onSaveDomains(parseDomains(domainsInput))}
+                  data-testid="install-domains-save"
+                >
+                  {savingDomains ? t("install.lockSaving") : t("install.lockSave")}
+                </button>
+                {domainsMsg ? (
+                  <span
+                    className={
+                      domainsMsg.kind === "ok"
+                        ? "text-sm text-[var(--accent-bright)]"
+                        : "text-sm text-[var(--warn,#fb923c)]"
+                    }
+                  >
+                    {domainsMsg.text}
+                  </span>
+                ) : null}
+              </div>
+            </Step>
+            <Step n={3} title={t("install.webStep2Title")} body={t("install.webStep2Body")}>
               <details className="mt-3 group">
                 <summary className="cursor-pointer text-sm font-medium text-[var(--accent-bright)]">
                   {t("install.whereToPaste")}
@@ -131,7 +195,7 @@ export function InstallPanel({
                 </ul>
               </details>
             </Step>
-            <Step n={3} title={t("install.webStep3Title")} body={t("install.webStep3Body")} />
+            <Step n={4} title={t("install.webStep3Title")} body={t("install.webStep3Body")} />
           </ol>
         ) : (
           <ol className="space-y-5">
@@ -280,6 +344,13 @@ function Step({
       </div>
     </li>
   );
+}
+
+function parseDomains(raw: string): string[] {
+  return raw
+    .split(",")
+    .map((d) => d.trim())
+    .filter(Boolean);
 }
 
 function normalizeHex(v: string): string {
