@@ -32,7 +32,7 @@ function setBusinessShellFlags(displayName?: string) {
 
 type Phase = "loading" | "google" | "mock" | "completing" | "denied" | "error";
 
-function Shell({ children }: { children: React.ReactNode }) {
+function Shell({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-4 py-10">
       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">

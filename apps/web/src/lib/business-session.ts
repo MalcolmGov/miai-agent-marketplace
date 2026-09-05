@@ -7,7 +7,8 @@ import type { ConsumerIdentity } from "@/lib/consumer-oidc";
  * path) and resolves the caller to the owner of their own per-user workspace.
  *
  * Mirrors consumer-session.ts but with distinct cookie names, so a person can be signed in to the
- * consumer and business surfaces independently. Same HS256 signing secret.
+ * consumer and business surfaces independently. Each token purpose has a distinct validated
+ * audience; cookie names alone do not prevent cross-surface token replay.
  *
  * Two cookies, both signed (HS256) with the session secret:
  *  - the session cookie (long-lived): the signed-in identity.
@@ -16,6 +17,9 @@ import type { ConsumerIdentity } from "@/lib/consumer-oidc";
 
 export const BUSINESS_SESSION_COOKIE = "miai_business_session";
 export const BUSINESS_LOGIN_STATE_COOKIE = "miai_business_login";
+
+const SESSION_AUDIENCE = "miai:business:session";
+const LOGIN_STATE_AUDIENCE = "miai:business:login-state";
 
 const SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const LOGIN_STATE_MAX_AGE = 60 * 10; // 10 minutes
@@ -57,6 +61,7 @@ export function loginStateCookieOptions() {
 export async function signBusinessSession(identity: ConsumerIdentity): Promise<string> {
   return new SignJWT({ email: identity.email, name: identity.name })
     .setProtectedHeader({ alg: "HS256" })
+    .setAudience(SESSION_AUDIENCE)
     .setSubject(identity.sub)
     .setIssuedAt()
     .setExpirationTime(`${SESSION_MAX_AGE}s`)
@@ -73,6 +78,7 @@ export type BusinessLoginState = {
 export async function signBusinessLoginState(data: BusinessLoginState): Promise<string> {
   return new SignJWT({ ...data })
     .setProtectedHeader({ alg: "HS256" })
+    .setAudience(LOGIN_STATE_AUDIENCE)
     .setIssuedAt()
     .setExpirationTime(`${LOGIN_STATE_MAX_AGE}s`)
     .sign(secretKey());
@@ -91,10 +97,14 @@ function readCookie(req: Request, name: string): string | null {
 
 /** The signed-in business person, or null if there is no valid session cookie. Never throws. */
 export async function readBusinessSession(req: Request): Promise<ConsumerIdentity | null> {
-  const token = readCookie(req, BUSINESS_SESSION_COOKIE);
-  if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secretKey(), { algorithms: ["HS256"] });
+    const token = readCookie(req, BUSINESS_SESSION_COOKIE);
+    if (!token) return null;
+    const { payload } = await jwtVerify(token, secretKey(), {
+      algorithms: ["HS256"],
+      audience: SESSION_AUDIENCE,
+      requiredClaims: ["sub", "iat", "exp"],
+    });
     const sub = typeof payload.sub === "string" ? payload.sub : "";
     if (!sub) return null;
     return {
@@ -108,10 +118,14 @@ export async function readBusinessSession(req: Request): Promise<ConsumerIdentit
 }
 
 export async function readBusinessLoginState(req: Request): Promise<BusinessLoginState | null> {
-  const token = readCookie(req, BUSINESS_LOGIN_STATE_COOKIE);
-  if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secretKey(), { algorithms: ["HS256"] });
+    const token = readCookie(req, BUSINESS_LOGIN_STATE_COOKIE);
+    if (!token) return null;
+    const { payload } = await jwtVerify(token, secretKey(), {
+      algorithms: ["HS256"],
+      audience: LOGIN_STATE_AUDIENCE,
+      requiredClaims: ["iat", "exp"],
+    });
     const { state, nonce, verifier, returnTo } = payload as Record<string, unknown>;
     if (
       typeof state === "string" &&

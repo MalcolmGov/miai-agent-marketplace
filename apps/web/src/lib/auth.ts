@@ -93,7 +93,13 @@ export async function resolveAuth(req: Request): Promise<AuthContext> {
   // the user is owner of only that workspace (no operator/platform role, so no cross-tenant reach).
   const { readBusinessSession } = await import("@/lib/business-session");
   const session = await readBusinessSession(req);
-  if (session) {
+  // Offboarding: re-check the invite allowlist on EVERY request, not only at the callback. A 30-day
+  // session cookie must stop working the moment the person is removed from the allowlist (or the
+  // allowlist is cleared for an emergency lockout) — otherwise their existing cookie keeps full owner
+  // access for weeks. The verified cookie satisfies the membership-only check, and a denied session
+  // skips provisioning entirely so it can never resurrect a revoked member row.
+  const { emailOnAllowlist } = await import("@/lib/business-allowlist");
+  if (session && emailOnAllowlist(session.email)) {
     const { businessWorkspaceId, ensureOwnerProvisioned, roleFromMembers } = await import(
       "@/lib/workspace-members"
     );

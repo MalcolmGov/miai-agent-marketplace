@@ -19,12 +19,14 @@ function csv(name: string): string[] {
 }
 
 /**
- * True when `email` is on the invite allowlist and Google has verified it. Requires a verified
- * email so an unverified address can't spoof a whitelisted domain.
+ * True when `email` is currently on the invite allowlist (exact address or matching domain).
+ * Fail-closed: no allowlist configured → nobody. This is membership ONLY — it does NOT check that
+ * Google verified the address, so it is safe to call at session RE-authentication (the session cookie
+ * already proves the address was verified when it was issued), but not at first admission.
  */
-export function isBusinessEmailAllowed(emailRaw?: string, emailVerified?: boolean): boolean {
+export function emailOnAllowlist(emailRaw?: string): boolean {
   const email = (emailRaw || "").trim().toLowerCase();
-  if (!email.includes("@") || emailVerified !== true) return false;
+  if (!email.includes("@")) return false;
 
   const emails = csv("MIAI_B2B_ALLOWED_EMAILS");
   const domains = csv("MIAI_B2B_ALLOWED_DOMAINS");
@@ -34,4 +36,13 @@ export function isBusinessEmailAllowed(emailRaw?: string, emailVerified?: boolea
 
   const domain = email.slice(email.indexOf("@") + 1);
   return domains.some((d) => domain === d || domain.endsWith(`.${d}`));
+}
+
+/**
+ * True when `email` is on the invite allowlist AND Google has verified it. Requires a verified email
+ * so an unverified address can't spoof a whitelisted domain. Used at the OIDC callback (first
+ * admission); re-authentication uses {@link emailOnAllowlist}, which the verified cookie satisfies.
+ */
+export function isBusinessEmailAllowed(emailRaw?: string, emailVerified?: boolean): boolean {
+  return emailVerified === true && emailOnAllowlist(emailRaw);
 }

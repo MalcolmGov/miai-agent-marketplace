@@ -15,6 +15,9 @@ import type { ConsumerIdentity } from "@/lib/consumer-oidc";
 export const SESSION_COOKIE = "miai_consumer_session";
 export const LOGIN_STATE_COOKIE = "miai_consumer_login";
 
+const SESSION_AUDIENCE = "miai:consumer:session";
+const LOGIN_STATE_AUDIENCE = "miai:consumer:login-state";
+
 const SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const LOGIN_STATE_MAX_AGE = 60 * 10; // 10 minutes
 
@@ -54,6 +57,7 @@ export function loginStateCookieOptions() {
 export async function signSession(identity: ConsumerIdentity): Promise<string> {
   return new SignJWT({ email: identity.email, name: identity.name })
     .setProtectedHeader({ alg: "HS256" })
+    .setAudience(SESSION_AUDIENCE)
     .setSubject(identity.sub)
     .setIssuedAt()
     .setExpirationTime(`${SESSION_MAX_AGE}s`)
@@ -65,6 +69,7 @@ export type LoginState = { state: string; nonce: string; verifier: string; retur
 export async function signLoginState(data: LoginState): Promise<string> {
   return new SignJWT({ ...data })
     .setProtectedHeader({ alg: "HS256" })
+    .setAudience(LOGIN_STATE_AUDIENCE)
     .setIssuedAt()
     .setExpirationTime(`${LOGIN_STATE_MAX_AGE}s`)
     .sign(secretKey());
@@ -83,10 +88,14 @@ function readCookie(req: Request, name: string): string | null {
 
 /** The signed-in person, or null if there is no valid session cookie. Never throws. */
 export async function readConsumerSession(req: Request): Promise<ConsumerIdentity | null> {
-  const token = readCookie(req, SESSION_COOKIE);
-  if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secretKey(), { algorithms: ["HS256"] });
+    const token = readCookie(req, SESSION_COOKIE);
+    if (!token) return null;
+    const { payload } = await jwtVerify(token, secretKey(), {
+      algorithms: ["HS256"],
+      audience: SESSION_AUDIENCE,
+      requiredClaims: ["sub", "iat", "exp"],
+    });
     const sub = typeof payload.sub === "string" ? payload.sub : "";
     if (!sub) return null;
     return {
@@ -100,10 +109,14 @@ export async function readConsumerSession(req: Request): Promise<ConsumerIdentit
 }
 
 export async function readLoginState(req: Request): Promise<LoginState | null> {
-  const token = readCookie(req, LOGIN_STATE_COOKIE);
-  if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secretKey(), { algorithms: ["HS256"] });
+    const token = readCookie(req, LOGIN_STATE_COOKIE);
+    if (!token) return null;
+    const { payload } = await jwtVerify(token, secretKey(), {
+      algorithms: ["HS256"],
+      audience: LOGIN_STATE_AUDIENCE,
+      requiredClaims: ["iat", "exp"],
+    });
     const { state, nonce, verifier, returnTo } = payload as Record<string, unknown>;
     if (
       typeof state === "string" &&

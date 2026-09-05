@@ -45,7 +45,11 @@ export async function GET(req: Request) {
   const returnTo = safeReturnPath(login?.returnTo || "/");
 
   // CSRF + integrity: the provider must return our code and a state matching the signed cookie.
-  if (providerError || !code || !state || !login || state !== login.state) {
+  // Split so `login` narrows to non-null before the state compare (and login.verifier/nonce below).
+  if (providerError || !code || !state || !login) {
+    return redirectToLogin({ auth_error: "1" });
+  }
+  if (state !== login.state) {
     return redirectToLogin({ auth_error: "1" });
   }
 

@@ -93,6 +93,13 @@ describe("business session cookie", () => {
 });
 
 describe("resolveAuth business-session branch (isolation + owner)", () => {
+  // Self-contained: every identity in this block is on the acme.com allowlist, so resolveAuth's
+  // per-request offboarding re-check admits them (rather than leaning on a prior block's env).
+  before(() => {
+    process.env.MIAI_B2B_ALLOWED_DOMAINS = "acme.com";
+    delete process.env.MIAI_B2B_ALLOWED_EMAILS;
+  });
+
   it("resolves a cookie to owner of its own per-user workspace, mode oidc", async () => {
     const token = await session.signBusinessSession({ sub: "google-abc", email: "owner@acme.com" });
     const ctx = await auth.resolveAuth(reqWithSession(token));
@@ -118,6 +125,31 @@ describe("resolveAuth business-session branch (isolation + owner)", () => {
   it("a stranger cannot become owner of someone else's workspace", async () => {
     // user-1's workspace already provisioned above; a different verified user gets readonly/null there.
     assert.equal(await members.roleFromMembers("ws_user-1", "user-2"), null);
+  });
+
+  it("offboards a removed user: a valid cookie whose email left the allowlist is denied", async () => {
+    // The person signed in while allowlisted; their 30-day cookie is still cryptographically valid.
+    const token = await session.signBusinessSession({ sub: "gone", email: "gone@ex-partner.com" });
+    // ex-partner.com is not on the acme.com allowlist -> the per-request re-check must deny the stale
+    // cookie (fall through to the Bearer path), rather than re-provisioning them as owner.
+    await assert.rejects(() => auth.resolveAuth(reqWithSession(token)), /Missing Bearer token/);
+    assert.equal(await members.roleFromMembers("ws_gone", "gone"), null, "no owner row resurrected");
+  });
+
+  it("ignores forged workspace/user/role headers on a valid cookie (per-user isolation)", async () => {
+    const token = await session.signBusinessSession({ sub: "self", email: "self@acme.com" });
+    const req = new Request("https://example.com/api/rent", {
+      headers: {
+        cookie: `miai_business_session=${token}`,
+        "x-workspace-id": "ws_victim",
+        "x-user-id": "victim",
+        "x-roles": "owner,operator",
+      },
+    });
+    const ctx = await auth.resolveAuth(req);
+    assert.equal(ctx.workspaceId, "ws_self", "workspace pinned to the verified sub, not the header");
+    assert.equal(ctx.userId, "self", "user pinned to the verified sub, not the header");
+    assert.deepEqual(ctx.roles, ["owner"], "no operator/platform role smuggled via x-roles");
   });
 
   it("falls through to the Bearer 401 when there is no session cookie", async () => {
