@@ -179,6 +179,17 @@ describe("wallet failures fail OPEN, not crash (P0-4)", () => {
     assert.match(r.assistantMessage, /breakfast/i, "answer served despite the wallet outage");
     assert.equal(r.paused, false, "fail open — do not pause on a gateway blip after answering");
     assert.equal(r.balance, 1000, "reports the fallback balance");
+    assert.equal(r.tokensDebited, 0, "fail-open served free — the ledger did not move, so report 0 not the metered amount");
+  });
+
+  it("a normal debit through the same request still reports the real charge (guard didn't zero real usage)", async () => {
+    const wallet = {
+      async getBalance() { return { workspaceId: "ws", tokens: 1000, currencyLabel: "tokens" }; },
+      async debit(req) { return { ok: true, balance: 1000 - (req.amount ?? 0), paused: false }; },
+      async topUp() { return { workspaceId: "ws", tokens: 1000, currencyLabel: "tokens" }; },
+    };
+    const r = await runTurn(hotelReq(), { wallet, model: stubModel });
+    assert.ok(r.tokensDebited > 0, "a genuine debit still meters usage");
   });
 
   it("a getBalance throw does not block the turn", async () => {
