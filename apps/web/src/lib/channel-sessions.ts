@@ -1,4 +1,4 @@
-import { redisAvailable, redisGet, redisSet } from "@/lib/redis";
+import { redisAvailable, redisGet, redisScanDel, redisSet } from "@/lib/redis";
 
 /** A stored chat message — the shared shape used by every channel's rolling session history. */
 export type StoredMessage = {
@@ -55,4 +55,27 @@ export function createSessionStore<T extends StoredMessage>(opts: {
       bag.set(sessionKey, trimmed);
     },
   };
+}
+
+/**
+ * DSAR: erase every rolling session for one owner across all agents/sessions. Session keys are
+ * `${ownerId}::${agentId}::${sessionId}`; Redis namespaces them under `redisPrefix`. Clears both
+ * the Redis copy (SCAN + DEL) and the in-process bag. Returns the number of sessions removed.
+ */
+export async function eraseOwnerSessions<T>(opts: {
+  redisPrefix: string;
+  bag: Map<string, T[]>;
+  ownerId: string;
+}): Promise<number> {
+  const { redisPrefix, bag, ownerId } = opts;
+  if (!ownerId) return 0;
+  let cleared = 0;
+  for (const k of [...bag.keys()]) {
+    if (k.startsWith(`${ownerId}::`)) {
+      bag.delete(k);
+      cleared++;
+    }
+  }
+  const viaRedis = await redisScanDel(`${redisPrefix}${ownerId}::*`);
+  return cleared + viaRedis;
 }

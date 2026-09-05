@@ -105,3 +105,27 @@ export async function redisDel(key: string): Promise<boolean> {
   const result = await upstashCommand("DEL", key);
   return typeof result === "number" && result > 0;
 }
+
+/**
+ * Delete every key matching a glob pattern via SCAN + DEL (Upstash REST). Returns the number of
+ * keys removed. No-op returning 0 when Redis is not configured. Used by DSAR erasure to clear a
+ * person's rolling session history, whose keys are namespaced by owner id.
+ */
+export async function redisScanDel(match: string): Promise<number> {
+  if (!upstashConfig()) return 0;
+  let cursor = "0";
+  let deleted = 0;
+  // Bound the loop so a pathological cursor can never spin forever.
+  for (let i = 0; i < 10_000; i++) {
+    const res = await upstashCommand("SCAN", cursor, "MATCH", match, "COUNT", "200");
+    if (!Array.isArray(res) || res.length < 2) break;
+    cursor = String(res[0]);
+    const keys = Array.isArray(res[1]) ? (res[1] as unknown[]).map(String) : [];
+    if (keys.length) {
+      const n = await upstashCommand("DEL", ...keys);
+      if (typeof n === "number") deleted += n;
+    }
+    if (cursor === "0") break;
+  }
+  return deleted;
+}

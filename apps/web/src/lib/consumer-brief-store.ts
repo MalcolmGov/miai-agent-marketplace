@@ -162,3 +162,17 @@ export async function listBriefRecords(): Promise<Array<{ consumerId: string; re
   const map = await fileMem();
   return [...map.entries()].map(([consumerId, record]) => ({ consumerId, record }));
 }
+
+/** Delete a person's daily-brief record (DSAR). Returns 1 if a record was removed, else 0. */
+export async function deleteBrief(consumerId: string): Promise<number> {
+  if (!consumerId) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query("DELETE FROM miai_consumer_brief WHERE consumer_id = $1", [consumerId]);
+    return res.rowCount ?? 0;
+  }
+  const map = await fileMem();
+  const had = map.delete(consumerId);
+  if (had) await fileWrite(map);
+  return had ? 1 : 0;
+}

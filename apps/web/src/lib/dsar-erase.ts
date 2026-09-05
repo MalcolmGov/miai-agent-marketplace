@@ -38,11 +38,15 @@ export async function eraseWorkspaceData(
   return { deleted };
 }
 
-async function eraseOAuthTokens(workspaceId: string): Promise<number> {
-  const connectors = await listConnected(workspaceId);
+/**
+ * Delete every stored OAuth connector token for an owner (workspace OR consumer — both key
+ * the token store by their own id). Shared by the workspace and consumer DSAR erasers.
+ */
+export async function eraseOAuthTokens(ownerId: string): Promise<number> {
+  const connectors = await listConnected(ownerId);
   for (const connectorId of connectors) {
     try {
-      await deleteToken(workspaceId, connectorId);
+      await deleteToken(ownerId, connectorId);
     } catch (err) {
       console.error("[dsar-erase] oauth token delete failed", connectorId, err);
     }
@@ -51,7 +55,7 @@ async function eraseOAuthTokens(workspaceId: string): Promise<number> {
   if (databaseUrl()) {
     try {
       const res = await query("DELETE FROM miai_oauth_tokens WHERE workspace_id = $1", [
-        workspaceId,
+        ownerId,
       ]);
       return Math.max(connectors.length, res.rowCount ?? 0);
     } catch (err) {

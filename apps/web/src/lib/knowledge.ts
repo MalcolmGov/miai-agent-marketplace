@@ -177,6 +177,19 @@ export async function updateKnowledgeSource(
   return next;
 }
 
+/** List every knowledge source across all agents in a workspace (DSAR export). */
+export async function listKnowledgeSourcesForWorkspace(
+  workspaceId: string,
+): Promise<KnowledgeSource[]> {
+  await hydrate();
+  const out: KnowledgeSource[] = [];
+  for (const [k, sources] of mem().entries()) {
+    if (!k.startsWith(`${workspaceId}::`)) continue;
+    out.push(...sources);
+  }
+  return out.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+}
+
 /** Delete all knowledge sources for every agent in a workspace. */
 export async function deleteKnowledgeForWorkspace(workspaceId: string): Promise<number> {
   await hydrate();
