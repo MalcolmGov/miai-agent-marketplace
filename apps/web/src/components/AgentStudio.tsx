@@ -47,6 +47,7 @@ interface AgentPayload {
     publicKey: string;
     connectedConnectors: string[];
     tier: keyof typeof TIER_PRICES;
+    approvedDomains?: string[];
   } | null;
   connectors: Array<{
     id: string;
@@ -115,6 +116,9 @@ export function AgentStudio({
   const [flagsReady, setFlagsReady] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [balanceTokens, setBalanceTokens] = useState<number | null>(null);
+  const [approvedDomains, setApprovedDomains] = useState<string[]>([]);
+  const [savingDomains, setSavingDomains] = useState(false);
+  const [domainsMsg, setDomainsMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
 
   const hasWorkflow = isWorkflowFamilyId(agentId);
 
@@ -128,6 +132,28 @@ export function AgentStudio({
     setPublicKey(json.rental?.publicKey ?? "");
     setState(json.rental?.state ?? "selected");
     setConnected(json.rental?.connectedConnectors ?? []);
+    setApprovedDomains(json.rental?.approvedDomains ?? []);
+  }
+
+  /** Set the embed origin lock. Empty = unlocked (anyone with the public key can use the agent). */
+  async function saveDomains(domains: string[]) {
+    setSavingDomains(true);
+    setDomainsMsg(null);
+    try {
+      const res = await fetch(`/api/agents/${agentId}/domains`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ domains }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { approvedDomains?: string[]; error?: string };
+      if (!res.ok) throw new Error(json.error || "save failed");
+      setApprovedDomains(Array.isArray(json.approvedDomains) ? json.approvedDomains : domains);
+      setDomainsMsg({ kind: "ok", text: t("install.lockSaved") });
+    } catch {
+      setDomainsMsg({ kind: "err", text: t("install.lockError") });
+    } finally {
+      setSavingDomains(false);
+    }
   }
 
   async function loadBalance() {
@@ -545,6 +571,10 @@ export function AgentStudio({
               onCopySnippet={() => void copySnippet()}
               onCopyAppUrl={() => void copyAppUrl()}
               onRent={() => goStep("tokens")}
+              approvedDomains={approvedDomains}
+              savingDomains={savingDomains}
+              domainsMsg={domainsMsg}
+              onSaveDomains={(d) => void saveDomains(d)}
             />
           </div>
         ) : null}
