@@ -64,6 +64,32 @@ test("http debit 402 → paused DebitResult (no throw)", async () => {
   assert.equal(r.balance, 12);
 });
 
+test("http debit 402 with NO balance in the body fetches the true balance, not 0", async () => {
+  // The consumer pause marker records this balance; a misleading 0 makes the next turn read the real
+  // dust balance as 'topped up' and serve free again (re-opening the P0). So the adapter must fetch
+  // the true remaining balance when the gateway's insufficient-funds response omits it.
+  let getBalanceCalls = 0;
+  const fetchImpl = async (url) => {
+    if (String(url).endsWith("/debit")) {
+      return new Response(JSON.stringify({ error: "Insufficient tokens" }), {
+        status: 402,
+        headers: { "content-type": "application/json" },
+      });
+    }
+    getBalanceCalls += 1;
+    return new Response(
+      JSON.stringify({ workspaceId: "ws", tokens: 300, currencyLabel: "PREPAID" }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    );
+  };
+  const w = new HttpWalletAdapter("https://wallet.test", "key", fetchImpl);
+  const r = await w.debit({ workspaceId: "ws", amount: 2000, idempotencyKey: "i2", reason: "chat" });
+  assert.equal(r.ok, false);
+  assert.equal(r.paused, true);
+  assert.equal(r.balance, 300, "fetched the true balance instead of defaulting to 0");
+  assert.equal(getBalanceCalls, 1, "fell back to getBalance exactly once");
+});
+
 test("http debit 500 throws", async () => {
   const fetchImpl = async () => new Response("nope", { status: 500 });
   const w = new HttpWalletAdapter("https://wallet.test", "key", fetchImpl);

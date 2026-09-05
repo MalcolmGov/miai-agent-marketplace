@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { runTurn, type ChatMessage } from "@miai/runtime";
 import { createWalletAdapter } from "@miai/wallet-adapter";
 import {
@@ -125,6 +126,12 @@ export async function runAskTurn(input: {
       state: "live",
       systemAppend,
       replyLanguage,
+      // Scope the derived wallet-debit idempotency key per visitor session, like the consumer and
+      // channel wrappers — otherwise two distinct ask visitors with an identical first message
+      // collide on one key and the second is deduped to a free turn. Bill each session-less turn on
+      // its own key so a caller that sends no session can't collide into a free dedup.
+      sessionId: input.sessionId,
+      ...(input.sessionId?.trim() ? {} : { idempotencyKey: randomUUID() }),
     },
     { wallet: createWalletAdapter() },
   );
