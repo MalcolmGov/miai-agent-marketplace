@@ -11,6 +11,8 @@ data/oauth-tokens.json
 data/knowledge-sources.json
 data/ask-leads.json
 data/turn-transcripts.json
+data/consumer-wallet-pause.json
+data/rentals.json
 
 # Playwright
 /test-results/

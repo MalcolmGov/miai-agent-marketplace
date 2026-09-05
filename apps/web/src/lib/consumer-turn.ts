@@ -18,6 +18,11 @@ import {
   setGoal,
 } from "@/lib/consumer-lifegraph-store";
 import { setReminder } from "@/lib/consumer-reminders-store";
+import {
+  getWalletPausedBalance,
+  markWalletPaused,
+  clearWalletPause,
+} from "@/lib/consumer-wallet-pause-store";
 import { newCorrelationId, recordChatTurn } from "@/lib/traceability";
 
 /**
@@ -104,6 +109,8 @@ type Prepared = {
   ok: true;
   sessionKey: string;
   turnInput: Parameters<typeof runTurn>[0];
+  /** True when the wallet-pause gate hard-paused this turn up front (no model call, no debit). */
+  prePaused: boolean;
 };
 
 async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prepared> {
@@ -156,9 +163,28 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
     .filter(Boolean)
     .join("\n\n");
 
+  // Wallet-pause gate (B2B parity). The runtime only auto-pauses at balance <= 0, so a wallet that
+  // settles at a positive-but-insufficient "dust" balance would otherwise serve unlimited free
+  // answers here. Once a turn couldn't be afforded we recorded that balance (see finalize); while the
+  // balance is still at or below it, hard-pause up front (no model call, no debit). A top-up (balance
+  // strictly greater) lifts the pause — no token-cost estimate, so no false pause. Fails open.
+  let state: "live" | "paused_no_tokens" = "live";
+  const pausedAt = await getWalletPausedBalance(input.walletId);
+  if (pausedAt != null) {
+    let currentBalance = pausedAt;
+    try {
+      currentBalance = (await createWalletAdapter().getBalance(input.walletId)).tokens;
+    } catch {
+      /* balance unreadable — fall through and hard-pause (the marker already says unaffordable) */
+    }
+    if (currentBalance <= pausedAt) state = "paused_no_tokens";
+    else await clearWalletPause(input.walletId); // topped up since the pause
+  }
+
   return {
     ok: true,
     sessionKey,
+    prePaused: state === "paused_no_tokens",
     turnInput: {
       workspaceId: input.walletId,
       agentId,
@@ -168,7 +194,7 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
       model: pkg.manifest?.model?.primary ?? "claude-sonnet",
       mode: "live",
       knowledgeOverride,
-      state: "live",
+      state,
       systemAppend,
       replyLanguage,
       consumerLine: true,
@@ -298,6 +324,14 @@ async function finalize(
   await persistMemoryWrites(owner, result.toolCalls);
   await persistReminderWrites(owner, result.toolCalls);
   await persistPassiveFacts(owner, input.message);
+
+  // Bound the free-serve to one answer: when the runtime reports paused because the balance couldn't
+  // cover the turn (and we didn't already hard-pause up front), remember the balance so the next turn
+  // hard-pauses until a top-up lifts it. A successful turn never reaches here paused, and the prepare
+  // gate already cleared a stale marker on top-up, so there is nothing to clear on the success path.
+  if (result.paused && !prepared.prePaused) {
+    await markWalletPaused(input.walletId, result.balance);
+  }
 
   const correlationId = input.correlationId?.trim() || newCorrelationId();
   const agentId = prepared.turnInput.agentId;

@@ -217,6 +217,11 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
       state: rental.state,
       systemAppend,
       replyLanguage,
+      // Scope the DERIVED wallet-debit idempotency key per visitor session. Without this, two
+      // different embed/app visitors whose first message is identical (e.g. a suggested opening
+      // prompt) derive the same key, and the gateway dedups the second to a free turn. The consumer
+      // wrapper already forwards this; the B2B channel must too.
+      sessionId: input.sessionId,
     },
   };
 }
