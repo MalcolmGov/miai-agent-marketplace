@@ -15,6 +15,7 @@ const MIGRATIONS: Migration[] = [
   { id: "006_telegram_binding", file: "006_telegram_binding.sql" },
   { id: "007_telegram_setup_nonce", file: "007_telegram_setup_nonce.sql" },
   { id: "008_consumer_wallet_pause", file: "008_consumer_wallet_pause.sql" },
+  { id: "009_oauth_state_nonce", file: "009_oauth_state_nonce.sql" },
 ];
 
 let ensuring: Promise<void> | undefined;

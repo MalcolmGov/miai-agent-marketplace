@@ -36,6 +36,15 @@ export async function GET(req: Request) {
     return NextResponse.redirect(`${base}/install?oauth=error&message=invalid_state`);
   }
 
+  // Single-use: the signed state is stateless (HMAC + TTL), so record its nonce and reject a replay.
+  // Done BEFORE exchangeCode, so a replayed callback never reaches the provider — the auth code is
+  // spent at most once. Closes the ~15-minute state-replay/reuse window.
+  const { consumeOAuthStateNonce } = await import("@/lib/oauth-state-store");
+  if (!(await consumeOAuthStateNonce(payload.nonce, payload.exp))) {
+    trackEvent("miai.oauth.callback", { success: false, error: "state_replay" });
+    return NextResponse.redirect(`${base}/install?oauth=error&message=invalid_state`);
+  }
+
   const exchangeStarted = Date.now();
   try {
     const token = await exchangeCode({
