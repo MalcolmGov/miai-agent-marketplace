@@ -1,5 +1,5 @@
 # Railway / staging image for MyInstantAI Agent Marketplace
-FROM node:20-bookworm-slim AS base
+FROM node:22-bookworm-slim AS base
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 WORKDIR /app
 
@@ -29,6 +29,8 @@ RUN pnpm --filter @miai/web build
 FROM base AS runner
 # gosu lets the entrypoint drop from root to the node user after fixing the mounted-volume owner.
 RUN apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/*
+ARG GIT_COMMIT_SHA=unknown
+ENV GIT_COMMIT_SHA=$GIT_COMMIT_SHA
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000

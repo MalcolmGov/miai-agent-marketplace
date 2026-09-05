@@ -19,6 +19,7 @@
 
 const PUBLIC_EXACT = new Set([
   "/api/health",
+  "/api/health/live",
   "/api/version",
   "/api/catalog",
   "/api/consent",

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { missingRuntimeConfig } from "@/lib/readiness-config";
 import { ensureStoreHydrated, pingStore } from "@/lib/store";
 import { pingRedis } from "@/lib/redis";
 import { telemetryMode } from "@/lib/telemetry";
@@ -26,7 +26,7 @@ export async function GET() {
     oidcIssuer: authMode === "oidc" ? (process.env.MIAI_OIDC_ISSUER ? "set" : "missing") : "n/a",
     walletUrl: walletMode === "http" ? (process.env.MIAI_WALLET_API_URL ? "set" : "missing") : "n/a",
     modelUrl:
-      modelMode === "gateway"
+      (modelMode === "gateway" || modelMode === "http")
         ? process.env.MIAI_MODEL_GATEWAY_URL
           ? "set"
           : "missing"
@@ -48,17 +48,25 @@ export async function GET() {
   if (!hardening.ok) {
     checks.status = "failing";
     checks.hardeningErrors = hardening.errors;
-    return NextResponse.json(checks, { status: 503 });
+    return Response.json(checks, { status: 503 });
+  }
+
+  const missing = missingRuntimeConfig();
+  if (missing.length) {
+    checks.status = "degraded";
+    checks.config = "incomplete";
+    checks.missingConfig = missing;
+    return Response.json(checks, { status: 503 });
   }
 
   const ping = await pingStore();
   checks.storeBackend = ping.backend;
   checks.storePing = ping.ok ? "ok" : "error";
-  if (ping.error) checks.storePingError = ping.error;
+  if (ping.error) checks.storePingError = "store unavailable";
 
   if (!ping.ok) {
     checks.status = "degraded";
-    return NextResponse.json(checks, { status: 503 });
+    return Response.json(checks, { status: 503 });
   }
 
   try {
@@ -66,9 +74,10 @@ export async function GET() {
     checks.store = "hydrated";
   } catch (err) {
     checks.store = "error";
-    checks.storeError = err instanceof Error ? err.message : "unknown";
+    console.error("[health] store hydration failed", err);
+    checks.storeError = "store initialization failed";
     checks.status = "degraded";
-    return NextResponse.json(checks, { status: 503 });
+    return Response.json(checks, { status: 503 });
   }
 
   // Redis is optional for single-replica; when configured, surface ping for B+ ops bar.
@@ -77,23 +86,10 @@ export async function GET() {
   checks.redisBackend = redis.backend;
   checks.redisPing = redis.configured ? (redis.ok ? "ok" : "error") : "not_configured";
   if (redis.configured && !redis.ok) {
-    checks.redisPingError = redis.error ?? "ping failed";
+    checks.redisPingError = "redis unavailable";
     // Configured-but-broken Redis is degraded (rate-limit/sessions fail closed).
     checks.status = "degraded";
   }
 
-  const configMissing =
-    (authMode === "oidc" && !process.env.MIAI_OIDC_ISSUER) ||
-    (walletMode === "http" && !process.env.MIAI_WALLET_API_URL) ||
-    (modelMode === "gateway" && !process.env.MIAI_MODEL_GATEWAY_URL);
-
-  if (configMissing) {
-    checks.status = "degraded";
-    checks.config = "incomplete";
-    // Still 200 so CA liveness does not flap on missing partner creds during bring-up;
-    // readiness operators should inspect status/config fields.
-  }
-
-  const statusCode = checks.status === "degraded" && redis.configured && !redis.ok ? 503 : 200;
-  return NextResponse.json(checks, statusCode === 200 ? undefined : { status: 503 });
+  return Response.json(checks, { status: checks.status === "ok" ? 200 : 503 });
 }

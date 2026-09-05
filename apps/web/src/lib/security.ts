@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import type { AuthContext } from "@/lib/auth";
 import { redisAvailable, redisIncr, redisTtl } from "@/lib/redis";
 import { isProductionRuntime } from "@/lib/security-flags";
@@ -77,20 +76,20 @@ export function isOperator(auth: AuthContext): boolean {
 }
 
 /** Gate MyInstantAI operator surfaces (Agent Admin marketplace view). */
-export function requireOperator(auth: AuthContext): NextResponse | null {
+export function requireOperator(auth: AuthContext): Response | null {
   const roles = normalizeRoles(auth.roles);
   const platform = roles.some((r) => r === "operator" || PLATFORM_ROLES.has(r));
   if (platform || (auth.mode === "mock" && hasMinRole(auth, "owner"))) return null;
-  return NextResponse.json(
+  return Response.json(
     { error: "Forbidden — platform operator role required" },
     { status: 403 },
   );
 }
 
 /** Require at least this workspace role. */
-export function requireRole(auth: AuthContext, min: WorkspaceRole): NextResponse | null {
+export function requireRole(auth: AuthContext, min: WorkspaceRole): Response | null {
   if (hasMinRole(auth, min)) return null;
-  return NextResponse.json(
+  return Response.json(
     { error: `Forbidden — requires ${min} role or higher`, roles: auth.roles },
     { status: 403 },
   );

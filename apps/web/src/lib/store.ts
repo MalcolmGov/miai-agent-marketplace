@@ -166,8 +166,8 @@ async function hydrateFromPostgres(): Promise<PersistShape | null> {
     }
     return shape;
   } catch (err) {
-    console.error("[store] postgres hydrate failed, falling back to file/memory", err);
-    return null;
+    console.error("[store] postgres hydrate failed", err);
+    throw err;
   }
 }
 
@@ -276,9 +276,13 @@ export async function ensureStoreHydrated(): Promise<void> {
       if (fromFile) applyShape(fromFile);
     }
     s.hydrated = true;
-    s.hydrating = undefined;
   })();
-  return s.hydrating;
+  try {
+    await s.hydrating;
+  } finally {
+    // A transient database/migration failure must be retryable on the next readiness probe.
+    s.hydrating = undefined;
+  }
 }
 
 function ws(workspaceId: string): WorkspaceRecord {
