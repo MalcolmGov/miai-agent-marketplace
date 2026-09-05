@@ -46,6 +46,14 @@ await check("health", async () => {
   const { res, body } = await json("/api/health");
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   if (!body || typeof body !== "object") throw new Error("no JSON");
+  if (body.status !== "ok" || body.hardening !== "ok" || body.config === "incomplete") {
+    throw new Error(`not ready: status=${body.status} hardening=${body.hardening} config=${body.config || "ok"}`);
+  }
+  // A genuine customer cutover must run real rails. A dual-acked mock-rails prod deploy still reports
+  // status:"ok", so assert the mock backdoor is closed (real auth/wallet, no ALLOW_MOCK_RAILS ack).
+  if (body.mockRailsAllowed !== false) {
+    throw new Error(`mock rails still allowed (mockRailsAllowed=${body.mockRailsAllowed}) — not a real cutover`);
+  }
   // storePing is new — tolerate older deploys until Azure/Railway pick up the health deepen
   if (body.storePing === "error") throw new Error(`storePing error: ${body.storePingError || "?"}`);
   if (body.store === "error") throw new Error(`store hydrate error: ${body.storeError || "?"}`);

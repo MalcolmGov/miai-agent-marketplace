@@ -110,6 +110,16 @@ export function checkProductionRails(): HardeningCheck {
     );
   }
 
+  // A typo must not pass boot checks then select a mock adapter at runtime.
+  for (const [key, allowed] of [
+    ["MIAI_AUTH_MODE", ["mock", "oidc"]],
+    ["MIAI_WALLET_MODE", ["mock", "http"]],
+    ["MIAI_MODEL_MODE", ["mock", "gateway", "http", "azure", "openai", "anthropic", "claude"]],
+  ] as const) {
+    const mode = process.env[key] ?? "mock";
+    if (!(allowed as readonly string[]).includes(mode)) errors.push(`${key} has an unsupported mode`);
+  }
+
   if (mockRailsAllowed()) return errors.length ? { ok: false, errors } : { ok: true };
 
   const auth = process.env.MIAI_AUTH_MODE ?? "mock";

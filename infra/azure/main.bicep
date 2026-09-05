@@ -288,7 +288,7 @@ resource kvSecretDb 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: kv
   name: 'database-url'
   properties: {
-    value: 'postgresql://miaiadmin:${postgresAdminPassword}@${postgres.properties.fullyQualifiedDomainName}:5432/miai_agents?sslmode=require'
+    value: 'postgresql://miaiadmin:${uriComponent(postgresAdminPassword)}@${postgres.properties.fullyQualifiedDomainName}:5432/miai_agents?sslmode=verify-full'
   }
 }
 
@@ -517,13 +517,15 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
           probes: [
             {
               type: 'Liveness'
-              httpGet: { path: '/api/health', port: 3000 }
+              httpGet: { path: '/api/health/live', port: 3000 }
+              timeoutSeconds: 5
               periodSeconds: 30
               failureThreshold: 3
             }
             {
               type: 'Readiness'
               httpGet: { path: '/api/health', port: 3000 }
+              timeoutSeconds: 5
               periodSeconds: 10
               failureThreshold: 3
             }

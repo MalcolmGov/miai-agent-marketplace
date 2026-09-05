@@ -38,7 +38,7 @@ jobs:
 
           echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
 
-          docker build -t "${image}:${sha_tag}" -t "${image}:${ref_tag}" .
+          docker build --build-arg GIT_COMMIT_SHA="${GITHUB_SHA}" -t "${image}:${sha_tag}" -t "${image}:${ref_tag}" .
           docker push "${image}:${sha_tag}"
           docker push "${image}:${ref_tag}"
 
