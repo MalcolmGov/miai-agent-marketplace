@@ -208,6 +208,20 @@ export function sandboxInProdAllowed(): boolean {
 }
 
 /**
+ * Request-time backstop for the mock auth trust boundary — NODE_ENV-INDEPENDENT (unlike
+ * mockRailsAllowed(), which is). A mock identity resolved from x-user-id / x-workspace-id / x-roles
+ * headers is only safe when this is NOT a real deployment, or an operator has explicitly acknowledged
+ * mock rails. This closes the gap where a prod image booted WITHOUT NODE_ENV=production would pass
+ * boot hardening yet still trust client headers = anonymous cross-tenant access.
+ */
+export function mockRailsTrustworthy(): boolean {
+  if (productionRailSignals().length === 0) return true; // local dev / a genuine sandbox
+  if (envFlag("ALLOW_MOCK_RAILS") && envFlag(MOCK_RAILS_ACK_ENV)) return true; // staging dual-ack
+  if (process.env.SANDBOX_MODE === "1" && sandboxInProdAllowed()) return true; // sandbox-in-prod dual-ack
+  return false;
+}
+
+/**
  * SANDBOX_MODE=1 disables every hardening check, so it must only run on a genuine sandbox. If it is
  * set while real production rails are configured, that is a leaked flag — refuse to boot (unless
  * explicitly dual-acked). Closes the single-flag master-bypass where a stray SANDBOX_MODE on the

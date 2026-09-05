@@ -1,5 +1,6 @@
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
 import { WORKSPACE_ID } from "@/lib/constants";
+import { mockRailsTrustworthy } from "@/lib/security-flags";
 
 export interface AuthContext {
   mode: "mock" | "oidc";
@@ -41,6 +42,16 @@ function getJwks() {
 export async function resolveAuth(req: Request): Promise<AuthContext> {
   const mode = authMode();
   if (mode === "mock") {
+    // Fail closed independent of NODE_ENV: if a real deployment's rails are present (oidc / http wallet
+    // / remote DATABASE_URL / a live key) without an explicit mock-rails acknowledgment, refuse the
+    // header-trusted mock identity rather than granting anonymous cross-tenant access. Throwing before
+    // any header is read also ignores x-user-id / x-workspace-id / x-roles.
+    if (!mockRailsTrustworthy()) {
+      throw new AuthError(
+        503,
+        "Mock auth refused: real production rails configured without ALLOW_MOCK_RAILS acknowledgment",
+      );
+    }
     const url = new URL(req.url);
     const headerWs = req.headers.get("x-workspace-id");
     const headerUser = req.headers.get("x-user-id");
