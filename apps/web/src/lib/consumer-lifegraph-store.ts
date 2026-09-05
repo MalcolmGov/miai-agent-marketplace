@@ -381,3 +381,39 @@ export async function getPeopleContext(owner: MemoryOwner): Promise<string> {
     return "";
   }
 }
+
+/** Erase ALL goals for a person (DSAR). Returns the number removed. */
+export async function eraseAllGoals(owner: MemoryOwner): Promise<number> {
+  if (!validOwner(owner)) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query(
+      "DELETE FROM miai_consumer_goal WHERE tenant_id = $1 AND consumer_id = $2",
+      [owner.tenantId, owner.consumerId],
+    );
+    return res.rowCount ?? 0;
+  }
+  const map = await goalsMem();
+  const bucket = ownerFileKey(owner);
+  const n = (map.get(bucket) ?? []).length;
+  if (map.delete(bucket)) await writeGoals(map);
+  return n;
+}
+
+/** Erase ALL people for a person (DSAR). Returns the number removed. */
+export async function eraseAllPeople(owner: MemoryOwner): Promise<number> {
+  if (!validOwner(owner)) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query(
+      "DELETE FROM miai_consumer_person WHERE tenant_id = $1 AND consumer_id = $2",
+      [owner.tenantId, owner.consumerId],
+    );
+    return res.rowCount ?? 0;
+  }
+  const map = await peopleMem();
+  const bucket = ownerFileKey(owner);
+  const n = (map.get(bucket) ?? []).length;
+  if (map.delete(bucket)) await writePeople(map);
+  return n;
+}

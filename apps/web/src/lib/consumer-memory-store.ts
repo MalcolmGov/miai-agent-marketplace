@@ -332,3 +332,21 @@ export async function getMemoryContext(owner: MemoryOwner, userMessage: string):
     return "";
   }
 }
+
+/** Erase ALL memories for a person (DSAR). Returns the number removed. */
+export async function eraseAllMemories(owner: MemoryOwner): Promise<number> {
+  if (!validOwner(owner)) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query(
+      "DELETE FROM miai_consumer_memory WHERE tenant_id = $1 AND consumer_id = $2",
+      [owner.tenantId, owner.consumerId],
+    );
+    return res.rowCount ?? 0;
+  }
+  const map = await fileMem();
+  const bucket = ownerFileKey(owner);
+  const n = (map.get(bucket) ?? []).length;
+  if (map.delete(bucket)) await fileWrite(map);
+  return n;
+}

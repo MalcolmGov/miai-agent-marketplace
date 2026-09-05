@@ -199,3 +199,21 @@ export async function dismissReminder(
   await writeReminders(map);
   return true;
 }
+
+/** Erase ALL reminders for a person (DSAR) — every status, not just pending. Returns the count. */
+export async function eraseAllReminders(owner: MemoryOwner): Promise<number> {
+  if (!validOwner(owner)) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query(
+      "DELETE FROM miai_consumer_reminder WHERE tenant_id = $1 AND consumer_id = $2",
+      [owner.tenantId, owner.consumerId],
+    );
+    return res.rowCount ?? 0;
+  }
+  const map = await remindersMem();
+  const bucket = ownerFileKey(owner);
+  const n = (map.get(bucket) ?? []).length;
+  if (map.delete(bucket)) await writeReminders(map);
+  return n;
+}
