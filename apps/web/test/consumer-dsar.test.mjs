@@ -70,6 +70,11 @@ describe("consumer-dsar", () => {
     await life.setGoal(TA, { title: "run a marathon" });
     await life.rememberPerson(TA, { name: "Alex" });
 
+    // Seed the in-process rolling session bag (created on import) directly for A and B.
+    const bag = globalThis.__miaiConsumerSessions;
+    bag.set("consumerA::agent1::default", [{ role: "user", content: "hi" }]);
+    bag.set("consumerB::agent1::default", [{ role: "user", content: "hey" }]);
+
     // Pre-conditions.
     assert.equal((await mem.listMemories(TA)).length, 1);
     assert.equal((await mem.listMemories(TB)).length, 1);
@@ -87,6 +92,8 @@ describe("consumer-dsar", () => {
       "telegramBindings",
       "conversationTurns",
       "knowledgeSources",
+      "oauthTokens",
+      "sessionHistories",
     ]) {
       assert.equal(typeof deleted[key], "number", `deleted.${key} should be a number`);
     }
@@ -100,6 +107,11 @@ describe("consumer-dsar", () => {
     assert.equal((await mem.listMemories(TA)).length, 0);
     assert.equal((await life.listGoals(TA)).length, 0);
     assert.equal((await life.listPeople(TA)).length, 0);
+
+    // Session history: A's rolling chat is cleared, B's is untouched.
+    assert.equal(deleted.sessionHistories, 1);
+    assert.equal(bag.has("consumerA::agent1::default"), false);
+    assert.equal(bag.has("consumerB::agent1::default"), true);
 
     // Isolation: same brand different person, and same person different brand, both survive.
     assert.equal((await mem.listMemories(TB)).length, 1);
@@ -116,6 +128,7 @@ describe("consumer-dsar", () => {
     assert.ok(payload.wallet && "tokens" in payload.wallet);
     assert.ok(Array.isArray(payload.conversationTurns));
     assert.ok(Array.isArray(payload.knowledge));
+    assert.ok(Array.isArray(payload.connectors));
     // Export is read-only: TB's memory is still there afterwards.
     const mem = await import("../src/lib/consumer-memory-store.ts");
     assert.equal((await mem.listMemories(TB)).length, 1);

@@ -6,7 +6,7 @@ import {
   replyLanguageSystemAppend,
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
-import { createSessionStore } from "@/lib/channel-sessions";
+import { createSessionStore, eraseOwnerSessions } from "@/lib/channel-sessions";
 import { DEFAULT_CONSUMER_AGENT, isRunnableConsumerAgent } from "@/lib/consumer";
 import { getComposedKnowledge } from "@/lib/knowledge";
 import { getMemoryContext, rememberFact, type MemoryOwner } from "@/lib/consumer-memory-store";
@@ -97,11 +97,25 @@ const g = globalThis as typeof globalThis & {
 const consumerBag: Map<string, ConsumerMessage[]> =
   g.__miaiConsumerSessions ?? (g.__miaiConsumerSessions = new Map());
 
+const CONSUMER_SESSION_PREFIX = "miai:consumer:";
+
 const sessionStore = createSessionStore<ConsumerMessage>({
-  redisPrefix: "miai:consumer:",
+  redisPrefix: CONSUMER_SESSION_PREFIX,
   bag: consumerBag,
   maxSessions: 1000,
 });
+
+/**
+ * DSAR: clear a person's rolling session chat history across every agent (Redis + in-process).
+ * Their last-24-turn conversation copy would otherwise outlive an erasure. Returns sessions removed.
+ */
+export async function eraseConsumerSessions(walletId: string): Promise<number> {
+  return eraseOwnerSessions({
+    redisPrefix: CONSUMER_SESSION_PREFIX,
+    bag: consumerBag,
+    ownerId: walletId,
+  });
+}
 
 // ---- turn ----
 

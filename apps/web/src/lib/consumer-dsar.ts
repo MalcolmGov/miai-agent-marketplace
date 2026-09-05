@@ -1,4 +1,7 @@
 import { createWalletAdapter } from "@miai/wallet-adapter";
+import { listTokenMeta } from "@miai/connectors";
+import { eraseOAuthTokens } from "@/lib/dsar-erase";
+import { eraseConsumerSessions } from "@/lib/consumer-turn";
 import {
   eraseAllMemories,
   listMemories,
@@ -64,6 +67,8 @@ export async function eraseConsumerData(
     telegramBindings: 0,
     conversationTurns: 0,
     knowledgeSources: 0,
+    oauthTokens: 0,
+    sessionHistories: 0,
   };
 
   deleted.memories = await eraseAllMemories(owner);
@@ -74,6 +79,11 @@ export async function eraseConsumerData(
   deleted.telegramBindings = await unbindTelegramForConsumer(identity.tenantId, personId);
   deleted.conversationTurns = await deleteTurnTranscriptsForWorkspace(personId);
   deleted.knowledgeSources = await deleteKnowledgeForWorkspace(personId);
+  // Live OAuth access/refresh tokens to the person's OWN external accounts (their consumer-side
+  // connectors, keyed by their id) — a deletion request must revoke these, not leave them live.
+  deleted.oauthTokens = await eraseOAuthTokens(personId);
+  // Rolling last-24-turn conversation copy in the session store (Redis + in-process).
+  deleted.sessionHistories = await eraseConsumerSessions(personId);
 
   return { deleted };
 }
@@ -86,7 +96,7 @@ export async function exportConsumerData(identity: ConsumerIdentity) {
   };
   const personId = identity.consumerId;
 
-  const [memories, goals, people, reminders, brief, telegramLinked, turns, knowledge] =
+  const [memories, goals, people, reminders, brief, telegramLinked, turns, knowledge, connectors] =
     await Promise.all([
       listMemories(owner),
       listGoals(owner),
@@ -96,6 +106,7 @@ export async function exportConsumerData(identity: ConsumerIdentity) {
       isConsumerLinked(identity.tenantId, personId),
       listTurnTranscripts({ workspaceId: personId, limit: 500 }),
       listKnowledgeSourcesForWorkspace(personId),
+      listTokenMeta(personId), // metadata only — never access/refresh secrets
     ]);
 
   let walletTokens: number | null = null;
@@ -119,6 +130,7 @@ export async function exportConsumerData(identity: ConsumerIdentity) {
     reminders,
     brief,
     telegram: { linked: telegramLinked },
+    connectors,
     knowledge: knowledge.map((s) => ({
       id: s.id,
       agentId: s.agentId,
