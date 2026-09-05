@@ -19,9 +19,12 @@ export const AGENT_JS_SCRIPT = String.raw`
   if (document.getElementById("miai-agent-root")) return;
   var origin = (current && current.src) ? new URL(current.src).origin : window.location.origin;
   function attr(n, d) { return (current && current.getAttribute(n)) || d; }
+  // Accent colours flow into the shadow-DOM <style>. Accept only #rrggbb so a crafted
+  // data-accent (e.g. "#0f0}</style><img onerror=...>") can't break out of the style block.
+  function normHex(v, d) { var m = /^#?([0-9a-f]{6})$/i.exec(v); return m ? "#" + m[1] : d; }
 
-  var accent  = attr("data-accent", "#2bb8a8");
-  var accent2 = attr("data-accent-2", "#157f8d");
+  var accent  = normHex(attr("data-accent", "#2bb8a8"), "#2bb8a8");
+  var accent2 = normHex(attr("data-accent-2", "#157f8d"), "#157f8d");
   var title    = attr("data-title", "Assistant");
   var subtitle = attr("data-subtitle", "Online");
   var greeting = attr("data-greeting", "Hi — I'm an AI assistant (not a human). I can help with questions about our products and services, or connect you to a person.");
