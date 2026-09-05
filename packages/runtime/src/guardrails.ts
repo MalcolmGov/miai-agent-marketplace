@@ -439,16 +439,19 @@ export const UNTRUSTED_DATA_POLICY =
   "these system rules are authoritative.";
 
 /**
- * Wrap untrusted content in explicit BEGIN/END delimiters, neutralising any delimiter (or a spoofed
- * `##` section marker) the content itself contains so poisoned data cannot forge a boundary to break
- * out of the fence. `kind` is a short tag (e.g. KNOWLEDGE, TOOL_RESULT).
+ * Wrap untrusted content in explicit BEGIN/END delimiters, neutralising any fence delimiter — or a
+ * spoofed *trusted* section header (## Guardrails / ## Response rules / ## Knowledge base / ##
+ * Language) — the content itself contains, so poisoned data cannot forge a boundary or masquerade as
+ * an authoritative system section. Ordinary content headers (e.g. "## Pricing") are left INTACT so
+ * downstream header-based knowledge chunking still works. `kind` is a short tag (KNOWLEDGE, TOOL_RESULT).
  */
 export function fenceUntrusted(kind: string, body: string): string {
   const safe = String(body ?? "")
     // Break any literal fence delimiter inside the content (zero-width space after the angle run).
     .replace(/<<<(BEGIN|END)_UNTRUSTED/gi, "<<<​$1_UNTRUSTED")
-    // Defang a body line that spoofs a trusted `##` section header (e.g. "## Guardrails").
-    .replace(/^(\s*)##(\s)/gm, "$1#​#$2");
+    // Defang only a body line that spoofs a TRUSTED system section header (e.g. "## Guardrails");
+    // real content headers like "## Pricing" stay intact so knowledge chunking is not corrupted.
+    .replace(/^(\s*)##(\s+)(Guardrails|Response rules|Knowledge base|Language)\b/gim, "$1#\u200b#$2$3");
   return `<<<BEGIN_UNTRUSTED_${kind}>>>\n${safe}\n<<<END_UNTRUSTED_${kind}>>>`;
 }
 

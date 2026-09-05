@@ -2496,6 +2496,14 @@ export async function runTurn(
     `Mode: ${req.mode}. Model: ${req.model}.`,
   ].join("\n");
 
+  // Retrieval source for the live-model tool fallbacks below: the CLEAN knowledge, NEVER the fenced
+  // slot. knowledgeHit() chunks on `## ` headers; the fenced slot wraps the KB in delimiters + policy
+  // text, so retrieving from it could surface fence scaffolding (the <<<BEGIN_UNTRUSTED_KNOWLEDGE>>>
+  // delimiter, the policy sentence) to the user. Mock/eval keeps `system` (its knowledge is clean).
+  const retrievalSystem = liveModel
+    ? `## Knowledge base\n${knowledgeForPrompt}\n## Guardrails`
+    : system;
+
   const messages: ChatMessage[] = [
     ...req.messages,
     { role: "user", content: req.userMessage },
@@ -3105,7 +3113,7 @@ export async function runTurn(
       completion = {
         content:
           follow.content.trim() ||
-          knowledgeHit(system, req.userMessage) ||
+          knowledgeHit(retrievalSystem, req.userMessage) ||
           "I couldn't reach the connected HR system, and I don't have that role list in knowledge yet. Upload open roles to Knowledge, or try again shortly.",
       };
       if (onDelta && completion.content && !follow.content.trim()) {
@@ -3209,7 +3217,7 @@ export async function runTurn(
       const finalText =
         text && !looksLikeJson
           ? text
-          : knowledgeHit(system, req.userMessage) ??
+          : knowledgeHit(retrievalSystem, req.userMessage) ??
             "I've checked our records. Please ask about a specific policy detail (PTO days, benefits start date, office address) and I'll answer from the knowledge base.";
       completion = { content: finalText };
       if (onDelta && (!text || looksLikeJson)) emitStatic(finalText);
