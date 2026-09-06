@@ -65,6 +65,8 @@ COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder /app/data/catalog ./data/catalog
 COPY --from=builder /app/data/catalog-consumer ./data/catalog-consumer
+COPY --from=builder /app/apps/web/migrations ./apps/web/migrations
+COPY --from=builder /app/apps/web/migrations ./migrations
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN mkdir -p /data && chown -R node:node /data /app && chmod +x /usr/local/bin/docker-entrypoint.sh
