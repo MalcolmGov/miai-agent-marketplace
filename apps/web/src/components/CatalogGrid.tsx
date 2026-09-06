@@ -873,7 +873,7 @@ export function CatalogGrid({
                               .join(", ")} to take live actions`}
                           >
                             <span className="h-1.5 w-1.5 rounded-full bg-[var(--warn)] opacity-85" aria-hidden />
-                            Needs setup
+                            <span>Needs setup</span>
                           </span>
                         ) : null}
                         {activePack && packs.includes(activePack) ? (
