@@ -36,6 +36,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV CATALOG_DIR=/app/data/catalog
+ENV CONSUMER_CATALOG_DIR=/app/data/catalog-consumer
 ENV OAUTH_TOKEN_STORE_PATH=/data/oauth-tokens.json
 ENV KNOWLEDGE_STORE_PATH=/data/knowledge-sources.json
 ENV RENTAL_STORE_PATH=/data/rentals.json
@@ -55,7 +56,14 @@ ENV MIAI_WALLET_MODE=mock
 ENV MIAI_MODEL_MODE=mock
 
 WORKDIR /app
-COPY --from=builder /app ./
+# Standalone runner: only copy compiled JS artifacts, static assets, and runtime catalog.
+# Strips all raw TypeScript sources, unit tests, internal eval harnesses, and git metadata.
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder /app/data/catalog ./data/catalog
+COPY --from=builder /app/data/catalog-consumer ./data/catalog-consumer
+
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN mkdir -p /data && chown -R node:node /data /app && chmod +x /usr/local/bin/docker-entrypoint.sh
 # No `USER node`: the entrypoint starts as root only to chown the mounted /data volume (which is
@@ -64,4 +72,4 @@ RUN mkdir -p /data && chown -R node:node /data /app && chmod +x /usr/local/bin/d
 EXPOSE 3000
 # Azure Container Apps / Railway set PORT; health at /api/health
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["sh", "-c", "pnpm --filter @miai/web exec next start -H 0.0.0.0 -p ${PORT:-3000}"]
+CMD ["node", "apps/web/server.js"]
