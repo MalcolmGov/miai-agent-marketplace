@@ -132,7 +132,7 @@ export function WorkspaceClient() {
         </Link>
       </div>
 
-      <section className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+      <section className="panel p-5">
         <h2 className="text-sm font-semibold text-[var(--text)]">Invite teammate</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">
           No email is sent yet — copy the invite token and share it out of band.
@@ -146,7 +146,7 @@ export function WorkspaceClient() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <select
-            className="rounded-lg border border-[var(--border)] bg-[var(--bg)] px-2 py-2 text-sm"
+            className="input text-sm"
             value={role}
             onChange={(e) => setRole(e.target.value as typeof role)}
           >
@@ -164,19 +164,36 @@ export function WorkspaceClient() {
           </button>
         </div>
         {lastInvite?.inviteToken ? (
-          <p className="mt-3 break-all rounded-lg bg-[var(--bg)] p-2 font-mono text-[11px] text-[var(--muted)]">
+          <p className="mt-3 break-all rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] p-2 font-mono text-[11px] text-[var(--muted)]">
             Invite token: {lastInvite.inviteToken}
           </p>
         ) : null}
       </section>
 
-      {loading && <p className="text-sm text-[var(--muted)]">Loading…</p>}
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {loading && (
+        <div className="space-y-3" aria-busy="true" aria-label="Loading workspace members">
+          <div className="overflow-hidden rounded-xl border border-[var(--line-strong)] bg-[var(--bg-panel)] p-4 space-y-3">
+            <div className="flex gap-4 border-b border-[var(--line)] pb-3">
+              <div className="skeleton h-4 flex-1" />
+              <div className="skeleton h-4 flex-1" />
+              <div className="skeleton h-4 flex-1" />
+            </div>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex gap-4 py-2">
+                <div className="skeleton h-4 flex-1" />
+                <div className="skeleton h-4 flex-1" />
+                <div className="skeleton h-4 flex-1" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {error && <p className="text-sm text-[var(--danger)]" role="alert">{error}</p>}
 
       {!loading && (
-        <div className="overflow-hidden rounded-xl border border-[var(--border)]">
+        <div className="overflow-hidden rounded-xl border border-[var(--line-strong)] bg-[var(--bg-panel)]">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--surface)] text-[var(--muted)]">
+            <thead className="bg-[var(--bg-elev)] text-[var(--muted)]">
               <tr>
                 <th className="px-3 py-2 font-medium">Member</th>
                 <th className="px-3 py-2 font-medium">Role</th>
@@ -187,7 +204,7 @@ export function WorkspaceClient() {
             </thead>
             <tbody>
               {members.map((m) => (
-                <tr key={m.userId} className="border-t border-[var(--border)]">
+                <tr key={m.userId} className="border-t border-[var(--line)] hover:bg-[var(--bg-panel-hover)]/60 transition-colors">
                   <td className="px-3 py-2">
                     <div className="font-medium text-[var(--text)]">
                       {m.displayName || m.email}
@@ -196,7 +213,7 @@ export function WorkspaceClient() {
                   </td>
                   <td className="px-3 py-2">
                     <select
-                      className="rounded border border-[var(--border)] bg-[var(--bg)] px-1.5 py-1 text-xs"
+                      className="input !px-2 !py-1 text-xs"
                       value={m.role}
                       disabled={busy}
                       onChange={(e) => void changeRole(m.userId, e.target.value)}
@@ -215,7 +232,7 @@ export function WorkspaceClient() {
                   <td className="px-3 py-2 text-right">
                     <button
                       type="button"
-                      className="text-[var(--muted)] hover:text-red-400"
+                      className="text-[var(--muted)] hover:text-[var(--danger)] transition-colors"
                       disabled={busy}
                       onClick={() => void remove(m.userId)}
                     >

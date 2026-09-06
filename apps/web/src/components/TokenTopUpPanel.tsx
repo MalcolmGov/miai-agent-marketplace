@@ -47,8 +47,16 @@ export function TokenTopUpPanel({
 
       <TokenPackageGrid scope="workspace" disabled={saving} onCredited={onCredited} />
 
-      {message?.kind === "err" ? <p className="text-xs text-red-400">{message.text}</p> : null}
-      {message?.kind === "ok" ? <p className="text-xs text-[var(--accent)]">{message.text}</p> : null}
+      {message?.kind === "err" ? (
+        <p className="text-xs text-[var(--danger)]" role="alert">
+          {message.text}
+        </p>
+      ) : null}
+      {message?.kind === "ok" ? (
+        <p className="text-xs text-[var(--accent)]" role="status">
+          {message.text}
+        </p>
+      ) : null}
 
       <p className="text-[11px] text-[var(--muted)]">Secure checkout by Paystack. You’ll return here once payment completes.</p>
 

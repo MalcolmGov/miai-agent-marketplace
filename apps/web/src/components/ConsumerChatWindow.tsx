@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { renderRichText } from "@/lib/rich-text";
 import type { ConsumerChat } from "@/lib/use-consumer-chat";
 
@@ -29,12 +29,23 @@ export function ConsumerChatWindow({
 }) {
   const { messages, typing, showSugs, submit, input, setInput, busy, error, scrollRef } = chat;
   const runStarter = onStarter ?? submit;
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const prevBusyRef = useRef(busy);
+
+  useEffect(() => {
+    if (prevBusyRef.current && !busy) {
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
+    }
+    prevBusyRef.current = busy;
+  }, [busy]);
 
   return (
     <div
       className={`flex ${className} flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_35%,transparent)]`}
     >
-      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
+      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4" role="log" aria-live="polite">
         {messages.map((m) => (
           <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
@@ -49,13 +60,14 @@ export function ConsumerChatWindow({
           </div>
         ))}
         {typing ? (
-          <div className="flex justify-start">
+          <div className="flex justify-start" aria-live="polite" aria-label="Assistant is typing">
             <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] px-3.5 py-2 text-sm text-[var(--muted)]">
-              <span className="inline-flex gap-1">
+              <span className="inline-flex gap-1" aria-hidden="true">
                 <span className="animate-pulse">●</span>
                 <span className="animate-pulse [animation-delay:150ms]">●</span>
                 <span className="animate-pulse [animation-delay:300ms]">●</span>
               </span>
+              <span className="sr-only">Typing…</span>
             </div>
           </div>
         ) : null}
@@ -73,7 +85,11 @@ export function ConsumerChatWindow({
         </div>
       ) : null}
 
-      {error ? <p className="px-4 pb-1 text-xs text-[var(--warn)]">{error}</p> : null}
+      {error ? (
+        <p className="px-4 pb-1 text-xs text-[var(--danger)]" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       <form
         className="flex items-end gap-2 border-t border-[var(--line)] p-3"
@@ -83,11 +99,12 @@ export function ConsumerChatWindow({
         }}
       >
         <input
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={placeholder}
           className="input min-w-0 flex-1 text-sm"
-          disabled={busy}
+          readOnly={busy}
           aria-label={ariaLabel}
         />
         <button

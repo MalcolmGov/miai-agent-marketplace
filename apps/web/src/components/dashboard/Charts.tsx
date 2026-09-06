@@ -6,10 +6,12 @@ export function AreaChart({
   points,
   height = 200,
   xLabels,
+  ariaLabel = "Conversations trend",
 }: {
   points: Point[];
   height?: number;
   xLabels?: [string, string, string];
+  ariaLabel?: string;
 }) {
   const w = 640;
   const h = height;
@@ -27,7 +29,7 @@ export function AreaChart({
   const labels = xLabels ?? ["2 wks ago", "1 wk ago", "today"];
 
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="h-full w-full" role="img" aria-label="Conversations trend">
+    <svg viewBox={`0 0 ${w} ${h}`} className="h-full w-full" role="img" aria-label={ariaLabel}>
       <defs>
         <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.45" />

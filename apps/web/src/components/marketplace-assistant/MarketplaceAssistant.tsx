@@ -223,7 +223,7 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
         )}
       </div>
 
-      {error && <div className="miai-ask-err">{error}</div>}
+      {error && <div className="miai-ask-err" role="alert">{error}</div>}
 
       {showSugs && (
         <div className="miai-ask-sugs">

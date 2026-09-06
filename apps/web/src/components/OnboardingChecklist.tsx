@@ -42,19 +42,28 @@ const STEPS: Array<{
     id: "try",
     title: "Try chat in Studio",
     body: "Free sandbox — ask a grounded question.",
-    href: () => "/agents/us-customer-support?step=try",
+    href: (p) => {
+      const family = intentToFamilyHint(p.intent);
+      return `/agents/${p.market}-${family}?step=try`;
+    },
   },
   {
     id: "rent",
     title: "Rent when ready",
     body: "Activate entitlement for live embed / app.",
-    href: () => "/agents/us-customer-support",
+    href: (p) => {
+      const family = intentToFamilyHint(p.intent);
+      return `/agents/${p.market}-${family}`;
+    },
   },
   {
     id: "install",
     title: "Install (optional)",
     body: "Copy agent.js or App channel URL.",
-    href: () => "/agents/us-customer-support?step=install",
+    href: (p) => {
+      const family = intentToFamilyHint(p.intent);
+      return `/agents/${p.market}-${family}?step=install`;
+    },
   },
 ];
 
@@ -167,6 +176,21 @@ export function OnboardingChecklist() {
           Dismiss
         </button>
       </div>
+
+      <div
+        className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--line)]"
+        role="progressbar"
+        aria-valuenow={doneCount}
+        aria-valuemin={0}
+        aria-valuemax={STEPS.length}
+        aria-label="Checklist completion"
+      >
+        <div
+          className="h-full rounded-full bg-[var(--accent)] transition-all duration-300"
+          style={{ width: `${Math.round((doneCount / STEPS.length) * 100)}%` }}
+        />
+      </div>
+
       <ol className="mt-3 space-y-2">
         {STEPS.map((step) => {
           const done = profile.checklist[step.id];
@@ -183,7 +207,13 @@ export function OnboardingChecklist() {
                 data-testid={`onboarding-step-${step.id}`}
               >
                 <span className="font-medium text-[var(--text)]">
-                  {done ? "✓ " : `${STEPS.findIndex((s) => s.id === step.id) + 1}. `}
+                  {done ? (
+                    <span className="mr-1.5 font-bold text-[var(--accent)]" aria-hidden>
+                      ✓
+                    </span>
+                  ) : (
+                    `${STEPS.findIndex((s) => s.id === step.id) + 1}. `
+                  )}
                   {step.title}
                 </span>
                 <span className="mt-0.5 block text-xs text-[var(--muted)]">{step.body}</span>

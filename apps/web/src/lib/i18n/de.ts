@@ -352,4 +352,19 @@ export const de: Dictionary = {
     "{name} benötigt Railway-/.env-Credentials: {env}. Redirect-URI {uri} in der Anbieter-Konsole registrieren.",
   "actions.errorUnavailableAdvanced":
     "{name} ist in dieser Umgebung noch nicht verfügbar — Sandbox-Demo möglich. Erweitert für Operator-Setup öffnen.",
+
+  "catalog.saved": "Gespeichert",
+  "consent.title": "Cookie-Einwilligung",
+  "consent.notice": "Wir verwenden essenziellen Speicher für Design und Sitzung. Optionale Analyse-Cookies laufen nur bei Zustimmung.",
+  "consent.cookieNotice": "Cookie-Hinweis",
+  "consent.privacy": "Datenschutz",
+  "consent.essentialOnly": "Nur essenziell",
+  "consent.accept": "Optionale akzeptieren",
+  "topup.title": "Prepaid-Tokens aufladen",
+  "topup.desc": "Einmalige Aufladung — kein Abonnement. Tokens treiben jede Antwort an; ein leeres Guthaben pausiert den Agenten.",
+  "topup.paystackNotice": "Sichere Bezahlung über Paystack. Sie kehren nach der Zahlung hierher zurück.",
+  "topup.close": "Schließen",
+  "topup.buy": "Kaufen",
+  "topup.tokens": "Tokens",
+  "topup.packages": "Token-Pakete",
 };

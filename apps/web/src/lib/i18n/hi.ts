@@ -352,4 +352,19 @@ export const hi: Dictionary = {
     "{name} को Railway / .env क्रेडेंशियल चाहिए: {env}। प्रदाता कंसोल में redirect URI {uri} पंजीकृत करें।",
   "actions.errorUnavailableAdvanced":
     "{name} इस वातावरण में अभी उपलब्ध नहीं — सैंडबॉक्स में डेमो कर सकते हैं। ऑपरेटर सेटअप के लिए Advanced खोलें।",
+
+  "catalog.saved": "सहेजे गए",
+  "consent.title": "कुकी सहमति",
+  "consent.notice": "हम थीम और सत्र के लिए आवश्यक स्टोरेज का उपयोग करते हैं। वैकल्पिक एनालिटिक्स कुकीज़ केवल आपकी सहमति पर चलती हैं।",
+  "consent.cookieNotice": "कुकी सूचना",
+  "consent.privacy": "गोपनीयता",
+  "consent.essentialOnly": "केवल आवश्यक",
+  "consent.accept": "वैकल्पिक स्वीकार करें",
+  "topup.title": "प्रीपेड टोकन टॉप अप करें",
+  "topup.desc": "एकमुश्त टॉप-अप — कोई सदस्यता नहीं। टोकन हर उत्तर को शक्ति प्रदान करते हैं; शून्य शेष पर एजेंट रुक जाता है।",
+  "topup.paystackNotice": "Paystack द्वारा सुरक्षित चेकआउट। भुगतान पूरा होने के बाद आप वापस यहाँ आएंगे।",
+  "topup.close": "बंद करें",
+  "topup.buy": "खरीदें",
+  "topup.tokens": "टोकन",
+  "topup.packages": "टोकन पैकेज",
 };

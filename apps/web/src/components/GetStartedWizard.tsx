@@ -246,6 +246,35 @@ export function GetStartedWizard() {
         </p>
       </div>
 
+      {step !== "welcome" && (
+        <div className="mb-3 space-y-2" role="region" aria-label="Onboarding progress">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-[var(--accent-bright)]">
+              {step === "business" && "Step 1 of 3 — Business details"}
+              {step === "intent" && "Step 2 of 3 — Primary intent"}
+              {step === "account" && "Step 3 of 3 — Workspace account"}
+            </span>
+            <span className="font-mono text-[var(--muted)]">
+              {step === "business" ? "33%" : step === "intent" ? "66%" : "100%"}
+            </span>
+          </div>
+          <div
+            className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--line)]"
+            role="progressbar"
+            aria-valuenow={step === "business" ? 1 : step === "intent" ? 2 : 3}
+            aria-valuemin={1}
+            aria-valuemax={3}
+          >
+            <div
+              className="h-full rounded-full bg-[var(--accent)] transition-all duration-300"
+              style={{
+                width: step === "business" ? "33%" : step === "intent" ? "66%" : "100%",
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="panel space-y-5 p-5">
         {step === "welcome" ? (
           <>

@@ -352,4 +352,19 @@ export const fr: Dictionary = {
     "{name} nécessite des identifiants Railway / .env : {env}. Enregistrez l'URI de redirection {uri} dans la console du fournisseur.",
   "actions.errorUnavailableAdvanced":
     "{name} n'est pas encore disponible dans cet environnement — vous pouvez tester en sandbox. Ouvrez Avancé pour la configuration opérateur.",
+
+  "catalog.saved": "Enregistrés",
+  "consent.title": "Consentement aux cookies",
+  "consent.notice": "Nous utilisons le stockage essentiel pour le thème et la session. Les cookies d'analyse optionnels ne s'exécutent que si vous acceptez.",
+  "consent.cookieNotice": "Avis sur les cookies",
+  "consent.privacy": "Confidentialité",
+  "consent.essentialOnly": "Essentiels uniquement",
+  "consent.accept": "Accepter les optionnels",
+  "topup.title": "Recharger des jetons prépayés",
+  "topup.desc": "Recharge ponctuelle — sans abonnement. Les jetons alimentent chaque réponse ; un solde vide met l'agent en pause.",
+  "topup.paystackNotice": "Paiement sécurisé par Paystack. Vous reviendrez ici une fois le paiement terminé.",
+  "topup.close": "Fermer",
+  "topup.buy": "Acheter",
+  "topup.tokens": "jetons",
+  "topup.packages": "Packs de jetons",
 };

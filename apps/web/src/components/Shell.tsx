@@ -87,6 +87,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               type="button"
               className="shell-menu-btn"
               aria-label="Open navigation"
+              aria-expanded={mobileNav}
               onClick={() => setMobileNav(true)}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
