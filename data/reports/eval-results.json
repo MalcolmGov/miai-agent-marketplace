@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T04:06:56.463Z",
+  "generatedAt": "2026-09-06T15:25:14.762Z",
   "mode": "static-only",
   "qualityLane": "mock-contract",
   "tokenCost": 0,
@@ -6072,7 +6072,7 @@
     {
       "id": "personal-assistant",
       "family": "personal-assistant",
-      "market": "global",
+      "market": "africa",
       "category": "vertical",
       "evalCount": 13,
       "staticIssues": [],
