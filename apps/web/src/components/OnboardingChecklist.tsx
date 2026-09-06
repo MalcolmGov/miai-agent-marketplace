@@ -179,11 +179,7 @@ export function OnboardingChecklist() {
 
       <div
         className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--line)]"
-        role="progressbar"
-        aria-valuenow={doneCount}
-        aria-valuemin={0}
-        aria-valuemax={STEPS.length}
-        aria-label="Checklist completion"
+        aria-hidden="true"
       >
         <div
           className="h-full rounded-full bg-[var(--accent)] transition-all duration-300"

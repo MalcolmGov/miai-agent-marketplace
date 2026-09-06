@@ -1,9 +1,15 @@
 import type { HTMLAttributes } from "react";
 
+function getLineWidth(index: number, total: number): string {
+  if (index === total - 1) return "w-3/5";
+  if (index % 2 === 0) return "w-full";
+  return "w-4/5";
+}
+
 export function Skeleton({
   className = "",
   ...props
-}: HTMLAttributes<HTMLDivElement>) {
+}: Readonly<HTMLAttributes<HTMLDivElement>>) {
   return (
     <div
       aria-hidden="true"
@@ -16,25 +22,24 @@ export function Skeleton({
 export function SkeletonText({
   lines = 3,
   className = "",
-}: {
+}: Readonly<{
   lines?: number;
   className?: string;
-}) {
+}>) {
+  const lineItems = Array.from({ length: lines }, (_, i) => `skel-line-${i}`);
   return (
     <div aria-hidden="true" className={`space-y-2 ${className}`}>
-      {Array.from({ length: lines }).map((_, i) => (
+      {lineItems.map((id, i) => (
         <div
-          key={i}
-          className={`skeleton h-3.5 ${
-            i === lines - 1 ? "w-3/5" : i % 2 === 0 ? "w-full" : "w-4/5"
-          }`}
+          key={id}
+          className={`skeleton h-3.5 ${getLineWidth(i, lines)}`}
         />
       ))}
     </div>
   );
 }
 
-export function SkeletonCard({ className = "" }: { className?: string }) {
+export function SkeletonCard({ className = "" }: Readonly<{ className?: string }>) {
   return (
     <div
       aria-hidden="true"
@@ -59,23 +64,26 @@ export function SkeletonTable({
   rows = 4,
   cols = 3,
   className = "",
-}: {
+}: Readonly<{
   rows?: number;
   cols?: number;
   className?: string;
-}) {
+}>) {
+  const colIds = Array.from({ length: cols }, (_, c) => `skel-col-${c}`);
+  const rowIds = Array.from({ length: rows }, (_, r) => `skel-row-${r}`);
+
   return (
     <div aria-hidden="true" className={`w-full space-y-2.5 ${className}`}>
       <div className="flex gap-4 border-b border-[var(--line)] pb-2">
-        {Array.from({ length: cols }).map((_, c) => (
-          <div key={c} className="skeleton h-4 flex-1" />
+        {colIds.map((id) => (
+          <div key={id} className="skeleton h-4 flex-1" />
         ))}
       </div>
-      {Array.from({ length: rows }).map((_, r) => (
-        <div key={r} className="flex gap-4 py-1.5">
-          {Array.from({ length: cols }).map((_, c) => (
+      {rowIds.map((rowId) => (
+        <div key={rowId} className="flex gap-4 py-1.5">
+          {colIds.map((colId, c) => (
             <div
-              key={c}
+              key={`${rowId}-${colId}`}
               className={`skeleton h-3 flex-1 ${c === 0 ? "opacity-90" : "opacity-60"}`}
             />
           ))}

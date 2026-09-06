@@ -387,7 +387,7 @@ export default function TrustPage() {
             <p className="mt-2 text-xs text-[var(--danger)]" role="alert">{eraseError}</p>
           ) : null}
           {eraseSuccess ? (
-            <p className="mt-2 text-xs text-[var(--accent-bright)]" role="status">{eraseSuccess}</p>
+            <p className="mt-2 text-xs text-[var(--accent-bright)]">{eraseSuccess}</p>
           ) : null}
           {events == null ? (
             <div className="mt-4 space-y-2" aria-busy="true" aria-label="Loading audit events">
@@ -457,19 +457,24 @@ export default function TrustPage() {
       {/* Erasure confirmation dialog */}
       {eraseDialogOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="erasure-dialog-title"
-          onClick={() => {
-            setEraseDialogOpen(false);
-            setEraseConfirmText("");
-          }}
         >
+          <button
+            type="button"
+            aria-label="Close dialog"
+            tabIndex={-1}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+            onClick={() => {
+              setEraseDialogOpen(false);
+              setEraseConfirmText("");
+            }}
+          />
           <div
             ref={eraseDialogRef}
-            className="panel w-full max-w-md p-5 rise shadow-2xl border border-[var(--danger)]"
-            onClick={(e) => e.stopPropagation()}
+            className="panel relative z-10 w-full max-w-md p-5 rise shadow-2xl border border-[var(--danger)]"
           >
             <div className="mb-3">
               <h2 id="erasure-dialog-title" className="text-lg font-semibold text-[var(--danger)]">

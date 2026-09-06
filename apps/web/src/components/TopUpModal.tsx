@@ -67,16 +67,21 @@ export function TopUpModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="topup-dialog-title"
-      onClick={onClose}
     >
+      <button
+        type="button"
+        aria-label="Close dialog"
+        tabIndex={-1}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+        onClick={onClose}
+      />
       <div
         ref={dialogRef}
-        className="panel w-full max-w-md p-5 rise shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
+        className="panel relative z-10 w-full max-w-md p-5 rise shadow-2xl"
       >
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>

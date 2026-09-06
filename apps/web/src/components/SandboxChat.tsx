@@ -184,7 +184,7 @@ export function SandboxChat({
               ) : null}
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--muted)]">
-              <div role="group" aria-label="Chat mode" className="inline-flex items-center gap-1.5">
+              <fieldset aria-label="Chat mode" className="m-0 inline-flex items-center gap-1.5 border-0 p-0">
                 <button
                   type="button"
                   aria-pressed={chatMode === "sandbox"}
@@ -219,7 +219,7 @@ export function SandboxChat({
                   )}
                   live (OAuth APIs)
                 </button>
-              </div>
+              </fieldset>
               <label className="inline-flex items-center gap-1.5 rounded-md border border-[var(--line)] bg-[var(--bg-elev)] px-2 py-1">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--muted-dim)]">
                   Reply in

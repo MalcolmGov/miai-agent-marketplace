@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
  * Provides persistent navigation between the assistant chat, the agent marketplace,
  * and a back-link to the business side, so removing the sidebar doesn't strand users.
  */
-function IconChat({ className = "h-3.5 w-3.5" }: { className?: string }) {
+function IconChat({ className = "h-3.5 w-3.5" }: Readonly<{ className?: string }>) {
   return (
     <svg
       className={className}
@@ -27,7 +27,7 @@ function IconChat({ className = "h-3.5 w-3.5" }: { className?: string }) {
   );
 }
 
-function IconSparkles({ className = "h-3.5 w-3.5" }: { className?: string }) {
+function IconSparkles({ className = "h-3.5 w-3.5" }: Readonly<{ className?: string }>) {
   return (
     <svg
       className={className}

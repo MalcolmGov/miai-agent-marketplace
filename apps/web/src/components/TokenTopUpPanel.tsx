@@ -53,7 +53,7 @@ export function TokenTopUpPanel({
         </p>
       ) : null}
       {message?.kind === "ok" ? (
-        <p className="text-xs text-[var(--accent)]" role="status">
+        <p className="text-xs text-[var(--accent)]">
           {message.text}
         </p>
       ) : null}
