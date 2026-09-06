@@ -215,17 +215,17 @@ export function SetupGuide({
                 : "Done";
 
   return (
-    <div className="panel space-y-4 p-4">
+    <div className="panel card-specular-rim space-y-4 p-4 sm:p-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-[var(--text)]">Setup</h2>
-          <p className="mt-0.5 max-w-xl text-xs text-[var(--muted)]">
+          <h2 className="text-sm font-semibold tracking-tight text-[var(--text)]">Setup Guide</h2>
+          <p className="mt-0.5 max-w-xl text-xs leading-relaxed text-[var(--muted)]">
             One step at a time. Add knowledge, optionally connect tools, try sandbox, then add
             prepaid tokens before you go live and activate.
           </p>
         </div>
         <div className="text-right">
-          <div className="text-xs font-semibold text-[var(--accent-bright)]">
+          <div className="text-xs font-bold text-[var(--accent-bright)]">
             {doneCount}/{steps.length} · {pct}%
           </div>
           <div className="mt-0.5 text-[10px] uppercase tracking-wide text-[var(--muted)]">
@@ -235,14 +235,14 @@ export function SetupGuide({
       </div>
 
       <div
-        className="h-1 overflow-hidden rounded-full bg-[var(--bg-elev)]"
+        className="h-1.5 overflow-hidden rounded-full bg-[var(--bg-elev)] shadow-inner"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
         aria-valuemax={100}
       >
         <div
-          className="h-full rounded-full bg-[var(--accent)] transition-[width] duration-300"
+          className="h-full rounded-full bg-gradient-to-r from-[var(--accent-dim)] via-[var(--accent)] to-[var(--accent-bright)] shadow-[0_0_10px_var(--accent)] transition-[width] duration-300"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -250,7 +250,7 @@ export function SetupGuide({
       <ol className="relative grid grid-cols-5 gap-1 sm:gap-2">
         <div
           aria-hidden
-          className="pointer-events-none absolute left-[10%] right-[10%] top-4 z-0 hidden h-px bg-[var(--line)] sm:block"
+          className="pointer-events-none absolute left-[10%] right-[10%] top-4 z-0 hidden h-0.5 bg-gradient-to-r from-[var(--line)] via-[color-mix(in_srgb,var(--accent)_50%,var(--line))] to-[var(--line)] sm:block"
         />
         {steps.map((step, idx) => {
           const active = step.id === activeStep;
@@ -263,11 +263,11 @@ export function SetupGuide({
                 aria-current={active ? "step" : undefined}
               >
                 <span
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition ${
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-200 ${
                     step.done
-                      ? "bg-[var(--accent)] text-[var(--accent-ink)]"
+                      ? "bg-gradient-to-br from-[var(--accent-bright)] to-[var(--accent)] text-[var(--accent-ink)] shadow-[0_0_12px_-2px_var(--accent)]"
                       : active
-                        ? "bg-[var(--bg-panel)] text-[var(--accent-bright)] ring-2 ring-[var(--accent)]"
+                        ? "bg-[var(--bg-panel)] text-[var(--accent-bright)] ring-2 ring-[var(--accent)] shadow-[0_0_16px_-2px_color-mix(in_srgb,var(--accent)_70%,transparent)]"
                         : "bg-[var(--bg-panel)] text-[var(--muted)] ring-1 ring-[var(--line)]"
                   }`}
                 >

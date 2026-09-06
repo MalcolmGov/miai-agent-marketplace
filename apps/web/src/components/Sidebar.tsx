@@ -389,10 +389,10 @@ export function Sidebar({
         <div className="flex h-full flex-col">
           <div className="border-b border-[var(--line)] px-4 pb-4 pt-5">
             <div className="flex items-center justify-between">
-              <Link href={logoHref} className="flex items-center gap-2.5" onClick={onClose}>
-                <span className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_40%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-elev))]">
+              <Link href={logoHref} className="group flex items-center gap-2.5" onClick={onClose}>
+                <span className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_45%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-elev))] shadow-[0_0_16px_-2px_color-mix(in_srgb,var(--accent)_35%,transparent)] transition-all duration-300 group-hover:shadow-[0_0_22px_0_color-mix(in_srgb,var(--accent)_55%,transparent)]">
                   <span className="text-xs font-bold tracking-tight text-[var(--accent-bright)]">M</span>
-                  <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-sm bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
+                  <span className="pulse-dot absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
                 </span>
                 <span className="text-[0.95rem] font-semibold tracking-tight text-[var(--text)]">
                   myinstant<span className="text-[var(--accent-bright)]">ai</span>
@@ -427,16 +427,25 @@ export function Sidebar({
               </button>
             </div>
 
-            <button type="button" onClick={onTopUp} className="token-card mt-4 w-full text-left">
+            <button type="button" onClick={onTopUp} className="token-card group mt-4 w-full text-left">
+              <div className="card-specular-rim" />
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
                   {t("sidebar.tokenBalance")}
                 </span>
-                <span className="chip chip-live !py-0.5 !text-[9px]">{t("sidebar.prepaid")}</span>
+                <span className="chip chip-live !py-0.5 !text-[9px]">
+                  <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                  {t("sidebar.prepaid")}
+                </span>
               </div>
-              <p className="mt-2 font-mono text-2xl font-semibold tracking-tight tabular-nums text-[var(--text)]">
-                {tokens === null ? "…" : tokens.toLocaleString()}
-              </p>
+              <div className="mt-2 flex items-baseline justify-between">
+                <p className="font-mono text-2xl font-semibold tracking-tight tabular-nums text-[var(--text)]">
+                  {tokens === null ? "…" : tokens.toLocaleString()}
+                </p>
+                <span className="text-xs font-semibold text-[var(--accent-bright)] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  Top up →
+                </span>
+              </div>
               <p className="mt-1 text-[11px] text-[var(--muted-dim)]">{t("sidebar.tapToTopUp")}</p>
             </button>
           </div>
@@ -497,20 +506,25 @@ export function Sidebar({
           <div className="border-t border-[var(--line)] px-3 py-3">
             <button
               type="button"
-              className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-[var(--bg-panel-hover)]"
+              className="group flex w-full items-center gap-2.5 rounded-xl border border-transparent p-2 text-left transition-all duration-200 hover:border-[var(--line)] hover:bg-[color-mix(in_srgb,var(--bg-panel-hover)_75%,transparent)]"
               data-testid="sidebar-account"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)] text-sm font-bold text-[var(--accent-ink)]">
-                M
-              </span>
+              <div className="relative flex-shrink-0">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-bright)] to-[var(--accent-dim)] text-xs font-bold text-[var(--accent-ink)] shadow-[0_2px_8px_-2px_color-mix(in_srgb,var(--accent)_60%,transparent)]">
+                  M
+                </span>
+                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border-2 border-[var(--bg-panel)] bg-[var(--live)] shadow-[0_0_6px_var(--live)]" />
+              </div>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-[13px] font-semibold text-[var(--text)]">Your account</span>
-                <span className="block truncate text-[11px] text-[var(--muted)]">
+                <span className="block truncate text-[13px] font-semibold text-[var(--text)] group-hover:text-[var(--accent-bright)]">
+                  Your account
+                </span>
+                <span className="block truncate text-[11px] font-medium text-[var(--muted)]">
                   {mode === "consumer" ? "Consumer plan" : "Workspaces plan"}
                 </span>
               </span>
-              <span className="text-[var(--muted)]" aria-hidden>
-                &#8943;
+              <span className="text-xs text-[var(--muted-dim)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--text)]" aria-hidden>
+                &#8250;
               </span>
             </button>
           </div>
