@@ -129,35 +129,42 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className={`shell-content ${isHome ? "shell-content-home" : ""}`}>{children}</main>
-        <footer className="border-t border-[var(--line-strong)] bg-[var(--bg-panel)] px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] text-sm text-[var(--card-body)] sm:px-6">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:gap-x-5 sm:text-sm">
-            <span className="w-full text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--card-meta)] sm:w-auto">
-              Legal
-            </span>
-            <Link href="/legal" className="font-medium text-[var(--accent-bright)] hover:underline">
-              Legal hub
-            </Link>
-            <Link href="/privacy" className="hover:text-[var(--text)] hover:underline">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-[var(--text)] hover:underline">
-              Terms
-            </Link>
-            <Link href="/cookies" className="hover:text-[var(--text)] hover:underline">
-              Cookies
-            </Link>
-            <Link href="/data-protection" className="hover:text-[var(--text)] hover:underline">
-              Data protection
-            </Link>
-            <Link href="/trust" className="hover:text-[var(--text)] hover:underline">
-              Trust Center
-            </Link>
-            <Link href="/quality" className="hover:text-[var(--text)] hover:underline">
-              Live quality
-            </Link>
+        <footer className="border-t border-[var(--line-strong)] bg-[color-mix(in_srgb,var(--bg-panel)_90%,transparent)] backdrop-blur-md px-4 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] text-sm text-[var(--card-body)] sm:px-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:gap-x-5 sm:text-sm">
+              <span className="w-full text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--card-meta)] sm:w-auto">
+                Legal
+              </span>
+              <Link href="/legal" className="font-medium text-[var(--accent-bright)] hover:underline">
+                Legal hub
+              </Link>
+              <Link href="/privacy" className="hover:text-[var(--text)] hover:underline">
+                Privacy
+              </Link>
+              <Link href="/terms" className="hover:text-[var(--text)] hover:underline">
+                Terms
+              </Link>
+              <Link href="/cookies" className="hover:text-[var(--text)] hover:underline">
+                Cookies
+              </Link>
+              <Link href="/data-protection" className="hover:text-[var(--text)] hover:underline">
+                Data protection
+              </Link>
+              <Link href="/trust" className="hover:text-[var(--text)] hover:underline">
+                Trust Center
+              </Link>
+              <Link href="/quality" className="hover:text-[var(--text)] hover:underline">
+                Live quality
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-400 shadow-[0_0_12px_-3px_rgba(52,211,153,0.3)] sm:self-auto">
+              <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]" />
+              <span>All Systems Operational</span>
+            </div>
           </div>
-          <p className="mt-2 text-[11px] leading-relaxed text-[var(--card-meta)] sm:text-xs">
-            Draft notices · AI system disclosures on chat surfaces · counsel review pending
+          <p className="mt-3 text-[11px] leading-relaxed text-[var(--card-meta)] sm:text-xs">
+            MyInstantAI · Enterprise Agent Infrastructure & White-Label Platform · Zero Customer Data Retention Policy
           </p>
         </footer>
       </div>

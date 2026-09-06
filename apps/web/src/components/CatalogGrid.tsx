@@ -622,7 +622,7 @@ export function CatalogGrid({
               </svg>
               <input
                 ref={searchInputRef}
-                className="input !pl-11 !pr-16"
+                className="input !pl-11 !pr-16 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)] transition-all duration-200 focus:border-[var(--accent-dim)] focus:shadow-[0_0_20px_-3px_color-mix(in_srgb,var(--accent)_25%,transparent)]"
                 placeholder={t("catalog.searchPlaceholder")}
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
@@ -635,7 +635,7 @@ export function CatalogGrid({
                 aria-label={t("catalog.searchPlaceholder")}
               />
               <kbd
-                className="biz-kbd pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
+                className="biz-kbd pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 border border-white/[0.12] bg-white/[0.05] text-[10px] text-[var(--muted)] shadow-sm"
                 aria-hidden
               >
                 &#8984;K
@@ -847,11 +847,19 @@ export function CatalogGrid({
             return (
               <article
                 key={item.id}
-                className="panel panel-interactive group rise relative flex flex-col p-0"
+                className="panel panel-interactive group rise card-specular-rim relative flex flex-col overflow-hidden p-0"
                 style={{ animationDelay: `${Math.min(idx, 15) * 28}ms` }}
               >
+                {/* Sector-tinted ambient hover bloom */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-px rounded-[var(--radius-panel)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{
+                    background: `radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, ${categoryAccent(item.marketplaceCategory)} 18%, transparent) 0%, transparent 70%)`,
+                  }}
+                />
                 <BookmarkButton saved={saved.has(item.id)} onToggle={() => toggleSaved(item.id)} />
-                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                <div className="relative z-[1] flex flex-1 flex-col p-5 sm:p-6">
                   <div className="flex items-start gap-3.5">
                     <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
                     <div className="min-w-0 flex-1 pr-7">
@@ -861,18 +869,18 @@ export function CatalogGrid({
                       <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                         <span>{item.marketplaceCategory}</span>
                         {hasWorkflow ? (
-                          <span className="inline-flex items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_24%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
+                          <span className="inline-flex items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_28%,transparent)] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)] shadow-[0_0_8px_-2px_color-mix(in_srgb,var(--accent)_35%,transparent)]">
                             {t("catalog.multiStep")}
                           </span>
                         ) : null}
                         {item.requiresConnectors?.length ? (
                           <span
-                            className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--warn)_24%,transparent)] bg-[color-mix(in_srgb,var(--warn)_12%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--warn)]"
+                            className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--warn)_30%,transparent)] bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--warn)] shadow-[0_0_8px_-2px_color-mix(in_srgb,var(--warn)_35%,transparent)]"
                             title={`Connect ${item.requiresConnectors
                               .map(connectorLabel)
                               .join(", ")} to take live actions`}
                           >
-                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--warn)] opacity-85" aria-hidden />
+                            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--warn)] shadow-[0_0_6px_var(--warn)]" aria-hidden />
                             <span>Needs setup</span>
                           </span>
                         ) : null}
@@ -899,10 +907,10 @@ export function CatalogGrid({
                     </button>
                     <Link
                       href={gatedSetupHref(href, agentsOnboarded)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-3 py-1.5 text-xs font-semibold text-[var(--accent-bright)] transition-all hover:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] hover:bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] group-hover:shadow-[0_0_14px_-3px_color-mix(in_srgb,var(--accent)_28%,transparent)]"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--accent)_30%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-3.5 py-1.5 text-xs font-semibold text-[var(--accent-bright)] shadow-[0_2px_8px_-2px_color-mix(in_srgb,var(--accent)_25%,transparent)] transition-all duration-200 hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] hover:bg-[color-mix(in_srgb,var(--accent)_22%,transparent)] hover:shadow-[0_0_16px_-2px_color-mix(in_srgb,var(--accent)_45%,transparent)]"
                     >
                       <span>{t("catalog.rentSetup")}</span>
-                      <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5">&#8594;</span>
+                      <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">&#8594;</span>
                     </Link>
                   </div>
                 </div>

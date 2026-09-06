@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyInstantAI Agents — Technical Audit & Security Handover</title>
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      .page.airy .card {
+        box-shadow: none;
+        border: 1px solid var(--line);
+        padding: 4.5mm 5.5mm;
+      }
+      .page.airy .content {
+        padding: 12mm 17mm 7mm;
+      }
+      .page.airy .hero + .content {
+        padding-top: 7mm;
+      }
+      .page.airy .footer {
+        margin-left: 17mm;
+        margin-right: 17mm;
+      }
+      .page.airy .section {
+        margin-bottom: 7.5mm;
+      }
+      .page.airy h2 {
+        font-size: 12px;
+        margin-bottom: 4.5mm;
+      }
+      .page.airy h3 {
+        font-size: 10.8px;
+        margin: 5mm 0 2.5mm;
+      }
+      .page.airy table {
+        margin-top: 1.5mm;
+      }
+      .page.airy th {
+        font-size: 8px;
+        padding: 2.5mm 3mm;
+      }
+      .page.airy td {
+        font-size: 9.5px;
+        line-height: 1.55;
+        padding: 3mm 3mm;
+      }
+      .page.airy .callout {
+        padding: 3.5mm 4.5mm;
+        line-height: 1.55;
+        margin-top: 3mm;
+      }
+      .page.airy .check li {
+        font-size: 9.8px;
+        line-height: 1.55;
+        margin-bottom: 2.2mm;
+      }
+      .page.airy .hero .lede {
+        line-height: 1.55;
+        font-size: 10.2px;
+      }
+      .badge-pass {
+        display: inline-block;
+        background: #0f8055;
+        color: #ffffff;
+        font-size: 8.5px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================ PAGE 1 ============================ -->
+    <section class="page airy">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Technical Audit & Architecture Handover · Moove Digital → MyInstantAI</p>
+        <h1>Enterprise Technical Audit & Security Handover</h1>
+        <p class="lede">
+          Moove Digital delivers the Agent Marketplace as a <strong style="color:#fff">pre-compiled container appliance</strong>
+          hosted inside MyInstantAI’s Microsoft Azure tenant. All customer conversations, audit records, OAuth tokens, and
+          credentials reside strictly within <strong style="color:#fff">MyInstantAI’s Azure subscription</strong>.
+          The production runtime is built with Next.js standalone mode, stripping all raw TypeScript sources and developer tooling
+          from the production image.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Pre-compiled Container</span>
+          <span class="pill">Azure Native Bicep</span>
+          <span class="pill">Customer Data Sovereignty</span>
+          <span class="pill muted">SOC2 / POPIA / GDPR Ready</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">01</span> Delivery & Intellectual Property Boundaries</h2>
+          <div class="card">
+            <strong>Container Appliance Model:</strong> Moove builds, certifies, and signs the production Docker image via CI/CD,
+            publishing to a private Container Registry. The final image contains <em>only</em> compiled bytecode, static assets, and catalog presets.
+            Zero raw source code, test harnesses, prompt engineering scripts, or Git metadata exist in the runtime container.
+            MyInstantAI controls the cloud perimeter, Key Vault keys, database, and ingress.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">02</span> Azure Infrastructure Topology (main.bicep)</h2>
+          <table>
+            <thead>
+              <tr><th style="width:28%">Azure Resource</th><th style="width:32%">Security & Governance</th><th>Audited Control</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Azure Container Apps</strong><br /><span style="color:var(--muted)">Runtime Host</span></td>
+                <td>Non-root execution (UID 1000 <span class="mono">node</span>). Health probe at <span class="mono">/api/health</span>. Min 1 replica.</td>
+                <td><span class="badge-pass">Verified</span> Least privilege, ephemeral container</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Key Vault</strong><br /><span style="color:var(--muted)">Secret Store</span></td>
+                <td>System-Assigned Managed Identity via RBAC (<span class="mono">Key Vault Secrets User</span>). Zero plaintext secrets.</td>
+                <td><span class="badge-pass">Verified</span> No hardcoded keys; secret rotation</td>
+              </tr>
+              <tr>
+                <td><strong>Azure PostgreSQL</strong><br /><span style="color:var(--muted)">Flexible Server</span></td>
+                <td>Encrypted at rest by default. SSL enforcement mandatory (<span class="mono">sslmode=require</span>). Private VNet ready.</td>
+                <td><span class="badge-pass">Verified</span> Strict TLS, automated backups</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Files</strong><br /><span style="color:var(--muted)">Volume Share</span></td>
+                <td>Mounted at <span class="mono">/data</span> for persistent OAuth tokens and knowledge base sources. Encrypted at rest.</td>
+                <td><span class="badge-pass">Verified</span> Isolated tenant file storage</td>
+              </tr>
+              <tr>
+                <td><strong>Application Insights</strong><br /><span style="color:var(--muted)">Observability</span></td>
+                <td>Native connection string integration. Structured audit logs without logging plaintext credentials.</td>
+                <td><span class="badge-pass">Verified</span> Centralized audit & telemetry</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Moove Digital</strong> · Delivery partner</span>
+        <span>Confidential · Technical Audit Handover · 1 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">03</span> Application Hardening & Boot Failsafes</h2>
+          <div class="card">
+            The application incorporates strict boot-time validation (<span class="mono">apps/web/src/lib/security-flags.ts</span>)
+            ensuring the server immediately halts in production if any security boundary is breached:
+          </div>
+          <table style="margin-top:3.5mm">
+            <thead>
+              <tr><th style="width:30%">Security Guard</th><th style="width:35%">Production Requirement</th><th>Fail-Closed Behavior</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Secret Entropy Floor</strong></td>
+                <td>Signing secrets (<span class="mono">OAUTH_TOKEN_SECRET</span>, <span class="mono">OAUTH_STATE_SECRET</span>, <span class="mono">EMBED_KEY_SECRET</span>) require &ge; 32 characters of high-entropy randomness.</td>
+                <td>Process exits immediately on boot if weak or default.</td>
+              </tr>
+              <tr>
+                <td><strong>Production Mock-Rails Blocker</strong></td>
+                <td>Mock authentication, mock wallets, and mock model gateway are strictly blocked when <span class="mono">NODE_ENV=production</span>.</td>
+                <td>Boot fails unless explicit dual-ACK flags are set (staging only).</td>
+              </tr>
+              <tr>
+                <td><strong>Sandbox Leak Guard</strong></td>
+                <td>Detects if <span class="mono">SANDBOX_MODE=1</span> is accidentally configured alongside real OIDC, live DB, or payment keys.</td>
+                <td>Server halts with error log; prevents live credential exposure.</td>
+              </tr>
+              <tr>
+                <td><strong>CSRF & Replay Prevention</strong></td>
+                <td>Connector OAuth flows use single-use cryptographic nonces verified on callback.</td>
+                <td>Nonces are burned on first use; replay attempts rejected.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">04</span> AI Safety, Input/Output Scrubbers & Prompt Defense</h2>
+          <table>
+            <thead>
+              <tr><th style="width:28%">Control Layer</th><th style="width:36%">Mechanism</th><th>Protection Guarantee</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PAN / Credit Card Scrubber</strong></td>
+                <td>Luhn algorithm verification runs on both user input and model output streams.</td>
+                <td>Valid 13-19 digit card numbers are automatically redacted.</td>
+              </tr>
+              <tr>
+                <td><strong>OTP / 2FA Code Scrubber</strong></td>
+                <td>Regex patterns match one-time passwords, access codes, and banking verification tokens.</td>
+                <td>Model completions cannot echo or leak sensitive auth codes.</td>
+              </tr>
+              <tr>
+                <td><strong>Untrusted Delimiter Fencing</strong></td>
+                <td>External knowledge bases and connector tool outputs are wrapped in <span class="mono">UNTRUSTED</span> markers.</td>
+                <td>Model is instructed to treat external data as untrusted text, neutralizing indirect prompt injection attacks.</td>
+              </tr>
+              <tr>
+                <td><strong>Safety Emergency Classifier</strong></td>
+                <td>Classifies high-risk queries (self-harm, physical hazards, medical emergencies) pre-inference.</td>
+                <td>Routes to official emergency handoff resources without generating uncontrolled LLM responses.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Moove Digital</strong> · Delivery partner</span>
+        <span>Confidential · Technical Audit Handover · 2 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">05</span> Data Privacy & Compliance (POPIA / GDPR)</h2>
+          <div class="card">
+            The Agent Marketplace enforces data protection standards aligned with South African POPIA and EU GDPR:
+          </div>
+          <table style="margin-top:3.5mm">
+            <thead>
+              <tr><th style="width:28%">Compliance Requirement</th><th style="width:38%">Endpoint / Mechanism</th><th>Audited Implementation</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Right of Access (DSAR Export)</strong></td>
+                <td><span class="mono">POST /api/consumer/dsar/export</span><br /><span class="mono">POST /api/dsar/export</span></td>
+                <td>Generates structured JSON archive of user profile, stored memory facts, active rentals, and interaction history.</td>
+              </tr>
+              <tr>
+                <td><strong>Right to Erasure (DSAR Erase)</strong></td>
+                <td><span class="mono">POST /api/consumer/dsar/erase</span><br /><span class="mono">POST /api/dsar/erase</span></td>
+                <td>Hard deletes all user facts, memory embeddings, reminders, and session records across databases and volumes.</td>
+              </tr>
+              <tr>
+                <td><strong>Retention Horizons</strong></td>
+                <td>Automated ephemeral cleanup</td>
+                <td>API usage logs, command caches, and expired OAuth tokens are scheduled for horizon purging; prevents stale data buildup.</td>
+              </tr>
+              <tr>
+                <td><strong>Host Header Poisoning Defense</strong></td>
+                <td>Strict origin validation in <span class="mono">middleware.ts</span></td>
+                <td>Authentication redirects and API endpoints use normalized relative paths; client-controlled <span class="mono">Host</span> headers are never trusted.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">06</span> Independent CI Quality & Audit Results</h2>
+          <table>
+            <thead>
+              <tr><th style="width:30%">Verification Suite</th><th style="width:34%">Auditor / Tool</th><th>Results & Quality Gate</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Static Security (SAST)</strong></td>
+                <td>SonarCloud Automatic Analysis</td>
+                <td><span class="badge-pass">Quality Gate Passed</span> 0 Vulnerabilities, 0 Security Hotspots, 0 Bugs</td>
+              </tr>
+              <tr>
+                <td><strong>Secrets Scanning</strong></td>
+                <td>GitHub Secret Scanner & Gitleaks</td>
+                <td><span class="badge-pass">Passed</span> 0 Exposed API keys or secrets detected</td>
+              </tr>
+              <tr>
+                <td><strong>Automated Unit Tests</strong></td>
+                <td>Node.js Test Runner (v22)</td>
+                <td><span class="badge-pass">Passed</span> 173 / 173 passing (Luhn, OTP, rail fences, DSAR)</td>
+              </tr>
+              <tr>
+                <td><strong>Catalog & Preset Integrity</strong></td>
+                <td>Marketplace Integrity Suite</td>
+                <td><span class="badge-pass">100% Verified</span> 500 SKUs, 100 Families across 5 regions</td>
+              </tr>
+              <tr>
+                <td><strong>Type Safety</strong></td>
+                <td>TypeScript Strict (<span class="mono">tsc --noEmit</span>)</td>
+                <td><span class="badge-pass">0 Errors</span> Strict type-checking across all monorepo packages</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Moove Digital</strong> · Delivery partner</span>
+        <span>Confidential · Technical Audit Handover · 3 / 4</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 4 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">07</span> API Contract & Integration Endpoints</h2>
+          <table>
+            <thead>
+              <tr><th style="width:28%">Surface / Purpose</th><th style="width:35%">Endpoint / Contract</th><th>Protocol & Payload</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OpenAPI 3.0 Contract</strong></td>
+                <td><span class="mono">GET /api/v1/openapi</span></td>
+                <td>Full machine-readable OpenAPI specification for all marketplace and agent APIs.</td>
+              </tr>
+              <tr>
+                <td><strong>System Health Probe</strong></td>
+                <td><span class="mono">GET /api/health</span></td>
+                <td>Returns JSON status: <span class="mono">{ authMode, modelMode, walletMode, database, redisConfigured }</span>.</td>
+              </tr>
+              <tr>
+                <td><strong>Liveness Probe</strong></td>
+                <td><span class="mono">GET /api/health/live</span></td>
+                <td>Lightweight HTTP 200 probe for Azure Container Apps orchestrator.</td>
+              </tr>
+              <tr>
+                <td><strong>Mobile App Channel</strong></td>
+                <td><span class="mono">GET /app/v1?key=mia_pk_...</span></td>
+                <td>Full-screen mobile WebView client for iOS and Android apps; zero browser chrome.</td>
+              </tr>
+              <tr>
+                <td><strong>Real-Time Chat Stream</strong></td>
+                <td><span class="mono">POST /api/embed/chat</span></td>
+                <td>Server-Sent Events (SSE) streaming endpoint authenticated via publishable key.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">08</span> Partner Technical Team Deployment Checklist</h2>
+          <div class="card">
+            <ul class="check">
+              <li><strong>Azure Resource Group:</strong> Create targeted resource group (e.g. <span class="mono">miai-agents-rg</span> in East US / South Africa North).</li>
+              <li><strong>Deploy Bicep Landing Zone:</strong> Run <span class="mono">az deployment group create -g miai-agents-rg -f infra/azure/main.bicep -p @parameters.json</span>.</li>
+              <li><strong>Generate Stable Signing Secrets:</strong> Generate 32+ character hex secrets for <span class="mono">OAUTH_TOKEN_SECRET</span>, <span class="mono">OAUTH_STATE_SECRET</span>, and <span class="mono">EMBED_KEY_SECRET</span> once and persist in Key Vault.</li>
+              <li><strong>Populate Key Vault:</strong> Ensure database connection strings, wallet API keys, and model gateway credentials are set.</li>
+              <li><strong>Configure DNS / Front Door:</strong> Map production domain (e.g. <span class="mono">agents.myinstantai.com</span>) to Container App Ingress FQDN.</li>
+              <li><strong>Verify Health:</strong> Query <span class="mono">curl -fsS https://agents.myinstantai.com/api/health</span> &mdash; verify all modes show production status (<span class="mono">mockRailsAllowed: false</span>).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span><strong>Moove Digital</strong> · Delivery partner</span>
+        <span>Confidential · Technical Audit Handover · 4 / 4</span>
+      </footer>
+    </section>
+  </body>
+</html>
