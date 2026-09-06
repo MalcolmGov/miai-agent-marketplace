@@ -19,6 +19,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   transpilePackages: [
     "@miai/agent-protocol",
     "@miai/wallet-adapter",
