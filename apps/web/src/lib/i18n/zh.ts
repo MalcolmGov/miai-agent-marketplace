@@ -341,4 +341,19 @@ export const zh: Dictionary = {
     "{name} 需要 Railway / .env 凭据：{env}。在提供商控制台注册重定向 URI {uri}。",
   "actions.errorUnavailableAdvanced":
     "{name} 在此环境暂不可用——仍可在沙盒演示。打开高级进行运营配置。",
+
+  "catalog.saved": "已保存",
+  "consent.title": "Cookie 同意",
+  "consent.notice": "我们使用必要存储来维护主题与会话。仅在您接受时运行可选的分析 Cookie。",
+  "consent.cookieNotice": "Cookie 声明",
+  "consent.privacy": "隐私",
+  "consent.essentialOnly": "仅必要",
+  "consent.accept": "接受可选",
+  "topup.title": "充值预付代币",
+  "topup.desc": "一次性充值 — 无订阅。代币用于支付回复费用；余额用尽将暂停智能体。",
+  "topup.paystackNotice": "Paystack 安全结账。支付完成后将返回此处。",
+  "topup.close": "关闭",
+  "topup.buy": "购买",
+  "topup.tokens": "代币",
+  "topup.packages": "代币套餐",
 };

@@ -48,7 +48,17 @@ export default function MyAgentsPage() {
       ) : null}
 
       {items === null ? (
-        <p className="text-sm text-[var(--muted)]">Loading…</p>
+        <div className="space-y-3" aria-busy="true" aria-label="Loading rented agents">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="panel flex items-center justify-between gap-4 p-4">
+              <div className="flex-1 space-y-2">
+                <div className="skeleton h-4 w-48" />
+                <div className="skeleton h-3 w-80" />
+              </div>
+              <div className="skeleton h-8 w-24 rounded-lg" />
+            </div>
+          ))}
+        </div>
       ) : items.length === 0 ? (
         <div className="panel space-y-3 p-6">
           <p className="text-sm text-[var(--text)]">No rented agents yet.</p>

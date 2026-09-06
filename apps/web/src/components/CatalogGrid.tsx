@@ -368,6 +368,7 @@ export function CatalogGrid({
   const [audience, setAudience] = useState("all");
   const [workflowsOnly, setWorkflowsOnly] = useState(false);
   const [pilotOnly, setPilotOnly] = useState(false);
+  const [savedOnly, setSavedOnly] = useState(false);
   const [smartFilter, setSmartFilter] = useState(true);
   const [smartApplied, setSmartApplied] = useState<string[]>([]);
   const [listening, setListening] = useState(false);
@@ -378,6 +379,7 @@ export function CatalogGrid({
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [agentsOnboarded, setAgentsOnboarded] = useState<boolean | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     try {
@@ -428,6 +430,18 @@ export function CatalogGrid({
 
   useEffect(() => {
     setSpeechSupported(Boolean(getSpeechRecognitionCtor()));
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   useEffect(() => {
@@ -573,7 +587,13 @@ export function CatalogGrid({
     (audience !== "all" ? 1 : 0) +
     (workflowsOnly ? 1 : 0) +
     (pilotOnly ? 1 : 0) +
+    (savedOnly ? 1 : 0) +
     (q ? 1 : 0);
+
+  const displayedItems = useMemo(() => {
+    if (!savedOnly) return items;
+    return items.filter((item) => saved.has(item.id));
+  }, [items, savedOnly, saved]);
 
   return (
     <div className="biz-market space-y-8">
@@ -601,10 +621,17 @@ export function CatalogGrid({
                 <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
               </svg>
               <input
+                ref={searchInputRef}
                 className="input !pl-11 !pr-16"
                 placeholder={t("catalog.searchPlaceholder")}
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    setQ("");
+                    searchInputRef.current?.blur();
+                  }
+                }}
                 aria-label={t("catalog.searchPlaceholder")}
               />
               <kbd
@@ -697,6 +724,18 @@ export function CatalogGrid({
                 });
               }}
             />
+            {saved.size > 0 && (
+              <ToggleFacet
+                label={t("catalog.saved") || "Saved"}
+                active={savedOnly}
+                count={saved.size}
+                title="Filter to saved agents"
+                onToggle={() => {
+                  setSmartFilter(false);
+                  setSavedOnly((v) => !v);
+                }}
+              />
+            )}
 
             <FacetSelect
               id="market-filter"
@@ -743,7 +782,9 @@ export function CatalogGrid({
           <p className="min-w-0">
             {workflowsOnly ? (
               <>
-                <span className="font-semibold text-[var(--text)]">{familyCount}</span>
+                <span className="font-semibold text-[var(--text)]">
+                  {savedOnly ? displayedItems.length : familyCount}
+                </span>
                 {familyCount < WORKFLOW_FAMILY_IDS.length ? (
                   <> {t("catalog.workflowsOf", { total: WORKFLOW_FAMILY_IDS.length })}</>
                 ) : (
@@ -752,7 +793,9 @@ export function CatalogGrid({
               </>
             ) : (
               <>
-                <span className="font-semibold text-[var(--text)]">{familyCount}</span>{" "}
+                <span className="font-semibold text-[var(--text)]">
+                  {savedOnly ? displayedItems.length : familyCount}
+                </span>{" "}
                 {t("catalog.agents")}
               </>
             )}
@@ -779,6 +822,7 @@ export function CatalogGrid({
                 setAudience("all");
                 setWorkflowsOnly(false);
                 setPilotOnly(false);
+                setSavedOnly(false);
                 setSmartApplied([]);
               }}
             >
@@ -788,7 +832,7 @@ export function CatalogGrid({
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {items.map((item, idx) => {
+          {displayedItems.map((item, idx) => {
             const hasWorkflow = isWorkflowFamilyId(item.id);
             const hrefMarket = market !== "all" && item.markets[market] ? market : null;
             const href =
@@ -875,10 +919,29 @@ export function CatalogGrid({
           />
         ) : null}
 
-        {!pending && items.length === 0 ? (
+        {!pending && displayedItems.length === 0 ? (
           <div className="panel px-6 py-12 text-center">
-            <p className="display text-xl font-semibold">{t("catalog.emptyTitle")}</p>
-            <p className="mt-2 text-sm text-[var(--muted)]">{t("catalog.emptyBody")}</p>
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] text-[var(--muted)]">
+              <svg
+                aria-hidden
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+              </svg>
+            </div>
+            <p className="display text-xl font-semibold">
+              {savedOnly ? "No saved agents match" : t("catalog.emptyTitle")}
+            </p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              {savedOnly
+                ? "Bookmark agents from their card or clear the saved filter."
+                : t("catalog.emptyBody")}
+            </p>
             <button
               type="button"
               className="btn btn-ghost mt-5"
@@ -889,6 +952,7 @@ export function CatalogGrid({
                 setAudience("all");
                 setWorkflowsOnly(false);
                 setPilotOnly(false);
+                setSavedOnly(false);
               }}
             >
               {t("catalog.resetFilters")}
@@ -926,6 +990,41 @@ function AgentDetailModal({
   const [caps, setCaps] = useState<FamilyCapabilities | null>(null);
   const [capsError, setCapsError] = useState(false);
   const [capsLoading, setCapsLoading] = useState(true);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+    modalRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onClose();
+      }
+      if (e.key === "Tab" && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0]!;
+        const last = focusable[focusable.length - 1]!;
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedRef.current?.focus();
+    };
+  }, [onClose]);
 
   useEffect(() => {
     let cancelled = false;
@@ -959,56 +1058,60 @@ function AgentDetailModal({
       onClick={onClose}
     >
       <div
+        ref={modalRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="agent-detail-title"
-        className="panel relative max-h-[min(92vh,880px)] w-full max-w-2xl overflow-y-auto p-0 shadow-2xl rise"
+        className="panel relative max-h-[min(92vh,880px)] w-full max-w-2xl overflow-y-auto p-0 shadow-2xl rise outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div
           className="cat-rail"
           style={{ background: categoryAccent(item.marketplaceCategory) }}
         />
-        <div className="p-5 sm:p-6">
-          <div className="mb-5 flex items-start gap-3.5">
-            <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-2">
+        <div className="sticky top-0 z-20 border-b border-[var(--line)] bg-[var(--bg-panel)]/95 px-5 py-4 backdrop-blur sm:px-6">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex min-w-0 flex-1 items-start gap-3.5">
+              <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
+              <div className="min-w-0 flex-1">
                 <h2
                   id="agent-detail-title"
                   className="display text-xl font-semibold leading-snug tracking-tight text-[var(--text)]"
                 >
                   {item.name}
                 </h2>
-                <div className="flex shrink-0 items-center gap-2">
-                  {activePack && packs.includes(activePack) ? (
-                    <MarketBadge market={activePack} prominent />
-                  ) : null}
-                  <button
-                    type="button"
-                    className="btn btn-ghost px-2 py-1"
-                    onClick={onClose}
-                    aria-label={t("catalog.close")}
-                  >
-                    ✕
-                  </button>
-                </div>
-              </div>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
-                <span>{item.marketplaceCategory}</span>
-                <span className="text-[var(--muted-dim)]">·</span>
-                <span className="capitalize">
-                  {item.audience === "internal" ? t("catalog.internal") : t("catalog.customer")}
-                </span>
-                {hasWorkflow ? (
-                  <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
-                    {t("catalog.multiStep")}
+                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
+                  <span>{item.marketplaceCategory}</span>
+                  <span className="text-[var(--muted-dim)]">·</span>
+                  <span className="capitalize">
+                    {item.audience === "internal" ? t("catalog.internal") : t("catalog.customer")}
                   </span>
-                ) : null}
-              </p>
+                  {hasWorkflow ? (
+                    <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
+                      {t("catalog.multiStep")}
+                    </span>
+                  ) : null}
+                </p>
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {activePack && packs.includes(activePack) ? (
+                <MarketBadge market={activePack} prominent />
+              ) : null}
+              <button
+                type="button"
+                className="btn btn-ghost px-2.5 py-1.5"
+                onClick={onClose}
+                aria-label={t("catalog.close")}
+              >
+                ✕
+              </button>
             </div>
           </div>
+        </div>
 
+        <div className="p-5 sm:p-6">
           <section className="space-y-2">
             <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-dim)]">
               {t("catalog.whatItDoes")}
@@ -1022,7 +1125,11 @@ function AgentDetailModal({
           </section>
 
           {capsLoading ? (
-            <p className="mt-4 text-sm text-[var(--muted)]">{t("catalog.capabilitiesLoading")}</p>
+            <div className="mt-4 space-y-3" aria-busy="true" aria-label={t("catalog.capabilitiesLoading")}>
+              <div className="skeleton h-4 w-3/4" />
+              <div className="skeleton h-4 w-1/2" />
+              <div className="skeleton h-20 w-full" />
+            </div>
           ) : null}
           {capsError && !caps ? (
             <p className="mt-4 text-sm text-[var(--muted)]">{t("catalog.capabilitiesError")}</p>

@@ -56,7 +56,32 @@ export default function InsightsPage() {
   }, []);
 
   if (!data) {
-    return <div className="text-[var(--muted)]">Loading Insights…</div>;
+    return (
+      <div className="space-y-6" aria-busy="true" aria-label="Loading insights">
+        <div>
+          <div className="skeleton h-7 w-48 mb-2" />
+          <div className="skeleton h-4 w-72" />
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="panel space-y-2 p-4">
+              <div className="skeleton h-3 w-1/2" />
+              <div className="skeleton h-7 w-2/3" />
+            </div>
+          ))}
+        </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="panel space-y-3 p-5">
+            <div className="skeleton h-5 w-40" />
+            <div className="skeleton h-48 w-full" />
+          </div>
+          <div className="panel space-y-3 p-5">
+            <div className="skeleton h-5 w-40" />
+            <div className="skeleton h-48 w-full" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const k = data.kpis;
@@ -174,6 +199,7 @@ export default function InsightsPage() {
           </div>
           <div className="h-[220px]">
             <AreaChart
+              ariaLabel="Conversations trend, last 14 days"
               points={data.conversationSeries.map((s) => ({ value: s.count, label: s.day }))}
             />
           </div>
@@ -185,6 +211,7 @@ export default function InsightsPage() {
           </div>
           <div className="h-[220px]">
             <AreaChart
+              ariaLabel="Token usage trend, last 14 days"
               points={(data.tokenSeries ?? []).map((s) => ({ value: s.tokens, label: s.day }))}
             />
           </div>
@@ -255,27 +282,27 @@ export default function InsightsPage() {
                   <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
                     <th className="px-5 py-3 font-medium">Agent</th>
                     <th className="px-3 py-3 font-medium">Status</th>
-                    <th className="px-3 py-3 font-medium">Convos</th>
-                    <th className="px-3 py-3 font-medium">Resolved</th>
-                    <th className="px-3 py-3 font-medium">Leads</th>
-                    <th className="px-3 py-3 font-medium">Tokens</th>
-                    <th className="px-5 py-3 font-medium">Spend</th>
+                    <th className="px-3 py-3 text-right font-medium">Convos</th>
+                    <th className="px-3 py-3 text-right font-medium">Resolved</th>
+                    <th className="px-3 py-3 text-right font-medium">Leads</th>
+                    <th className="px-3 py-3 text-right font-medium">Tokens</th>
+                    <th className="px-5 py-3 text-right font-medium">Spend</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.byAgent.map((a) => (
-                    <tr key={a.agentId} className="border-t border-[var(--line)]">
+                    <tr key={a.agentId} className="border-t border-[var(--line)] hover:bg-[var(--bg-panel-hover)]/60 transition-colors">
                       <td className="px-5 py-3 font-medium">{a.name}</td>
                       <td className="px-3 py-3">{statusChip(a.status.tone, a.status.label)}</td>
-                      <td className="px-3 py-3 tabular-nums">{a.conversations.toLocaleString()}</td>
-                      <td className="px-3 py-3 tabular-nums">
+                      <td className="px-3 py-3 text-right tabular-nums">{a.conversations.toLocaleString()}</td>
+                      <td className="px-3 py-3 text-right tabular-nums">
                         {a.resolvedPct == null ? "—" : `${a.resolvedPct}%`}
                       </td>
-                      <td className="px-3 py-3 tabular-nums">{a.leads}</td>
-                      <td className="px-3 py-3 tabular-nums text-[var(--muted)]">
+                      <td className="px-3 py-3 text-right tabular-nums">{a.leads}</td>
+                      <td className="px-3 py-3 text-right tabular-nums text-[var(--muted)]">
                         {a.tokens >= 1000 ? `${Math.round(a.tokens / 1000)}k` : a.tokens}
                       </td>
-                      <td className="px-5 py-3 tabular-nums">{formatUsd(a.spend)}</td>
+                      <td className="px-5 py-3 text-right tabular-nums">{formatUsd(a.spend)}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -41,6 +41,7 @@ export function TokenPackageGrid({
             key={p.id}
             type="button"
             disabled={disabled || busy !== null}
+            aria-busy={busy === p.id}
             className="flex items-center justify-between rounded-lg border border-[var(--line)] px-3 py-3 text-left transition hover:border-[var(--accent-dim)] disabled:opacity-60"
             onClick={() => void buy(p.id)}
           >
@@ -48,11 +49,27 @@ export function TokenPackageGrid({
               <span className="block font-medium">${p.usd}</span>
               <span className="text-xs text-[var(--muted)]">{p.tokens.toLocaleString()} tokens</span>
             </span>
-            <span className="text-sm text-[var(--accent)]">{busy === p.id ? "…" : "Buy"}</span>
+            <span className="text-sm text-[var(--accent)] font-medium">
+              {busy === p.id ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <span
+                    className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent"
+                    aria-hidden
+                  />
+                  <span className="sr-only">Starting checkout…</span>
+                </span>
+              ) : (
+                "Buy"
+              )}
+            </span>
           </button>
         ))}
       </div>
-      {err ? <p className="text-xs text-red-400">{err}</p> : null}
+      {err ? (
+        <p className="text-xs text-[var(--danger)]" role="alert">
+          {err}
+        </p>
+      ) : null}
     </div>
   );
 }

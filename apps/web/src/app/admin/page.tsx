@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LineTrendChart, formatCompact, formatUsd } from "@/components/dashboard/Charts";
 
 type AdminPayload = {
@@ -49,6 +49,9 @@ type AdminPayload = {
   }>;
 };
 
+type AdminRental = AdminPayload["rentals"][number];
+type AdminCustomRequest = AdminPayload["customRequests"][number];
+
 function tierChip(tier: string) {
   const t = tier.toUpperCase();
   const style =
@@ -90,12 +93,27 @@ function requestStatus(status: string) {
 export default function AdminPage() {
   const [data, setData] = useState<AdminPayload | null>(null);
   const [statusBusy, setStatusBusy] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [secondsAgo, setSecondsAgo] = useState(0);
+  const initialLoadDone = useRef(false);
 
   function load() {
     return fetch("/api/admin")
-      .then((r) => r.json())
-      .then(setData)
-      .catch(() => setData(null));
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to load admin data");
+        return r.json();
+      })
+      .then((d) => {
+        setData(d);
+        setLastUpdated(new Date());
+        setSecondsAgo(0);
+        initialLoadDone.current = true;
+      })
+      .catch(() => {
+        if (!initialLoadDone.current) {
+          setData(null);
+        }
+      });
   }
 
   useEffect(() => {
@@ -103,6 +121,14 @@ export default function AdminPage() {
     const t = setInterval(load, 15_000);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+    if (!lastUpdated) return;
+    const interval = setInterval(() => {
+      setSecondsAgo(Math.round((Date.now() - lastUpdated.getTime()) / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [lastUpdated]);
 
   async function setRequestStatus(id: string, status: string) {
     setStatusBusy(id);
@@ -119,7 +145,33 @@ export default function AdminPage() {
   }
 
   if (!data) {
-    return <div className="text-[var(--muted)]">Loading Agent Admin…</div>;
+    return (
+      <div className="space-y-6" aria-busy="true" aria-label="Loading Agent Admin">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <div className="skeleton h-7 w-52" />
+            <div className="skeleton h-4 w-80" />
+          </div>
+          <div className="skeleton h-8 w-24 rounded-lg" />
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="panel space-y-2 p-4">
+              <div className="skeleton h-3 w-1/2" />
+              <div className="skeleton h-7 w-2/3" />
+            </div>
+          ))}
+        </div>
+        <div className="panel space-y-4 p-5">
+          <div className="skeleton h-5 w-44" />
+          <div className="space-y-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="skeleton h-10 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const { kpis: k, economics: e } = data;
@@ -146,6 +198,11 @@ export default function AdminPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {lastUpdated ? (
+            <span className="text-xs text-[var(--muted-dim)]">
+              Updated {secondsAgo < 5 ? "just now" : `${secondsAgo}s ago`}
+            </span>
+          ) : null}
           {data.source === "live" && (
             <span className="chip chip-live px-3 py-1 text-[11px] font-semibold uppercase tracking-wider">
               Live data
@@ -295,117 +352,146 @@ export default function AdminPage() {
         </div>
       </section>
 
-      <section className="panel overflow-hidden">
-        <div className="border-b border-[var(--line)] px-5 py-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider">All rented agents</h2>
-          <p className="mt-1 text-xs text-[var(--muted)]">
-            Live from the rental store — clients, tiers, channels, and list-price MRR.
-          </p>
-        </div>
-        {data.rentals.length === 0 ? (
-          <p className="px-5 py-8 text-sm text-[var(--muted)]">
-            No rentals yet. When partners rent agents from the catalogue, they appear here with
-            workspace, tier, and status.
-          </p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-left text-sm">
-              <thead>
-                <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
-                  <th className="px-5 py-3 font-medium">Customer</th>
-                  <th className="px-3 py-3 font-medium">Agent</th>
-                  <th className="px-3 py-3 font-medium">Tier</th>
-                  <th className="px-3 py-3 font-medium">Channel</th>
-                  <th className="px-3 py-3 font-medium">Status</th>
-                  <th className="px-5 py-3 font-medium">Rental</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.rentals.map((r) => (
-                  <tr key={`${r.workspaceId}-${r.agentId}`} className="border-t border-[var(--line)]">
-                    <td className="px-5 py-3 font-medium">{r.customer}</td>
-                    <td className="px-3 py-3">{r.agentName}</td>
-                    <td className="px-3 py-3">{tierChip(r.tier)}</td>
-                    <td className="px-3 py-3 text-[var(--muted)]">{r.channel}</td>
-                    <td className="px-3 py-3">{statusText(r.status.tone, r.status.label)}</td>
-                    <td className="px-5 py-3 tabular-nums">
-                      {r.rentalUsd != null ? `${formatUsd(r.rentalUsd)}/mo` : "—"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-
-      <section className="panel overflow-hidden">
-        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--line)] px-5 py-4">
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider">Custom agent requests</h2>
-            <p className="mt-1 text-xs text-[var(--muted)]">
-              From Create and Request in the dashboard. Advance New → Reviewing → Scoped, then
-              publish to the catalogue.
-            </p>
-          </div>
-          <a href="/request" className="btn btn-ghost text-xs">
-            + New request
-          </a>
-        </div>
-        {data.customRequests.length === 0 ? (
-          <p className="px-5 py-8 text-sm text-[var(--muted)]">
-            No open requests. Partners submit via{" "}
-            <a href="/create" className="text-[var(--accent-bright)] hover:underline">
-              Create
-            </a>{" "}
-            or{" "}
-            <a href="/request" className="text-[var(--accent-bright)] hover:underline">
-              Request
-            </a>
-            .
-          </p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-left text-sm">
-              <thead>
-                <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
-                  <th className="px-5 py-3 font-medium">Business</th>
-                  <th className="px-3 py-3 font-medium">What they need</th>
-                  <th className="px-3 py-3 font-medium">Source</th>
-                  <th className="px-3 py-3 font-medium">Status</th>
-                  <th className="px-5 py-3 font-medium">Advance</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.customRequests.map((req) => (
-                  <tr key={req.id} className="border-t border-[var(--line)]">
-                    <td className="px-5 py-3 font-medium">{req.business}</td>
-                    <td className="max-w-xs px-3 py-3 text-[var(--muted)]">{req.need}</td>
-                    <td className="px-3 py-3">
-                      <span className="chip">{req.source}</span>
-                    </td>
-                    <td className="px-3 py-3">{requestStatus(req.status)}</td>
-                    <td className="px-5 py-3">
-                      <select
-                        className="input py-1.5 text-xs"
-                        disabled={statusBusy === req.id}
-                        value={req.status}
-                        onChange={(e) => void setRequestStatus(req.id, e.target.value)}
-                      >
-                        <option value="new">New</option>
-                        <option value="reviewing">Reviewing</option>
-                        <option value="scoped">Scoped</option>
-                        <option value="done">Done</option>
-                        <option value="declined">Declined</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
+      <RentalsSection rentals={data.rentals} />
+      <CustomRequestsSection
+        requests={data.customRequests}
+        statusBusy={statusBusy}
+        onStatusChange={setRequestStatus}
+      />
     </div>
+  );
+}
+
+function RentalsSection({ rentals }: Readonly<{ rentals: AdminRental[] }>) {
+  return (
+    <section className="panel overflow-hidden">
+      <div className="border-b border-[var(--line)] px-5 py-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wider">All rented agents</h2>
+        <p className="mt-1 text-xs text-[var(--muted)]">
+          Live from the rental store — clients, tiers, channels, and list-price MRR.
+        </p>
+      </div>
+      {rentals.length === 0 ? (
+        <p className="px-5 py-8 text-sm text-[var(--muted)]">
+          No rentals yet. When partners rent agents from the catalogue, they appear here with
+          workspace, tier, and status.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[720px] text-left text-sm">
+            <thead>
+              <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
+                <th className="px-5 py-3 font-medium">Customer</th>
+                <th className="px-3 py-3 font-medium">Agent</th>
+                <th className="px-3 py-3 font-medium">Tier</th>
+                <th className="px-3 py-3 font-medium">Channel</th>
+                <th className="px-3 py-3 font-medium">Status</th>
+                <th className="px-5 py-3 text-right font-medium">Rental</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rentals.map((r) => (
+                <tr
+                  key={`${r.workspaceId}-${r.agentId}`}
+                  className="border-t border-[var(--line)] transition-colors hover:bg-[var(--bg-panel-hover)]/60"
+                >
+                  <td className="px-5 py-3 font-medium">{r.customer}</td>
+                  <td className="px-3 py-3">{r.agentName}</td>
+                  <td className="px-3 py-3">{tierChip(r.tier)}</td>
+                  <td className="px-3 py-3 text-[var(--muted)]">{r.channel}</td>
+                  <td className="px-3 py-3">{statusText(r.status.tone, r.status.label)}</td>
+                  <td className="px-5 py-3 text-right tabular-nums">
+                    {r.rentalUsd != null ? `${formatUsd(r.rentalUsd)}/mo` : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CustomRequestsSection({
+  requests,
+  statusBusy,
+  onStatusChange,
+}: Readonly<{
+  requests: AdminCustomRequest[];
+  statusBusy: string | null;
+  onStatusChange: (id: string, status: string) => void;
+}>) {
+  return (
+    <section className="panel overflow-hidden">
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--line)] px-5 py-4">
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-wider">Custom agent requests</h2>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            From Create and Request in the dashboard. Advance New → Reviewing → Scoped, then
+            publish to the catalogue.
+          </p>
+        </div>
+        <a href="/request" className="btn btn-ghost text-xs">
+          + New request
+        </a>
+      </div>
+      {requests.length === 0 ? (
+        <p className="px-5 py-8 text-sm text-[var(--muted)]">
+          No open requests. Partners submit via{" "}
+          <a href="/create" className="text-[var(--accent-bright)] hover:underline">
+            Create
+          </a>{" "}
+          or{" "}
+          <a href="/request" className="text-[var(--accent-bright)] hover:underline">
+            Request
+          </a>
+          .
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[720px] text-left text-sm">
+            <thead>
+              <tr className="text-[11px] uppercase tracking-wider text-[var(--muted)]">
+                <th className="px-5 py-3 font-medium">Business</th>
+                <th className="px-3 py-3 font-medium">What they need</th>
+                <th className="px-3 py-3 font-medium">Source</th>
+                <th className="px-3 py-3 font-medium">Status</th>
+                <th className="px-5 py-3 text-right font-medium">Advance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.map((req) => (
+                <tr
+                  key={req.id}
+                  className="border-t border-[var(--line)] transition-colors hover:bg-[var(--bg-panel-hover)]/60"
+                >
+                  <td className="px-5 py-3 font-medium">{req.business}</td>
+                  <td className="max-w-xs px-3 py-3 text-[var(--muted)]">{req.need}</td>
+                  <td className="px-3 py-3">
+                    <span className="chip">{req.source}</span>
+                  </td>
+                  <td className="px-3 py-3">{requestStatus(req.status)}</td>
+                  <td className="px-5 py-3 text-right">
+                    <select
+                      className="input py-1.5 text-xs"
+                      disabled={statusBusy === req.id}
+                      value={req.status}
+                      onChange={(e) => void onStatusChange(req.id, e.target.value)}
+                    >
+                      <option value="new">New</option>
+                      <option value="reviewing">Reviewing</option>
+                      <option value="scoped">Scoped</option>
+                      <option value="done">Done</option>
+                      <option value="declined">Declined</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 }

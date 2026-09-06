@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { MessageKey } from "@/lib/i18n";
 import { useT } from "@/lib/locale";
 
@@ -237,7 +237,6 @@ const GROUPS: NavGroup[] = [
     items: [
       { id: "consultants", href: "/consultants", label: "Consultants", icon: <IconSpark /> },
       { id: "settings", href: "/settings", label: "Settings", icon: <IconGear /> },
-      { id: "help", href: "/support", label: "Help & Support", icon: <IconSupport /> },
     ],
   },
 ];
@@ -245,7 +244,7 @@ const GROUPS: NavGroup[] = [
 function resolveActive(pathname: string, item: NavItem, groupId: string) {
   if (item.href.includes("#")) return false;
   if (pathname === "/" && item.href === "/") {
-    return groupId === "agents" && item.id === "ai-agents";
+    return groupId === "core" && item.id === "home";
   }
   if (item.exact) return pathname === item.href;
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -351,6 +350,27 @@ export function Sidebar({
   }
 
   const logoHref = mode === "consumer" ? "/personal" : "/";
+  const asideRef = useRef<HTMLElement | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => setIsDesktop(mq.matches);
+    setIsDesktop(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    if (isDesktop || !mobileOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isDesktop, mobileOpen, onClose]);
 
   return (
     <>
@@ -359,18 +379,34 @@ export function Sidebar({
         onClick={onClose}
         aria-hidden={!mobileOpen}
       />
-      <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`} data-testid="app-sidebar">
+      <aside
+        ref={asideRef}
+        className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`}
+        data-testid="app-sidebar"
+        aria-hidden={!isDesktop && !mobileOpen}
+        inert={!isDesktop && !mobileOpen ? true : undefined}
+      >
         <div className="flex h-full flex-col">
           <div className="border-b border-[var(--line)] px-4 pb-4 pt-5">
-            <Link href={logoHref} className="flex items-center gap-2.5" onClick={onClose}>
-              <span className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_40%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-elev))]">
-                <span className="text-xs font-bold tracking-tight text-[var(--accent-bright)]">M</span>
-                <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-sm bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
-              </span>
-              <span className="text-[0.95rem] font-semibold tracking-tight text-[var(--text)]">
-                myinstant<span className="text-[var(--accent-bright)]">ai</span>
-              </span>
-            </Link>
+            <div className="flex items-center justify-between">
+              <Link href={logoHref} className="flex items-center gap-2.5" onClick={onClose}>
+                <span className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_40%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-elev))]">
+                  <span className="text-xs font-bold tracking-tight text-[var(--accent-bright)]">M</span>
+                  <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-sm bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
+                </span>
+                <span className="text-[0.95rem] font-semibold tracking-tight text-[var(--text)]">
+                  myinstant<span className="text-[var(--accent-bright)]">ai</span>
+                </span>
+              </Link>
+              <button
+                type="button"
+                className="btn btn-ghost px-2 py-1 lg:hidden"
+                onClick={onClose}
+                aria-label="Close navigation"
+              >
+                ✕
+              </button>
+            </div>
 
             <div className="mode-toggle mt-4" role="group" aria-label={t("sidebar.accountMode")}>
               <button

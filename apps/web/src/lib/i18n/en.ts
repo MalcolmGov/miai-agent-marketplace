@@ -352,6 +352,21 @@ export const en = {
     "{name} needs Railway / .env credentials: {env}. Register redirect URI {uri} in the provider console.",
   "actions.errorUnavailableAdvanced":
     "{name} isn't available on this environment yet — you can still demo in sandbox. Open Advanced for operator setup.",
+
+  "catalog.saved": "Saved",
+  "consent.title": "Cookie consent",
+  "consent.notice": "We use essential storage for theme and session. Optional analytics cookies only run if you accept.",
+  "consent.cookieNotice": "Cookie notice",
+  "consent.privacy": "Privacy",
+  "consent.essentialOnly": "Essential only",
+  "consent.accept": "Accept optional",
+  "topup.title": "Top up prepaid tokens",
+  "topup.desc": "One-time top-up — no subscription. Tokens power every reply; an empty balance pauses the agent until you top up again.",
+  "topup.paystackNotice": "Secure checkout by Paystack. You’ll return here once payment completes.",
+  "topup.close": "Close",
+  "topup.buy": "Buy",
+  "topup.tokens": "tokens",
+  "topup.packages": "Token packages",
 } as const;
 
 export type MessageKey = keyof typeof en;

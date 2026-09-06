@@ -100,7 +100,7 @@ export function HistoryClient() {
       </header>
 
       <div className="flex flex-wrap items-center gap-2">
-        <div className="inline-flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5">
+        <div className="inline-flex rounded-full border border-[var(--line)] bg-[var(--bg-panel)] p-0.5">
           {(
             [
               ["conversations", "Conversations"],
@@ -122,7 +122,7 @@ export function HistoryClient() {
           ))}
         </div>
         <select
-          className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs text-[var(--text)]"
+          className="input !px-2.5 !py-1.5 text-xs text-[var(--text)]"
           value={channel}
           onChange={(e) => setChannel(e.target.value)}
           aria-label="Channel filter"
@@ -134,7 +134,7 @@ export function HistoryClient() {
           <option value="ask">Ask AI</option>
         </select>
         <input
-          className="min-w-[12rem] flex-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--text)]"
+          className="input min-w-[12rem] flex-1 !px-3 !py-1.5 text-xs text-[var(--text)]"
           placeholder="Search messages, agents, correlation id…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -144,13 +144,25 @@ export function HistoryClient() {
         </button>
       </div>
 
-      {loading && <p className="text-sm text-[var(--muted)]">Loading…</p>}
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {loading && (
+        <div className="space-y-3" aria-busy="true" aria-label="Loading history">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="panel space-y-2 p-4">
+              <div className="flex justify-between">
+                <div className="skeleton h-4 w-40" />
+                <div className="skeleton h-3 w-28" />
+              </div>
+              <div className="skeleton h-3 w-3/4" />
+            </div>
+          ))}
+        </div>
+      )}
+      {error && <p className="text-sm text-[var(--danger)]" role="alert">{error}</p>}
 
       {!loading && !error && tab === "conversations" && (
         <div className="space-y-3">
           {filteredTurns.length === 0 && (
-            <p className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-sm text-[var(--muted)]">
+            <p className="panel p-6 text-sm text-[var(--muted)]">
               No conversation turns yet. Chat in Agent Studio, Ask AI, or a live channel — each reply
               is recorded here with a correlation id.
             </p>
@@ -158,10 +170,10 @@ export function HistoryClient() {
           {filteredTurns.map((t) => (
             <article
               key={t.id}
-              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4"
+              className="panel p-4"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] text-[var(--muted)]">
-                <span className="rounded-full bg-[var(--bg)] px-2 py-0.5 font-medium uppercase tracking-wide">
+                <span className="rounded-full border border-[var(--line)] bg-[var(--bg-elev)] px-2 py-0.5 font-medium uppercase tracking-wide">
                   {t.channel}
                 </span>
                 <span className="font-mono">{t.agentId}</span>
@@ -196,9 +208,9 @@ export function HistoryClient() {
       )}
 
       {!loading && !error && tab === "activity" && (
-        <div className="overflow-hidden rounded-xl border border-[var(--border)]">
+        <div className="overflow-hidden rounded-xl border border-[var(--line-strong)] bg-[var(--bg-panel)]">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--surface)] text-[var(--muted)]">
+            <thead className="bg-[var(--bg-elev)] text-[var(--muted)]">
               <tr>
                 <th className="px-3 py-2 font-medium">When</th>
                 <th className="px-3 py-2 font-medium">Type</th>
@@ -209,7 +221,7 @@ export function HistoryClient() {
             </thead>
             <tbody>
               {filteredEvents.map((e) => (
-                <tr key={e.id} className="border-t border-[var(--border)]">
+                <tr key={e.id} className="border-t border-[var(--line)] hover:bg-[var(--bg-panel-hover)]/60 transition-colors">
                   <td className="px-3 py-2 whitespace-nowrap text-[var(--muted)]">
                     {new Date(e.at).toLocaleString()}
                   </td>
@@ -250,7 +262,7 @@ export function HistoryClient() {
           onClick={() => setSelectedCorr(null)}
         >
           <div
-            className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 shadow-xl"
+            className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[var(--line-strong)] bg-[var(--bg-panel)] p-5 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-start justify-between gap-3">
@@ -262,7 +274,13 @@ export function HistoryClient() {
                 Close
               </button>
             </div>
-            {!trace && <p className="text-sm text-[var(--muted)]">Loading trace…</p>}
+            {!trace && (
+              <div className="space-y-3 py-2" aria-busy="true" aria-label="Loading trace">
+                <div className="skeleton h-4 w-32" />
+                <div className="skeleton h-16 w-full rounded-lg" />
+                <div className="skeleton h-16 w-full rounded-lg" />
+              </div>
+            )}
             {trace && (
               <div className="space-y-4">
                 <section>
@@ -270,7 +288,7 @@ export function HistoryClient() {
                     Turns ({trace.turns.length})
                   </h3>
                   {trace.turns.map((t) => (
-                    <div key={t.id} className="mb-2 rounded-lg border border-[var(--border)] p-3 text-sm">
+                    <div key={t.id} className="mb-2 rounded-lg border border-[var(--line)] bg-[var(--bg-elev)] p-3 text-sm">
                       <p>
                         <span className="text-[var(--muted)]">You: </span>
                         {t.userMessage}

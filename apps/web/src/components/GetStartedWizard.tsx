@@ -40,6 +40,32 @@ const SIZES = ["1-10", "11-50", "51-200", "201-1000", "1000+"];
 
 type Step = "welcome" | "business" | "intent" | "account";
 
+function getStepLabel(s: Step): string {
+  switch (s) {
+    case "business":
+      return "Step 1 of 3 — Business details";
+    case "intent":
+      return "Step 2 of 3 — Primary intent";
+    case "account":
+      return "Step 3 of 3 — Workspace account";
+    default:
+      return "";
+  }
+}
+
+function getStepPercentage(s: Step): string {
+  switch (s) {
+    case "business":
+      return "33%";
+    case "intent":
+      return "66%";
+    case "account":
+      return "100%";
+    default:
+      return "0%";
+  }
+}
+
 function readDraft(): Partial<{
   companyName: string;
   market: OnboardingMarket;
@@ -245,6 +271,28 @@ export function GetStartedWizard() {
           live on web or app.
         </p>
       </div>
+
+      {step !== "welcome" && (
+        <section className="mb-3 space-y-2" aria-label="Onboarding progress">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-[var(--accent-bright)]">
+              {getStepLabel(step)}
+            </span>
+            <span className="font-mono text-[var(--muted)]">
+              {getStepPercentage(step)}
+            </span>
+          </div>
+          <div
+            className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--line)]"
+            aria-hidden="true"
+          >
+            <div
+              className="h-full rounded-full bg-[var(--accent)] transition-all duration-300"
+              style={{ width: getStepPercentage(step) }}
+            />
+          </div>
+        </section>
+      )}
 
       <div className="panel space-y-5 p-5">
         {step === "welcome" ? (

@@ -184,20 +184,42 @@ export function SandboxChat({
               ) : null}
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--muted)]">
-              <button
-                type="button"
-                className={`chip ${chatMode === "sandbox" ? "chip-live" : ""}`}
-                onClick={() => setChatMode("sandbox")}
-              >
-                sandbox
-              </button>
-              <button
-                type="button"
-                className={`chip ${chatMode === "live" ? "chip-live" : ""}`}
-                onClick={() => setChatMode("live")}
-              >
-                live (OAuth APIs)
-              </button>
+              <fieldset aria-label="Chat mode" className="m-0 inline-flex items-center gap-1.5 border-0 p-0">
+                <button
+                  type="button"
+                  aria-pressed={chatMode === "sandbox"}
+                  className={`chip transition ${
+                    chatMode === "sandbox"
+                      ? "chip-live font-medium shadow-sm"
+                      : "opacity-75 hover:opacity-100"
+                  }`}
+                  onClick={() => setChatMode("sandbox")}
+                >
+                  {chatMode === "sandbox" && (
+                    <span aria-hidden className="mr-1 font-bold text-[var(--accent)]">
+                      ✓
+                    </span>
+                  )}
+                  sandbox
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={chatMode === "live"}
+                  className={`chip transition ${
+                    chatMode === "live"
+                      ? "chip-live font-medium shadow-sm"
+                      : "opacity-75 hover:opacity-100"
+                  }`}
+                  onClick={() => setChatMode("live")}
+                >
+                  {chatMode === "live" && (
+                    <span aria-hidden className="mr-1 font-bold text-[var(--accent)]">
+                      ✓
+                    </span>
+                  )}
+                  live (OAuth APIs)
+                </button>
+              </fieldset>
               <label className="inline-flex items-center gap-1.5 rounded-md border border-[var(--line)] bg-[var(--bg-elev)] px-2 py-1">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--muted-dim)]">
                   Reply in

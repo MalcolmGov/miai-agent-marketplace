@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { useT } from "@/lib/locale";
 import { TokenPackageGrid } from "./TokenPackageGrid";
 
 export function TopUpModal({
@@ -14,20 +16,88 @@ export function TopUpModal({
   onDone: (tokens: number) => void;
   scope?: "workspace" | "consumer";
 }) {
+  const t = useT();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    triggerRef.current = document.activeElement as HTMLElement | null;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    const timer = requestAnimationFrame(() => {
+      const first = dialogRef.current?.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      first?.focus();
+    });
+
+    return () => {
+      cancelAnimationFrame(timer);
+      window.removeEventListener("keydown", handleKeyDown);
+      triggerRef.current?.focus();
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="panel w-full max-w-md p-5 rise shadow-2xl">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="topup-dialog-title"
+    >
+      <button
+        type="button"
+        aria-label="Close dialog"
+        tabIndex={-1}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+        onClick={onClose}
+      />
+      <div
+        ref={dialogRef}
+        className="panel relative z-10 w-full max-w-md p-5 rise shadow-2xl"
+      >
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold">Top up prepaid tokens</h2>
+            <h2 id="topup-dialog-title" className="text-lg font-semibold">
+              {t("topup.title")}
+            </h2>
             <p className="mt-1 text-sm text-[var(--muted)]">
-              One-time top-up — no subscription. Tokens power every reply; an empty balance pauses
-              the agent until you top up again.
+              {t("topup.desc")}
             </p>
           </div>
-          <button type="button" className="btn btn-ghost px-2 py-1" onClick={onClose}>
+          <button
+            type="button"
+            className="btn btn-ghost px-2 py-1"
+            onClick={onClose}
+            aria-label={t("topup.close")}
+          >
             ✕
           </button>
         </div>
@@ -40,7 +110,7 @@ export function TopUpModal({
           }}
         />
         <p className="mt-3 text-[11px] text-[var(--muted)]">
-          Secure checkout by Paystack. You’ll return here once payment completes.
+          {t("topup.paystackNotice")}
         </p>
       </div>
     </div>

@@ -83,7 +83,11 @@ export default function CreatePage() {
               placeholder={t("create.jobPlaceholder")}
             />
           </label>
-          {error ? <p className="text-sm text-[var(--warn,#fb923c)]">{error}</p> : null}
+          {error ? (
+            <p className="text-sm text-[var(--danger)]" role="alert">
+              {error}
+            </p>
+          ) : null}
           <div className="flex flex-wrap gap-2">
             <button type="submit" className="btn btn-primary" disabled={busy}>
               {busy ? t("create.saving") : t("create.sendPipeline")}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   HERO_BADGES,
   PILLARS,
@@ -22,7 +22,10 @@ function TruthChip({ truth }: { truth: Truth }) {
     return (
       <span
         className="chip text-[10px]"
-        style={{ color: "#93c5fd", borderColor: "rgba(96,165,250,0.45)" }}
+        style={{
+          color: "var(--biz-bright)",
+          borderColor: "color-mix(in srgb, var(--biz-bright) 45%, transparent)",
+        }}
       >
         {truthLabel(truth)}
       </span>
@@ -31,7 +34,10 @@ function TruthChip({ truth }: { truth: Truth }) {
     return (
       <span
         className="chip text-[10px]"
-        style={{ color: "#f0b429", borderColor: "rgba(240,180,41,0.45)" }}
+        style={{
+          color: "var(--warn)",
+          borderColor: "color-mix(in srgb, var(--warn) 45%, transparent)",
+        }}
       >
         {truthLabel(truth)}
       </span>
@@ -43,7 +49,13 @@ function StatusChip({ status }: { status: Status }) {
   if (status === "shipped") return <span className="chip chip-live">{statusLabel(status)}</span>;
   if (status === "in_progress")
     return (
-      <span className="chip" style={{ color: "#f0b429", borderColor: "rgba(240,180,41,0.45)" }}>
+      <span
+        className="chip"
+        style={{
+          color: "var(--warn)",
+          borderColor: "color-mix(in srgb, var(--warn) 45%, transparent)",
+        }}
+      >
         {statusLabel(status)}
       </span>
     );
@@ -92,6 +104,10 @@ export default function TrustPage() {
   const [eraseBusy, setEraseBusy] = useState(false);
   const [eraseError, setEraseError] = useState<string | null>(null);
   const [eraseSuccess, setEraseSuccess] = useState<string | null>(null);
+  const [eraseDialogOpen, setEraseDialogOpen] = useState(false);
+  const [eraseConfirmText, setEraseConfirmText] = useState("");
+  const eraseDialogRef = useRef<HTMLDivElement>(null);
+  const eraseTriggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     fetch("/api/audit?limit=6")
@@ -99,6 +115,37 @@ export default function TrustPage() {
       .then((d) => setEvents(d.events ?? []))
       .catch(() => setEvents([]));
   }, []);
+
+  useEffect(() => {
+    if (!eraseDialogOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setEraseDialogOpen(false);
+        setEraseConfirmText("");
+      }
+      if (e.key === "Tab" && eraseDialogRef.current) {
+        const focusable = eraseDialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      eraseTriggerRef.current?.focus();
+    };
+  }, [eraseDialogOpen]);
 
   async function downloadDsar() {
     setDsarBusy(true);
@@ -123,12 +170,15 @@ export default function TrustPage() {
     }
   }
 
-  async function requestErasure() {
-    const ok = window.confirm(
-      "Request workspace erasure?\n\nThis permanently deletes rented agents, transcripts, knowledge, OAuth tokens, and members for THIS workspace. Audit history is kept with tombstone markers.\n\nAdmin/owner only. This cannot be undone.",
-    );
-    if (!ok) return;
+  function openEraseDialog(e: React.MouseEvent<HTMLButtonElement>) {
+    eraseTriggerRef.current = e.currentTarget;
+    setEraseConfirmText("");
+    setEraseDialogOpen(true);
+  }
 
+  async function confirmErasure() {
+    if (eraseConfirmText.trim() !== "ERASE") return;
+    setEraseDialogOpen(false);
     setEraseBusy(true);
     setEraseError(null);
     setEraseSuccess(null);
@@ -149,6 +199,7 @@ export default function TrustPage() {
       setEraseError(e instanceof Error ? e.message : "Erasure failed");
     } finally {
       setEraseBusy(false);
+      setEraseConfirmText("");
     }
   }
 
@@ -183,10 +234,10 @@ export default function TrustPage() {
             <span className="text-[var(--accent-bright)]">Live</span> — in this build
           </span>
           <span>
-            <span style={{ color: "#f0b429" }}>Partial</span> — real capability, fuller story on roadmap
+            <span style={{ color: "var(--warn)" }}>Partial</span> — real capability, fuller story on roadmap
           </span>
           <span>
-            <span style={{ color: "#93c5fd" }}>Via provider</span> — Stripe / host / IdP
+            <span style={{ color: "var(--biz-bright)" }}>Via provider</span> — Stripe / host / IdP
           </span>
           <span>
             <span className="text-[var(--muted)]">Planned</span> — not claiming today
@@ -243,15 +294,15 @@ export default function TrustPage() {
       {/* Guardrails CTA */}
       <section
         className="panel flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between"
-        style={{ borderColor: "color-mix(in srgb, #fb923c 45%, var(--line))" }}
+        style={{ borderColor: "color-mix(in srgb, var(--warn) 45%, var(--line))" }}
       >
         <div className="flex gap-3">
           <span
             className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
-            style={{ background: "rgba(251, 146, 60, 0.14)" }}
+            style={{ background: "color-mix(in srgb, var(--warn) 14%, transparent)" }}
             aria-hidden
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fb923c" strokeWidth="1.8">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" strokeWidth="1.8">
               <path d="M12 3 5 6v6c0 5 3.5 8 7 9 3.5-1 7-4 7-9V6l-7-3z" />
               <path d="M9.5 12.5 11 14l3.5-3.5" />
             </svg>
@@ -324,22 +375,26 @@ export default function TrustPage() {
                 type="button"
                 className="btn btn-ghost text-xs"
                 disabled={dsarBusy || eraseBusy}
-                onClick={() => void requestErasure()}
+                onClick={openEraseDialog}
                 title="Destructive — removes operational data for this workspace"
               >
                 {eraseBusy ? "Erasing…" : "Request erasure"}
               </button>
             </div>
           </div>
-          {dsarError ? <p className="mt-2 text-xs text-[var(--warn,#fb923c)]">{dsarError}</p> : null}
+          {dsarError ? <p className="mt-2 text-xs text-[var(--danger)]" role="alert">{dsarError}</p> : null}
           {eraseError ? (
-            <p className="mt-2 text-xs text-[var(--warn,#fb923c)]">{eraseError}</p>
+            <p className="mt-2 text-xs text-[var(--danger)]" role="alert">{eraseError}</p>
           ) : null}
           {eraseSuccess ? (
             <p className="mt-2 text-xs text-[var(--accent-bright)]">{eraseSuccess}</p>
           ) : null}
           {events == null ? (
-            <p className="mt-4 text-sm text-[var(--muted)]">Loading…</p>
+            <div className="mt-4 space-y-2" aria-busy="true" aria-label="Loading audit events">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="skeleton h-9 w-full rounded-md" />
+              ))}
+            </div>
           ) : events.length === 0 ? (
             <p className="mt-4 text-sm text-[var(--muted)]">
               No events yet. Rent, chat, or connect a connector to see the trail.
@@ -398,6 +453,80 @@ export default function TrustPage() {
         </a>
         .
       </p>
+
+      {/* Erasure confirmation dialog */}
+      {eraseDialogOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="erasure-dialog-title"
+        >
+          <button
+            type="button"
+            aria-label="Close dialog"
+            tabIndex={-1}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+            onClick={() => {
+              setEraseDialogOpen(false);
+              setEraseConfirmText("");
+            }}
+          />
+          <div
+            ref={eraseDialogRef}
+            className="panel relative z-10 w-full max-w-md p-5 rise shadow-2xl border border-[var(--danger)]"
+          >
+            <div className="mb-3">
+              <h2 id="erasure-dialog-title" className="text-lg font-semibold text-[var(--danger)]">
+                Request workspace erasure?
+              </h2>
+              <p className="mt-2 text-sm text-[var(--muted)]">
+                This permanently deletes rented agents, transcripts, knowledge, OAuth tokens, and
+                members for <strong>this workspace</strong>. Audit history is kept with tombstone
+                markers.
+              </p>
+              <p className="mt-2 text-xs font-semibold text-[var(--danger)]">
+                Admin/owner only. This action cannot be undone.
+              </p>
+            </div>
+
+            <label className="block mt-4 space-y-1.5">
+              <span className="text-xs font-medium text-[var(--muted)]">
+                Type <code className="font-bold text-[var(--danger)]">ERASE</code> to confirm:
+              </span>
+              <input
+                type="text"
+                autoFocus
+                className="input w-full font-mono uppercase tracking-wider"
+                placeholder="ERASE"
+                value={eraseConfirmText}
+                onChange={(e) => setEraseConfirmText(e.target.value)}
+              />
+            </label>
+
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost text-xs"
+                onClick={() => {
+                  setEraseDialogOpen(false);
+                  setEraseConfirmText("");
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn text-xs font-medium bg-[var(--danger)] text-white hover:opacity-90 disabled:opacity-40"
+                disabled={eraseConfirmText.trim() !== "ERASE" || eraseBusy}
+                onClick={() => void confirmErasure()}
+              >
+                {eraseBusy ? "Erasing…" : "Permanently erase workspace"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

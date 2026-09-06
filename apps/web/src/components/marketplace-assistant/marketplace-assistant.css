@@ -1,14 +1,14 @@
 .miai-ask {
-  --ask-bg: #121212;
-  --ask-panel: #161616;
-  --ask-bubble: #1e1e1e;
-  --ask-accent: #4fd1c5;
-  --ask-accent-dim: #2bb8a8;
-  --ask-text: #f5f5f5;
-  --ask-muted: #9e9e9e;
-  --ask-border: rgba(255, 255, 255, 0.08);
+  --ask-bg: var(--bg-panel);
+  --ask-panel: var(--bg-panel);
+  --ask-bubble: var(--bg-elev);
+  --ask-accent: var(--accent);
+  --ask-accent-dim: var(--accent-dim);
+  --ask-text: var(--text);
+  --ask-muted: var(--muted);
+  --ask-border: var(--line);
   color: var(--ask-text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-ui, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif);
 }
 
 .miai-ask-fab {
@@ -22,8 +22,8 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(79, 209, 197, 0.35);
+  background: var(--bg-elev);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px color-mix(in srgb, var(--ask-accent) 45%, transparent);
   display: grid;
   place-items: center;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -31,7 +31,7 @@
 
 .miai-ask-fab:hover {
   transform: translateY(-1px) scale(1.03);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(79, 209, 197, 0.55);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--ask-accent);
 }
 
 .miai-ask-fab img {
@@ -52,7 +52,7 @@
   border-radius: 18px;
   overflow: hidden;
   background: var(--ask-bg);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--ask-border);
   animation: miai-ask-in 0.22s ease;
 }
 
@@ -84,7 +84,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.9rem 1rem;
-  background: #0e0e0e;
+  background: var(--bg-elev);
   border-bottom: 1px solid var(--ask-border);
   flex-shrink: 0;
 }
@@ -94,7 +94,7 @@
   height: 2.5rem;
   border-radius: 999px;
   background: transparent;
-  border: 1px solid rgba(79, 209, 197, 0.35);
+  border: 1px solid color-mix(in srgb, var(--ask-accent) 45%, transparent);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -171,9 +171,9 @@
 
 .miai-ask-u {
   align-self: flex-end;
-  background: rgba(79, 209, 197, 0.16);
+  background: color-mix(in srgb, var(--ask-accent) 15%, transparent);
   color: var(--ask-text);
-  border: 1px solid rgba(79, 209, 197, 0.28);
+  border: 1px solid color-mix(in srgb, var(--ask-accent) 30%, transparent);
 }
 
 .miai-ask-m a {
@@ -224,8 +224,9 @@
   margin: 0 1rem;
   padding: 0.5rem 0.75rem;
   border-radius: 10px;
-  background: rgba(220, 80, 80, 0.15);
-  color: #ffb4b4;
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
   font-size: 0.8rem;
 }
 
@@ -239,8 +240,8 @@
 
 .miai-ask-chip {
   appearance: none;
-  border: 1px solid rgba(79, 209, 197, 0.35);
-  background: rgba(79, 209, 197, 0.08);
+  border: 1px solid color-mix(in srgb, var(--ask-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--ask-accent) 8%, transparent);
   color: var(--ask-text);
   border-radius: 999px;
   padding: 0.35rem 0.7rem;
@@ -249,7 +250,7 @@
 }
 
 .miai-ask-chip:hover:not(:disabled) {
-  background: rgba(79, 209, 197, 0.16);
+  background: color-mix(in srgb, var(--ask-accent) 18%, transparent);
 }
 
 .miai-ask-chip:disabled {
@@ -262,7 +263,7 @@
   align-items: center;
   gap: 0.55rem;
   padding: 0.85rem 1rem 1rem;
-  background: #0e0e0e;
+  background: var(--bg-elev);
   border-top: 1px solid var(--ask-border);
   flex-shrink: 0;
 }
@@ -272,7 +273,7 @@
   height: 2.75rem;
   border-radius: 12px;
   border: 1.5px solid var(--ask-accent);
-  background: #0a0a0a;
+  background: var(--ask-bg);
   color: var(--ask-text);
   padding: 0 0.9rem;
   font-size: 16px;
@@ -294,7 +295,7 @@
   border: none;
   border-radius: 12px;
   background: var(--ask-accent);
-  color: #102a27;
+  color: var(--accent-ink);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -309,8 +310,8 @@
 .miai-ask-send svg {
   width: 1.15rem;
   height: 1.15rem;
-  stroke: #102a27;
-  fill: #102a27;
+  stroke: var(--accent-ink);
+  fill: var(--accent-ink);
   stroke-width: 1.5;
 }
 
@@ -320,5 +321,19 @@
     left: 0.75rem;
     width: auto;
     bottom: 5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .miai-ask-dock {
+    animation: none !important;
+  }
+  .miai-ask-fab {
+    transition: none !important;
+  }
+  .miai-ask-typing i {
+    animation: none !important;
+    opacity: 0.7;
+    transform: none !important;
   }
 }

@@ -387,7 +387,33 @@ export function AgentStudio({
   }
 
   if (!data) {
-    return <div className="text-[var(--muted)]">{t("studio.loading")}</div>;
+    return (
+      <div className="space-y-6" aria-busy="true" aria-label={t("studio.loading")}>
+        <div className="flex items-center gap-4">
+          <div className="skeleton h-12 w-12 rounded-xl" />
+          <div className="space-y-2">
+            <div className="skeleton h-6 w-48" />
+            <div className="skeleton h-3 w-64" />
+          </div>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="space-y-4 lg:col-span-2">
+            <div className="panel space-y-3 p-5">
+              <div className="skeleton h-5 w-36" />
+              <div className="skeleton h-32 w-full" />
+            </div>
+            <div className="panel space-y-3 p-5">
+              <div className="skeleton h-5 w-48" />
+              <div className="skeleton h-24 w-full" />
+            </div>
+          </div>
+          <div className="panel space-y-3 p-5">
+            <div className="skeleton h-5 w-32" />
+            <div className="skeleton h-64 w-full" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const m = data.package.manifest;
