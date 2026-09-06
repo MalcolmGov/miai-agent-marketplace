@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useT } from "@/lib/locale";
 
 /** Small leading glyph for the "Browse agents" CTA — a shuffle / route mark. */
@@ -17,164 +18,6 @@ function IconGear() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" className="h-4 w-4" aria-hidden>
       <circle cx="12" cy="12" r="3.2" />
       <path d="M12 2.6v2.5M12 18.9v2.5M4.4 7l2.1 1.3M17.5 15.7l2.1 1.3M4.4 17l2.1-1.3M17.5 8.3l2.1-1.3" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function FloatTile({
-  x,
-  y,
-  tint,
-  glyph,
-}: {
-  x: number;
-  y: number;
-  tint: string;
-  glyph: "mail" | "chat" | "doc" | "grid";
-}) {
-  const glyphs: Record<string, React.ReactNode> = {
-    mail: (
-      <path d="M-9,-6 h18 v12 h-18 z M-9,-6 L0,2 L9,-6" fill="none" stroke={tint} strokeWidth="2" strokeLinejoin="round" />
-    ),
-    chat: (
-      <path d="M-9,-7 h18 v11 h-11 l-4,4 v-4 h-3 z" fill="none" stroke={tint} strokeWidth="2" strokeLinejoin="round" />
-    ),
-    doc: (
-      <path
-        d="M-7,-9 h9 l5,5 v13 h-14 z M2,-9 v5 h5 M-4,2 h8 M-4,6 h8"
-        fill="none"
-        stroke={tint}
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    ),
-    grid: (
-      <path
-        d="M-8,-8 h7 v7 h-7 z M1,-8 h7 v7 h-7 z M-8,1 h7 v7 h-7 z M1,1 h7 v7 h-7 z"
-        fill="none"
-        stroke={tint}
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    ),
-  };
-  return (
-    <g transform={`translate(${x} ${y})`}>
-      <rect x="-24" y="-24" width="48" height="48" rx="14" fill="var(--bg-panel)" stroke="var(--line)" strokeWidth="1.5" />
-      <rect x="-24" y="-24" width="48" height="48" rx="14" fill={`color-mix(in srgb, ${tint} 8%, transparent)`} />
-      <g>{glyphs[glyph]}</g>
-    </g>
-  );
-}
-
-/**
- * Isometric "agents platform" illustration — a raised agent tile on a soft iso slab,
- * surrounded by floating tool tiles wired to it. Pure inline SVG, fully theme-aware
- * (every fill routes through CSS tokens), so it reads clean on both light and dark.
- */
-function HeroArt() {
-  return (
-    <svg
-      viewBox="0 0 480 420"
-      className="h-full w-full"
-      role="img"
-      aria-label="AI agents connected across your business tools"
-    >
-      <defs>
-        <linearGradient id="hero-agent" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent-bright)" />
-          <stop offset="100%" stopColor="var(--accent)" />
-        </linearGradient>
-        <linearGradient id="hero-slab" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="color-mix(in srgb, var(--accent) 20%, var(--bg-panel))" />
-          <stop offset="100%" stopColor="color-mix(in srgb, var(--accent) 6%, var(--bg-panel))" />
-        </linearGradient>
-        <radialGradient id="hero-glow" cx="50%" cy="42%" r="60%">
-          <stop offset="0%" stopColor="color-mix(in srgb, var(--accent) 30%, transparent)" />
-          <stop offset="100%" stopColor="transparent" />
-        </radialGradient>
-      </defs>
-
-      {/* ambient glow */}
-      <ellipse cx="248" cy="210" rx="220" ry="180" fill="url(#hero-glow)" opacity="0.7" />
-
-      {/* isometric base slab */}
-      <g>
-        <polygon points="240,300 430,210 240,120 50,210" fill="url(#hero-slab)" />
-        <polygon
-          points="50,210 240,300 240,330 50,240"
-          fill="color-mix(in srgb, var(--accent) 22%, var(--bg))"
-          opacity="0.55"
-        />
-        <polygon
-          points="430,210 240,300 240,330 430,240"
-          fill="color-mix(in srgb, var(--accent) 12%, var(--bg))"
-          opacity="0.45"
-        />
-        <polygon
-          points="240,300 430,210 240,120 50,210"
-          fill="none"
-          stroke="color-mix(in srgb, var(--accent) 40%, transparent)"
-          strokeWidth="1.5"
-        />
-      </g>
-
-      {/* connector lines from hub to tiles */}
-      <g
-        stroke="color-mix(in srgb, var(--accent) 45%, transparent)"
-        strokeWidth="1.5"
-        strokeDasharray="3 5"
-        fill="none"
-      >
-        <path d="M240,196 L120,132" />
-        <path d="M240,196 L372,140" />
-        <path d="M240,196 L118,250" />
-        <path d="M240,196 L378,246" />
-      </g>
-
-      {/* floating tool tiles */}
-      <FloatTile x={98} y={110} tint="var(--biz)" glyph="mail" />
-      <FloatTile x={356} y={118} tint="var(--accent)" glyph="chat" />
-      <FloatTile x={100} y={236} tint="var(--warn)" glyph="doc" />
-      <FloatTile x={358} y={228} tint="var(--biz)" glyph="grid" />
-
-      {/* central raised agent tile */}
-      <g>
-        <polygon
-          points="240,196 300,161 240,126 180,161"
-          fill="color-mix(in srgb, var(--accent) 30%, var(--bg))"
-          opacity="0.6"
-        />
-        <rect x="196" y="96" width="88" height="88" rx="20" fill="url(#hero-agent)" />
-        <rect
-          x="196"
-          y="96"
-          width="88"
-          height="88"
-          rx="20"
-          fill="none"
-          stroke="color-mix(in srgb, #ffffff 35%, transparent)"
-          strokeWidth="1.5"
-        />
-        {/* robot face */}
-        <g>
-          <rect
-            x="216"
-            y="122"
-            width="48"
-            height="34"
-            rx="10"
-            fill="color-mix(in srgb, var(--accent-ink) 92%, transparent)"
-            opacity="0.16"
-          />
-          <circle cx="228" cy="139" r="5.5" fill="#ffffff" />
-          <circle cx="252" cy="139" r="5.5" fill="#ffffff" />
-          <circle cx="228" cy="139" r="2.4" fill="var(--accent-ink)" />
-          <circle cx="252" cy="139" r="2.4" fill="var(--accent-ink)" />
-          <rect x="230" y="106" width="20" height="6" rx="3" fill="#ffffff" opacity="0.9" />
-          <circle cx="240" cy="101" r="3.4" fill="#ffffff" />
-        </g>
-      </g>
     </svg>
   );
 }
@@ -268,9 +111,27 @@ export function MarketplaceHero({
           </div>
         </div>
 
-        {/* Right — illustration (hidden on small screens) */}
-        <div className="biz-hero-art relative hidden aspect-[6/5] w-full max-w-[520px] justify-self-end lg:block">
-          <HeroArt />
+        {/* Right — 3D AI Agent Hero illustration (hidden on small screens) */}
+        <div className="biz-hero-art relative hidden aspect-square w-full max-w-[460px] items-center justify-center justify-self-end lg:flex">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-4 rounded-full opacity-45 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in srgb, var(--accent) 32%, transparent) 0%, color-mix(in srgb, var(--biz) 18%, transparent) 45%, transparent 70%)",
+            }}
+          />
+          <div className="hero-3d-asset relative aspect-square w-full max-w-[430px] overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent shadow-[0_24px_54px_-20px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.12)] backdrop-blur-sm">
+            <Image
+              src="/img/hero-agent-3d.webp"
+              alt="Autonomous 3D AI Agent platform connected across your business tools"
+              width={880}
+              height={880}
+              priority
+              sizes="(max-width: 1024px) 100vw, 430px"
+              className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+            />
+          </div>
         </div>
       </div>
     </section>

@@ -855,24 +855,25 @@ export function CatalogGrid({
                   <div className="flex items-start gap-3.5">
                     <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
                     <div className="min-w-0 flex-1 pr-7">
-                      <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
+                      <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent-bright)]">
                         {item.name}
                       </h3>
                       <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
                         <span>{item.marketplaceCategory}</span>
                         {hasWorkflow ? (
-                          <span className="rounded-md bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
+                          <span className="inline-flex items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_24%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)]">
                             {t("catalog.multiStep")}
                           </span>
                         ) : null}
                         {item.requiresConnectors?.length ? (
                           <span
-                            className="rounded-md bg-[color-mix(in_srgb,var(--warn)_16%,transparent)] px-1.5 py-0.5 text-[11px] font-semibold text-[var(--warn)]"
+                            className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--warn)_24%,transparent)] bg-[color-mix(in_srgb,var(--warn)_12%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--warn)]"
                             title={`Connect ${item.requiresConnectors
                               .map(connectorLabel)
                               .join(", ")} to take live actions`}
                           >
-                            Needs setup
+                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--warn)] opacity-85" aria-hidden />
+                            <span>Needs setup</span>
                           </span>
                         ) : null}
                         {activePack && packs.includes(activePack) ? (
@@ -882,26 +883,26 @@ export function CatalogGrid({
                     </div>
                   </div>
 
-                  <p className="mt-3 line-clamp-2 text-[13px] leading-relaxed text-[var(--card-body)]">
+                  <p className="mt-3 line-clamp-2 text-[13.5px] leading-relaxed text-[var(--card-body)]">
                     {blurb}
                   </p>
                   {/* Channel badges are shown only when a specific market is selected; hidden in the default "All markets" view. */}
                   {market !== "all" ? <ChannelBadges channels={item.channels} /> : null}
 
-                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
+                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-[color-mix(in_srgb,var(--line)_70%,transparent)] pt-4">
                     <button
                       type="button"
-                      className="text-sm font-semibold text-[var(--muted)] transition hover:text-[var(--accent-bright)] hover:underline"
+                      className="text-xs font-semibold text-[var(--muted)] transition-colors hover:text-[var(--text)]"
                       onClick={() => setDetail(item)}
                     >
                       {t("catalog.learnMore")}
                     </button>
                     <Link
                       href={gatedSetupHref(href, agentsOnboarded)}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-bright)] transition group-hover:gap-2"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-3 py-1.5 text-xs font-semibold text-[var(--accent-bright)] transition-all hover:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] hover:bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] group-hover:shadow-[0_0_14px_-3px_color-mix(in_srgb,var(--accent)_28%,transparent)]"
                     >
-                      {t("catalog.rentSetup")}
-                      <span aria-hidden>&#8594;</span>
+                      <span>{t("catalog.rentSetup")}</span>
+                      <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5">&#8594;</span>
                     </Link>
                   </div>
                 </div>
