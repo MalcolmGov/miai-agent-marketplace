@@ -48,6 +48,10 @@ const jobs = [
     html: "myinstantai-info-request.html",
     pdf: "MyInstantAI-x-MoveDigital-Production-Cutover-Info-Request.pdf",
   },
+  {
+    html: "full-codebase-audit.html",
+    pdf: "MyInstantAI-Codebase-Architecture-and-Complexity-Audit.pdf",
+  },
 ];
 
 if (!existsSync(chrome)) {
