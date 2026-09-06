@@ -33,7 +33,7 @@ html[data-theme="dark"] {
     "Hiragino Sans", sans-serif;
   --font-mono-stack: var(--font-mono), ui-monospace, monospace;
   --radius-panel: 16px;
-  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -28px rgba(0, 0, 0, 0.75);
+  --shadow-panel: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Optional cool mid-light — opt-in via toggle; dark remains default */
@@ -269,13 +269,15 @@ button:focus-visible {
 .panel {
   background: linear-gradient(
     165deg,
-    color-mix(in srgb, var(--bg-panel) 96%, #fff 4%) 0%,
+    color-mix(in srgb, var(--bg-panel) 92%, #fff 8%) 0%,
     var(--bg-panel) 45%,
-    color-mix(in srgb, var(--bg-elev) 90%, transparent) 100%
+    color-mix(in srgb, var(--bg-elev) 92%, #000 8%) 100%
   );
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--line) 85%, #fff 15%);
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Agent Studio sandbox chat — clear customer vs agent turns */
@@ -456,17 +458,17 @@ html[data-theme="light"] .studio-chat-bubble-agent {
 }
 
 .panel-interactive:hover {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line-strong));
   background: linear-gradient(
     165deg,
-    var(--bg-panel-hover) 0%,
-    color-mix(in srgb, var(--bg-panel) 80%, #1a3040) 100%
+    color-mix(in srgb, var(--bg-panel-hover) 88%, #fff 12%) 0%,
+    color-mix(in srgb, var(--bg-panel) 85%, var(--accent) 15%) 100%
   );
   transform: translateY(-3px);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05) inset,
-    0 22px 48px -28px rgba(0, 0, 0, 0.85),
-    0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    0 20px 40px -15px rgba(0, 0, 0, 0.75),
+    0 0 24px -4px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 .input {
@@ -1196,7 +1198,8 @@ html[data-theme="light"] .how-step-icon {
 
 /* Hero illustration — gentle float */
 @media (prefers-reduced-motion: no-preference) {
-  .biz-hero-art svg {
+  .biz-hero-art svg,
+  .biz-hero-art .hero-3d-asset {
     animation: bizFloat 6s ease-in-out infinite;
   }
 }
@@ -1354,19 +1357,28 @@ html[data-theme="light"] .how-step-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   color: var(--muted-dim);
-  background: transparent;
+  background: color-mix(in srgb, var(--bg-elev) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   transition:
-    color 0.15s ease,
-    background 0.15s ease;
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 .biz-bookmark:hover {
   color: var(--accent-bright);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg-elev));
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: scale(1.05);
 }
 .biz-bookmark-on {
   color: var(--accent-bright);
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg-elev));
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }

@@ -4,48 +4,56 @@ import { useTheme } from "@/lib/theme";
 
 /** Colored visual icons for catalogue cards — keyed by family id, with category fallback. */
 
-type IconTone = { bg: string; fg: string; ring: string };
+type IconTone = { bg: string; fg: string; ring: string; glow?: string };
 
 const TONES_DARK: Record<string, IconTone> = {
   teal: {
-    bg: "linear-gradient(145deg,#1a4a45 0%,#0d2a28 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(61,214,198,0.22) 0%, rgba(20,40,48,0.85) 60%, rgba(13,26,32,0.95) 100%)",
     fg: "#6aefe0",
     ring: "rgba(61,214,198,0.45)",
+    glow: "0 0 16px -2px rgba(61,214,198,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   mint: {
-    bg: "linear-gradient(145deg,#164a3a 0%,#0c261e 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(52,211,153,0.22) 0%, rgba(18,44,36,0.85) 60%, rgba(12,28,24,0.95) 100%)",
     fg: "#5eead4",
     ring: "rgba(52,211,153,0.45)",
+    glow: "0 0 16px -2px rgba(52,211,153,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   sky: {
-    bg: "linear-gradient(145deg,#163a52 0%,#0c1e2c 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(56,189,248,0.22) 0%, rgba(18,38,54,0.85) 60%, rgba(12,24,36,0.95) 100%)",
     fg: "#7dd3fc",
     ring: "rgba(56,189,248,0.45)",
+    glow: "0 0 16px -2px rgba(56,189,248,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   amber: {
-    bg: "linear-gradient(145deg,#4a3514 0%,#261a0a 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(251,191,36,0.22) 0%, rgba(50,34,14,0.85) 60%, rgba(28,18,8,0.95) 100%)",
     fg: "#fbbf24",
     ring: "rgba(251,191,36,0.45)",
+    glow: "0 0 16px -2px rgba(251,191,36,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   coral: {
-    bg: "linear-gradient(145deg,#4a2418 0%,#26120c 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(251,146,60,0.22) 0%, rgba(52,26,16,0.85) 60%, rgba(30,14,10,0.95) 100%)",
     fg: "#fb923c",
     ring: "rgba(251,146,60,0.45)",
+    glow: "0 0 16px -2px rgba(251,146,60,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   slate: {
-    bg: "linear-gradient(145deg,#2a3340 0%,#151a22 100%)",
-    fg: "#94a3b8",
-    ring: "rgba(148,163,184,0.4)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(148,163,184,0.2) 0%, rgba(32,40,54,0.85) 60%, rgba(18,24,34,0.95) 100%)",
+    fg: "#cbd5e1",
+    ring: "rgba(148,163,184,0.35)",
+    glow: "0 0 16px -2px rgba(148,163,184,0.2), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   rose: {
-    bg: "linear-gradient(145deg,#4a1e2e 0%,#261018 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(244,114,182,0.22) 0%, rgba(52,22,34,0.85) 60%, rgba(30,12,20,0.95) 100%)",
     fg: "#f9a8d4",
-    ring: "rgba(244,114,182,0.4)",
+    ring: "rgba(244,114,182,0.45)",
+    glow: "0 0 16px -2px rgba(244,114,182,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
   indigo: {
-    bg: "linear-gradient(145deg,#2a2a4a 0%,#161628 100%)",
+    bg: "radial-gradient(circle at 35% 30%, rgba(129,140,248,0.24) 0%, rgba(30,30,58,0.85) 60%, rgba(18,18,36,0.95) 100%)",
     fg: "#a5b4fc",
-    ring: "rgba(129,140,248,0.4)",
+    ring: "rgba(129,140,248,0.45)",
+    glow: "0 0 16px -2px rgba(129,140,248,0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
   },
 };
 
@@ -617,11 +625,11 @@ export function AgentIcon({
   return (
     <span
       aria-hidden
-      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${className}`}
+      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-[1.04] ${className}`}
       style={{
         background: t.bg,
         color: t.fg,
-        boxShadow: `inset 0 0 0 1px ${t.ring}`,
+        boxShadow: t.glow ? `${t.glow}, inset 0 0 0 1px ${t.ring}` : `inset 0 0 0 1px ${t.ring}`,
       }}
     >
       <Glyph kind={kind} />
