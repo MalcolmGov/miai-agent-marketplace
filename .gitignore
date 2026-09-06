@@ -24,3 +24,5 @@ data/rentals.json
 docs/branded-pdfs/output/preview-*.png
 docs/branded-pdfs/output/qa-*.png
 data/workspace-members.json
+
+.claude/
