@@ -6,6 +6,7 @@ targetScope = 'resourceGroup'
 param location string = resourceGroup().location
 
 @description('Name prefix for resources')
+@minLength(3)
 param namePrefix string = 'miai-agents'
 
 @description('Container image (ACR or public)')
@@ -548,7 +549,6 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
   dependsOn: [
     postgresFirewallAzure
     postgresDb
-    fileShare
     kvRoleUami
     kvSecretOauth
     kvSecretOauthState
