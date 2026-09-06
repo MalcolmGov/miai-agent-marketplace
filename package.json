@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "pnpm --filter @miai/web dev",
     "build": "pnpm -r build",
+    "start": "node apps/web/server.js",
     "build:packages": "pnpm -r --filter './packages/*' build",
     "build:web": "pnpm build:packages && pnpm --filter @miai/web build",
     "start:web": "sh scripts/start-web.sh",
