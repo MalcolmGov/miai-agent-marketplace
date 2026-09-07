@@ -31,6 +31,19 @@ type NavItem = {
 
 type NavGroup = { titleKey?: MessageKey; title?: string; id: string; items: NavItem[] };
 
+function IconAtomLogo({ className = "h-6 w-6" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#2ec4b6" strokeWidth="1.5">
+        <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)" />
+        <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(90 12 12)" />
+        <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(150 12 12)" />
+      </g>
+      <path d="M12 9.2 Q12 12 14.8 12 Q12 12 12 14.8 Q12 12 9.2 12 Q12 12 12 9.2 Z" fill="#2ec4b6" />
+    </svg>
+  );
+}
+
 function IconGear() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -39,19 +52,25 @@ function IconGear() {
     </svg>
   );
 }
+
 function IconGift() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8ZM3 8h18v3H3V8ZM12 8v12" strokeLinejoin="round" />
-      <path d="M12 8S9.5 4.5 7.5 5.5 8.5 8 12 8Zm0 0s2.5-3.5 4.5-2.5S15.5 8 12 8Z" strokeLinejoin="round" />
+      <polyline points="20 12 20 22 4 22 4 12" />
+      <rect x="2" y="7" width="20" height="5" />
+      <line x1="12" y1="22" x2="12" y2="7" />
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
     </svg>
   );
 }
+
 function IconTokens() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <ellipse cx="12" cy="6.5" rx="7" ry="3" />
-      <path d="M5 6.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5M5 11.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5" />
+      <path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+      <rect x="7" y="7" width="14" height="10" rx="2" />
+      <circle cx="16.5" cy="12" r="1" fill="currentColor" />
     </svg>
   );
 }
@@ -59,7 +78,18 @@ function IconTokens() {
 function IconHome() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" strokeLinejoin="round" />
+      <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" />
+    </svg>
+  );
+}
+
+function IconAsk() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -87,8 +117,8 @@ function IconSearch() {
 function IconHistory() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M4 12a8 8 0 1 0 2.3-5.6" strokeLinecap="round" />
-      <path d="M4 5v4h4M12 8v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="8" />
+      <polyline points="12 7 12 12 15 14" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -143,6 +173,29 @@ function IconSupport() {
   );
 }
 
+function IconHelp() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="4" />
+      <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" strokeLinecap="round" />
+      <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" strokeLinecap="round" />
+      <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" strokeLinecap="round" />
+      <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconDots() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+      <circle cx="5" cy="12" r="1.5" />
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="19" cy="12" r="1.5" />
+    </svg>
+  );
+}
+
 function IconAdmin() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -163,8 +216,8 @@ function IconShield() {
 function IconLearn() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M4 7.5 12 4l8 3.5v8L12 19l-8-3.5v-8Z" strokeLinejoin="round" />
-      <path d="M12 19V11" strokeLinecap="round" />
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" strokeLinejoin="round" />
+      <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" />
     </svg>
   );
 }
@@ -183,7 +236,7 @@ const GROUPS: NavGroup[] = [
     titleKey: "nav.core",
     items: [
       { id: "home", href: "/", labelKey: "nav.home", icon: <IconHome />, exact: true },
-      { id: "ask", href: "/ask", labelKey: "nav.askAi", icon: <IconSpark /> },
+      { id: "ask", href: "/ask", labelKey: "nav.askAi", icon: <IconAsk /> },
       {
         id: "ai-agents-hub",
         href: "/agents",
@@ -237,6 +290,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { id: "consultants", href: "/consultants", label: "Consultants", icon: <IconSpark /> },
       { id: "settings", href: "/settings", label: "Settings", icon: <IconGear /> },
+      { id: "help", href: "/support", label: "Help & Support", icon: <IconHelp /> },
     ],
   },
 ];
@@ -274,6 +328,7 @@ export function Sidebar({
     pathname === "/personal" || pathname.startsWith("/personal/") ? "consumer" : "business",
   );
   const [showAdmin, setShowAdmin] = useState(false);
+  const [username, setUsername] = useState<string>("malcolmgov24");
   const [, setConsumerAppUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -294,6 +349,11 @@ export function Sidebar({
         const roles: string[] = data.me?.roles ?? [];
         const isOp = Boolean(data.me?.isOperator) || platformOperator(roles);
         setShowAdmin(isOp);
+        if (data.me?.username) {
+          setUsername(data.me.username);
+        } else if (data.me?.userId && !data.me.userId.startsWith("user_")) {
+          setUsername(data.me.userId);
+        }
         let stored: string | null = null;
         try {
           stored = sessionStorage.getItem("miai.shellMode");
@@ -389,22 +449,21 @@ export function Sidebar({
         <div className="flex h-full flex-col">
           <div className="border-b border-[var(--line)] px-4 pb-4 pt-5">
             <div className="flex items-center justify-between">
-              <Link href={logoHref} className="group flex items-center gap-2.5" onClick={onClose}>
-                <span className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-[color-mix(in_srgb,var(--accent)_45%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-elev))] shadow-[0_0_16px_-2px_color-mix(in_srgb,var(--accent)_35%,transparent)] transition-all duration-300 group-hover:shadow-[0_0_22px_0_color-mix(in_srgb,var(--accent)_55%,transparent)]">
-                  <span className="text-xs font-bold tracking-tight text-[var(--accent-bright)]">M</span>
-                  <span className="pulse-dot absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
-                </span>
-                <span className="text-[0.95rem] font-semibold tracking-tight text-[var(--text)]">
-                  myinstant<span className="text-[var(--accent-bright)]">ai</span>
+              <Link href={logoHref} className="group flex items-center gap-2" onClick={onClose}>
+                <IconAtomLogo className="h-6 w-6 shrink-0 transition-transform duration-300 group-hover:scale-105" />
+                <span className="text-[1.1rem] font-bold italic tracking-tight text-[var(--accent)]">
+                  myinstantai
                 </span>
               </Link>
               <button
                 type="button"
-                className="btn btn-ghost px-2 py-1 lg:hidden"
+                className="rounded-md p-1 text-[var(--muted-dim)] transition-colors hover:bg-[var(--bg-elev)] hover:text-[var(--text)]"
                 onClick={onClose}
-                aria-label="Close navigation"
+                aria-label="Collapse navigation"
               >
-                ✕
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
+                  <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </button>
             </div>
 
@@ -427,26 +486,28 @@ export function Sidebar({
               </button>
             </div>
 
-            <button type="button" onClick={onTopUp} className="token-card group mt-4 w-full text-left">
+            <button
+              type="button"
+              onClick={onTopUp}
+              className="token-card group mt-4 w-full text-left cursor-pointer transition-all duration-200"
+              title={t("sidebar.tapToTopUp")}
+              data-testid="sidebar-token-card"
+            >
               <div className="card-specular-rim" />
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                <span className="text-[11px] font-medium text-[var(--muted)]">
                   {t("sidebar.tokenBalance")}
                 </span>
-                <span className="chip chip-live !py-0.5 !text-[9px]">
-                  <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                <span className="rounded-full bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[var(--accent-bright)] border border-[color-mix(in_srgb,var(--accent)_30%,transparent)]">
                   {t("sidebar.prepaid")}
                 </span>
               </div>
-              <div className="mt-2 flex items-baseline justify-between">
-                <p className="font-mono text-2xl font-semibold tracking-tight tabular-nums text-[var(--text)]">
+              <div className="mt-1.5 flex items-baseline justify-between">
+                <p className="font-mono text-2xl font-bold tracking-tight tabular-nums text-white">
                   {tokens === null ? "…" : tokens.toLocaleString()}
                 </p>
-                <span className="text-xs font-semibold text-[var(--accent-bright)] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  Top up →
-                </span>
               </div>
-              <p className="mt-1 text-[11px] text-[var(--muted-dim)]">{t("sidebar.tapToTopUp")}</p>
+              <div className="mt-2.5 h-1 w-full rounded-full bg-[var(--accent)] shadow-[0_0_10px_color-mix(in_srgb,var(--accent)_80%,transparent)]" />
             </button>
           </div>
 
@@ -510,21 +571,20 @@ export function Sidebar({
               data-testid="sidebar-account"
             >
               <div className="relative flex-shrink-0">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-bright)] to-[var(--accent-dim)] text-xs font-bold text-[var(--accent-ink)] shadow-[0_2px_8px_-2px_color-mix(in_srgb,var(--accent)_60%,transparent)]">
-                  M
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent)] text-sm font-bold text-[var(--accent-ink)] shadow-[0_2px_8px_-2px_color-mix(in_srgb,var(--accent)_60%,transparent)]">
+                  {(username[0] || "M").toUpperCase()}
                 </span>
-                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border-2 border-[var(--bg-panel)] bg-[var(--live)] shadow-[0_0_6px_var(--live)]" />
               </div>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-[13px] font-semibold text-[var(--text)] group-hover:text-[var(--accent-bright)]">
-                  Your account
+                <span className="block truncate text-[13px] font-semibold text-white group-hover:text-[var(--accent-bright)]">
+                  {username}
                 </span>
                 <span className="block truncate text-[11px] font-medium text-[var(--muted)]">
                   {mode === "consumer" ? "Consumer plan" : "Workspaces plan"}
                 </span>
               </span>
-              <span className="text-xs text-[var(--muted-dim)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--text)]" aria-hidden>
-                &#8250;
+              <span className="p-1 text-[var(--muted-dim)] transition-colors group-hover:text-[var(--text)]" aria-hidden>
+                <IconDots />
               </span>
             </button>
           </div>
