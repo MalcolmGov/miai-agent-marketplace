@@ -195,6 +195,11 @@ export function ActionsPanel({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ agentId }),
       });
+      setTestStatus((prev) => {
+        const next = { ...prev };
+        delete next[connectorId];
+        return next;
+      });
       if (connectorId === "slack") {
         setSlackChannels([]);
         setSlackChannel("");
@@ -590,34 +595,33 @@ export function ActionsPanel({
           {/* Fixed action column — same width buttons, top-aligned */}
           {isOauth ? (
             <div className="flex shrink-0 flex-row flex-wrap gap-2 lg:w-[11.5rem] lg:flex-col lg:items-stretch">
-              <button
-                type="button"
-                className={!configured ? btnGhost : btnPrimary}
-                disabled={busy === c.id || !configured}
-                title={
-                  !configured
+              {!on ? (
+                <button
+                  type="button"
+                  className={!configured ? btnGhost : btnPrimary}
+                  disabled={busy === c.id || !configured}
+                  title={
+                    !configured
+                      ? operatorDetail
+                        ? t("actions.configureEnvFirst", {
+                            env: (oauth?.missingEnv ?? []).join(", "),
+                          })
+                        : t("actions.notAvailableSandbox")
+                      : undefined
+                  }
+                  onClick={() => startOAuth(c.id)}
+                >
+                  {!configured
                     ? operatorDetail
-                      ? t("actions.configureEnvFirst", {
-                          env: (oauth?.missingEnv ?? []).join(", "),
-                        })
-                      : t("actions.notAvailableSandbox")
-                    : undefined
-                }
-                onClick={() => startOAuth(c.id)}
-              >
-                {!configured
-                  ? operatorDetail
-                    ? "Set up env"
-                    : t("actions.unavailable")
-                  : on
-                    ? t("actions.reconnect")
+                      ? "Set up env"
+                      : t("actions.unavailable")
                     : t("actions.connectOAuth")}
-              </button>
-              {on ? (
+                </button>
+              ) : (
                 <>
                   <button
                     type="button"
-                    className="btn btn-ghost inline-flex h-9 min-w-[8.5rem] items-center justify-center gap-1.5 px-3 text-xs text-[var(--accent-bright)] hover:text-white"
+                    className="btn btn-ghost inline-flex h-9 min-w-[8.5rem] items-center justify-center gap-1.5 px-3 text-xs text-[var(--accent-bright)] hover:text-white border border-[var(--line)] hover:border-[var(--accent)]"
                     disabled={busy === `test-${c.id}`}
                     onClick={() => void testConnector(c.id)}
                     title="Send a live read-only ping to verify stored OAuth token"
@@ -627,15 +631,13 @@ export function ActionsPanel({
                   </button>
                   <button
                     type="button"
-                    className={btnGhost}
+                    className={`${btnGhost} text-rose-400 hover:text-rose-200 hover:border-rose-500/30`}
                     disabled={busy === c.id}
                     onClick={() => disconnect(c.id)}
                   >
                     {t("actions.disconnect")}
                   </button>
                 </>
-              ) : (
-                <span className="hidden h-9 lg:block" aria-hidden />
               )}
             </div>
           ) : null}
