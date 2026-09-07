@@ -91,16 +91,17 @@ async function hydrateFromFile(): Promise<void> {
 }
 
 async function hydrate(): Promise<void> {
-  const s = mem();
-  if (s.hydrated) return;
-  if (s.hydrating) return s.hydrating;
-  s.hydrating = (async () => {
-    const fromPg = await hydrateFromPostgres();
-    if (!fromPg) await hydrateFromFile();
-    s.hydrated = true;
-    s.hydrating = undefined;
-  })();
-  return s.hydrating;
+  const cache = mem();
+  if (cache.hydrated) return;
+  if (!cache.hydrating) {
+    cache.hydrating = (async () => {
+      const pgLoaded = await hydrateFromPostgres();
+      if (!pgLoaded) await hydrateFromFile();
+      cache.hydrated = true;
+      cache.hydrating = undefined;
+    })();
+  }
+  return cache.hydrating;
 }
 
 async function persistToFile(): Promise<void> {
