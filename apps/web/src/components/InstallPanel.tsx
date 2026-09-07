@@ -114,16 +114,29 @@ export function InstallPanel({
         {channel === "web" ? (
           <ol className="space-y-5">
             <Step n={1} title={t("install.webStep1Title")} body={t("install.webStep1Body")}>
-              <pre className="mt-3 overflow-x-auto rounded-xl bg-[#0d1219] p-3.5 text-[12px] leading-relaxed text-[var(--accent)]">
-                {snippet}
-              </pre>
+              <div className="mt-3 relative overflow-hidden rounded-xl border border-[var(--line)] bg-[#0a0f16]">
+                <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg-elev)]/60 px-4 py-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="pulse-dot h-2 w-2 rounded-full bg-[var(--accent)]" />
+                    <span className="font-mono text-[11px] text-[var(--muted)]">Website Embed Script (agent.js)</span>
+                  </div>
+                  <span className="rounded bg-[color-mix(in_srgb,var(--accent)_15%,transparent)] px-2 py-0.5 text-[10px] font-mono font-semibold text-[var(--accent-bright)]">
+                    🔒 SRI Hash Protected
+                  </span>
+                </div>
+                <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed font-mono text-[var(--accent-bright)]">
+                  {snippet}
+                </pre>
+              </div>
               <button
                 type="button"
-                className="btn btn-primary mt-3 text-sm"
+                className={`btn mt-3 text-sm font-semibold transition-all ${
+                  copied ? "!bg-emerald-400 !text-black shadow-lg" : "btn-primary"
+                }`}
                 disabled={!ready}
                 onClick={onCopySnippet}
               >
-                {copied ? t("studio.copied") : t("install.copyCode")}
+                {copied ? `✓ ${t("studio.copied")}` : t("install.copyCode")}
               </button>
             </Step>
             <Step n={2} title={t("install.lockHeading")} body={t("install.lockBody")}>

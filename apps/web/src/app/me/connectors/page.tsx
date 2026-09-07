@@ -165,7 +165,11 @@ export default function ConsumerConnectorsPage() {
       ) : null}
 
       {items === null ? (
-        <p className="text-sm text-[var(--muted)]">Loading…</p>
+        <div className="space-y-3" aria-busy="true">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="panel h-20 rounded-2xl" />
+          ))}
+        </div>
       ) : (
         <ul className="space-y-3">
           {items.map((item) => {
@@ -174,36 +178,44 @@ export default function ConsumerConnectorsPage() {
             return (
               <li
                 key={item.connector}
-                className="rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_40%,transparent)] p-4"
+                className={`panel relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all ${
+                  item.connected
+                    ? "border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] bg-[color-mix(in_srgb,var(--accent)_6%,var(--bg-panel))]"
+                    : "border-[var(--line)] bg-[var(--bg-panel)] hover:border-white/20"
+                }`}
               >
+                <div className="card-specular-rim" />
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex min-w-0 items-start gap-3">
-                    <span aria-hidden className="mt-0.5 leading-none">
-                      <ConnectorIcon connector={item.connector} size={22} />
+                  <div className="flex min-w-0 items-start gap-3.5">
+                    <span aria-hidden className="mt-0.5 shrink-0 rounded-xl bg-[var(--bg-elev)] p-2 leading-none border border-[var(--line)]">
+                      <ConnectorIcon connector={item.connector} size={24} />
                     </span>
                     <div className="min-w-0 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-semibold text-[var(--text)]">
+                        <span className="text-sm font-bold text-white">
                           {meta.name}
                         </span>
                         {item.connected ? (
-                          <span className="chip chip-live">Connected</span>
+                          <span className="chip chip-live !py-0.5 !text-[10px] font-semibold">
+                            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                            Connected
+                          </span>
                         ) : justConnected === item.connector ? (
-                          <span className="chip">Connecting…</span>
+                          <span className="chip !py-0.5 !text-[10px] text-amber-300">Connecting…</span>
                         ) : (
-                          <span className="chip opacity-70">Not connected</span>
+                          <span className="chip !py-0.5 !text-[10px] text-[var(--muted-dim)]">Not connected</span>
                         )}
                       </div>
                       <p className="text-xs leading-relaxed text-[var(--muted)]">{meta.desc}</p>
                     </div>
                   </div>
-                  <div className="shrink-0">
+                  <div className="shrink-0 pt-1 sm:pt-0">
                     {item.connected ? (
                       <button
                         type="button"
                         disabled={isBusy}
                         onClick={() => disconnect(item.connector)}
-                        className="btn btn-ghost inline-flex h-9 min-w-[7.5rem] items-center justify-center px-3 text-xs"
+                        className="btn btn-ghost inline-flex h-9 min-w-[7.5rem] items-center justify-center px-3 text-xs text-rose-400 hover:text-rose-200"
                       >
                         {isBusy ? "…" : "Disconnect"}
                       </button>

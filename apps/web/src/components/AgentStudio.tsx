@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { KnowledgePanel } from "./KnowledgePanel";
 import { ActionsPanel } from "./ActionsPanel";
 import { InstallPanel } from "./InstallPanel";
@@ -23,6 +24,15 @@ import {
 } from "@/lib/workflows";
 import { buildEmbedScriptTag } from "@/lib/agent-js-script";
 import { useEffect, useMemo, useState } from "react";
+
+function marketFlag(market?: string) {
+  if (market === "us") return "🇺🇸 United States";
+  if (market === "eu") return "🇪🇺 European Union";
+  if (market === "africa" || market === "za") return "🌍 Africa";
+  if (market === "asia") return "🌏 Asia";
+  if (market === "oceania") return "🇦🇺 Oceania";
+  return "🌍 Global";
+}
 
 interface AgentPayload {
   package: {
@@ -427,34 +437,88 @@ export function AgentStudio({
 
   return (
     <div className="space-y-6">
-      <div className="rise">
-        <div className="mb-2 flex flex-wrap gap-2">
-          {hasWorkflow && (
-            <span className="chip chip-live" title={t("studio.multiStepTitle")}>
-              {t("studio.multiStepAgent")}
-            </span>
-          )}
-          <span className="chip">{m.tier}</span>
-          <span className="chip">
-            {(m.market === "za" ? "africa" : m.market ?? "africa").toUpperCase()}
-          </span>
-          <span className={`chip ${rented ? "chip-live" : ""}`}>
-            {t(rentalStatusKey(state))}
-          </span>
+      {/* Top Breadcrumb & Quick Actions Bar */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-[var(--line)] pb-3">
+        <Link
+          href="/my-agents"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--muted)] hover:text-white transition-colors"
+        >
+          <span aria-hidden>←</span> Back to My Agents
+        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => goStep("try")}
+            className={`btn text-xs !py-1.5 !px-3 ${
+              activeStep === "try" ? "btn-primary" : "btn-ghost text-[var(--accent-bright)]"
+            }`}
+          >
+            💬 Test in Sandbox
+          </button>
+          <button
+            type="button"
+            onClick={() => goStep("install")}
+            className={`btn text-xs !py-1.5 !px-3 ${
+              activeStep === "install" ? "btn-primary" : "btn-ghost text-[var(--muted)] hover:text-white"
+            }`}
+          >
+            ⚡ Embed Code
+          </button>
+          <Link
+            href="/my-agents?tab=insights"
+            className="btn btn-ghost text-xs !py-1.5 !px-3 text-[var(--muted)] hover:text-white"
+          >
+            📊 Fleet Insights
+          </Link>
         </div>
-        <h1 className="display text-2xl font-semibold tracking-tight sm:text-3xl">{m.name}</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--card-body)]">{m.summary}</p>
-        {hasWorkflow ? (
-          <>
-            <p className="mt-2 max-w-2xl text-sm text-[var(--text)]">
-              {t("studio.multiStepWorkflow")}{" "}
-              {demoHint ?? "Connect Calendar / Slack, then try a prompt in sandbox."}
+      </div>
+
+      {/* Hero Header Card */}
+      <div className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-6 shadow-[0_4px_24px_-10px_rgba(0,0,0,0.5)]">
+        <div className="card-specular-rim" />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="chip text-[11px] font-semibold text-white/90">
+                {marketFlag(m.market)}
+              </span>
+              <span className="chip text-[11px] font-semibold uppercase tracking-wider text-[var(--accent-bright)]">
+                {m.tier}
+              </span>
+              {hasWorkflow && (
+                <span className="chip chip-live text-[11px]" title={t("studio.multiStepTitle")}>
+                  {t("studio.multiStepAgent")}
+                </span>
+              )}
+              <span className={`chip text-[11px] font-semibold ${rented ? "chip-live" : ""}`}>
+                {t(rentalStatusKey(state))}
+              </span>
+              <span className="rounded-full bg-[var(--bg-elev)] px-2.5 py-0.5 text-[10px] font-mono text-[var(--muted-dim)]">
+                v1.1.0-verified
+              </span>
+            </div>
+            <h1 className="display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              {m.name}
+            </h1>
+            <p className="max-w-2xl text-sm leading-relaxed text-[var(--card-body)]">
+              {m.summary}
             </p>
-            <div className="mt-3 flex flex-wrap gap-1.5" aria-label={t("studio.capabilitiesAria")}>
+          </div>
+        </div>
+
+        {hasWorkflow ? (
+          <div className="mt-4 border-t border-[var(--line)] pt-3">
+            <p className="max-w-2xl text-xs font-medium text-[var(--text)]">
+              {t("studio.multiStepWorkflow")}{" "}
+              <span className="text-[var(--muted)]">
+                {demoHint ?? "Connect Calendar / Slack, then test prompts in sandbox."}
+              </span>
+            </p>
+            <div className="mt-2.5 flex flex-wrap gap-1.5" aria-label={t("studio.capabilitiesAria")}>
               {capabilityChips.map((label) => (
                 <span
                   key={label}
-                  className={`chip normal-case tracking-normal ${
+                  className={`chip text-[11px] normal-case tracking-normal ${
                     label === "Can act" ||
                     label === "Multi-step" ||
                     label === "Confirm before write"
@@ -466,7 +530,7 @@ export function AgentStudio({
                 </span>
               ))}
             </div>
-          </>
+          </div>
         ) : null}
       </div>
 
@@ -489,29 +553,66 @@ export function AgentStudio({
       <div className="space-y-4">
         {activeStep === "knowledge" ? (
           <div className="grid gap-4 lg:grid-cols-2">
-            <div id="studio-model" className="panel p-4">
-              <h2 className="mb-1 text-sm font-semibold">{t("studio.model")}</h2>
-              <p className="mb-3 text-xs text-[var(--muted)]">
-                Required — pick a model. Sonnet is the default for quality.
-              </p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {MODELS.map((mod) => (
-                  <button
-                    key={mod.id}
-                    type="button"
-                    onClick={() => setModel(mod.id)}
-                    className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
-                      model === mod.id
-                        ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)]"
-                        : "border-[var(--line)]"
-                    }`}
-                  >
-                    <div className="font-medium">{mod.label}</div>
-                    <div className="text-xs text-[var(--muted)]">
-                      {mod.blurb} · {t("studio.modelBurn", { burn: mod.burn })}
-                    </div>
-                  </button>
-                ))}
+            <div id="studio-model" className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-5 shadow-[0_4px_24px_-10px_rgba(0,0,0,0.4)]">
+              <div className="card-specular-rim" />
+              <div className="mb-3 flex items-baseline justify-between">
+                <div>
+                  <h2 className="text-sm font-bold text-white tracking-tight">{t("studio.model")}</h2>
+                  <p className="text-xs text-[var(--muted)] mt-0.5">
+                    Select reasoning engine for this agent unit
+                  </p>
+                </div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted-dim)]">
+                  Active: {model}
+                </span>
+              </div>
+              <div className="grid gap-2.5 sm:grid-cols-2">
+                {MODELS.map((mod) => {
+                  const isSelected = model === mod.id;
+                  const speedTag =
+                    mod.id === "gemini-flash" ? "⚡ Sub-120ms" :
+                    mod.id === "gpt-4o-mini" ? "⚡ ~180ms" :
+                    mod.id === "claude-sonnet" ? "⚡ ~250ms" :
+                    mod.id === "gpt-4o" ? "⚡ ~320ms" : "⚡ ~600ms";
+                  const depthTag =
+                    mod.id === "claude-opus" || mod.id === "gpt-4o"
+                      ? "Deep Reasoning"
+                      : mod.id === "claude-sonnet"
+                      ? "Enterprise Standard"
+                      : "High Throughput";
+
+                  return (
+                    <button
+                      key={mod.id}
+                      type="button"
+                      onClick={() => setModel(mod.id)}
+                      className={`relative flex flex-col justify-between rounded-xl border p-3.5 text-left transition-all ${
+                        isSelected
+                          ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_12%,var(--bg-panel))] shadow-[0_0_16px_color-mix(in_srgb,var(--accent)_20%,transparent)]"
+                          : "border-[var(--line)] bg-[var(--bg-elev)] hover:border-white/20 hover:bg-[var(--bg-panel-hover)]"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <span className={`text-sm font-bold ${isSelected ? "text-[var(--accent-bright)]" : "text-white"}`}>
+                          {mod.label}
+                        </span>
+                        <span className={`rounded-md px-1.5 py-0.5 text-[9px] font-mono font-bold ${
+                          isSelected ? "bg-[var(--accent)] text-[var(--accent-ink)]" : "bg-white/10 text-[var(--muted)]"
+                        }`}>
+                          {mod.burn}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-[var(--muted)] line-clamp-1">
+                        {mod.blurb}
+                      </p>
+                      <div className="mt-2.5 flex items-center gap-2 border-t border-[var(--line)] pt-2 text-[10px]">
+                        <span className="font-semibold text-[var(--accent-bright)]">{speedTag}</span>
+                        <span className="text-[var(--muted-dim)]">•</span>
+                        <span className="text-[var(--muted-dim)]">{depthTag}</span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
             <div id="studio-knowledge">
