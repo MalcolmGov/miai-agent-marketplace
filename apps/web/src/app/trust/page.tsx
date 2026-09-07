@@ -330,12 +330,13 @@ export default function TrustPage() {
             guarantees.
           </p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {REGION_PACKS.map((r) => (
-            <article key={r.id} className="panel p-4">
+            <article key={r.id} className="panel relative overflow-hidden p-4">
+              <div className="card-specular-rim" />
               <div className="flex items-center justify-between gap-2">
                 <h3 className="text-sm font-semibold">{r.label}</h3>
-                <span className="chip text-[10px]">{r.id.toUpperCase()}</span>
+                <span className="chip text-[10px] uppercase font-mono">{r.id}</span>
               </div>
               <div className="mt-2 flex flex-wrap gap-1">
                 {r.frameworks.map((f) => (
@@ -344,7 +345,12 @@ export default function TrustPage() {
                   </span>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-[var(--muted)]">{r.agentLayer}</p>
+              <div className="mt-2.5 flex items-center gap-1.5 text-[11px] text-[var(--muted-dim)]">
+                <span className="font-semibold text-rose-400/90">🚨 {r.emergency}</span>
+                <span>•</span>
+                <span>{r.channels.join(", ")}</span>
+              </div>
+              <p className="mt-2 text-xs leading-relaxed text-[var(--muted)]">{r.agentLayer}</p>
             </article>
           ))}
         </div>
