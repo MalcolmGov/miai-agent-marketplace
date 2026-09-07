@@ -5,6 +5,14 @@ import { useT } from "@/lib/locale";
 
 type Channel = "web" | "app";
 
+const PLATFORMS = [
+  { id: "html", label: "Custom HTML / React", icon: "🌐" },
+  { id: "wordpress", label: "WordPress", icon: "Ⓜ️" },
+  { id: "shopify", label: "Shopify", icon: "🛍️" },
+  { id: "webflow", label: "Webflow", icon: "🔷" },
+  { id: "wix", label: "Wix / Squarespace", icon: "⚡" },
+] as const;
+
 export function InstallPanel({
   ready,
   publicKey,
@@ -53,6 +61,7 @@ export function InstallPanel({
 }) {
   const t = useT();
   const [channel, setChannel] = useState<Channel>("web");
+  const [platform, setPlatform] = useState<"html" | "wordpress" | "shopify" | "webflow" | "wix">("html");
   const locked = approvedDomains.length > 0;
   const domainsKey = approvedDomains.join(", ");
   const [domainsInput, setDomainsInput] = useState(domainsKey);
@@ -187,26 +196,102 @@ export function InstallPanel({
                 ) : null}
               </div>
             </Step>
-            <Step n={3} title={t("install.webStep2Title")} body={t("install.webStep2Body")}>
-              <details className="mt-3 group">
-                <summary className="cursor-pointer text-sm font-medium text-[var(--accent-bright)]">
-                  {t("install.whereToPaste")}
-                </summary>
-                <ul className="mt-2 space-y-2 border-l-2 border-[var(--line)] pl-3 text-sm text-[var(--muted)]">
-                  <li>
-                    <span className="font-medium text-[var(--text)]">WordPress</span> —{" "}
-                    {t("studio.embedWordPressBody")}
-                  </li>
-                  <li>
-                    <span className="font-medium text-[var(--text)]">Shopify</span> —{" "}
-                    {t("studio.embedShopifyBody")}
-                  </li>
-                  <li>
-                    <span className="font-medium text-[var(--text)]">Wix</span> —{" "}
-                    {t("studio.embedWixBody")}
-                  </li>
-                </ul>
-              </details>
+            <Step n={3} title={t("install.webStep2Title")} body="Follow the quick visual guide for your website CMS or framework:">
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-wrap gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] p-1">
+                  {PLATFORMS.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setPlatform(p.id)}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+                        platform === p.id
+                          ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
+                          : "text-[var(--muted)] hover:text-white"
+                      }`}
+                    >
+                      <span>{p.icon}</span>
+                      <span>{p.label}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="rounded-xl border border-[var(--line)] bg-[#0a0f16] p-4 text-xs space-y-2.5">
+                  {platform === "html" && (
+                    <>
+                      <div className="flex items-center justify-between border-b border-[var(--line)] pb-2 font-semibold text-white">
+                        <span>HTML / React / Next.js / Static Sites</span>
+                        <span className="text-[10px] text-emerald-400 font-mono">1-Line Embed</span>
+                      </div>
+                      <ol className="space-y-1.5 text-[var(--muted)] list-decimal list-inside leading-relaxed">
+                        <li>Open your website template or layout file (e.g. <code className="text-slate-300">index.html</code> or <code className="text-slate-300">footer.html</code>).</li>
+                        <li>Scroll to the bottom and paste the script snippet directly before the closing <code className="text-[var(--accent-bright)]">&lt;/body&gt;</code> tag.</li>
+                        <li>Save and deploy. The floating agent chat bubble will automatically appear in the bottom-right corner!</li>
+                      </ol>
+                    </>
+                  )}
+
+                  {platform === "wordpress" && (
+                    <>
+                      <div className="flex items-center justify-between border-b border-[var(--line)] pb-2 font-semibold text-white">
+                        <span>WordPress (Elementor, Divi, Gutenberg, or Classic)</span>
+                        <span className="text-[10px] text-blue-400 font-mono">Zero Code</span>
+                      </div>
+                      <ol className="space-y-1.5 text-[var(--muted)] list-decimal list-inside leading-relaxed">
+                        <li>In your WordPress Admin dashboard, go to <strong className="text-white">Plugins → Add New</strong>.</li>
+                        <li>Search for <strong className="text-white">WPCode</strong> (or use <strong className="text-white">Appearance → Theme File Editor → footer.php</strong>).</li>
+                        <li>Click <strong className="text-white">Add New Snippet</strong> → Select <strong className="text-white">Add Your Custom Code (New Snippet)</strong>.</li>
+                        <li>Set Code Type to <strong className="text-white">HTML Snippet</strong>, Insertion to <strong className="text-white">Site Wide Footer</strong>, paste your embed script, and toggle to <strong className="text-emerald-400">Active</strong>.</li>
+                      </ol>
+                    </>
+                  )}
+
+                  {platform === "shopify" && (
+                    <>
+                      <div className="flex items-center justify-between border-b border-[var(--line)] pb-2 font-semibold text-white">
+                        <span>Shopify (Dawn & all Liquid themes)</span>
+                        <span className="text-[10px] text-emerald-400 font-mono">theme.liquid</span>
+                      </div>
+                      <ol className="space-y-1.5 text-[var(--muted)] list-decimal list-inside leading-relaxed">
+                        <li>In your Shopify Admin, click <strong className="text-white">Online Store → Themes</strong>.</li>
+                        <li>Click the <strong className="text-white">...</strong> (three dots) button next to your live theme and choose <strong className="text-white">Edit code</strong>.</li>
+                        <li>In the left sidebar under <strong className="text-white">Layout</strong>, select <code className="text-slate-300">theme.liquid</code>.</li>
+                        <li>Scroll to the bottom of the file, paste your embed script tag right before the closing <code className="text-[var(--accent-bright)]">&lt;/body&gt;</code> tag, and click <strong className="text-white">Save</strong>.</li>
+                      </ol>
+                    </>
+                  )}
+
+                  {platform === "webflow" && (
+                    <>
+                      <div className="flex items-center justify-between border-b border-[var(--line)] pb-2 font-semibold text-white">
+                        <span>Webflow</span>
+                        <span className="text-[10px] text-indigo-400 font-mono">Custom Code</span>
+                      </div>
+                      <ol className="space-y-1.5 text-[var(--muted)] list-decimal list-inside leading-relaxed">
+                        <li>In your Webflow Designer/Dashboard, open <strong className="text-white">Project Settings</strong>.</li>
+                        <li>Navigate to the <strong className="text-white">Custom Code</strong> tab in the left sidebar.</li>
+                        <li>Scroll down to the <strong className="text-white">Footer Code</strong> section (<code className="text-slate-300">Before &lt;/body&gt; tag</code>).</li>
+                        <li>Paste your embed snippet, click <strong className="text-white">Save Changes</strong>, and click <strong className="text-white">Publish</strong> to publish the changes live.</li>
+                      </ol>
+                    </>
+                  )}
+
+                  {platform === "wix" && (
+                    <>
+                      <div className="flex items-center justify-between border-b border-[var(--line)] pb-2 font-semibold text-white">
+                        <span>Wix, Squarespace & Framer</span>
+                        <span className="text-[10px] text-amber-400 font-mono">Site Settings</span>
+                      </div>
+                      <ol className="space-y-1.5 text-[var(--muted)] list-decimal list-inside leading-relaxed">
+                        <li>In your Wix or Squarespace site dashboard, navigate to <strong className="text-white">Settings → Custom Code</strong> (or <strong className="text-white">Developer Tools</strong>).</li>
+                        <li>Click <strong className="text-white">+ Add Custom Code</strong> and paste your script snippet.</li>
+                        <li>Set <strong className="text-white">Place Code in</strong> to <strong className="text-white">Body - end</strong>.</li>
+                        <li>Select <strong className="text-white">Apply to: All Pages</strong> and click <strong className="text-white">Apply</strong>.</li>
+                      </ol>
+                    </>
+                  )}
+                </div>
+              </div>
             </Step>
             <Step n={4} title={t("install.webStep3Title")} body={t("install.webStep3Body")} />
           </ol>

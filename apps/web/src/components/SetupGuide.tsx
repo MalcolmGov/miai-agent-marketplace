@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 export type SetupStepId = "knowledge" | "connect" | "try" | "tokens" | "install";
 
 export const SETUP_STEPS: SetupStepId[] = [
@@ -171,6 +173,7 @@ export function SetupGuide({
     },
   ];
 
+  const [collapsed, setCollapsed] = useState(false);
   const doneCount = steps.filter((s) => s.done).length;
   const current = steps.find((s) => s.id === activeStep) ?? steps[0]!;
   const pct = Math.round((doneCount / steps.length) * 100);
@@ -184,8 +187,12 @@ export function SetupGuide({
       if (nxt) onStepChange(nxt);
       return;
     }
-    if (activeStep === "connect" && !toolsConnected) {
-      onSkipConnect();
+    if (activeStep === "connect") {
+      if (toolsConnected) {
+        if (nxt) onStepChange(nxt);
+      } else {
+        document.getElementById("studio-actions")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
       return;
     }
     if (activeStep === "tokens") {
@@ -202,23 +209,36 @@ export function SetupGuide({
   const primaryLabel =
     activeStep === "knowledge"
       ? "Save & continue"
-      : activeStep === "tokens"
-        ? "Add tokens"
-        : activeStep === "install" && !rented
-          ? "Activate to go live"
-          : activeStep === "try"
-            ? "Continue — Add tokens"
-            : activeStep === "install"
-              ? "Setup complete"
-              : nxt
-                ? `Continue — ${steps.find((s) => s.id === nxt)?.title}`
-                : "Done";
+      : activeStep === "connect"
+        ? toolsConnected
+          ? "Continue — Sandbox"
+          : "Connect Accounts Below ↓"
+        : activeStep === "tokens"
+          ? "Add tokens"
+          : activeStep === "install" && !rented
+            ? "Activate to go live"
+            : activeStep === "try"
+              ? "Continue — Add tokens"
+              : activeStep === "install"
+                ? "Setup complete"
+                : nxt
+                  ? `Continue — ${steps.find((s) => s.id === nxt)?.title}`
+                  : "Done";
 
   return (
     <div className="panel card-specular-rim space-y-4 p-4 sm:p-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold tracking-tight text-[var(--text)]">Setup Guide</h2>
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-sm font-semibold tracking-tight text-[var(--text)]">Setup Guide</h2>
+            <button
+              type="button"
+              onClick={() => setCollapsed((v: boolean) => !v)}
+              className="text-[10px] font-medium text-[var(--muted)] hover:text-white px-2 py-0.5 rounded border border-[var(--line)] bg-[var(--bg-elev)] transition-colors"
+            >
+              {collapsed ? "Show details ▼" : "Minimize ▲"}
+            </button>
+          </div>
           <p className="mt-0.5 max-w-xl text-xs leading-relaxed text-[var(--muted)]">
             One step at a time. Add knowledge, optionally connect tools, try sandbox, then add
             prepaid tokens before you go live and activate.
@@ -297,76 +317,84 @@ export function SetupGuide({
         })}
       </ol>
 
-      <div
-        className={`rounded-xl border px-4 py-3 ${
-          current.done && activeStep !== current.id
-            ? "border-[var(--line)]"
-            : "border-[color-mix(in_srgb,var(--accent)_40%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)]"
-        }`}
-      >
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-[var(--text)]">
-            Step {SETUP_STEPS.indexOf(activeStep) + 1}: {current.title}
-          </span>
-          <span
-            className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${requirementClass(current.requirement)}`}
+      {!collapsed ? (
+        <>
+          <div
+            className={`rounded-xl border px-4 py-3 ${
+              current.done && activeStep !== current.id
+                ? "border-[var(--line)]"
+                : "border-[color-mix(in_srgb,var(--accent)_40%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)]"
+            }`}
           >
-            {current.requirementLabel}
-          </span>
-        </div>
-        <p className="mt-1.5 text-xs leading-relaxed text-[var(--muted)]">{current.detail}</p>
-
-        <div className="mt-3 flex flex-wrap gap-2">
-          {activeStep === "install" && visitedInstall && rented ? (
-            <p className="text-xs text-[var(--accent)]">
-              Setup complete. Use the embed or App link below anytime.
-            </p>
-          ) : (
-            <>
-              <button
-                type="button"
-                className="btn btn-primary text-xs"
-                onClick={primaryAction}
-                disabled={activeStep === "install" && rented && visitedInstall}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-semibold text-[var(--text)]">
+                Step {SETUP_STEPS.indexOf(activeStep) + 1}: {current.title}
+              </span>
+              <span
+                className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${requirementClass(current.requirement)}`}
               >
-                {primaryLabel}
-              </button>
-              {activeStep === "connect" && !toolsConnected ? (
-                <button type="button" className="btn btn-ghost text-xs" onClick={onSkipConnect}>
-                  Skip tools — continue
-                </button>
-              ) : null}
-              {activeStep === "tokens" && nxt ? (
-                <button
-                  type="button"
-                  className="btn btn-ghost text-xs"
-                  onClick={() => onStepChange(nxt)}
-                >
-                  Continue — {steps.find((s) => s.id === nxt)?.title}
-                </button>
-              ) : null}
-            </>
-          )}
-        </div>
-      </div>
+                {current.requirementLabel}
+              </span>
+            </div>
+            <p className="mt-1.5 text-xs leading-relaxed text-[var(--muted)]">
+              {activeStep === "connect" && !toolsConnected
+                ? "Authenticate your agent's external tools below (Google Calendar, HubSpot, Slack, WhatsApp, etc.) to enable live actions, or skip to test in Sandbox first."
+                : current.detail}
+            </p>
 
-      <p className="text-[11px] text-[var(--muted)]">
-        <span className="font-medium text-[var(--text)]">Minimum path:</span> add your knowledge →
-        try sandbox → add tokens → go live and activate.
-        {isWorkflow ? (
-          <>
-            {" "}
-            <span className="font-medium text-[var(--text)]">Optional later:</span> Calendar / Slack
-            for live bookings and handoffs.
-          </>
-        ) : (
-          <>
-            {" "}
-            <span className="font-medium text-[var(--text)]">Optional later:</span> connect tools for
-            live actions.
-          </>
-        )}
-      </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {activeStep === "install" && visitedInstall && rented ? (
+                <p className="text-xs text-[var(--accent)]">
+                  Setup complete. Use the embed or App link below anytime.
+                </p>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-primary text-xs"
+                    onClick={primaryAction}
+                    disabled={activeStep === "install" && rented && visitedInstall}
+                  >
+                    {primaryLabel}
+                  </button>
+                  {activeStep === "connect" && !toolsConnected ? (
+                    <button type="button" className="btn btn-ghost text-xs" onClick={onSkipConnect}>
+                      Skip for now — Test in Sandbox →
+                    </button>
+                  ) : null}
+                  {activeStep === "tokens" && nxt ? (
+                    <button
+                      type="button"
+                      className="btn btn-ghost text-xs"
+                      onClick={() => onStepChange(nxt)}
+                    >
+                      Continue — {steps.find((s) => s.id === nxt)?.title}
+                    </button>
+                  ) : null}
+                </>
+              )}
+            </div>
+          </div>
+
+          <p className="text-[11px] text-[var(--muted)]">
+            <span className="font-medium text-[var(--text)]">Minimum path:</span> add your knowledge →
+            try sandbox → add tokens → go live and activate.
+            {isWorkflow ? (
+              <>
+                {" "}
+                <span className="font-medium text-[var(--text)]">Optional later:</span> Calendar / Slack
+                for live bookings and handoffs.
+              </>
+            ) : (
+              <>
+                {" "}
+                <span className="font-medium text-[var(--text)]">Optional later:</span> connect tools for
+                live actions.
+              </>
+            )}
+          </p>
+        </>
+      ) : null}
     </div>
   );
 }

@@ -5,8 +5,10 @@ import {
   loadAgentPackage,
   marketplaceCategory,
   type AgentAudience,
+  type AgentCategory,
   type AgentPackage,
 } from "@miai/agent-protocol";
+import { findCustomAgentById } from "@/lib/store";
 
 export interface CatalogEntry {
   id: string;
@@ -317,6 +319,47 @@ export async function getAgentPackage(id: string): Promise<AgentPackage | null> 
       const raw = await fs.readFile(path.join(dir, `${id}.agent.json`), "utf8");
       return loadAgentPackage(JSON.parse(raw));
     } catch {
+      try {
+        const custom = await findCustomAgentById(id);
+        if (custom) {
+          const category = (custom.category || "sales") as AgentCategory;
+          return {
+            format: "miai.agent-package/v1",
+            manifest: {
+              id: custom.agentId,
+              name: custom.name || custom.agentId,
+              version: "1",
+              category,
+              tier: custom.tier || "standard",
+              summary: custom.summary || "",
+              channels: ["embed", "app", "api"],
+              languages: ["en"],
+              market: custom.market || undefined,
+              model: {
+                primary: custom.model || "claude-haiku-4-5",
+                temperature: 0.3,
+                max_output_tokens: 700,
+              },
+            },
+            system_prompt: [
+              custom.systemPrompt || custom.knowledge || "",
+              custom.escalationContact
+                ? `\n\nWhen a user requests human assistance or asks a question beyond your scope, escalate to: ${custom.escalationContact}`
+                : "",
+            ].join(""),
+            knowledge: custom.knowledge || "",
+            tools: (custom.toolsList || []).map((t) => ({
+              name: t,
+              description: `Agent action tool: ${t}`,
+              parameters: {},
+            })),
+            guardrails: "",
+            evals: [],
+          };
+        }
+      } catch (err) {
+        console.error("[catalog] findCustomAgentById error", err);
+      }
       return null;
     }
   }
