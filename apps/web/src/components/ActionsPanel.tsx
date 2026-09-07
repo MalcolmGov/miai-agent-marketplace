@@ -61,6 +61,7 @@ export function ActionsPanel({
   const [slackSavedChannel, setSlackSavedChannel] = useState<string | null>(null);
   const [slackNeedsInvite, setSlackNeedsInvite] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [testStatus, setTestStatus] = useState<Record<string, { ok: boolean; message: string }>>({});
 
   const byId = useMemo(() => new Map(status.map((s) => [s.id, s])), [status]);
   const slackConnected = Boolean(byId.get("slack")?.connected) || connected.includes("slack");
@@ -227,6 +228,46 @@ export function ActionsPanel({
     }
   }
 
+  async function testConnector(connectorId: string) {
+    setBusy(`test-${connectorId}`);
+    setError(null);
+    try {
+      const res = await fetch(`/api/oauth/${connectorId}/test`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setTestStatus((prev) => ({
+          ...prev,
+          [connectorId]: {
+            ok: true,
+            message: data.account ? `Verified: ${data.account}` : "Active & verified with vendor",
+          },
+        }));
+      } else {
+        setTestStatus((prev) => ({
+          ...prev,
+          [connectorId]: {
+            ok: false,
+            message: data.error ? `Verification failed: ${data.error}` : "Probe failed — re-auth needed",
+          },
+        }));
+      }
+    } catch {
+      setTestStatus((prev) => ({
+        ...prev,
+        [connectorId]: {
+          ok: false,
+          message: "Network error running live probe",
+        },
+      }));
+    } finally {
+      setBusy(null);
+    }
+  }
+
   const recommendedIds = (() => {
     if (isWorkflow) return new Set(["google_calendar", "slack", "hubspot", "email"]);
     const flagged = connectors.filter((c) => c.recommended).map((c) => c.id);
@@ -312,6 +353,19 @@ export function ActionsPanel({
               )
             ) : null}
 
+            {testStatus[c.id] ? (
+              <div
+                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${
+                  testStatus[c.id].ok
+                    ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                    : "border border-rose-500/30 bg-rose-500/10 text-rose-300"
+                }`}
+              >
+                <span>{testStatus[c.id].ok ? "✓" : "⚠"}</span>
+                <span>{testStatus[c.id].message}</span>
+              </div>
+            ) : null}
+
             {/* Extra config sits with the copy, full width of the left column */}
             {c.id === "shopify" ? (
               <input
@@ -378,33 +432,34 @@ export function ActionsPanel({
                 {slackSavedChannel ? (
                   <p className="text-xs text-[var(--muted)]">
                     {t("actions.handoffsGoTo")}{" "}
-                    <code className="text-[var(--accent-bright)]">
-                      {slackChannels.find((ch) => ch.id === slackSavedChannel)?.name ??
-                        slackSavedChannel}
-                    </code>
-                    {slackNeedsInvite ? <> {t("actions.slackInviteHint")}</> : null}
+                    <span className="font-semibold text-[var(--text)]">#{slackSavedChannel}</span>
                   </p>
+                ) : null}
+                {slackNeedsInvite ? (
+                  <p className="text-xs text-[var(--warn)]">{t("actions.slackInviteHint")}</p>
                 ) : null}
               </div>
             ) : null}
 
             {c.id === "webhook" ? (
-              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
-                <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="https://hooks.example.com/miai"
-                  value={webhookUrl}
-                  onChange={(e) => setWebhookUrl(e.target.value)}
-                />
-                <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="shared secret"
-                  value={webhookSecret}
-                  onChange={(e) => setWebhookSecret(e.target.value)}
-                />
+              <div className="space-y-2">
+                <div className="flex max-w-xl flex-col gap-2 sm:flex-row sm:items-center">
+                  <input
+                    className="input min-w-0 flex-1 text-xs"
+                    placeholder="https://api.your-company.com/webhooks/miai"
+                    value={webhookUrl}
+                    onChange={(e) => setWebhookUrl(e.target.value)}
+                  />
+                  <input
+                    className="input w-full text-xs sm:w-44"
+                    placeholder="shared secret (HMAC)"
+                    value={webhookSecret}
+                    onChange={(e) => setWebhookSecret(e.target.value)}
+                  />
+                </div>
                 <button
                   type="button"
-                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
+                  className={btnPrimary}
                   disabled={busy === "webhook"}
                   onClick={() =>
                     saveCredentials("webhook", {
@@ -559,14 +614,26 @@ export function ActionsPanel({
                     : t("actions.connectOAuth")}
               </button>
               {on ? (
-                <button
-                  type="button"
-                  className={btnGhost}
-                  disabled={busy === c.id}
-                  onClick={() => disconnect(c.id)}
-                >
-                  {t("actions.disconnect")}
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-ghost inline-flex h-9 min-w-[8.5rem] items-center justify-center gap-1.5 px-3 text-xs text-[var(--accent-bright)] hover:text-white"
+                    disabled={busy === `test-${c.id}`}
+                    onClick={() => void testConnector(c.id)}
+                    title="Send a live read-only ping to verify stored OAuth token"
+                  >
+                    <span>⚡</span>
+                    <span>{busy === `test-${c.id}` ? "Pinging…" : "Test connection"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={btnGhost}
+                    disabled={busy === c.id}
+                    onClick={() => disconnect(c.id)}
+                  >
+                    {t("actions.disconnect")}
+                  </button>
+                </>
               ) : (
                 <span className="hidden h-9 lg:block" aria-hidden />
               )}
