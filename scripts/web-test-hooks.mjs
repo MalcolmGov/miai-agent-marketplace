@@ -25,8 +25,11 @@ function resolveWebAlias(specifier) {
   return `${base}.ts`;
 }
 
-/** Resolve Next.js `@/*` imports when running web unit tests outside the bundler. */
+/** Resolve Next.js `@/*` imports and `next/server` when running web unit tests outside the bundler. */
 export async function resolve(specifier, context, nextResolve) {
+  if (specifier === "next/server") {
+    return nextResolve("next/server.js", context);
+  }
   if (specifier.startsWith("@/")) {
     const file = resolveWebAlias(specifier);
     return nextResolve(pathToFileURL(file).href, context);
