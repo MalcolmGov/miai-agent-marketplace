@@ -185,33 +185,32 @@ describe("business credentials route (/api/business/auth/credentials)", () => {
     credentialsRoute = await import("../src/app/api/business/auth/credentials/route.ts");
   });
 
-  it("rejects unauthorized email with 403", async () => {
-    const req = new Request("https://example.com/api/business/auth/credentials", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        email: "stranger@evil.com",
-        password: "Password123!",
-        action: "signup",
+  const sendAuthRequest = (payload) =>
+    credentialsRoute.POST(
+      new Request("https://example.com/api/business/auth/credentials", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
       }),
+    );
+
+  it("rejects unauthorized email with 403", async () => {
+    const res = await sendAuthRequest({
+      email: "stranger@evil.com",
+      password: "Password123!",
+      action: "signup",
     });
-    const res = await credentialsRoute.POST(req);
     assert.equal(res.status, 403);
     const data = await res.json();
     assert.ok(data.error.includes("Access is limited to invited teams"));
   });
 
   it("registers an allowlisted user and sets a valid session cookie", async () => {
-    const req = new Request("https://example.com/api/business/auth/credentials", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        email: "test-emp@acme.com",
-        password: "ValidPassword123!",
-        action: "signup",
-      }),
+    const res = await sendAuthRequest({
+      email: "test-emp@acme.com",
+      password: "ValidPassword123!",
+      action: "signup",
     });
-    const res = await credentialsRoute.POST(req);
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.ok, true);
@@ -222,32 +221,22 @@ describe("business credentials route (/api/business/auth/credentials)", () => {
   });
 
   it("authenticates a registered user with correct password", async () => {
-    const req = new Request("https://example.com/api/business/auth/credentials", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        email: "test-emp@acme.com",
-        password: "ValidPassword123!",
-        action: "signin",
-      }),
+    const res = await sendAuthRequest({
+      email: "test-emp@acme.com",
+      password: "ValidPassword123!",
+      action: "signin",
     });
-    const res = await credentialsRoute.POST(req);
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.ok, true);
   });
 
   it("rejects incorrect password with 401", async () => {
-    const req = new Request("https://example.com/api/business/auth/credentials", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        email: "test-emp@acme.com",
-        password: "WrongPassword!",
-        action: "signin",
-      }),
+    const res = await sendAuthRequest({
+      email: "test-emp@acme.com",
+      password: "WrongPassword!",
+      action: "signin",
     });
-    const res = await credentialsRoute.POST(req);
     assert.equal(res.status, 401);
     const data = await res.json();
     assert.equal(data.error, "Incorrect password");
