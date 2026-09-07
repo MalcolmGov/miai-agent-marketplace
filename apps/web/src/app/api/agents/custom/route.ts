@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 30) || "agent";
-  const randomSuffix = Math.random().toString(36).slice(2, 7);
+  const randomSuffix = crypto.randomUUID().replace(/-/g, "").slice(0, 6);
   const agentId = `custom-${slug}-${randomSuffix}`;
 
   const publicKey = embedKeyFor(workspaceId, agentId);
