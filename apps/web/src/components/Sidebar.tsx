@@ -8,7 +8,7 @@ import { useT } from "@/lib/locale";
 
 type ShellMode = "business" | "consumer";
 
-const BUSINESS_HIDDEN = new Set(["learn"]);
+const BUSINESS_HIDDEN = new Set(["learn", "live-ops", "quality"]);
 /** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
 const CONSUMER_ALLOWED = new Set([
   "home", "ask", "ai-agents-hub", "search", "history",
@@ -261,7 +261,7 @@ const GROUPS: NavGroup[] = [
         icon: <IconOps />,
         badge: { labelKey: "nav.badgeLive", tone: "live" },
       },
-      { id: "insights", href: "/insights", labelKey: "nav.insights", icon: <IconChart /> },
+      { id: "insights", href: "/my-agents?tab=insights", labelKey: "nav.insights", icon: <IconChart /> },
       { id: "support", href: "/support", labelKey: "nav.supportDesk", icon: <IconSupport /> },
       { id: "admin", href: "/admin", labelKey: "nav.agentAdmin", icon: <IconAdmin /> },
       { id: "trust", href: "/trust", labelKey: "nav.trust", icon: <IconShield /> },
@@ -300,8 +300,23 @@ function resolveActive(pathname: string, item: NavItem, groupId: string) {
   if (pathname === "/" && item.href === "/") {
     return groupId === "core" && item.id === "home";
   }
+  if (item.id === "insights") {
+    return (
+      pathname === "/insights" ||
+      (pathname === "/my-agents" &&
+        typeof window !== "undefined" &&
+        window.location.search.includes("tab=insights"))
+    );
+  }
+  if (item.id === "my-agents") {
+    return (
+      pathname === "/my-agents" &&
+      (typeof window === "undefined" || !window.location.search.includes("tab=insights"))
+    );
+  }
   if (item.exact) return pathname === item.href;
-  return pathname === item.href || pathname.startsWith(`${item.href}/`);
+  const targetBase = item.href.split("?")[0];
+  return pathname === targetBase || pathname.startsWith(`${targetBase}/`);
 }
 
 function platformOperator(roles: string[]): boolean {

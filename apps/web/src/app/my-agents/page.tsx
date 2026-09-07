@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { rentalStatusLabel } from "@/components/SetupGuide";
+import { InsightsDashboard } from "@/components/dashboard/InsightsDashboard";
 
 interface MissingConnector {
   connector: string;
@@ -22,7 +24,7 @@ interface RentalItem {
   readiness?: { ready: boolean; missing: MissingConnector[] };
 }
 
-type TabMode = "all" | "active" | "inactive";
+type TabMode = "all" | "active" | "inactive" | "insights";
 
 const MARKET_LABELS: Record<string, { label: string; flag: string }> = {
   us: { label: "United States", flag: "🇺🇸" },
@@ -65,6 +67,14 @@ function IconBot({ className = "h-5 w-5" }: { className?: string }) {
       <circle cx="9" cy="11.5" r="1.25" fill="currentColor" stroke="none" />
       <circle cx="15" cy="11.5" r="1.25" fill="currentColor" stroke="none" />
       <path d="M12 2v4M8 15h8M2 12h2M20 12h2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconChart({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className={className}>
+      <path d="M4 19h16M7 16V9M12 16V5M17 16v-4" strokeLinecap="round" />
     </svg>
   );
 }
@@ -137,12 +147,25 @@ function IconAlert({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-export default function MyAgentsPage() {
+function MyAgentsContent() {
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab");
+
   const [items, setItems] = useState<RentalItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<TabMode>("all");
+  const [activeTab, setActiveTab] = useState<TabMode>(() =>
+    initialTab === "insights" ? "insights" : initialTab === "active" ? "active" : initialTab === "inactive" ? "inactive" : "all",
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [marketFilter, setMarketFilter] = useState<string>("all");
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "insights") setActiveTab("insights");
+    else if (tab === "active") setActiveTab("active");
+    else if (tab === "inactive") setActiveTab("inactive");
+    else if (tab === "all") setActiveTab("all");
+  }, [searchParams]);
 
   useEffect(() => {
     fetch("/api/rentals")
@@ -153,6 +176,14 @@ export default function MyAgentsPage() {
       })
       .catch((e: Error) => setError(e.message));
   }, []);
+
+  function handleTabChange(next: TabMode) {
+    setActiveTab(next);
+    const url = next === "all" ? "/my-agents" : `/my-agents?tab=${next}`;
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", url);
+    }
+  }
 
   const { activeList, inactiveList, totalConnectors } = useMemo(() => {
     if (!items) return { activeList: [], inactiveList: [], totalConnectors: 0 };
@@ -321,13 +352,13 @@ export default function MyAgentsPage() {
       {/* Filter and Segmentation Controls */}
       {items !== null && items.length > 0 ? (
         <div className="flex flex-col gap-3 rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_75%,transparent)] p-3 sm:flex-row sm:items-center sm:justify-between">
-          {/* Active vs Inactive Tabs */}
-          <div className="inline-flex rounded-xl bg-[color-mix(in_srgb,var(--bg-elev)_85%,transparent)] p-1 border border-[var(--line)]" role="tablist">
+          {/* Main Navigation Tabs */}
+          <div className="inline-flex flex-wrap items-center gap-1 rounded-xl bg-[color-mix(in_srgb,var(--bg-elev)_85%,transparent)] p-1 border border-[var(--line)]" role="tablist">
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === "all"}
-              onClick={() => setActiveTab("all")}
+              onClick={() => handleTabChange("all")}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "all"
                   ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
@@ -344,7 +375,7 @@ export default function MyAgentsPage() {
               type="button"
               role="tab"
               aria-selected={activeTab === "active"}
-              onClick={() => setActiveTab("active")}
+              onClick={() => handleTabChange("active")}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "active"
                   ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
@@ -362,7 +393,7 @@ export default function MyAgentsPage() {
               type="button"
               role="tab"
               aria-selected={activeTab === "inactive"}
-              onClick={() => setActiveTab("inactive")}
+              onClick={() => handleTabChange("inactive")}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "inactive"
                   ? "bg-amber-400 text-slate-950 shadow-sm"
@@ -375,50 +406,84 @@ export default function MyAgentsPage() {
                 {inactiveList.length}
               </span>
             </button>
-          </div>
 
-          {/* Search & Market Filter */}
-          <div className="flex flex-1 items-center gap-2 sm:max-w-md">
-            <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted-dim)]">
-                <IconSearch className="h-3.5 w-3.5" />
-              </span>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search agent name, ID, or tool..."
-                className="input !py-1.5 !pl-9 !text-xs"
-              />
-              {searchQuery ? (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-[var(--muted-dim)] hover:text-white"
-                >
-                  ✕
-                </button>
-              ) : null}
-            </div>
-
-            <select
-              value={marketFilter}
-              onChange={(e) => setMarketFilter(e.target.value)}
-              className="input !w-auto shrink-0 !py-1.5 !text-xs"
+            {/* Merged Insights & Analytics Tab */}
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "insights"}
+              onClick={() => handleTabChange("insights")}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+                activeTab === "insights"
+                  ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
+                  : "text-[var(--muted)] hover:text-white"
+              }`}
             >
-              <option value="all">All Regions</option>
-              <option value="us">🇺🇸 US</option>
-              <option value="eu">🇪🇺 EU</option>
-              <option value="africa">🌍 Africa</option>
-              <option value="asia">🌏 Asia</option>
-              <option value="oceania">🇦🇺 Oceania</option>
-            </select>
+              <IconChart className="h-3.5 w-3.5" />
+              <span>Insights &amp; Analytics</span>
+              <span className={`rounded-full px-1.5 py-0.2 text-[9px] font-bold ${activeTab === "insights" ? "bg-black/20 text-inherit" : "bg-[color-mix(in_srgb,var(--accent)_22%,transparent)] text-[var(--accent-bright)]"}`}>
+                LIVE
+              </span>
+            </button>
           </div>
+
+          {/* Search & Market Filter (visible when browsing agent lists) */}
+          {activeTab !== "insights" ? (
+            <div className="flex flex-1 items-center gap-2 sm:max-w-md">
+              <div className="relative flex-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted-dim)]">
+                  <IconSearch className="h-3.5 w-3.5" />
+                </span>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search agent name, ID, or tool..."
+                  className="input !py-1.5 !pl-9 !text-xs"
+                />
+                {searchQuery ? (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-[var(--muted-dim)] hover:text-white"
+                  >
+                    ✕
+                  </button>
+                ) : null}
+              </div>
+
+              <select
+                value={marketFilter}
+                onChange={(e) => setMarketFilter(e.target.value)}
+                className="input !w-auto shrink-0 !py-1.5 !text-xs"
+              >
+                <option value="all">All Regions</option>
+                <option value="us">🇺🇸 US</option>
+                <option value="eu">🇪🇺 EU</option>
+                <option value="africa">🌍 Africa</option>
+                <option value="asia">🌏 Asia</option>
+                <option value="oceania">🇦🇺 Oceania</option>
+              </select>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-[var(--muted-dim)]">
+                Autonomous performance &amp; usage telemetry
+              </span>
+            </div>
+          )}
         </div>
       ) : null}
 
-      {/* Loading Skeleton */}
-      {items === null ? (
+      {/* Main Tab Content */}
+      {activeTab === "insights" ? (
+        /* Embedded Polished Insights Dashboard */
+        <InsightsDashboard
+          showHeader={false}
+          onNavigateToFleet={() => handleTabChange("all")}
+        />
+      ) : items === null ? (
+        /* Loading Skeleton */
         <div className="space-y-3" aria-busy="true" aria-label="Loading rented agents">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="panel flex items-center justify-between gap-4 rounded-2xl p-5">
@@ -669,5 +734,25 @@ function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MyAgentsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-6xl space-y-6" aria-busy="true">
+          <div className="skeleton h-8 w-48 mb-2" />
+          <div className="skeleton h-4 w-72" />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mt-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="panel h-24 rounded-2xl" />
+            ))}
+          </div>
+        </div>
+      }
+    >
+      <MyAgentsContent />
+    </Suspense>
   );
 }
