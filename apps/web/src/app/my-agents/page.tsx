@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { rentalStatusLabel } from "@/components/SetupGuide";
 import { InsightsDashboard } from "@/components/dashboard/InsightsDashboard";
+import { ConfigureAgentModal } from "@/components/agents/ConfigureAgentModal";
 
 interface MissingConnector {
   connector: string;
@@ -21,6 +22,9 @@ interface RentalItem {
   market: string | null;
   connectedConnectors: string[];
   rentedAt: string | null;
+  publicKey?: string;
+  isCustom?: boolean;
+  accentColor?: string;
   readiness?: { ready: boolean; missing: MissingConnector[] };
 }
 
@@ -167,7 +171,9 @@ function MyAgentsContent() {
     else if (tab === "all") setActiveTab("all");
   }, [searchParams]);
 
-  useEffect(() => {
+  const [isConfigureOpen, setIsConfigureOpen] = useState(false);
+
+  const fetchRentals = () => {
     fetch("/api/rentals")
       .then(async (r) => {
         const data = await r.json();
@@ -175,6 +181,10 @@ function MyAgentsContent() {
         setItems(data.items ?? []);
       })
       .catch((e: Error) => setError(e.message));
+  };
+
+  useEffect(() => {
+    fetchRentals();
   }, []);
 
   function handleTabChange(next: TabMode) {
@@ -263,11 +273,18 @@ function MyAgentsContent() {
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href="/#catalogue"
-            className="btn btn-primary inline-flex items-center gap-1.5 text-xs shadow-[0_0_16px_color-mix(in_srgb,var(--accent)_30%,transparent)]"
+          <button
+            type="button"
+            onClick={() => setIsConfigureOpen(true)}
+            className="btn btn-primary inline-flex items-center gap-1.5 text-xs shadow-[0_0_16px_color-mix(in_srgb,var(--accent)_30%,transparent)] cursor-pointer"
           >
             <IconPlus className="h-3.5 w-3.5" />
+            <span>Configure New Agent</span>
+          </button>
+          <Link
+            href="/#catalogue"
+            className="btn btn-ghost inline-flex items-center gap-1.5 text-xs"
+          >
             <span>Browse Catalogue</span>
           </Link>
         </div>
@@ -595,6 +612,14 @@ function MyAgentsContent() {
           ))}
         </div>
       )}
+
+      <ConfigureAgentModal
+        isOpen={isConfigureOpen}
+        onClose={() => setIsConfigureOpen(false)}
+        onCreated={() => {
+          fetchRentals();
+        }}
+      />
     </div>
   );
 }
@@ -679,6 +704,12 @@ function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
               {needsSetup ? (
                 <span className="rounded-md bg-amber-500/18 px-2 py-0.5 text-[10px] font-semibold text-amber-300 border border-amber-500/35">
                   Needs setup
+                </span>
+              ) : null}
+
+              {item.isCustom ? (
+                <span className="rounded-md bg-indigo-500/18 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-300 border border-indigo-500/35">
+                  Custom Agent
                 </span>
               ) : null}
             </div>

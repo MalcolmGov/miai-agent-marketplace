@@ -6,6 +6,7 @@ import { ActionsPanel } from "./ActionsPanel";
 import { InstallPanel } from "./InstallPanel";
 import { TokenTopUpPanel } from "./TokenTopUpPanel";
 import { SandboxChat } from "./SandboxChat";
+import { QuickstartRoadmap } from "./QuickstartRoadmap";
 import {
   SetupGuide,
   readSetupFlag,
@@ -58,6 +59,7 @@ interface AgentPayload {
     connectedConnectors: string[];
     tier: keyof typeof TIER_PRICES;
     approvedDomains?: string[];
+    isCustom?: boolean;
   } | null;
   connectors: Array<{
     id: string;
@@ -129,6 +131,7 @@ export function AgentStudio({
   const [approvedDomains, setApprovedDomains] = useState<string[]>([]);
   const [savingDomains, setSavingDomains] = useState(false);
   const [domainsMsg, setDomainsMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [welcomeBanner, setWelcomeBanner] = useState(false);
 
   const hasWorkflow = isWorkflowFamilyId(agentId);
 
@@ -192,6 +195,10 @@ export function AgentStudio({
     if (fromUrl) {
       setActiveStep(fromUrl);
       setHydrated(true);
+    }
+    const wantWelcome = new URLSearchParams(window.location.search).get("welcome") === "1";
+    if (wantWelcome) {
+      setWelcomeBanner(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reload when agent route changes
   }, [agentId]);
@@ -434,6 +441,7 @@ export function AgentStudio({
   const toolsConnected = hasWorkflow
     ? connected.some((id) => id === "google_calendar" || id === "slack" || id === "calendar")
     : connected.length > 0 || data.connectors.some((c) => c.recommended && connected.includes(c.id));
+  const isCustom = Boolean(data?.rental?.isCustom || agentId.startsWith("custom-"));
 
   return (
     <div className="space-y-6">
@@ -534,21 +542,58 @@ export function AgentStudio({
         ) : null}
       </div>
 
-      <SetupGuide
-        agentId={agentId}
-        isWorkflow={hasWorkflow}
-        rented={rented}
-        hasTokens={(balanceTokens ?? 0) > 0}
-        hasKnowledge={hasKnowledge}
-        toolsConnected={toolsConnected}
-        triedChat={triedChat}
-        visitedInstall={visitedInstall}
-        skippedConnect={skippedConnect}
-        activeStep={activeStep}
-        onStepChange={goStep}
-        onSkipConnect={skipConnect}
-        onConfirmKnowledge={confirmKnowledge}
-      />
+      {welcomeBanner ? (
+        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-[var(--bg-panel)] p-4 text-xs shadow-lg">
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-lg">
+              🎉
+            </span>
+            <div>
+              <p className="font-bold text-white text-sm">
+                &ldquo;{data?.package.manifest.name ?? "Your Agent"}&rdquo; is Live & Deployed!
+              </p>
+              <p className="text-[var(--muted)] mt-0.5">
+                Welcome to your Agent Studio. Follow the 1-click launch roadmap below to connect your apps, test drive in the sandbox, and embed on your website.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setWelcomeBanner(false)}
+            className="self-end sm:self-center shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-semibold text-[var(--muted)] hover:text-white border border-white/10 bg-white/5 transition-colors"
+          >
+            Dismiss ✕
+          </button>
+        </div>
+      ) : null}
+
+      {isCustom ? (
+        <QuickstartRoadmap
+          agentName={data?.package.manifest.name ?? "Agent"}
+          activeStep={activeStep}
+          onStepChange={goStep}
+          toolsConnected={toolsConnected}
+          connectedCount={connected.length}
+          triedChat={triedChat}
+          visitedInstall={visitedInstall}
+        />
+      ) : (
+        <SetupGuide
+          agentId={agentId}
+          isWorkflow={hasWorkflow}
+          rented={rented}
+          hasTokens={(balanceTokens ?? 0) > 0}
+          hasKnowledge={hasKnowledge}
+          toolsConnected={toolsConnected}
+          triedChat={triedChat}
+          visitedInstall={visitedInstall}
+          skippedConnect={skippedConnect}
+          activeStep={activeStep}
+          onStepChange={goStep}
+          onSkipConnect={skipConnect}
+          onConfirmKnowledge={confirmKnowledge}
+        />
+      )}
 
       <div className="space-y-4">
         {activeStep === "knowledge" ? (
@@ -667,7 +712,7 @@ export function AgentStudio({
         ) : null}
 
         {activeStep === "try" ? (
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-3xl space-y-4">
             <SandboxChat
               agentId={agentId}
               mode="sandbox"
@@ -675,6 +720,26 @@ export function AgentStudio({
               highlightTry={tryMode || activeStep === "try"}
               onFirstMessage={markTried}
             />
+            {triedChat ? (
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent p-4 text-xs shadow-sm">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xl">🚀</span>
+                  <div>
+                    <p className="font-bold text-white text-sm">Satisfied with your agent&apos;s responses?</p>
+                    <p className="text-[var(--muted)] mt-0.5">
+                      Your agent is ready to engage live visitors. Embed it on your website in under a minute.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => goStep("install")}
+                  className="btn btn-primary py-2 px-4 text-xs font-semibold shrink-0 shadow-glow-sm"
+                >
+                  Add to Website (1-Line Embed) →
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : null}
 

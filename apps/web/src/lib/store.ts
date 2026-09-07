@@ -38,6 +38,13 @@ export type RentTier = "standard" | "pro" | "enterprise";
 
 export interface WorkspaceAgent {
   agentId: string;
+  name?: string;
+  summary?: string;
+  category?: string;
+  accentColor?: string;
+  isCustom?: boolean;
+  toolsList?: string[];
+  systemPrompt?: string;
   state: AgentState;
   model: string;
   knowledge: string;
@@ -51,6 +58,13 @@ export interface WorkspaceAgent {
   approvedDomains?: string[];
   bindings: ToolBinding[];
   connectedConnectors: string[];
+  market?: string;
+  tone?: string;
+  escalationContact?: string;
+  webhookUrl?: string;
+  webhookSecret?: string;
+  mcpEndpoint?: string;
+  mcpToken?: string;
   messages: ChatMessage[];
   rentedAt?: string;
 }
@@ -422,6 +436,26 @@ export async function listWorkspaceAgents(workspaceId: string): Promise<Workspac
   }
   await ensureStoreHydrated();
   return [...ws(workspaceId).agents.values()];
+}
+
+export async function findCustomAgentById(agentId: string): Promise<WorkspaceAgent | null> {
+  await ensureStoreHydrated();
+  for (const s of store().workspaces.values()) {
+    const a = s.agents.get(agentId);
+    if (a) return a;
+  }
+  if (getPool()) {
+    try {
+      const res = await query<{ payload: WorkspaceAgent }>(
+        "SELECT payload FROM miai_rentals WHERE agent_id = $1 LIMIT 1",
+        [agentId],
+      );
+      if (res.rows[0]?.payload) return res.rows[0].payload;
+    } catch (e) {
+      console.error("[store] findCustomAgentById query failed", e);
+    }
+  }
+  return null;
 }
 
 export async function listAllWorkspaces(): Promise<

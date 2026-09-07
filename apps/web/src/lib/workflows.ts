@@ -197,6 +197,17 @@ export function tryPromptsForAgent(agentId: string): { workflow: boolean; prompt
       ],
     };
   }
+  if (agentId.startsWith("custom-") || /sdr|closer|sales|booking|assistant|support/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "What services do you provide and how much does it cost?",
+        "Can I schedule a 30-minute introductory meeting for tomorrow afternoon?",
+        "I'm interested in working together. Can you log my contact details for follow-up?",
+        "Can I speak with a human specialist on your team?",
+      ],
+    };
+  }
   return {
     workflow: false,
     prompts: [

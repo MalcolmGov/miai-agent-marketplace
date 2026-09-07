@@ -22,14 +22,16 @@ export async function GET(req: Request) {
         const preflight = pkg ? await agentReadiness(workspaceId, pkg, r.bindings) : null;
         return {
           agentId: r.agentId,
-          name: pkg?.manifest.name ?? r.agentId,
-          summary: pkg?.manifest.summary ?? "",
+          name: pkg?.manifest.name ?? r.name ?? r.agentId,
+          summary: pkg?.manifest.summary ?? r.summary ?? "",
           state: r.state,
           tier: r.tier,
           market: pkg?.manifest.market ?? null,
           connectedConnectors: r.connectedConnectors ?? [],
           rentedAt: r.rentedAt ?? null,
           publicKey: r.publicKey,
+          isCustom: r.isCustom ?? false,
+          accentColor: r.accentColor,
           readiness: preflight
             ? { ready: preflight.readiness.ready, missing: preflight.connectorNotice?.missing ?? [] }
             : { ready: true, missing: [] },
