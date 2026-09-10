@@ -3,17 +3,17 @@ import { listTokenMeta } from "@miai/connectors";
 import { eraseOAuthTokens } from "@/lib/dsar-erase";
 import { eraseConsumerSessions } from "@/lib/consumer-turn";
 import {
-  eraseAllMemories,
+  eraseAllMemoriesForConsumer,
   listMemories,
   type MemoryOwner,
 } from "@/lib/consumer-memory-store";
 import {
-  eraseAllGoals,
-  eraseAllPeople,
+  eraseAllGoalsForConsumer,
+  eraseAllPeopleForConsumer,
   listGoals,
   listPeople,
 } from "@/lib/consumer-lifegraph-store";
-import { eraseAllReminders, listReminders } from "@/lib/consumer-reminders-store";
+import { eraseAllRemindersForConsumer, listReminders } from "@/lib/consumer-reminders-store";
 import { deleteBrief, getBriefRecord } from "@/lib/consumer-brief-store";
 import { isConsumerLinked, unbindTelegramForConsumer } from "@/lib/consumer-telegram-store";
 import { deleteKnowledgeForWorkspace, listKnowledgeSourcesForWorkspace } from "@/lib/knowledge";
@@ -51,11 +51,10 @@ export type ConsumerIdentity = {
 export async function eraseConsumerData(
   identity: ConsumerIdentity,
 ): Promise<{ deleted: ConsumerErasureCounts }> {
-  const owner: MemoryOwner = {
-    tenantId: identity.tenantId,
-    consumerId: identity.consumerId,
-  };
-  // Person-scoped stores are keyed by the consumer's own id (= walletId).
+  // The person's own account id (= walletId). Tenant-scoped stores (memory/goals/people/reminders)
+  // are erased by this consumer id across EVERY brand namespace they have data under — a person can
+  // accumulate memory under several brands (same consumer_id, different tenant_id), and a
+  // right-to-erasure request must clear all of them, not just the one named in the request.
   const personId = identity.consumerId;
 
   const deleted: ConsumerErasureCounts = {
@@ -71,19 +70,36 @@ export async function eraseConsumerData(
     sessionHistories: 0,
   };
 
-  deleted.memories = await eraseAllMemories(owner);
-  deleted.goals = await eraseAllGoals(owner);
-  deleted.people = await eraseAllPeople(owner);
-  deleted.reminders = await eraseAllReminders(owner);
-  deleted.briefRecords = await deleteBrief(personId);
-  deleted.telegramBindings = await unbindTelegramForConsumer(identity.tenantId, personId);
-  deleted.conversationTurns = await deleteTurnTranscriptsForWorkspace(personId);
-  deleted.knowledgeSources = await deleteKnowledgeForWorkspace(personId);
+  // Best-effort: one store failing must not abort erasure of the rest (partial deletion is still
+  // progress on the request, and the surviving steps still run). Each step is isolated and logged.
+  const step = async (key: keyof ConsumerErasureCounts, run: () => Promise<number>) => {
+    try {
+      deleted[key] = await run();
+    } catch (err) {
+      console.error(
+        JSON.stringify({
+          level: "error",
+          event: "miai.consumer_dsar_erase_step_failed",
+          step: key,
+          message: err instanceof Error ? err.message : String(err),
+        }),
+      );
+    }
+  };
+
+  await step("memories", () => eraseAllMemoriesForConsumer(personId));
+  await step("goals", () => eraseAllGoalsForConsumer(personId));
+  await step("people", () => eraseAllPeopleForConsumer(personId));
+  await step("reminders", () => eraseAllRemindersForConsumer(personId));
+  await step("briefRecords", () => deleteBrief(personId));
+  await step("telegramBindings", () => unbindTelegramForConsumer(identity.tenantId, personId));
+  await step("conversationTurns", () => deleteTurnTranscriptsForWorkspace(personId));
+  await step("knowledgeSources", () => deleteKnowledgeForWorkspace(personId));
   // Live OAuth access/refresh tokens to the person's OWN external accounts (their consumer-side
   // connectors, keyed by their id) — a deletion request must revoke these, not leave them live.
-  deleted.oauthTokens = await eraseOAuthTokens(personId);
+  await step("oauthTokens", () => eraseOAuthTokens(personId));
   // Rolling last-24-turn conversation copy in the session store (Redis + in-process).
-  deleted.sessionHistories = await eraseConsumerSessions(personId);
+  await step("sessionHistories", () => eraseConsumerSessions(personId));
 
   return { deleted };
 }

@@ -78,6 +78,9 @@ describe("wallet top-up crediting", () => {
     const data = {
       reference: "wtu_credit_1",
       status: "success",
+      // Amount actually paid MUST match the package price, in the settlement currency.
+      amount: paystack.toMinorUnits(wallet.usdForPackage("20")),
+      currency: paystack.currency(),
       metadata: { purpose: "wallet_topup", walletId: "ws-credit", packageId: "20", scope: "workspace" },
     };
     const first = await topup.applyTopupFromPaystack(data);
@@ -87,6 +90,37 @@ describe("wallet top-up crediting", () => {
     // Webhook retry / return-URL race with the SAME reference must not double-credit.
     const again = await topup.applyTopupFromPaystack(data);
     assert.equal(again.tokens, first.tokens, "no double credit on retry");
+  });
+
+  it("refuses to credit when the amount paid doesn't match the package price", async () => {
+    // Attack: a genuinely-signed charge for ~1 minor unit but metadata claims the $200 package.
+    // HMAC proves the event came from Paystack; it does NOT prove the package price was paid.
+    const underpaid = await topup.applyTopupFromPaystack({
+      reference: "wtu_underpaid",
+      status: "success",
+      amount: 1,
+      currency: paystack.currency(),
+      metadata: { purpose: "wallet_topup", walletId: "ws-attacker", packageId: "200", scope: "consumer" },
+    });
+    assert.equal(underpaid, null, "underpayment must not credit");
+
+    // A mismatched settlement currency is also refused.
+    const wrongCurrency = await topup.applyTopupFromPaystack({
+      reference: "wtu_wrongccy",
+      status: "success",
+      amount: paystack.toMinorUnits(wallet.usdForPackage("20")),
+      currency: "NGN",
+      metadata: { purpose: "wallet_topup", walletId: "ws-x", packageId: "20", scope: "workspace" },
+    });
+    assert.equal(wrongCurrency, null, "wrong currency must not credit");
+
+    // A missing amount (older payload shape) is refused rather than silently trusted.
+    const noAmount = await topup.applyTopupFromPaystack({
+      reference: "wtu_noamt",
+      status: "success",
+      metadata: { purpose: "wallet_topup", walletId: "ws-x", packageId: "20" },
+    });
+    assert.equal(noAmount, null, "missing amount must not credit");
   });
 
   it("ignores charges that aren't wallet top-ups or aren't successful", async () => {

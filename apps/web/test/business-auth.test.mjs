@@ -182,6 +182,10 @@ describe("business page gate (opt-in, safe direction)", () => {
 describe("business credentials route (/api/business/auth/credentials)", () => {
   let credentialsRoute;
   before(async () => {
+    // Signup is gated on an EXACT invited email (not a domain wildcard, which can't prove ownership).
+    // Signin uses membership (domain OR exact). Set both so the invited user can sign up AND sign in.
+    process.env.MIAI_B2B_ALLOWED_EMAILS = "test-emp@acme.com";
+    process.env.MIAI_B2B_ALLOWED_DOMAINS = "acme.com";
     credentialsRoute = await import("../src/app/api/business/auth/credentials/route.ts");
   });
 
@@ -194,7 +198,7 @@ describe("business credentials route (/api/business/auth/credentials)", () => {
       }),
     );
 
-  it("rejects unauthorized email with 403", async () => {
+  it("rejects a non-invited signup with 403 (domain match is NOT enough for signup)", async () => {
     const res = await sendAuthRequest({
       email: "stranger@evil.com",
       password: "Password123!",
@@ -202,7 +206,20 @@ describe("business credentials route (/api/business/auth/credentials)", () => {
     });
     assert.equal(res.status, 403);
     const data = await res.json();
-    assert.ok(data.error.includes("Access is limited to invited teams"));
+    assert.match(data.error, /invited email addresses/i);
+  });
+
+  it("rejects a domain-only (non-exact) signup with 403 — closes self-provision", async () => {
+    // acme.com is a signIN domain, but signUP now needs an exact invite, so a random acme address
+    // can no longer self-provision an owner workspace.
+    const res = await sendAuthRequest({
+      email: "not-invited@acme.com",
+      password: "Password123!",
+      action: "signup",
+    });
+    assert.equal(res.status, 403);
+    const data = await res.json();
+    assert.match(data.error, /invited email addresses/i);
   });
 
   it("registers an allowlisted user and sets a valid session cookie", async () => {

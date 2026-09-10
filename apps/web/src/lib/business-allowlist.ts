@@ -39,6 +39,22 @@ export function emailOnAllowlist(emailRaw?: string): boolean {
 }
 
 /**
+ * True only when `email` is an EXACT entry in MIAI_B2B_ALLOWED_EMAILS — never a domain-wildcard match.
+ *
+ * Gates FIRST-TIME password-credential creation (business signup). The password path cannot prove the
+ * caller controls the address (no Google verification, no confirmation email), so it must not admit an
+ * arbitrary local-part at an allowlisted DOMAIN — otherwise anyone who knows the domain could
+ * self-provision an owner workspace. Requiring an explicitly-invited exact address closes that hole.
+ * Fail-closed: with no exact emails configured, nobody can sign up with a password (they use Google
+ * SSO, which verifies ownership). Signin still uses {@link emailOnAllowlist}.
+ */
+export function emailExactlyAllowlisted(emailRaw?: string): boolean {
+  const email = (emailRaw || "").trim().toLowerCase();
+  if (!email.includes("@")) return false;
+  return csv("MIAI_B2B_ALLOWED_EMAILS").includes(email);
+}
+
+/**
  * True when `email` is on the invite allowlist AND Google has verified it. Requires a verified email
  * so an unverified address can't spoof a whitelisted domain. Used at the OIDC callback (first
  * admission); re-authentication uses {@link emailOnAllowlist}, which the verified cookie satisfies.

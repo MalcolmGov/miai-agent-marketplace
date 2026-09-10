@@ -336,8 +336,19 @@ export async function refreshAccessToken(token: StoredToken): Promise<StoredToke
   }
 
   const res = await fetch(provider.tokenUrl(ctx), { method: "POST", headers, body });
-  const json = (await res.json()) as Record<string, unknown>;
-  if (!res.ok) throw new Error(`Refresh failed: ${JSON.stringify(json).slice(0, 300)}`);
+  // Tolerate a non-JSON error body (HTML 5xx page, empty 429) so we can still read res.status below.
+  const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!res.ok) {
+    const err = new Error(`Refresh failed: ${JSON.stringify(json).slice(0, 300)}`) as Error & {
+      status?: number;
+      oauthError?: string;
+    };
+    err.status = res.status;
+    // The OAuth error code (e.g. "invalid_grant") distinguishes a revoked/expired refresh token
+    // from a transient upstream failure. Only the former means the credential is truly dead.
+    err.oauthError = typeof json.error === "string" ? json.error : undefined;
+    throw err;
+  }
 
   const next: StoredToken = {
     ...token,
@@ -371,8 +382,16 @@ export async function getValidAccessToken(
     }
     try {
       token = await refreshAccessToken(token);
-    } catch {
-      await deleteToken(workspaceId, connectorId);
+    } catch (err) {
+      const e = err as { status?: number; oauthError?: string };
+      // Only drop the stored connection when the refresh token is DEFINITIVELY invalid
+      // (revoked/expired). A transient failure — 429 rate-limit, 5xx, network reset, non-JSON body —
+      // must NOT delete the credential: that would silently disconnect the user over a momentary
+      // provider blip and force a full re-auth even though the refresh token was still valid.
+      if (e.oauthError === "invalid_grant") {
+        await deleteToken(workspaceId, connectorId);
+      }
+      // Fail closed for this call (no valid access token right now) but keep the credential.
       return null;
     }
   }
