@@ -103,8 +103,12 @@ export async function runAskTurn(input: {
     ? input.replyLanguage
     : "en";
 
-  const sessionKey = `ask::${input.sessionId ?? "anon"}`;
-  const history = await getAskHistory(sessionKey);
+  // Only session-carrying callers get persistent history. A session-less caller must NOT read or
+  // write a shared bucket (the old `ask::anon` key bled one anonymous visitor's turns — including
+  // captured leads/emails — into the next anonymous visitor's context). They run stateless instead.
+  const trimmedSession = input.sessionId?.trim();
+  const sessionKey = trimmedSession ? `ask::${trimmedSession}` : null;
+  const history = sessionKey ? await getAskHistory(sessionKey) : [];
 
   const systemAppend = [
     "You are chatting inside the MyInstantAI Agent Marketplace product UI.",
@@ -136,7 +140,7 @@ export async function runAskTurn(input: {
     { wallet: createWalletAdapter() },
   );
 
-  await setAskHistory(sessionKey, result.messages as ChatMessage[]);
+  if (sessionKey) await setAskHistory(sessionKey, result.messages as ChatMessage[]);
 
   const leadIds: string[] = [];
   for (const call of result.toolCalls) {
@@ -164,7 +168,7 @@ export async function runAskTurn(input: {
   let reply = result.assistantMessage
     // White-label: never surface delivery partners or personal names in customer chat.
     .replace(/\bMove\s*Digital\b/gi, "MyInstantAI")
-    .replace(/\bZara\b/g, "our team");
+    .replace(/\bZara\b/gi, "our team");
   if (leadIds[0]) {
     reply = reply
       .replace(/LEAD-\d+/g, leadIds[0])

@@ -63,8 +63,12 @@ export function mintSetupNonce(consumerId: string): string {
     store.set(token, { consumerId, expiresAt: Date.now() + SETUP_TTL_MS });
     return token;
   }
-  // Signed format: <nonceHex>.<consumerId>.<timestamp> → base64.<hmac>
-  const payload = `${randomBytes(16).toString("hex")}.${consumerId}.${Date.now()}`;
+  // Signed format: base64url(JSON [nonceHex, consumerId, timestamp]).<hmac>. A JSON array is used
+  // instead of a "."-joined string because consumerId can itself contain "." (e.g. a dotted brand
+  // like "acme.co"), which corrupted the field split — mis-binding the identity and turning the
+  // timestamp into NaN so the TTL was never enforced. base64url never contains ".", so the single
+  // "." separating payload from signature is unambiguous. (Mirrors connectors/flow.ts state tokens.)
+  const payload = JSON.stringify([randomBytes(16).toString("hex"), consumerId, Date.now()]);
   const sig = createHmac("sha256", SETUP_SECRET).update(payload).digest("base64url");
   return `${Buffer.from(payload).toString("base64url")}.${sig}`;
 }
@@ -98,13 +102,12 @@ export function verifySetupNonce(token: string): { consumerId: string; nonceId: 
     const sig = parts[1];
     const expected = createHmac("sha256", SETUP_SECRET).update(raw).digest("base64url");
     if (!timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
-    const fields = raw.split(".");
-    const nonceId = fields[0];
-    const consumerId = fields[1];
-    const ts = fields[2];
-    if (!nonceId || !consumerId || !ts) return null;
-    if (Date.now() - Number(ts) > SETUP_TTL_MS) return null;
-    return { consumerId, nonceId };
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length !== 3) return null;
+    const [nonceId, consumerId, ts] = parsed as [unknown, unknown, unknown];
+    if (!nonceId || !consumerId || typeof ts !== "number") return null;
+    if (Date.now() - ts > SETUP_TTL_MS) return null;
+    return { consumerId: String(consumerId), nonceId: String(nonceId) };
   } catch {
     return null;
   }

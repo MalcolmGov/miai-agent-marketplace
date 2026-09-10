@@ -78,6 +78,40 @@ async function hydrateFromPostgres(): Promise<boolean> {
   }
 }
 
+/**
+ * Read ONE credential straight from Postgres — the source of truth on a DATABASE_URL deployment.
+ * hydrateFromPostgres loads a full-table snapshot ONCE and never refreshes, so on a multi-replica
+ * deployment a credential created on replica B is invisible to replica A until restart: a valid
+ * login routed to A fails "No account found", and a password change on one replica doesn't take on
+ * another. Reading per-email on each lookup removes that staleness. Throws on a real DB error so the
+ * caller fails closed (a 500) rather than falsely reporting "no account".
+ */
+async function getCredentialFromPostgres(email: string): Promise<UserCredential | null> {
+  if (!databaseUrl()) return null;
+  await ensureMigrations();
+  const res = await query<{
+    email: string;
+    user_id: string;
+    password_hash: string;
+    password_salt: string;
+    created_at: string;
+    updated_at: string;
+  }>(
+    "SELECT email, user_id, password_hash, password_salt, created_at, updated_at FROM miai_user_credentials WHERE email = $1",
+    [email],
+  );
+  const row = res.rows[0];
+  if (!row) return null;
+  return {
+    email: row.email.toLowerCase(),
+    userId: row.user_id,
+    passwordHash: row.password_hash,
+    passwordSalt: row.password_salt,
+    createdAt: new Date(row.created_at).toISOString(),
+    updatedAt: new Date(row.updated_at).toISOString(),
+  };
+}
+
 async function hydrateFromFile(): Promise<void> {
   try {
     const raw = await fs.readFile(storePath(), "utf8");
@@ -154,6 +188,9 @@ export function generateUserId(email: string): string {
 export async function getUserCredential(emailRaw: string): Promise<UserCredential | null> {
   const email = normalizeEmail(emailRaw);
   if (!email) return null;
+  // Source of truth is Postgres when configured (avoids the stale full-table cache); the file
+  // cache is only the no-database fallback.
+  if (databaseUrl()) return getCredentialFromPostgres(email);
   await hydrate();
   return mem().data.users[email] ?? null;
 }
@@ -170,8 +207,7 @@ export async function createUserCredential(
     return { ok: false, error: "Password must be at least 8 characters" };
   }
 
-  await hydrate();
-  if (mem().data.users[email]) {
+  if (await getUserCredential(email)) {
     return { ok: false, error: "An account with this email already exists. Please sign in." };
   }
 
@@ -202,8 +238,13 @@ export async function verifyUserPassword(
     return { ok: false, error: "Email and password are required" };
   }
 
-  await hydrate();
-  const cred = mem().data.users[email];
+  let cred: UserCredential | null;
+  if (databaseUrl()) {
+    cred = await getCredentialFromPostgres(email);
+  } else {
+    await hydrate();
+    cred = mem().data.users[email] ?? null;
+  }
   if (!cred) {
     return { ok: false, error: "No account found with this email. Please sign up." };
   }

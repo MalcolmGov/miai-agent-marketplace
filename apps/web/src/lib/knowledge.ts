@@ -129,6 +129,19 @@ export async function listKnowledgeSources(
   workspaceId: string,
   agentId: string,
 ): Promise<KnowledgeSource[]> {
+  // Read from Postgres directly when configured. The in-process Map is hydrated once at cold start
+  // and never refreshed, so on a multi-replica deployment a source uploaded (or deleted) on one
+  // instance is missing from (or lingers on) another — and getComposedKnowledge feeds this straight
+  // into the live agent prompt, so the agent answered with stale/deleted knowledge. The Map stays
+  // as the no-database fallback.
+  if (databaseUrl()) {
+    await ensureMigrations();
+    const res = await query<{ payload: KnowledgeSource }>(
+      "SELECT payload FROM miai_knowledge_sources WHERE workspace_id = $1 AND agent_id = $2",
+      [workspaceId, agentId],
+    );
+    return res.rows.map((r) => r.payload).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
   await hydrate();
   return [...(mem().get(key(workspaceId, agentId)) ?? [])].sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt),
