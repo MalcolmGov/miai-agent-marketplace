@@ -17,6 +17,8 @@ const TURN_AUDIT_TYPES = new Set([
   "app_turn",
   "ask_turn",
   "studio_turn",
+  "consumer_turn",
+  "whatsapp_turn",
 ]);
 
 function channelLabel(raw?: string): string {
@@ -491,8 +493,10 @@ export async function buildAdminOverview(opts: AdminOverviewOptions = {}) {
 
   for (const ev of audit) {
     const key = ev.at.slice(0, 7);
-    if (ev.type === "agent_turn" || ev.type === "chat" || ev.type === "embed_turn") {
-      if (ev.detail?.action === "clear_chat") continue;
+    // Use the shared turn predicate so the operator KPIs count EVERY channel (app/ask/consumer/
+    // whatsapp/studio), not just agent_turn+chat+embed_turn — the old subset silently reported those
+    // conversations and their tokens/revenue as zero. isTurnEvent already excludes clear_chat.
+    if (isTurnEvent(ev)) {
       const debited = numDetail(ev.detail, "tokensDebited");
       if (tokensByMonth.has(key)) {
         tokensByMonth.set(key, (tokensByMonth.get(key) ?? 0) + debited);

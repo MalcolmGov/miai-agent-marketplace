@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useT } from "@/lib/locale";
 import { parseSmartCatalogQuery } from "@/lib/smart-catalog-query";
 import { sectorAccent } from "@/lib/sectors";
@@ -374,7 +374,9 @@ export function CatalogGrid({
   const [listening, setListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechHint, setSpeechHint] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
+  // Explicit loading flag. (useTransition's `isPending` did NOT track the fetch — the transition
+  // callback returned before the un-awaited promise settled — so the "Updating…" affordance was dead.)
+  const [pending, setPending] = useState(false);
   const [detail, setDetail] = useState<FamilyItem | null>(null);
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [agentsOnboarded, setAgentsOnboarded] = useState<boolean | null>(null);
@@ -510,6 +512,7 @@ export function CatalogGrid({
         counts[item.marketplaceCategory] = (counts[item.marketplaceCategory] ?? 0) + 1;
       }
       setCategoryCounts(counts);
+      setPending(false);
       return;
     }
     const params = new URLSearchParams();
@@ -520,16 +523,30 @@ export function CatalogGrid({
     if (audience !== "all") params.set("audience", audience);
     if (workflowsOnly) params.set("workflow", "1");
     if (pilotOnly) params.set("pilot", "1");
-    startTransition(() => {
-      fetch(`/api/catalog?${params}`)
-        .then((r) => r.json())
-        .then((d) => {
-          const next = (d.items ?? []) as FamilyItem[];
-          setItems(next);
-          setFamilyCount(d.familyCount ?? d.count ?? 0);
-          if (d.categoryCounts) setCategoryCounts(d.categoryCounts as Record<string, number>);
-        });
-    });
+    // Guard against out-of-order responses: only the latest filter's fetch may write state. Without
+    // this, a slow earlier request (e.g. "sal") can resolve after a newer one ("salon") and leave the
+    // grid showing results for a filter the user already moved past.
+    let cancelled = false;
+    const controller = new AbortController();
+    setPending(true);
+    fetch(`/api/catalog?${params}`, { signal: controller.signal })
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return;
+        const next = (d.items ?? []) as FamilyItem[];
+        setItems(next);
+        setFamilyCount(d.familyCount ?? d.count ?? 0);
+        if (d.categoryCounts) setCategoryCounts(d.categoryCounts as Record<string, number>);
+        setPending(false);
+      })
+      .catch(() => {
+        // Swallow the AbortError from a superseded request; only clear loading if we're still current.
+        if (!cancelled) setPending(false);
+      });
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [searchQ, market, category, audience, workflowsOnly, pilotOnly, seeded]);
 
   function toggleVoiceSearch() {
@@ -773,12 +790,13 @@ export function CatalogGrid({
               }}
             >
               {categories.map((c) => {
-                // "All" reflects the other active facets (sum of facet-aware per-industry counts);
-                // falls back to the grand total when no counts are loaded yet.
+                // "All" reflects the other active facets (sum of facet-aware per-industry counts).
+                // With a filter active, a zero sum is a REAL result (e.g. a search matching nothing),
+                // so show 0 — the grand-total fallback is only for the initial unfiltered pre-load
+                // window before any facet counts have arrived.
+                const summed = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
                 const allCount =
-                  Object.values(categoryCounts).reduce((a, b) => a + b, 0) ||
-                  totalFamilies ||
-                  familyCount;
+                  activeFilterCount > 0 ? summed : summed || totalFamilies || familyCount;
                 const count = c === "all" ? allCount : categoryCounts[c] ?? 0;
                 return (
                   <option key={c} value={c}>

@@ -13,7 +13,9 @@ export async function GET(
   ctx: { params: Promise<{ familyId: string }> },
 ) {
   const { familyId } = await ctx.params;
-  const id = decodeURIComponent(familyId || "").trim();
+  // App Router already URL-decodes route params, so decoding again both corrupts ids containing
+  // % or + and throws URIError (→ unhandled 500) on a malformed segment like "%25". Use as-is.
+  const id = (familyId || "").trim();
   if (!id || id.length > 120) {
     return NextResponse.json({ error: "Invalid family id" }, { status: 400 });
   }
