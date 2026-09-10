@@ -505,6 +505,11 @@ export function CatalogGrid({
     if (unfiltered && seeded.length > 0) {
       setItems(seeded);
       setFamilyCount(seeded.length);
+      const counts: Record<string, number> = {};
+      for (const item of seeded) {
+        counts[item.marketplaceCategory] = (counts[item.marketplaceCategory] ?? 0) + 1;
+      }
+      setCategoryCounts(counts);
       return;
     }
     const params = new URLSearchParams();
@@ -522,6 +527,7 @@ export function CatalogGrid({
           const next = (d.items ?? []) as FamilyItem[];
           setItems(next);
           setFamilyCount(d.familyCount ?? d.count ?? 0);
+          if (d.categoryCounts) setCategoryCounts(d.categoryCounts as Record<string, number>);
         });
     });
   }, [searchQ, market, category, audience, workflowsOnly, pilotOnly, seeded]);
@@ -767,7 +773,13 @@ export function CatalogGrid({
               }}
             >
               {categories.map((c) => {
-                const count = c === "all" ? totalFamilies || familyCount : categoryCounts[c] ?? 0;
+                // "All" reflects the other active facets (sum of facet-aware per-industry counts);
+                // falls back to the grand total when no counts are loaded yet.
+                const allCount =
+                  Object.values(categoryCounts).reduce((a, b) => a + b, 0) ||
+                  totalFamilies ||
+                  familyCount;
+                const count = c === "all" ? allCount : categoryCounts[c] ?? 0;
                 return (
                   <option key={c} value={c}>
                     {c === "all" ? `${t("catalog.allIndustries")} (${count})` : `${c} (${count})`}
