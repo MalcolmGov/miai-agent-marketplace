@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { MessageKey } from "@/lib/i18n";
 import { useT } from "@/lib/locale";
@@ -295,24 +295,24 @@ const GROUPS: NavGroup[] = [
   },
 ];
 
-function resolveActive(pathname: string, item: NavItem, groupId: string) {
+function resolveActive(
+  pathname: string,
+  activeTab: string | null,
+  item: NavItem,
+  groupId: string,
+) {
   if (item.href.includes("#")) return false;
   if (pathname === "/" && item.href === "/") {
     return groupId === "core" && item.id === "home";
   }
+  // Read the ?tab= query via useSearchParams (threaded in as activeTab), NOT window.location during
+  // render — the latter is undefined on the server and set on the client, which produced a hydration
+  // mismatch on /my-agents?tab=insights (server & client disagreed on which item was active).
   if (item.id === "insights") {
-    return (
-      pathname === "/insights" ||
-      (pathname === "/my-agents" &&
-        typeof window !== "undefined" &&
-        window.location.search.includes("tab=insights"))
-    );
+    return pathname === "/insights" || (pathname === "/my-agents" && activeTab === "insights");
   }
   if (item.id === "my-agents") {
-    return (
-      pathname === "/my-agents" &&
-      (typeof window === "undefined" || !window.location.search.includes("tab=insights"))
-    );
+    return pathname === "/my-agents" && activeTab !== "insights";
   }
   if (item.exact) return pathname === item.href;
   const targetBase = item.href.split("?")[0];
@@ -337,6 +337,8 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab");
   const router = useRouter();
   const t = useT();
   const [mode, setMode] = useState<ShellMode>(() =>
@@ -547,7 +549,7 @@ export function Sidebar({
                     const active =
                       mode === "consumer" && item.id === "home"
                         ? pathname === "/personal" || pathname.startsWith("/personal/")
-                        : resolveActive(pathname, item, group.id);
+                        : resolveActive(pathname, activeTab, item, group.id);
                     return (
                       <li key={`${group.id}-${item.id}`}>
                         <Link

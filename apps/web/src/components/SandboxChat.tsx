@@ -182,6 +182,20 @@ export function SandboxChat({
         }),
       });
       const elapsedMs = Date.now() - startedAt;
+      if (!res.ok) {
+        // Surface the server error instead of appending a blank assistant bubble (a 500 leaves
+        // assistantMessage undefined, which used to render as an empty "Verified Agent" turn).
+        const errData = await res.json().catch(() => ({}) as Record<string, unknown>);
+        const errMsg =
+          typeof errData?.error === "string" && errData.error.trim()
+            ? errData.error.trim()
+            : "Something went wrong. Please try again.";
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: `Sorry — ${errMsg}`, latencyMs: elapsedMs },
+        ]);
+        return;
+      }
       const data = await res.json();
       setPaused(Boolean(data.paused));
       setBalance(data.balance ?? null);
