@@ -42,6 +42,7 @@ export function KnowledgePanel({
   const [pasteExtra, setPasteExtra] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const refresh = useCallback(async () => {
@@ -172,20 +173,73 @@ export function KnowledgePanel({
       />
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-lg border border-[var(--line)] p-3">
+        <div
+          className={`rounded-lg border p-3 transition-colors ${
+            isDragging
+              ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)]"
+              : "border-[var(--line)]"
+          }`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setIsDragging(false);
+            const f = e.dataTransfer.files?.[0];
+            if (f) void uploadFile(f);
+          }}
+        >
           <div className="mb-2 text-xs font-medium">{t("knowledge.addFile")}</div>
           <p className="mb-2 text-[11px] text-[var(--muted)]">{t("knowledge.fileHint")}</p>
           <input
             ref={fileRef}
             type="file"
             accept=".txt,.md,.markdown,.csv,.json,.html,.htm,.pdf,text/*,application/pdf"
-            className="block w-full text-xs text-[var(--muted)] file:mr-3 file:rounded-md file:border-0 file:bg-[var(--bg-elev)] file:px-3 file:py-1.5 file:text-xs file:text-[var(--text)]"
+            className="hidden"
             disabled={busy === "upload"}
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) void uploadFile(f);
             }}
           />
+          <div className="flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={busy === "upload"}
+              className="btn btn-primary inline-flex w-full items-center justify-center gap-2 text-xs py-2 cursor-pointer shadow-[0_0_14px_color-mix(in_srgb,var(--accent)_25%,transparent)] transition-all hover:scale-[1.005] active:scale-[0.995] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {busy === "upload" ? (
+                <>
+                  <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  <span>Uploading file…</span>
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="h-3.5 w-3.5 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <span>Upload File</span>
+                </>
+              )}
+            </button>
+            <div className="text-center text-[10px] text-[var(--muted)]">
+              {isDragging ? "Drop file to upload" : "Click button or drag and drop file here"}
+            </div>
+          </div>
         </div>
 
         <div className="rounded-lg border border-[var(--line)] p-3">
