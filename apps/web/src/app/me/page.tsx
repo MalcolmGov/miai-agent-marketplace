@@ -72,6 +72,15 @@ function AssistantHome() {
   });
   const [tgBusy, setTgBusy] = useState(false);
   const briefOfferedRef = useRef(false);
+  // Holds the active Telegram connect-poll interval so rapid re-clicks can't stack overlapping
+  // polls and navigating away clears it (otherwise it kept fetching + setState on an unmounted tree).
+  const tgPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(
+    () => () => {
+      if (tgPollRef.current) clearInterval(tgPollRef.current);
+    },
+    [],
+  );
 
   // The chat loop (messages, prepaid balance, streaming turn) is shared with the specialist pages.
   // The assistant layers its own chrome — brand switcher, connectors, reminders, welcome — around it.
@@ -158,19 +167,31 @@ function AssistantHome() {
    *  control flips to "Connected" once they press Start in Telegram. */
   async function connectTelegram() {
     setTgBusy(true);
+    // Cancel any in-flight poll so a re-click doesn't stack a second interval on top of the first.
+    if (tgPollRef.current) {
+      clearInterval(tgPollRef.current);
+      tgPollRef.current = null;
+    }
     try {
       const r = await fetch(`/api/consumer/telegram/connect${ws}`, { method: "POST" });
       const d = await r.json();
-      if (d?.url) window.open(d.url, "_blank", "noopener,noreferrer");
+      if (!d?.url) {
+        setTgBusy(false); // nothing to open/poll — re-enable the button
+        return;
+      }
+      window.open(d.url, "_blank", "noopener,noreferrer");
       let tries = 0;
-      const iv = setInterval(() => {
-        if (++tries > 10) return clearInterval(iv);
+      tgPollRef.current = setInterval(() => {
+        if (++tries > 10) {
+          if (tgPollRef.current) clearInterval(tgPollRef.current);
+          tgPollRef.current = null;
+          setTgBusy(false); // polling window elapsed — re-enable
+          return;
+        }
         refreshTelegram();
       }, 3000);
     } catch {
-      /* ignore — the user can retry */
-    } finally {
-      setTgBusy(false);
+      setTgBusy(false); // failed — let the user retry
     }
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type AuditEvent = {
   id: string;
@@ -67,12 +67,19 @@ export function HistoryClient() {
     void load();
   }, [load]);
 
+  // Tracks the most recently requested correlation id so a slow earlier trace fetch that resolves
+  // after a newer selection can't render its data under the newer id (mismatched header vs body).
+  const latestCorrRef = useRef<string | null>(null);
+
   async function openTrace(correlationId: string) {
+    latestCorrRef.current = correlationId;
     setSelectedCorr(correlationId);
     setTrace(null);
     const res = await fetch(`/api/history/trace/${encodeURIComponent(correlationId)}`);
+    if (latestCorrRef.current !== correlationId) return; // superseded by a newer openTrace
     if (!res.ok) return;
     const data = await res.json();
+    if (latestCorrRef.current !== correlationId) return; // re-check after the second await
     setTrace({ turns: data.turns ?? [], audit: data.audit ?? [] });
   }
 
