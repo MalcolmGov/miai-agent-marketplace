@@ -119,7 +119,10 @@ export function marketplaceCategory(manifest: AgentManifest): string {
   )
     return "Financial services";
   if (/property|rental|building/.test(id)) return "Property";
-  if (/student|course|admission|onboarding-buddy/.test(id)) return "Education";
+  // NOTE: onboarding-buddy is intentionally NOT here — it's employee onboarding (operations/internal)
+  // and is matched by the "HR & internal ops" rule below. Listing it here shadowed that rule and
+  // mis-filed all *-onboarding-buddy agents under Education (a student/course category).
+  if (/student|course|admission/.test(id)) return "Education";
   if (/fleet|field|delivery|order-tracking|stock-availability|home-services|trades|grant-stock/.test(id))
     return "Logistics & field ops";
   if (/recruitment|interview-scheduling|hr-helpdesk|it-helpdesk|executive-assistant|policy-compliance|procurement|onboarding-buddy|learning-development|performance-reviews/.test(id))

@@ -24,7 +24,14 @@ export async function GET(req: Request) {
   const audit = await listAudit(5000, { workspaceId });
   const turns = await listTurnTranscripts({ workspaceId, limit: 500 });
   const connectors = await listTokenMeta(workspaceId);
-  const wallet = await createWalletAdapter().getBalance(workspaceId);
+  // Wallet balance is a best-effort reference field — if the wallet gateway is down/rate-limited,
+  // the DSAR export must still succeed with everything else, not 500. (Mirrors exportConsumerData.)
+  let walletTokens: number | null = null;
+  try {
+    walletTokens = (await createWalletAdapter().getBalance(workspaceId)).tokens;
+  } catch {
+    walletTokens = null;
+  }
 
   const knowledge = [];
   for (const a of agents) {
@@ -54,7 +61,7 @@ export async function GET(req: Request) {
     workspaceId,
     notice:
       "This export is for legitimate access/portability requests. OAuth secrets are omitted. Destructive erasure is available to owners/admins via POST /api/dsar/erase (confirm required); audit tombstones are retained.",
-    wallet: { tokens: wallet.tokens },
+    wallet: { tokens: walletTokens },
     agents: agents.map((a) => ({
       agentId: a.agentId,
       state: a.state,

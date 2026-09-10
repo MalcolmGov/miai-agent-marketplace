@@ -24,7 +24,10 @@ export async function GET(req: Request) {
     workspaceId = requested;
   }
   const wallet = await createWalletAdapter().getBalance(workspaceId);
-  const recent = (await listAudit(20)).filter((e) => e.workspaceId === workspaceId);
+  // Scope at the query, not after: fetching the global newest-20 and post-filtering by workspace
+  // returned [] whenever other tenants produced the 20 most-recent events (i.e. almost always in a
+  // busy multi-tenant deployment). listAudit filters by workspaceId in both the pg and memory paths.
+  const recent = await listAudit(20, { workspaceId });
   return NextResponse.json({
     workspaceId,
     wallet,
