@@ -15,10 +15,10 @@ function collector() {
 }
 
 describe("streamChatTurn — graceful degradation (Journey #9)", () => {
-  it("a runner THROW becomes an in-stream error frame (status 500), not a crash", async () => {
+  it("a runner THROW becomes a SANITIZED in-stream error frame (status 500), not a crash", async () => {
     const { frames, send } = collector();
     await streamChatTurn(send, { channel: "consumer" }, async () => {
-      throw new Error("session store down");
+      throw new Error("connect ECONNREFUSED 46.224.42.163:6379");
     });
     assert.deepEqual(
       frames.map((f) => f.event),
@@ -28,7 +28,13 @@ describe("streamChatTurn — graceful degradation (Journey #9)", () => {
     const err = frames.find((f) => f.event === "error");
     assert.equal(err.data.status, 500);
     assert.equal(err.data.error, "Chat failed");
-    assert.match(err.data.detail, /session store down/);
+    // The raw exception (host/IP/DSN-shaped) must NOT be forwarded to the browser — it's logged
+    // server-side instead. Only the generic status/error reach the client.
+    assert.equal(err.data.detail, undefined, "no raw internal detail leaked to the client");
+    assert.ok(
+      !JSON.stringify(err.data).includes("46.224.42.163"),
+      "internal host/IP must not appear in the client frame",
+    );
   });
 
   it("a graceful !ok result surfaces its status in an error frame, no done frame", async () => {

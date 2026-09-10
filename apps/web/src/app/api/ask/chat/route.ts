@@ -18,9 +18,13 @@ export async function POST(req: Request) {
   }
   const body = parsed.data;
 
-  const sessionId = body.sessionId ?? "anon";
+  // Keep session-less callers isolated: pass sessionId=undefined to runAskTurn (which then gives an
+  // empty, non-shared history and a per-turn debit key) instead of collapsing everyone into one
+  // "anon" bucket — that bled one visitor's history into another's turn and deduped their turns to
+  // free. "anon" is only a coarse fallback for the rate-limit key.
+  const sessionId = body.sessionId?.trim() || undefined;
   const correlationId = correlationFromRequest(req, body.correlationId);
-  const limited = await rateLimit(`ask:${sessionId.slice(0, 48)}`, {
+  const limited = await rateLimit(`ask:${(sessionId ?? "anon").slice(0, 48)}`, {
     limit: 40,
     windowMs: 60_000,
   });

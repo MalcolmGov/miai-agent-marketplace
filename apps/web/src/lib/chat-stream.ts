@@ -48,10 +48,16 @@ export async function streamChatTurn(
       correlationId: result.correlationId,
     });
   } catch (err) {
-    send("error", {
-      error: "Chat failed",
-      detail: err instanceof Error ? err.message : "Unknown error",
-      status: 500,
-    });
+    // Log the raw error server-side, but send a GENERIC frame — the raw message can carry internal
+    // host/IP/DSN/credential-shaped detail (e.g. "connect ECONNREFUSED 46.x:6379", a pg auth error)
+    // straight into the user's chat banner. Matches the sanitized JSON path (api/consumer/chat).
+    console.error(
+      JSON.stringify({
+        level: "error",
+        event: "miai.chat_stream_failed",
+        message: err instanceof Error ? err.message : String(err),
+      }),
+    );
+    send("error", { error: "Chat failed", status: 500 });
   }
 }
