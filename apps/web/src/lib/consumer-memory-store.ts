@@ -350,3 +350,31 @@ export async function eraseAllMemories(owner: MemoryOwner): Promise<number> {
   if (map.delete(bucket)) await fileWrite(map);
   return n;
 }
+
+/**
+ * DSAR erase of ALL of one person's memories across EVERY tenant/brand namespace, not just one.
+ * A consumer legitimately accumulates memory under multiple brand namespaces (same consumer_id,
+ * different tenant_id); a right-to-erasure request must clear all of them. consumer_id is unique to
+ * the person (= sub in OIDC), so deleting by it alone stays inside this one person.
+ */
+export async function eraseAllMemoriesForConsumer(consumerId: string): Promise<number> {
+  if (!consumerId) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query("DELETE FROM miai_consumer_memory WHERE consumer_id = $1", [consumerId]);
+    return res.rowCount ?? 0;
+  }
+  const map = await fileMem();
+  const suffix = `::${consumerId}`;
+  let n = 0;
+  let changed = false;
+  for (const key of [...map.keys()]) {
+    if (key.endsWith(suffix)) {
+      n += (map.get(key) ?? []).length;
+      map.delete(key);
+      changed = true;
+    }
+  }
+  if (changed) await fileWrite(map);
+  return n;
+}

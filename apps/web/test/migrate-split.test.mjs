@@ -11,7 +11,7 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { splitStatements } from "../src/lib/migrate.ts";
+import { splitStatements, MIGRATIONS as MIGRATION_ENTRIES } from "../src/lib/migrate.ts";
 
 const MIGRATIONS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../migrations");
 const LEADING_KEYWORDS = new Set([
@@ -47,4 +47,26 @@ test("migration 008 specifically yields a single clean CREATE TABLE", () => {
   const stmts = splitStatements(readFileSync(path.join(MIGRATIONS, "008_consumer_wallet_pause.sql"), "utf8"));
   assert.equal(stmts.length, 1);
   assert.ok(stmts[0].startsWith("CREATE TABLE IF NOT EXISTS miai_consumer_wallet_pause"));
+});
+
+// Regression for the orphaned-migration bug: 010_user_credentials.sql shipped but was never added to
+// the MIGRATIONS array, so ensureMigrations() never created miai_user_credentials on Postgres and
+// email/password auth silently fell back to an ephemeral file. Lock every *.sql file to a registered
+// entry (and vice-versa) so a future orphaned migration fails CI instead of shipping dormant.
+test("every migration .sql file is registered in the MIGRATIONS array (and vice-versa)", () => {
+  const filesOnDisk = readdirSync(MIGRATIONS)
+    .filter((f) => f.endsWith(".sql"))
+    .sort();
+  const registeredFiles = MIGRATION_ENTRIES.map((m) => m.file).sort();
+  assert.deepEqual(
+    registeredFiles,
+    filesOnDisk,
+    "MIGRATIONS must list exactly the .sql files on disk — a file present on disk but missing here never runs",
+  );
+  // ids must be unique and match their file's stem so ordering/recording stays coherent.
+  const ids = MIGRATION_ENTRIES.map((m) => m.id);
+  assert.equal(new Set(ids).size, ids.length, "migration ids are unique");
+  for (const m of MIGRATION_ENTRIES) {
+    assert.equal(`${m.id}.sql`, m.file, `migration id "${m.id}" must match its file "${m.file}"`);
+  }
 });

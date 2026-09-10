@@ -48,7 +48,6 @@ export async function POST(req: Request) {
     agentId,
     message: body.message.trim(),
     sessionId: body.sessionId,
-    idempotencyKey: body.idempotencyKey,
     replyLanguage: body.replyLanguage,
     correlationId,
     rateLimitOk: limited.ok,

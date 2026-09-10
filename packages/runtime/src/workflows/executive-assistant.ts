@@ -84,29 +84,38 @@ function nextIso(dayOffset: number, hour: number, minute = 0): string {
 
 function resolveDatetime(text: string): string {
   const lower = text.toLowerCase();
+  // Require a colon or a meridiem so a bare number (e.g. the "30" in "30-min") is never read as a
+  // time. The meridiem form is tried first so "2:30pm" (no space) parses as 14:30 — not as "30pm"
+  // with the minutes captured as the hour, which the old colon-first order produced.
   const time =
-    lower.match(/\b(\d{1,2}):(\d{2})\b/) ||
-    lower.match(/\b(\d{1,2})\s*(am|pm)\b/);
+    lower.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/) ||
+    lower.match(/\b(\d{1,2}):(\d{2})\b/);
   let hour = 14;
   let minute = 0;
   if (time) {
     hour = Number(time[1]);
-    if (time[2] && /^\d{2}$/.test(time[2])) minute = Number(time[2]);
-    else if (/pm/i.test(time[2] || "") && hour < 12) hour += 12;
-    else if (/am/i.test(time[2] || "") && hour === 12) hour = 0;
+    minute = time[2] ? Number(time[2]) : 0;
+    const mer = time[3]; // present only on the meridiem branch
+    if (mer === "pm" && hour < 12) hour += 12;
+    else if (mer === "am" && hour === 12) hour = 0;
+    if (hour > 23 || minute > 59) {
+      hour = 14;
+      minute = 0;
+    }
   }
   let offset = 1;
   if (/today/.test(lower)) offset = 0;
   else if (/tomorrow/.test(lower)) offset = 1;
-  else if (/thursday/.test(lower)) {
-    const day = new Date().getDay();
-    offset = (4 - day + 7) % 7 || 7;
-  } else if (/friday/.test(lower)) {
-    const day = new Date().getDay();
-    offset = (5 - day + 7) % 7 || 7;
-  } else if (/monday/.test(lower)) {
-    const day = new Date().getDay();
-    offset = (1 - day + 7) % 7 || 7;
+  else {
+    // All seven weekdays (the old code silently ignored Tue/Wed/Sat/Sun and defaulted to tomorrow).
+    const weekdays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const today = new Date().getDay();
+    for (let i = 0; i < weekdays.length; i++) {
+      if (lower.includes(weekdays[i]!)) {
+        offset = (i - today + 7) % 7 || 7; // next occurrence; naming today's weekday -> next week
+        break;
+      }
+    }
   }
   return nextIso(offset, hour, minute);
 }

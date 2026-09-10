@@ -34,10 +34,13 @@ export async function POST(req: Request) {
     const data = (event.data ?? {}) as {
       reference?: string;
       status?: string;
+      amount?: number;
+      currency?: string;
       metadata?: Record<string, unknown> | null;
     };
-    const meta = (data.metadata ?? {}) as Record<string, unknown>;
-    if (isWalletReference(String(data.reference || "")) || meta.purpose === "wallet_topup") {
+    // Route on our server-issued reference only; applyTopupFromPaystack re-checks and binds the
+    // credited package to the amount actually paid.
+    if (isWalletReference(String(data.reference || ""))) {
       try {
         const result = await applyTopupFromPaystack(data);
         return NextResponse.json({ ok: true, routed: "wallet_topup", credited: result?.credited ?? false });

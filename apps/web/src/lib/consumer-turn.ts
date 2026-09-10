@@ -78,9 +78,6 @@ export type ConsumerTurnInput = {
   agentId: string;
   message: string;
   sessionId?: string;
-  /** Per-submit wallet-debit idempotency key from the client — unique per distinct send, reused
-   *  only on a retry of the SAME send. Forwarded to the runtime so a replay dedups the charge. */
-  idempotencyKey?: string;
   replyLanguage?: string;
   correlationId?: string;
   rateLimitOk: boolean;
@@ -212,10 +209,12 @@ async function prepare(input: ConsumerTurnInput): Promise<ConsumerTurnErr | Prep
       systemAppend,
       replyLanguage,
       consumerLine: true,
-      // Session scopes the DERIVED idempotency key so two distinct conversations with an identical
-      // first message are charged separately; idempotencyKey (when the client sends one) overrides.
+      // Session scopes the runtime's content-derived idempotency key so two distinct conversations
+      // with an identical first message are charged separately. The consumer path does NOT forward a
+      // client-supplied key: an untrusted client could otherwise pin one key across different
+      // messages and be charged only once (unlimited free turns). turnDebitKey derives a retry-safe
+      // key from workspace+agent+session+position+content, so genuine same-send replays still dedup.
       sessionId: input.sessionId,
-      idempotencyKey: input.idempotencyKey,
     },
   };
 }

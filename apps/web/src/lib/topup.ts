@@ -5,6 +5,7 @@ import {
   type TopUpPackageId,
 } from "@miai/wallet-adapter";
 import { appendAudit } from "@/lib/store";
+import { currency, toMinorUnits } from "@/lib/paystack";
 
 /**
  * Wallet top-up plumbing shared by the Paystack init / webhook / return routes.
@@ -54,11 +55,15 @@ function asPackageId(v: unknown): TopUpPackageId | null {
 export async function applyTopupFromPaystack(data: {
   reference?: string;
   status?: string;
+  amount?: number; // minor units actually paid (webhook payload / verify API)
+  currency?: string;
   metadata?: Record<string, unknown> | null;
 }): Promise<{ credited: boolean; tokens: number } | null> {
   const reference = String(data.reference || "");
   const meta = (data.metadata || {}) as Record<string, unknown>;
-  if (!(isWalletReference(reference) || meta.purpose === "wallet_topup")) return null;
+  // Route ONLY on our server-issued `wtu_` reference. The old `|| meta.purpose === "wallet_topup"`
+  // fallback trusted attacker-chosen metadata: any charge could enter the wallet-credit path.
+  if (!isWalletReference(reference)) return null;
 
   const status = String(data.status || "success").toLowerCase();
   if (status !== "success" && status !== "successful") return null;
@@ -68,6 +73,16 @@ export async function applyTopupFromPaystack(data: {
   if (!walletId || !packageId) return null;
 
   const usd = usdForPackage(packageId);
+
+  // Credit is decided by the metadata packageId, so it MUST be bound to the amount actually paid —
+  // otherwise a buyer could initialize a 1-cent charge with packageId:"200" in metadata (the public
+  // key allows arbitrary client-set amounts) and, on the genuinely-signed webhook, be credited $200
+  // of tokens. HMAC only proves the event came from Paystack, not that the package price was paid.
+  const paidMinor = Number(data.amount);
+  const expectedMinor = toMinorUnits(usd);
+  if (!Number.isFinite(paidMinor) || paidMinor !== expectedMinor) return null;
+  if (String(data.currency || "").toUpperCase() !== currency()) return null;
+
   const wallet = createWalletAdapter();
   // idempotencyKey = the Paystack reference → a retry returns the balance uncredited.
   const balance = await wallet.topUp({

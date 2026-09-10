@@ -417,3 +417,49 @@ export async function eraseAllPeople(owner: MemoryOwner): Promise<number> {
   if (map.delete(bucket)) await writePeople(map);
   return n;
 }
+
+/** DSAR: erase ALL goals for a person across EVERY tenant/brand namespace (by consumer_id alone). */
+export async function eraseAllGoalsForConsumer(consumerId: string): Promise<number> {
+  if (!consumerId) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query("DELETE FROM miai_consumer_goal WHERE consumer_id = $1", [consumerId]);
+    return res.rowCount ?? 0;
+  }
+  const map = await goalsMem();
+  const suffix = `::${consumerId}`;
+  let n = 0;
+  let changed = false;
+  for (const key of [...map.keys()]) {
+    if (key.endsWith(suffix)) {
+      n += (map.get(key) ?? []).length;
+      map.delete(key);
+      changed = true;
+    }
+  }
+  if (changed) await writeGoals(map);
+  return n;
+}
+
+/** DSAR: erase ALL people for a person across EVERY tenant/brand namespace (by consumer_id alone). */
+export async function eraseAllPeopleForConsumer(consumerId: string): Promise<number> {
+  if (!consumerId) return 0;
+  if (getPool()) {
+    await ensureMigrations();
+    const res = await query("DELETE FROM miai_consumer_person WHERE consumer_id = $1", [consumerId]);
+    return res.rowCount ?? 0;
+  }
+  const map = await peopleMem();
+  const suffix = `::${consumerId}`;
+  let n = 0;
+  let changed = false;
+  for (const key of [...map.keys()]) {
+    if (key.endsWith(suffix)) {
+      n += (map.get(key) ?? []).length;
+      map.delete(key);
+      changed = true;
+    }
+  }
+  if (changed) await writePeople(map);
+  return n;
+}

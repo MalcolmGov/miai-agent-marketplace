@@ -34,9 +34,10 @@ export const consumerChatBodySchema = z.object({
   sessionId: shortText.optional(),
   replyLanguage: z.string().max(32).optional(),
   correlationId: shortText.optional(),
-  // Per-submit wallet-debit idempotency key: unique per distinct send, reused only when the SAME
-  // send is retried, so a network/serverless replay dedups while a fresh message is charged.
-  idempotencyKey: shortText.optional(),
+  // NOTE: no client-supplied idempotencyKey on the consumer line. The wallet-debit key is derived
+  // server-side (turnDebitKey: workspace+agent+session+position+content), which dedups genuine
+  // same-send replays without letting an untrusted client pin one key across different messages to
+  // get free metered turns.
 });
 
 // Consumer daily-brief schedule.

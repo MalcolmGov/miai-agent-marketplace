@@ -6,7 +6,7 @@ import { getPool, query } from "@/lib/pg";
 type Migration = { id: string; file: string };
 
 /** Ordered schema migrations. Each is applied once and recorded in miai_schema_migrations. */
-const MIGRATIONS: Migration[] = [
+export const MIGRATIONS: Migration[] = [
   { id: "001_init", file: "001_init.sql" },
   { id: "002_consumer_brief", file: "002_consumer_brief.sql" },
   { id: "003_consumer_memory", file: "003_consumer_memory.sql" },
@@ -16,6 +16,7 @@ const MIGRATIONS: Migration[] = [
   { id: "007_telegram_setup_nonce", file: "007_telegram_setup_nonce.sql" },
   { id: "008_consumer_wallet_pause", file: "008_consumer_wallet_pause.sql" },
   { id: "009_oauth_state_nonce", file: "009_oauth_state_nonce.sql" },
+  { id: "010_user_credentials", file: "010_user_credentials.sql" },
 ];
 
 let ensuring: Promise<void> | undefined;

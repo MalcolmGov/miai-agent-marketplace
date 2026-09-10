@@ -31,7 +31,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Password is required" }, { status: 400 });
     }
 
-    // Enforce business allowlist (same gate as Google OIDC)
+    // Business allowlist gate (membership only). NOTE: unlike the Google OIDC callback — which uses
+    // isBusinessEmailAllowed(email, emailVerified) and requires a Google-verified address — this
+    // password path does NOT prove the caller controls the address. A domain-allowlisted signup can
+    // therefore self-provision without email verification. Acceptable only for trusted invite-only
+    // B2B domains; if that assumption weakens, add an email-confirmation step (or gate signup on an
+    // exact-address invite) before minting the credential + session.
     if (!emailOnAllowlist(email)) {
       return NextResponse.json(
         {

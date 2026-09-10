@@ -1,7 +1,9 @@
 /**
  * Consumer DSAR (subject-level export + erase) — file fallback, no Postgres required.
- * Verifies the isolation invariant: erasing one person's data never touches another person,
- * nor the same person under a different brand/tenant. Run: pnpm --filter @miai/web test
+ * Verifies the erasure invariant: a right-to-erasure request clears the person EVERYWHERE — across
+ * every brand/tenant namespace they have data under — while never touching a DIFFERENT person.
+ * (Erasing only the request's brand would leave the person's data under other brands, a POPIA/GDPR
+ * incomplete-erasure violation.) Run: pnpm --filter @miai/web test
  */
 import { describe, it, before, after } from "node:test";
 import assert from "node:assert/strict";
@@ -58,7 +60,7 @@ describe("consumer-dsar", () => {
     assert.equal(typeof mod.exportConsumerData, "function");
   });
 
-  it("erases only the target person, leaving other consumers and tenants intact", async () => {
+  it("erases the target person across every brand, leaving other people intact", async () => {
     const mem = await import("../src/lib/consumer-memory-store.ts");
     const life = await import("../src/lib/consumer-lifegraph-store.ts");
     const { eraseConsumerData } = await import("../src/lib/consumer-dsar.ts");
@@ -100,8 +102,9 @@ describe("consumer-dsar", () => {
     // Wallet balance must never appear in an erasure result.
     assert.ok(!("wallet" in deleted) && !("walletTokens" in deleted));
 
-    // Target person wiped.
-    assert.equal(deleted.memories, 1);
+    // Target person wiped. memories = 2: consumerA's rows under BOTH tenantT (TA) and tenantU (UA)
+    // are erased, because a deletion request clears the person across every brand namespace.
+    assert.equal(deleted.memories, 2);
     assert.equal(deleted.goals, 1);
     assert.equal(deleted.people, 1);
     assert.equal((await mem.listMemories(TA)).length, 0);
@@ -113,9 +116,10 @@ describe("consumer-dsar", () => {
     assert.equal(bag.has("consumerA::agent1::default"), false);
     assert.equal(bag.has("consumerB::agent1::default"), true);
 
-    // Isolation: same brand different person, and same person different brand, both survive.
+    // A DIFFERENT person under the same brand is untouched...
     assert.equal((await mem.listMemories(TB)).length, 1);
-    assert.equal((await mem.listMemories(UA)).length, 1);
+    // ...but the SAME person under another brand IS erased (the fix: no data left behind anywhere).
+    assert.equal((await mem.listMemories(UA)).length, 0);
   });
 
   it("exports a person's own data without mutating it", async () => {
