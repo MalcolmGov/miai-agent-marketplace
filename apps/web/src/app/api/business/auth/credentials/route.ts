@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { safeReturnPath } from "@/lib/consumer-oidc";
-import { emailOnAllowlist } from "@/lib/business-allowlist";
+import { emailExactlyAllowlisted, emailOnAllowlist } from "@/lib/business-allowlist";
 import {
   BUSINESS_SESSION_COOKIE,
   sessionCookieOptions,
@@ -31,17 +31,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Password is required" }, { status: 400 });
     }
 
-    // Business allowlist gate (membership only). NOTE: unlike the Google OIDC callback — which uses
-    // isBusinessEmailAllowed(email, emailVerified) and requires a Google-verified address — this
-    // password path does NOT prove the caller controls the address. A domain-allowlisted signup can
-    // therefore self-provision without email verification. Acceptable only for trusted invite-only
-    // B2B domains; if that assumption weakens, add an email-confirmation step (or gate signup on an
-    // exact-address invite) before minting the credential + session.
-    if (!emailOnAllowlist(email)) {
+    // Business allowlist gate. SIGNUP is first-admission via a password, which — unlike Google OIDC
+    // (isBusinessEmailAllowed requires a Google-verified address) — cannot prove the caller controls
+    // the address, so it is gated on an EXACT invited email (MIAI_B2B_ALLOWED_EMAILS), never a domain
+    // wildcard that would let anyone at the domain self-provision an owner workspace. SIGNIN uses the
+    // membership check (safe at re-auth, and can't mint a session for an address that never signed up
+    // because verifyUserPassword requires an existing credential).
+    const allowed = action === "signup" ? emailExactlyAllowlisted(email) : emailOnAllowlist(email);
+    if (!allowed) {
       return NextResponse.json(
         {
           error:
-            "Access is limited to invited teams. Please use an authorized email (@myinstantai.com or invited address).",
+            action === "signup"
+              ? "Sign-up is limited to invited email addresses. Ask your admin for an invite, or sign in with your Google work account."
+              : "Access is limited to invited teams. Please use an authorized email (@myinstantai.com or invited address).",
         },
         { status: 403 },
       );
