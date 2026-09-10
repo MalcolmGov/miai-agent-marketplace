@@ -290,7 +290,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
           languages: ["en"],
           model: { primary: "claude-sonnet", temperature: 0.3, max_output_tokens: 700 },
         }),
-      audience: agentAudience(f.category),
+      audience: agentAudience(sample?.category ?? f.category),
       markets,
       packs: INDEXED_MARKETS.filter((p) => Boolean(markets[p])),
       // Legacy flag for integrity tooling; ZA is not a separate commercial market.
