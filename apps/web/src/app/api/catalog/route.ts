@@ -81,9 +81,8 @@ export async function GET(req: Request) {
   if (preferred) {
     items = items.filter((f) => Boolean(f.markets[preferred]));
   }
-  if (category && category !== "all") {
-    items = items.filter((i) => i.marketplaceCategory === category);
-  }
+  // Apply every facet EXCEPT category first, so the industry dropdown can show
+  // counts that reflect the other active filters (audience/market/workflow/pilot/search).
   if (audience === "customer" || audience === "internal") {
     items = items.filter((i) => i.audience === audience);
   }
@@ -102,6 +101,19 @@ export async function GET(req: Request) {
     );
   }
 
+  // Per-industry counts for the dropdown, computed before the category facet is
+  // applied so selecting one industry doesn't zero out the others.
+  const categoryCounts: Record<string, number> = {};
+  for (const i of items) {
+    if (i.marketplaceCategory) {
+      categoryCounts[i.marketplaceCategory] = (categoryCounts[i.marketplaceCategory] ?? 0) + 1;
+    }
+  }
+
+  if (category && category !== "all") {
+    items = items.filter((i) => i.marketplaceCategory === category);
+  }
+
   items = sortWorkflowFirst(items);
 
   const agentCount = preferred
@@ -113,6 +125,7 @@ export async function GET(req: Request) {
     count: items.length,
     familyCount: items.length,
     agentCount,
+    categoryCounts,
     totalAgents,
     items,
     packs,
