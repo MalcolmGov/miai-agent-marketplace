@@ -472,12 +472,31 @@ html[data-theme="light"] .studio-chat-bubble-agent {
 }
 
 .input {
-  @apply w-full px-3.5 py-2.5 text-sm outline-none transition;
+  @apply w-full px-3.5 py-2.5 outline-none transition;
+  font-size: 16px;
   border-radius: 10px;
   background: color-mix(in srgb, #060a10 88%, transparent);
   border: 1px solid var(--line);
   color: var(--text);
   font-family: var(--font-ui);
+}
+
+@media (min-width: 640px) {
+  .input {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 639px) {
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
 
 .input::placeholder {
@@ -607,7 +626,8 @@ html[data-theme="light"] .studio-chat-bubble-agent {
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 50;
-  width: 272px;
+  width: min(280px, 82dvw);
+  max-width: 320px;
   background: linear-gradient(180deg, #0c121c 0%, #090e16 100%);
   border-right: 1px solid var(--line);
   transform: translateX(-105%);
@@ -681,12 +701,19 @@ html[data-theme="light"] .studio-chat-bubble-agent {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 10px;
   border: 1px solid var(--line);
   color: var(--text);
   background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.shell-menu-btn:active {
+  transform: scale(0.95);
 }
 
 .shell-content {
@@ -713,9 +740,11 @@ html[data-theme="light"] .studio-chat-bubble-agent {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 0.15rem;
-  margin-inline: -0.15rem;
-  padding-inline: 0.15rem;
+  padding-bottom: 0.25rem;
+  margin-inline: -0.25rem;
+  padding-inline: 0.25rem;
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
 }
 
 .catalog-filter-scroll::-webkit-scrollbar {

@@ -163,10 +163,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
             <ThemeToggle />
 
-            {/* Notification Bell */}
+            {/* Notification Bell (desktop/tablet) */}
             <button
               type="button"
-              className="p-1.5 rounded-lg text-[var(--muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-all"
+              className="hidden sm:inline-flex p-1.5 rounded-lg text-[var(--muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-all touch-manipulation"
               aria-label="Notifications"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -175,10 +175,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </svg>
             </button>
 
-            {/* Settings shortcut */}
+            {/* Settings shortcut (desktop/tablet) */}
             <Link
               href="/settings"
-              className="p-1.5 rounded-lg text-[var(--muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-all"
+              className="hidden sm:inline-flex p-1.5 rounded-lg text-[var(--muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-all touch-manipulation"
               aria-label="Settings"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
