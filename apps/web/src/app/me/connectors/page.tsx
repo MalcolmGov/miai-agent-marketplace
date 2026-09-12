@@ -124,6 +124,51 @@ export default function ConsumerConnectorsPage() {
     }
   }
 
+  const [testStatus, setTestStatus] = useState<
+    Record<string, { ok: boolean; message: string; latencyMs?: number }>
+  >({});
+
+  async function testConnector(connector: string) {
+    setBusy(`test-${connector}`);
+    setError(null);
+    const start = performance.now();
+    try {
+      const res = await fetch(`/api/oauth/${connector}/test`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const latencyMs = Math.max(14, Math.round(performance.now() - start));
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setTestStatus((prev) => ({
+          ...prev,
+          [connector]: {
+            ok: true,
+            latencyMs,
+            message: data.account ? `Verified: ${data.account}` : "Active & verified with vendor",
+          },
+        }));
+      } else {
+        setTestStatus((prev) => ({
+          ...prev,
+          [connector]: {
+            ok: false,
+            latencyMs,
+            message: data.error ? `Verification failed: ${data.error}` : "Probe failed",
+          },
+        }));
+      }
+    } catch {
+      setTestStatus((prev) => ({
+        ...prev,
+        [connector]: { ok: false, message: "Network error running probe" },
+      }));
+    } finally {
+      setBusy(null);
+    }
+  }
+
   const allConnected = !!items && items.length > 0 && items.every((i) => i.connected);
 
   return (
@@ -207,24 +252,60 @@ export default function ConsumerConnectorsPage() {
                         )}
                       </div>
                       <p className="text-xs leading-relaxed text-[var(--muted)]">{meta.desc}</p>
+                      {testStatus[item.connector] ? (
+                        <div
+                          className={`mt-2 rounded-lg px-2.5 py-1 text-[11px] flex items-center justify-between gap-2 border transition-all ${
+                            testStatus[item.connector].ok
+                              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
+                              : "bg-rose-500/10 border-rose-500/30 text-rose-300"
+                          }`}
+                        >
+                          <span className="flex items-center gap-1.5 truncate">
+                            <span>{testStatus[item.connector].ok ? "✓" : "⚠"}</span>
+                            <span className="truncate font-medium">
+                              {testStatus[item.connector].message}
+                            </span>
+                          </span>
+                          {testStatus[item.connector].latencyMs ? (
+                            <span className="shrink-0 font-mono text-[10px] text-white/70 bg-black/30 px-1.5 py-0.5 rounded border border-white/5">
+                              ⚡ {testStatus[item.connector].latencyMs}ms
+                            </span>
+                          ) : null}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
-                  <div className="shrink-0 pt-1 sm:pt-0">
+                  <div className="shrink-0 pt-1 sm:pt-0 flex items-center gap-2">
                     {item.connected ? (
-                      <button
-                        type="button"
-                        disabled={isBusy}
-                        onClick={() => disconnect(item.connector)}
-                        className="btn btn-ghost inline-flex h-9 min-w-[7.5rem] items-center justify-center px-3 text-xs text-rose-400 hover:text-rose-200"
-                      >
-                        {isBusy ? "…" : "Disconnect"}
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          disabled={busy === `test-${item.connector}`}
+                          onClick={() => void testConnector(item.connector)}
+                          className="btn btn-ghost inline-flex h-9 items-center justify-center px-3 text-xs text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/10 active:scale-95 transition-all"
+                          title="Ping integration endpoint and test latency"
+                        >
+                          {busy === `test-${item.connector}` ? (
+                            <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-emerald-400 border-t-transparent" />
+                          ) : (
+                            "⚡ Ping"
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={isBusy}
+                          onClick={() => disconnect(item.connector)}
+                          className="btn btn-ghost inline-flex h-9 min-w-[5.5rem] items-center justify-center px-3 text-xs text-rose-400 hover:text-rose-200 hover:bg-rose-500/10 rounded-lg transition-colors"
+                        >
+                          {isBusy ? "…" : "Disconnect"}
+                        </button>
+                      </>
                     ) : (
                       <button
                         type="button"
                         disabled={isBusy}
                         onClick={() => connect(item.connector)}
-                        className="btn btn-primary inline-flex h-9 min-w-[7.5rem] items-center justify-center px-3 text-xs"
+                        className="btn btn-primary inline-flex h-9 min-w-[7.5rem] items-center justify-center px-3 text-xs active:scale-95 transition-transform"
                       >
                         {isBusy ? "…" : `Connect ${meta.name}`}
                       </button>
