@@ -623,10 +623,10 @@ function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
 
   return (
     <div
-      className={`panel panel-interactive group relative overflow-hidden rounded-2xl border p-5 transition-all duration-200 ${
+      className={`panel panel-interactive group relative overflow-hidden rounded-2xl border p-4 sm:p-5 transition-all duration-200 ${
         active
-          ? "border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] hover:border-[var(--accent)] hover:shadow-[0_0_24px_-4px_color-mix(in_srgb,var(--accent)_22%,transparent)]"
-          : "border-[color-mix(in_srgb,#f59e0b_28%,var(--line))] hover:border-amber-400/60 hover:shadow-[0_0_24px_-4px_rgba(245,158,11,0.18)]"
+          ? "border-cyan-400/35 shadow-[0_0_14px_-2px_rgba(61,214,198,0.25)] hover:border-cyan-300/70 hover:shadow-[0_0_22px_rgba(61,214,198,0.45)]"
+          : "border-amber-400/35 shadow-[0_0_14px_-2px_rgba(245,158,11,0.2)] hover:border-amber-300/70 hover:shadow-[0_0_22px_rgba(245,158,11,0.35)]"
       }`}
     >
       <div className="card-specular-rim" />
