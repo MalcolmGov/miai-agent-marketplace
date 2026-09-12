@@ -17,6 +17,7 @@ export const MIGRATIONS: Migration[] = [
   { id: "008_consumer_wallet_pause", file: "008_consumer_wallet_pause.sql" },
   { id: "009_oauth_state_nonce", file: "009_oauth_state_nonce.sql" },
   { id: "010_user_credentials", file: "010_user_credentials.sql" },
+  { id: "011_pgvector_and_rls", file: "011_pgvector_and_rls.sql" },
 ];
 
 let ensuring: Promise<void> | undefined;
