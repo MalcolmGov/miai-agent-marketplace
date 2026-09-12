@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-03T10:06:19.852Z",
+  "updatedAt": "2026-09-12T13:49:44.322Z",
   "disclaimer": "Live-LLM samples only (real model adapter). MockModel catalogue eval pass-rates are a different metric and must not be sold as live quality. Coverage is the hero / flagship sets named below — not the full 551-agent catalogue.",
   "coverageNote": "Hero / flagship sets only. Depth: live on pilots still requires OAuth connector evidence (Wave 4), not merely a live-LLM FAQ pass.",
   "sets": [
     {
       "id": "go-live-18",
       "label": "Go-live 18 heroes",
-      "reportFile": "eval-live-2026-08-03-go-live-18.md",
-      "date": "2026-08-03",
+      "reportFile": "eval-live-2026-09-12-go-live-18.md",
+      "date": "2026-09-12",
       "modelMode": "anthropic",
       "passed": 17,
       "total": 18,
@@ -18,13 +18,13 @@
           "agentId": "us-accounting-practice",
           "ok": true,
           "prompt": "When is monthly payroll tax due?",
-          "preview": "## Filing deadlines — general guide only > General guideline dates for planning — not advice about any client's specific obligations. > The agent fetches this list with `get_deadlines`. - **Monthly payroll tax deposits (example guide):** ma"
+          "preview": "## Filing deadlines — general guide only - **Monthly payroll tax deposits (example guide):** many small employers remit by the **7th** of the   following month when using a monthly schedule — confirm with your accountant / IRS schedule.   ("
         },
         {
           "agentId": "us-events-venue",
           "ok": true,
           "prompt": "What wedding packages do you offer?",
-          "preview": "## Packages & pricing Starting prices; the events team confirms a detailed quote. `get_packages` returns this list.  - **Intimate** — up to 50 guests — from **USD 25000** / **$25000** (USD 25,000). Wedding.   Includes: venue hire, tables an"
+          "preview": "## Packages & pricing  - **Intimate** — up to 50 guests — from **USD 25000** / **$25000** (USD 25,000). Wedding.   Includes: venue hire, tables and chairs, basic setup, day coordinator. - **Classic wedding** — up to 120 guests — from **USD"
         },
         {
           "agentId": "us-building-management",
@@ -34,15 +34,15 @@
         },
         {
           "agentId": "us-pharmacy",
-          "ok": true,
+          "ok": false,
           "prompt": "Do you have Panado 500mg in stock?",
-          "preview": "I checked OTC stock for that item. If you need a prescription refill logged, share the RX number and your name/phone."
+          "preview": "Panado 500mg in stock is **in stock**."
         },
         {
           "agentId": "us-gym-membership",
           "ok": true,
           "prompt": "What memberships do you offer?",
-          "preview": "## Membership plans & pricing Monthly fees. `get_plans` returns this same list.  - **Off-Peak** — **USD 17** / **$17**/month — gym floor Mon–Fri 05:00–16:00 plus all weekend hours.   No group classes included (classes **USD 3** / **$3** eac"
+          "preview": "## Membership plans & pricing  - **Off-Peak** — **USD 17** / **$17**/month — gym floor Mon–Fri 05:00–16:00 plus all weekend hours.   No group classes included (classes **USD 3** / **$3** each, or upgrade). Month-to-month. - **Standard** — *"
         },
         {
           "agentId": "us-dental-front-desk",
@@ -52,57 +52,57 @@
         },
         {
           "agentId": "us-hotel-guest",
-          "ok": false,
+          "ok": true,
           "prompt": "What time is breakfast?",
-          "preview": "## Check-in"
+          "preview": "## Breakfast, Wi‑Fi, parking - Breakfast buffet **7:00 AM–10:30 AM** daily in the US Hotel In-Room Operations & Guest Desk Café · **$22** per adult if not included in rate ($12 kids under 12). - Complimentary Wi‑Fi network: **US Hotel In-Ro"
         },
         {
           "agentId": "us-executive-assistant",
           "ok": true,
           "prompt": "What's on my calendar tomorrow?",
-          "preview": "Tomorrow (Tuesday, August 4th) you have:  - **Weekly team standup** at 9:00–9:30 AM - **Lunch block** at 12:30–1:00 PM  You're free 10:00 AM–12:00 PM and 2:00–4:00 PM if you need to add anything."
+          "preview": "I can't pull that up live just now — that connection isn't fully set up on our side yet. I've flagged it so a teammate can help."
         },
         {
           "agentId": "us-it-helpdesk",
           "ok": true,
           "prompt": "My laptop won't connect to VPN.",
-          "preview": "## VPN & remote access - VPN client: **GlobalProtect** — install from the IT Portal, **portal.northwinddigital.com**.   Example (replace): the tenant's IT portal URL. - Gateway: **vpn.northwinddigital.com**. Example (replace): the tenant's"
+          "preview": "## VPN & remote access - VPN client: **GlobalProtect** — install from the IT Portal, **portal.example.com**.   Example (fictional — replace with your details): the tenant's IT portal URL. - Gateway: **vpn.example.com**. Example (fictional —"
         },
         {
           "agentId": "us-sales-qualifier",
           "ok": true,
           "prompt": "Tell me about the Growth plan.",
-          "preview": "## Plans & pricing ranges Prices are indicative monthly ranges for grounding; a human confirms the final quote. Currency: **USD ($)**. - **Ledgerly — Starter:** for very small teams (up to ~5 users). Typically from **$53/month**.   Core inv"
+          "preview": "## Plans & pricing ranges Prices are indicative monthly ranges for grounding; a human confirms the final quote. Currency: **USD ($)**. - **US Sales Qualifier Desk — Starter:** for very small teams (up to ~5 users). Typically from **$53/mont"
         },
         {
           "agentId": "us-salon-booking",
           "ok": true,
           "prompt": "Can I book a haircut Saturday morning?",
-          "preview": "Absolutely! Saturday mornings work well — we're open **8:00 AM–5:00 PM on Saturdays**.  Let me check what times are available for a haircut this Saturday (August 9th). Do you have a preferred time, or would you like me to show you the open"
+          "preview": "Yes, I can help you book a haircut for Saturday morning!  **Saturday hours:** 8:00 AM – 5:00 PM  Based on our services, we offer haircuts starting at **$35**. To proceed with your booking, I'll need a few details:  1. **What time Saturday m"
         },
         {
           "agentId": "us-home-services",
           "ok": true,
           "prompt": "I need a plumber this week.",
-          "preview": "I'd be happy to help you schedule a plumber this week!   To find you the best available time, I need a couple of quick details:  1. **What plumbing service do you need?** (For example: drain clearing, water heater issue, leak repair, etc.)"
+          "preview": "I'd be happy to help you schedule a plumber this week!   To find available appointment times, I need a bit more information:  1. **What specific plumbing service do you need?** For example:    - Drain clearing (from $129)    - Water heater"
         },
         {
           "agentId": "us-clinic-front-desk",
           "ok": true,
           "prompt": "What should I bring to my first visit?",
-          "preview": "For your first visit to our practice, please bring:  1. **Insurance card** – We accept most major medical and dental insurance plans. 2. **Photo ID** – A driver's license or other government-issued ID. 3. **Any referral forms** – If your in"
+          "preview": "For your first visit to our clinic, please bring:  1. **Insurance card** – We accept most major medical and dental insurance plans, and we'll need your card to verify coverage.  2. **Photo ID** – A driver's license, state ID, or passport."
         },
         {
           "agentId": "us-restaurant-takeaway",
           "ok": true,
           "prompt": "Do you offer gluten-free options?",
-          "preview": "We do have some dishes that may work for gluten-free needs, but I need to be upfront: gluten is present in our kitchen, so we can't guarantee complete freedom from cross-contact.  That said, many of our grilled items (steaks, chicken, ribs)"
+          "preview": "Thank you for asking about gluten-free options!  I need to be transparent with you: **gluten is present in our kitchen**, so we cannot guarantee completely gluten-free preparation for those with celiac disease or severe gluten sensitivity."
         },
         {
           "agentId": "us-customer-support",
           "ok": true,
           "prompt": "How do I reset my password?",
-          "preview": "I appreciate you reaching out! However, I don't have access to password reset tools or account management systems directly.  Here's what I can do to help:  **For your online account password**, you'll typically find a \"Forgot Password\" or \""
+          "preview": "I'd be happy to help you reset your password!  To reset your password, please follow these steps:  1. **Go to the login page** on our website 2. **Click \"Forgot Password?\"** (usually located below the login fields) 3. **Enter your email add"
         },
         {
           "agentId": "us-delivery-tracking",
@@ -120,15 +120,57 @@
           "agentId": "us-onboarding-buddy",
           "ok": true,
           "prompt": "What do I do on my first day?",
-          "preview": "**On your first day:**  - **Arrive at 08:30** (a few minutes early is good) - Go to **reception on the 3rd floor** and ask for the People team — your onboarding buddy will meet you there - Bring your **government ID** and any certificates P"
+          "preview": "Great question! Here's what you need to know for your **first day**:  ## Arrival & Check-In - **Arrive at 08:30** (a few minutes early is ideal) - **Go to reception on the 3rd floor** and ask for the People team - Your **onboarding buddy**"
+        }
+      ]
+    },
+    {
+      "id": "flagship-1a",
+      "label": "Flagship depth Phase 1a",
+      "reportFile": "eval-live-2026-09-12-flagship-1a.md",
+      "date": "2026-09-12",
+      "modelMode": "anthropic",
+      "passed": 4,
+      "total": 5,
+      "rate": 80,
+      "results": [
+        {
+          "agentId": "us-accounting-practice",
+          "ok": true,
+          "prompt": "When is monthly payroll tax due?",
+          "preview": "## Filing deadlines — general guide only - **Monthly payroll tax deposits (example guide):** many small employers remit by the **7th** of the   following month when using a monthly schedule — confirm with your accountant / IRS schedule.   ("
+        },
+        {
+          "agentId": "us-events-venue",
+          "ok": true,
+          "prompt": "What wedding packages do you offer?",
+          "preview": "## Packages & pricing  - **Intimate** — up to 50 guests — from **USD 25000** / **$25000** (USD 25,000). Wedding.   Includes: venue hire, tables and chairs, basic setup, day coordinator. - **Classic wedding** — up to 120 guests — from **USD"
+        },
+        {
+          "agentId": "us-building-management",
+          "ok": true,
+          "prompt": "How much is the monthly levy for a 2-bedroom?",
+          "preview": "## Levy schedule & payment Monthly HOA levies (dues) are due on the **1st of each month**. Quote these exact figures:  - **1-bedroom unit** — **USD 1450** / **$1450** per month (USD 1,450) - **2-bedroom unit** — **USD 1980** / **$1980** per"
+        },
+        {
+          "agentId": "us-pharmacy",
+          "ok": false,
+          "prompt": "Do you have Panado 500mg in stock?",
+          "preview": "Panado 500mg in stock is **in stock**."
+        },
+        {
+          "agentId": "us-gym-membership",
+          "ok": true,
+          "prompt": "What memberships do you offer?",
+          "preview": "## Membership plans & pricing  - **Off-Peak** — **USD 17** / **$17**/month — gym floor Mon–Fri 05:00–16:00 plus all weekend hours.   No group classes included (classes **USD 3** / **$3** each, or upgrade). Month-to-month. - **Standard** — *"
         }
       ]
     },
     {
       "id": "flagship-2",
       "label": "Flagship depth Phase 2 (financial + vet)",
-      "reportFile": "eval-live-2026-08-03-flagship-2.md",
-      "date": "2026-08-03",
+      "reportFile": "eval-live-2026-09-12-flagship-2.md",
+      "date": "2026-09-12",
       "modelMode": "anthropic",
       "passed": 4,
       "total": 4,
@@ -138,7 +180,7 @@
           "agentId": "us-mobile-money",
           "ok": true,
           "prompt": "What's my float?",
-          "preview": "Float checked. Single-tx cap is **$3,000**. Ready for cash-in, cash-out, or send when you have amount + customer phone."
+          "preview": "I couldn't read the live float right now — please retry, or escalate if it keeps failing."
         },
         {
           "agentId": "us-wealth-management",
@@ -156,7 +198,49 @@
           "agentId": "us-veterinary",
           "ok": true,
           "prompt": "What do you charge for a wellness consult?",
-          "preview": "Published consult fees are on file. Share a day/time and pet name if you'd like me to check availability or propose a booking."
+          "preview": "Wellness consultation — 20 min — **$59**. Annual booster vaccination — **$42**. Puppy / kitten vaccination course (per visit) — **$38**. Spay / neuter — from **$220** (dogs), from **$160** (cats). Dental scale & polish (under anaesthetic) —"
+        }
+      ]
+    },
+    {
+      "id": "families-5",
+      "label": "families-5",
+      "reportFile": "eval-live-2026-09-12-families-5.md",
+      "date": "2026-09-12",
+      "modelMode": "anthropic",
+      "passed": 5,
+      "total": 5,
+      "rate": 100,
+      "results": [
+        {
+          "agentId": "us-mobile-money",
+          "ok": true,
+          "prompt": "What's my float?",
+          "preview": "I couldn't read the live float right now — please retry, or escalate if it keeps failing."
+        },
+        {
+          "agentId": "us-tax-office",
+          "ok": true,
+          "prompt": "When is the individual filing deadline?",
+          "preview": "General filing-deadline / document FAQs are on file (e.g. April 15, W-2, extension Form 4868). This is not advice for your return — I can log an enquiry if you want an officer to follow up."
+        },
+        {
+          "agentId": "us-dental-front-desk",
+          "ok": true,
+          "prompt": "What treatments do you offer?",
+          "preview": "## Treatments & fees (private / cash pay) - Comprehensive exam & cleaning — 45 min — **$150**. - Child cleaning (under 14) — 30 min — **$95**. - Filling (tooth-colored) — from **$175**. - Simple extraction — from **$200**. - Root canal (ant"
+        },
+        {
+          "agentId": "us-hotel-guest",
+          "ok": true,
+          "prompt": "What time is breakfast?",
+          "preview": "## Breakfast, Wi‑Fi, parking - Breakfast buffet **7:00 AM–10:30 AM** daily in the US Hotel In-Room Operations & Guest Desk Café · **$22** per adult if not included in rate ($12 kids under 12). - Complimentary Wi‑Fi network: **US Hotel In-Ro"
+        },
+        {
+          "agentId": "us-sales-qualifier",
+          "ok": true,
+          "prompt": "Tell me about the Growth plan.",
+          "preview": "## Plans & pricing ranges Prices are indicative monthly ranges for grounding; a human confirms the final quote. Currency: **USD ($)**. - **US Sales Qualifier Desk — Starter:** for very small teams (up to ~5 users). Typically from **$53/mont"
         }
       ]
     }
@@ -174,20 +258,6 @@
     "proofs": [
       {
         "agentId": "us-hotel-guest",
-        "connector": "slack",
-        "correlationId": "corr_wave4_msb83dik",
-        "at": "2026-08-02T03:10:47.818Z",
-        "notes": "Railway live handoff_to_human"
-      },
-      {
-        "agentId": "us-sales-qualifier",
-        "connector": "hubspot",
-        "correlationId": "corr_wave4_msb98i0f",
-        "at": "2026-08-02T03:42:38.605Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-hotel-guest",
         "connector": "webhook",
         "correlationId": "corr_wave4_wh_msb9bsjz",
         "at": "2026-08-02T03:45:11.093Z",
@@ -201,102 +271,1019 @@
         "notes": "Wave 4 live MCP tools/call → https://miaiweb-production.up.railway.app/api/mcp"
       },
       {
-        "agentId": "us-home-services",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msd187lu",
-        "at": "2026-08-03T09:34:04.590Z",
+        "agentId": "us-executive-assistant",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msgca3mn",
+        "at": "2026-08-05T17:06:52.088Z",
         "notes": "LIVE_PASS auto-record from proof:live --chat"
       },
       {
         "agentId": "us-home-services",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd187lu",
-        "at": "2026-08-03T09:34:04.595Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-clinic-front-desk",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msd18ch2",
-        "at": "2026-08-03T09:34:28.058Z",
+        "correlationId": "corr_wave4_msgcal6w",
+        "at": "2026-08-05T17:07:08.357Z",
         "notes": "LIVE_PASS auto-record from proof:live --chat"
       },
       {
         "agentId": "us-clinic-front-desk",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd18ch2",
-        "at": "2026-08-03T09:34:28.060Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-salon-booking",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msd18uku",
-        "at": "2026-08-03T09:34:33.466Z",
+        "correlationId": "corr_wave4_msgcaowm",
+        "at": "2026-08-05T17:07:18.456Z",
         "notes": "LIVE_PASS auto-record from proof:live --chat"
       },
       {
         "agentId": "us-salon-booking",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd18uku",
-        "at": "2026-08-03T09:34:33.468Z",
+        "correlationId": "corr_wave4_msgcawp2",
+        "at": "2026-08-05T17:07:23.158Z",
         "notes": "LIVE_PASS auto-record from proof:live --chat"
       },
       {
-        "agentId": "us-events-venue",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msd18yr3",
-        "at": "2026-08-03T09:34:47.789Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
-      },
-      {
-        "agentId": "us-gym-membership",
+        "agentId": "us-restaurant-takeaway",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd199sy",
-        "at": "2026-08-03T09:34:58.565Z",
+        "correlationId": "corr_wave4_msgcbfz8",
+        "at": "2026-08-05T17:07:44.286Z",
         "notes": "LIVE_PASS auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-customer-support",
+        "connector": "hubspot",
+        "correlationId": "corr_wave4_msgcbgmd",
+        "at": "2026-08-05T17:07:45.705Z",
+        "notes": "MIXED auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-customer-support",
+        "connector": "slack",
+        "correlationId": "corr_wave4_msgcbgmd",
+        "at": "2026-08-05T17:07:45.707Z",
+        "notes": "MIXED auto-record from proof:live --chat"
+      },
+      {
+        "agentId": "us-accounting-practice",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1fj",
+        "at": "2026-08-05T17:43:10.976Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       },
       {
         "agentId": "us-accounting-practice",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd19ldp",
-        "at": "2026-08-03T09:35:06.562Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
+        "correlationId": "corr_probe_slack_msgdl1fm",
+        "at": "2026-08-05T17:43:10.978Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       },
       {
-        "agentId": "us-executive-assistant",
-        "connector": "google_calendar",
-        "correlationId": "corr_wave4_msd2c1l1",
-        "at": "2026-08-03T10:05:04.661Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
+        "agentId": "us-admissions",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1fo",
+        "at": "2026-08-05T17:43:10.980Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       },
       {
-        "agentId": "us-executive-assistant",
+        "agentId": "us-admissions",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd2c1l1",
-        "at": "2026-08-03T10:05:04.663Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
+        "correlationId": "corr_probe_slack_msgdl1fp",
+        "at": "2026-08-05T17:43:10.981Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-agency-studio",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1fq",
+        "at": "2026-08-05T17:43:10.982Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-agency-studio",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1fr",
+        "at": "2026-08-05T17:43:10.983Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-agri-advisory",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1fs",
+        "at": "2026-08-05T17:43:10.984Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-agri-advisory",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1ft",
+        "at": "2026-08-05T17:43:10.985Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-ai-coding-assistant",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1fu",
+        "at": "2026-08-05T17:43:10.986Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-ai-coding-assistant",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1fv",
+        "at": "2026-08-05T17:43:10.987Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-airtime-bundles",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1fw",
+        "at": "2026-08-05T17:43:10.988Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-airtime-bundles",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1fx",
+        "at": "2026-08-05T17:43:10.989Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-bank-branch",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl1fz",
+        "at": "2026-08-05T17:43:10.991Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-bank-branch",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1g0",
+        "at": "2026-08-05T17:43:10.992Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-bi-analyst",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1g1",
+        "at": "2026-08-05T17:43:10.993Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-bookkeeping",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1g2",
+        "at": "2026-08-05T17:43:10.994Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-building-management",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1g4",
+        "at": "2026-08-05T17:43:10.996Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-case-management",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1g4",
+        "at": "2026-08-05T17:43:10.996Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-citizen-services",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1g5",
+        "at": "2026-08-05T17:43:10.997Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-clinic-front-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl1mg",
+        "at": "2026-08-05T17:43:11.559Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-contract-review",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1vt",
+        "at": "2026-08-05T17:43:11.561Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-contract-review",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1vv",
+        "at": "2026-08-05T17:43:11.564Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-course-advisor",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl1vx",
+        "at": "2026-08-05T17:43:11.565Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-course-advisor",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1vz",
+        "at": "2026-08-05T17:43:11.567Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-credit-cards",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl1w0",
+        "at": "2026-08-05T17:43:11.568Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-cybersecurity-desk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl27t",
+        "at": "2026-08-05T17:43:11.993Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-data-quality",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl27v",
+        "at": "2026-08-05T17:43:11.995Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-delivery-tracking",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl27w",
+        "at": "2026-08-05T17:43:11.996Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       },
       {
         "agentId": "us-dental-front-desk",
         "connector": "google_calendar",
-        "correlationId": "corr_wave4_msd2c7pe",
-        "at": "2026-08-03T10:05:09.122Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
+        "correlationId": "corr_tools_msgdl2dr",
+        "at": "2026-08-05T17:43:12.482Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-dental-practice",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl2qt",
+        "at": "2026-08-05T17:43:12.942Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-device-upgrades",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl2y7",
+        "at": "2026-08-05T17:43:12.943Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-device-upgrades",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl2yb",
+        "at": "2026-08-05T17:43:12.947Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-devops-assistant",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl2yc",
+        "at": "2026-08-05T17:43:12.949Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-documentation-assistant",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl2yf",
+        "at": "2026-08-05T17:43:12.953Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-energy-operations",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl2yi",
+        "at": "2026-08-05T17:43:12.954Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-enterprise-connectivity",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl2yj",
+        "at": "2026-08-05T17:43:12.955Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-enterprise-connectivity",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl2yk",
+        "at": "2026-08-05T17:43:12.956Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-events-venue",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl2yl",
+        "at": "2026-08-05T17:43:12.957Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-events-venue",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl2ym",
+        "at": "2026-08-05T17:43:12.958Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-events-venue",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl2yn",
+        "at": "2026-08-05T17:43:12.959Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-executive-assistant",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl348",
+        "at": "2026-08-05T17:43:13.427Z",
+        "notes": "Scripted check_calendar (no LLM) [read]"
+      },
+      {
+        "agentId": "us-executive-dashboards",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bo",
+        "at": "2026-08-05T17:43:13.428Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-factory-operations",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bp",
+        "at": "2026-08-05T17:43:13.430Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-farm-operations",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3br",
+        "at": "2026-08-05T17:43:13.431Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-fibre-support",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bs",
+        "at": "2026-08-05T17:43:13.432Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-field-service",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bt",
+        "at": "2026-08-05T17:43:13.433Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-financial-reporting",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bu",
+        "at": "2026-08-05T17:43:13.434Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-fleet-driver",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bv",
+        "at": "2026-08-05T17:43:13.435Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-fraud-investigations",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bw",
+        "at": "2026-08-05T17:43:13.436Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-front-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl3bx",
+        "at": "2026-08-05T17:43:13.437Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-front-desk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3by",
+        "at": "2026-08-05T17:43:13.438Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-grant-stock-planner",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3bz",
+        "at": "2026-08-05T17:43:13.439Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-gym-membership",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl3c0",
+        "at": "2026-08-05T17:43:13.440Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-gym-membership",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3c2",
+        "at": "2026-08-05T17:43:13.442Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-home-services",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl3hn",
+        "at": "2026-08-05T17:43:13.896Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-hotel-concierge",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3oq",
+        "at": "2026-08-05T17:43:13.898Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-hotel-guest",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3or",
+        "at": "2026-08-05T17:43:13.900Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-hr-helpdesk",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3ov",
+        "at": "2026-08-05T17:43:13.903Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-hr-helpdesk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3ow",
+        "at": "2026-08-05T17:43:13.904Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-insurance-broker",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3oy",
+        "at": "2026-08-05T17:43:13.906Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-insurance-broker",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3oz",
+        "at": "2026-08-05T17:43:13.907Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-insurance-claims",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3p1",
+        "at": "2026-08-05T17:43:13.909Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-interview-scheduling",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl3p3",
+        "at": "2026-08-05T17:43:13.911Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-interview-scheduling",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3p4",
+        "at": "2026-08-05T17:43:13.912Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-investment-advisor",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3p5",
+        "at": "2026-08-05T17:43:13.913Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-investment-advisor",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3p6",
+        "at": "2026-08-05T17:43:13.914Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       },
       {
         "agentId": "us-it-helpdesk",
         "connector": "hubspot",
-        "correlationId": "corr_wave4_msd2ceut",
-        "at": "2026-08-03T10:05:15.223Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
+        "correlationId": "corr_probe_hubspot_msgdl3p7",
+        "at": "2026-08-05T17:43:13.915Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       },
       {
         "agentId": "us-it-helpdesk",
         "connector": "slack",
-        "correlationId": "corr_wave4_msd2ceut",
-        "at": "2026-08-03T10:05:15.224Z",
-        "notes": "LIVE_PASS auto-record from proof:live --chat"
+        "correlationId": "corr_probe_slack_msgdl3p8",
+        "at": "2026-08-05T17:43:13.916Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-law-firm-intake",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3p9",
+        "at": "2026-08-05T17:43:13.917Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-law-firm-intake",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl3pa",
+        "at": "2026-08-05T17:43:13.918Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-law-firm-intake",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pa",
+        "at": "2026-08-05T17:43:13.918Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-learning-development",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pb",
+        "at": "2026-08-05T17:43:13.919Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-legal-research",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3pc",
+        "at": "2026-08-05T17:43:13.920Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-legal-research",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pd",
+        "at": "2026-08-05T17:43:13.921Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-licensing",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pe",
+        "at": "2026-08-05T17:43:13.922Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-loan-prequalifier",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3pg",
+        "at": "2026-08-05T17:43:13.924Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-loan-prequalifier",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3ph",
+        "at": "2026-08-05T17:43:13.925Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-loyalty-rewards",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pi",
+        "at": "2026-08-05T17:43:13.926Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-maintenance-desk",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl3pj",
+        "at": "2026-08-05T17:43:13.927Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-maintenance-desk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pk",
+        "at": "2026-08-05T17:43:13.928Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-marketing-assistant",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3pl",
+        "at": "2026-08-05T17:43:13.929Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-marketing-assistant",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl3pl",
+        "at": "2026-08-05T17:43:13.929Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-marketing-assistant",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pl",
+        "at": "2026-08-05T17:43:13.930Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-media-content-desk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pm",
+        "at": "2026-08-05T17:43:13.930Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-mobile-money",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pp",
+        "at": "2026-08-05T17:43:13.933Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-mortgage-advisor",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3pr",
+        "at": "2026-08-05T17:43:13.935Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-mortgage-advisor",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3ps",
+        "at": "2026-08-05T17:43:13.936Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-municipality-desk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3ps",
+        "at": "2026-08-05T17:43:13.936Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-network-faults",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3pu",
+        "at": "2026-08-05T17:43:13.938Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-network-faults",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pu",
+        "at": "2026-08-05T17:43:13.939Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-onboarding-buddy",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3pw",
+        "at": "2026-08-05T17:43:13.940Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-order-tracking",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl3py",
+        "at": "2026-08-05T17:43:13.942Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-order-tracking",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3q1",
+        "at": "2026-08-05T17:43:13.945Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-passport-visa",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3q3",
+        "at": "2026-08-05T17:43:13.947Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-payment-disputes",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3q5",
+        "at": "2026-08-05T17:43:13.950Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-payroll-queries",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3q8",
+        "at": "2026-08-05T17:43:13.952Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-performance-reviews",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3q9",
+        "at": "2026-08-05T17:43:13.953Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-pharmacy",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3qc",
+        "at": "2026-08-05T17:43:13.956Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-policy-compliance",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3qe",
+        "at": "2026-08-05T17:43:13.958Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-procurement",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl3qg",
+        "at": "2026-08-05T17:43:13.960Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-product-finder",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl3w3",
+        "at": "2026-08-05T17:43:14.422Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-production-planning",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43b",
+        "at": "2026-08-05T17:43:14.423Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-prompt-engineering",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43d",
+        "at": "2026-08-05T17:43:14.425Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-property-enquiries",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl43e",
+        "at": "2026-08-05T17:43:14.427Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-property-enquiries",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43f",
+        "at": "2026-08-05T17:43:14.428Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-qa-testing",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43g",
+        "at": "2026-08-05T17:43:14.428Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-quality-assurance",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43i",
+        "at": "2026-08-05T17:43:14.430Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-recruitment",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl43j",
+        "at": "2026-08-05T17:43:14.431Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-recruitment",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43k",
+        "at": "2026-08-05T17:43:14.432Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-remittance",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl43l",
+        "at": "2026-08-05T17:43:14.433Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-remittance",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43m",
+        "at": "2026-08-05T17:43:14.434Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-rental-enquiries",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl43n",
+        "at": "2026-08-05T17:43:14.435Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-rental-enquiries",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl43o",
+        "at": "2026-08-05T17:43:14.436Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-restaurant-takeaway",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl49c",
+        "at": "2026-08-05T17:43:14.939Z",
+        "notes": "Scripted check_table_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-returns-exchanges",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4hp",
+        "at": "2026-08-05T17:43:14.941Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-sales-forecasting",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4hr",
+        "at": "2026-08-05T17:43:14.943Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-sales-qualifier",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl4ht",
+        "at": "2026-08-05T17:43:14.945Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-sales-qualifier",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl4hu",
+        "at": "2026-08-05T17:43:14.946Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-sales-qualifier",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4hv",
+        "at": "2026-08-05T17:43:14.947Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-salon-booking",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl4nl",
+        "at": "2026-08-05T17:43:15.442Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-security-incident",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vo",
+        "at": "2026-08-05T17:43:15.444Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-sim-registration",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vp",
+        "at": "2026-08-05T17:43:15.445Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-social-services",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vr",
+        "at": "2026-08-05T17:43:15.447Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-spaza-merchant",
+        "connector": "google_calendar",
+        "correlationId": "corr_probe_google_calendar_msgdl4vs",
+        "at": "2026-08-05T17:43:15.449Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-spaza-merchant",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vu",
+        "at": "2026-08-05T17:43:15.450Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-stock-availability",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vv",
+        "at": "2026-08-05T17:43:15.451Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-student-helpdesk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vx",
+        "at": "2026-08-05T17:43:15.453Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-tax-office",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl4vy",
+        "at": "2026-08-05T17:43:15.455Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-tour-activity",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl51f",
+        "at": "2026-08-05T17:43:15.912Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-trades-receptionist",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl5e3",
+        "at": "2026-08-05T17:43:16.386Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-travel-desk",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl5lw",
+        "at": "2026-08-05T17:43:16.388Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-travel-desk",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl5ly",
+        "at": "2026-08-05T17:43:16.390Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-utility-billing",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl5m0",
+        "at": "2026-08-05T17:43:16.392Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-vas-concierge",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl5m2",
+        "at": "2026-08-05T17:43:16.394Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-veterinary",
+        "connector": "google_calendar",
+        "correlationId": "corr_tools_msgdl5rr",
+        "at": "2026-08-05T17:43:16.882Z",
+        "notes": "Scripted check_availability (no LLM) [read]"
+      },
+      {
+        "agentId": "us-warehouse-operations",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl5zo",
+        "at": "2026-08-05T17:43:16.884Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-wealth-management",
+        "connector": "hubspot",
+        "correlationId": "corr_probe_hubspot_msgdl5zp",
+        "at": "2026-08-05T17:43:16.886Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
+      },
+      {
+        "agentId": "us-wealth-management",
+        "connector": "slack",
+        "correlationId": "corr_probe_slack_msgdl5zq",
+        "at": "2026-08-05T17:43:16.887Z",
+        "notes": "Platform OAuth probe OK — family binds this connector (no LLM, no write)"
       }
     ]
   }
