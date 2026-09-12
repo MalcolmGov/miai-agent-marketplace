@@ -164,7 +164,7 @@ export function MarketplaceHero({
             value={promptText}
             onChange={(e) => setPromptText(e.target.value)}
             placeholder="Ask anything..."
-            className="flex-1 bg-transparent px-2 py-1.5 text-sm text-white placeholder-[var(--muted-dim)] focus:outline-none"
+            className="flex-1 bg-transparent px-2.5 py-2 text-base sm:text-sm text-white placeholder-[var(--muted-dim)] focus:outline-none"
           />
 
           {/* Model picker & Send action */}
@@ -172,7 +172,7 @@ export function MarketplaceHero({
             <button
               type="button"
               onClick={() => setSelectedModel(selectedModel === "Auto" ? "Agents" : "Auto")}
-              className="flex items-center gap-1 rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.06)] px-2.5 py-1 text-xs font-medium text-[var(--muted)] hover:text-white transition-all"
+              className="hidden sm:flex items-center gap-1 rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.06)] px-2.5 py-1 text-xs font-medium text-[var(--muted)] hover:text-white transition-all touch-manipulation"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               <span>{selectedModel}</span>
@@ -184,10 +184,10 @@ export function MarketplaceHero({
             <button
               type="submit"
               disabled={!promptText.trim()}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--accent)] text-slate-950 shadow-md transition-all hover:scale-105 disabled:opacity-40 disabled:hover:scale-100"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent)] text-slate-950 shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100 touch-manipulation"
               aria-label="Send prompt"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
             </button>

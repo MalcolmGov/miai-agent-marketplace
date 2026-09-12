@@ -366,13 +366,13 @@ function MyAgentsContent() {
       {items !== null && items.length > 0 ? (
         <div className="flex flex-col gap-3 rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_75%,transparent)] p-3 sm:flex-row sm:items-center sm:justify-between">
           {/* Main Navigation Tabs */}
-          <div className="inline-flex flex-wrap items-center gap-1 rounded-xl bg-[color-mix(in_srgb,var(--bg-elev)_85%,transparent)] p-1 border border-[var(--line)]" role="tablist">
+          <div className="flex items-center gap-1.5 rounded-xl bg-[color-mix(in_srgb,var(--bg-elev)_85%,transparent)] p-1 border border-[var(--line)] overflow-x-auto scrollbar-none max-w-full touch-pan-x" role="tablist">
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === "all"}
               onClick={() => handleTabChange("all")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
                 activeTab === "all"
                   ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
                   : "text-[var(--muted)] hover:text-white"
@@ -389,7 +389,7 @@ function MyAgentsContent() {
               role="tab"
               aria-selected={activeTab === "active"}
               onClick={() => handleTabChange("active")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
                 activeTab === "active"
                   ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
                   : "text-[var(--muted)] hover:text-white"
@@ -407,7 +407,7 @@ function MyAgentsContent() {
               role="tab"
               aria-selected={activeTab === "inactive"}
               onClick={() => handleTabChange("inactive")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
                 activeTab === "inactive"
                   ? "bg-amber-400 text-slate-950 shadow-sm"
                   : "text-[var(--muted)] hover:text-white"
@@ -426,7 +426,7 @@ function MyAgentsContent() {
               role="tab"
               aria-selected={activeTab === "insights"}
               onClick={() => handleTabChange("insights")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
                 activeTab === "insights"
                   ? "bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm"
                   : "text-[var(--muted)] hover:text-white"
@@ -525,7 +525,7 @@ function MyAgentsContent() {
             Your workspace has no active or draft agents. Explore our verified global catalogue of over 500 bespoke regional agents ready for deployment.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/#catalogue" className="btn btn-primary inline-flex items-center gap-2">
+            <Link href="/agents" className="btn btn-primary inline-flex items-center gap-2 touch-manipulation">
               <IconSparkles className="h-4 w-4" />
               <span>Browse 500+ Verified Agents</span>
             </Link>

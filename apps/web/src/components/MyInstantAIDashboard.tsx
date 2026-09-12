@@ -32,17 +32,17 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
             Your AI command center — chat, search, automate, learn.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
             <Link
               href="/ask"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#2ec4b6] px-4 py-2 text-xs sm:text-sm font-semibold text-slate-950 shadow-sm transition hover:brightness-110 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2ec4b6] px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-950 shadow-sm transition hover:brightness-110 active:scale-95 touch-manipulation min-h-[40px]"
             >
               Ask AI
             </Link>
 
             <Link
               href="/ask?search=true"
-              className="inline-flex items-center gap-2 rounded-xl border border-[#2ec4b6]/40 bg-[#2ec4b6]/10 px-4 py-2 text-xs sm:text-sm font-medium text-[#2ec4b6] transition hover:bg-[#2ec4b6]/20 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#2ec4b6]/40 bg-[#2ec4b6]/10 px-4 py-2.5 text-xs sm:text-sm font-medium text-[#2ec4b6] transition hover:bg-[#2ec4b6]/20 active:scale-95 touch-manipulation min-h-[40px]"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
                 <circle cx="11" cy="11" r="7" />
@@ -53,7 +53,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
 
             <Link
               href="/learn"
-              className="inline-flex items-center gap-2 rounded-xl border border-[#2ec4b6]/40 bg-[#2ec4b6]/10 px-4 py-2 text-xs sm:text-sm font-medium text-[#2ec4b6] transition hover:bg-[#2ec4b6]/20 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#2ec4b6]/40 bg-[#2ec4b6]/10 px-4 py-2.5 text-xs sm:text-sm font-medium text-[#2ec4b6] transition hover:bg-[#2ec4b6]/20 active:scale-95 touch-manipulation min-h-[40px]"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -65,17 +65,17 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
         </div>
       </section>
 
-      {/* 4 Metric / Stat Cards */}
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* 4 Metric / Stat Cards — 2x2 on phones, 4 cols on desktop */}
+      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {/* Token Balance */}
         <Link
           href="/tokens"
-          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-3.5 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
         >
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             TOKEN BALANCE
           </span>
-          <div className="mt-3 text-2xl font-bold tracking-tight text-white">
+          <div className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold tracking-tight text-white truncate">
             {tokenBalance.toLocaleString()}
           </div>
         </Link>
@@ -83,43 +83,43 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
         {/* Lessons Complete */}
         <Link
           href="/learn"
-          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-3.5 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
         >
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             LESSONS COMPLETE
           </span>
-          <div className="mt-3 text-2xl font-bold tracking-tight text-white">
+          <div className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold tracking-tight text-white truncate">
             2/54
           </div>
-          <p className="mt-1 text-xs text-slate-400">4% complete</p>
+          <p className="mt-1 text-[11px] sm:text-xs text-slate-400 truncate">4% complete</p>
         </Link>
 
         {/* Questions Today */}
         <Link
           href="/ask"
-          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-3.5 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
         >
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             QUESTIONS TODAY
           </span>
-          <div className="mt-3 text-2xl font-bold tracking-tight text-white">
+          <div className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold tracking-tight text-white truncate">
             0
           </div>
-          <p className="mt-1 text-xs text-[#2ec4b6]">No questions yet</p>
+          <p className="mt-1 text-[11px] sm:text-xs text-[#2ec4b6] truncate">No questions yet</p>
         </Link>
 
         {/* Models Used */}
         <Link
           href="/ask"
-          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+          className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-3.5 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
         >
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             MODELS USED
           </span>
-          <div className="mt-3 text-2xl font-bold tracking-tight text-white">
+          <div className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold tracking-tight text-white truncate">
             0
           </div>
-          <p className="mt-1 text-xs text-[#2ec4b6]">No models used yet</p>
+          <p className="mt-1 text-[11px] sm:text-xs text-[#2ec4b6] truncate">No models used yet</p>
         </Link>
       </section>
 
@@ -163,15 +163,15 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search the web with AI..."
-              className="w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d131d] py-3 pl-10 pr-12 text-sm text-white placeholder-slate-500 transition focus:border-[#2ec4b6] focus:outline-none focus:ring-1 focus:ring-[#2ec4b6]"
+              className="w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d131d] py-3.5 pl-10 pr-14 text-base sm:text-sm text-white placeholder-slate-500 transition focus:border-[#2ec4b6] focus:outline-none focus:ring-1 focus:ring-[#2ec4b6]"
             />
             <button
               type="submit"
               disabled={!searchQuery.trim()}
-              className="absolute right-2.5 flex h-7 w-7 items-center justify-center rounded-lg bg-[#2ec4b6] text-slate-950 transition hover:brightness-110 disabled:opacity-40 disabled:hover:brightness-100"
+              className="absolute right-2 flex h-9 w-9 items-center justify-center rounded-lg bg-[#2ec4b6] text-slate-950 transition hover:brightness-110 active:scale-95 disabled:opacity-40 disabled:hover:brightness-100 touch-manipulation"
               aria-label="Submit search"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
             </button>
@@ -186,11 +186,11 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
           <span className="text-xs text-slate-500">3 features available</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3">
           {/* Ask AI */}
           <Link
             href="/ask"
-            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
           >
             <div className="flex items-center justify-between">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-800/80 text-[#2ec4b6] border border-white/5">
@@ -200,7 +200,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
               </div>
               <span className="text-slate-500 transition group-hover:text-[#2ec4b6] group-hover:translate-x-0.5" aria-hidden>&gt;</span>
             </div>
-            <h3 className="mt-4 text-sm font-semibold text-white">Ask AI</h3>
+            <h3 className="mt-3 sm:mt-4 text-sm font-semibold text-white">Ask AI</h3>
             <p className="mt-1 text-xs text-slate-400 leading-relaxed">
               Chat with frontier models — GPT-4o, Claude, Gemini and more
             </p>
@@ -209,7 +209,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
           {/* AI Search */}
           <Link
             href="/ask?search=true"
-            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
           >
             <div className="flex items-center justify-between">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-800/80 text-[#2ec4b6] border border-white/5">
@@ -220,7 +220,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
               </div>
               <span className="text-slate-500 transition group-hover:text-[#2ec4b6] group-hover:translate-x-0.5" aria-hidden>&gt;</span>
             </div>
-            <h3 className="mt-4 text-sm font-semibold text-white">AI Search</h3>
+            <h3 className="mt-3 sm:mt-4 text-sm font-semibold text-white">AI Search</h3>
             <p className="mt-1 text-xs text-slate-400 leading-relaxed">
               Get answers grounded in real-time web results
             </p>
@@ -229,7 +229,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
           {/* Learn & Earn */}
           <Link
             href="/learn"
-            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924]"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 sm:p-5 backdrop-blur-sm transition hover:border-[#2ec4b6]/40 hover:bg-[#121924] active:scale-[0.98] touch-manipulation"
           >
             <div className="flex items-center justify-between">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-800/80 text-[#2ec4b6] border border-white/5">

@@ -458,7 +458,7 @@ export function Sidebar({
                         <Link
                           href={href}
                           onClick={onClose}
-                          className={`nav-item ${active ? "nav-item-active" : ""}`}
+                          className={`nav-item touch-manipulation active:scale-[0.98] ${active ? "nav-item-active" : ""}`}
                           data-nav-id={item.id}
                         >
                           <span className="nav-item-icon">{item.icon}</span>
@@ -484,10 +484,10 @@ export function Sidebar({
             ))}
           </nav>
 
-          <div className="border-t border-[var(--line)] px-3 py-3">
+          <div className="border-t border-[var(--line)] px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
             <button
               type="button"
-              className="group flex w-full items-center gap-2.5 rounded-xl border border-transparent p-2 text-left transition-all duration-200 hover:border-[var(--line)] hover:bg-[color-mix(in_srgb,var(--bg-panel-hover)_75%,transparent)]"
+              className="group flex w-full items-center gap-2.5 rounded-xl border border-transparent p-2 text-left transition-all duration-200 hover:border-[var(--line)] hover:bg-[color-mix(in_srgb,var(--bg-panel-hover)_75%,transparent)] touch-manipulation active:scale-[0.98]"
               data-testid="sidebar-account"
             >
               <div className="relative flex-shrink-0">
