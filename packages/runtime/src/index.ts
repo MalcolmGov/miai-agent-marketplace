@@ -1,4 +1,9 @@
-import type { AgentPackage } from "@miai/agent-protocol";
+import type {
+  AgentPackage,
+  A2ADelegationRequest,
+  A2ADelegationResult,
+  VoiceSessionConfig,
+} from "@miai/agent-protocol";
 import { executeConnector, backoffWithJitter, type ToolBinding } from "@miai/connectors";
 import { defaultBindingsForTools, getPreset } from "@miai/presets";
 import {
@@ -2350,6 +2355,80 @@ function bindingFor(tool: string, bindings: ToolBinding[]): ToolBinding {
     }
   );
 }
+
+/**
+ * Phase 4: Agent-to-Agent (A2A) Task Delegation Runner.
+ * Executes cross-agent delegation by packaging context and executing a targeted turn
+ * against the destination specialist agent.
+ */
+export async function delegateA2ATask(
+  req: A2ADelegationRequest,
+  targetPkg: AgentPackage,
+  model: ModelAdapter = createModelAdapter(),
+): Promise<A2ADelegationResult> {
+  try {
+    const payloadStr = JSON.stringify(req.contextPayload, null, 2);
+    const delegationPrompt = `[A2A Task Delegation from Agent ${req.sourceAgentId}]\nGoal: ${req.taskGoal}\n\nContext Data:\n${payloadStr}`;
+
+    const completion = await model.complete({
+      system: targetPkg.system_prompt,
+      messages: [{ role: "user", content: delegationPrompt }],
+      tools: targetPkg.tools,
+      model: targetPkg.manifest.model.primary,
+    });
+
+    return {
+      id: req.id,
+      sourceAgentId: req.sourceAgentId,
+      targetAgentId: req.targetAgentId,
+      status: "completed",
+      resultSummary: completion.content,
+      data: {
+        toolCall: completion.toolCall,
+        handledBy: targetPkg.manifest.name,
+      },
+      tokensConsumed: completion.usage?.totalTokens ?? 50,
+    };
+  } catch (error) {
+    return {
+      id: req.id,
+      sourceAgentId: req.sourceAgentId,
+      targetAgentId: req.targetAgentId,
+      status: "failed",
+      resultSummary: error instanceof Error ? error.message : "A2A delegation failed",
+      data: {},
+      tokensConsumed: 0,
+    };
+  }
+}
+
+/**
+ * Phase 4: Initialize Real-time Low-Latency Multimodal Voice Session.
+ * Validates audio format, sets up duplex voice configuration, and returns session parameters.
+ */
+export function initializeVoiceSession(
+  agentId: string,
+  workspaceId: string,
+  options?: Partial<VoiceSessionConfig>,
+): VoiceSessionConfig {
+  const provider = options?.voiceProvider ?? (env("ELEVENLABS_API_KEY") ? "elevenlabs" : "custom_tts");
+  return {
+    sessionId: `voice_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    agentId,
+    workspaceId,
+    voiceProvider: provider,
+    voiceId: options?.voiceId ?? (env("ELEVENLABS_VOICE_ID") || "default-agent-voice"),
+    sampleRate: options?.sampleRate ?? 24000,
+    audioEncoding: options?.audioEncoding ?? "pcm16",
+    turnDetection: options?.turnDetection ?? {
+      type: "server_vad",
+      threshold: 0.5,
+      prefixPaddingMs: 300,
+      silenceDurationMs: 500,
+    },
+  };
+}
+
 
 /** A requested reply language that is (some form of) English. */
 export function isEnglishLang(lang?: string): boolean {

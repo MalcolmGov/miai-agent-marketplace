@@ -143,3 +143,49 @@ export function loadAgentPackage(raw: unknown): AgentPackage {
   }
   return pkg;
 }
+
+/**
+ * Phase 4: Agent-to-Agent (A2A) Delegation Protocol
+ * Standard contract for routing complex multi-domain tasks between specialized agents.
+ */
+export interface A2ADelegationRequest {
+  id: string;
+  sourceAgentId: string;
+  targetAgentId: string;
+  workspaceId: string;
+  taskGoal: string;
+  contextPayload: Record<string, unknown>;
+  priority?: "low" | "normal" | "urgent";
+  timeoutMs?: number;
+}
+
+export interface A2ADelegationResult {
+  id: string;
+  sourceAgentId: string;
+  targetAgentId: string;
+  status: "completed" | "rejected" | "escalated" | "failed";
+  resultSummary: string;
+  data: Record<string, unknown>;
+  tokensConsumed?: number;
+}
+
+/**
+ * Phase 4: Multimodal Voice Session Specification
+ * Low-latency real-time voice streaming config (WebRTC / WebSocket).
+ */
+export interface VoiceSessionConfig {
+  sessionId: string;
+  agentId: string;
+  workspaceId: string;
+  voiceProvider: "elevenlabs" | "azure_speech" | "custom_tts";
+  voiceId?: string;
+  sampleRate: 16000 | 24000 | 48000;
+  audioEncoding: "pcm16" | "opus" | "mp3";
+  turnDetection?: {
+    type: "server_vad" | "client_vad";
+    threshold?: number;
+    prefixPaddingMs?: number;
+    silenceDurationMs?: number;
+  };
+}
+
