@@ -212,3 +212,42 @@ export function trackAudit(event: {
     detailKeys: event.detail ? Object.keys(event.detail).join(",") : "",
   });
 }
+
+/**
+ * OpenTelemetry-style span tracker for critical runtime pipelines.
+ * Tracks execution duration, error states, and emits APM dependency metrics.
+ */
+export async function traceSpan<T>(
+  name: string,
+  type: string,
+  operation: () => Promise<T>,
+  properties?: TelemetryProps,
+): Promise<T> {
+  const start = Date.now();
+  try {
+    const result = await operation();
+    trackDependency({
+      name,
+      type,
+      durationMs: Date.now() - start,
+      success: true,
+      resultCode: 200,
+      properties,
+    });
+    return result;
+  } catch (error) {
+    trackDependency({
+      name,
+      type,
+      durationMs: Date.now() - start,
+      success: false,
+      resultCode: 500,
+      properties: {
+        ...properties,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      },
+    });
+    throw error;
+  }
+}
+
