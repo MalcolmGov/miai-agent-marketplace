@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { MessageKey } from "@/lib/i18n";
 import { useT } from "@/lib/locale";
@@ -12,7 +12,7 @@ const BUSINESS_HIDDEN = new Set(["learn", "live-ops", "quality"]);
 /** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
 const CONSUMER_ALLOWED = new Set([
   "home", "ask", "ai-agents-hub", "search", "history",
-  "learn", "my-tokens", "redeem-epin", "consultants", "settings", "help",
+  "learn", "my-tokens", "redeem-epin", "subscriptions", "consultants", "settings", "help",
 ]);
 /** Entire nav groups hidden in consumer mode (Agents ops are a Business product). */
 const CONSUMER_HIDDEN_GROUPS = new Set(["agents"]);
@@ -30,6 +30,15 @@ type NavItem = {
 };
 
 type NavGroup = { titleKey?: MessageKey; title?: string; id: string; items: NavItem[] };
+
+function IconCard() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <line x1="2" y1="10" x2="22" y2="10" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 function IconAtomLogo({ className = "h-6 w-6" }: { className?: string }) {
   return (
@@ -94,17 +103,6 @@ function IconAsk() {
   );
 }
 
-function IconSpark() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path
-        d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 function IconSearch() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -134,45 +132,6 @@ function IconAgents() {
   );
 }
 
-function IconGrid() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <rect x="4" y="4" width="6" height="6" rx="1" />
-      <rect x="14" y="4" width="6" height="6" rx="1" />
-      <rect x="4" y="14" width="6" height="6" rx="1" />
-      <rect x="14" y="14" width="6" height="6" rx="1" />
-    </svg>
-  );
-}
-
-function IconOps() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M4 14h4l2-5 3 8 2-4h5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="18" cy="7" r="2" />
-    </svg>
-  );
-}
-
-function IconChart() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M4 19h16M7 16V9M12 16V5M17 16v-4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function IconSupport() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path
-        d="M4 12a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-1v-6h3M4 13h3v6H6a2 2 0 0 1-2-2v-4Z"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function IconHelp() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -196,23 +155,6 @@ function IconDots() {
   );
 }
 
-function IconAdmin() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <circle cx="12" cy="8" r="3.5" />
-      <path d="M5 19.5c1.5-3 4-4.5 7-4.5s5.5 1.5 7 4.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function IconShield() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M12 3 5 6v5c0 4.5 2.8 7.8 7 10 4.2-2.2 7-5.5 7-10V6l-7-3Z" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function IconLearn() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -222,73 +164,43 @@ function IconLearn() {
   );
 }
 
-function IconPlus() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-      <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 const GROUPS: NavGroup[] = [
   {
     id: "core",
-    titleKey: "nav.core",
+    title: "CORE",
     items: [
-      { id: "home", href: "/", labelKey: "nav.home", icon: <IconHome />, exact: true },
-      { id: "ask", href: "/ask", labelKey: "nav.askAi", icon: <IconAsk /> },
+      { id: "home", href: "/", label: "Home", icon: <IconHome />, exact: true },
+      { id: "ask", href: "/ask", label: "Ask AI", icon: <IconAsk /> },
       {
         id: "ai-agents-hub",
         href: "/agents",
-        labelKey: "nav.aiAgents",
+        label: "AI Agents",
         icon: <IconAgents />,
         badge: { labelKey: "nav.badgeNew", tone: "new" },
       },
-      { id: "search", href: "/#catalogue", labelKey: "nav.search", icon: <IconSearch /> },
-      { id: "history", href: "/history", labelKey: "nav.history", icon: <IconHistory /> },
-      { id: "workspace", href: "/workspace", labelKey: "nav.workspace", icon: <IconAdmin /> },
-    ],
-  },
-  {
-    id: "agents",
-    titleKey: "nav.agents",
-    items: [
-      { id: "my-agents", href: "/my-agents", labelKey: "nav.myAgents", icon: <IconGrid /> },
-      {
-        id: "live-ops",
-        href: "/ops",
-        labelKey: "nav.liveOps",
-        icon: <IconOps />,
-        badge: { labelKey: "nav.badgeLive", tone: "live" },
-      },
-      { id: "insights", href: "/my-agents?tab=insights", labelKey: "nav.insights", icon: <IconChart /> },
-      { id: "support", href: "/support", labelKey: "nav.supportDesk", icon: <IconSupport /> },
-      { id: "admin", href: "/admin", labelKey: "nav.agentAdmin", icon: <IconAdmin /> },
-      { id: "trust", href: "/trust", labelKey: "nav.trust", icon: <IconShield /> },
-      { id: "quality", href: "/quality", labelKey: "nav.quality", icon: <IconChart /> },
-      { id: "legal", href: "/legal", labelKey: "nav.legal", icon: <IconShield /> },
+      { id: "search", href: "/#catalogue", label: "Search", icon: <IconSearch /> },
+      { id: "history", href: "/history", label: "History", icon: <IconHistory /> },
     ],
   },
   {
     id: "growth",
-    titleKey: "nav.growth",
+    title: "GROWTH",
     items: [
-      { id: "learn", href: "/learn", labelKey: "nav.learnEarn", icon: <IconLearn /> },
-      { id: "create", href: "/create", labelKey: "nav.create", icon: <IconPlus /> },
+      { id: "learn", href: "/learn", label: "Learn & Earn", icon: <IconLearn /> },
     ],
   },
   {
     id: "tokens",
-    title: "Tokens",
+    title: "TOKENS",
     items: [
       { id: "my-tokens", href: "/tokens", label: "My Tokens", icon: <IconTokens /> },
       { id: "redeem-epin", href: "/redeem", label: "Redeem e-PIN", icon: <IconGift /> },
+      { id: "subscriptions", href: "/tokens#subscriptions", label: "Subscriptions", icon: <IconCard /> },
     ],
   },
   {
     id: "system",
     items: [
-      { id: "consultants", href: "/consultants", label: "Consultants", icon: <IconSpark /> },
       { id: "settings", href: "/settings", label: "Settings", icon: <IconGear /> },
       { id: "help", href: "/support", label: "Help & Support", icon: <IconHelp /> },
     ],
@@ -339,7 +251,6 @@ export function Sidebar({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab");
-  const router = useRouter();
   const t = useT();
   const [mode, setMode] = useState<ShellMode>(() =>
     pathname === "/personal" || pathname.startsWith("/personal/") ? "consumer" : "business",
@@ -393,18 +304,6 @@ export function Sidebar({
       cancelled = true;
     };
   }, []);
-
-  function changeMode(next: ShellMode) {
-    setMode(next);
-    try {
-      sessionStorage.setItem("miai.shellMode", next);
-      if (next === "business") sessionStorage.setItem("miai.product", "agents");
-    } catch {
-      /* ignore */
-    }
-    // Land on the mode's home: consumer marketplace vs business catalogue.
-    router.push(next === "consumer" ? "/personal" : "/");
-  }
 
   const visibleGroups = useMemo(() => {
     return GROUPS.map((group) => {
@@ -484,47 +383,30 @@ export function Sidebar({
               </button>
             </div>
 
-            <div className="mode-toggle mt-4" role="group" aria-label={t("sidebar.accountMode")}>
-              <button
-                type="button"
-                className={mode === "consumer" ? "mode-active" : ""}
-                onClick={() => changeMode("consumer")}
-                data-testid="shell-mode-consumer"
-              >
-                {t("sidebar.consumer")}
-              </button>
-              <button
-                type="button"
-                className={mode === "business" ? "mode-active" : ""}
-                onClick={() => changeMode("business")}
-                data-testid="shell-mode-business"
-              >
-                {t("sidebar.workspaces")}
-              </button>
-            </div>
-
             <button
               type="button"
               onClick={onTopUp}
-              className="token-card group mt-4 w-full text-left cursor-pointer transition-all duration-200"
-              title={t("sidebar.tapToTopUp")}
+              className="token-card group mt-4 w-full text-left cursor-pointer transition-all duration-200 border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-[color-mix(in_srgb,var(--bg-panel)_85%,transparent)] p-3 rounded-xl shadow-sm hover:border-[var(--accent)]"
+              title="Tap to top up tokens"
               data-testid="sidebar-token-card"
             >
               <div className="card-specular-rim" />
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[11px] font-medium text-[var(--muted)]">
-                  {t("sidebar.tokenBalance")}
+                  Token Balance
                 </span>
-                <span className="rounded-full bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[var(--accent-bright)] border border-[color-mix(in_srgb,var(--accent)_30%,transparent)]">
-                  {t("sidebar.prepaid")}
+                <span className="rounded-full bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--accent-bright)] border border-[color-mix(in_srgb,var(--accent)_30%,transparent)]">
+                  FOREVER
                 </span>
               </div>
-              <div className="mt-1.5 flex items-baseline justify-between">
+              <div className="mt-2 flex items-baseline justify-between">
                 <p className="font-mono text-2xl font-bold tracking-tight tabular-nums text-white">
-                  {tokens === null ? "…" : tokens.toLocaleString()}
+                  {tokens === null ? "11,716" : tokens.toLocaleString()}
                 </p>
               </div>
-              <div className="mt-2.5 h-1 w-full rounded-full bg-[var(--accent)] shadow-[0_0_10px_color-mix(in_srgb,var(--accent)_80%,transparent)]" />
+              <div className="mt-2.5 h-1.5 w-full rounded-full bg-[rgba(255,255,255,0.08)] overflow-hidden">
+                <div className="h-full w-4/5 rounded-full bg-[var(--accent)] shadow-[0_0_10px_color-mix(in_srgb,var(--accent)_80%,transparent)]" />
+              </div>
             </button>
           </div>
 

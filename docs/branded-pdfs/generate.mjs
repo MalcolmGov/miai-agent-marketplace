@@ -56,6 +56,10 @@ const jobs = [
     html: "white-label-handover.html",
     pdf: "MyInstantAI-White-Label-Platform-Technical-Handover.pdf",
   },
+  {
+    html: "integration-options.html",
+    pdf: "MyInstantAI-x-MoveDigital-Integration-Options.pdf",
+  },
 ];
 
 if (!existsSync(chrome)) {

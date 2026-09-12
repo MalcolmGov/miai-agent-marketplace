@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyInstantAI Agents — Full-Stack Turnkey vs. Headless AI Engine</title>
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      .badge-ok {
+        display: inline-block;
+        background: #e6f7f2;
+        color: #0d7a70;
+        border: 1px solid #99dfd6;
+        font-size: 8px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      .badge-alt {
+        display: inline-block;
+        background: #eff6ff;
+        color: #1e40af;
+        border: 1px solid #bfdbfe;
+        font-size: 8px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      .arch-box {
+        background: var(--navy-2);
+        color: #e2f1f0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 7.8px;
+        line-height: 1.4;
+        padding: 3.5mm;
+        border-radius: 6px;
+        border: 1px solid rgba(46, 196, 182, 0.25);
+        white-space: pre;
+      }
+      .page.airy .card {
+        box-shadow: none;
+        border: 1px solid var(--line);
+        padding: 4mm 4.5mm;
+      }
+      .page.airy .content {
+        padding: 10mm 15mm 7mm;
+      }
+      .page.airy .hero + .content {
+        padding-top: 5mm;
+      }
+      .page.airy .footer {
+        margin-left: 15mm;
+        margin-right: 15mm;
+      }
+      .page.airy .section {
+        margin-bottom: 5.5mm;
+      }
+      .page.airy h2 {
+        font-size: 11.5px;
+        margin-bottom: 3mm;
+      }
+      .page.airy h3 {
+        font-size: 10px;
+        margin: 4.5mm 0 2mm;
+      }
+      .page.airy table {
+        margin-top: 1.5mm;
+        font-size: 8.5px;
+      }
+      .page.airy th {
+        font-size: 7.8px;
+        padding: 2mm 2.5mm;
+      }
+      .page.airy td {
+        font-size: 8.5px;
+        line-height: 1.45;
+        padding: 2.5mm 2.5mm;
+      }
+      .page.airy .callout {
+        padding: 3mm 3.5mm;
+        line-height: 1.5;
+        font-size: 8.8px;
+      }
+      .code-snippet {
+        background: #0f172a;
+        color: #38bdf8;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 7.8px;
+        line-height: 1.4;
+        padding: 3mm 3.5mm;
+        border-radius: 6px;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================ PAGE 1 ============================ -->
+    <section class="page airy">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Technical Integration Brief · MoveDigital → MyInstantAI</p>
+        <h1>Turnkey Full-Stack vs. Headless AI Engine</h1>
+        <p class="lede">
+          MoveDigital's agent platform was built with a strict decoupled boundary. Whether MyInstantAI deploys the 
+          <strong>turnkey Next.js 15 app</strong> on Day 1 or connects an in-house frontend to our 
+          <strong>Headless AI Engine &amp; Client SDK</strong>, all core platform capabilities, multi-model resilience, 
+          and 99.9% API uptime SLAs remain 100% identical.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Dual Integration Models</span>
+          <span class="pill">Decoupled Architecture</span>
+          <span class="pill muted">Enterprise 99.9% SLA</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">01</span> Architectural Integration Matrix</h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 20%">Dimension</th>
+                <th style="width: 40%">Option A: Turnkey Full-Stack Next.js 15</th>
+                <th style="width: 40%">Option B: Headless AI Engine &amp; Client SDK</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Primary Scope</strong></td>
+                <td>End-to-end container (Next.js 15, React 19 UI, Studio, Hub + AI Engine)</td>
+                <td>Decoupled AI Engine microservice + TypeScript/Python SDK + OpenAPI REST/SSE</td>
+              </tr>
+              <tr>
+                <td><strong>Time to Market</strong></td>
+                <td><span class="badge-ok">Day 1 Immediate</span> — Zero frontend code required</td>
+                <td><span class="badge-alt">3 to 6 Weeks</span> — Partner builds bespoke UI screens</td>
+              </tr>
+              <tr>
+                <td><strong>Frontend Ownership</strong></td>
+                <td>MoveDigital maintains web components, screens &amp; responsive layouts</td>
+                <td>MyInstantAI internal engineering team designs &amp; owns 100% of UI/UX</td>
+              </tr>
+              <tr>
+                <td><strong>Integration Surface</strong></td>
+                <td>Branded CSS theme tokens, logo assets, OIDC auth config, domain DNS</td>
+                <td>Client SDK (<span class="mono">@miai/client-sdk</span>), <span class="mono">/api/turns/stream</span> (SSE), REST catalog</td>
+              </tr>
+              <tr>
+                <td><strong>500-Agent Catalog</strong></td>
+                <td>Rendered in pre-built marketplace gallery &amp; configuration studio</td>
+                <td>Streamed via JSON catalog endpoints with typed tool parameters</td>
+              </tr>
+              <tr>
+                <td><strong>MoveDigital Core</strong></td>
+                <td>Application software, UI components, AI Engine, pgvector RAG, Multi-Model Router &amp; App SLA</td>
+                <td>AI Engine microservice, Multi-Model Router, RAG, MCP Gateway, SDK Maintenance, 99.9% API SLA</td>
+              </tr>
+              <tr>
+                <td><strong>Cloud Hosting &amp; Infra</strong></td>
+                <td><strong>MyInstantAI Azure Subscription</strong> (Partner owns cloud spend &amp; tenant)</td>
+                <td><strong>MyInstantAI Azure Subscription</strong> (Partner owns cloud spend &amp; tenant)</td>
+              </tr>
+              <tr>
+                <td><strong>Identity &amp; Auth (OIDC)</strong></td>
+                <td><strong>MyInstantAI IdP (OIDC / Entra ID)</strong> (App federates with partner IdP)</td>
+                <td><strong>MyInstantAI IdP (OIDC / JWT)</strong> (Partner passes auth token to Client SDK)</td>
+              </tr>
+              <tr>
+                <td><strong>Support &amp; SLA</strong></td>
+                <td>Full Application &amp; AI Runtime Maintenance SLA</td>
+                <td>99.9% AI Engine, API Gateway &amp; Tool Execution SLA</td>
+              </tr>
+              <tr>
+                <td><strong>Deployment Footprint</strong></td>
+                <td>Single Container App (Web UI + Autonomous Runtime)</td>
+                <td>Decoupled Microservice (API / SDK Substrate)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2><span class="n">02</span> Core Architectural Recommendation</h2>
+          <div class="card callout">
+            <strong>The Staged Onboarding Model:</strong> Launch <strong>Option A on Day 1</strong> for immediate operational deployment, while MyInstantAI frontend engineers build against the MoveDigital Client SDK in parallel (<strong>Option B</strong>). When the custom UI is completed in Week 5, cutover requires zero database migrations or backend refactoring.
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>MoveDigital Engineering Team · Confidential</span>
+        <span>Page 1 of 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">03</span> Option A: Turnkey Full-Stack Deployment</h2>
+          <p style="font-size: 9px; color: var(--muted); margin-bottom: 3mm">
+            Deploy the complete enterprise application as a single Azure Container App. MoveDigital manages both the frontend presentation tier and the agent execution runtime.
+          </p>
+
+          <div class="arch-box">
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        OPTION A: TURNKEY FULL-STACK RUNTIME CONTAINER                  │
+│                                                                                        │
+│  [ Web Browser / Client ]  ──( HTTPS / WSS )──►  [ Azure Front Door / Ingress ]        │
+│                                                           │                            │
+│  ┌────────────────────────────────────────────────────────▼─────────────────────────┐  │
+│  │  Next.js 15 Web Application (apps/web)                                           │  │
+│  │  ├─ SSR Pages: Marketplace Gallery · Agent Studio · Install Hub · Admin Console  │  │
+│  │  ├─ Interactive Client (React 19): Duplex Voice WebRTC · Streaming Chat Terminal │  │
+│  │  └─ API Route Handlers: /api/turns/stream · /api/catalog · /api/knowledge        │  │
+│  └────────────────────────────────────────────────────────┬─────────────────────────┘  │
+│                                                           │                            │
+│  ┌────────────────────────────────────────────────────────▼─────────────────────────┐  │
+│  │  Autonomous Agent Substrate (packages/runtime)                                   │  │
+│  │  ├─ Multi-Model Fallback Engine (Claude 3.5 Sonnet ──► GPT-4o ──► DeepSeek-R1)  │  │
+│  │  ├─ JSON-RPC 2.0 MCP Tool Execution Gateway (Stripe, GitHub, CRM, Slack)         │  │
+│  │  ├─ Hybrid pgvector RAG Pipeline (HNSW Vector Search + Tenant RLS Isolation)     │  │
+│  │  └─ Agent-to-Agent (A2A) Delegation Protocol Bus                                │  │
+│  └──────────────────────────────────────────────────────────────────────────────────┘  │
+└────────────────────────────────────────────────────────────────────────────────────────┘</div>
+
+          <h3>Included Out-of-the-Box Modules</h3>
+          <div class="grid-2" style="gap: 3mm">
+            <div class="card">
+              <strong>1. Agent Marketplace &amp; Storefront</strong>
+              <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+                Categorized directory of 500 domain agents, fuzzy search, capability filters, price tiers, and one-click sandbox testing.
+              </p>
+            </div>
+            <div class="card">
+              <strong>2. Agent Studio &amp; Customizer</strong>
+              <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+                Prompt configuration studio, knowledge file upload manager, dynamic temperature tuning, and tool permission toggles.
+              </p>
+            </div>
+            <div class="card">
+              <strong>3. Duplex Voice Interface</strong>
+              <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+                Low-latency conversational voice engine with real-time waveform visualization, interruptibility, and audio playback.
+              </p>
+            </div>
+            <div class="card">
+              <strong>4. Integration &amp; Install Hub</strong>
+              <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+                OAuth connector setup for Slack, Microsoft Teams, WhatsApp Web, and custom webhooks with tenant-level credential storage.
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 3.5mm; border-left: 3px solid var(--accent)">
+            <strong>When to Choose Option A:</strong> Recommended if MyInstantAI wants immediate deployment on Day 1, lacks frontend bandwidth, or wants MoveDigital to shoulder the complete UI maintenance and browser-compatibility surface.
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>MoveDigital Engineering Team · Confidential</span>
+        <span>Page 2 of 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">04</span> Option B: Headless AI Engine &amp; Client SDK</h2>
+          <p style="font-size: 9px; color: var(--muted); margin-bottom: 3mm">
+            MyInstantAI designs, builds, and hosts the frontend UI across web, mobile, and enterprise portals. MoveDigital delivers a high-throughput, low-latency AI microservice via Client SDK and REST/SSE APIs.
+          </p>
+
+          <div class="arch-box">
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        OPTION B: HEADLESS AI ENGINE INTEGRATION                        │
+│                                                                                        │
+│  [ MyInstantAI Bespoke UI ] ──► [ @miai/client-sdk ] ──( SSE / REST )──► [ API Gateway ]
+│  (Custom Web / iOS / Android)                                                 │        │
+│                                                                               │        │
+│  ┌────────────────────────────────────────────────────────────────────────────▼─────┐  │
+│  │  MoveDigital Headless AI Microservice Container                                  │  │
+│  │  ├─ POST /api/turns/stream  ── Real-time SSE token, tool & citation streaming   │  │
+│  │  ├─ GET  /api/catalog       ── 500-agent typed metadata & capability specs       │  │
+│  │  ├─ POST /api/knowledge     ── Multi-tenant pgvector RAG document ingestion      │  │
+│  │  └─ POST /api/a2a/delegate  ── Asynchronous multi-agent execution bus            │  │
+│  └─────────────────────────────────────┬────────────────────────────────────────────┘  │
+│                                        │                                               │
+│  ┌─────────────────────────────────────▼────────────────────────────────────────────┐  │
+│  │  Enterprise AI Infrastructure Layer                                              │  │
+│  │  ├─ Model Fallback: Azure OpenAI ──► Anthropic ──► DeepSeek                      │  │
+│  │  ├─ JSON-RPC 2.0 MCP Gateway: Sandboxed Tool Connectors                          │  │
+│  │  └─ Azure PostgreSQL (pgvector HNSW) + Azure Cache for Redis                     │  │
+│  └──────────────────────────────────────────────────────────────────────────────────┘  │
+└────────────────────────────────────────────────────────────────────────────────────────┘</div>
+
+          <h3>Client SDK Developer Snippet (TypeScript)</h3>
+          <div class="code-snippet">import { MoveDigitalAgentClient } from "@miai/client-sdk";
+
+const client = new MoveDigitalAgentClient({
+  baseUrl: "https://ai-engine.myinstantai.digital",
+  apiKey: userAuthToken,
+  tenantId: "tenant_enterprise_01"
+});
+
+// Stream tokens, tool calls, and citations directly into MyInstantAI custom state
+const stream = await client.turns.stream({
+  agentId: "financial-auditor-pro",
+  message: "Verify compliance with IFRS 16 lease liability rules.",
+  sessionId: "session_abc123"
+});
+
+for await (const event of stream) {
+  if (event.type === "chunk") appendTokenToUI(event.data.delta);
+  if (event.type === "tool.call") renderToolSpinner(event.data.tool);
+  if (event.type === "grounding.citation") renderBadge(event.data.source);
+}</div>
+
+          <div class="card" style="margin-top: 3mm; border-left: 3px solid #1e40af">
+            <strong>Headless Engine Core Surface:</strong> Exposes OpenAPI 3.1 REST endpoints and Server-Sent Events (SSE) streaming token deltas, tool executions, and vector citations with zero coupling to React or frontend CSS.
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>MoveDigital Engineering Team · Confidential</span>
+        <span>Page 3 of 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 4 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">05</span> Direct Platform Mapping: app.myinstantai.com, iOS &amp; Android</h2>
+          <p style="font-size: 9px; color: var(--muted); margin-bottom: 3mm">
+            A technical review of MyInstantAI's live production web platform (<span class="mono">app.myinstantai.com</span>) and native mobile apps (iOS &amp; Android) demonstrates why Option B is the ideal architectural fit.
+          </p>
+
+          <div class="arch-box">
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        OMNICHANNEL CLIENT ARCHITECTURE MAPPING                         │
+│                                                                                        │
+│   ┌────────────────────────┐  ┌────────────────────────┐  ┌────────────────────────┐   │
+│   │  app.myinstantai.com   │  │  MyInstantAI iOS App   │  │ MyInstantAI Android App│   │
+│   │   (Web React Client)   │  │   (Swift / SwiftUI)    │  │   (Kotlin / Compose)   │   │
+│   └───────────┬────────────┘  └───────────┬────────────┘  └───────────┬────────────┘   │
+│               │                           │                           │                │
+│               └───────────────────────────┼───────────────────────────┘                │
+│                                           │ (Client SDK / SSE / HTTP)                  │
+│                                           ▼                                            │
+│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
+│   │  MoveDigital Headless AI Substrate (Single Azure Deployment)                   │   │
+│   │  ├─ 500 Domain-Specific Agents Catalog (GET /api/catalog)                      │   │
+│   │  ├─ Real-Time Streaming Turn Execution (POST /api/turns/stream)                │   │
+│   │  ├─ Multi-Tenant pgvector RAG Knowledge Pipeline (/api/knowledge)              │   │
+│   │  └─ Dynamic Model Fallback: Azure OpenAI ──► Claude 3.5 ──► DeepSeek           │   │
+│   └────────────────────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────────────────────────────────┘</div>
+
+          <h3>1. Web Portal Integration Blueprint (<span class="mono">app.myinstantai.com</span>)</h3>
+          <div class="grid-2" style="gap: 3mm">
+            <div class="card">
+              <strong>Sidebar Navigation Alignment</strong>
+              <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+                Add an <strong>"AI Agents"</strong> entry directly under the <strong>CORE</strong> section (Home, Ask AI, <strong>AI Agents</strong>, Search, History). Clicking it opens the 500-agent catalog grid.
+              </p>
+            </div>
+            <div class="card">
+              <strong>Interactive Canvas Transformation</strong>
+              <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+                Selecting an agent shifts the workspace from generic model chatting (<span class="mono">Single / Compare / Blend</span>) into <strong>Autonomous Agent Execution</strong> with live tool status badges.
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 3mm; border-left: 3px solid var(--accent)">
+            <strong>2. Native Token &amp; e-PIN Balance Ledger Alignment:</strong>
+            <p style="font-size: 8.5px; color: var(--ink); margin-top: 1mm">
+              <span class="mono">app.myinstantai.com</span> already features a prominent <strong>Token Balance Widget (e.g. 11,716 FOREVER)</strong> backed by <span class="mono">Redeem e-PIN</span> and subscriptions. 
+              When a turn completes, MoveDigital's engine emits a typed <span class="mono">turn.complete</span> event with exact prompt and completion token counts. MyInstantAI's billing engine simply deducts tokens from the user's existing ledger with zero disruption to their monetization model.
+            </p>
+          </div>
+
+          <div class="card" style="margin-top: 3mm">
+            <strong>3. Native Mobile Parity (iOS &amp; Android):</strong>
+            <p style="font-size: 8.5px; color: var(--muted); margin-top: 1mm">
+              Because MoveDigital's engine uses standard SSE streams, MyInstantAI's iOS (Swift) and Android (Kotlin) apps consume the exact same agent catalog, RAG citations, and tools without developing separate mobile backends.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>MoveDigital Engineering Team · Confidential</span>
+        <span>Page 4 of 5</span>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 5 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2><span class="n">06</span> Architectural Value &amp; RACI Division</h2>
+          
+          <p style="font-size: 8.6px; line-height: 1.45; color: var(--ink); margin-bottom: 2.5mm">
+            <strong>Architectural Value Boundary:</strong> The core technical moat resides in model resilience, pgvector hybrid search, MCP sandboxing, and prompt engineering—not frontend markup. 
+            Building an autonomous AI engine from scratch requires specialized AI/ML infrastructure engineering; MoveDigital provides this substrate with battle-tested reliability and an enterprise 99.9% API SLA.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 40%">Capability / Responsibility Area</th>
+                <th style="width: 30%">Option A: Turnkey Full-Stack</th>
+                <th style="width: 30%">Option B: Headless Engine</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>UI/UX Design, Components &amp; Layouts</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MyInstantAI In-House Team</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Cross-Browser QA &amp; Mobile Responsive Polish</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MyInstantAI In-House Team</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Agent System Prompts &amp; 500-Catalog IP</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Multi-Model Failover &amp; Token Optimization</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+              <tr>
+                <td><strong>pgvector RAG Chunking &amp; Hybrid Search</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Model Context Protocol (MCP) Tool Sandboxing</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+              <tr>
+                <td><strong>A2A Multi-Agent Orchestration Protocol</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Azure Cloud Subscription &amp; Infra Ownership</strong></td>
+                <td><strong>MyInstantAI</strong> (Owns Azure tenant &amp; cloud spend)</td>
+                <td><strong>MyInstantAI</strong> (Owns Azure tenant &amp; cloud spend)</td>
+              </tr>
+              <tr>
+                <td><strong>Identity Provider &amp; User Directory (OIDC / Entra ID)</strong></td>
+                <td><strong>MyInstantAI</strong> (Owns IdP, users, roles &amp; SSO)</td>
+                <td><strong>MyInstantAI</strong> (Owns IdP, users, roles &amp; SSO)</td>
+              </tr>
+              <tr>
+                <td><strong>Cloud Provisioning &amp; Network Security</strong></td>
+                <td><strong>MyInstantAI</strong> (with MoveDigital config templates)</td>
+                <td><strong>MyInstantAI</strong> (with MoveDigital config templates)</td>
+              </tr>
+              <tr>
+                <td><strong>Application Container &amp; Code Updates</strong></td>
+                <td><strong>MoveDigital</strong></td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+              <tr>
+                <td><strong>24/7 Engine Health &amp; 99.9% Uptime SLA</strong></td>
+                <td>MoveDigital</td>
+                <td><strong>MoveDigital</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 style="margin-top: 4mm"><span class="n">07</span> Recommended Action Plan</h2>
+          <div class="card" style="padding: 3mm 4mm">
+            <div class="grid-3" style="gap: 2.5mm">
+              <div>
+                <strong>Phase 1: Day 1–15</strong>
+                <p style="font-size: 8.2px; color: var(--muted); margin-top: 1mm">
+                  Deploy Option A on Azure. Brand with MyInstantAI logos and begin customer onboarding immediately.
+                </p>
+              </div>
+              <div>
+                <strong>Phase 2: Day 15–40</strong>
+                <p style="font-size: 8.2px; color: var(--muted); margin-top: 1mm">
+                  MyInstantAI frontend team consumes Client SDK in parallel, building bespoke portal against live staging API.
+                </p>
+              </div>
+              <div>
+                <strong>Phase 3: Day 45+</strong>
+                <p style="font-size: 8.2px; color: var(--muted); margin-top: 1mm">
+                  Cutover traffic to bespoke UI. Zero backend migration required; all agent memories and RAG vectors persist.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>MoveDigital Engineering Team · Confidential</span>
+        <span>Page 5 of 5</span>
+      </footer>
+    </section>
+  </body>
+</html>
