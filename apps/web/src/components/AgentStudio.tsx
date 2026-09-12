@@ -524,7 +524,7 @@ export function AgentStudio({
       </div>
 
       {/* Hero Header Card */}
-      <div className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-6 shadow-[0_4px_24px_-10px_rgba(0,0,0,0.5)]">
+      <div className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-4 sm:p-6 shadow-[0_4px_24px_-10px_rgba(0,0,0,0.5)]">
         <div className="card-specular-rim" />
         <div className="flex flex-col gap-3.5">
           <div className="flex flex-wrap items-center gap-2">
@@ -813,6 +813,8 @@ export function AgentStudio({
               savingDomains={savingDomains}
               domainsMsg={domainsMsg}
               onSaveDomains={(d) => void saveDomains(d)}
+              agentName={data.package.manifest.name}
+              agentId={agentId}
             />
           </div>
         ) : null}

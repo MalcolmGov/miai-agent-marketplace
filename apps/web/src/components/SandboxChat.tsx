@@ -482,10 +482,10 @@ export function SandboxChat({
           </div>
         )}
       </div>
-      <div className="flex gap-2 border-t border-[var(--line)] p-3">
+      <div className="flex gap-2 border-t border-[var(--line)] p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-[var(--bg-panel)]/90 backdrop-blur-md">
         <input
           id="sandbox-chat-input"
-          className="input"
+          className="input min-h-[44px] text-base sm:text-sm"
           value={input}
           placeholder={
             paused
@@ -512,7 +512,7 @@ export function SandboxChat({
         />
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary min-h-[44px] px-4 text-xs font-bold active:scale-95 transition-transform"
           disabled={busy || paused}
           onClick={() => void send()}
         >
