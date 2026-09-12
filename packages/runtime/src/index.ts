@@ -2236,6 +2236,64 @@ export class AzureOpenAIModelAdapter implements ModelAdapter {
   }
 }
 
+/**
+ * Resilient multi-provider fallback adapter.
+ * Wraps a primary ModelAdapter (e.g. Azure OpenAI) and automatically fails over
+ * to secondary providers (e.g. Anthropic Claude, OpenAI direct) upon 429 rate limits,
+ * network timeouts, or 5xx server outages.
+ */
+export class ResilientFallbackModelAdapter implements ModelAdapter {
+  constructor(
+    public readonly primary: ModelAdapter,
+    public readonly fallbacks: ModelAdapter[] = [],
+  ) {}
+
+  async complete(input: ModelCompleteInput): Promise<ModelCompleteResult> {
+    const chain = [this.primary, ...this.fallbacks];
+    let lastErr: unknown;
+    for (let i = 0; i < chain.length; i++) {
+      try {
+        return await chain[i]!.complete(input);
+      } catch (err) {
+        lastErr = err;
+        // If there are remaining fallbacks, log and retry with the next in chain
+        if (i < chain.length - 1) {
+          const providerName = chain[i]!.constructor.name;
+          const nextName = chain[i + 1]!.constructor.name;
+          console.warn(`[resilient-model] ${providerName} failed; falling back to ${nextName}`, err);
+          continue;
+        }
+      }
+    }
+    throw lastErr;
+  }
+
+  async *streamComplete(input: ModelCompleteInput): AsyncIterable<StreamChunk> {
+    const chain = [this.primary, ...this.fallbacks];
+    let lastErr: unknown;
+    for (let i = 0; i < chain.length; i++) {
+      try {
+        const stream = chain[i]!.streamComplete
+          ? chain[i]!.streamComplete!(input)
+          : streamFromComplete(chain[i]!, input);
+        for await (const chunk of stream) {
+          yield chunk;
+        }
+        return;
+      } catch (err) {
+        lastErr = err;
+        if (i < chain.length - 1) {
+          const providerName = chain[i]!.constructor.name;
+          const nextName = chain[i + 1]!.constructor.name;
+          console.warn(`[resilient-model-stream] ${providerName} failed; falling back to ${nextName}`, err);
+          continue;
+        }
+      }
+    }
+    throw lastErr;
+  }
+}
+
 let sandboxModelTurns = 0;
 export function createModelAdapter(): ModelAdapter {
   const mode = env("MIAI_MODEL_MODE") ?? "mock";
@@ -2246,17 +2304,33 @@ export function createModelAdapter(): ModelAdapter {
     if (sandboxModelTurns >= cap) return new MockModelAdapter();
     sandboxModelTurns++;
   }
-  if ((mode === "gateway" || mode === "http") && env("MIAI_MODEL_GATEWAY_URL")) {
-    return new GatewayModelAdapter();
-  }
+
+  const providers: ModelAdapter[] = [];
+
+  // Register configured live providers in priority order based on active mode
   if (mode === "azure" && env("AZURE_OPENAI_API_KEY") && env("AZURE_OPENAI_ENDPOINT")) {
-    return new AzureOpenAIModelAdapter();
+    providers.push(new AzureOpenAIModelAdapter());
+  } else if ((mode === "gateway" || mode === "http") && env("MIAI_MODEL_GATEWAY_URL")) {
+    providers.push(new GatewayModelAdapter());
+  } else if ((mode === "anthropic" || mode === "claude") && env("ANTHROPIC_API_KEY")) {
+    providers.push(new AnthropicModelAdapter());
+  } else if (mode === "openai" && env("OPENAI_API_KEY")) {
+    providers.push(new OpenAIModelAdapter());
   }
-  if ((mode === "anthropic" || mode === "claude") && env("ANTHROPIC_API_KEY")) {
-    return new AnthropicModelAdapter();
+
+  // Multi-provider resilience: if fallback keys are configured, add them as hot backups
+  if (env("ANTHROPIC_API_KEY") && !providers.some((p) => p instanceof AnthropicModelAdapter)) {
+    providers.push(new AnthropicModelAdapter());
   }
-  if (mode === "openai" && env("OPENAI_API_KEY")) {
-    return new OpenAIModelAdapter();
+  if (env("OPENAI_API_KEY") && !providers.some((p) => p instanceof OpenAIModelAdapter)) {
+    providers.push(new OpenAIModelAdapter());
+  }
+
+  if (providers.length > 1) {
+    return new ResilientFallbackModelAdapter(providers[0]!, providers.slice(1));
+  }
+  if (providers.length === 1) {
+    return providers[0]!;
   }
   return new MockModelAdapter();
 }
