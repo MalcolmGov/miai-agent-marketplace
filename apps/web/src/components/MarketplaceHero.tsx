@@ -88,12 +88,12 @@ export function MarketplaceHero({
       />
 
       <div className="relative mx-auto max-w-3xl text-center">
-        {/* Signature headline from app.myinstantai.com */}
+        {/* Signature headline */}
         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl">
-          What can I help you with?
+          AI Agent Marketplace
         </h1>
         <p className="mt-3 text-sm text-[var(--muted)] sm:text-base">
-          Ask anything — powered by frontier AI models.
+          Browse 500 enterprise AI agents across 100 industry families and 5 global markets.
         </p>
 
         {/* 4 Interactive Suggestion Cards */}

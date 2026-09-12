@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Your AI command center — chat, search, automate, learn.",
 };
 
-export default function HomePage() {
+export default function DashboardPage() {
   return <MyInstantAIDashboard tokenBalance={11716} />;
 }
