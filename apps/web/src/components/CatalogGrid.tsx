@@ -788,7 +788,7 @@ export function CatalogGrid({
           ) : null}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {displayedItems.map((item, idx) => {
             const hasWorkflow = isWorkflowFamilyId(item.id);
             const hrefMarket = market !== "all" && item.markets[market] ? market : null;
@@ -804,46 +804,53 @@ export function CatalogGrid({
             return (
               <article
                 key={item.id}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1322]/85 hover:bg-[#0f172a]/95 backdrop-blur-xl p-5 sm:p-6 transition-all duration-300 hover:border-white/[0.18] hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8),0_0_24px_-6px_rgba(56,189,248,0.18)]"
+                className="glow-border-card group relative flex flex-col justify-between overflow-hidden rounded-2xl p-3 sm:p-5 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]"
                 style={{ animationDelay: `${Math.min(idx, 15) * 25}ms` }}
               >
-                {/* Subtle top ambient rim accent */}
+                {/* Luminous top rim flare */}
                 <div
-                  className="pointer-events-none absolute top-0 inset-x-0 h-px transition-opacity duration-300 opacity-40 group-hover:opacity-100"
+                  className="pointer-events-none absolute top-0 inset-x-0 h-[1.5px] opacity-75 group-hover:opacity-100 transition-opacity"
                   style={{
-                    background: `linear-gradient(90deg, transparent 0%, ${categoryAccent(item.marketplaceCategory)} 30%, ${categoryAccent(item.marketplaceCategory)} 70%, transparent 100%)`,
+                    background: `linear-gradient(90deg, transparent 0%, rgba(61,214,198,0.85) 30%, ${categoryAccent(item.marketplaceCategory)} 70%, transparent 100%)`,
                   }}
                   aria-hidden
                 />
 
                 {/* Top Bento Header: Icon on Left, Category Pill + Bookmark on Right */}
                 <div>
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-1.5">
                     <div className="relative shrink-0">
-                      <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
+                      <AgentIcon
+                        familyId={item.id}
+                        category={item.marketplaceCategory}
+                        className="!h-8 !w-8 sm:!h-10 sm:!w-10 !rounded-lg sm:!rounded-xl"
+                      />
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium tracking-wide text-slate-300">
+                    <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+                      <span
+                        className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[11px] font-medium tracking-wide text-slate-300 max-w-[75px] sm:max-w-none truncate"
+                        title={item.marketplaceCategory}
+                      >
                         <span
-                          className="h-1.5 w-1.5 rounded-full"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
                           style={{ background: categoryAccent(item.marketplaceCategory) }}
                           aria-hidden
                         />
-                        {item.marketplaceCategory}
+                        <span className="truncate">{item.marketplaceCategory}</span>
                       </span>
                       <button
                         type="button"
                         onClick={() => toggleSaved(item.id)}
                         aria-pressed={saved.has(item.id)}
                         aria-label={saved.has(item.id) ? "Saved" : "Save agent"}
-                        className={`inline-flex h-7 w-7 items-center justify-center rounded-lg border transition-all duration-200 ${
+                        className={`inline-flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-md sm:rounded-lg border transition-all duration-200 ${
                           saved.has(item.id)
                             ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent-bright)]"
                             : "border-white/[0.08] bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
                         }`}
                       >
-                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill={saved.has(item.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill={saved.has(item.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
                           <path d="M6 4h12v16l-6-4-6 4z" strokeLinejoin="round" />
                         </svg>
                       </button>
@@ -851,24 +858,24 @@ export function CatalogGrid({
                   </div>
 
                   {/* Title & Micro-Badges */}
-                  <div className="mt-4">
-                    <h3 className="text-[1.05rem] font-bold leading-tight tracking-tight text-white transition-colors duration-200 group-hover:text-[var(--accent-bright)]">
+                  <div className="mt-2 sm:mt-3">
+                    <h3 className="text-[12.5px] sm:text-[15px] font-bold leading-snug tracking-tight text-white transition-colors duration-200 group-hover:text-[var(--accent-bright)] line-clamp-2 min-h-[32px] sm:min-h-[40px] flex items-center">
                       {item.name}
                     </h3>
-                    
-                    <div className="mt-2 flex flex-wrap items-center gap-1.5">
+
+                    <div className="mt-1 sm:mt-1.5 flex flex-wrap items-center gap-1">
                       {hasWorkflow ? (
-                        <span className="inline-flex items-center gap-1 rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10.5px] font-semibold text-cyan-300">
+                        <span className="inline-flex items-center gap-0.5 rounded border border-cyan-500/30 bg-cyan-500/10 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold text-cyan-300">
                           ✦ {t("catalog.multiStep")}
                         </span>
                       ) : null}
                       {item.requiresConnectors?.length ? (
                         <span
-                          className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10.5px] font-semibold text-amber-300"
+                          className="inline-flex items-center gap-1 rounded border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold text-amber-300"
                           title={`Requires ${item.requiresConnectors.map(connectorLabel).join(", ")} setup`}
                         >
-                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" aria-hidden />
-                          Needs connector
+                          <span className="h-1 w-1 rounded-full bg-amber-400 animate-pulse" aria-hidden />
+                          <span>Needs connector</span>
                         </span>
                       ) : null}
                       {activePack && packs.includes(activePack) ? (
@@ -877,17 +884,17 @@ export function CatalogGrid({
                     </div>
                   </div>
 
-                  {/* 2-line Description */}
-                  <p className="mt-3 text-[13px] leading-relaxed text-slate-300/90 line-clamp-2">
+                  {/* Description */}
+                  <p className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-[12.5px] leading-tight sm:leading-relaxed text-slate-300/85 line-clamp-2">
                     {blurb}
                   </p>
                 </div>
 
                 {/* Footer Action Bar: Details Modal + Glowing Setup CTA */}
-                <div className="mt-5 pt-3.5 border-t border-white/[0.07] flex items-center justify-between gap-3">
+                <div className="mt-2.5 sm:mt-4 pt-2 sm:pt-3 border-t border-white/[0.08] flex items-center justify-between gap-1">
                   <button
                     type="button"
-                    className="text-[12px] font-medium text-slate-400 hover:text-white transition-colors"
+                    className="text-[10.5px] sm:text-[12px] font-medium text-slate-400 hover:text-white transition-colors"
                     onClick={() => setDetail(item)}
                   >
                     Details ↗
@@ -895,10 +902,10 @@ export function CatalogGrid({
 
                   <Link
                     href={gatedSetupHref(href, agentsOnboarded)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#3dd6c6] to-[#20b2aa] hover:from-[#4ee5d5] hover:to-[#2bc4bb] px-4 py-1.5 text-[12px] font-bold text-slate-950 transition-all duration-200 shadow-[0_0_16px_rgba(61,214,198,0.45)] hover:shadow-[0_0_24px_rgba(61,214,198,0.7)] hover:scale-[1.03] active:scale-[0.98]"
+                    className="inline-flex items-center gap-1 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#3dd6c6] to-[#20b2aa] hover:from-[#4ee5d5] hover:to-[#2bc4bb] px-2.5 sm:px-4 py-1 sm:py-1.5 text-[10.5px] sm:text-[12px] font-bold text-slate-950 transition-all duration-200 shadow-[0_0_12px_rgba(61,214,198,0.45)] hover:shadow-[0_0_20px_rgba(61,214,198,0.7)] hover:scale-[1.03] active:scale-[0.98]"
                   >
                     <span>Setup</span>
-                    <span aria-hidden className="text-[11px] font-bold transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+                    <span aria-hidden className="text-[10px] font-bold transition-transform duration-200 group-hover:translate-x-0.5">→</span>
                   </Link>
                 </div>
               </article>
