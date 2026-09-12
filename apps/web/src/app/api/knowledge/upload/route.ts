@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
   try {
     const buf = Buffer.from(await file.arrayBuffer());
-    const text = fileToText(file.name, file.type, buf).trim();
+    const text = (await fileToText(file.name, file.type, buf)).trim();
     if (text.length < 20) {
       return NextResponse.json({ error: "File had almost no extractable text" }, { status: 400 });
     }

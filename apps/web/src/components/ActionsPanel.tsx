@@ -4,6 +4,23 @@ import { useEffect, useMemo, useState } from "react";
 import { isWorkflowFamilyId } from "@/lib/workflows";
 import { useT } from "@/lib/locale";
 import { BUSINESS_CONNECTORS } from "@/lib/connectors-catalog";
+import { getBusinessProblemForAgent } from "@/lib/knowledge-guidance";
+import { getConnectorIcon } from "@/lib/connector-icons";
+
+function ConnectorBrandIcon({ id, className = "h-5 w-5" }: { id: string; className?: string }) {
+  const iconMeta = getConnectorIcon(id);
+  if (iconMeta.svgPath) {
+    return (
+      <img
+        src={iconMeta.svgPath}
+        alt={iconMeta.label}
+        className={`${className} object-contain transition-transform duration-200 group-hover:scale-105`}
+        loading="lazy"
+      />
+    );
+  }
+  return <span className="text-base select-none">{iconMeta.emojiFallback}</span>;
+}
 
 interface Connector {
   id: string;
@@ -29,21 +46,25 @@ interface OauthStatus {
 export function ActionsPanel({
   agentId,
   agentName,
+  agentCategory,
   connectors,
   connected,
   onConnected,
   agentConnectors = [],
   isCustom = false,
   onProceedToSandbox,
+  onSkip,
 }: {
   agentId: string;
   agentName?: string;
+  agentCategory?: string;
   connectors: Connector[];
   connected: string[];
   onConnected: (ids: string[]) => void;
   agentConnectors?: string[];
   isCustom?: boolean;
   onProceedToSandbox?: () => void;
+  onSkip?: () => void;
 }) {
   const t = useT();
   const [busy, setBusy] = useState<string | null>(null);
@@ -69,16 +90,25 @@ export function ActionsPanel({
   const [slackChannel, setSlackChannel] = useState("");
   const [slackSavedChannel, setSlackSavedChannel] = useState<string | null>(null);
   const [slackNeedsInvite, setSlackNeedsInvite] = useState(false);
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  
+  // Clean UI toggles & Modal state
+  const [configuringConnectorId, setConfiguringConnectorId] = useState<string | null>(null);
   const [showOther, setShowOther] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [testStatus, setTestStatus] = useState<Record<string, { ok: boolean; message: string }>>({});
 
   void isCustom;
+  void slackNeedsInvite;
+  void setSlackNeedsInvite;
 
   const byId = useMemo(() => new Map(status.map((s) => [s.id, s])), [status]);
   const slackConnected = Boolean(byId.get("slack")?.connected) || connected.includes("slack");
-  const missingCount = status.filter((s) => !s.configured).length;
   const isWorkflow = isWorkflowFamilyId(agentId);
+
+  // Business Problem Area mapping for this agent
+  const problemArea = useMemo(() => {
+    return getBusinessProblemForAgent(agentId, agentName, agentCategory);
+  }, [agentId, agentName, agentCategory]);
 
   async function simulateConnect(connectorId: string) {
     setBusy(connectorId);
@@ -100,6 +130,9 @@ export function ActionsPanel({
       }
       if (data.rental) onConnected(data.rental.connectedConnectors);
       await refreshStatus();
+      if (configuringConnectorId === connectorId) {
+        setConfiguringConnectorId(null);
+      }
     } catch {
       setError("Network error while connecting demo account");
     } finally {
@@ -267,6 +300,7 @@ export function ActionsPanel({
       }
       if (data.rental) onConnected(data.rental.connectedConnectors);
       await refreshStatus();
+      setConfiguringConnectorId(null);
     } finally {
       setBusy(null);
     }
@@ -312,579 +346,836 @@ export function ActionsPanel({
     }
   }
 
-  const recommendedIds = (() => {
+  // Determine smart recommendations based on agent's business area
+  const domainRecommendedIds = useMemo(() => {
     if (isWorkflow) return new Set(["google_calendar", "slack", "hubspot", "email"]);
-    const flagged = connectors.filter((c) => c.recommended).map((c) => c.id);
-    if (flagged.length) return new Set(flagged);
-    return new Set(
-      ["slack", "google_calendar", "email", "calendly", "hubspot"].filter((id) =>
-        connectors.some((c) => c.id === id),
-      ),
-    );
-  })();
-
-  const equippedIds = useMemo(() => {
+    
+    // Check explicit agentConnectors first
     if (agentConnectors && agentConnectors.length > 0) {
       return new Set(agentConnectors);
     }
-    return recommendedIds;
-  }, [agentConnectors, recommendedIds]);
+
+    const set = new Set<string>();
+    const pid = problemArea.id;
+
+    if (pid === "education") {
+      set.add("hubspot");
+      set.add("google_calendar");
+      set.add("email");
+      set.add("slack");
+    } else if (pid === "sales") {
+      set.add("hubspot");
+      set.add("google_calendar");
+      set.add("slack");
+      set.add("email");
+    } else if (pid === "bookings") {
+      set.add("google_calendar");
+      set.add("m365_calendar");
+      set.add("calendly");
+      set.add("whatsapp");
+    } else if (pid === "finance") {
+      set.add("stripe");
+      set.add("xero");
+      set.add("quickbooks");
+      set.add("email");
+    } else if (pid === "support") {
+      set.add("zendesk");
+      set.add("slack");
+      set.add("email");
+    } else if (pid === "developer" || pid === "operations") {
+      set.add("slack");
+      set.add("webhook");
+      set.add("mcp");
+    } else {
+      // Default general business
+      set.add("email");
+      set.add("google_calendar");
+      set.add("slack");
+      set.add("whatsapp");
+    }
+
+    return set;
+  }, [isWorkflow, agentConnectors, problemArea.id]);
 
   function isConnected(c: Connector): boolean {
     const oauth = byId.get(c.id);
     return connected.includes(c.id) || Boolean(oauth?.connected);
   }
 
-  function sortConnectedFirst(list: Connector[]): Connector[] {
+  // Developer protocols (MCP, Webhook) kept cleanly grouped
+  const isDevProtocol = (id: string) => id === "mcp" || id === "webhook";
+
+  // Business connectors vs Dev protocols
+  const allBusinessConnectors = connectors.filter((c) => !isDevProtocol(c.id));
+
+  // Sort: Connected first, then domain recommended, then alphabetical
+  function sortConnectors(list: Connector[]): Connector[] {
     return [...list].sort((a, b) => {
-      const ac = isConnected(a) ? 0 : 1;
-      const bc = isConnected(b) ? 0 : 1;
-      if (ac !== bc) return ac - bc;
-      const aEquipped = equippedIds.has(a.id) ? 0 : 1;
-      const bEquipped = equippedIds.has(b.id) ? 0 : 1;
-      if (aEquipped !== bEquipped) return aEquipped - bEquipped;
-      const aReady = byId.get(a.id)?.configured !== false ? 0 : 1;
-      const bReady = byId.get(b.id)?.configured !== false ? 0 : 1;
-      if (aReady !== bReady) return aReady - bReady;
+      const aConn = isConnected(a) ? 0 : 1;
+      const bConn = isConnected(b) ? 0 : 1;
+      if (aConn !== bConn) return aConn - bConn;
+
+      const aRec = domainRecommendedIds.has(a.id) ? 0 : 1;
+      const bRec = domainRecommendedIds.has(b.id) ? 0 : 1;
+      if (aRec !== bRec) return aRec - bRec;
+
       return a.name.localeCompare(b.name);
     });
   }
 
-  const equippedConnectors = sortConnectedFirst(connectors.filter((c) => equippedIds.has(c.id)));
-  const otherConnectors = sortConnectedFirst(connectors.filter((c) => !equippedIds.has(c.id)));
-  const connectedEquippedCount = equippedConnectors.filter((c) => isConnected(c)).length;
-  const phase2 = sortConnectedFirst(connectors.filter((c) => c.phase === 2));
+  const primaryConnectors = sortConnectors(
+    allBusinessConnectors.filter((c) => domainRecommendedIds.has(c.id) || isConnected(c))
+  );
 
-  const btnPrimary =
-    "btn btn-primary inline-flex h-9 min-w-[8.5rem] items-center justify-center px-3 text-xs";
-  const btnGhost =
-    "btn btn-ghost inline-flex h-9 min-w-[8.5rem] items-center justify-center px-3 text-xs";
+  const moreConnectors = sortConnectors(
+    allBusinessConnectors.filter((c) => !domainRecommendedIds.has(c.id) && !isConnected(c))
+  );
 
-  function row(c: Connector, opts?: { operatorDetail?: boolean; isEquipped?: boolean }) {
-    const operatorDetail = Boolean(opts?.operatorDetail);
-    const isEquipped = Boolean(opts?.isEquipped);
-    const oauth = byId.get(c.id);
-    const isOauth = Boolean(oauth) || c.auth === "oauth";
-    const on = isConnected(c);
-    const configured = oauth ? oauth.configured : true;
-    const recommended = c.recommended || recommendedIds.has(c.id);
-    const biz = BUSINESS_CONNECTORS.find((b) => b.id === c.id);
-    const icon = biz?.icon ?? (c.id.includes("calendar") ? "📅" : c.id === "slack" ? "💬" : c.id === "hubspot" ? "🟠" : "🔌");
-    const authBadge = biz?.authBadge ?? (isOauth ? "OAuth 2.0" : c.auth === "api_key" ? "API Key" : "Integration");
+  const totalConnectedCount = connectors.filter((c) => isConnected(c)).length;
 
-    let actionButtonLabel = isOauth ? t("actions.connectOAuth") : "Connect";
-    let brandClass = "";
-    if (c.id === "google_calendar" || c.id === "google_tasks" || c.id === "google_contacts") {
-      actionButtonLabel = "Sign in with Google";
-      brandClass = "bg-[#4285f4] hover:bg-[#3367d6] text-white border-0 shadow-[0_0_12px_rgba(66,133,244,0.3)]";
-    } else if (c.id === "hubspot") {
-      actionButtonLabel = "Authorize HubSpot";
-      brandClass = "bg-[#ff7a59] hover:bg-[#e06545] text-white border-0 shadow-[0_0_12px_rgba(255,122,89,0.3)]";
-    } else if (c.id === "slack") {
-      actionButtonLabel = "Add to Slack";
-      brandClass = "bg-[#4a154b] hover:bg-[#611f69] text-white border-0 shadow-[0_0_12px_rgba(74,21,75,0.3)]";
-    } else if (c.id === "whatsapp") {
-      actionButtonLabel = "Configure WhatsApp";
-      brandClass = "bg-[#25d366] hover:bg-[#1ebd56] text-slate-950 font-bold border-0 shadow-[0_0_12px_rgba(37,211,102,0.3)]";
-    }
+  // Active connector being configured in modal
+  const activeModalConnector = configuringConnectorId
+    ? connectors.find((c) => c.id === configuringConnectorId)
+    : null;
 
-    return (
-      <div
-        key={c.id}
-        className={`rounded-2xl border p-4 sm:p-5 transition-all ${
-          on
-            ? "border-emerald-500/35 bg-gradient-to-br from-emerald-500/[0.07] to-transparent shadow-[0_4px_20px_-8px_rgba(16,185,129,0.15)]"
-            : isEquipped
-              ? "border-[var(--accent)]/30 bg-[color-mix(in_srgb,var(--bg-elev)_60%,transparent)] shadow-card"
-              : "border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-elev)_40%,transparent)]"
-        }`}
-      >
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-6">
-          <div className="min-w-0 flex-1 space-y-2.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[var(--bg-panel)] text-sm border border-white/10 shadow-sm">
-                {icon}
-              </span>
-              <span className="text-sm font-bold text-[var(--text)]">{biz?.name ?? c.name}</span>
-              {on ? (
-                <span className="chip chip-live flex items-center gap-1">
-                  <span>✓</span>
-                  <span>{t("actions.connected")}</span>
-                </span>
-              ) : isOauth && configured ? (
-                <span className="chip text-[var(--accent-bright)] border-[var(--accent)]/30 bg-[color-mix(in_srgb,var(--accent)_12%,transparent)]">
-                  {t("actions.ready")}
-                </span>
-              ) : isOauth && !configured ? (
-                <span className="chip text-amber-300 border-amber-500/30 bg-amber-500/10">
-                  Pending Authorization
-                </span>
-              ) : null}
-              <span className="chip opacity-70 text-[10px] font-mono">{authBadge}</span>
-              {recommended && !on ? <span className="chip">{t("actions.recommended")}</span> : null}
-            </div>
-            <p className="text-xs leading-relaxed text-[var(--muted)]">{c.description}</p>
-            {isOauth && !configured ? (
-              <p className="text-[11px] text-[var(--muted)]">
-                {operatorDetail && oauth?.missingEnv?.length
-                  ? `Missing env keys: ${(oauth.missingEnv ?? []).join(", ")}`
-                  : "Click below to connect in Sandbox demo mode or configure vendor OAuth keys."}
-              </p>
-            ) : null}
-
-            {testStatus[c.id] ? (
-              <div
-                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${
-                  testStatus[c.id].ok
-                    ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                    : "border border-rose-500/30 bg-rose-500/10 text-rose-300"
+  return (
+    <div className="space-y-6 max-w-5xl mx-auto">
+      {/* Top Banner: Clear, uncluttered title + Quick Actions */}
+      <div className="rounded-2xl border border-[var(--line)] bg-gradient-to-r from-[var(--bg-panel)] via-[color-mix(in_srgb,var(--bg-elev)_80%,transparent)] to-[var(--bg-panel)] p-5 sm:p-6 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">⚡</span>
+              <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                Connect Business Tools for {agentName || "this Agent"}
+              </h2>
+              <span
+                className={`chip !text-[11px] font-semibold ${
+                  totalConnectedCount > 0 ? "chip-live" : "chip-gray"
                 }`}
               >
-                <span>{testStatus[c.id].ok ? "✓" : "⚠"}</span>
-                <span>{testStatus[c.id].message}</span>
-              </div>
-            ) : null}
+                {totalConnectedCount > 0
+                  ? `${totalConnectedCount} Active`
+                  : "All Simulated in Sandbox"}
+              </span>
+            </div>
+            <p className="text-xs text-[var(--muted)] max-w-2xl leading-relaxed">
+              Equip your agent with direct access to your calendar, CRM, messaging, or email. In the
+              Sandbox, all tool calls are safely simulated so you can test immediately without live credentials.
+            </p>
+          </div>
 
-            {/* Extra config sits with the copy, full width of the left column */}
-            {c.id === "shopify" ? (
-              <input
-                className="input mt-1 max-w-md text-xs"
-                placeholder="my-store.myshopify.com"
-                value={shop}
-                onChange={(e) => setShop(e.target.value)}
-              />
+          <div className="flex items-center gap-2.5 shrink-0">
+            {onSkip ? (
+              <button
+                type="button"
+                onClick={onSkip}
+                className="btn btn-ghost text-xs px-3.5 py-2 text-[var(--muted)] hover:text-white border border-transparent hover:border-[var(--line)]"
+              >
+                Skip for now
+              </button>
             ) : null}
-            {c.id === "zendesk" ? (
-              <input
-                className="input mt-1 max-w-md text-xs"
-                placeholder="your-subdomain"
-                value={zendeskSub}
-                onChange={(e) => setZendeskSub(e.target.value)}
-              />
+            {onProceedToSandbox ? (
+              <button
+                type="button"
+                onClick={onProceedToSandbox}
+                className="btn btn-primary text-xs px-4 py-2 inline-flex items-center gap-2 shadow-glow-sm"
+              >
+                <span>Continue to Test</span>
+                <span>→</span>
+              </button>
             ) : null}
-            {c.id === "email" ? (
-              <div className="flex flex-wrap gap-2 pt-1">
-                {(["google", "microsoft"] as const).map((p) => (
-                  <button
-                    key={p}
-                    type="button"
-                    className={`chip ${emailProvider === p ? "chip-live" : ""}`}
-                    onClick={() => setEmailProvider(p)}
-                  >
-                    {p === "google" ? "Gmail" : "Microsoft 365"}
-                  </button>
-                ))}
-              </div>
-            ) : null}
-            {c.id === "slack" && on ? (
-              <div className="space-y-2 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] p-3">
-                <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--muted)]">
-                  Handoff channel
-                </p>
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                  <select
-                    className="input min-w-0 flex-1 text-xs"
-                    value={slackChannel}
-                    onChange={(e) => setSlackChannel(e.target.value)}
-                  >
-                    {slackChannels.length === 0 && (
-                      <option value="">{t("actions.loadingChannels")}</option>
+          </div>
+        </div>
+      </div>
+
+      {error && (
+        <div className="rounded-xl border border-[var(--danger)]/40 bg-[color-mix(in_srgb,var(--danger)_12%,transparent)] px-4 py-3 text-xs text-[var(--danger)] flex items-center justify-between gap-2">
+          <span>⚠️ {error}</span>
+          <button
+            type="button"
+            onClick={() => setError(null)}
+            className="text-[var(--muted)] hover:text-white font-bold"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Recommended Business Integrations Section */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <span>{problemArea.icon}</span>
+              <span>Recommended for {problemArea.title.replace(/^\d+\.\s*/, "")}</span>
+            </h3>
+            <p className="text-[11px] text-[var(--muted)] mt-0.5">
+              Curated tools aligned to solve: {problemArea.problems[0]}
+            </p>
+          </div>
+        </div>
+
+        {/* Bento Grid of Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          {primaryConnectors.map((c) => {
+            const on = isConnected(c);
+            const oauth = byId.get(c.id);
+            const isOauth = Boolean(oauth) || c.auth === "oauth";
+            const configured = oauth ? oauth.configured : true;
+            const biz = BUSINESS_CONNECTORS.find((b) => b.id === c.id);
+            const authBadge =
+              biz?.authBadge ??
+              (isOauth ? "OAuth 2.0" : c.auth === "api_key" ? "API Key" : "Direct");
+
+            return (
+              <div
+                key={c.id}
+                className={`relative rounded-xl border p-4 sm:p-5 transition-all flex flex-col justify-between ${
+                  on
+                    ? "border-emerald-500/40 bg-gradient-to-br from-emerald-500/[0.08] to-transparent shadow-[0_4px_20px_-8px_rgba(16,185,129,0.15)]"
+                    : "border-[var(--line)] bg-[var(--bg-panel)] hover:border-white/20"
+                }`}
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-3 mb-2.5">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--bg-elev)] border border-white/10 shadow-sm p-2">
+                        <ConnectorBrandIcon id={c.id} className="h-6 w-6" />
+                      </span>
+                      <div>
+                        <h4 className="text-sm font-bold text-white">{biz?.name ?? c.name}</h4>
+                        <span className="text-[10px] font-mono text-[var(--muted)]">
+                          {authBadge}
+                        </span>
+                      </div>
+                    </div>
+
+                    {on ? (
+                      <span className="chip chip-live flex items-center gap-1 text-[11px]">
+                        <span>●</span>
+                        <span>Connected</span>
+                      </span>
+                    ) : (
+                      <span className="chip chip-gray text-[10px]">Ready to Connect</span>
                     )}
-                    {slackChannels.map((ch) => (
-                      <option key={ch.id} value={ch.id}>
-                        {ch.is_private ? t("actions.slackPrivate") : "#"}
-                        {ch.name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    className={btnPrimary}
-                    disabled={busy === "slack-channel" || !slackChannel}
-                    onClick={() => void saveSlackChannel()}
-                  >
-                    {slackSavedChannel === slackChannel
-                      ? t("actions.saved")
-                      : t("actions.setHandoff")}
-                  </button>
-                </div>
-                {slackSavedChannel ? (
-                  <p className="text-xs text-[var(--muted)]">
-                    {t("actions.handoffsGoTo")}{" "}
-                    <span className="font-semibold text-[var(--text)]">#{slackSavedChannel}</span>
+                  </div>
+
+                  <p className="text-xs text-[var(--muted)] leading-relaxed line-clamp-2 mb-4">
+                    {biz?.description ?? c.description}
                   </p>
-                ) : null}
-                {slackNeedsInvite ? (
-                  <p className="text-xs text-[var(--warn)]">{t("actions.slackInviteHint")}</p>
-                ) : null}
-              </div>
-            ) : null}
-
-            {c.id === "webhook" ? (
-              <div className="space-y-2">
-                <div className="flex max-w-xl flex-col gap-2 sm:flex-row sm:items-center">
-                  <input
-                    className="input min-w-0 flex-1 text-xs"
-                    placeholder="https://api.your-company.com/webhooks/miai"
-                    value={webhookUrl}
-                    onChange={(e) => setWebhookUrl(e.target.value)}
-                  />
-                  <input
-                    className="input w-full text-xs sm:w-44"
-                    placeholder="shared secret (HMAC)"
-                    value={webhookSecret}
-                    onChange={(e) => setWebhookSecret(e.target.value)}
-                  />
                 </div>
-                <button
-                  type="button"
-                  className={btnPrimary}
-                  disabled={busy === "webhook"}
-                  onClick={() =>
-                    saveCredentials("webhook", {
-                      url: webhookUrl,
-                      secret: webhookSecret || "miai",
-                    })
-                  }
-                >
-                  {t("actions.saveWebhook")}
-                </button>
-              </div>
-            ) : null}
 
-            {c.id === "mcp" ? (
-              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
+                {/* Card Actions */}
+                <div className="pt-3 border-t border-[var(--line)]/60 flex items-center justify-between gap-2">
+                  {testStatus[c.id] ? (
+                    <span
+                      className={`text-[11px] font-medium flex items-center gap-1 ${
+                        testStatus[c.id].ok ? "text-emerald-400" : "text-rose-400"
+                      }`}
+                    >
+                      {testStatus[c.id].ok ? "✓ Verified" : "⚠ Error"}
+                    </span>
+                  ) : (
+                    <span className="text-[11px] text-[var(--muted)]">
+                      {on ? "Active in chat" : "Sandbox ready"}
+                    </span>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    {on ? (
+                      <>
+                        <button
+                          type="button"
+                          disabled={busy === `test-${c.id}`}
+                          onClick={() => void testConnector(c.id)}
+                          className="btn btn-ghost text-xs px-2.5 py-1.5 text-emerald-400 hover:text-emerald-300 border border-emerald-500/20"
+                          title="Ping integration endpoint"
+                        >
+                          {busy === `test-${c.id}` ? "Testing…" : "Test Ping"}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={busy === c.id}
+                          onClick={() => void disconnect(c.id)}
+                          className="text-xs text-rose-400 hover:text-rose-300 px-2 py-1"
+                        >
+                          Disconnect
+                        </button>
+                      </>
+                    ) : isOauth && configured ? (
+                      <button
+                        type="button"
+                        disabled={busy === c.id}
+                        onClick={() => void startOAuth(c.id)}
+                        className="btn btn-primary text-xs px-3.5 py-1.5 font-medium shadow-sm"
+                      >
+                        {busy === c.id ? "Connecting…" : "Connect Account"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setConfiguringConnectorId(c.id)}
+                        className="btn btn-ghost text-xs px-3.5 py-1.5 border border-[var(--line)] hover:border-white/30 text-white font-medium"
+                      >
+                        Configure / Connect
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Secondary Integrations: Clean Accordion */}
+      {moreConnectors.length > 0 && (
+        <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] overflow-hidden">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors"
+            onClick={() => setShowOther((v) => !v)}
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="text-sm font-bold text-white">More Business Integrations</span>
+              <span className="chip chip-gray text-[10px]">+{moreConnectors.length} more</span>
+            </div>
+            <span className="text-xs text-[var(--muted)] font-medium">
+              {showOther ? "▲ Collapse" : "▼ Browse All"}
+            </span>
+          </button>
+
+          {showOther && (
+            <div className="p-4 pt-0 border-t border-[var(--line)]/60 grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+              {moreConnectors.map((c) => {
+                const on = isConnected(c);
+                const oauth = byId.get(c.id);
+                const isOauth = Boolean(oauth) || c.auth === "oauth";
+                const configured = oauth ? oauth.configured : true;
+                const biz = BUSINESS_CONNECTORS.find((b) => b.id === c.id);
+
+                return (
+                  <div
+                    key={c.id}
+                    className="rounded-lg border border-[var(--line)]/60 bg-[var(--bg-elev)]/40 p-3.5 flex items-center justify-between gap-3"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--bg-elev)] border border-white/10 shadow-sm p-1.5">
+                        <ConnectorBrandIcon id={c.id} className="h-5 w-5" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-white truncate">{biz?.name ?? c.name}</p>
+                        <p className="text-[11px] text-[var(--muted)] truncate">{c.description}</p>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0">
+                      {on ? (
+                        <span className="chip chip-live text-[10px]">Connected</span>
+                      ) : isOauth && configured ? (
+                        <button
+                          type="button"
+                          disabled={busy === c.id}
+                          onClick={() => void startOAuth(c.id)}
+                          className="btn btn-primary text-xs px-2.5 py-1"
+                        >
+                          Connect
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setConfiguringConnectorId(c.id)}
+                          className="btn btn-ghost text-xs px-2.5 py-1 border border-[var(--line)]"
+                        >
+                          Setup
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Advanced Developer Accordion (MCP & Webhooks) */}
+      <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] overflow-hidden">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors"
+          onClick={() => setShowAdvanced((v) => !v)}
+        >
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-white">Developer Protocols & Custom MCP</span>
+              <span className="chip chip-gray text-[10px]">Advanced</span>
+            </div>
+            <p className="text-[11px] text-[var(--muted)] mt-0.5">
+              Connect private Model Context Protocol (MCP) servers or enterprise outbound HTTP webhooks.
+            </p>
+          </div>
+          <span className="text-xs text-[var(--muted)] font-medium">
+            {showAdvanced ? "▲ Hide" : "▼ Expand"}
+          </span>
+        </button>
+
+        {showAdvanced && (
+          <div className="p-4 pt-0 border-t border-[var(--line)]/60 space-y-4 mt-3">
+            {/* MCP Configuration */}
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elev)]/50 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🔌</span>
+                  <span className="text-xs font-bold text-white">Model Context Protocol (MCP) Bridge</span>
+                </div>
+                {isConnected({ id: "mcp" } as Connector) && (
+                  <span className="chip chip-live text-[10px]">Active</span>
+                )}
+              </div>
+              <p className="text-[11px] text-[var(--muted)]">
+                Connect an HTTP MCP endpoint to expose custom tools and internal APIs to this agent.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
                 <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="https://mcp.example.com"
+                  className="input text-xs"
+                  placeholder="https://mcp.your-domain.com"
                   value={mcpEndpoint}
                   onChange={(e) => setMcpEndpoint(e.target.value)}
                 />
                 <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="bearer token"
+                  className="input text-xs"
+                  placeholder="Bearer token (optional)"
                   value={mcpToken}
                   onChange={(e) => setMcpToken(e.target.value)}
                 />
-                <button
-                  type="button"
-                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
-                  disabled={busy === "mcp"}
-                  onClick={() =>
-                    saveCredentials("mcp", { endpoint: mcpEndpoint, token: mcpToken })
-                  }
-                >
-                  {t("actions.saveMcp")}
-                </button>
               </div>
-            ) : null}
-
-            {c.id === "whatsapp" ? (
-              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
-                <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="Cloud API permanent token"
-                  value={whatsappToken}
-                  onChange={(e) => setWhatsappToken(e.target.value)}
-                />
-                <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="Phone number ID"
-                  value={whatsappPhoneId}
-                  onChange={(e) => setWhatsappPhoneId(e.target.value)}
-                />
-                <div className="sm:col-span-2 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    className={`${btnPrimary} sm:w-fit`}
-                    disabled={busy === "whatsapp"}
-                    onClick={() =>
-                      saveCredentials("whatsapp", {
-                        api_key: whatsappToken || "demo-wa-token",
-                        phone_number_id: whatsappPhoneId || "demo-wa-id",
-                      })
-                    }
-                  >
-                    {t("actions.saveWhatsApp")}
-                  </button>
-                  {!on ? (
-                    <button
-                      type="button"
-                      className="btn btn-ghost text-xs border border-[var(--line)]"
-                      disabled={busy === "whatsapp"}
-                      onClick={() => simulateConnect("whatsapp")}
-                    >
-                      Connect Demo WhatsApp
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-            ) : null}
-
-            {c.id === "stripe" ? (
-              <div className="flex max-w-xl flex-col gap-2 sm:flex-row sm:items-center">
-                <input
-                  className="input min-w-0 flex-1 text-xs"
-                  placeholder="sk_live_… or sk_test_…"
-                  value={stripeKey}
-                  onChange={(e) => setStripeKey(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className={btnPrimary}
-                  disabled={busy === "stripe"}
-                  onClick={() => saveCredentials("stripe", { api_key: stripeKey })}
-                >
-                  {t("actions.saveStripe")}
-                </button>
-              </div>
-            ) : null}
-
-            {c.id === "woocommerce" ? (
-              <div className="grid max-w-xl gap-2 sm:grid-cols-2">
-                <input
-                  className="input text-xs sm:col-span-2"
-                  placeholder="https://shop.example.com"
-                  value={wooUrl}
-                  onChange={(e) => setWooUrl(e.target.value)}
-                />
-                <input
-                  className="input text-xs"
-                  placeholder="Consumer key"
-                  value={wooKey}
-                  onChange={(e) => setWooKey(e.target.value)}
-                />
-                <input
-                  className="input text-xs"
-                  placeholder="Consumer secret"
-                  value={wooSecret}
-                  onChange={(e) => setWooSecret(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className={`${btnPrimary} sm:col-span-2 sm:w-fit`}
-                  disabled={busy === "woocommerce"}
-                  onClick={() =>
-                    saveCredentials("woocommerce", {
-                      store_url: wooUrl,
-                      consumer_key: wooKey,
-                      consumer_secret: wooSecret,
-                    })
-                  }
-                >
-                  {t("actions.saveWoo")}
-                </button>
-              </div>
-            ) : null}
-          </div>
-
-          {/* Action column */}
-          {isOauth ? (
-            <div className="flex shrink-0 flex-row flex-wrap gap-2 lg:w-[12rem] lg:flex-col lg:items-stretch">
-              {!on ? (
-                configured ? (
-                  <button
-                    type="button"
-                    className={`btn inline-flex h-9 min-w-[8.5rem] items-center justify-center gap-1.5 px-3 text-xs font-semibold ${brandClass || btnPrimary}`}
-                    disabled={busy === c.id}
-                    onClick={() => startOAuth(c.id)}
-                  >
-                    {busy === c.id ? "Connecting…" : actionButtonLabel}
-                  </button>
-                ) : (
-                  <div className="flex flex-col gap-1.5 w-full">
-                    <button
-                      type="button"
-                      className="btn btn-primary inline-flex h-9 w-full items-center justify-center gap-1.5 px-3 text-xs font-semibold shadow-glow-sm"
-                      disabled={busy === c.id}
-                      onClick={() => simulateConnect(c.id)}
-                      title="Connect in Sandbox/Demo mode for testing without external OAuth credentials"
-                    >
-                      <span>⚡</span>
-                      <span>{busy === c.id ? "Connecting…" : "Connect (Demo)"}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowAdvanced(true)}
-                      className="text-center text-[10px] text-[var(--muted)] hover:text-white underline pt-0.5"
-                    >
-                      Configure OAuth keys
-                    </button>
-                  </div>
-                )
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-ghost inline-flex h-9 min-w-[8.5rem] items-center justify-center gap-1.5 px-3 text-xs text-emerald-400 hover:text-white border border-emerald-500/30 hover:border-emerald-400 bg-emerald-500/10"
-                    disabled={busy === `test-${c.id}`}
-                    onClick={() => void testConnector(c.id)}
-                    title="Send a live read-only ping to verify stored OAuth token"
-                  >
-                    <span>⚡</span>
-                    <span>{busy === `test-${c.id}` ? "Pinging…" : "Test connection"}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={`${btnGhost} text-rose-400 hover:text-rose-200 hover:border-rose-500/30`}
-                    disabled={busy === c.id}
-                    onClick={() => disconnect(c.id)}
-                  >
-                    {t("actions.disconnect")}
-                  </button>
-                </>
-              )}
-            </div>
-          ) : !isOauth && on ? (
-            <div className="flex shrink-0 flex-row flex-wrap gap-2 lg:w-[12rem] lg:flex-col lg:items-stretch">
-              <button
-                type="button"
-                className={`${btnGhost} text-rose-400 hover:text-rose-200 hover:border-rose-500/30`}
-                disabled={busy === c.id}
-                onClick={() => disconnect(c.id)}
-              >
-                {t("actions.disconnect")}
-              </button>
-            </div>
-          ) : null}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-4">
-      {error && (
-        <div className="rounded-lg border border-[var(--danger)]/40 bg-[color-mix(in_srgb,var(--danger)_12%,transparent)] px-3 py-2 text-sm text-[var(--danger)]">
-          {error}
-        </div>
-      )}
-
-      {/* Primary Section: Equipped / Selected Accounts */}
-      <div className="panel p-4 sm:p-5 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--line)] pb-3.5">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-white tracking-tight">
-                Selected Accounts for {agentName || "this Agent"}
-              </h2>
-              <span className="chip chip-live !text-[10px]">
-                {connectedEquippedCount} / {equippedConnectors.length} Connected
-              </span>
-            </div>
-            <p className="mt-1 text-xs text-[var(--muted)] leading-relaxed">
-              Authenticate your equipped apps below via 1-click OAuth or credentials so this agent can perform live actions.
-            </p>
-          </div>
-        </div>
-
-        {equippedConnectors.length > 0 ? (
-          <div className="grid gap-3">
-            {equippedConnectors.map((c) => row(c, { operatorDetail: showAdvanced, isEquipped: true }))}
-          </div>
-        ) : (
-          <p className="text-xs text-[var(--muted)]">No specific connectors equipped for this agent.</p>
-        )}
-
-        {/* Next Step / Ready to test banner */}
-        <div className="rounded-xl border border-[var(--accent)]/35 bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-glow-sm">
-          <div>
-            <p className="text-xs font-bold text-white flex items-center gap-1.5">
-              <span>🚀</span> Ready to test your agent?
-            </p>
-            <p className="text-[11px] text-[var(--muted)] mt-0.5">
-              Try prompts, verify tool execution, and inspect outputs in the safe Sandbox.
-            </p>
-          </div>
-          {onProceedToSandbox ? (
-            <button
-              type="button"
-              onClick={onProceedToSandbox}
-              className="btn btn-primary text-xs shrink-0 px-4 py-2 inline-flex items-center gap-1.5 shadow-glow-sm"
-            >
-              <span>Proceed to Sandbox Test</span>
-              <span>→</span>
-            </button>
-          ) : null}
-        </div>
-      </div>
-
-      {/* Secondary Collapsible Section: Other Available Integrations */}
-      {otherConnectors.length > 0 ? (
-        <div className="panel p-4 sm:p-5">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between gap-3 text-left"
-            onClick={() => setShowOther((v) => !v)}
-          >
-            <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold">Other Available Integrations</span>
-                <span className="chip chip-gray !py-0 !text-[10px]">+{otherConnectors.length} more</span>
+                <button
+                  type="button"
+                  disabled={busy === "mcp" || !mcpEndpoint}
+                  onClick={() =>
+                    void saveCredentials("mcp", { endpoint: mcpEndpoint, token: mcpToken })
+                  }
+                  className="btn btn-primary text-xs px-3 py-1.5"
+                >
+                  Save MCP Connection
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void simulateConnect("mcp")}
+                  className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                >
+                  Simulate Demo MCP
+                </button>
               </div>
-              <p className="mt-0.5 text-xs text-[var(--muted)]">
-                Browse and connect additional integrations across CRM, eCommerce, and billing.
-              </p>
             </div>
-            <span className="shrink-0 text-xs text-[var(--muted)]">
-              {showOther ? "▲ Hide" : "▼ Browse"}
-            </span>
-          </button>
 
-          {showOther ? (
-            <div className="mt-4 grid gap-3">
-              {otherConnectors.map((c) => row(c, { operatorDetail: showAdvanced }))}
-            </div>
-          ) : null}
-        </div>
-      ) : null}
-
-      {/* Advanced Developer Settings Panel */}
-      <div className="panel p-4 sm:p-5">
-        <button
-          type="button"
-          className="flex w-full items-center justify-between gap-3 text-left"
-          onClick={() => setShowAdvanced((v) => !v)}
-        >
-          <span>
-            <span className="text-sm font-semibold">{t("actions.advancedTitle")}</span>
-            <span className="mt-0.5 block text-xs text-[var(--muted)]">
-              {t("actions.advancedSub")}
-              {missingCount > 0 ? t("actions.missingEnv", { count: missingCount }) : ""}
-            </span>
-          </span>
-          <span className="shrink-0 text-xs text-[var(--muted)]">
-            {showAdvanced ? t("actions.hide") : t("actions.show")}
-          </span>
-        </button>
-        {showAdvanced ? (
-          <div className="mt-4 space-y-5">
-            {callbackUrl ? (
-              <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] px-3 py-3 text-xs">
-                <p className="font-medium text-[var(--text)]">{t("actions.redirectUri")}</p>
-                <code className="mt-1 block break-all text-[var(--accent-bright)]">{callbackUrl}</code>
-                {missingCount > 0 ? (
-                  <p className="mt-2 text-[var(--muted)]">
-                    {t("actions.connectorsNeedCreds", { count: missingCount })}
-                  </p>
-                ) : (
-                  <p className="mt-2 text-[var(--accent)]">{t("actions.allOAuthConfigured")}</p>
+            {/* Webhook Configuration */}
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elev)]/50 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">⚡</span>
+                  <span className="text-xs font-bold text-white">Custom Outbound Webhook</span>
+                </div>
+                {isConnected({ id: "webhook" } as Connector) && (
+                  <span className="chip chip-live text-[10px]">Active</span>
                 )}
               </div>
-            ) : null}
-            {phase2.length > 0 ? (
-              <div>
-                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                  {t("actions.phase2")}
-                </h3>
-                <div className="grid gap-3">
-                  {phase2.map((c) => row(c, { operatorDetail: true }))}
+              <p className="text-[11px] text-[var(--muted)]">
+                Dispatch signed JSON payloads to your ERP or server whenever the agent takes an action.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <input
+                  className="input text-xs"
+                  placeholder="https://api.your-company.com/events"
+                  value={webhookUrl}
+                  onChange={(e) => setWebhookUrl(e.target.value)}
+                />
+                <input
+                  className="input text-xs"
+                  placeholder="Shared secret / HMAC key"
+                  value={webhookSecret}
+                  onChange={(e) => setWebhookSecret(e.target.value)}
+                />
+              </div>
+              <button
+                type="button"
+                disabled={busy === "webhook" || !webhookUrl}
+                onClick={() =>
+                  void saveCredentials("webhook", {
+                    url: webhookUrl,
+                    secret: webhookSecret || "miai",
+                  })
+                }
+                className="btn btn-primary text-xs px-3 py-1.5"
+              >
+                Save Webhook URL
+              </button>
+            </div>
+
+            {/* OAuth Callback Info */}
+            {callbackUrl && (
+              <div className="rounded-lg border border-white/10 bg-black/20 p-3 text-xs space-y-1">
+                <span className="text-[10px] font-mono text-[var(--muted)] uppercase tracking-wider">
+                  OAuth Redirect URI (For Vendor Consoles)
+                </span>
+                <code className="block text-[11px] text-[var(--accent-bright)] font-mono break-all select-all">
+                  {callbackUrl}
+                </code>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Sandbox Callout */}
+      <div className="rounded-2xl border border-[var(--accent)]/30 bg-gradient-to-r from-[color-mix(in_srgb,var(--accent)_12%,transparent)] to-transparent p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="space-y-1">
+          <p className="text-sm font-bold text-white flex items-center gap-2">
+            <span>🧪</span>
+            <span>Ready to test without configuring live accounts?</span>
+          </p>
+          <p className="text-xs text-[var(--muted)]">
+            You can skip directly to the Sandbox. All actions will return safe, realistic simulated responses.
+          </p>
+        </div>
+        {onProceedToSandbox && (
+          <button
+            type="button"
+            onClick={onProceedToSandbox}
+            className="btn btn-primary text-xs px-4 py-2 shrink-0 inline-flex items-center gap-1.5 shadow-glow-sm"
+          >
+            <span>Go to Sandbox Chat</span>
+            <span>→</span>
+          </button>
+        )}
+      </div>
+
+      {/* Clean Modal for Configuring Individual Connectors */}
+      {activeModalConnector && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-md rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-[var(--line)] pb-3">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--bg-elev)] border border-white/10 shadow-sm p-2">
+                  <ConnectorBrandIcon id={activeModalConnector.id} className="h-6 w-6" />
+                </span>
+                <div>
+                  <h3 className="text-sm font-bold text-white">{activeModalConnector.name}</h3>
+                  <span className="text-[10px] text-[var(--muted)] font-mono">
+                    Configure Integration
+                  </span>
                 </div>
               </div>
-            ) : null}
+              <button
+                type="button"
+                onClick={() => setConfiguringConnectorId(null)}
+                className="text-[var(--muted)] hover:text-white text-base"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              {activeModalConnector.id === "whatsapp" ? (
+                <div className="space-y-3">
+                  <p className="text-[var(--muted)]">
+                    Enter Meta Cloud API credentials or connect a simulated sandbox channel.
+                  </p>
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="Cloud API permanent token"
+                    value={whatsappToken}
+                    onChange={(e) => setWhatsappToken(e.target.value)}
+                  />
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="Phone number ID"
+                    value={whatsappPhoneId}
+                    onChange={(e) => setWhatsappPhoneId(e.target.value)}
+                  />
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect("whatsapp")}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Connect Demo Sandbox
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy === "whatsapp"}
+                      onClick={() =>
+                        void saveCredentials("whatsapp", {
+                          api_key: whatsappToken || "demo-token",
+                          phone_number_id: whatsappPhoneId || "demo-id",
+                        })
+                      }
+                      className="btn btn-primary text-xs px-4 py-1.5"
+                    >
+                      Save Token
+                    </button>
+                  </div>
+                </div>
+              ) : activeModalConnector.id === "stripe" ? (
+                <div className="space-y-3">
+                  <p className="text-[var(--muted)]">
+                    Enter your Stripe secret key (sk_test_… or sk_live_…) for invoice drafting and payment links.
+                  </p>
+                  <input
+                    className="input text-xs w-full font-mono"
+                    placeholder="sk_test_…"
+                    value={stripeKey}
+                    onChange={(e) => setStripeKey(e.target.value)}
+                  />
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect("stripe")}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Use Demo Stripe
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy === "stripe" || !stripeKey}
+                      onClick={() => void saveCredentials("stripe", { api_key: stripeKey })}
+                      className="btn btn-primary text-xs px-4 py-1.5"
+                    >
+                      Save Key
+                    </button>
+                  </div>
+                </div>
+              ) : activeModalConnector.id === "shopify" ? (
+                <div className="space-y-3">
+                  <p className="text-[var(--muted)]">
+                    Enter your myshopify.com domain to initiate Shopify store OAuth.
+                  </p>
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="your-store.myshopify.com"
+                    value={shop}
+                    onChange={(e) => setShop(e.target.value)}
+                  />
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect("shopify")}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Demo Store
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy === "shopify" || !shop}
+                      onClick={() => void startOAuth("shopify")}
+                      className="btn btn-primary text-xs px-4 py-1.5"
+                    >
+                      Authorize Shopify
+                    </button>
+                  </div>
+                </div>
+              ) : activeModalConnector.id === "zendesk" ? (
+                <div className="space-y-3">
+                  <p className="text-[var(--muted)]">
+                    Enter your Zendesk subdomain (e.g. acme for acme.zendesk.com).
+                  </p>
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="subdomain"
+                    value={zendeskSub}
+                    onChange={(e) => setZendeskSub(e.target.value)}
+                  />
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect("zendesk")}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Demo Desk
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy === "zendesk" || !zendeskSub}
+                      onClick={() => void startOAuth("zendesk")}
+                      className="btn btn-primary text-xs px-4 py-1.5"
+                    >
+                      Authorize Zendesk
+                    </button>
+                  </div>
+                </div>
+              ) : activeModalConnector.id === "email" ? (
+                <div className="space-y-3">
+                  <p className="text-[var(--muted)]">Choose your email provider to connect:</p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEmailProvider("google")}
+                      className={`flex-1 p-3 rounded-xl border text-center font-medium ${
+                        emailProvider === "google"
+                          ? "border-[var(--accent)] bg-[var(--accent)]/10 text-white"
+                          : "border-[var(--line)] text-[var(--muted)]"
+                      }`}
+                    >
+                      Google / Gmail
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEmailProvider("microsoft")}
+                      className={`flex-1 p-3 rounded-xl border text-center font-medium ${
+                        emailProvider === "microsoft"
+                          ? "border-[var(--accent)] bg-[var(--accent)]/10 text-white"
+                          : "border-[var(--line)] text-[var(--muted)]"
+                      }`}
+                    >
+                      Microsoft 365
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect("email")}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Demo Account
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void startOAuth("email")}
+                      className="btn btn-primary text-xs px-4 py-1.5"
+                    >
+                      Sign In & Authorize
+                    </button>
+                  </div>
+                </div>
+              ) : activeModalConnector.id === "woocommerce" ? (
+                <div className="space-y-3">
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="https://shop.example.com"
+                    value={wooUrl}
+                    onChange={(e) => setWooUrl(e.target.value)}
+                  />
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="Consumer key (ck_…)"
+                    value={wooKey}
+                    onChange={(e) => setWooKey(e.target.value)}
+                  />
+                  <input
+                    className="input text-xs w-full"
+                    placeholder="Consumer secret (cs_…)"
+                    value={wooSecret}
+                    onChange={(e) => setWooSecret(e.target.value)}
+                  />
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect("woocommerce")}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Demo Store
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy === "woocommerce" || !wooUrl}
+                      onClick={() =>
+                        void saveCredentials("woocommerce", {
+                          store_url: wooUrl,
+                          consumer_key: wooKey,
+                          consumer_secret: wooSecret,
+                        })
+                      }
+                      className="btn btn-primary text-xs px-4 py-1.5"
+                    >
+                      Save Keys
+                    </button>
+                  </div>
+                </div>
+              ) : activeModalConnector.id === "slack" ? (
+                <div className="space-y-3">
+                  {slackConnected ? (
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold text-white">Select Handoff Channel</p>
+                      <select
+                        className="input w-full text-xs"
+                        value={slackChannel}
+                        onChange={(e) => setSlackChannel(e.target.value)}
+                      >
+                        {slackChannels.length === 0 && <option value="">Loading channels…</option>}
+                        {slackChannels.map((ch) => (
+                          <option key={ch.id} value={ch.id}>
+                            {ch.is_private ? "🔒 " : "# "}
+                            {ch.name}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        disabled={busy === "slack-channel" || !slackChannel}
+                        onClick={() => void saveSlackChannel()}
+                        className="btn btn-primary text-xs px-3 py-1.5 w-full"
+                      >
+                        {slackSavedChannel === slackChannel ? "Saved Handoff Channel" : "Save Channel"}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-[var(--muted)]">
+                        Add this agent to your Slack workspace to route lead alerts and escalations.
+                      </p>
+                      <div className="flex items-center justify-end gap-2 pt-2">
+                        <button
+                          type="button"
+                          onClick={() => void simulateConnect("slack")}
+                          className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                        >
+                          Connect Demo Slack
+                        </button>
+                        {byId.get("slack")?.configured && (
+                          <button
+                            type="button"
+                            onClick={() => void startOAuth("slack")}
+                            className="btn btn-primary text-xs px-4 py-1.5"
+                          >
+                            Add to Slack
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-[var(--muted)]">
+                    Connect {activeModalConnector.name} for live actions or enable simulated demo mode in the Sandbox.
+                  </p>
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => void simulateConnect(activeModalConnector.id)}
+                      className="btn btn-ghost text-xs px-3 py-1.5 border border-[var(--line)]"
+                    >
+                      Connect in Demo Mode
+                    </button>
+                    {byId.get(activeModalConnector.id)?.configured && (
+                      <button
+                        type="button"
+                        onClick={() => void startOAuth(activeModalConnector.id)}
+                        className="btn btn-primary text-xs px-4 py-1.5"
+                      >
+                        Authorize Live
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        ) : null}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

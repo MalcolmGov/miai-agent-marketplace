@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useT } from "@/lib/locale";
+import { resolveProblemArea } from "@/lib/knowledge-guidance";
 
 interface SourceRow {
   id: string;
@@ -18,6 +19,8 @@ interface SourceRow {
 
 export function KnowledgePanel({
   agentId,
+  agentName,
+  agentCategory,
   knowledge,
   onKnowledgeChange,
   saving,
@@ -27,6 +30,8 @@ export function KnowledgePanel({
   showSelectedTip,
 }: {
   agentId: string;
+  agentName?: string;
+  agentCategory?: string;
   knowledge: string;
   onKnowledgeChange: (v: string) => void;
   saving: boolean;
@@ -36,10 +41,14 @@ export function KnowledgePanel({
   showSelectedTip: boolean;
 }) {
   const t = useT();
+  const problemArea = useMemo(
+    () => resolveProblemArea(agentCategory || "", agentId || "", agentName || ""),
+    [agentCategory, agentId, agentName],
+  );
+  const [showGuide, setShowGuide] = useState(true);
   const [sources, setSources] = useState<SourceRow[]>([]);
   const [composedChars, setComposedChars] = useState(0);
   const [websiteUrl, setWebsiteUrl] = useState("");
-  const [pasteExtra, setPasteExtra] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -56,33 +65,6 @@ export function KnowledgePanel({
   useEffect(() => {
     void refresh();
   }, [refresh]);
-
-  async function addPaste() {
-    const content = pasteExtra.trim();
-    if (!content) return;
-    setBusy("paste");
-    setMsg(null);
-    try {
-      const res = await fetch("/api/knowledge/paste", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ agentId, title: "Extra FAQs", content }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setMsg({ kind: "err", text: data.error ?? t("knowledge.errorPaste") });
-        return;
-      }
-      setPasteExtra("");
-      setMsg({
-        kind: "ok",
-        text: t("knowledge.okPaste", { chars: data.source.chars.toLocaleString() }),
-      });
-      await refresh();
-    } finally {
-      setBusy(null);
-    }
-  }
 
   async function uploadFile(file: File) {
     setBusy("upload");
@@ -155,22 +137,102 @@ export function KnowledgePanel({
 
   return (
     <div className="panel space-y-4 p-4">
-      <div>
-        <h2 className="mb-1 text-sm font-semibold">{t("knowledge.title")}</h2>
-        <p className="text-xs text-[var(--muted)]">
-          {t("knowledge.lede")}
-          {composedChars > 0 && (
-            <> {t("knowledge.composed", { count: composedChars.toLocaleString() })}</>
-          )}
-        </p>
+      {/* 150 Business Problems & Optimal Setup Blueprint Header */}
+      <div className="rounded-xl border border-white/[0.09] bg-gradient-to-br from-white/[0.04] to-black/30 p-4 shadow-sm">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.06] border border-white/10 text-sm">
+              {problemArea.icon}
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-white tracking-tight">{problemArea.title}</span>
+                <span className="rounded-full bg-cyan-400/10 border border-cyan-400/30 px-2 py-0.2 text-[10px] font-semibold text-cyan-300">
+                  Optimal Setup Guide
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                Target business problems solved by this agent and setup requirements
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowGuide(!showGuide)}
+            className="text-[11px] font-medium text-slate-400 hover:text-white transition-colors"
+          >
+            {showGuide ? "Hide Guide ▲" : "Show Guide ▼"}
+          </button>
+        </div>
+
+        {showGuide ? (
+          <div className="mt-3.5 pt-3 border-t border-white/[0.07] grid gap-4 sm:grid-cols-2 text-xs">
+            <div>
+              <h4 className="font-semibold text-slate-200 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+                <span className="text-emerald-400">✓</span> Business Problems Solved
+              </h4>
+              <ul className="mt-1.5 space-y-1 text-slate-300/90 text-[11.5px] leading-relaxed">
+                {problemArea.problems.map((prob, idx) => (
+                  <li key={idx} className="flex items-start gap-1.5">
+                    <span className="text-emerald-400/70 shrink-0">•</span>
+                    <span>{prob}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-slate-200 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+                <span className="text-cyan-400">⚙</span> Required for Optimal Setup
+              </h4>
+              <div className="mt-1.5 space-y-1.5 text-slate-300/90 text-[11.5px]">
+                <div className="rounded-lg bg-black/20 p-2 border border-white/[0.05]">
+                  <span className="text-slate-400 text-[10.5px] uppercase tracking-wider block font-semibold">Recommended Knowledge Inputs:</span>
+                  <ul className="mt-1 space-y-0.5 list-disc pl-4 text-[11px]">
+                    {problemArea.optimalSetup.recommendedInputs.map((inp, idx) => (
+                      <li key={idx}>{inp}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex items-center gap-1.5 text-[11px]">
+                  <span className="text-slate-400 font-medium">Recommended Connectors:</span>
+                  <div className="flex flex-wrap gap-1">
+                    {problemArea.optimalSetup.recommendedConnectors.map((c) => (
+                      <span key={c} className="rounded bg-white/[0.06] border border-white/[0.1] px-1.5 py-0.2 text-[10px] font-semibold text-slate-200">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
 
-      <textarea
-        className="input min-h-[140px] font-mono text-xs"
-        value={knowledge}
-        onChange={(e) => onKnowledgeChange(e.target.value)}
-        placeholder={t("knowledge.placeholder")}
-      />
+      <div className="flex items-baseline justify-between gap-2">
+        <div>
+          <h2 className="text-sm font-bold text-white tracking-tight">{t("knowledge.title")}</h2>
+          <p className="text-xs text-[var(--muted)] mt-0.5">
+            {t("knowledge.lede")}
+            {composedChars > 0 && (
+              <> {t("knowledge.composed", { count: composedChars.toLocaleString() })}</>
+            )}
+          </p>
+        </div>
+        <span className="text-[11px] font-mono text-slate-400">
+          Markdown supported
+        </span>
+      </div>
+
+      <div className="relative">
+        <textarea
+          className="input min-h-[300px] w-full font-mono text-xs leading-relaxed bg-[#0a0f1d]/90 border border-white/[0.12] rounded-2xl p-4 text-slate-200 focus:border-cyan-400/50 shadow-inner"
+          value={knowledge}
+          onChange={(e) => onKnowledgeChange(e.target.value)}
+          placeholder={t("knowledge.placeholder")}
+        />
+      </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div
@@ -265,24 +327,6 @@ export function KnowledgePanel({
             </button>
           </div>
         </div>
-      </div>
-
-      <div className="rounded-lg border border-[var(--line)] p-3">
-        <div className="mb-2 text-xs font-medium">{t("knowledge.addFaqs")}</div>
-        <textarea
-          className="input min-h-[80px] font-mono text-xs"
-          placeholder={t("knowledge.pastePlaceholder")}
-          value={pasteExtra}
-          onChange={(e) => setPasteExtra(e.target.value)}
-        />
-        <button
-          type="button"
-          className="btn btn-ghost mt-2 text-xs"
-          disabled={busy === "paste" || pasteExtra.trim().length < 10}
-          onClick={() => void addPaste()}
-        >
-          {busy === "paste" ? t("knowledge.adding") : t("knowledge.addSource")}
-        </button>
       </div>
 
       {sources.length > 0 && (

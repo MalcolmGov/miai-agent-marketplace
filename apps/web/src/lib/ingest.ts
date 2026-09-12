@@ -295,7 +295,11 @@ export async function crawlSite(
   return { pages, errors };
 }
 
-export function fileToText(filename: string, mime: string | undefined, buf: Buffer): string {
+export async function fileToText(
+  filename: string,
+  mime: string | undefined,
+  buf: Buffer,
+): Promise<string> {
   const lower = filename.toLowerCase();
   const asUtf8 = () => buf.toString("utf8");
 
@@ -309,23 +313,33 @@ export function fileToText(filename: string, mime: string | undefined, buf: Buff
   }
 
   if (/\.pdf$/i.test(lower) || mime === "application/pdf") {
-    const raw = buf.toString("latin1");
-    const chunks: string[] = [];
-    const re = /\((?:\\.|[^\\)])+\)/g;
-    let m: RegExpExecArray | null;
-    while ((m = re.exec(raw))) {
-      const inner = m[0]
-        .slice(1, -1)
-        .replace(/\\n/g, "\n")
-        .replace(/\\r/g, "")
-        .replace(/\\t/g, " ")
-        .replace(/\\(.)/g, "$1");
-      if (/[A-Za-z]{3,}/.test(inner)) chunks.push(inner);
+    try {
+      const { PDFParse } = await import("pdf-parse");
+      const parser = new PDFParse({ data: buf });
+      const result = await parser.getText();
+      await parser.destroy();
+
+      let text = (result?.text ?? "")
+        .replace(/-- \d+ of \d+ --/g, "")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .replace(/[ \t]{2,}/g, " ")
+        .trim();
+
+      // Filter out raw unprintable control characters
+      text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
+
+      if (text.length >= 20) {
+        return text.slice(0, 100_000);
+      }
+    } catch {
+      // Fall through to descriptive error
     }
-    const text = chunks.join(" ").replace(/\s+/g, " ").trim();
-    if (text.length > 80) return text.slice(0, 100_000);
+
     throw new Error(
-      "Could not extract text from this PDF. Export as .txt/.md or paste the content.",
+      "Could not extract readable text from this PDF (it may be scanned/image-only or encrypted). Please export as text, Markdown, or copy-paste the content.",
     );
   }
 

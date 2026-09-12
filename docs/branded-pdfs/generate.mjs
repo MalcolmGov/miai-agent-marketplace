@@ -52,6 +52,10 @@ const jobs = [
     html: "full-codebase-audit.html",
     pdf: "MyInstantAI-Codebase-Architecture-and-Complexity-Audit.pdf",
   },
+  {
+    html: "white-label-handover.html",
+    pdf: "MyInstantAI-White-Label-Platform-Technical-Handover.pdf",
+  },
 ];
 
 if (!existsSync(chrome)) {

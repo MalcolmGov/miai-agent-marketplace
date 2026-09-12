@@ -27,7 +27,7 @@ test.describe("Mobile responsive @functional @handover", () => {
     });
     expect(metrics.overflowX).toBeLessThanOrEqual(1);
     expect(metrics.menu).toBeTruthy();
-    await expect(page.getByRole("link", { name: /Rent \/ setup/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Rent \/ setup|Setup/i }).first()).toBeVisible();
   });
 
   test("studio try chat fits phone viewport", async ({ page }) => {

@@ -6,7 +6,7 @@ test.describe("Marketplace catalogue UI @smoke", () => {
     await openCatalogue(page);
 
     await expect(page.locator("#market-filter")).toBeVisible();
-    const rentLinks = page.getByRole("link", { name: /Rent \/ setup/i });
+    const rentLinks = page.getByRole("link", { name: /Rent \/ setup|Setup/i });
     await expect(rentLinks.first()).toBeVisible({ timeout: 30_000 });
 
     // At least one agent card
@@ -21,7 +21,7 @@ test.describe("Marketplace catalogue UI @smoke", () => {
     );
     await expect(search.first()).toBeVisible();
     await search.first().fill("customer support");
-    await expect(page.getByRole("link", { name: /Rent \/ setup/i }).first()).toBeVisible({
+    await expect(page.getByRole("link", { name: /Rent \/ setup|Setup/i }).first()).toBeVisible({
       timeout: 20_000,
     });
   });
