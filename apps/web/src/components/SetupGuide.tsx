@@ -279,15 +279,15 @@ export function SetupGuide({
               <button
                 type="button"
                 onClick={() => onStepChange(step.id)}
-                className="flex w-full flex-col items-center gap-1.5 px-0.5 text-center sm:gap-2 sm:px-1"
+                className="flex w-full min-h-[44px] flex-col items-center gap-1.5 px-0.5 text-center sm:gap-2 sm:px-1 active:scale-[0.96] transition-transform"
                 aria-current={active ? "step" : undefined}
               >
                 <span
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-200 ${
+                  className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-200 ${
                     step.done
                       ? "bg-gradient-to-br from-[var(--accent-bright)] to-[var(--accent)] text-[var(--accent-ink)] shadow-[0_0_12px_-2px_var(--accent)]"
                       : active
-                        ? "bg-[var(--bg-panel)] text-[var(--accent-bright)] ring-2 ring-[var(--accent)] shadow-[0_0_16px_-2px_color-mix(in_srgb,var(--accent)_70%,transparent)]"
+                        ? "bg-[var(--bg-panel)] text-[var(--accent-bright)] ring-2 ring-[var(--accent)] shadow-[0_0_16px_rgba(61,214,198,0.7)]"
                         : "bg-[var(--bg-panel)] text-[var(--muted)] ring-1 ring-[var(--line)]"
                   }`}
                 >
