@@ -187,80 +187,7 @@ function IconGridSq() {
   );
 }
 
-type ChannelGlyph = "chat" | "globe" | "mail" | "mic" | "plug";
-function channelGlyph(name: string): ChannelGlyph {
-  const n = name.toLowerCase();
-  if (/mail|email/.test(n)) return "mail";
-  if (/voice|call|phone|ivr/.test(n)) return "mic";
-  if (/web|site|widget|embed|portal/.test(n)) return "globe";
-  if (/whats|telegram|messenger|insta|sms|chat|message|slack|dm/.test(n)) return "chat";
-  return "plug";
-}
-const CHANNEL_TINTS = ["var(--accent)", "var(--biz)", "var(--warn)"] as const;
 
-function ChannelGlyphSvg({ kind }: { kind: ChannelGlyph }) {
-  const paths: Record<ChannelGlyph, React.ReactNode> = {
-    chat: <path d="M4 5h16v10H9l-4 3v-3H4z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />,
-    globe: (
-      <>
-        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M4 12h16M12 4c2.2 2.4 2.2 13.6 0 16M12 4c-2.2 2.4-2.2 13.6 0 16" fill="none" stroke="currentColor" strokeWidth="1.4" />
-      </>
-    ),
-    mail: <path d="M4 6h16v12H4z M4 6l8 6 8-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />,
-    mic: <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4zM6 11a6 6 0 0 0 12 0M12 17v3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />,
-    plug: <path d="M9 3v5m6-5v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />,
-  };
-  return (
-    <svg viewBox="0 0 24 24" className="h-[13px] w-[13px]">
-      {paths[kind]}
-    </svg>
-  );
-}
-
-/** Compact row of channel/tool badges + overflow count — the card's "works with" strip. */
-function ChannelBadges({ channels }: { channels: string[] }) {
-  const list = channels.filter(Boolean);
-  if (list.length === 0) return null;
-  const shown = list.slice(0, 3);
-  const extra = list.length - shown.length;
-  return (
-    <div className="mt-2.5 flex items-center gap-1.5" aria-label="Channels">
-      {shown.map((c, i) => (
-        <span
-          key={c}
-          title={c}
-          className="flex h-6 w-6 items-center justify-center rounded-md ring-1 ring-[var(--line)]"
-          style={{
-            color: CHANNEL_TINTS[i % CHANNEL_TINTS.length],
-            background: `color-mix(in srgb, ${CHANNEL_TINTS[i % CHANNEL_TINTS.length]} 12%, var(--bg-panel))`,
-          }}
-        >
-          <ChannelGlyphSvg kind={channelGlyph(c)} />
-        </span>
-      ))}
-      {extra > 0 ? (
-        <span className="text-[11px] font-semibold text-[var(--muted-dim)]">+{extra}</span>
-      ) : null}
-    </div>
-  );
-}
-
-function BookmarkButton({ saved, onToggle }: { saved: boolean; onToggle: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-pressed={saved}
-      aria-label={saved ? "Saved" : "Save agent"}
-      className={`biz-bookmark ${saved ? "biz-bookmark-on" : ""}`}
-    >
-      <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8">
-        <path d="M6 4h12v16l-6-4-6 4z" strokeLinejoin="round" />
-      </svg>
-    </button>
-  );
-}
 
 /** A count-badged filter pill that toggles a boolean facet (Workflows / Go-live). */
 function ToggleFacet({
@@ -877,72 +804,102 @@ export function CatalogGrid({
             return (
               <article
                 key={item.id}
-                className="panel panel-interactive group rise card-specular-rim relative flex flex-col overflow-hidden p-0"
-                style={{ animationDelay: `${Math.min(idx, 15) * 28}ms` }}
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1322]/85 hover:bg-[#0f172a]/95 backdrop-blur-xl p-5 sm:p-6 transition-all duration-300 hover:border-white/[0.18] hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8),0_0_24px_-6px_rgba(56,189,248,0.18)]"
+                style={{ animationDelay: `${Math.min(idx, 15) * 25}ms` }}
               >
-                {/* Sector-tinted ambient hover bloom */}
+                {/* Subtle top ambient rim accent */}
                 <div
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-px rounded-[var(--radius-panel)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  className="pointer-events-none absolute top-0 inset-x-0 h-px transition-opacity duration-300 opacity-40 group-hover:opacity-100"
                   style={{
-                    background: `radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, ${categoryAccent(item.marketplaceCategory)} 18%, transparent) 0%, transparent 70%)`,
+                    background: `linear-gradient(90deg, transparent 0%, ${categoryAccent(item.marketplaceCategory)} 30%, ${categoryAccent(item.marketplaceCategory)} 70%, transparent 100%)`,
                   }}
+                  aria-hidden
                 />
-                <BookmarkButton saved={saved.has(item.id)} onToggle={() => toggleSaved(item.id)} />
-                <div className="relative z-[1] flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="flex items-start gap-3.5">
-                    <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
-                    <div className="min-w-0 flex-1 pr-7">
-                      <h3 className="display text-[1.05rem] font-semibold leading-snug tracking-tight text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent-bright)]">
-                        {item.name}
-                      </h3>
-                      <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-[var(--card-meta)]">
-                        <span>{item.marketplaceCategory}</span>
-                        {hasWorkflow ? (
-                          <span className="inline-flex items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_28%,transparent)] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--accent-bright)] shadow-[0_0_8px_-2px_color-mix(in_srgb,var(--accent)_35%,transparent)]">
-                            {t("catalog.multiStep")}
-                          </span>
-                        ) : null}
-                        {item.requiresConnectors?.length ? (
-                          <span
-                            className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_srgb,var(--warn)_30%,transparent)] bg-[color-mix(in_srgb,var(--warn)_14%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[var(--warn)] shadow-[0_0_8px_-2px_color-mix(in_srgb,var(--warn)_35%,transparent)]"
-                            title={`Connect ${item.requiresConnectors
-                              .map(connectorLabel)
-                              .join(", ")} to take live actions`}
-                          >
-                            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--warn)] shadow-[0_0_6px_var(--warn)]" aria-hidden />
-                            <span>Needs setup</span>
-                          </span>
-                        ) : null}
-                        {activePack && packs.includes(activePack) ? (
-                          <MarketBadge market={activePack} prominent />
-                        ) : null}
-                      </p>
+
+                {/* Top Bento Header: Icon on Left, Category Pill + Bookmark on Right */}
+                <div>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="relative shrink-0">
+                      <AgentIcon familyId={item.id} category={item.marketplaceCategory} />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium tracking-wide text-slate-300">
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{ background: categoryAccent(item.marketplaceCategory) }}
+                          aria-hidden
+                        />
+                        {item.marketplaceCategory}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => toggleSaved(item.id)}
+                        aria-pressed={saved.has(item.id)}
+                        aria-label={saved.has(item.id) ? "Saved" : "Save agent"}
+                        className={`inline-flex h-7 w-7 items-center justify-center rounded-lg border transition-all duration-200 ${
+                          saved.has(item.id)
+                            ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent-bright)]"
+                            : "border-white/[0.08] bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
+                        }`}
+                      >
+                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill={saved.has(item.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                          <path d="M6 4h12v16l-6-4-6 4z" strokeLinejoin="round" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
 
-                  <p className="mt-3 line-clamp-2 text-[13.5px] leading-relaxed text-[var(--card-body)]">
+                  {/* Title & Micro-Badges */}
+                  <div className="mt-4">
+                    <h3 className="text-[1.05rem] font-bold leading-tight tracking-tight text-white transition-colors duration-200 group-hover:text-[var(--accent-bright)]">
+                      {item.name}
+                    </h3>
+                    
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                      {hasWorkflow ? (
+                        <span className="inline-flex items-center gap-1 rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10.5px] font-semibold text-cyan-300">
+                          ✦ {t("catalog.multiStep")}
+                        </span>
+                      ) : null}
+                      {item.requiresConnectors?.length ? (
+                        <span
+                          className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10.5px] font-semibold text-amber-300"
+                          title={`Requires ${item.requiresConnectors.map(connectorLabel).join(", ")} setup`}
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" aria-hidden />
+                          Needs connector
+                        </span>
+                      ) : null}
+                      {activePack && packs.includes(activePack) ? (
+                        <MarketBadge market={activePack} prominent />
+                      ) : null}
+                    </div>
+                  </div>
+
+                  {/* 2-line Description */}
+                  <p className="mt-3 text-[13px] leading-relaxed text-slate-300/90 line-clamp-2">
                     {blurb}
                   </p>
-                  {/* Channel badges are shown only when a specific market is selected; hidden in the default "All markets" view. */}
-                  {market !== "all" ? <ChannelBadges channels={item.channels} /> : null}
+                </div>
 
-                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-[color-mix(in_srgb,var(--line)_70%,transparent)] pt-4">
-                    <button
-                      type="button"
-                      className="text-xs font-semibold text-[var(--muted)] transition-colors hover:text-[var(--text)]"
-                      onClick={() => setDetail(item)}
-                    >
-                      {t("catalog.learnMore")}
-                    </button>
-                    <Link
-                      href={gatedSetupHref(href, agentsOnboarded)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-[color-mix(in_srgb,var(--accent)_30%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-3.5 py-1.5 text-xs font-semibold text-[var(--accent-bright)] shadow-[0_2px_8px_-2px_color-mix(in_srgb,var(--accent)_25%,transparent)] transition-all duration-200 hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] hover:bg-[color-mix(in_srgb,var(--accent)_22%,transparent)] hover:shadow-[0_0_16px_-2px_color-mix(in_srgb,var(--accent)_45%,transparent)]"
-                    >
-                      <span>{t("catalog.rentSetup")}</span>
-                      <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">&#8594;</span>
-                    </Link>
-                  </div>
+                {/* Footer Action Bar: Details Modal + Glowing Setup CTA */}
+                <div className="mt-5 pt-3.5 border-t border-white/[0.07] flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    className="text-[12px] font-medium text-slate-400 hover:text-white transition-colors"
+                    onClick={() => setDetail(item)}
+                  >
+                    Details ↗
+                  </button>
+
+                  <Link
+                    href={gatedSetupHref(href, agentsOnboarded)}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#3dd6c6] to-[#20b2aa] hover:from-[#4ee5d5] hover:to-[#2bc4bb] px-4 py-1.5 text-[12px] font-bold text-slate-950 transition-all duration-200 shadow-[0_0_16px_rgba(61,214,198,0.45)] hover:shadow-[0_0_24px_rgba(61,214,198,0.7)] hover:scale-[1.03] active:scale-[0.98]"
+                  >
+                    <span>Setup</span>
+                    <span aria-hidden className="text-[11px] font-bold transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+                  </Link>
                 </div>
               </article>
             );

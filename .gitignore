@@ -13,6 +13,8 @@ data/ask-leads.json
 data/turn-transcripts.json
 data/consumer-wallet-pause.json
 data/rentals.json
+data/webhook-sink.json
+data/workspace-onboarding.json
 
 # Playwright
 /test-results/

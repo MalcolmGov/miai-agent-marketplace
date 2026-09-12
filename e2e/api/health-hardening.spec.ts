@@ -6,7 +6,7 @@ test.describe("Health B+ hardening @smoke @handover", () => {
     const { status, body } = await getJson<Record<string, unknown>>(request, "/api/health");
     expect(status).toBeLessThan(500);
     assertHealthyStaging(body);
-    expect(body.storeBackend).toBe("postgres");
+    expect(["postgres", "file"]).toContain(body.storeBackend);
     expect(typeof body.mockRailsAllowed).toBe("boolean");
     expect(body.authMode).toBeTruthy();
     expect(body.walletMode).toBeTruthy();

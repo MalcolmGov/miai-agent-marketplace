@@ -122,7 +122,7 @@ export function MarketplaceHero({
           </div>
         </div>
 
-        {/* Right — 3D AI Agent Hero illustration with floating telemetry badges (hidden on small screens) */}
+        {/* Right — 3D AI Agent Hero illustration (clean, without floating chip overlays) */}
         <div className="biz-hero-art relative hidden aspect-square w-full max-w-[460px] items-center justify-center justify-self-end lg:flex">
           <div
             aria-hidden
@@ -133,29 +133,9 @@ export function MarketplaceHero({
             }}
           />
 
-          {/* Floating Telemetry 1 (Top Left) */}
-          <div className="hero-telemetry-badge hero-telemetry-1 -left-5 top-5">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--accent)_24%,transparent)] text-[var(--accent-bright)]">
-              ✦
-            </span>
-            <span>500 Verified Agents</span>
-          </div>
-
-          {/* Floating Telemetry 2 (Bottom Left) */}
-          <div className="hero-telemetry-badge hero-telemetry-2 -left-3 bottom-12">
-            <span className="pulse-dot h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
-            <span>Sub-100ms Inference</span>
-          </div>
-
-          {/* Floating Telemetry 3 (Bottom Right) */}
-          <div className="hero-telemetry-badge hero-telemetry-3 -right-3 bottom-6">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 text-[var(--biz-bright)]">
-              <path d="M12 3L4 7v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V7l-8-4z" />
-            </svg>
-            <span>Enterprise Sovereignty</span>
-          </div>
-
-          <div className="hero-3d-asset relative aspect-square w-full max-w-[430px] overflow-hidden rounded-3xl border border-white/[0.12] bg-gradient-to-b from-white/[0.05] to-transparent shadow-[0_24px_54px_-20px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.2)] backdrop-blur-sm">
+          <div className="hero-3d-asset group relative aspect-square w-full max-w-[430px] overflow-hidden rounded-3xl border border-white/[0.16] bg-gradient-to-b from-white/[0.08] via-black/40 to-transparent shadow-[0_24px_64px_-16px_rgba(0,0,0,0.9),0_0_36px_-8px_color-mix(in_srgb,var(--accent)_22%,transparent),inset_0_1px_0_0_rgba(255,255,255,0.3)] backdrop-blur-md">
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 z-10" />
+            <div className="card-specular-rim" />
             <Image
               src="/img/hero-agent-3d.webp"
               alt="Autonomous 3D AI Agent platform connected across your business tools"
@@ -163,7 +143,7 @@ export function MarketplaceHero({
               height={880}
               priority
               sizes="(max-width: 1024px) 100vw, 430px"
-              className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             />
           </div>
         </div>

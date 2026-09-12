@@ -12,7 +12,7 @@ test.describe("UAT · partner demo journey @uat", () => {
     // 1. Catalogue proves scale
     await page.goto("/#catalogue");
     await expect(page.locator("#catalogue")).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByRole("link", { name: /Rent \/ setup/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Rent \/ setup|Setup/i }).first()).toBeVisible();
 
     // 2. Open hero agent studio
     await page.goto(`/agents/${SMOKE_AGENT_ID}`);

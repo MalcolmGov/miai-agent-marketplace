@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyInstantAI Agents — White-Label Technical Handover & Infrastructure Integration</title>
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      /* Shared Base Styles */
+      .badge-ok {
+        display: inline-block;
+        background: #e6f7f2;
+        color: #0d7a70;
+        border: 1px solid #99dfd6;
+        font-size: 8px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      .arch-box {
+        background: var(--navy-2);
+        color: #e2f1f0;
+        font-family: "JetBrains Mono", monospace;
+        border-radius: 8px;
+        border: 1px solid rgba(46, 196, 182, 0.25);
+        white-space: pre;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         SCREEN PRESENTATION: Modern, Full-Screen, Centered Layout
+         ═══════════════════════════════════════════════════════════ */
+      @media screen {
+        body {
+          margin: 0;
+          padding: 32px 16px;
+          background: #080d16;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          color: #0f1724;
+        }
+        .page {
+          width: 95vw !important;
+          max-width: 1200px !important;
+          height: auto !important;
+          min-height: auto !important;
+          max-height: none !important;
+          margin: 0 auto 36px auto !important;
+          border-radius: 16px !important;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+          overflow: visible !important;
+          background: #ffffff !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+        .page .hero {
+          border-radius: 16px 16px 0 0 !important;
+          padding: 36px 44px !important;
+        }
+        .page .hero h1 {
+          font-size: 30px !important;
+          line-height: 1.25 !important;
+          margin: 10px 0 !important;
+        }
+        .page .hero .lede {
+          font-size: 14px !important;
+          line-height: 1.65 !important;
+          max-width: 950px !important;
+        }
+        .page .meta-row {
+          margin-top: 18px !important;
+          gap: 10px !important;
+        }
+        .page .meta-row .pill {
+          font-size: 11px !important;
+          padding: 4px 12px !important;
+        }
+        .page .content {
+          padding: 36px 44px 28px !important;
+        }
+        .page.airy .hero + .content {
+          padding-top: 32px !important;
+        }
+        .page .footer {
+          margin: 16px 44px 28px !important;
+        }
+        .page .section {
+          margin-bottom: 28px !important;
+        }
+        .page h2 {
+          font-size: 18px !important;
+          margin-bottom: 14px !important;
+          color: var(--navy) !important;
+          border-bottom: 1px solid #e2e8f0 !important;
+          padding-bottom: 8px !important;
+        }
+        .page h3 {
+          font-size: 13.5px !important;
+          margin: 14px 0 8px !important;
+          color: var(--teal-deep) !important;
+        }
+        .page p, .page td, .page .check li {
+          font-size: 13px !important;
+          line-height: 1.65 !important;
+        }
+        .page .card {
+          padding: 20px 24px !important;
+          border-radius: 12px !important;
+          border: 1px solid #e2e8f0 !important;
+          background: #fbfcfe !important;
+        }
+        .page .cols {
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 20px !important;
+        }
+        .page table {
+          width: 100% !important;
+          margin-top: 8px !important;
+          border-collapse: collapse !important;
+        }
+        .page th {
+          font-size: 11px !important;
+          padding: 9px 12px !important;
+          background: #f1f5f9 !important;
+        }
+        .page td {
+          font-size: 12.5px !important;
+          padding: 10px 12px !important;
+          border-bottom: 1px solid #edf2f7 !important;
+        }
+        .page pre {
+          font-size: 12px !important;
+          line-height: 1.6 !important;
+          padding: 14px 18px !important;
+          border-radius: 8px !important;
+          margin: 8px 0 12px !important;
+        }
+        .arch-box {
+          font-size: 11px !important;
+          line-height: 1.45 !important;
+          padding: 18px 22px !important;
+          border-radius: 10px !important;
+          margin: 12px 0 !important;
+          overflow-x: auto !important;
+        }
+        .page .check li {
+          padding-left: 22px !important;
+          margin-bottom: 8px !important;
+        }
+        .page .check .box {
+          width: 13px !important;
+          height: 13px !important;
+          top: 3px !important;
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         PRINT PRESENTATION: Exact A4 Multi-Page Layout
+         ═══════════════════════════════════════════════════════════ */
+      @media print {
+        @page {
+          size: A4;
+          margin: 0;
+        }
+        html, body {
+          margin: 0 !important;
+          padding: 0 !important;
+          background: var(--paper) !important;
+        }
+        .page {
+          width: 210mm !important;
+          height: 297mm !important;
+          max-height: 297mm !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
+          page-break-after: always !important;
+          break-after: page !important;
+          overflow: hidden !important;
+        }
+        .page.airy .card {
+          box-shadow: none !important;
+          border: 1px solid var(--line) !important;
+          padding: 4.5mm 5mm !important;
+        }
+        .page.airy .content {
+          padding: 12mm 16mm 7mm !important;
+        }
+        .page.airy .hero + .content {
+          padding-top: 7mm !important;
+        }
+        .page.airy .footer {
+          margin-left: 16mm !important;
+          margin-right: 16mm !important;
+        }
+        .page.airy .section {
+          margin-bottom: 6mm !important;
+        }
+        .page.airy h2 {
+          font-size: 12px !important;
+          margin-bottom: 3.5mm !important;
+          color: var(--navy) !important;
+        }
+        .page.airy h3 {
+          font-size: 10px !important;
+          margin: 4mm 0 2mm !important;
+          color: var(--teal-deep) !important;
+          letter-spacing: 0.01em !important;
+        }
+        .page.airy table {
+          margin-top: 1.5mm !important;
+        }
+        .page.airy th {
+          font-size: 7.8px !important;
+          padding: 2.2mm 2.5mm !important;
+        }
+        .page.airy td {
+          font-size: 8.8px !important;
+          line-height: 1.45 !important;
+          padding: 2.5mm 2.5mm !important;
+        }
+        .page.airy .callout {
+          padding: 3mm 3.5mm !important;
+          line-height: 1.5 !important;
+          margin-top: 2mm !important;
+        }
+        .page.airy .check li {
+          display: block !important;
+          position: relative !important;
+          padding-left: 5.5mm !important;
+          font-size: 9.2px !important;
+          line-height: 1.45 !important;
+          margin-bottom: 1.8mm !important;
+        }
+        .page.airy .check .box {
+          position: absolute !important;
+          left: 0 !important;
+          top: 1.2mm !important;
+          margin-top: 0 !important;
+          border-color: var(--teal) !important;
+        }
+        .page.airy .cols {
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 3mm 6mm !important;
+          align-items: start !important;
+        }
+        .page.airy pre {
+          background: var(--navy) !important;
+          color: #bfe9e0 !important;
+          font-family: "JetBrains Mono", monospace !important;
+          font-size: 7.6px !important;
+          line-height: 1.5 !important;
+          padding: 2.5mm 3mm !important;
+          border-radius: 5px !important;
+          margin: 1.5mm 0 2mm !important;
+          white-space: pre-wrap !important;
+          word-break: break-word !important;
+        }
+        .arch-box {
+          font-size: 7.2px !important;
+          line-height: 1.35 !important;
+          padding: 3mm !important;
+          margin: 2mm 0 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================ PAGE 1 ============================ -->
+    <section class="page airy">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand-mark">M</div>
+          <div class="brand-name">myinstant<span>ai</span> · Agents</div>
+        </div>
+        <p class="eyebrow">Technical Handover & Infrastructure Integration · MoveDigital → MyInstantAI</p>
+        <h1>White-Label Platform Handover Runbook</h1>
+        <p class="lede">
+          Executive engineering handoff for licensing and hosting <strong style="color:#fff">500 specialized AI Agents</strong> 
+          directly within <strong style="color:#fff">MyInstantAI’s cloud infrastructure</strong>. Designed as a zero-leakage, 
+          fully white-labeled deployment integrating natively into MyInstantAI’s first-party OIDC identity, token wallet, payment gateway, and inference clusters.
+        </p>
+        <div class="meta-row">
+          <span class="pill">White-Label Handover</span>
+          <span class="pill">Infra: MyInstantAI</span>
+          <span class="pill">Status: 100% Verified (83/83 E2E)</span>
+          <span class="pill date">September 2026</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="section">
+          <h2>1. Executive Summary & White-Label Licensing Model</h2>
+          <div class="cols">
+            <div class="card">
+              <h3>Commercial & Architectural Model</h3>
+              <p style="font-size: 9px; line-height: 1.5; margin: 0 0 2mm;">
+                This solution is an <strong>enterprise white-label licensing deployment</strong>. MoveDigital supplies the turnkey agent intelligence, domain knowledge bases, 100 specialized capability families, and self-contained embed engines.
+              </p>
+              <ul class="check" style="margin: 0;">
+                <li><span class="box"></span><strong>Hosting:</strong> Deployed 100% inside MyInstantAI’s virtual networks and cloud containers.</li>
+                <li><span class="box"></span><strong>Branding:</strong> Zero third-party logos or traces; fully themed to MyInstantAI design tokens.</li>
+                <li><span class="box"></span><strong>Data Sovereignty:</strong> Customer chats, credentials, and telemetry never leave MyInstantAI databases.</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h3>First-Party Integration Touchpoints</h3>
+              <ul class="check" style="margin: 0;">
+                <li><span class="box"></span><strong>OIDC Authentication:</strong> Single Sign-On via MyInstantAI work & consumer accounts.</li>
+                <li><span class="box"></span><strong>Token Wallet API:</strong> Real-time balance deduction & top-up through MyInstantAI billing.</li>
+                <li><span class="box"></span><strong>Payment Gateway:</strong> First-party billing webhooks credit internal user token accounts directly.</li>
+                <li><span class="box"></span><strong>Model Gateway:</strong> Routes inference through MyInstantAI Azure OpenAI / private clusters.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>2. High-Level Architecture & System Boundaries</h2>
+          <div class="arch-box">
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 MYINSTANT.AI CUSTOMER & BROWSER EDGES                                 │
+│  • Customer Websites: Embed Floating Bubble (&lt;script src=".../agent.js" data-key="..."&gt;)               │
+│  • Business Portal: Next.js 14 App Router (Catalogue, Agent Studio, Setup Hub, Analytics)              │
+└───────────────────────────────────────────────────┬────────────────────────────────────────────────────┘
+                                                    │ HTTPS / WSS / REST
+┌───────────────────────────────────────────────────▼────────────────────────────────────────────────────┐
+│                       MYINSTANT.AI CLOUD INFRASTRUCTURE (VNet / Container Apps)                        │
+│                                                                                                        │
+│   ┌───────────────────────────────────┐    ┌───────────────────────────────────┐                       │
+│   │    apps/web (Next.js 14 Core)     │    │   packages/connectors & runtime   │                       │
+│   │ • Embed SRI & Origin Shield       │◄──►│ • Tool Execution Sandbox          │                       │
+│   │ • Studio Step Wizard (Setup/Chat) │    │ • 4 Guardrail Refusal Filters     │                       │
+│   │ • Dynamic Knowledge & Blueprints │    │ • OAuth Simulation & Connectors  │                       │
+│   └─────────────────┬─────────────────┘    └─────────────────┬─────────────────┘                       │
+│                     │                                        │                                         │
+│   ┌─────────────────▼────────────────────────────────────────▼─────────────────────────────────────┐   │
+│   │                           MYINSTANT.AI FIRST-PARTY PLATFORM RAILS                              │   │
+│   │  [OIDC Auth Provider]      [Token Wallet API]      [Payment Webhooks]      [Azure OpenAI / LLM]│   │
+│   │  MIAI_AUTH_MODE=oidc       MIAI_WALLET_MODE=http   First-Party Billing     MIAI_MODEL_MODE     │   │
+│   └─────────────────┬──────────────────────────────────────────────────────────────────────────────┘   │
+│                     │                                                                                  │
+│                     ▼                                                                                  │
+│   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐   │
+│   │  PERSISTENCE TIER: PostgreSQL (Relational, Workspaces, Audit) + Redis (Turns & Rate Limits)    │   │
+│   └────────────────────────────────────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘</div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="rule"></div>
+        <div class="row">
+          <span>MyInstantAI Agents · White-Label Infrastructure Handover</span>
+          <span>Confidential · Page 1 of 5</span>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 2 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2>3. Infrastructure Hosting & Container Deployment</h2>
+          <p style="font-size: 9.2px; line-height: 1.5; margin: 0 0 3mm;">
+            The codebase is packaged as a standard containerized Node.js service (Node 20+ LTS). It can be hosted on Azure Container Apps, AWS ECS/Fargate, Kubernetes, or Hetzner VPS instances managed by MyInstantAI DevOps.
+          </p>
+
+          <div class="card" style="margin-bottom: 3.5mm;">
+            <h3>Production Container Specification</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Resource</th>
+                  <th>Minimum Staging</th>
+                  <th>Recommended Production</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Compute</strong></td>
+                  <td>1 vCPU, 2 GB RAM</td>
+                  <td>2 vCPU, 4 GB RAM (Autoscaling 2–10 replicas)</td>
+                  <td>Stateless web process; scale horizontally with traffic.</td>
+                </tr>
+                <tr>
+                  <td><strong>PostgreSQL</strong></td>
+                  <td>v15+ (Single node)</td>
+                  <td>v15+ Managed (Azure Flexible / AWS RDS) with SSL</td>
+                  <td>Stores workspaces, audit logs, and knowledge sources.</td>
+                </tr>
+                <tr>
+                  <td><strong>Redis</strong></td>
+                  <td>Optional (Memory fallback)</td>
+                  <td>v7+ Managed (Azure Cache / ElastiCache)</td>
+                  <td>Enforces token rate limits and ephemeral conversation turns.</td>
+                </tr>
+                <tr>
+                  <td><strong>Networking</strong></td>
+                  <td>Port 3000 exposed</td>
+                  <td>TLS 1.3 Termination, HTTPS only, CDN for static /icons</td>
+                  <td>HTTP strictly redirects to HTTPS; SRI headers enforced.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cols">
+            <div class="card">
+              <h3>Docker Build & Run Commands</h3>
+              <pre># 1. Build Production Image
+docker build -t myinstantai/agents:v1.0 .
+
+# 2. Run Container with Managed Postgres
+docker run -d -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e DATABASE_URL="postgresql://user:pass@pg.internal:5432/miai_prod?sslmode=require" \
+  -e MIAI_AUTH_MODE=oidc \
+  -e MIAI_WALLET_MODE=http \
+  --name miai-agents myinstantai/agents:v1.0</pre>
+            </div>
+
+            <div class="card">
+              <h3>Persistence & Storage Architecture</h3>
+              <p style="font-size: 8.8px; line-height: 1.45; margin: 0 0 2mm;">
+                The platform includes fail-closed storage adapters configured in <span class="mono">apps/web/src/lib/persistence/</span>:
+              </p>
+              <ul class="check" style="margin: 0;">
+                <li><span class="box"></span><strong>PostgreSQL Adapter:</strong> Primary persistent relational store with connection pooling and SSL verification.</li>
+                <li><span class="box"></span><strong>Redis Session Adapter:</strong> Fast key-value lookups for active chat turns and token deductions.</li>
+                <li><span class="box"></span><strong>File Fallback Guard:</strong> Blocked in production unless dual escape hatches are set, preventing accidental state loss.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>4. Document & Knowledge Base Processing Engine</h2>
+          <div class="card">
+            <h3>Enterprise Parsing Pipeline (<span class="mono">apps/web/src/lib/ingest.ts</span>)</h3>
+            <p style="font-size: 9px; line-height: 1.5; margin: 0 0 2mm;">
+              Customers upload business guidelines, pricing sheets, and policy PDFs to customize their licensed agents. The ingestion engine has been hardened against corrupted binary payloads:
+            </p>
+            <div class="cols">
+              <div>
+                <ul class="check" style="margin: 0;">
+                  <li><span class="box"></span><strong>Mozilla PDF.js Engine:</strong> Employs <span class="mono">pdf-parse</span> built on <span class="mono">pdfjs-dist</span>, eliminating character corruption and raw stream dumps.</li>
+                  <li><span class="box"></span><strong>Multi-Column Layout Awareness:</strong> Reconstructs multi-line tables, line items, and invoice headers cleanly into markdown.</li>
+                </ul>
+              </div>
+              <div>
+                <ul class="check" style="margin: 0;">
+                  <li><span class="box"></span><strong>Sanitization & Chunking:</strong> Strips binary headers and control characters before passing context to LLM inference windows.</li>
+                  <li><span class="box"></span><strong>Supported Formats:</strong> PDF (.pdf), Plain Text (.txt), Markdown (.md), and direct clipboard text paste.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="rule"></div>
+        <div class="row">
+          <span>MyInstantAI Agents · White-Label Infrastructure Handover</span>
+          <span>Confidential · Page 2 of 5</span>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 3 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2>5. First-Party Rails Integration (OIDC, Wallet & Payment)</h2>
+          <p style="font-size: 9.2px; line-height: 1.5; margin: 0 0 3mm;">
+            Because this is a white-labeled product under the MyInstantAI umbrella, the platform is engineered to wire directly into MyInstantAI’s existing core authentication, wallet, and billing systems without requiring code refactoring.
+          </p>
+
+          <div class="card" style="margin-bottom: 3.5mm;">
+            <h3>A. Single Sign-On & Corporate OIDC (<span class="mono">MIAI_AUTH_MODE=oidc</span>)</h3>
+            <p style="font-size: 8.8px; line-height: 1.45; margin: 0 0 2mm;">
+              When switched to OIDC, the platform delegates user identity entirely to MyInstantAI’s identity provider (Keycloak, Auth0, Google Workspace, or Azure Entra ID):
+            </p>
+            <pre># OIDC Configuration Blueprint in .env
+MIAI_AUTH_MODE=oidc
+OIDC_ISSUER=https://auth.myinstantai.com/realms/miai-prod
+OIDC_CLIENT_ID=miai-agents-platform
+OIDC_CLIENT_SECRET=sec_miai_prod_oidc_secret_here
+OIDC_REDIRECT_URI=https://agents.myinstantai.digital/api/auth/callback</pre>
+            <p style="font-size: 8.5px; line-height: 1.4; color: var(--muted); margin: 0;">
+              <strong>Token Verification:</strong> The callback validates RS256/ES256 signatures against the issuer's <span class="mono">.well-known/openid-configuration</span> JWKS endpoint, mapping the email to workspace roles (<span class="mono">owner</span>, <span class="mono">operator</span>, <span class="mono">readonly</span>).
+            </p>
+          </div>
+
+          <div class="cols">
+            <div class="card">
+              <h3>B. Token Wallet API (<span class="mono">MIAI_WALLET_MODE=http</span>)</h3>
+              <p style="font-size: 8.8px; line-height: 1.45; margin: 0 0 2mm;">
+                Agent inference and tool calls deduct tokens directly from the user's primary MyInstantAI wallet account:
+              </p>
+              <pre># Wallet HTTP Adapter Config
+MIAI_WALLET_MODE=http
+WALLET_API_URL=https://wallet-api.myinstantai.internal
+WALLET_SERVICE_TOKEN=sec_wallet_service_bearer_token</pre>
+              <ul class="check" style="margin: 1.5mm 0 0;">
+                <li><span class="box"></span><strong>Pre-Inference Check:</strong> <span class="mono">GET /balance</span> verifies sufficient funds before executing LLM turns.</li>
+                <li><span class="box"></span><strong>Post-Turn Deduction:</strong> Atomically posts prompt + completion token usage with transaction IDs.</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h3>C. Payment Gateway &amp; Top-Ups</h3>
+              <p style="font-size: 8.8px; line-height: 1.45; margin: 0 0 2mm;">
+                Users top up token packages directly inside the Agent Studio via MyInstantAI's billing gateway or webhooks:
+              </p>
+              <pre># First-Party Billing &amp; Webhook HMAC
+BILLING_WEBHOOK_URL=https://billing.myinstantai.internal/webhook
+WEBHOOK_HMAC_SECRET=sec_hmac_sha256_webhook_signing</pre>
+              <ul class="check" style="margin: 1.5mm 0 0;">
+                <li><span class="box"></span><strong>HMAC Signed Webhooks:</strong> Rejects unsigned or tampered payment callbacks.</li>
+                <li><span class="box"></span><strong>Direct Credit:</strong> Top-ups immediately update the user's available token balance in the UI.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>6. Model Provider & Private Inference Gateways</h2>
+          <div class="card">
+            <h3>Supported LLM Gateways (<span class="mono">packages/runtime</span>)</h3>
+            <p style="font-size: 9px; line-height: 1.5; margin: 0 0 2mm;">
+              The runtime engine supports both direct model APIs and MyInstantAI’s internal AI gateway clusters:
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Mode (<span class="mono">MIAI_MODEL_MODE</span>)</th>
+                  <th>Target Engine</th>
+                  <th>Primary Use Case in Agent Studio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="mono">azure</span></td>
+                  <td>Azure OpenAI Service Private Endpoints</td>
+                  <td>Enterprise deployments requiring zero data retention agreements.</td>
+                </tr>
+                <tr>
+                  <td><span class="mono">gateway</span></td>
+                  <td>MyInstantAI Internal Inference Proxy</td>
+                  <td>Centralized telemetry, rate-limiting, and cost allocation.</td>
+                </tr>
+                <tr>
+                  <td><span class="mono">openai</span> / <span class="mono">anthropic</span></td>
+                  <td>GPT-4o Mini, Claude 3.5 Sonnet / Opus</td>
+                  <td>Direct developer fallback with provider API keys.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="rule"></div>
+        <div class="row">
+          <span>MyInstantAI Agents · White-Label Infrastructure Handover</span>
+          <span>Confidential · Page 3 of 5</span>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 4 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2>7. Enterprise Security Hardening & Fail-Closed Guardrails</h2>
+          <p style="font-size: 9.2px; line-height: 1.5; margin: 0 0 3mm;">
+            The platform is engineered to comply with enterprise procurement and security diligence audits. Safety guardrails execute in real-time before prompts reach model context windows.
+          </p>
+
+          <div class="cols">
+            <div class="card">
+              <h3>4 Live Pre-Prompt Guardrails</h3>
+              <ul class="check" style="margin: 0;">
+                <li><span class="box"></span><strong>PCI-DSS Credit Card Scrubbing:</strong> Primary Account Numbers (PAN) and CVVs are masked with <span class="mono">[REDACTED_CARD]</span> before persistence or inference.</li>
+                <li><span class="box"></span><strong>Prompt Injection & Jailbreak Refusal:</strong> System prompt exfiltration attacks and override attempts trigger immediate polite refusal.</li>
+                <li><span class="box"></span><strong>Cross-Tenant Data Isolation:</strong> Strict workspace boundary checks prevent agent leakage between different MyInstantAI accounts.</li>
+                <li><span class="box"></span><strong>Emergency / 911 Escalation:</strong> High-risk medical or suicide indicators immediately trigger human escalation paths.</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h3>Cryptographic Protection</h3>
+              <ul class="check" style="margin: 0;">
+                <li><span class="box"></span><strong>PBKDF2 Password Hashing:</strong> 32-byte deterministic salt with 100,000 iterations for local credentials.</li>
+                <li><span class="box"></span><strong>Embed Key Hashing:</strong> Public keys use SHA-256 HMAC tokens with domain origin restriction.</li>
+                <li><span class="box"></span><strong>Subresource Integrity (SRI):</strong> The <span class="mono">agent.js</span> widget carries sha384 SRI hashes preventing CDN tampering.</li>
+                <li><span class="box"></span><strong>Fail-Closed Boot Guard:</strong> Application halts at startup if secrets are defaults or shorter than 16 characters.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>8. Automated Verification & Test Suite Results</h2>
+          <div class="card">
+            <h3>Test Execution Scorecard · Verified 12 September 2026</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Test Level</th>
+                  <th>Framework</th>
+                  <th>Test Count</th>
+                  <th>Pass Rate</th>
+                  <th>Scope Covered</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>End-to-End Browser (E2E)</strong></td>
+                  <td>Playwright (Chromium)</td>
+                  <td><strong>83 tests</strong> across 34 files</td>
+                  <td><span class="badge-ok">100% Passed</span></td>
+                  <td>Marketplace catalogue, studio setup, sandbox chat, mobile responsiveness, partner demo journey.</td>
+                </tr>
+                <tr>
+                  <td><strong>Unit & Security Integration</strong></td>
+                  <td>Node.js Test Runner</td>
+                  <td><strong>309 tests</strong> across 82 suites</td>
+                  <td><span class="badge-ok">100% Passed</span></td>
+                  <td>Boot hardening, consumer session cookies, tenant brands, wallet adapters, credential hashing.</td>
+                </tr>
+                <tr>
+                  <td><strong>TypeScript Monorepo Check</strong></td>
+                  <td>tsc --noEmit</td>
+                  <td><strong>8 packages</strong></td>
+                  <td><span class="badge-ok">0 Errors</span></td>
+                  <td>Strict type verification across @miai/web, @miai/connectors, @miai/runtime, and packages.</td>
+                </tr>
+                <tr>
+                  <td><strong>Catalog SKU Integrity</strong></td>
+                  <td>Custom Verification Script</td>
+                  <td><strong>500 agents / 100 families</strong></td>
+                  <td><span class="badge-ok">100% Valid</span></td>
+                  <td>Full index across US, UK, EU, Africa/ZA, and Global packs; zero broken relations or orphan schemas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>9. Client Embed & Installation Ecosystem</h2>
+          <div class="card">
+            <h3>Universal Multi-Framework Embedding</h3>
+            <p style="font-size: 8.8px; line-height: 1.45; margin: 0 0 2mm;">
+              The <strong>Install Step</strong> inside Agent Studio generates production-ready code snippets with 1-click visual copy buttons across all major environments:
+            </p>
+            <div class="cols">
+              <div>
+                <ul class="check" style="margin: 0;">
+                  <li><span class="box"></span><strong>Web Embed:</strong> Lightweight 1-line script tag with SRI protection for any HTML site.</li>
+                  <li><span class="box"></span><strong>CMS Guides:</strong> Step-by-step documentation for WordPress, Shopify, Webflow, and Wix.</li>
+                  <li><span class="box"></span><strong>React Native / Expo:</strong> <span class="mono">react-native-webview</span> component with keyboard safety.</li>
+                </ul>
+              </div>
+              <div>
+                <ul class="check" style="margin: 0;">
+                  <li><span class="box"></span><strong>Flutter:</strong> <span class="mono">webview_flutter</span> widget with unrestricted JS and backgrounding persistence.</li>
+                  <li><span class="box"></span><strong>Native iOS & Android:</strong> Swift WKWebView and Kotlin Jetpack Compose integrations.</li>
+                  <li><span class="box"></span><strong>No-Code Builders:</strong> Verified setups for FlutterFlow, Bubble Mobile, and WebViewGold.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="rule"></div>
+        <div class="row">
+          <span>MyInstantAI Agents · White-Label Infrastructure Handover</span>
+          <span>Confidential · Page 4 of 5</span>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ============================ PAGE 5 ============================ -->
+    <section class="page airy">
+      <div class="content">
+        <div class="section">
+          <h2>10. Production Cutover Checklist for MyInstantAI DevOps</h2>
+          <div class="card" style="margin-bottom: 3.5mm;">
+            <h3>Step-by-Step Platform Go-Live Procedure</h3>
+            <ul class="check" style="margin: 0;">
+              <li><span class="box"></span><strong>Step 1: Database Provisioning:</strong> Spin up managed PostgreSQL (v15+) and Redis (v7+). Run initial migration script or let automatic schema sync bootstrap tables.</li>
+              <li><span class="box"></span><strong>Step 2: Environment Configuration:</strong> Inject production secrets (OIDC issuer, client secrets, wallet API token, encryption keys) into the container environment.</li>
+              <li><span class="box"></span><strong>Step 3: DNS & Domain Allocation:</strong> Map target production domains (e.g. <span class="mono">agents.myinstantai.com</span>) with Let's Encrypt or corporate TLS certificates.</li>
+              <li><span class="box"></span><strong>Step 4: Boot Hardening Verification:</strong> Query <span class="mono">GET /api/health</span> and verify that <span class="mono">"status": "ok"</span>, <span class="mono">"storeBackend": "postgres"</span>, and <span class="mono">"hardening": "ok"</span> are returned.</li>
+              <li><span class="box"></span><strong>Step 5: Automated Smoke Test:</strong> Execute <span class="mono">pnpm test:e2e:smoke</span> against the live endpoint to verify catalogue loading, OIDC handoff, and chat execution.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>11. Complete Production Environment Variable Blueprint</h2>
+          <div class="card">
+            <h3>Production Variables (<span class="mono">/opt/miai/.env</span>)</h3>
+            <pre># Core Runtime
+NODE_ENV=production
+PUBLIC_URL=https://agents.myinstantai.com
+
+# Persistence (PostgreSQL + Redis)
+DATABASE_URL=postgresql://user:password@pg-host:5432/miai_prod?sslmode=require
+REDIS_URL=rediss://default:password@redis-host:6379
+
+# Encryption Secrets (Generate via: openssl rand -hex 32)
+OAUTH_TOKEN_SECRET=
+OAUTH_STATE_SECRET=
+EMBED_KEY_SECRET=
+
+# MyInstantAI First-Party Rails
+MIAI_AUTH_MODE=oidc
+OIDC_ISSUER=https://auth.myinstantai.com/realms/miai-prod
+OIDC_CLIENT_ID=miai-agents-platform
+OIDC_CLIENT_SECRET=myinstantai_oidc_client_secret_here
+
+MIAI_WALLET_MODE=http
+WALLET_API_URL=https://wallet-api.myinstantai.internal
+WALLET_SERVICE_TOKEN=myinstantai_wallet_bearer_token_here
+
+# Payment Gateway & Billing Webhook Sink
+BILLING_WEBHOOK_URL=https://billing.myinstantai.internal/webhook
+WEBHOOK_HMAC_SECRET=myinstantai_webhook_hmac_signing_key_here
+
+# AI Model Inference (Azure OpenAI or Gateway)
+MIAI_MODEL_MODE=azure
+AZURE_OPENAI_ENDPOINT=https://miai-ai-prod.openai.azure.com/
+AZURE_OPENAI_API_KEY=azure_openai_production_key_here</pre>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>12. Handover & Engineering Sign-Off</h2>
+          <div class="cols">
+            <div class="card">
+              <h3>MoveDigital Licensing Team</h3>
+              <p style="font-size: 8.5px; line-height: 1.45; margin: 0 0 1.5mm;">
+                <strong>Licensor & Delivery Entity:</strong> MoveDigital Engineering Team<br/>
+                <strong>Delivery Package:</strong> Full monorepo source, 500 Agent Packs, 100 Family Blueprints, automated test suites, and documentation.
+              </p>
+              <p style="font-size: 8.5px; line-height: 1.45; color: var(--teal-deep); font-weight: 700; margin: 0;">
+                ✓ Verified Production-Ready & Handover Approved
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>MyInstantAI Operations Team</h3>
+              <p style="font-size: 8.5px; line-height: 1.45; margin: 0 0 1.5mm;">
+                <strong>Target Platform:</strong> MyInstantAI Enterprise Cloud<br/>
+                <strong>Integration Acceptance:</strong> OIDC Identity, Internal Wallet Token Metering, Azure OpenAI Gateway, Billing Rails.
+              </p>
+              <p style="font-size: 8.5px; line-height: 1.45; color: var(--muted); margin: 0;">
+                Pending staging environment deployment & secret injection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="rule"></div>
+        <div class="row">
+          <span>MyInstantAI Agents · White-Label Infrastructure Handover</span>
+          <span>Confidential · Page 5 of 5</span>
+        </div>
+      </footer>
+    </section>
+  </body>
+</html>

@@ -334,19 +334,45 @@ function BusinessLogin() {
         </form>
 
         {phase === "mock" && !loginUrl && (
-          <div className="pt-2 border-t border-[var(--line)]">
+          <form
+            data-testid="mock-login-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setBusinessShellFlags(email || "demo@company.com");
+              router.push(returnTo);
+            }}
+            className="pt-3 border-t border-[var(--line)] space-y-2"
+          >
+            <div className="flex items-center justify-between text-[11px] text-[var(--muted)]">
+              <span>Quick mock sign-in (testing &amp; staging)</span>
+              <span className="font-mono text-[10px] text-amber-400">Mock Mode</span>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                data-testid="login-username"
+                className="input text-xs flex-1 py-1"
+                placeholder="demo@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="password"
+                data-testid="login-password"
+                className="input text-xs flex-1 py-1"
+                placeholder="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
             <button
-              type="button"
+              type="submit"
               className="btn btn-ghost w-full text-xs text-[var(--muted)] hover:text-white"
               data-testid="login-submit"
-              onClick={() => {
-                setBusinessShellFlags("demo@company.com");
-                router.push(returnTo);
-              }}
             >
-              Continue as guest (staging click-through)
+              Continue as guest / mock sign-in →
             </button>
-          </div>
+          </form>
         )}
       </div>
 

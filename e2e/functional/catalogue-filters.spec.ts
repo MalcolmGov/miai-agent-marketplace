@@ -6,7 +6,7 @@ test.describe("Functional · catalogue filters @functional", () => {
     await openCatalogue(page);
     await page.locator("#market-filter").selectOption("eu");
     await expect(page.locator("#market-filter")).toHaveValue("eu");
-    await expect(page.getByRole("link", { name: /Rent \/ setup/i }).first()).toBeVisible({
+    await expect(page.getByRole("link", { name: /Rent \/ setup|Setup/i }).first()).toBeVisible({
       timeout: 20_000,
     });
   });
@@ -17,14 +17,14 @@ test.describe("Functional · catalogue filters @functional", () => {
     await expect(page).toHaveURL(/pilot=1/);
     const pilotChip = page.getByRole("button", { name: /Go-live 100/i });
     await expect(pilotChip).toBeVisible();
-    await expect(page.getByRole("link", { name: /Rent \/ setup/i }).first()).toBeVisible({
+    await expect(page.getByRole("link", { name: /Rent \/ setup|Setup/i }).first()).toBeVisible({
       timeout: 20_000,
     });
   });
 
   test("Learn more opens capability detail dialog", async ({ page }) => {
     await openCatalogue(page);
-    await page.getByRole("button", { name: /Learn more/i }).first().click();
+    await page.getByRole("button", { name: /Learn more|Details/i }).first().click();
     await expect(page.locator('[aria-labelledby="agent-detail-title"]')).toBeVisible({
       timeout: 15_000,
     });
