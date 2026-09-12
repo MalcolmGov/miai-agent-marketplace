@@ -11,7 +11,7 @@ type ShellMode = "business" | "consumer";
 const BUSINESS_HIDDEN = new Set(["learn", "live-ops", "quality"]);
 /** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
 const CONSUMER_ALLOWED = new Set([
-  "home", "ask", "ai-agents-hub", "search", "history",
+  "home", "ask", "ai-agents-marketplace", "my-agents", "search", "history",
   "learn", "my-tokens", "redeem-epin", "subscriptions", "consultants", "settings", "help",
 ]);
 /** Entire nav groups hidden in consumer mode (Agents ops are a Business product). */
@@ -132,6 +132,18 @@ function IconAgents() {
   );
 }
 
+function IconMyAgents() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <rect x="4" y="5" width="16" height="13" rx="3" />
+      <circle cx="9" cy="10.5" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="10.5" r="1.2" fill="currentColor" stroke="none" />
+      <path d="M12 2v3M8 15h8M2 12h2M20 12h2" strokeLinecap="round" />
+      <path d="M8.5 14.5c1 .8 2.5 1.2 3.5 1.2s2.5-.4 3.5-1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconHelp() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -172,13 +184,19 @@ const GROUPS: NavGroup[] = [
       { id: "home", href: "/", label: "Home", icon: <IconHome />, exact: true },
       { id: "ask", href: "/ask", label: "Ask AI", icon: <IconAsk /> },
       {
-        id: "ai-agents-hub",
+        id: "ai-agents-marketplace",
         href: "/agents",
-        label: "AI Agents",
+        label: "AI Agent Marketplace",
         icon: <IconAgents />,
         badge: { labelKey: "nav.badgeNew", tone: "new" },
       },
-      { id: "search", href: "/#catalogue", label: "Search", icon: <IconSearch /> },
+      {
+        id: "my-agents",
+        href: "/my-agents",
+        label: "My Agents",
+        icon: <IconMyAgents />,
+      },
+      { id: "search", href: "/ask?search=true", label: "Search", icon: <IconSearch /> },
       { id: "history", href: "/history", label: "History", icon: <IconHistory /> },
     ],
   },
@@ -214,7 +232,7 @@ function resolveActive(
   groupId: string,
 ) {
   if (item.href.includes("#")) return false;
-  if (pathname === "/" && item.href === "/") {
+  if ((pathname === "/" || pathname === "/dashboard") && item.href === "/") {
     return groupId === "core" && item.id === "home";
   }
   // Read the ?tab= query via useSearchParams (threaded in as activeTab), NOT window.location during
@@ -225,6 +243,9 @@ function resolveActive(
   }
   if (item.id === "my-agents") {
     return pathname === "/my-agents" && activeTab !== "insights";
+  }
+  if (item.id === "ai-agents-marketplace") {
+    return pathname === "/agents" || (pathname.startsWith("/agents/") && !pathname.startsWith("/agents/v1/"));
   }
   if (item.exact) return pathname === item.href;
   const targetBase = item.href.split("?")[0];
