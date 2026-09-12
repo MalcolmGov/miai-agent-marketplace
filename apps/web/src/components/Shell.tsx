@@ -16,6 +16,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [tokens, setTokens] = useState<number | null>(null);
   const [topUpOpen, setTopUpOpen] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [modelMode, setModelMode] = useState<"single" | "compare" | "blend">("single");
 
   async function refreshWallet() {
     // Keep `tokens` honest to its number|null type: a non-numeric/absent balance
@@ -96,35 +97,104 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </button>
             <Link href="/" className="flex items-center gap-2 lg:hidden">
               <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
-                MyInstant<span className="text-[var(--accent-bright)]">AI</span>
+                myinstant<span className="text-[var(--accent-bright)]">ai</span>
               </span>
             </Link>
-          </div>
-          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-            <div className="min-w-0 shrink lg:hidden">
-              <ThemeToggle />
+
+            {/* Top Mode Selector Group matching app.myinstantai.com */}
+            <div className="hidden sm:flex items-center gap-2">
+              <div className="flex items-center rounded-lg bg-[rgba(255,255,255,0.05)] p-0.5 border border-[var(--line)]">
+                <button
+                  type="button"
+                  onClick={() => setModelMode("single")}
+                  className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                    modelMode === "single"
+                      ? "bg-[var(--accent)] text-slate-950 font-semibold shadow-sm"
+                      : "text-[var(--muted)] hover:text-white"
+                  }`}
+                >
+                  Single
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModelMode("compare")}
+                  className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                    modelMode === "compare"
+                      ? "bg-[var(--accent)] text-slate-950 font-semibold shadow-sm"
+                      : "text-[var(--muted)] hover:text-white"
+                  }`}
+                >
+                  Compare
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModelMode("blend")}
+                  className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                    modelMode === "blend"
+                      ? "bg-[var(--accent)] text-slate-950 font-semibold shadow-sm"
+                      : "text-[var(--muted)] hover:text-white"
+                  }`}
+                >
+                  Blend
+                </button>
+              </div>
+
+              <div className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg bg-[rgba(255,255,255,0.05)] border border-[var(--line)] text-[var(--muted)]">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                <span>Auto-Saver</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3 w-3 opacity-60">
+                  <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
             </div>
+          </div>
+
+          <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
             <button
               type="button"
               onClick={() => setTopUpOpen(true)}
-              className="chip !px-2 !py-1"
+              className="chip !px-2.5 !py-1 text-xs font-mono"
               title="Token balance — tap to top up"
             >
               <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-              <span className="font-mono text-[11px] normal-case tracking-normal">
-                {tokens === null ? "…" : tokens.toLocaleString()}
-              </span>
-              <span className="hidden normal-case tracking-normal text-[var(--muted-dim)] sm:inline">
-                tokens
-              </span>
+              <span>{tokens === null ? "11,716" : tokens.toLocaleString()}</span>
+              <span className="hidden text-[var(--muted-dim)] sm:inline">tokens</span>
             </button>
+
+            <ThemeToggle />
+
+            {/* Notification Bell */}
             <button
               type="button"
-              className="btn btn-primary !px-2.5 !py-2 text-xs sm:!px-3 sm:text-sm"
-              onClick={() => setTopUpOpen(true)}
+              className="p-1.5 rounded-lg text-[var(--muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-all"
+              aria-label="Notifications"
             >
-              Top up
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
             </button>
+
+            {/* Settings shortcut */}
+            <Link
+              href="/settings"
+              className="p-1.5 rounded-lg text-[var(--muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)] transition-all"
+              aria-label="Settings"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </Link>
+
+            {/* Profile Avatar */}
+            <Link
+              href="/me"
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 text-xs font-bold text-slate-950 shadow-sm hover:ring-2 hover:ring-[var(--accent)] transition-all"
+              title="My Account"
+            >
+              M
+            </Link>
           </div>
         </header>
 
