@@ -369,6 +369,9 @@ export function ActionsPanel({
 
   // Determine smart recommendations based on agent's business area
   const domainRecommendedIds = useMemo(() => {
+    if (/agentic-commerce|shopping|commerce/i.test(agentId)) {
+      return new Set(["shopify", "stripe", "webhook", "slack"]);
+    }
     if (isWorkflow) return new Set(["google_calendar", "slack", "hubspot", "email"]);
     
     // Check explicit agentConnectors first
@@ -379,7 +382,12 @@ export function ActionsPanel({
     const set = new Set<string>();
     const pid = problemArea.id;
 
-    if (pid === "education") {
+    if (pid === "commerce") {
+      set.add("shopify");
+      set.add("stripe");
+      set.add("webhook");
+      set.add("slack");
+    } else if (pid === "education") {
       set.add("hubspot");
       set.add("google_calendar");
       set.add("email");
@@ -416,7 +424,7 @@ export function ActionsPanel({
     }
 
     return set;
-  }, [isWorkflow, agentConnectors, problemArea.id]);
+  }, [isWorkflow, agentConnectors, problemArea.id, agentId]);
 
   function isConnected(c: Connector): boolean {
     const oauth = byId.get(c.id);

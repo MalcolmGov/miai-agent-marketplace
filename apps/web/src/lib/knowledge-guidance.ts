@@ -269,6 +269,32 @@ export const BUSINESS_PROBLEM_MAP: Record<string, BusinessProblemArea> = {
       ],
     },
   },
+  commerce: {
+    id: "commerce",
+    title: "11. Retail, E-Commerce & Autonomous Shopping",
+    icon: "🛍️",
+    theme: "#f59e0b",
+    problems: [
+      "Eliminates cart abandonment and checkout drop-offs with autonomous shopping journeys",
+      "Searches merchant product catalogs and verifies real-time stock and SKU availability",
+      "Calculates itemized taxes, courier shipping options, and promotional discounts automatically",
+      "Formulates cryptographically signed purchase mandates with spend ceilings and user consent gates",
+      "Executes Zero-PAN tokenized checkouts (Visa/Mastercard network tokens) without exposing raw card details",
+      "Provides live multi-carrier tracking, shipment status updates, and automated digital receipts",
+    ],
+    optimalSetup: {
+      recommendedInputs: [
+        "Product catalog with SKUs, titles, descriptions, pricing, and variant options",
+        "Shipping policies, courier delivery tiers, and sales tax / VAT rules",
+        "Return, refund, and warranty guidelines with merchant support escalation queue",
+      ],
+      recommendedConnectors: ["Shopify", "Stripe", "Webhook / MCP Server"],
+      operatingRules: [
+        "Strict Zero-PAN compliance: Never accept, request, or store raw 16-digit card numbers or CVVs in chat",
+        "Always obtain explicit user authorization on the purchase mandate before initiating checkout",
+      ],
+    },
+  },
 };
 
 /**
@@ -323,6 +349,11 @@ export function resolveProblemArea(category: string, familyId: string, name?: st
   // 9. Support & Ticket Triage
   if (/support|helpdesk|it-help|service-desk|complaint|repair|telecom|fibre|network-fault/.test(all)) {
     return BUSINESS_PROBLEM_MAP.support;
+  }
+
+  // 10. Retail, E-Commerce & Autonomous Shopping
+  if (/commerce|shopping|retail|store|cart|checkout|spaza|catalog-search|product-finder|returns-exchanges|agentic/.test(all)) {
+    return BUSINESS_PROBLEM_MAP.commerce;
   }
 
   // Default to Customer Enquiries & Front Desk
