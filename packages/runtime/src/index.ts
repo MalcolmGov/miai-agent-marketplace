@@ -72,6 +72,10 @@ import {
   isMarketplaceAssistant,
   runMarketplaceAssistantWorkflow,
 } from "./workflows/marketplace-assistant.js";
+import {
+  isAgenticCommerce,
+  runAgenticCommerceWorkflow,
+} from "./workflows/agentic-commerce.js";
 import { wf } from "./workflows/i18n.js";
 import {
   applyTemplateVars,
@@ -99,6 +103,10 @@ import {
 import { selectKnowledgeForPromptAsync } from "./knowledge-retrieve.js";
 
 export type { WorkflowPlan, WorkflowStep };
+export {
+  isAgenticCommerce,
+  runAgenticCommerceWorkflow,
+} from "./workflows/agentic-commerce.js";
 export {
   applyTemplateVars,
   buildTemplateVars,
@@ -3145,6 +3153,21 @@ export async function runTurn(
       replyLanguage: req.replyLanguage,
     });
     const done = await finishWorkflow(dt);
+    if (done) return done;
+  }
+
+  // Autonomous Shopping Agent for Agentic Commerce (Anthropic + Visa/Mastercard)
+  if (!forced && isAgenticCommerce(req.agentId)) {
+    const ac = await runAgenticCommerceWorkflow({
+      agentId: req.agentId,
+      userMessage: req.userMessage,
+      messages: req.messages,
+      toolNames: req.pkg.tools.map((t) => t.name),
+      knowledge,
+      executeTool,
+      replyLanguage: req.replyLanguage,
+    });
+    const done = await finishWorkflow(ac);
     if (done) return done;
   }
 

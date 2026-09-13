@@ -144,8 +144,55 @@ const personalAssistant = (
   { tool: "remember_person", connector: "webhook" },
 ];
 
+const agenticCommerce = (handoff: "slack" | "teams" = "slack"): ToolBinding[] => [
+  { tool: "search_catalog", connector: "shopify" },
+  { tool: "check_inventory", connector: "shopify" },
+  { tool: "assemble_cart", connector: "shopify" },
+  { tool: "generate_purchase_mandate", connector: "webhook" },
+  { tool: "authorize_checkout", connector: "stripe" },
+  { tool: "track_order", connector: "webhook" },
+  { tool: "handoff_to_human", connector: handoff },
+];
+
 /** Explicit hand overrides — win over generated presets (production marketplace). */
 const HAND_OVERRIDES: AgentPreset[] = [
+  // Autonomous Shopping Agent — Agentic Commerce (Anthropic + Visa/Mastercard)
+  {
+    agentId: "agentic-commerce",
+    pilot: false,
+    phase: 1,
+    bindings: agenticCommerce("slack"),
+  },
+  {
+    agentId: "us-agentic-commerce",
+    pilot: false,
+    phase: 1,
+    bindings: agenticCommerce("slack"),
+  },
+  {
+    agentId: "eu-agentic-commerce",
+    pilot: false,
+    phase: 1,
+    bindings: agenticCommerce("teams"),
+  },
+  {
+    agentId: "asia-agentic-commerce",
+    pilot: false,
+    phase: 1,
+    bindings: agenticCommerce("slack"),
+  },
+  {
+    agentId: "africa-agentic-commerce",
+    pilot: false,
+    phase: 1,
+    bindings: agenticCommerce("slack"),
+  },
+  {
+    agentId: "latam-agentic-commerce",
+    pilot: false,
+    phase: 1,
+    bindings: agenticCommerce("slack"),
+  },
   {
     agentId: "us-customer-support",
     pilot: false,
@@ -475,8 +522,10 @@ export function defaultBindingsForTools(toolNames: string[]): ToolBinding[] {
     )
       return { tool, connector: "google_calendar" as const };
     if (tool.includes("notify_team")) return { tool, connector: "slack" as const };
-    if (tool.includes("order") || tool.includes("stock"))
+    if (tool.includes("order") || tool.includes("stock") || tool.includes("catalog") || tool.includes("cart"))
       return { tool, connector: "shopify" as const };
+    if (tool.includes("checkout") || tool.includes("mandate"))
+      return { tool, connector: "stripe" as const };
     if (tool.includes("ticket") || tool.includes("lead") || tool.includes("capture"))
       return { tool, connector: "hubspot" as const };
     return { tool, connector: "webhook" as const };

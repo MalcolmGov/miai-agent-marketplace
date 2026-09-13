@@ -16,7 +16,7 @@ import { executeWebhook } from "./handlers/webhook.js";
  */
 export function isActionTool(tool: string): boolean {
   const n = tool.toLowerCase();
-  if (/^(get_|list_|search_|find_|lookup_|read_|fetch_|check_|explain_|show_)/.test(n)) return false;
+  if (/^(get_|list_|search_|find_|lookup_|read_|fetch_|check_|explain_|show_|assemble_|generate_|track_)/.test(n)) return false;
   if (/_status\b|_info\b|availability|_details\b/.test(n)) return false;
   // Internal routing / escalation — must never be blocked as "not connected".
   if (/handoff|hand_off|to_human|escalat|route_to|take_message/.test(n)) return false;
@@ -282,6 +282,195 @@ function stubFor(tool: string, args: Record<string, unknown>): Record<string, un
       source: "sandbox_stub",
     };
   if (n.includes("estimate")) return { estimate_ref: "EST-2201", status: "logged" };
+  if (n === "search_catalog" || n.includes("search_catalog")) {
+    const q = String(args.query ?? "").toLowerCase();
+    const items = [
+      {
+        sku: "SH-PEG-TR5",
+        name: "Pegasus Trail 5 Running Shoes",
+        price: 149.00,
+        category: "apparel",
+        in_stock: true,
+        summary: "Responsive cushioning, all-terrain grip, breathable engineered mesh.",
+      },
+      {
+        sku: "MON-4K-32",
+        name: "UltraSharp 32\" 4K OLED Monitor",
+        price: 799.00,
+        category: "electronics",
+        in_stock: true,
+        summary: "144Hz, HDR TrueBlack, USB-C 90W charging.",
+      },
+      {
+        sku: "HP-PRO-ANC",
+        name: "StudioPro Noise-Canceling Headphones",
+        price: 299.00,
+        category: "electronics",
+        in_stock: true,
+        summary: "40h battery, spatial audio, multi-point pairing.",
+      },
+      {
+        sku: "MS-ERGO-WL",
+        name: "MagSpeed Ergonomic Wireless Mouse",
+        price: 99.00,
+        category: "electronics",
+        in_stock: true,
+        summary: "8K DPI sensor, hyper-fast scroll, thumb wheel.",
+      },
+      {
+        sku: "JKT-AERO-H2O",
+        name: "AeroFit Hydro Running Jacket",
+        price: 129.00,
+        category: "apparel",
+        in_stock: true,
+        summary: "Waterproof, wind-resistant, reflective detailing.",
+      },
+      {
+        sku: "KIT-AC-6L",
+        name: "AirCrisp Pro 6L Smart Air Fryer",
+        price: 139.00,
+        category: "home",
+        in_stock: true,
+        summary: "Dual-zone basket, app connectivity, 2200W rapid heating.",
+      },
+      {
+        sku: "KIT-BM-ESP",
+        name: "BaristaMax Espresso Machine",
+        price: 449.00,
+        category: "home",
+        in_stock: true,
+        summary: "15-bar Italian pump, PID temperature control, steam wand.",
+      },
+    ];
+    const filtered = items.filter((item) => {
+      if (args.max_price && item.price > Number(args.max_price)) return false;
+      if (q && !item.name.toLowerCase().includes(q) && !item.category.includes(q) && !item.summary.toLowerCase().includes(q)) {
+        if (/shoe|run|trail/i.test(q) && /SH-PEG-TR5|JKT-AERO-H2O/i.test(item.sku)) return true;
+        if (/monitor|screen|display|oled/i.test(q) && /MON-4K-32/i.test(item.sku)) return true;
+        if (/headphone|audio|anc/i.test(q) && /HP-PRO-ANC/i.test(item.sku)) return true;
+        if (/mouse|pointer/i.test(q) && /MS-ERGO-WL/i.test(item.sku)) return true;
+        if (/coffee|espresso/i.test(q) && /KIT-BM-ESP/i.test(item.sku)) return true;
+        if (/fryer|cook|kitchen/i.test(q) && /KIT-AC-6L/i.test(item.sku)) return true;
+        return false;
+      }
+      return true;
+    });
+    return {
+      ok: true,
+      results: filtered.length > 0 ? filtered : [items[0]],
+      source: "sandbox_stub",
+    };
+  }
+  if (n === "check_inventory" || n.includes("check_inventory")) {
+    const sku = String(args.sku ?? "SH-PEG-TR5").toUpperCase();
+    return {
+      ok: true,
+      sku,
+      available: true,
+      stock_count: 42,
+      variant: String(args.variant ?? "10.5 US"),
+      dispatch_eta: "Ships in 24 hours",
+      source: "sandbox_stub",
+    };
+  }
+  if (n === "assemble_cart" || n.includes("assemble_cart")) {
+    const rawItems = Array.isArray(args.items) ? args.items : [{ sku: "SH-PEG-TR5", quantity: 1, variant: "10.5 US" }];
+    const catalogMap: Record<string, { name: string; price: number }> = {
+      "SH-PEG-TR5": { name: "Pegasus Trail 5 Running Shoes", price: 149.00 },
+      "MON-4K-32": { name: "UltraSharp 32\" 4K OLED Monitor", price: 799.00 },
+      "HP-PRO-ANC": { name: "StudioPro Noise-Canceling Headphones", price: 299.00 },
+      "MS-ERGO-WL": { name: "MagSpeed Ergonomic Wireless Mouse", price: 99.00 },
+      "JKT-AERO-H2O": { name: "AeroFit Hydro Running Jacket", price: 129.00 },
+      "APP-MER-100": { name: "Merino Core Base Layer", price: 69.00 },
+      "KIT-AC-6L": { name: "AirCrisp Pro 6L Smart Air Fryer", price: 139.00 },
+      "KIT-BM-ESP": { name: "BaristaMax Espresso Machine", price: 449.00 },
+    };
+    const line_items = rawItems.map((it: any) => {
+      const match = catalogMap[it.sku] ?? { name: it.sku || "Product Item", price: 99.00 };
+      const qty = Number(it.quantity) || 1;
+      return {
+        sku: it.sku,
+        name: match.name,
+        quantity: qty,
+        unit_price: match.price,
+        subtotal: match.price * qty,
+        variant: it.variant ?? "Default",
+      };
+    });
+    const subtotal = line_items.reduce((s: number, i: any) => s + i.subtotal, 0);
+    const promo = String(args.promo_code ?? "").toUpperCase();
+    const discount = promo === "AGENTIC10" ? Number((subtotal * 0.1).toFixed(2)) : 0;
+    const shipping = subtotal >= 150 || promo === "FREESHIP" ? 0 : 9.00;
+    const tax = Number(((subtotal - discount) * 0.0825).toFixed(2));
+    const total = Number((subtotal - discount + shipping + tax).toFixed(2));
+    return {
+      ok: true,
+      cart_id: "CART-98214",
+      line_items,
+      subtotal,
+      discount,
+      shipping,
+      tax,
+      total,
+      currency: "USD",
+      source: "sandbox_stub",
+    };
+  }
+  if (n === "generate_purchase_mandate" || n.includes("generate_purchase_mandate")) {
+    const cartId = String(args.cart_id ?? "CART-98214");
+    const maxSpend = Number(args.max_authorized_spend) || 161.29;
+    return {
+      ok: true,
+      mandate_id: "MND-AUTH-77291",
+      cart_id: cartId,
+      merchant: "MoveDigital Autonomous Commerce",
+      total_amount: maxSpend,
+      network_token: "visa-network-token-4242",
+      payment_method: "Visa Token Service (•••• 4242)",
+      expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+      consent_required: true,
+      source: "sandbox_stub",
+    };
+  }
+  if (n === "authorize_checkout" || n.includes("authorize_checkout")) {
+    const mandateId = String(args.mandate_id ?? "MND-AUTH-77291");
+    const idem = String(args.idempotency_key ?? "idem-77291");
+    return {
+      ok: true,
+      order_id: "AC-8821",
+      order_ref: "AC-8821",
+      status: "confirmed",
+      transaction_id: "txn_vts_88219934",
+      mandate_id: mandateId,
+      idempotency_key: idem,
+      total_paid: 161.29,
+      currency: "USD",
+      payment_token: "visa-token-••••-4242",
+      network: "Visa Delegated Token Rail",
+      estimated_delivery: "3-5 business days",
+      carrier: "FedEx Priority",
+      receipt_url: "https://receipts.miai.dev/order/AC-8821",
+      source: "sandbox_stub",
+    };
+  }
+  if (n === "track_order" || n.includes("track_order")) {
+    const orderId = String(args.order_id ?? "AC-8821");
+    return {
+      ok: true,
+      order_id: orderId,
+      status: "in_transit",
+      carrier: "FedEx Priority",
+      tracking_number: "FX-9928172635",
+      eta: "Thursday by 17:00",
+      milestones: [
+        { status: "Order Authorized", time: "Today 08:30" },
+        { status: "Inventory Picked & Packed", time: "Today 10:15" },
+        { status: "Dispatched from Central Warehouse", time: "Today 12:45" },
+        { status: "In Transit — Sorting Facility", time: "Today 14:00" },
+      ],
+      source: "sandbox_stub",
+    };
+  }
   if (
     n.includes("catalogue") ||
     n.includes("list_services") ||
