@@ -117,17 +117,21 @@ export function SetupGuide({
   onSkipConnect: () => void;
   onConfirmKnowledge?: () => void;
 }) {
-  void agentId;
-
+  const isCommerce = /agentic-commerce|shopping|commerce/i.test(agentId);
   const connectDone = toolsConnected || skippedConnect;
-  const connectTitle = isWorkflow ? "Connect Calendar / Slack" : "Connect tools";
+  const connectTitle = isCommerce
+    ? "Connect Shopify / Stripe"
+    : isWorkflow
+      ? "Connect Calendar / Slack"
+      : "Connect tools";
 
   const steps: Step[] = [
     {
       id: "knowledge",
       title: "Knowledge",
-      detail:
-        "Add your business info — services, hours, FAQs, and policies — so answers sound like you. Replace the starter pack with your real content.",
+      detail: isCommerce
+        ? "Add your merchant catalog, shipping tiers, returns & tax policies — so shoppers get accurate quotes and checkouts."
+        : "Add your business info — services, hours, FAQs, and policies — so answers sound like you. Replace the starter pack with your real content.",
       done: hasKnowledge,
       requirement: "required",
       requirementLabel: "Required — your business content",
@@ -135,9 +139,11 @@ export function SetupGuide({
     {
       id: "connect",
       title: connectTitle,
-      detail: isWorkflow
-        ? "Optional. Skip to try the agent on knowledge alone. Connect Calendar / Slack later for live bookings and handoffs."
-        : "Optional. Skip to try the agent on knowledge alone. Connect tools later if you need live writes.",
+      detail: isCommerce
+        ? "Optional. Skip to try the agent on catalog knowledge alone. Connect Shopify / Stripe later for live inventory, orders, and checkout execution."
+        : isWorkflow
+          ? "Optional. Skip to try the agent on knowledge alone. Connect Calendar / Slack later for live bookings and handoffs."
+          : "Optional. Skip to try the agent on knowledge alone. Connect tools later if you need live writes.",
       done: connectDone,
       requirement: "optional",
       requirementLabel: "Optional — knowledge-only is fine",
@@ -338,7 +344,9 @@ export function SetupGuide({
             </div>
             <p className="mt-1.5 text-xs leading-relaxed text-[var(--muted)]">
               {activeStep === "connect" && !toolsConnected
-                ? "Authenticate your agent's external tools below (Google Calendar, HubSpot, Slack, WhatsApp, etc.) to enable live actions, or skip to test in Sandbox first."
+                ? isCommerce
+                  ? "Authenticate your merchant tools below (Shopify for catalog/inventory, Stripe for checkout execution) to enable live actions, or skip to test in Sandbox first."
+                  : "Authenticate your agent's external tools below (Google Calendar, HubSpot, Slack, WhatsApp, etc.) to enable live actions, or skip to test in Sandbox first."
                 : current.detail}
             </p>
 
@@ -379,7 +387,13 @@ export function SetupGuide({
           <p className="text-[11px] text-[var(--muted)]">
             <span className="font-medium text-[var(--text)]">Minimum path:</span> add your knowledge →
             try sandbox → add tokens → go live and activate.
-            {isWorkflow ? (
+            {isCommerce ? (
+              <>
+                {" "}
+                <span className="font-medium text-[var(--text)]">Optional later:</span> Shopify / Stripe
+                for live catalog search, inventory, and tokenized checkout.
+              </>
+            ) : isWorkflow ? (
               <>
                 {" "}
                 <span className="font-medium text-[var(--text)]">Optional later:</span> Calendar / Slack
