@@ -136,6 +136,19 @@ export async function runMarketplaceAssistantWorkflow(input: {
     };
   }
 
+  if (
+    /(?:shopping|commerce|e-?commerce|retail|autonomous shopping|agentic commerce|purchase mandate|checkout)/i.test(
+      lower,
+    )
+  ) {
+    return {
+      handled: true,
+      toolCalls,
+      assistantMessage:
+        "For autonomous shopping and agentic commerce journeys (catalog search, cart assembly, Visa/Mastercard purchase mandates, and human-in-the-loop checkout authorization), explore the **Autonomous Shopping Agent** at `/agents/agentic-commerce`. You can configure merchant connectors (Shopify, Stripe), test live cart actions in the Sandbox, and deploy across Web, App, and WhatsApp.",
+    };
+  }
+
   if (/guardrail/.test(lower)) {
     return {
       handled: true,

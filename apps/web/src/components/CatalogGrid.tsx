@@ -379,6 +379,13 @@ export function CatalogGrid({
     if (params.get("pilot") === "1" || params.get("pilot") === "true") {
       setPilotOnly(true);
     }
+    const urlQ = params.get("q");
+    if (urlQ) {
+      setQ(urlQ);
+      requestAnimationFrame(() => {
+        document.getElementById("catalogue")?.scrollIntoView({ behavior: "smooth" });
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -552,6 +559,12 @@ export function CatalogGrid({
         agentCount={500}
         categoryCount={industryCategoryCount}
         workflowCount={WORKFLOW_FAMILY_IDS.length}
+        onSearch={(term) => {
+          setQ(term);
+          requestAnimationFrame(() => {
+            document.getElementById("catalogue")?.scrollIntoView({ behavior: "smooth" });
+          });
+        }}
       />
 
       <section id="catalogue" className="scroll-mt-24 space-y-4">
