@@ -8,12 +8,14 @@ import { useT } from "@/lib/locale";
 export function MarketplaceHero({
   familyCount,
   agentCount = 500,
+  onSearch,
 }: {
   familyCount: number;
   /** Indexed catalogue SKUs (100 families × 5 regions). */
   agentCount?: number;
   categoryCount?: number;
   workflowCount?: number;
+  onSearch?: (term: string) => void;
 }) {
   const router = useRouter();
   const [promptText, setPromptText] = useState("");
@@ -67,8 +69,13 @@ export function MarketplaceHero({
 
   function handleSubmit(e?: React.FormEvent) {
     if (e) e.preventDefault();
-    if (!promptText.trim()) return;
-    router.push(`/ask?q=${encodeURIComponent(promptText.trim())}`);
+    const term = promptText.trim();
+    if (!term) return;
+    if (onSearch) {
+      onSearch(term);
+    } else {
+      router.push(`/agents?q=${encodeURIComponent(term)}`);
+    }
   }
 
   function handleSelectCard(query: string) {
@@ -163,7 +170,7 @@ export function MarketplaceHero({
             type="text"
             value={promptText}
             onChange={(e) => setPromptText(e.target.value)}
-            placeholder="Ask anything..."
+            placeholder="Search 500 AI agents (e.g. Autonomous Shopping Agent, Dental, IT)..."
             className="flex-1 bg-transparent px-2.5 py-2 text-base sm:text-sm text-white placeholder-[var(--muted-dim)] focus:outline-none"
           />
 

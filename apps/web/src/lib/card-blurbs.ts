@@ -4,6 +4,7 @@ export const CARD_BLURBS: Record<string, string> = {
   "accounting-practice": "Answers front-desk filing questions and routes tax matters to a qualified accountant.",
   "admissions": "Answers entry-requirement questions and captures applications — routes appeals to a person.",
   "agency-studio": "Handles a creative studio's production requests and hands complex briefs to staff.",
+  "agentic-commerce": "Searches merchant catalogs, checks inventory, generates purchase mandates with user consent, and executes zero-PAN tokenized checkouts.",
   "agri-advisory": "Answers agronomy programme questions and books advisory appointments for farmers.",
   "ai-coding-assistant": "Answers engineers' code questions grounded in repo docs — never invents secrets.",
   "airtime-bundles": "Explains airtime plans and bundles and captures purchase intent.",

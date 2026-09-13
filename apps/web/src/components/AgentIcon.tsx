@@ -151,6 +151,7 @@ const FAMILY_ICONS: Record<string, { kind: IconKind; tone: ToneName }> = {
   "accounting-practice": { kind: "receipt", tone: "amber" },
   "admissions": { kind: "graduation", tone: "indigo" },
   "agency-studio": { kind: "megaphone", tone: "rose" },
+  "agentic-commerce": { kind: "cart", tone: "amber" },
   "agri-advisory": { kind: "leaf", tone: "mint" },
   "ai-coding-assistant": { kind: "code", tone: "indigo" },
   "airtime-bundles": { kind: "signal", tone: "sky" },

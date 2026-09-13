@@ -260,7 +260,7 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
     });
   }
 
-  return familiesRaw.map((f) => {
+  const mapped: FamilyEntry[] = familiesRaw.map((f) => {
     const markets = publicMarkets(f.markets);
     const variantIds = Object.values(markets);
     const variants = variantIds.map((id) => byId.get(id)).filter(Boolean) as CatalogEntry[];
@@ -302,6 +302,38 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
       requiresConnectors: [...new Set(variants.flatMap((v) => v.requiresConnectors ?? []))],
     };
   });
+
+  const agenticCommerceFamily: FamilyEntry = {
+    id: "agentic-commerce",
+    name: "Autonomous Shopping Agent",
+    tier: "pro",
+    category: "commerce",
+    summary:
+      "Anthropic + Visa/Mastercard Agentic Commerce blueprint — searches merchant catalogs, checks inventory, calculates taxes/shipping, generates cryptographic purchase mandates with consent gates, and executes zero-PAN tokenized checkouts.",
+    channels: ["web", "app", "whatsapp"],
+    marketplaceCategory: "Retail & e-commerce",
+    audience: "customer",
+    markets: {
+      us: "agentic-commerce",
+      eu: "agentic-commerce",
+      africa: "agentic-commerce",
+      asia: "agentic-commerce",
+      oceania: "agentic-commerce",
+    },
+    packs: ["us", "eu", "africa", "asia", "oceania"],
+    hasZa: true,
+    pilot: false,
+    liveReady: true,
+    catalogueReady: true,
+    defaultAgentId: "agentic-commerce",
+    requiresConnectors: ["shopify", "stripe"],
+  };
+
+  if (!mapped.some((f) => f.id === "agentic-commerce")) {
+    mapped.unshift(agenticCommerceFamily);
+  }
+
+  return mapped;
 }
 
 export async function getAgentPackage(id: string): Promise<AgentPackage | null> {

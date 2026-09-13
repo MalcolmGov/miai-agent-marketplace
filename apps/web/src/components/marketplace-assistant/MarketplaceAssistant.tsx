@@ -86,6 +86,7 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
   const msgsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const greeted = useRef(false);
+  const querySubmitted = useRef(false);
 
   const scrollBottom = useCallback(() => {
     const el = msgsRef.current;
@@ -109,12 +110,23 @@ export function MarketplaceAssistant({ mode }: { mode: "floating" | "page" }) {
         setMessages([{ id: "greet", role: "assistant", text: GREETING }]);
       }
       focusInput();
+
+      if (!querySubmitted.current && typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const qParam = params.get("q")?.trim();
+        if (qParam) {
+          querySubmitted.current = true;
+          void submit(qParam);
+        }
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, open, focusInput]);
 
   function resetChat() {
     sessionId.current = newSession();
     greeted.current = false;
+    querySubmitted.current = false;
     setMessages([]);
     setInput("");
     setBusy(false);
