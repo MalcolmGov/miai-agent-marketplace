@@ -130,6 +130,7 @@ export function SandboxChat({
   const isOnboarding = /onboarding-buddy/i.test(agentId);
   const isDental = /dental-front-desk/i.test(agentId);
   const isHotel = /hotel-guest/i.test(agentId);
+  const isCommerce = /agentic-commerce/i.test(agentId);
   const hasWorkflowUi =
     isEA ||
     isIT ||
@@ -139,6 +140,7 @@ export function SandboxChat({
     isOnboarding ||
     isDental ||
     isHotel ||
+    isCommerce ||
     isWorkflowAgent;
 
   async function clearChat() {
@@ -443,7 +445,74 @@ export function SandboxChat({
             </div>
           </div>
         ) : null}
-        {workflow && (
+        {workflow && isCommerce && workflow.status === "proposed" ? (
+          <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-b from-indigo-950/40 via-purple-950/20 to-[var(--bg-panel)] p-4 text-xs shadow-lg backdrop-blur-md">
+            <div className="flex items-center justify-between gap-2 border-b border-indigo-500/20 pb-2.5">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 font-bold">
+                  🛡️
+                </span>
+                <div>
+                  <div className="font-semibold text-sm text-[var(--text)] flex items-center gap-1.5">
+                    Purchase Mandate Authorization
+                    <span className="rounded bg-indigo-500/20 px-1.5 py-0.5 text-[10px] font-mono text-indigo-300">
+                      Zero-PAN
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-[var(--muted)]">
+                    Anthropic + Visa/Mastercard Delegated Framework
+                  </div>
+                </div>
+              </div>
+              <span className="chip chip-live font-mono text-[10px]">
+                Consent Required
+              </span>
+            </div>
+
+            <div className="mt-3 space-y-2">
+              <div className="rounded-lg bg-[var(--bg)]/60 p-2.5 border border-[var(--line)]">
+                <div className="text-[11px] font-medium text-[var(--text)]">
+                  {workflow.goal}
+                </div>
+                <div className="mt-1 flex flex-wrap items-center justify-between text-[11px] text-[var(--muted)]">
+                  <span>Mandate ID: <code className="text-[var(--text)] font-mono">{workflow.id}</code></span>
+                  <span>Spend Cap: <strong className="text-emerald-400 font-semibold">$161.29 USD</strong></span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between rounded-lg bg-[var(--bg)]/40 px-3 py-2 border border-[var(--line)]/50">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs">💳</span>
+                  <span className="text-[11px] font-medium text-[var(--text)]">
+                    Visa Token Service (•••• 4242)
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
+                  ✓ Pre-authorized
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-3.5 flex items-center gap-2 pt-1">
+              <button
+                type="button"
+                disabled={busy || paused}
+                onClick={() => void send("Yes, authorize purchase under mandate")}
+                className="btn btn-primary flex-1 min-h-[38px] text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md active:scale-95 transition-all"
+              >
+                ✓ Authorize Purchase ($161.29)
+              </button>
+              <button
+                type="button"
+                disabled={busy || paused}
+                onClick={() => void send("Cancel order")}
+                className="btn min-h-[38px] px-3 text-xs text-[var(--muted)] hover:text-[var(--text)] border border-[var(--line)] bg-[var(--bg)] active:scale-95 transition-all"
+              >
+                Decline
+              </button>
+            </div>
+          </div>
+        ) : workflow ? (
           <div className="rounded-lg border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-xs">
             <div className="font-medium text-[var(--text)]">
               Workflow · {workflow.status}
@@ -468,7 +537,7 @@ export function SandboxChat({
               ))}
             </ol>
           </div>
-        )}
+        ) : null}
         {lastTools.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5" aria-label="Actions just taken">
             <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted-dim)]">
@@ -501,7 +570,9 @@ export function SandboxChat({
                         ? "Yes, that's right — please book it."
                         : isHotel
                           ? "Yes, please log it."
-                          : "Yes — please set it up…"
+                          : isCommerce
+                            ? "Yes, authorize purchase under mandate."
+                            : "Yes — please set it up…"
                 : "Message the agent…"
           }
           disabled={busy || paused}

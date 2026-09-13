@@ -10,10 +10,11 @@ export const WORKFLOW_FAMILY_IDS = [
   "onboarding-buddy",
   "dental-front-desk",
   "hotel-guest",
+  "agentic-commerce",
 ] as const;
 
 const WORKFLOW_RE =
-  /executive-assistant|it-helpdesk|salon-booking|trades-receptionist|home-services|sales-qualifier|restaurant-takeaway|onboarding-buddy|dental-front-desk|hotel-guest/i;
+  /executive-assistant|it-helpdesk|salon-booking|trades-receptionist|home-services|sales-qualifier|restaurant-takeaway|onboarding-buddy|dental-front-desk|hotel-guest|agentic-commerce/i;
 
 export function isWorkflowFamilyId(familyOrAgentId: string): boolean {
   return WORKFLOW_RE.test(familyOrAgentId);
@@ -52,6 +53,9 @@ export function workflowCapabilityChips(agentId: string): string[] {
   if (/hotel-guest/i.test(agentId)) {
     return [...base, "Amenities", "Local tips", "Log request"];
   }
+  if (/agentic-commerce/i.test(agentId)) {
+    return [...base, "Catalog discovery", "Purchase mandate", "Visa/Mastercard token", "Zero-PAN"];
+  }
   return base;
 }
 
@@ -77,6 +81,12 @@ export function toolChipLabel(toolName: string): string {
     get_local_recommendations: "Local tips",
     list_services: "Listed services",
     get_treatment_info: "Treatment info",
+    search_catalog: "Searched catalog",
+    check_inventory: "Verified inventory",
+    assemble_cart: "Assembled cart",
+    generate_purchase_mandate: "Issued purchase mandate",
+    authorize_checkout: "Executed token checkout",
+    track_order: "Tracked shipment",
   };
   return map[toolName] ?? toolName.replace(/_/g, " ");
 }
@@ -105,6 +115,9 @@ export function workflowDemoHint(agentId: string): string | null {
   }
   if (/hotel-guest/i.test(agentId)) {
     return "Ask amenities or log towels/late check-out with confirm; billing and complaints go to the front desk.";
+  }
+  if (/agentic-commerce/i.test(agentId)) {
+    return "Searches live catalog, verifies inventory, issues signed purchase mandates with spending limits, and executes Zero-PAN tokenized checkouts.";
   }
   return null;
 }
@@ -194,6 +207,16 @@ export function tryPromptsForAgent(agentId: string): { workflow: boolean; prompt
         "What time is check-in and what’s the Wi‑Fi?",
         "Any restaurant recommendations nearby?",
         "I need extra towels in room 412.",
+      ],
+    };
+  }
+  if (/agentic-commerce/i.test(agentId)) {
+    return {
+      workflow: true,
+      prompts: [
+        "Find running shoes under $160 in size 10.5 US and calculate delivery.",
+        "I want to buy the UltraSharp 32\" 4K Monitor with promo code AGENTIC10.",
+        "Track order AC-8821.",
       ],
     };
   }

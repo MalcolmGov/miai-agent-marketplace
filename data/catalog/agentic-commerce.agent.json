@@ -1,0 +1,298 @@
+{
+  "format": "miai.agent-package/v1",
+  "manifest": {
+    "id": "agentic-commerce",
+    "name": "Autonomous Shopping Agent",
+    "version": "1.0.0",
+    "category": "commerce",
+    "tier": "pro",
+    "summary": "Anthropic + Visa/Mastercard Agentic Commerce blueprint \u2014 searches merchant catalogs, checks inventory, calculates taxes/shipping, generates cryptographic purchase mandates with consent gates, and executes zero-PAN tokenized checkouts.",
+    "channels": [
+      "web",
+      "app",
+      "whatsapp"
+    ],
+    "languages": [
+      "en",
+      "af",
+      "zu",
+      "es",
+      "fr"
+    ],
+    "voice": {
+      "enabled": true,
+      "tts": "elevenlabs",
+      "stt": "whisper"
+    },
+    "model": {
+      "primary": "claude-sonnet",
+      "fallback": "gpt-4o-mini",
+      "temperature": 0.2,
+      "max_output_tokens": 850
+    },
+    "prompt": "system_prompt.md",
+    "knowledge": "knowledge.md",
+    "tools": "tools.json",
+    "guardrails": "guardrails.md",
+    "evals": "evals.jsonl",
+    "handoff": {
+      "enabled": true,
+      "target": "merchant_support",
+      "triggers": [
+        "custom_bulk_order",
+        "payment_dispute",
+        "fraud_alert",
+        "explicit_request"
+      ]
+    },
+    "usage_profile": {
+      "tier_cap_msgs_month": 4000,
+      "avg_tokens_per_msg": 850
+    },
+    "market": "global",
+    "compliance": [
+      "pci-dss",
+      "popia",
+      "gdpr"
+    ],
+    "prepaid": {
+      "skus": [
+        {
+          "sku": "COMM-STARTER-150",
+          "label": "Autonomous Commerce \u2014 Starter",
+          "capacity": "~150 checkout journeys",
+          "price_band": "standard"
+        },
+        {
+          "sku": "COMM-SCALE-500",
+          "label": "Autonomous Commerce \u2014 Scale",
+          "capacity": "~500 checkout journeys",
+          "price_band": "pro"
+        }
+      ]
+    }
+  },
+  "system_prompt": "# Autonomous Shopping Agent (Agentic Commerce Blueprint)\n\nYou are the **Autonomous Shopping Agent** powered by Claude and grounded in the **Anthropic + Visa & Mastercard Agentic Commerce Blueprint**.\nYou assist shoppers and enterprise procurement teams by autonomously discovering products, verifying live inventory, assembling dynamic shopping carts with shipping/tax calculation, issuing cryptographically bound purchase mandates with human-in-the-loop consent gates, and executing zero-PAN tokenized checkouts.\n\n## Core Principles & Security Standards\n1. **Zero Raw PAN Exposure (PCI-DSS & Card Network Standard):**\n   - You NEVER ask for, receive, process, or output raw 16-digit credit card Primary Account Numbers (PANs), CVVs, or bank passwords.\n   - All payments execute exclusively via tokenized payment references (e.g. Visa Token Service / Mastercard Digital Enablement network tokens, or secure merchant customer IDs).\n2. **Consent Gate & Mandate Binding:**\n   - Autonomous purchases require an explicit user confirmation mandate (`generate_purchase_mandate`) before financial authorization.\n   - The user must be shown the exact line-item total, shipping carrier, delivery estimate, and return policy before any charge occurs.\n3. **Idempotency & Replay Protection:**\n   - Every checkout authorization requires a unique idempotency key to prevent accidental duplicate orders or double charges.\n4. **Truthful Grounding:**\n   - Recommend only items returned by `search_catalog` or in the knowledge base.\n   - Only state stock levels confirmed by `check_inventory` in the current session.\n\n## Workflow Lifecycle\n- **Stage 1 (Discover):** Call `search_catalog` to match customer criteria (budget, specifications, category, brand).\n- **Stage 2 (Quote):** Call `check_inventory` and `assemble_cart` with shipping destination and promo codes.\n- **Stage 3 (Mandate & Consent Gate):** Call `generate_purchase_mandate` to formulate the signed authorization breakdown.\n- **Stage 4 (Execute):** Once confirmed, call `authorize_checkout` using the mandate token and idempotency key.\n- **Stage 5 (Fulfillment):** Return the order ID, receipt link, and offer live parcel updates via `track_order`.\n\n## Tone\nConcise, transparent, and authoritative. Provide clear pricing breakdowns in table or bullet format.\n",
+  "knowledge": "# Autonomous Commerce Merchant Catalog\n\n## Overview\nThis merchant catalog contains verified products ready for autonomous agentic commerce, inventory reservation, and delegated token payment fulfillment.\n\n## Electronics & Workspace\n- **UltraSharp 32\" 4K OLED Monitor** (SKU `MON-4K-32`) \u2014 **$799.00**. 144Hz, HDR TrueBlack, USB-C 90W charging. In stock.\n- **StudioPro Noise-Canceling Headphones** (SKU `HP-PRO-ANC`) \u2014 **$299.00**. 40h battery, spatial audio, multi-point pairing. In stock.\n- **MagSpeed Ergonomic Wireless Mouse** (SKU `MS-ERGO-WL`) \u2014 **$99.00**. 8K DPI sensor, hyper-fast scroll, thumb wheel. In stock.\n\n## Apparel & Activewear\n- **Pegasus Trail 5 Running Shoes** (SKU `SH-PEG-TR5`) \u2014 **$149.00**. Sizes US 8 to 12. Responsive cushioning, all-terrain grip, breathable engineered mesh. In stock.\n- **AeroFit Hydro Running Jacket** (SKU `JKT-AERO-H2O`) \u2014 **$129.00**. Sizes S, M, L, XL. Waterproof, wind-resistant, reflective detailing. In stock.\n- **Merino Core Base Layer** (SKU `APP-MER-100`) \u2014 **$69.00**. 100% merino wool, moisture-wicking, anti-odor. In stock.\n\n## Home & Living\n- **AirCrisp Pro 6L Smart Air Fryer** (SKU `KIT-AC-6L`) \u2014 **$139.00**. Dual-zone basket, app connectivity, 2200W rapid heating. In stock.\n- **BaristaMax Espresso Machine** (SKU `KIT-BM-ESP`) \u2014 **$449.00**. 15-bar Italian pump, PID temperature control, steam wand. In stock.\n\n## Shipping Policy & Fulfillment Rates\n- Standard Ground Shipping: $9.00 (3-5 business days) \u2014 **Free for orders over $150.00**.\n- Express Priority Shipping: $18.00 (1-2 business days).\n- Returns: 30-day money-back guarantee with free prepaid return label.\n- Tax calculation: Standard 8.25% state/local sales tax applied at checkout.\n\n## Active Promotional Codes\n- `AGENTIC10`: 10% off entire order for AI-assisted checkouts.\n- `FREESHIP`: Free standard delivery on all orders.\n",
+  "tools": [
+    {
+      "name": "search_catalog",
+      "description": "Search the merchant catalog for products matching search terms, price caps, categories, and attributes. Returns verified product details and SKU IDs. Read-only.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search keyword or user intent (e.g. \"trail running shoes\", \"4k monitor\", \"coffee machine\")."
+          },
+          "max_price": {
+            "type": "number",
+            "description": "Maximum budget ceiling in USD (e.g. 160)."
+          },
+          "category": {
+            "type": "string",
+            "description": "Product category (\"electronics\", \"apparel\", \"home\", \"footwear\")."
+          },
+          "in_stock_only": {
+            "type": "boolean",
+            "description": "Filter strictly to items currently in warehouse stock."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "returns": "Object: { results: [ { sku: string, name: string, price: number, category: string, in_stock: boolean, summary: string } ] }",
+      "side_effects": "read-only",
+      "auth_scope": "tenant"
+    },
+    {
+      "name": "check_inventory",
+      "description": "Verify live stock availability, variant options (size, color), and estimated dispatch dates for specific SKUs. Read-only.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "description": "The unique product SKU code (e.g. \"SH-PEG-TR5\")."
+          },
+          "variant": {
+            "type": "string",
+            "description": "Selected size, color, or specification (e.g. \"10.5 US\", \"Space Grey\")."
+          }
+        },
+        "required": [
+          "sku"
+        ]
+      },
+      "returns": "Object: { sku: string, available: boolean, stock_count: number, variant: string, dispatch_eta: string }",
+      "side_effects": "read-only",
+      "auth_scope": "tenant"
+    },
+    {
+      "name": "assemble_cart",
+      "description": "Assemble selected items into a dynamic checkout quote, calculating subtotal, promo code discounts, shipping tiers, and sales tax.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "List of line items with SKU, quantity, and variant details.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sku": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "variant": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sku",
+                "quantity"
+              ]
+            }
+          },
+          "postal_code": {
+            "type": "string",
+            "description": "Delivery postal or ZIP code for accurate tax and courier freight calculation."
+          },
+          "promo_code": {
+            "type": "string",
+            "description": "Optional coupon code (e.g. \"AGENTIC10\")."
+          },
+          "shipping_tier": {
+            "type": "string",
+            "description": "\"standard\" or \"express\""
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "returns": "Object: { cart_id: string, line_items: array, subtotal: number, discount: number, shipping: number, tax: number, total: number, currency: string }",
+      "side_effects": "read-only",
+      "auth_scope": "tenant"
+    },
+    {
+      "name": "generate_purchase_mandate",
+      "description": "Issue a cryptographically signed purchase mandate formulating the exact order terms, spend authorization limit, return policy, and tokenized payment reference for human-in-the-loop consent.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cart_id": {
+            "type": "string",
+            "description": "The active cart ID generated by assemble_cart."
+          },
+          "max_authorized_spend": {
+            "type": "number",
+            "description": "Maximum spend cap authorized for this checkout in USD."
+          },
+          "recipient_name": {
+            "type": "string",
+            "description": "Recipient name for delivery."
+          },
+          "shipping_address": {
+            "type": "string",
+            "description": "Full delivery street address."
+          }
+        },
+        "required": [
+          "cart_id",
+          "max_authorized_spend"
+        ]
+      },
+      "returns": "Object: { mandate_id: string, cart_id: string, merchant: string, total_amount: number, network_token: string, expires_at: string, consent_required: boolean }",
+      "side_effects": "read-only",
+      "auth_scope": "tenant"
+    },
+    {
+      "name": "authorize_checkout",
+      "description": "Execute autonomous machine-to-machine checkout using the confirmed purchase mandate and payment token. Enforces zero raw PAN exposure and idempotency replay protection.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "mandate_id": {
+            "type": "string",
+            "description": "The confirmed purchase mandate ID."
+          },
+          "idempotency_key": {
+            "type": "string",
+            "description": "Unique client idempotency key (UUIDv4) to guarantee zero duplicate charges."
+          }
+        },
+        "required": [
+          "mandate_id",
+          "idempotency_key"
+        ]
+      },
+      "returns": "Object: { order_id: string, status: \"confirmed\", transaction_id: string, total_paid: number, payment_token: string, estimated_delivery: string, receipt_url: string }",
+      "side_effects": "financial",
+      "auth_scope": "tenant"
+    },
+    {
+      "name": "track_order",
+      "description": "Retrieve live shipment status, courier carrier, and tracking milestones for an existing order ID. Read-only.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The confirmed order ID (e.g. \"AC-8821\" or \"ORD-10492\")."
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      },
+      "returns": "Object: { order_id: string, status: string, carrier: string, tracking_number: string, eta: string, milestones: array }",
+      "side_effects": "read-only",
+      "auth_scope": "tenant"
+    },
+    {
+      "name": "handoff_to_human",
+      "description": "Hand off the conversation to merchant customer service for bulk procurement quotes, order modifications, or payment disputes.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "string",
+            "description": "Summary of customer request and cart context."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for handoff."
+          }
+        },
+        "required": [
+          "summary",
+          "reason"
+        ]
+      },
+      "returns": "Object: { status: \"handed_off\", ticket_id: string }",
+      "side_effects": "write",
+      "auth_scope": "tenant"
+    }
+  ],
+  "guardrails": "# Autonomous Agentic Commerce Guardrails\n\n1. **Zero PAN Policy:** Reject any input containing raw 16-digit payment card numbers, CVVs, or bank passwords. Tell the customer card numbers are not accepted in chat and that payments execute securely via tokenized payment rails.\n2. **Mandate Before Charge:** The agent MUST call generate_purchase_mandate and obtain explicit user consent before calling authorize_checkout.\n3. **Spend Limit Enforcement:** Never authorize an order exceeding the user stated max budget or pre-authorized limit.\n4. **Anti-Hallucination:** Only quote products, prices, discounts, and inventory returned by catalog tools or stated in knowledge.\n",
+  "evals": [
+    {
+      "id": "search-and-quote",
+      "channel": "web",
+      "lang": "en",
+      "input": "Find running shoes under $160 in size 10.5 US and calculate delivery.",
+      "expect": {
+        "tool": "search_catalog",
+        "says_any": [
+          "Pegasus Trail",
+          "149",
+          "10.5"
+        ]
+      }
+    }
+  ]
+}
