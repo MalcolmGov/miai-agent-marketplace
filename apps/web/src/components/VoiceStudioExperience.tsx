@@ -46,8 +46,15 @@ const MODES = [
   { id: "architect", label: "Systems Architect", desc: "Database schemas, API connectors & infrastructure workflows" },
 ];
 
+const VOICE_PROFILES = [
+  { id: "QeKcckTBICc3UuWL7ETc", name: "Zara Neural (Flagship)", badge: "Flagship Signature" },
+  { id: "21m00Tcm4TlvDq8ikWAM", name: "Rachel (Calm & Polished)", badge: "Executive" },
+  { id: "AZnzlk1XvdvUeBnXmlld", name: "Domi (Confident & Crisp)", badge: "Dynamic" },
+];
+
 export function VoiceStudioExperience() {
   const [activeMode, setActiveMode] = useState("forge");
+  const [selectedVoiceId, setSelectedVoiceId] = useState("QeKcckTBICc3UuWL7ETc");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
@@ -93,7 +100,10 @@ export function VoiceStudioExperience() {
       const resp = await fetch("/api/voice/speak", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: textToSpeak }),
+        body: JSON.stringify({
+          text: textToSpeak,
+          voiceId: selectedVoiceId,
+        }),
       });
 
       const contentType = resp.headers.get("content-type") || "";
@@ -791,22 +801,41 @@ export function VoiceStudioExperience() {
           </div>
         </div>
 
-        {/* Mode Selector Capsules */}
-        <div className="hidden md:flex items-center rounded-2xl border border-white/10 bg-black/50 p-1 backdrop-blur-md">
-          {MODES.map((mode) => (
-            <button
-              key={mode.id}
-              type="button"
-              onClick={() => setActiveMode(mode.id)}
-              className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
-                activeMode === mode.id
-                  ? "bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 shadow-md"
-                  : "text-slate-400 hover:text-white"
-              }`}
+        {/* Mode & Voice Profile Selector Capsules */}
+        <div className="hidden lg:flex items-center gap-2">
+          {/* Mode Selector */}
+          <div className="flex items-center rounded-2xl border border-white/10 bg-black/50 p-1 backdrop-blur-md">
+            {MODES.map((mode) => (
+              <button
+                key={mode.id}
+                type="button"
+                onClick={() => setActiveMode(mode.id)}
+                className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
+                  activeMode === mode.id
+                    ? "bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+
+          {/* ElevenLabs Premier Voice Selector */}
+          <div className="flex items-center rounded-2xl border border-white/10 bg-black/50 p-1 backdrop-blur-md">
+            <span className="px-2 text-[10px] font-mono uppercase text-slate-500 font-semibold">VOICE</span>
+            <select
+              value={selectedVoiceId}
+              onChange={(e) => setSelectedVoiceId(e.target.value)}
+              className="bg-transparent text-xs font-semibold text-cyan-300 focus:outline-none cursor-pointer pr-2"
             >
-              {mode.label}
-            </button>
-          ))}
+              {VOICE_PROFILES.map((vp) => (
+                <option key={vp.id} value={vp.id} className="bg-slate-900 text-white">
+                  {vp.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Status Telemetry */}
