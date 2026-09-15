@@ -680,6 +680,16 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
               500
             </span>
           </button>
+
+          <Link
+            href="/my-agents"
+            className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.15)] ml-auto"
+          >
+            <span>🤖 My Agents</span>
+            <span className="rounded bg-cyan-400/20 px-1.5 py-0.2 text-[9px] font-extrabold text-cyan-200 uppercase tracking-wider">
+              WORKSPACE
+            </span>
+          </Link>
         </div>
       </div>
 

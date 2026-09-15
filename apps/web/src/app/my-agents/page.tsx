@@ -175,9 +175,34 @@ function MyAgentsContent() {
       .then(async (r) => {
         const data = await r.json();
         if (!r.ok) throw new Error(data.error ?? "Failed to load rentals");
-        setItems(data.items ?? []);
+        const remoteItems: RentalItem[] = [...(data.items ?? [])];
+        try {
+          const localCustom: RentalItem[] = JSON.parse(localStorage.getItem("miai.customAgents") || "[]");
+          if (localCustom.length > 0) {
+            const seen = new Set(remoteItems.map((i) => i.agentId));
+            for (const c of localCustom) {
+              if (!seen.has(c.agentId)) {
+                remoteItems.unshift(c);
+                seen.add(c.agentId);
+              }
+            }
+          }
+        } catch {
+          // ignore parsing error
+        }
+        setItems(remoteItems);
       })
-      .catch((e: Error) => setError(e.message));
+      .catch((e: Error) => {
+        // Fallback to local storage agents if offline or unauthenticated
+        try {
+          const localCustom: RentalItem[] = JSON.parse(localStorage.getItem("miai.customAgents") || "[]");
+          if (localCustom.length > 0) {
+            setItems(localCustom);
+            return;
+          }
+        } catch {}
+        setError(e.message);
+      });
   };
 
   useEffect(() => {
