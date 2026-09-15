@@ -265,9 +265,8 @@ function FacetSelect({
  * forwards back to the agent via ?next once setup is done). Onboarded workspaces
  * go straight to the agent studio.
  */
-function gatedSetupHref(agentHref: string, onboarded: boolean | null): string {
-  if (onboarded === true) return agentHref;
-  return `/get-started?next=${encodeURIComponent(agentHref)}`;
+function gatedSetupHref(agentHref: string): string {
+  return agentHref;
 }
 
 export function CatalogGrid({

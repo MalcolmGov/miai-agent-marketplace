@@ -1,6 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+
+export interface SuiteMemberAgent {
+  name: string;
+  role: string;
+  icon: string;
+  familyId: string;
+}
 
 export interface AgentSuite {
   id: string;
@@ -10,7 +18,7 @@ export interface AgentSuite {
   tagline: string;
   combinedRoi: string;
   bundlePrice: string;
-  agents: Array<{ name: string; role: string; icon: string }>;
+  agents: SuiteMemberAgent[];
   connectors: string[];
   description: string;
 }
@@ -25,10 +33,10 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
     combinedRoi: "$310,000 / yr saved",
     bundlePrice: "$1,800 / mo",
     agents: [
-      { name: "AI CFO", role: "Cash runway & variance forecasting", icon: "📊" },
-      { name: "Accounts Payable Agent", role: "3-way PO matching & batch pay", icon: "🧾" },
-      { name: "AR & Collections Agent", role: "Smart multi-channel recovery", icon: "💰" },
-      { name: "Autonomous Invoice Processing", role: "Touchless OCR ledger posting", icon: "📁" },
+      { name: "AI CFO", role: "Cash runway & variance forecasting", icon: "📊", familyId: "financial-reporting" },
+      { name: "Accounts Payable Agent", role: "3-way PO matching & batch pay", icon: "🧾", familyId: "invoicing" },
+      { name: "AR & Collections Agent", role: "Smart multi-channel recovery", icon: "💰", familyId: "bookkeeping" },
+      { name: "Autonomous Invoice Processing", role: "Touchless OCR ledger posting", icon: "📁", familyId: "invoicing" },
     ],
     connectors: ["xero", "sage", "quickbooks", "paystack"],
     description: "Unifies every financial touchpoint into an automated, zero-error ledger pipeline with daily runway simulations and board reporting.",
@@ -42,10 +50,10 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
     combinedRoi: "$480,000 pipeline / mo",
     bundlePrice: "$2,200 / mo",
     agents: [
-      { name: "Autonomous Sales Rep (SDR)", role: "Multi-channel outbound & enrichment", icon: "🎯" },
-      { name: "Lead Qualifier & Deal Radar", role: "Instant 10-second qualification", icon: "⚡" },
-      { name: "Contract Intelligence Copilot", role: "Deal terms & redline review", icon: "⚖️" },
-      { name: "Customer Support Director", role: "Retention & upsell trigger", icon: "🎧" },
+      { name: "Autonomous Sales Rep (SDR)", role: "Multi-channel outbound & enrichment", icon: "🎯", familyId: "sales-qualifier" },
+      { name: "Lead Qualifier & Deal Radar", role: "Instant 10-second qualification", icon: "⚡", familyId: "sales-qualifier" },
+      { name: "Contract Intelligence Copilot", role: "Deal terms & redline review", icon: "⚖️", familyId: "contract-review" },
+      { name: "Customer Support Director", role: "Retention & upsell trigger", icon: "🎧", familyId: "customer-support" },
     ],
     connectors: ["hubspot", "salesforce", "google_workspace", "m365"],
     description: "Accelerates sales velocity by running multi-channel outbound campaigns, synchronizing CRM records in real-time, and redlining sales agreements.",
@@ -59,9 +67,9 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
     combinedRoi: "54 hrs / wk saved",
     bundlePrice: "$1,950 / mo",
     agents: [
-      { name: "Autonomous Chief of Staff", role: "Cross-functional orchestration", icon: "👑" },
-      { name: "AI Executive Boardroom", role: "Multi-agent consensus war room", icon: "🏛️" },
-      { name: "Business Intelligence Analyst", role: "Automated executive board decks", icon: "📈" },
+      { name: "Autonomous Chief of Staff", role: "Cross-functional orchestration", icon: "👑", familyId: "executive-assistant" },
+      { name: "AI Executive Boardroom", role: "Multi-agent consensus war room", icon: "🏛️", familyId: "executive-dashboards" },
+      { name: "Business Intelligence Analyst", role: "Automated executive board decks", icon: "📈", familyId: "bi-analyst" },
     ],
     connectors: ["slack", "microsoft_teams", "jira", "snowflake"],
     description: "Empowers founders and executive teams with an autonomous operational layer that synthesizes departmental metrics, runs board debates, and keeps initiatives on track.",
@@ -75,9 +83,9 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
     combinedRoi: "92% First-Contact Resolution",
     bundlePrice: "$1,400 / mo",
     agents: [
-      { name: "Customer Support Operations Director", role: "Autonomous ticket routing", icon: "🎧" },
-      { name: "WhatsApp Business Concierge", role: "Order status & instant FAQ", icon: "💬" },
-      { name: "Feedback & CSAT Analyst", role: "Sentiment scoring & churn alarms", icon: "⭐" },
+      { name: "Customer Support Operations Director", role: "Autonomous ticket routing", icon: "🎧", familyId: "customer-support" },
+      { name: "WhatsApp Business Concierge", role: "Order status & instant FAQ", icon: "💬", familyId: "vas-concierge" },
+      { name: "Feedback & CSAT Analyst", role: "Sentiment scoring & churn alarms", icon: "⭐", familyId: "quality-assurance" },
     ],
     connectors: ["zendesk", "whatsapp", "shopify", "stripe"],
     description: "Delivers instant, human-grade customer care across WhatsApp, email, and live chat with real-time Shopify order synchronization and refund validation.",
@@ -91,9 +99,9 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
     combinedRoi: "75% Faster Contract Review",
     bundlePrice: "$1,650 / mo",
     agents: [
-      { name: "Contract Intelligence Copilot", role: "Risk clause detection & redlines", icon: "⚖️" },
-      { name: "Regulatory Compliance Sentinel", role: "POPIA, GDPR & SEC checks", icon: "📋" },
-      { name: "Procurement & Vendor Intelligence", role: "Vendor counterparty audits", icon: "📦" },
+      { name: "Contract Intelligence Copilot", role: "Risk clause detection & redlines", icon: "⚖️", familyId: "contract-review" },
+      { name: "Regulatory Compliance Sentinel", role: "POPIA, GDPR & SEC checks", icon: "📋", familyId: "policy-compliance" },
+      { name: "Procurement & Vendor Intelligence", role: "Vendor counterparty audits", icon: "📦", familyId: "procurement" },
     ],
     connectors: ["docusign", "remote_mcp", "email", "postgresql"],
     description: "Protects institutional integrity by cross-referencing agreements against company policy standards, verifying regulatory compliance, and monitoring vendor risk.",
@@ -103,10 +111,42 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
 export function AgentSuitesSection() {
   const [selectedSuite, setSelectedSuite] = useState<AgentSuite | null>(null);
   const [deployedSuites, setDeployedSuites] = useState<Set<string>>(new Set());
+  const [deploySuccessMessage, setDeploySuccessMessage] = useState<string | null>(null);
 
-  function handleDeploy(suiteId: string) {
-    setDeployedSuites((prev) => new Set(prev).add(suiteId));
-    setSelectedSuite(null);
+  function handleOpenSetup(suite: AgentSuite) {
+    setSelectedSuite(suite);
+    setDeploySuccessMessage(null);
+  }
+
+  function handleDeploy(suite: AgentSuite) {
+    setDeployedSuites((prev) => new Set(prev).add(suite.id));
+
+    // Save deployed suite member agents to custom rentals storage so they appear under My Agents
+    try {
+      const existingRaw = localStorage.getItem("miai.customAgents");
+      const existing = existingRaw ? JSON.parse(existingRaw) : [];
+      const timestamp = new Date().toISOString();
+
+      const newAgents = suite.agents.map((ag, idx) => ({
+        id: `suite-${suite.id}-${idx}-${Date.now()}`,
+        name: ag.name,
+        role: ag.role,
+        category: suite.category,
+        description: `${ag.name} deployed as part of ${suite.title}.`,
+        status: "active",
+        createdAt: timestamp,
+        toolsCount: suite.connectors.length,
+        version: "1.0.0",
+        suiteId: suite.id,
+        suiteTitle: suite.title,
+      }));
+
+      localStorage.setItem("miai.customAgents", JSON.stringify([...existing, ...newAgents]));
+    } catch {
+      // ignore storage errors
+    }
+
+    setDeploySuccessMessage(`All ${suite.agents.length} agents in "${suite.title}" have been provisioned and added to your My Agents workspace.`);
   }
 
   return (
@@ -166,7 +206,7 @@ export function AgentSuitesSection() {
                   </p>
                 </div>
 
-                {/* Member Agents List */}
+                {/* Member Agents List with Links */}
                 <div className="rounded-xl bg-white/[0.03] border border-white/5 p-3 space-y-2">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
                     <span>Included Agents ({suite.agents.length})</span>
@@ -174,11 +214,20 @@ export function AgentSuitesSection() {
                   </div>
                   <div className="space-y-1.5">
                     {suite.agents.map((ag) => (
-                      <div key={ag.name} className="flex items-center gap-2 text-xs text-slate-300">
-                        <span className="text-sm">{ag.icon}</span>
-                        <span className="font-semibold text-white">{ag.name}</span>
-                        <span className="text-[10px] text-slate-400 truncate">· {ag.role}</span>
-                      </div>
+                      <Link
+                        key={ag.name}
+                        href={`/agents/${ag.familyId}`}
+                        className="flex items-center justify-between group/agent hover:bg-white/5 p-1 rounded-lg transition"
+                      >
+                        <div className="flex items-center gap-2 text-xs text-slate-300">
+                          <span className="text-sm">{ag.icon}</span>
+                          <span className="font-semibold text-white group-hover/agent:text-[#00D2FF] transition-colors">{ag.name}</span>
+                          <span className="text-[10px] text-slate-400 truncate">· {ag.role}</span>
+                        </div>
+                        <span className="text-[10px] text-[#00D2FF] opacity-0 group-hover/agent:opacity-100 transition-opacity">
+                          Studio &rarr;
+                        </span>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -207,7 +256,7 @@ export function AgentSuitesSection() {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => setSelectedSuite(suite)}
+                    onClick={() => handleOpenSetup(suite)}
                     className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-white/10 transition"
                   >
                     Details
@@ -215,7 +264,7 @@ export function AgentSuitesSection() {
 
                   <button
                     type="button"
-                    onClick={() => handleDeploy(suite.id)}
+                    onClick={() => handleOpenSetup(suite)}
                     className={`rounded-xl px-3.5 py-2 text-xs font-bold transition shadow-sm ${
                       isDeployed
                         ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
@@ -231,26 +280,46 @@ export function AgentSuitesSection() {
         })}
       </div>
 
-      {/* Suite Details Modal */}
+      {/* Suite Details & Setup Modal */}
       {selectedSuite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md animate-fadeIn">
           <div className="relative w-full max-w-xl rounded-3xl border border-[#00D2FF]/30 bg-gradient-to-b from-[#111c2a] to-[#0a111a] p-6 shadow-2xl space-y-5">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#00D2FF]">
-                  {selectedSuite.category} · Enterprise Suite
+                  {selectedSuite.category} · Enterprise Suite Setup
                 </span>
                 <h3 className="text-xl font-extrabold text-white mt-0.5">{selectedSuite.title}</h3>
                 <p className="text-xs text-slate-300 mt-1 leading-relaxed">{selectedSuite.description}</p>
               </div>
               <button
                 type="button"
-                onClick={() => setSelectedSuite(null)}
+                onClick={() => {
+                  setSelectedSuite(null);
+                  setDeploySuccessMessage(null);
+                }}
                 className="rounded-lg border border-white/10 p-1.5 text-slate-400 hover:text-white"
               >
                 ✕
               </button>
             </div>
+
+            {deploySuccessMessage && (
+              <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 space-y-2">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                  <span>✓</span>
+                  <span>{deploySuccessMessage}</span>
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <Link
+                    href="/my-agents"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-[#00D2FF] hover:underline"
+                  >
+                    Open My Agents Workspace &rarr;
+                  </Link>
+                </div>
+              </div>
+            )}
 
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
               <div className="flex justify-between items-center text-xs pb-2 border-b border-white/10">
@@ -264,9 +333,11 @@ export function AgentSuitesSection() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
-                Synchronized Agents in Bundle
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
+                  Synchronized Agents in Bundle (Click to Configure Individual Agent)
+                </span>
+              </div>
               <div className="space-y-2">
                 {selectedSuite.agents.map((ag) => (
                   <div
@@ -280,9 +351,12 @@ export function AgentSuitesSection() {
                         <div className="text-[11px] text-slate-400">{ag.role}</div>
                       </div>
                     </div>
-                    <span className="rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold">
-                      Pre-Wired
-                    </span>
+                    <Link
+                      href={`/agents/${ag.familyId}`}
+                      className="rounded-lg bg-white/10 hover:bg-[#00D2FF]/20 text-[#00D2FF] border border-white/10 px-2.5 py-1 text-[11px] font-bold transition"
+                    >
+                      Configure Agent &rarr;
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -291,17 +365,20 @@ export function AgentSuitesSection() {
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => handleDeploy(selectedSuite.id)}
+                onClick={() => handleDeploy(selectedSuite)}
                 className="flex-1 rounded-xl bg-gradient-to-r from-emerald-400 to-[#00D2FF] py-3 text-xs font-extrabold text-slate-950 hover:brightness-110 transition"
               >
-                Deploy Complete Suite to Workspace &rarr;
+                {deployedSuites.has(selectedSuite.id) ? "✓ Re-Deploy Suite to Workspace" : "Deploy Complete Suite to Workspace →"}
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedSuite(null)}
+                onClick={() => {
+                  setSelectedSuite(null);
+                  setDeploySuccessMessage(null);
+                }}
                 className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold text-white hover:bg-white/10 transition"
               >
-                Cancel
+                Close
               </button>
             </div>
           </div>

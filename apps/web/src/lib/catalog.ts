@@ -337,10 +337,39 @@ export async function listFamilies(preferredMarket?: string | null): Promise<Fam
 }
 
 export async function getAgentPackage(id: string): Promise<AgentPackage | null> {
+  const cleanId = id.replace(/^flagship\./, "");
+  // Map common flagship aliases to their catalog family IDs
+  const FLAGSHIP_FAMILY_MAP: Record<string, string> = {
+    cfo: "financial-reporting",
+    accounts_payable: "invoicing",
+    ar_collections: "bookkeeping",
+    invoice_processing: "invoicing",
+    procurement: "operations",
+    sales_rep: "sales-qualifier",
+    customer_service_mgr: "customer-support",
+    chief_of_staff: "executive-assistant",
+    general_counsel: "legal-compliance",
+    cro: "operations-intelligence",
+  };
+  const targetId = FLAGSHIP_FAMILY_MAP[cleanId] ?? cleanId;
+
+  // 1. Direct file lookup in data/catalog/
   try {
-    const raw = await fs.readFile(path.join(catalogDir(), `${id}.agent.json`), "utf8");
+    const raw = await fs.readFile(path.join(catalogDir(), `${targetId}.agent.json`), "utf8");
     return loadAgentPackage(JSON.parse(raw));
   } catch {
+    // 2. Regional prefix resolution if targetId is a family ID (e.g. "financial-reporting" -> "us-financial-reporting")
+    const regions = ["us", "africa", "eu", "asia", "oceania", "za"];
+    for (const reg of regions) {
+      try {
+        const regionalFile = path.join(catalogDir(), `${reg}-${targetId}.agent.json`);
+        const raw = await fs.readFile(regionalFile, "utf8");
+        return loadAgentPackage(JSON.parse(raw));
+      } catch {
+        // try next region
+      }
+    }
+
     // Not in the business catalogue — try the consumer section (personal agents live there and
     // are run by the consumer line). Same package format; different directory.
     try {
@@ -348,7 +377,7 @@ export async function getAgentPackage(id: string): Promise<AgentPackage | null> 
         process.cwd(),
         process.env.CONSUMER_CATALOG_DIR ?? "../../data/catalog-consumer",
       );
-      const raw = await fs.readFile(path.join(dir, `${id}.agent.json`), "utf8");
+      const raw = await fs.readFile(path.join(dir, `${targetId}.agent.json`), "utf8");
       return loadAgentPackage(JSON.parse(raw));
     } catch {
       try {
