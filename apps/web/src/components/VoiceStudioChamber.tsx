@@ -85,7 +85,7 @@ const SCENARIO_PRESETS = [
   },
 ];
 
-export function VoiceStudioChamber() {
+export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
   const [blueprint, setBlueprint] = useState<VoiceStudioBlueprint>(DEFAULT_BLUEPRINT);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -924,6 +924,21 @@ export function VoiceStudioChamber() {
           <span className="rounded-full bg-cyan-500/15 border border-cyan-500/30 px-3 py-1 text-xs font-mono font-bold text-cyan-300">
             {vadTelemetry}
           </span>
+          {onClose && (
+            <button
+              type="button"
+              onClick={() => {
+                stopCurrentAudio();
+                stopListening();
+                onClose();
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-slate-200 hover:bg-white/20 hover:text-white transition"
+              title="Close Voice Studio"
+            >
+              <span>✕</span>
+              <span>Close Studio</span>
+            </button>
+          )}
         </div>
       </div>
 

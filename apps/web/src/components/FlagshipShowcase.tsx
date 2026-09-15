@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ZARA_FLAGSHIP_AGENTS, type FlagshipAgent } from "@/lib/flagship-agents";
 import { VoiceStudioChamber } from "./VoiceStudioChamber";
 
@@ -97,6 +97,24 @@ function FlagshipIcon({ icon }: { icon: string }) {
 
 export function FlagshipShowcase() {
   const [selectedAgent, setSelectedAgent] = useState<FlagshipAgent | null>(null);
+  const [isVoiceStudioOpen, setIsVoiceStudioOpen] = useState(false);
+  const studioRef = useRef<HTMLDivElement>(null);
+
+  function handleAgentClick(agent: FlagshipAgent) {
+    if (agent.id === "flagship.voice_studio") {
+      setIsVoiceStudioOpen((prev) => {
+        const next = !prev;
+        if (next) {
+          setTimeout(() => {
+            studioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 80);
+        }
+        return next;
+      });
+    } else {
+      setSelectedAgent(agent);
+    }
+  }
 
   return (
     <section className="space-y-6 pt-2">
@@ -119,59 +137,99 @@ export function FlagshipShowcase() {
         </div>
       </div>
 
-      {/* KILLER FEATURE SPOTLIGHT: Zara Voice Studio · Instant Agent Forge */}
-      <VoiceStudioChamber />
+      {/* KILLER FEATURE SPOTLIGHT: Zara Voice Studio · Only shown when voice card is clicked */}
+      {isVoiceStudioOpen && (
+        <div ref={studioRef} className="animate-fadeIn">
+          <VoiceStudioChamber onClose={() => setIsVoiceStudioOpen(false)} />
+        </div>
+      )}
 
-      {/* The Other 10 Flagship Agent Cards Grid */}
+      {/* Flagship Agent Cards Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between px-1">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-            Autonomous C-Suite & Back-Office Specialists ({ZARA_FLAGSHIP_AGENTS.length - 1})
+            Autonomous C-Suite & Flagship Specialists ({ZARA_FLAGSHIP_AGENTS.length})
           </h3>
-          <span className="text-xs text-slate-400">Click any agent for toolsets & setup routing</span>
+          <span className="text-xs text-slate-400">Click any card to explore or launch</span>
         </div>
 
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {ZARA_FLAGSHIP_AGENTS.filter((a) => a.id !== "flagship.voice_studio").map((agent) => (
-            <div
-              key={agent.id}
-              onClick={() => setSelectedAgent(agent)}
-              className="group relative flex flex-col justify-between rounded-2xl border border-[rgba(255,255,255,0.08)] bg-gradient-to-b from-[#121926]/90 to-[#0A101A]/95 p-4 sm:p-5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-[#00D2FF]/50 hover:shadow-[0_12px_32px_-10px_rgba(0,210,255,0.25)] cursor-pointer"
-            >
-              <div className="space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-[#00D2FF] group-hover:scale-105 transition-transform">
-                    <FlagshipIcon icon={agent.icon} />
+          {ZARA_FLAGSHIP_AGENTS.map((agent) => {
+            const isVoiceCard = agent.id === "flagship.voice_studio";
+            return (
+              <div
+                key={agent.id}
+                onClick={() => handleAgentClick(agent)}
+                className={`group relative flex flex-col justify-between rounded-2xl p-4 sm:p-5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 cursor-pointer ${
+                  isVoiceCard
+                    ? "border-2 border-[#00E5FF] bg-gradient-to-b from-[#0c2238]/95 via-[#091524]/95 to-[#040a12]/95 shadow-[0_0_30px_rgba(0,229,255,0.25)] hover:shadow-[0_0_40px_rgba(0,229,255,0.4)]"
+                    : "border border-[rgba(255,255,255,0.08)] bg-gradient-to-b from-[#121926]/90 to-[#0A101A]/95 hover:border-[#00D2FF]/50 hover:shadow-[0_12px_32px_-10px_rgba(0,210,255,0.25)]"
+                }`}
+              >
+                <div className="space-y-3">
+                  {/* Top Row: Icon + Badges */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-xl border text-[#00D2FF] group-hover:scale-105 transition-transform ${
+                        isVoiceCard
+                          ? "bg-cyan-500/20 border-cyan-400/50 shadow-[0_0_15px_rgba(0,229,255,0.4)]"
+                          : "bg-white/5 border-white/10"
+                      }`}
+                    >
+                      <FlagshipIcon icon={agent.icon} />
+                    </div>
+
+                    <div className="flex flex-col items-end gap-1">
+                      {isVoiceCard && (
+                        <span className="rounded-full bg-cyan-400/20 border border-cyan-400/50 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-cyan-300 animate-pulse">
+                          ⚡ KILLER FEATURE
+                        </span>
+                      )}
+                      <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+                        {agent.roi}
+                      </span>
+                    </div>
                   </div>
-                  <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
-                    {agent.roi}
+
+                  {/* Name & Description */}
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h3
+                        className={`text-sm font-bold transition-colors truncate ${
+                          isVoiceCard ? "text-cyan-300 group-hover:text-white" : "text-white group-hover:text-[#00D2FF]"
+                        }`}
+                      >
+                        {agent.name}
+                      </h3>
+                    </div>
+                    <p className="mt-1 text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                      {agent.desc}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Footer Row */}
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+                    <span>{agent.tools}</span>
+                    <span>&bull;</span>
+                    <span>{agent.evals}</span>
+                  </div>
+                  <span
+                    className={`font-semibold group-hover:translate-x-0.5 transition-transform ${
+                      isVoiceCard ? "text-cyan-300 font-bold" : "text-[#00D2FF]"
+                    }`}
+                  >
+                    {isVoiceCard
+                      ? isVoiceStudioOpen
+                        ? "▲ Active (Click to Close)"
+                        : "⚡ Open Voice Studio →"
+                      : "Configure →"}
                   </span>
                 </div>
-
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <h3 className="text-sm font-bold text-white group-hover:text-[#00D2FF] transition-colors truncate">
-                      {agent.name}
-                    </h3>
-                  </div>
-                  <p className="mt-1 text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                    {agent.desc}
-                  </p>
-                </div>
               </div>
-
-              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                  <span>{agent.tools}</span>
-                  <span>&bull;</span>
-                  <span>{agent.evals}</span>
-                </div>
-                <span className="text-[#00D2FF] font-semibold group-hover:translate-x-0.5 transition-transform">
-                  Configure &rarr;
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
