@@ -265,7 +265,7 @@ function FacetSelect({
  * forwards back to the agent via ?next once setup is done). Onboarded workspaces
  * go straight to the agent studio.
  */
-function gatedSetupHref(agentHref: string): string {
+function gatedSetupHref(agentHref: string, _onboarded?: boolean | null): string {
   return agentHref;
 }
 
