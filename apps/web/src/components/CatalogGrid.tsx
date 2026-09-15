@@ -10,6 +10,10 @@ import { isWorkflowFamilyId, WORKFLOW_FAMILY_IDS } from "@/lib/workflows";
 import { AgentIcon } from "./AgentIcon";
 import { CARD_BLURBS } from "@/lib/card-blurbs";
 import { MarketplaceCTA, MarketplaceHero } from "./MarketplaceHero";
+import { FlagshipShowcase } from "./FlagshipShowcase";
+import { MarketplaceBoardroom } from "./MarketplaceBoardroom";
+import { AgentSuitesSection } from "./AgentSuitesSection";
+import { EnterpriseConnectors } from "./EnterpriseConnectors";
 import {
   MarketBadge,
   PACK_ORDER,
@@ -298,6 +302,9 @@ export function CatalogGrid({
   const [savedOnly, setSavedOnly] = useState(false);
   const [smartFilter, setSmartFilter] = useState(true);
   const [smartApplied, setSmartApplied] = useState<string[]>([]);
+type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connectors" | "catalogue";
+
+  const [marketplaceView, setMarketplaceView] = useState<MarketplaceView>("all");
   const [listening, setListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechHint, setSpeechHint] = useState<string | null>(null);
@@ -556,16 +563,145 @@ export function CatalogGrid({
     <div className="biz-market space-y-8">
       <MarketplaceHero
         familyCount={totalFamilies || familyCount || 100}
-        agentCount={500}
+        agentCount={515}
         categoryCount={industryCategoryCount}
         workflowCount={WORKFLOW_FAMILY_IDS.length}
         onSearch={(term) => {
           setQ(term);
+          setMarketplaceView("catalogue");
           requestAnimationFrame(() => {
             document.getElementById("catalogue")?.scrollIntoView({ behavior: "smooth" });
           });
         }}
+        onSelectFeature={(feat) => {
+          setMarketplaceView(feat);
+        }}
       />
+
+      {/* Premier Marketplace Experience Navigator Bar */}
+      <div className="sticky top-2 z-30 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#0c1420]/95 p-2 backdrop-blur-xl shadow-2xl">
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 w-full">
+          <button
+            type="button"
+            onClick={() => setMarketplaceView("all")}
+            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 ${
+              marketplaceView === "all"
+                ? "bg-white/15 text-white border border-white/20 shadow-sm"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <span>🌟 Full Showcase</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMarketplaceView("voice-studio")}
+            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 ${
+              marketplaceView === "voice-studio"
+                ? "bg-[#00D2FF] text-slate-950 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
+                : "text-slate-400 hover:text-[#00D2FF] hover:bg-[#00D2FF]/10"
+            }`}
+          >
+            <span>⚡ Voice Studio & Flagships</span>
+            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
+              marketplaceView === "voice-studio" ? "bg-slate-950 text-[#00D2FF]" : "bg-[#00D2FF]/20 text-[#00D2FF]"
+            }`}>
+              KILLER FORGE
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMarketplaceView("boardroom")}
+            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 ${
+              marketplaceView === "boardroom"
+                ? "bg-purple-500 text-slate-950 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                : "text-slate-400 hover:text-purple-300 hover:bg-purple-500/10"
+            }`}
+          >
+            <span>🏛️ AI Executive Boardroom</span>
+            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
+              marketplaceView === "boardroom" ? "bg-slate-950 text-purple-300" : "bg-purple-500/20 text-purple-300"
+            }`}>
+              10 SEATS
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMarketplaceView("suites")}
+            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 ${
+              marketplaceView === "suites"
+                ? "bg-emerald-400 text-slate-950 shadow-[0_0_15px_rgba(52,211,153,0.4)]"
+                : "text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+            }`}
+          >
+            <span>📦 Enterprise Suites</span>
+            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
+              marketplaceView === "suites" ? "bg-slate-950 text-emerald-400" : "bg-emerald-500/20 text-emerald-400"
+            }`}>
+              5 BUNDLES
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMarketplaceView("connectors")}
+            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 ${
+              marketplaceView === "connectors"
+                ? "bg-cyan-400 text-slate-950 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
+                : "text-slate-400 hover:text-cyan-300 hover:bg-cyan-500/10"
+            }`}
+          >
+            <span>🔌 Certified Connectors</span>
+            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
+              marketplaceView === "connectors" ? "bg-slate-950 text-cyan-300" : "bg-cyan-500/20 text-cyan-300"
+            }`}>
+              14
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setMarketplaceView("catalogue");
+              requestAnimationFrame(() => {
+                document.getElementById("catalogue")?.scrollIntoView({ behavior: "smooth" });
+              });
+            }}
+            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 ${
+              marketplaceView === "catalogue"
+                ? "bg-[var(--accent)] text-slate-950 shadow-[0_0_15px_rgba(46,196,182,0.4)]"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <span>🌐 Global Regional Catalog</span>
+            <span className="rounded bg-white/10 px-1.5 py-0.2 text-[9px] font-extrabold text-slate-300">
+              500
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* 1. Flagship & Voice Studio */}
+      {(marketplaceView === "all" || marketplaceView === "voice-studio") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+        <FlagshipShowcase />
+      )}
+
+      {/* 2. AI Executive Boardroom */}
+      {(marketplaceView === "all" || marketplaceView === "boardroom") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+        <MarketplaceBoardroom />
+      )}
+
+      {/* 3. Enterprise Agent Suites */}
+      {(marketplaceView === "all" || marketplaceView === "suites") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+        <AgentSuitesSection />
+      )}
+
+      {/* 4. Enterprise Connectors Directory */}
+      {(marketplaceView === "all" || marketplaceView === "connectors") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+        <EnterpriseConnectors />
+      )}
 
       <section id="catalogue" className="scroll-mt-24 space-y-4">
         {/* One control strip — search + primary facets */}
