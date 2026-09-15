@@ -6,7 +6,18 @@
 
 ---
 
-## 1. What Was Just Completed (Session State — 12 September 2026)
+## 1. What Was Just Completed (Session State — 15 September 2026)
+
+> **Latest session state lives in [RESUME-2026-09-16.md](RESUME-2026-09-16.md)** — read it first.
+>
+> 15 Sept: PRs #182 + #183 merged and live in prod (`bb1839c`): fixed 6 broken flagship/suite
+> agent links (soft-404s), Voice Studio two-way loop (full-utterance transcripts, adaptive
+> endpointing, mic auto-restart, barge-in handover, de-personalized greetings, word-boundary
+> intent matching), connector 401 → login redirects, and the `/catalogue/:id` login-gate bypass.
+> Repo is now PUBLIC (history scanned clean). Open items: provider OAuth env vars in Railway,
+> Takealot Copilot tools gap in the Zara backend, final handover acceptance pass.
+
+### Archive: 12 September 2026 session
 
 All changes have been fully implemented, verified, and tested with **100% test passing rate**:
 
