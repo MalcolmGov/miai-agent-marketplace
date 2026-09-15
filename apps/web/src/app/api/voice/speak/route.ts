@@ -15,8 +15,9 @@ export async function POST(req: Request) {
     }
 
     const apiKey = process.env.ELEVENLABS_API_KEY || "";
-    const voiceId = body.voiceId || process.env.ELEVENLABS_VOICE_ID || "QeKcckTBICc3UuWL7ETc"; // Zara Voice ID
-    const modelId = body.modelId || "eleven_turbo_v2_5";
+    // Default to Malcolm's custom Zara Neural Voice ID, or allow fallback to ElevenLabs' premier voices (e.g. Rachel / custom)
+    const voiceId = body.voiceId || process.env.ELEVENLABS_VOICE_ID || "QeKcckTBICc3UuWL7ETc";
+    const modelId = body.modelId || process.env.ELEVENLABS_MODEL_ID || "eleven_turbo_v2_5";
 
     if (!apiKey) {
       // In local dev without ElevenLabs API key, signal browser speech fallback
@@ -24,11 +25,12 @@ export async function POST(req: Request) {
         ok: true,
         fallback: true,
         provider: "browser_speech_synthesis",
+        voiceId,
         message: "ElevenLabs API key not set on local server. Using high-fidelity Web Speech fallback.",
       });
     }
 
-    // Call ElevenLabs Neural Streaming API
+    // Call ElevenLabs Neural Streaming API with optimized latency and premier warmth settings
     const elResp = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream?optimize_streaming_latency=3`,
       {
@@ -43,8 +45,8 @@ export async function POST(req: Request) {
           model_id: modelId,
           voice_settings: {
             stability: 0.38,
-            similarity_boost: 0.86,
-            style: 0.28,
+            similarity_boost: 0.88,
+            style: 0.24,
             use_speaker_boost: true,
           },
         }),
