@@ -68,15 +68,23 @@ export function VoiceStudioExperience() {
   const [specDrawerOpen, setSpecDrawerOpen] = useState(false);
   const [synthesizedAgent, setSynthesizedAgent] = useState<SynthesizedAgent | null>(null);
   const [bargeInFlash, setBargeInFlash] = useState(false);
+  const [twoWayMode, setTwoWayMode] = useState(true);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number | null>(null);
   const recognitionRef = useRef<ISpeechRecognitionInstance | null>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const currentBufferSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const shockwavesRef = useRef<Array<{ r: number; maxR: number; alpha: number }>>([]);
+  const twoWayModeRef = useRef(true);
+
+  useEffect(() => {
+    twoWayModeRef.current = twoWayMode;
+  }, [twoWayMode]);
 
   // Session Call Timer
   useEffect(() => {
@@ -90,11 +98,30 @@ export function VoiceStudioExperience() {
     return `${m}:${s}`;
   };
 
+  // ── Audio Context Unlock Helper (Crucial for Safari / Chrome Autoplay Policy) ─
+  function unlockAudio() {
+    if (typeof window === "undefined") return;
+    try {
+      const AudioCtxClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (AudioCtxClass) {
+        if (!audioCtxRef.current) {
+          audioCtxRef.current = new AudioCtxClass();
+        }
+        if (audioCtxRef.current.state === "suspended") {
+          audioCtxRef.current.resume();
+        }
+      }
+    } catch {}
+  }
+
   // ── Speech Output Audio Pipeline (ElevenLabs with Web Speech fallback) ──────
   async function speakZaraAudio(textToSpeak: string) {
     stopCurrentAudio();
     setIsSpeaking(true);
     setSpeakerTag("ZARA");
+    unlockAudio();
 
     try {
       const resp = await fetch("/api/voice/speak", {
@@ -110,30 +137,75 @@ export function VoiceStudioExperience() {
 
       if (resp.ok && contentType.includes("audio")) {
         const audioBlob = await resp.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        currentAudioRef.current = audio;
 
-        audio.onended = () => {
-          URL.revokeObjectURL(audioUrl);
-          currentAudioRef.current = null;
-          setIsSpeaking(false);
-          setSpeakerTag("STANDBY");
-        };
+        // 1. Primary path: HTML5 Audio element
+        try {
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          currentAudioRef.current = audio;
 
-        audio.onerror = () => {
-          URL.revokeObjectURL(audioUrl);
-          currentAudioRef.current = null;
-          playBrowserTtsFallback(textToSpeak);
-        };
+          audio.onended = () => {
+            URL.revokeObjectURL(audioUrl);
+            currentAudioRef.current = null;
+            setIsSpeaking(false);
+            setSpeakerTag("STANDBY");
+            if (twoWayModeRef.current) {
+              setSubtitles("Listening... speak your next requirement or answer.");
+              setTimeout(() => {
+                startListening();
+              }, 400);
+            }
+          };
 
-        await audio.play();
-        return;
+          audio.onerror = () => {
+            URL.revokeObjectURL(audioUrl);
+            currentAudioRef.current = null;
+            playBrowserTtsFallback(textToSpeak);
+          };
+
+          await audio.play();
+          return;
+        } catch (playErr) {
+          console.warn("[VoiceStudio] Audio.play rejected, attempting Web Audio buffer fallback:", playErr);
+
+          // 2. Web Audio API Buffer fallback (avoids Safari/iOS autoplay restrictions on blob URL)
+          if (audioCtxRef.current) {
+            try {
+              if (audioCtxRef.current.state === "suspended") {
+                await audioCtxRef.current.resume();
+              }
+              const arrayBuffer = await audioBlob.arrayBuffer();
+              const audioBuffer = await audioCtxRef.current.decodeAudioData(arrayBuffer);
+              const source = audioCtxRef.current.createBufferSource();
+              source.buffer = audioBuffer;
+              source.connect(audioCtxRef.current.destination);
+              currentBufferSourceRef.current = source;
+
+              source.onended = () => {
+                currentBufferSourceRef.current = null;
+                setIsSpeaking(false);
+                setSpeakerTag("STANDBY");
+                if (twoWayModeRef.current) {
+                  setSubtitles("Listening... speak your next requirement or answer.");
+                  setTimeout(() => {
+                    startListening();
+                  }, 400);
+                }
+              };
+
+              source.start(0);
+              return;
+            } catch (bufferErr) {
+              console.warn("[VoiceStudio] Web Audio buffer decode failed:", bufferErr);
+            }
+          }
+        }
       }
-    } catch {
-      // ignore network errors and fallback
+    } catch (err) {
+      console.warn("[VoiceStudio] Audio synthesis exception:", err);
     }
 
+    // 3. High-fidelity Web Speech fallback
     playBrowserTtsFallback(textToSpeak);
   }
 
@@ -161,6 +233,12 @@ export function VoiceStudioExperience() {
     utterance.onend = () => {
       setIsSpeaking(false);
       setSpeakerTag("STANDBY");
+      if (twoWayModeRef.current) {
+        setSubtitles("Listening... speak your next requirement or answer.");
+        setTimeout(() => {
+          startListening();
+        }, 400);
+      }
     };
 
     utterance.onerror = () => {
@@ -176,6 +254,12 @@ export function VoiceStudioExperience() {
       currentAudioRef.current.pause();
       currentAudioRef.current = null;
     }
+    if (currentBufferSourceRef.current) {
+      try {
+        currentBufferSourceRef.current.stop();
+      } catch {}
+      currentBufferSourceRef.current = null;
+    }
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
@@ -187,6 +271,7 @@ export function VoiceStudioExperience() {
     if (typeof window === "undefined") return;
 
     stopCurrentAudio();
+    unlockAudio();
     const windowWithSpeech = window as unknown as {
       SpeechRecognition?: new () => ISpeechRecognitionInstance;
       webkitSpeechRecognition?: new () => ISpeechRecognitionInstance;
@@ -195,7 +280,7 @@ export function VoiceStudioExperience() {
       windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+      alert("Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.");
       return;
     }
 
@@ -229,9 +314,12 @@ export function VoiceStudioExperience() {
         }, 850);
       };
 
-      recognition.onerror = () => {
+      recognition.onerror = (event: { error?: string }) => {
         setIsListening(false);
         setSpeakerTag("STANDBY");
+        if (event?.error === "not-allowed") {
+          setSubtitles("⚠️ Microphone permission denied. Please allow microphone access in your browser settings to enable two-way voice.");
+        }
       };
 
       recognition.onend = () => {
@@ -324,6 +412,7 @@ export function VoiceStudioExperience() {
   }
 
   function handleVoiceToggle() {
+    unlockAudio();
     if (isSpeaking) {
       triggerBargeIn();
       return;
@@ -336,6 +425,7 @@ export function VoiceStudioExperience() {
   }
 
   function handleSendText() {
+    unlockAudio();
     if (!textInput.trim()) return;
     const msg = textInput.trim();
     setTextInput("");
@@ -838,8 +928,26 @@ export function VoiceStudioExperience() {
           </div>
         </div>
 
-        {/* Status Telemetry */}
+        {/* Status Telemetry & Two-Way Loop Toggle */}
         <div className="flex items-center gap-3 text-xs font-mono">
+          <button
+            type="button"
+            onClick={() => setTwoWayMode((m) => !m)}
+            className={`hidden sm:flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition cursor-pointer ${
+              twoWayMode
+                ? "border-cyan-500/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+                : "border-white/10 bg-white/5 text-slate-400 hover:text-white"
+            }`}
+            title="When enabled, microphone re-arms automatically after Zara speaks for a continuous hands-free conversation"
+          >
+            <span
+              className={`h-2 w-2 rounded-full ${
+                twoWayMode ? "bg-cyan-400 animate-pulse" : "bg-slate-600"
+              }`}
+            />
+            <span>{twoWayMode ? "2-Way Loop: ON" : "2-Way Loop: OFF"}</span>
+          </button>
+
           <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-emerald-400">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>&lt;250ms VAD</span>
@@ -928,7 +1036,9 @@ export function VoiceStudioExperience() {
               {isListening
                 ? "Listening… Tap to Send"
                 : isSpeaking
-                ? "Zara Speaking… Tap to Stop"
+                ? "Zara Speaking… Tap to Interrupt"
+                : twoWayMode
+                ? "Tap to Speak Naturally (2-Way)"
                 : "Tap to Speak Naturally"}
             </span>
           </button>

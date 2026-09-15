@@ -44,6 +44,8 @@ const PUBLIC_PREFIXES = [
   "/agents/v1/",
   "/api/webhook/sink",
   "/api/mcp",
+  // Voice synthesis & audio streaming endpoints for the flagship Voice Studio
+  "/api/voice/",
   // Consumer line — the individual-facing surface. It is authenticated by the consumer SESSION
   // COOKIE (Sign in with Google), not the B2B OIDC Bearer: /api/consumer/auth/* runs the login
   // flow, and every data route enforces the session in-route via requireConsumer(). (The telegram
