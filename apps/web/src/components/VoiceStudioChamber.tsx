@@ -257,7 +257,7 @@ export function VoiceStudioChamber() {
   const [isCompiling, setIsCompiling] = useState(false);
   const [textInput, setTextInput] = useState("");
   const [subtitles, setSubtitles] = useState(
-    "\"Tell me what business workflow or role you want to create, or connect a GitHub repository to build directly from your codebase.\""
+    "\"Tell me what business workflow or role you want to create, or tap the microphone to speak naturally.\""
   );
   const [speakerTag, setSpeakerTag] = useState("ZARA NEURAL VOICE");
   const [vadTelemetry, setVadTelemetry] = useState("HARDWARE VAD: ARMED (<50ms)");
@@ -277,8 +277,225 @@ export function VoiceStudioChamber() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animFrameRef = useRef<number | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Holographic 3D Arc-Reactor Neural Canvas Loop
+  // ── Speech Output Audio Pipeline (ElevenLabs with Web Speech fallback) ──────
+  async function speakZaraAudio(textToSpeak: string) {
+    stopCurrentAudio();
+    setIsSpeaking(true);
+    setSpeakerTag("ZARA SPEAKING");
+
+    try {
+      // 1. Try ElevenLabs API endpoint
+      const resp = await fetch("/api/voice/speak", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: textToSpeak }),
+      });
+
+      const contentType = resp.headers.get("content-type") || "";
+
+      if (resp.ok && contentType.includes("audio")) {
+        const audioBlob = await resp.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        currentAudioRef.current = audio;
+
+        setVadTelemetry("STREAMING ELEVENLABS NEURAL TTS");
+
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl);
+          currentAudioRef.current = null;
+          setIsSpeaking(false);
+          setSpeakerTag("STANDBY");
+          setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
+        };
+
+        audio.onerror = () => {
+          URL.revokeObjectURL(audioUrl);
+          currentAudioRef.current = null;
+          playBrowserTtsFallback(textToSpeak);
+        };
+
+        await audio.play();
+        return;
+      }
+    } catch {
+      // ignore network errors and fallback
+    }
+
+    // 2. High-Fidelity Browser Speech Synthesis Fallback (Local Dev / Staging)
+    playBrowserTtsFallback(textToSpeak);
+  }
+
+  function playBrowserTtsFallback(cleanText: string) {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      setIsSpeaking(false);
+      setSpeakerTag("STANDBY");
+      setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    setVadTelemetry("BROWSER NEURAL SPEECH ACTIVE");
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.05;
+    utterance.pitch = 1.0;
+
+    // Pick best English voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const naturalVoice = voices.find(
+      (v) =>
+        (v.lang.startsWith("en") && (v.name.includes("Natural") || v.name.includes("Samantha") || v.name.includes("Google") || v.name.includes("Victoria")))
+    ) || voices.find((v) => v.lang.startsWith("en"));
+
+    if (naturalVoice) utterance.voice = naturalVoice;
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setSpeakerTag("STANDBY");
+      setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setSpeakerTag("STANDBY");
+      setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function stopCurrentAudio() {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current = null;
+    }
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+  }
+
+  // ── Speech Recognition Input Pipeline (Live Microphone) ─────────────────────
+  function startListening() {
+    if (typeof window === "undefined") return;
+
+    stopCurrentAudio();
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setSpeakerTag("YOU SPEAKING");
+        setVadTelemetry("LISTENING (<50ms VAD ACTIVE)...");
+        setSubtitles("Listening... speak your business workflow or bottleneck naturally.");
+      };
+
+      recognition.onresult = (event: any) => {
+        let interimTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          interimTranscript += event.results[i][0].transcript;
+        }
+
+        const clean = interimTranscript.trim();
+        if (!clean) return;
+
+        setSubtitles(`"${clean}"`);
+
+        // Debounce automatic compile upon pause
+        if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = setTimeout(() => {
+          stopListening();
+          executeAgentSynthesis(clean);
+        }, 850);
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn("[Voice Studio] Speech recognition error:", event.error);
+        if (event.error !== "no-speech") {
+          setIsListening(false);
+          setSpeakerTag("STANDBY");
+          setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (err) {
+      console.warn("Could not start speech recognition:", err);
+      setIsListening(false);
+    }
+  }
+
+  function stopListening() {
+    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {}
+      recognitionRef.current = null;
+    }
+    setIsListening(false);
+  }
+
+  function executeAgentSynthesis(userSpokenText: string) {
+    setIsCompiling(true);
+    setSpeakerTag("SYNTHESIZING AGENT DNA…");
+    setVadTelemetry("COMPILING FROM SPOKEN SPEC");
+    setSubtitles(`Parsing: "${userSpokenText}"... Synthesizing enterprise agent...`);
+
+    setTimeout(() => {
+      const lower = userSpokenText.toLowerCase();
+      let target: VoiceStudioBlueprint;
+
+      if (lower.includes("xero") || lower.includes("invoice") || lower.includes("collection") || lower.includes("debt")) {
+        target = SCENARIO_PRESETS[1].agent;
+      } else if (lower.includes("it") || lower.includes("slack") || lower.includes("servicenow") || lower.includes("password")) {
+        target = SCENARIO_PRESETS[2].agent;
+      } else if (lower.includes("github") || lower.includes("code") || lower.includes("gaslite") || lower.includes("repo")) {
+        target = SCENARIO_PRESETS[3].agent;
+      } else if (lower.includes("order") || lower.includes("shopify") || lower.includes("whatsapp") || lower.includes("store")) {
+        target = SCENARIO_PRESETS[0].agent;
+      } else {
+        target = {
+          ...DEFAULT_BLUEPRINT,
+          name: "Autonomous Operations Specialist",
+          role: `Enterprise workflow agent synthesized for: "${userSpokenText.slice(0, 42)}..."`,
+          readinessScore: 92,
+        };
+      }
+
+      setBlueprint(target);
+      setIsCompiling(false);
+
+      const spokenResponse = `I have synthesized ${target.name}. System instructions, workflow DAG, and certified connectors are pre-audited with ${target.readinessScore}% Enterprise Production Readiness.`;
+      setSubtitles(`"${spokenResponse}"`);
+
+      // Actually speak out loud
+      speakZaraAudio(spokenResponse);
+    }, 450);
+  }
+
+  // ── Holographic 3D Arc-Reactor Neural Canvas Loop ───────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -440,12 +657,12 @@ export function VoiceStudioChamber() {
 
   // Barge-In Interruption Handler
   function triggerBargeIn(reason = "Hologram Tap Interrupt") {
-    setIsSpeaking(false);
-    setIsListening(true);
+    stopCurrentAudio();
+    stopListening();
     setShowBargeInBadge(true);
     setVadTelemetry("⚡ BARGE-IN ENGAGED · 0ms CUT-OFF");
     setSpeakerTag("LISTENING…");
-    setSubtitles("⚡ Interrupted instantaneously! I am listening to your feedback…");
+    setSubtitles("⚡ Interrupted instantaneously! Tap the microphone to talk or select a scenario.");
 
     setTimeout(() => {
       setShowBargeInBadge(false);
@@ -460,51 +677,25 @@ export function VoiceStudioChamber() {
     }
 
     if (isListening) {
-      setIsListening(false);
-      setSpeakerTag("ZARA NEURAL VOICE");
+      stopListening();
+      setSpeakerTag("STANDBY");
       setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
       setSubtitles("Mic paused. Tap to speak or select an executive scenario below.");
       return;
     }
 
-    setIsListening(true);
-    setSpeakerTag("LISTENING…");
-    setVadTelemetry("LISTENING (<50ms VAD ACTIVE)...");
-    setSubtitles("Listening to you… Describe your workflow, integrations, or business rules.");
-
-    setTimeout(() => {
-      setIsListening(false);
-      setIsCompiling(true);
-      setSpeakerTag("COMPILING AGENT BLUEPRINT…");
-      setVadTelemetry("STREAMING ELEVENLABS NEURAL TTS");
-      setSubtitles("Compiling custom enterprise agent blueprint from your spoken requirements…");
-
-      setTimeout(() => {
-        setIsCompiling(false);
-        setIsSpeaking(true);
-        setSpeakerTag("ZARA NEURAL VOICE");
-        setVadTelemetry("ELEVENLABS ULTRA-LOW-LATENCY STREAM");
-        setSubtitles(
-          "\"I have synthesized the custom enterprise agent blueprint. System instructions, 6-step workflow DAG, and certified connectors are bound and pre-audited.\""
-        );
-
-        setTimeout(() => {
-          setIsSpeaking(false);
-          setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
-        }, 3200);
-      }, 700);
-    }, 2200);
+    startListening();
   }
 
   function handlePauseResume() {
     setIsPaused((p) => {
       const next = !p;
       if (next) {
-        setIsSpeaking(false);
-        setIsListening(false);
+        stopCurrentAudio();
+        stopListening();
         setSubtitles("Conversation paused ⏸️. Tap resume when you are ready.");
       } else {
-        setSubtitles("Resumed! Listening or ready for scenario execution.");
+        setSubtitles("Resumed! Tap the microphone to speak or type below.");
       }
       return next;
     });
@@ -514,45 +705,15 @@ export function VoiceStudioChamber() {
     if (!textInput.trim()) return;
     const q = textInput.trim();
     setTextInput("");
-
-    setIsCompiling(true);
-    setVadTelemetry("COMPILING FROM SPECIFICATION");
-    setSpeakerTag("COMPILER ACTIVE");
-    setSubtitles(`Parsing: "${q}"... Synthesizing enterprise agent...`);
-
-    setTimeout(() => {
-      const match = SCENARIO_PRESETS.find(
-        (p) =>
-          q.toLowerCase().includes(p.key) ||
-          q.toLowerCase().includes("shopify") ||
-          q.toLowerCase().includes("xero") ||
-          q.toLowerCase().includes("slack")
-      );
-
-      const target = match ? match.agent : {
-        ...DEFAULT_BLUEPRINT,
-        name: "Custom Enterprise Operations Agent",
-        role: `Autonomous workflow orchestrator for: "${q.slice(0, 45)}..."`,
-        readinessScore: 91,
-      };
-
-      setBlueprint(target);
-      setIsCompiling(false);
-      setIsSpeaking(true);
-      setSpeakerTag("ZARA NEURAL VOICE");
-      setVadTelemetry("ELEVENLABS ULTRA-LOW-LATENCY STREAM");
-      setSubtitles(`"I have compiled ${target.name} with ${target.readinessScore}% Enterprise Production Readiness."`);
-
-      setTimeout(() => {
-        setIsSpeaking(false);
-        setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
-      }, 2800);
-    }, 600);
+    executeAgentSynthesis(q);
   }
 
   function handlePresetTrigger(presetKey: string) {
     const found = SCENARIO_PRESETS.find((p) => p.key === presetKey);
     if (!found) return;
+
+    stopCurrentAudio();
+    stopListening();
 
     setIsCompiling(true);
     setSpeakerTag("SYNTHESIZING AGENT DNA…");
@@ -562,16 +723,11 @@ export function VoiceStudioChamber() {
     setTimeout(() => {
       setBlueprint(found.agent);
       setIsCompiling(false);
-      setIsSpeaking(true);
-      setSpeakerTag("ZARA NEURAL VOICE");
-      setVadTelemetry("ELEVENLABS ULTRA-LOW-LATENCY STREAM");
-      setSubtitles(`"Loaded ${found.agent.name}. Pre-audited DNA matched with ${found.agent.dna.matchScore}% confidence."`);
 
-      setTimeout(() => {
-        setIsSpeaking(false);
-        setVadTelemetry("HARDWARE VAD: ARMED (<50ms)");
-      }, 3000);
-    }, 450);
+      const spokenResponse = `Loaded ${found.agent.name}. Pre-audited DNA matched with ${found.agent.dna.matchScore}% confidence.`;
+      setSubtitles(`"${spokenResponse}"`);
+      speakZaraAudio(spokenResponse);
+    }, 350);
   }
 
   function handleDeployPR() {
@@ -690,7 +846,9 @@ export function VoiceStudioChamber() {
           {/* Real-time Speech Subtitles */}
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3.5 space-y-1.5">
             <div className="flex items-center justify-between text-[11px] font-mono">
-              <span className="font-bold text-cyan-400">{speakerTag}</span>
+              <span className={`font-bold ${isSpeaking ? "text-cyan-400" : isListening ? "text-emerald-400" : "text-purple-400"}`}>
+                {speakerTag}
+              </span>
               <span className="text-slate-500 text-[10px]">ELEVENLABS ULTRA-LOW-LATENCY STREAM</span>
             </div>
             <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-sans italic min-h-[44px]">
@@ -727,6 +885,8 @@ export function VoiceStudioChamber() {
               className={`flex-1 flex items-center justify-center gap-2.5 rounded-xl py-3 px-4 font-black text-xs sm:text-sm transition shadow-lg ${
                 isListening
                   ? "bg-rose-500 text-white shadow-[0_0_20px_#f43f5e] animate-pulse"
+                  : isSpeaking
+                  ? "bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 hover:brightness-110"
                   : "bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 hover:brightness-110 active:scale-95"
               }`}
             >
@@ -735,7 +895,13 @@ export function VoiceStudioChamber() {
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                 <line x1="12" x2="12" y1="19" y2="22" />
               </svg>
-              <span>{isListening ? "Listening... (Tap to Cut-Off)" : "Tap to Talk & Build Agent"}</span>
+              <span>
+                {isListening
+                  ? "Listening to you... (Tap to Finish)"
+                  : isSpeaking
+                  ? "Zara Speaking... (Tap to Interrupt)"
+                  : "Tap to Talk & Build Agent"}
+              </span>
             </button>
 
             <button
