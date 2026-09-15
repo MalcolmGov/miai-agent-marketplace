@@ -259,16 +259,6 @@ function FacetSelect({
   );
 }
 
-/**
- * Agent "Set up" must run business onboarding first. Until the workspace has
- * completed the business wizard, route the CTA through /get-started (which
- * forwards back to the agent via ?next once setup is done). Onboarded workspaces
- * go straight to the agent studio.
- */
-function gatedSetupHref(agentHref: string, _onboarded?: boolean | null): string {
-  return agentHref;
-}
-
 export function CatalogGrid({
   initialFamilies,
 }: {
@@ -312,7 +302,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
   const [pending, setPending] = useState(false);
   const [detail, setDetail] = useState<FamilyItem | null>(null);
   const [saved, setSaved] = useState<Set<string>>(new Set());
-  const [agentsOnboarded, setAgentsOnboarded] = useState<boolean | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -323,24 +312,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
     } catch {
       /* ignore */
     }
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/onboarding")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (cancelled) return;
-        setAgentsOnboarded(
-          Boolean(d && (d.profile?.wizardCompleted || d.me?.product === "agents")),
-        );
-      })
-      .catch(() => {
-        if (!cancelled) setAgentsOnboarded(false);
-      });
-    return () => {
-      cancelled = true;
-    };
   }, []);
 
   function toggleSaved(id: string) {
@@ -1059,7 +1030,7 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
                   </button>
 
                   <Link
-                    href={gatedSetupHref(href, agentsOnboarded)}
+                    href={href}
                     className="inline-flex items-center gap-1 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#3dd6c6] to-[#20b2aa] hover:from-[#4ee5d5] hover:to-[#2bc4bb] px-2.5 sm:px-4 py-1 sm:py-1.5 text-[10.5px] sm:text-[12px] font-bold text-slate-950 transition-all duration-200 shadow-[0_0_12px_rgba(61,214,198,0.45)] hover:shadow-[0_0_20px_rgba(61,214,198,0.7)] hover:scale-[1.03] active:scale-[0.98]"
                   >
                     <span>Setup</span>
@@ -1075,7 +1046,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
           <AgentDetailModal
             item={detail}
             market={market}
-            onboarded={agentsOnboarded}
             onClose={() => setDetail(null)}
           />
         ) : null}
@@ -1130,12 +1100,10 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
 function AgentDetailModal({
   item,
   market,
-  onboarded,
   onClose,
 }: {
   item: FamilyItem;
   market: string;
-  onboarded: boolean | null;
   onClose: () => void;
 }) {
   const t = useT();
@@ -1445,7 +1413,7 @@ function AgentDetailModal({
           </dl>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href={gatedSetupHref(href, onboarded)} className="btn btn-primary" onClick={onClose}>
+            <Link href={href} className="btn btn-primary" onClick={onClose}>
               {t("catalog.rentSetup")}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={onClose}>
