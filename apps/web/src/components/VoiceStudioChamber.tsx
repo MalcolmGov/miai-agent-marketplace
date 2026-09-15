@@ -12,6 +12,35 @@ export interface VoiceStudioBlueprint {
   roi: string;
 }
 
+interface ISpeechRecognitionResult {
+  [index: number]: { transcript: string };
+  length: number;
+}
+
+interface ISpeechRecognitionEvent {
+  resultIndex: number;
+  results: {
+    [index: number]: ISpeechRecognitionResult;
+    length: number;
+  };
+}
+
+interface ISpeechRecognitionErrorEvent {
+  error: string;
+}
+
+interface ISpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onstart: () => void;
+  onresult: (event: ISpeechRecognitionEvent) => void;
+  onerror: (event: ISpeechRecognitionErrorEvent) => void;
+  onend: () => void;
+  start: () => void;
+  stop: () => void;
+}
+
 const DEFAULT_BLUEPRINT: VoiceStudioBlueprint = {
   id: "custom-order-spec",
   name: "Order Resolution Specialist",
@@ -110,7 +139,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animFrameRef = useRef<number | null>(null);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<ISpeechRecognitionInstance | null>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
@@ -217,8 +246,12 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
     if (typeof window === "undefined") return;
 
     stopCurrentAudio();
+    const windowWithSpeech = window as unknown as {
+      SpeechRecognition?: new () => ISpeechRecognitionInstance;
+      webkitSpeechRecognition?: new () => ISpeechRecognitionInstance;
+    };
     const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       alert("Speech recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
@@ -238,7 +271,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
         setSubtitles("Listening... speak your business workflow or bottleneck naturally.");
       };
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: ISpeechRecognitionEvent) => {
         let interimTranscript = "";
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           interimTranscript += event.results[i][0].transcript;
@@ -256,7 +289,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
         }, 850);
       };
 
-      recognition.onerror = (event: any) => {
+      recognition.onerror = (event: ISpeechRecognitionErrorEvent) => {
         console.warn("[Voice Studio] Speech recognition error:", event.error);
         if (event.error !== "no-speech") {
           setIsListening(false);
@@ -389,7 +422,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
     ];
 
     let rotY = 0;
-    let rotX = 0.2;
+    const rotX = 0.2;
     let T = 0;
     let radarAngle = 0;
 
@@ -790,7 +823,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
     mouseRef.current.targetY = 0;
   }
 
-  function triggerBargeIn(reason = "Hologram Tap Interrupt") {
+  function triggerBargeIn() {
     stopCurrentAudio();
     stopListening();
     setShowBargeInBadge(true);
@@ -807,7 +840,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
 
   function handleVoiceToggle() {
     if (isSpeaking) {
-      triggerBargeIn("Mic Tap Interrupt");
+      triggerBargeIn();
       return;
     }
 
@@ -964,7 +997,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
           ref={containerRef}
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
-          onClick={() => isSpeaking && triggerBargeIn("Hologram Tap")}
+          onClick={() => isSpeaking && triggerBargeIn()}
           title="Interactive 3D Core · Tap anywhere to interrupt in 0ms"
           className="relative cursor-pointer overflow-hidden rounded-2xl border border-cyan-500/30 bg-[#02050e] shadow-[inset_0_0_50px_rgba(0,229,255,0.18)] group"
         >
@@ -1054,7 +1087,7 @@ export function VoiceStudioChamber({ onClose }: { onClose?: () => void } = {}) {
 
           <button
             type="button"
-            onClick={() => triggerBargeIn("Manual Cut-Off")}
+            onClick={() => triggerBargeIn()}
             title="Instant Barge-In Stop (Spacebar / Tap)"
             className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3.5 text-xs font-bold text-rose-400 hover:bg-rose-500/20 transition"
           >
