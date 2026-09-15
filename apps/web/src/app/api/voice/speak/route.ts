@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     }
 
     const apiKey = process.env.ELEVENLABS_API_KEY || "";
-    // Default to Malcolm's custom Zara Neural Voice ID, or allow fallback to ElevenLabs' premier voices (e.g. Rachel / custom)
+    // Default to the flagship Zara neural voice; overridable per-request or via env for white-label deployments
     const voiceId = body.voiceId || process.env.ELEVENLABS_VOICE_ID || "QeKcckTBICc3UuWL7ETc";
     const modelId = body.modelId || process.env.ELEVENLABS_MODEL_ID || "eleven_turbo_v2_5";
 

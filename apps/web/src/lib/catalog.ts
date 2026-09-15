@@ -341,10 +341,9 @@ export async function getAgentPackage(id: string): Promise<AgentPackage | null> 
   // Map common flagship aliases to their catalog family IDs
   const FLAGSHIP_FAMILY_MAP: Record<string, string> = {
     cfo: "financial-reporting",
-    accounts_payable: "invoicing",
+    accounts_payable: "procurement",
     ar_collections: "bookkeeping",
-    invoice_processing: "invoicing",
-    procurement: "operations",
+    invoice_processing: "bookkeeping",
     sales_rep: "sales-qualifier",
     customer_service_mgr: "customer-support",
     chief_of_staff: "executive-assistant",
