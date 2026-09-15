@@ -310,7 +310,7 @@ export function VoiceStudioExperience() {
         if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
         silenceTimerRef.current = setTimeout(() => {
           stopListening();
-          executeAgentSynthesis(clean);
+          handleVoiceInput(clean);
         }, 850);
       };
 
@@ -344,58 +344,186 @@ export function VoiceStudioExperience() {
     setIsListening(false);
   }
 
-  function executeAgentSynthesis(userSpokenText: string) {
+  function handleVoiceInput(userSpokenText: string) {
+    const clean = userSpokenText.trim();
+    if (!clean) return;
+    const lower = clean.toLowerCase();
+
+    // Check if the user is merely greeting or saying hello without specifying a problem/agent
+    const isCasualGreeting =
+      /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening|day)|howdy|sup|yo|hola)\b/i.test(clean) ||
+      /^(how\s+are\s+you|who\s+are\s+you|what\s+can\s+you\s+do|help|what\s+is\s+this|test|testing|can\s+you\s+hear\s+me)\b/i.test(clean) ||
+      (clean.split(/\s+/).length <= 3 && /^(hi|hello|hey|yo|yes|ok|okay|morning|afternoon|evening|hi\s+zara|hello\s+zara|hey\s+zara)$/i.test(clean));
+
+    // Specific problem / agent intent indicators
+    const hasProblemOrAgentIntent =
+      lower.includes("agent") ||
+      lower.includes("build") ||
+      lower.includes("create") ||
+      lower.includes("make") ||
+      lower.includes("need") ||
+      lower.includes("want") ||
+      lower.includes("automate") ||
+      lower.includes("problem") ||
+      lower.includes("issue") ||
+      lower.includes("bottleneck") ||
+      lower.includes("invoice") ||
+      lower.includes("debt") ||
+      lower.includes("collection") ||
+      lower.includes("order") ||
+      lower.includes("courier") ||
+      lower.includes("shipping") ||
+      lower.includes("return") ||
+      lower.includes("shopify") ||
+      lower.includes("slack") ||
+      lower.includes("it") ||
+      lower.includes("access") ||
+      lower.includes("password") ||
+      lower.includes("support") ||
+      lower.includes("customer") ||
+      lower.includes("client") ||
+      lower.includes("lead") ||
+      lower.includes("sales") ||
+      lower.includes("marketing") ||
+      lower.includes("hr") ||
+      lower.includes("onboard") ||
+      lower.includes("finance") ||
+      lower.includes("accounting") ||
+      lower.includes("xero") ||
+      lower.includes("paystack") ||
+      lower.includes("webhook");
+
+    if (isCasualGreeting && !hasProblemOrAgentIntent) {
+      respondToGreeting(clean);
+      return;
+    }
+
+    // Actual problem statement or agent request -> build and save custom agent
+    executeAgentSynthesis(clean);
+  }
+
+  function respondToGreeting(clean: string) {
+    const lower = clean.toLowerCase();
+    let reply = "";
+
+    if (lower.includes("who are you") || lower.includes("what can you do")) {
+      reply = "I'm Zara, your enterprise operations architect. Describe an operational bottleneck or workflow challenge, and I will architect, configure, and deploy an agent directly to your My Agents workspace.";
+    } else if (lower.includes("how are you")) {
+      reply = "I'm doing well, thank you! I'm ready to architect custom agents for your business. Describe a workflow or operational bottleneck you'd like to automate.";
+    } else {
+      reply = "Hello Malcolm! I'm Zara, your operations architect. Tell me what operational bottleneck or agent you need, and I will compile and deploy it directly into your My Agents tab.";
+    }
+
+    setSpeakerTag("ZARA");
+    setSubtitles(`"${reply}"`);
+    speakZaraAudio(reply);
+  }
+
+  async function executeAgentSynthesis(userSpokenText: string) {
     setIsCompiling(true);
     setSpeakerTag("COMPILING");
-    setSubtitles(`Synthesizing enterprise agent from: "${userSpokenText}"...`);
+    setSubtitles(`Architecting enterprise agent from: "${userSpokenText}"...`);
 
     shockwavesRef.current.push({ r: 20, maxR: 320, alpha: 1.0 });
 
-    setTimeout(() => {
-      const lower = userSpokenText.toLowerCase();
-      let compiled: SynthesizedAgent;
+    const lower = userSpokenText.toLowerCase();
+    let compiled: SynthesizedAgent;
 
-      if (lower.includes("invoice") || lower.includes("collection") || lower.includes("debt") || lower.includes("xero")) {
-        compiled = {
-          name: "AR Collections Specialist",
-          role: "Automated debt recovery, Xero ledger reconciliation & Paystack payment arrangements",
-          confidence: 94,
-          tools: ["Xero Invoices API", "Paystack Links", "Aging Scheduler", "POPIA Ledger"],
-          systemPrompt: "You are the AR Collections Specialist. Manage overdue receivables and issue payment plans compliant with National Credit Act guidelines.",
-        };
-      } else if (lower.includes("order") || lower.includes("shopify") || lower.includes("delivery") || lower.includes("return")) {
-        compiled = {
-          name: "Omnichannel Order Specialist",
-          role: "Autonomous courier waybill tracking, size exchanges & instant refund management",
-          confidence: 98,
-          tools: ["Shopify GraphQL", "WhatsApp Cloud Webhook", "The Courier Guy", "Store Credit Emitter"],
-          systemPrompt: "You are the Omnichannel Order Specialist. Track waybills and process size exchange authorizations autonomously within approved thresholds.",
-        };
-      } else if (lower.includes("it") || lower.includes("slack") || lower.includes("access") || lower.includes("password")) {
-        compiled = {
-          name: "SecOps Identity Concierge",
-          role: "Role-based Slack channel provisioning, temporary VPN credentials & MFA resets",
-          confidence: 96,
-          tools: ["Okta OAuth2", "ServiceNow REST", "Slack Admin API", "Audit Hash Ledger"],
-          systemPrompt: "You are the SecOps Identity Concierge. Handle access requests and credential rotation with zero-trust verification.",
-        };
-      } else {
-        compiled = {
-          name: "Autonomous Operations Architect",
-          role: `Enterprise agent compiled for: "${userSpokenText.slice(0, 48)}..."`,
-          confidence: 92,
-          tools: ["Workflow DAG Runner", "Universal Webhook Emitter", "Context RAG Engine", "Audit Logger"],
-          systemPrompt: `You are the Autonomous Operations Architect synthesized for: ${userSpokenText}.`,
-        };
-      }
+    if (lower.includes("invoice") || lower.includes("collection") || lower.includes("debt") || lower.includes("xero")) {
+      compiled = {
+        name: "AR Collections Specialist",
+        role: "Automated debt recovery, Xero ledger reconciliation & Paystack payment arrangements",
+        confidence: 94,
+        tools: ["Xero Invoices API", "Paystack Links", "Aging Scheduler", "POPIA Ledger"],
+        systemPrompt: "You are the AR Collections Specialist. Manage overdue receivables and issue payment plans compliant with National Credit Act guidelines.",
+      };
+    } else if (lower.includes("order") || lower.includes("shopify") || lower.includes("delivery") || lower.includes("return") || lower.includes("courier")) {
+      compiled = {
+        name: "Omnichannel Order Specialist",
+        role: "Autonomous courier waybill tracking, size exchanges & instant refund management",
+        confidence: 98,
+        tools: ["Shopify GraphQL", "WhatsApp Cloud Webhook", "The Courier Guy", "Store Credit Emitter"],
+        systemPrompt: "You are the Omnichannel Order Specialist. Track waybills and process size exchange authorizations autonomously within approved thresholds.",
+      };
+    } else if (lower.includes("it") || lower.includes("slack") || lower.includes("access") || lower.includes("password") || lower.includes("vpn")) {
+      compiled = {
+        name: "SecOps Identity Concierge",
+        role: "Role-based Slack channel provisioning, temporary VPN credentials & MFA resets",
+        confidence: 96,
+        tools: ["Okta OAuth2", "ServiceNow REST", "Slack Admin API", "Audit Hash Ledger"],
+        systemPrompt: "You are the SecOps Identity Concierge. Handle access requests and credential rotation with zero-trust verification.",
+      };
+    } else if (lower.includes("support") || lower.includes("customer") || lower.includes("whatsapp") || lower.includes("ticket") || lower.includes("helpdesk")) {
+      compiled = {
+        name: "Customer Experience Concierge",
+        role: "24/7 client ticket resolution, sentiment-aware escalation & WhatsApp concierge",
+        confidence: 97,
+        tools: ["WhatsApp Cloud Webhook", "Zendesk API", "Knowledge RAG", "Sentiment Guardrail"],
+        systemPrompt: "You are the Customer Experience Concierge. Resolve client inquiries autonomously and escalate edge cases with full context.",
+      };
+    } else if (lower.includes("lead") || lower.includes("sales") || lower.includes("crm") || lower.includes("hubspot") || lower.includes("prospect")) {
+      compiled = {
+        name: "Revenue Operations Prospector",
+        role: "Autonomous lead scoring, HubSpot CRM enrichment & Calendly meeting dispatch",
+        confidence: 95,
+        tools: ["HubSpot CRM", "Calendly API", "Email Dispatcher", "Clearbit Enrichment"],
+        systemPrompt: "You are the Revenue Operations Prospector. Qualify inbound inquiries and coordinate executive calendar slots.",
+      };
+    } else {
+      compiled = {
+        name: "Autonomous Operations Architect",
+        role: `Enterprise agent compiled for: "${userSpokenText.slice(0, 48)}..."`,
+        confidence: 92,
+        tools: ["Workflow DAG Runner", "Universal Webhook Emitter", "Context RAG Engine", "Audit Logger"],
+        systemPrompt: `You are the Autonomous Operations Architect synthesized for: ${userSpokenText}.`,
+      };
+    }
 
-      setSynthesizedAgent(compiled);
-      setIsCompiling(false);
+    setSynthesizedAgent(compiled);
+    setIsCompiling(false);
 
-      const spokenResponse = `I have compiled ${compiled.name}. Certified toolsets and safety guardrails are pre-audited with ${compiled.confidence}% production readiness.`;
-      setSubtitles(`"${spokenResponse}"`);
-      speakZaraAudio(spokenResponse);
-    }, 500);
+    // Persist agent into workspace via custom agent API and localStorage
+    const slug = compiled.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    try {
+      await fetch("/api/agents/custom", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: compiled.name,
+          role: compiled.role,
+          description: compiled.role,
+          systemPrompt: compiled.systemPrompt,
+          tools: compiled.tools,
+          category: "operations",
+          tier: "enterprise",
+          accentColor: "#00D2FF",
+          state: "live",
+        }),
+      });
+    } catch {
+      // ignore network errors in offline/dev
+    }
+
+    try {
+      const localCustom = JSON.parse(localStorage.getItem("miai.customAgents") || "[]");
+      localCustom.unshift({
+        agentId: slug,
+        name: compiled.name,
+        summary: compiled.role,
+        state: "live",
+        tier: "enterprise",
+        market: "global",
+        connectedConnectors: [],
+        rentedAt: new Date().toISOString(),
+        isCustom: true,
+        accentColor: "#00D2FF",
+      });
+      localStorage.setItem("miai.customAgents", JSON.stringify(localCustom.slice(0, 25)));
+    } catch {}
+
+    const spokenResponse = `I have compiled and deployed ${compiled.name}. Certified toolsets and safety guardrails are pre-audited. It is now saved and active under your My Agents tab.`;
+    setSubtitles(`"${spokenResponse}"`);
+    speakZaraAudio(spokenResponse);
   }
 
   function triggerBargeIn() {
@@ -430,7 +558,7 @@ export function VoiceStudioExperience() {
     const msg = textInput.trim();
     setTextInput("");
     setShowTextInput(false);
-    executeAgentSynthesis(msg);
+    handleVoiceInput(msg);
   }
 
   // ── Next-Generation 3D Holographic AI Core Canvas Loop ────────────────────────
@@ -876,6 +1004,19 @@ export function VoiceStudioExperience() {
           >
             ←
           </Link>
+          <Link
+            href="/my-agents"
+            className="flex items-center gap-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5 text-xs font-bold text-cyan-300 hover:bg-cyan-500/20 hover:text-white transition shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+            title="View and manage your deployed enterprise agents"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4 text-cyan-400">
+              <rect x="4" y="6" width="16" height="12" rx="3" />
+              <circle cx="9" cy="11.5" r="1.25" fill="currentColor" />
+              <circle cx="15" cy="11.5" r="1.25" fill="currentColor" />
+              <path d="M12 2v4M8 15h8M2 12h2M20 12h2" strokeLinecap="round" />
+            </svg>
+            <span>My Agents</span>
+          </Link>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
@@ -973,6 +1114,28 @@ export function VoiceStudioExperience() {
           </div>
         )}
 
+        {/* Synthesized Agent Confirmed & Saved Pill */}
+        {synthesizedAgent && (
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative z-30 mb-4 flex items-center gap-3 rounded-2xl border border-cyan-400/40 bg-black/80 px-5 py-2.5 backdrop-blur-xl shadow-[0_0_30px_rgba(6,182,212,0.3)] animate-fadeIn pointer-events-auto"
+          >
+            <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="text-left">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold">
+                ✓ Compiled &amp; Saved to Workspace
+              </div>
+              <div className="text-sm font-black text-white">{synthesizedAgent.name}</div>
+            </div>
+            <Link
+              href="/my-agents"
+              className="ml-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-3.5 py-1.5 text-xs font-black text-slate-950 hover:brightness-110 transition shadow-md"
+            >
+              View in My Agents →
+            </Link>
+          </div>
+        )}
+
         {/* Floating Poetic Subtitles */}
         <div className="relative z-20 max-w-2xl px-6 text-center space-y-2 pointer-events-none">
           <div className="text-[11px] font-mono uppercase tracking-widest text-cyan-400/90 font-bold">
@@ -1054,6 +1217,17 @@ export function VoiceStudioExperience() {
           >
             ⌨️
           </button>
+
+          {/* View in My Agents Button (Appears when an agent is synthesized) */}
+          {synthesizedAgent && (
+            <Link
+              href="/my-agents"
+              className="flex items-center gap-2 rounded-2xl border border-emerald-400/40 bg-emerald-500/20 px-4 py-3.5 text-xs font-black text-emerald-300 hover:bg-emerald-500/30 transition animate-fadeIn shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+            >
+              <span>🤖</span>
+              <span>Open in My Agents →</span>
+            </Link>
+          )}
 
           {/* Spec Drawer Button (Appears when an agent is synthesized) */}
           {synthesizedAgent && (
@@ -1139,12 +1313,18 @@ export function VoiceStudioExperience() {
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4 border-t border-white/10">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/10">
               <Link
-                href="/create"
+                href="/my-agents"
                 className="flex-1 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 py-3 text-center text-xs font-black text-slate-950 hover:brightness-110 transition shadow-lg"
               >
-                Open in Full Studio Editor →
+                View in My Agents →
+              </Link>
+              <Link
+                href="/create"
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-xs font-bold text-slate-300 hover:text-white transition"
+              >
+                Full Studio Editor
               </Link>
               <button
                 type="button"

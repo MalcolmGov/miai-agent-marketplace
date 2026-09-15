@@ -40,6 +40,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/catalogue/:id*",
+        destination: "/agents/:id*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

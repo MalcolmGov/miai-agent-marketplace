@@ -277,7 +277,7 @@ export function FlagshipShowcase() {
             <div className="flex gap-3 pt-2">
               {selectedAgent.familyId ? (
                 <Link
-                  href={`/catalogue/${selectedAgent.familyId}`}
+                  href={selectedAgent.familyId === "create" ? "/voice" : `/agents/${selectedAgent.familyId}`}
                   className="flex-1 rounded-xl bg-gradient-to-r from-emerald-400 to-[#00D2FF] py-3 text-center text-xs font-extrabold text-slate-950 hover:brightness-110 transition"
                 >
                   Configure & Rent Agent &rarr;
