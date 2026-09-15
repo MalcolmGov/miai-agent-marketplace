@@ -42,6 +42,7 @@
     "test:e2e:uat": "playwright test --grep @uat",
     "test:e2e:acceptance": "playwright test --grep '@smoke|@functional|@uat'",
     "test:e2e:handover": "playwright test --grep '@smoke|@functional|@uat|@handover'",
+    "test:zara": "node scripts/test-zara-e2e.mjs",
     "test:e2e:prod": "playwright test --grep @prod",
     "gate:prod": "node scripts/prod-e2e-gate.mjs",
     "wallet:stub": "node scripts/wallet-stub.mjs",

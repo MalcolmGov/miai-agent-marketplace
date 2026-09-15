@@ -11,7 +11,7 @@ type ShellMode = "business" | "consumer";
 const BUSINESS_HIDDEN = new Set(["learn", "live-ops", "quality"]);
 /** Consumer shell: prepaid chat only — Agents catalogue/ops are a Business product. */
 const CONSUMER_ALLOWED = new Set([
-  "home", "ask", "ai-agents-marketplace", "my-agents", "search", "history",
+  "home", "voice-studio", "ask", "ai-agents-marketplace", "my-agents", "search", "history",
   "learn", "my-tokens", "redeem-epin", "subscriptions", "consultants", "settings", "help",
 ]);
 /** Entire nav groups hidden in consumer mode (Agents ops are a Business product). */
@@ -121,6 +121,16 @@ function IconHistory() {
   );
 }
 
+function IconMic() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+      <line x1="12" x2="12" y1="19" y2="22" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconAgents() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
@@ -182,6 +192,13 @@ const GROUPS: NavGroup[] = [
     title: "CORE",
     items: [
       { id: "home", href: "/", label: "Home", icon: <IconHome />, exact: true },
+      {
+        id: "voice-studio",
+        href: "/voice",
+        label: "Zara Voice Studio",
+        icon: <IconMic />,
+        badge: { labelKey: "nav.badgeNew", tone: "live" },
+      },
       { id: "ask", href: "/ask", label: "Ask AI", icon: <IconAsk /> },
       {
         id: "ai-agents-marketplace",

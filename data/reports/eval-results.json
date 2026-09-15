@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T09:41:20.201Z",
+  "generatedAt": "2026-09-15T09:32:00.486Z",
   "mode": "static-only",
   "qualityLane": "mock-contract",
   "tokenCost": 0,
@@ -1439,6 +1439,26 @@
       "category": "vertical",
       "evalCount": 17,
       "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
+      "id": "agentic-commerce",
+      "family": "agentic-commerce",
+      "market": "global",
+      "category": "commerce",
+      "evalCount": 1,
+      "staticIssues": [
+        {
+          "severity": "medium",
+          "kind": "few_evals",
+          "detail": "1 evals"
+        }
+      ],
       "driftCount": 0,
       "runtimeFailed": 0,
       "runtimeTotal": 0,

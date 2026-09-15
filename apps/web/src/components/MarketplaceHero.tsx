@@ -7,8 +7,9 @@ import { useT } from "@/lib/locale";
 
 export function MarketplaceHero({
   familyCount,
-  agentCount = 500,
+  agentCount = 515,
   onSearch,
+  onSelectFeature,
 }: {
   familyCount: number;
   /** Indexed catalogue SKUs (100 families × 5 regions). */
@@ -16,6 +17,7 @@ export function MarketplaceHero({
   categoryCount?: number;
   workflowCount?: number;
   onSearch?: (term: string) => void;
+  onSelectFeature?: (feature: "voice-studio" | "boardroom" | "suites" | "connectors" | "catalogue") => void;
 }) {
   const router = useRouter();
   const [promptText, setPromptText] = useState("");
@@ -23,47 +25,68 @@ export function MarketplaceHero({
 
   const cards = [
     {
-      tag: "Compare",
-      tagColor: "bg-blue-500/15 text-blue-400 border-blue-500/25",
+      featureId: "voice-studio" as const,
+      tag: "Voice Studio Forge",
+      tagColor: "bg-[#00D2FF]/15 text-[#00D2FF] border-[#00D2FF]/40",
+      badge: "KILLER FEATURE",
+      badgeColor: "bg-[#00D2FF] text-slate-950",
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-          <path d="M18 20V10M12 20V4M6 20v-6" strokeLinecap="round" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+          <line x1="12" x2="12" y1="19" y2="22" />
         </svg>
       ),
-      query: "React vs Vue vs Svelte in 2026",
+      title: "Voice Studio · Instant Agent Forge",
+      desc: "Speak or describe any bottleneck — compiles custom AI agents in milliseconds ready to deploy.",
     },
     {
-      tag: "Research",
-      tagColor: "bg-emerald-500/15 text-emerald-400 border-emerald-500/25",
+      featureId: "boardroom" as const,
+      tag: "AI Boardroom",
+      tagColor: "bg-purple-500/15 text-purple-300 border-purple-500/40",
+      badge: "10-SEAT QUORUM",
+      badgeColor: "bg-purple-400 text-slate-950",
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-          <path d="M10 2v7.31M14 9.3V1.99M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0" strokeLinecap="round" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <circle cx="12" cy="11" r="3" />
+          <path d="m9 18 3-2 3 2" />
         </svg>
       ),
-      query: "Latest breakthroughs in AI agent architectures",
+      title: "AI Executive Boardroom",
+      desc: "Convene CFO, Legal, CISO & Ops for multi-agent consensus deliberation & contract interrogation.",
     },
     {
-      tag: "Draft",
-      tagColor: "bg-purple-500/15 text-purple-400 border-purple-500/25",
+      featureId: "suites" as const,
+      tag: "Agent Suites",
+      tagColor: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
+      badge: "5 BUNDLES",
+      badgeColor: "bg-emerald-400 text-slate-950",
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+          <rect width="7" height="7" x="3" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="14" rx="1" />
+          <rect width="7" height="7" x="3" y="14" rx="1" />
         </svg>
       ),
-      query: "Compelling B2B enterprise outreach email",
+      title: "Departmental Agent Suites",
+      desc: "Pre-assembled ecosystems for Finance ($310k saved), Revenue ($480k pipe), Ops & Legal.",
     },
     {
-      tag: "Explain",
-      tagColor: "bg-amber-500/15 text-amber-400 border-amber-500/25",
+      featureId: "connectors" as const,
+      tag: "Connectors",
+      tagColor: "bg-cyan-500/15 text-cyan-300 border-cyan-500/40",
+      badge: "14 INTEGRATIONS",
+      badgeColor: "bg-cyan-400 text-slate-950",
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="16" x2="12" y2="12" />
-          <line x1="12" y1="8" x2="12.01" y2="8" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+          <path d="M12 2v8M12 18v4M4.93 4.93l5.66 5.66M13.41 13.41l5.66 5.66" />
+          <circle cx="12" cy="14" r="4" />
         </svg>
       ),
-      query: "How autonomous multi-agent systems delegate tasks",
+      title: "Zara-Grade Connectors Directory",
+      desc: "OAuth 2.0 & MCP integrations for Xero, Sage, QuickBooks, HubSpot, Salesforce & Paystack.",
     },
   ];
 
@@ -78,8 +101,13 @@ export function MarketplaceHero({
     }
   }
 
-  function handleSelectCard(query: string) {
-    router.push(`/ask?q=${encodeURIComponent(query)}`);
+  function handleSelectCard(featureId: "voice-studio" | "boardroom" | "suites" | "connectors") {
+    if (onSelectFeature) {
+      onSelectFeature(featureId);
+    } else {
+      const el = document.getElementById(featureId);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
   }
 
   return (
@@ -94,35 +122,50 @@ export function MarketplaceHero({
         }}
       />
 
-      <div className="relative mx-auto max-w-3xl text-center">
+      <div className="relative mx-auto max-w-4xl text-center">
         {/* Signature headline */}
         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl">
           AI Agent Marketplace
         </h1>
         <p className="mt-3 text-sm text-[var(--muted)] sm:text-base">
-          Browse 500 enterprise AI agents across 100 industry families and 5 global markets.
+          Browse 515+ enterprise AI agents across 100 industry families, flagship suites, and 5 global markets.
         </p>
 
-        {/* 4 Interactive Suggestion Cards */}
+        {/* 4 Premier Interactive Spotlight Cards */}
         <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 text-left">
           {cards.map((card) => (
             <button
               key={card.tag}
               type="button"
-              onClick={() => handleSelectCard(card.query)}
-              className="group flex flex-col justify-between rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_80%,transparent)] p-3.5 transition-all hover:border-[var(--accent)] hover:bg-[color-mix(in_srgb,var(--bg-elev)_60%,transparent)] shadow-sm cursor-pointer"
+              onClick={() => handleSelectCard(card.featureId)}
+              className="group flex flex-col justify-between rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_85%,transparent)] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[color-mix(in_srgb,var(--bg-elev)_70%,transparent)] hover:shadow-[0_8px_24px_-8px_rgba(46,196,182,0.3)] shadow-sm cursor-pointer"
             >
-              <div className="flex items-center gap-2">
-                <span className={`flex h-6 w-6 items-center justify-center rounded-lg border ${card.tagColor}`}>
-                  {card.icon}
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text)]">
-                  {card.tag}
-                </span>
+              <div>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className={`flex h-7 w-7 items-center justify-center rounded-xl border ${card.tagColor}`}>
+                      {card.icon}
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-white">
+                      {card.tag}
+                    </span>
+                  </div>
+                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${card.badgeColor}`}>
+                    {card.badge}
+                  </span>
+                </div>
+                <h4 className="mt-2.5 text-sm font-bold text-white group-hover:text-[var(--accent)] transition-colors">
+                  {card.title}
+                </h4>
+                <p className="mt-1 text-xs text-[var(--muted)] group-hover:text-slate-200 transition-colors line-clamp-2 leading-relaxed">
+                  {card.desc}
+                </p>
               </div>
-              <p className="mt-2 text-xs text-[var(--muted)] group-hover:text-white transition-colors truncate">
-                {card.query}
-              </p>
+
+              <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-[11px] font-semibold text-[var(--accent)]">
+                <span>Explore Feature</span>
+                <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+              </div>
             </button>
           ))}
         </div>

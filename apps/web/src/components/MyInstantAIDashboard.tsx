@@ -247,6 +247,178 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
           </Link>
         </div>
       </section>
+
+      {/* Zara Autonomous Flagship Suite & Executive Workspaces */}
+      <section className="space-y-4 pt-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-[#00D2FF] shadow-[0_0_8px_#00D2FF]" />
+              <h2 className="text-sm sm:text-base font-semibold text-white">
+                Enterprise Autonomous Agents & Executive Suites
+              </h2>
+              <span className="rounded-full bg-[#00D2FF]/10 border border-[#00D2FF]/30 px-2 py-0.2 text-[10px] font-bold text-[#00D2FF]">
+                Zara Partner Suite
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Production-grade AI agents pre-configured with certified financial, ERP, and communication tools.
+            </p>
+          </div>
+
+          <Link
+            href="/agents"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#00D2FF] hover:underline"
+          >
+            <span>View all 10 Flagship Agents</span>
+            <span aria-hidden>&rarr;</span>
+          </Link>
+        </div>
+
+        {/* Executive Workspaces: Voice Studio & AI Boardroom */}
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+          {/* Voice Studio · Instant Agent Forge */}
+          <Link
+            href="/agents"
+            className="group relative overflow-hidden rounded-2xl border border-[rgba(0,210,255,0.3)] bg-gradient-to-br from-[#0c1f2d] via-[#091520] to-[#070e17] p-5 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#00D2FF]/70 hover:shadow-[0_8px_28px_-8px_rgba(0,210,255,0.4)]"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#00D2FF]/15 text-[#00D2FF] border border-[#00D2FF]/40 shadow-[0_0_12px_rgba(0,210,255,0.3)]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" x2="12" y1="19" y2="22" />
+                </svg>
+              </div>
+              <span className="rounded-full bg-gradient-to-r from-[#00D2FF] to-emerald-400 px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-slate-950 shadow-sm">
+                KILLER FEATURE · ZERO-CODE FORGE
+              </span>
+            </div>
+            <h3 className="mt-3.5 text-base font-bold text-white group-hover:text-[#00D2FF] transition-colors flex items-center gap-2">
+              <span>Voice Studio · Instant Agent Forge</span>
+            </h3>
+            <p className="mt-1 text-xs text-slate-400 leading-relaxed">
+              Speak or describe any business bottleneck — compiles a custom, production-ready AI agent in milliseconds for you to configure and deploy.
+            </p>
+            <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#00D2FF]">
+              <span>Forge Custom Agent in Milliseconds</span>
+              <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+            </div>
+          </Link>
+
+          {/* AI Boardroom */}
+          <Link
+            href="/agents#boardroom"
+            className="group relative overflow-hidden rounded-2xl border border-[rgba(124,58,237,0.25)] bg-gradient-to-br from-[#160d2e] via-[#0d091e] to-[#070512] p-5 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-400/60 hover:shadow-[0_8px_24px_-8px_rgba(124,58,237,0.3)]"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/30">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <circle cx="12" cy="11" r="3" />
+                  <path d="m9 18 3-2 3 2" />
+                </svg>
+              </div>
+              <span className="rounded-full bg-purple-400 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-slate-950">
+                Multi-Agent Consensus
+              </span>
+            </div>
+            <h3 className="mt-3.5 text-base font-bold text-white group-hover:text-purple-400 transition-colors">
+              AI Executive Boardroom
+            </h3>
+            <p className="mt-1 text-xs text-slate-400 leading-relaxed">
+              Convene CFO, Legal, CISO, and Ops agents to debate strategic decisions, interrogate contracts, and reach unanimous verdicts.
+            </p>
+            <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-purple-400">
+              <span>Convene the Board</span>
+              <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* 4 Flagship Agent Quick-Launch Cards */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Link
+            href="/catalogue/financial-reporting"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 backdrop-blur-sm transition hover:border-[#00D2FF]/40 hover:bg-[#121924] active:scale-[0.98]"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-[#00D2FF] uppercase tracking-wider">
+                FINANCE & CASH
+              </span>
+              <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2">
+                $180k/yr saved
+              </span>
+            </div>
+            <h4 className="mt-2.5 text-sm font-semibold text-white group-hover:text-[#00D2FF] transition-colors">
+              Autonomous AI CFO
+            </h4>
+            <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+              Continuous runway forecasting, variance analysis & cash flow automation.
+            </p>
+          </Link>
+
+          <Link
+            href="/catalogue/invoicing"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 backdrop-blur-sm transition hover:border-[#00D2FF]/40 hover:bg-[#121924] active:scale-[0.98]"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                ACCOUNTS PAYABLE
+              </span>
+              <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2">
+                $65k/yr saved
+              </span>
+            </div>
+            <h4 className="mt-2.5 text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">
+              Accounts Payable Specialist
+            </h4>
+            <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+              3-way PO matching, ERP batch posting, and fraud anomaly detection.
+            </p>
+          </Link>
+
+          <Link
+            href="/catalogue/cold-email-lead-gen"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 backdrop-blur-sm transition hover:border-[#00D2FF]/40 hover:bg-[#121924] active:scale-[0.98]"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">
+                SALES & REVENUE
+              </span>
+              <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2">
+                $240k pipe/mo
+              </span>
+            </div>
+            <h4 className="mt-2.5 text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
+              Autonomous Sales Rep (SDR)
+            </h4>
+            <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+              Multi-channel prospecting, dynamic pricing, and automatic CRM synchronization.
+            </p>
+          </Link>
+
+          <Link
+            href="/catalogue/executive-assistant"
+            className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 backdrop-blur-sm transition hover:border-[#00D2FF]/40 hover:bg-[#121924] active:scale-[0.98]"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">
+                OPERATIONS
+              </span>
+              <span className="rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2">
+                32 hrs/wk saved
+              </span>
+            </div>
+            <h4 className="mt-2.5 text-sm font-semibold text-white group-hover:text-purple-400 transition-colors">
+              Autonomous Chief of Staff
+            </h4>
+            <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+              Cross-functional project tracking, executive briefing, and task orchestration.
+            </p>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
