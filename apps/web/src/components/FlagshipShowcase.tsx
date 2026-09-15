@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ZARA_FLAGSHIP_AGENTS, type FlagshipAgent } from "@/lib/flagship-agents";
 import { VoiceStudioChamber } from "./VoiceStudioChamber";
 
@@ -96,21 +97,12 @@ function FlagshipIcon({ icon }: { icon: string }) {
 }
 
 export function FlagshipShowcase() {
+  const router = useRouter();
   const [selectedAgent, setSelectedAgent] = useState<FlagshipAgent | null>(null);
-  const [isVoiceStudioOpen, setIsVoiceStudioOpen] = useState(false);
-  const studioRef = useRef<HTMLDivElement>(null);
 
   function handleAgentClick(agent: FlagshipAgent) {
     if (agent.id === "flagship.voice_studio") {
-      setIsVoiceStudioOpen((prev) => {
-        const next = !prev;
-        if (next) {
-          setTimeout(() => {
-            studioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }, 80);
-        }
-        return next;
-      });
+      router.push("/voice");
     } else {
       setSelectedAgent(agent);
     }
@@ -135,14 +127,15 @@ export function FlagshipShowcase() {
             Pre-configured with certified toolsets, continuous compliance evals, and quantified ROI.
           </p>
         </div>
-      </div>
 
-      {/* KILLER FEATURE SPOTLIGHT: Zara Voice Studio · Only shown when voice card is clicked */}
-      {isVoiceStudioOpen && (
-        <div ref={studioRef} className="animate-fadeIn">
-          <VoiceStudioChamber onClose={() => setIsVoiceStudioOpen(false)} />
-        </div>
-      )}
+        <Link
+          href="/voice"
+          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-4 py-2 text-xs font-black text-slate-950 shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:brightness-110 active:scale-95 transition"
+        >
+          <span>⚡ Enter Voice Studio</span>
+          <span>→</span>
+        </Link>
+      </div>
 
       {/* Flagship Agent Cards Grid */}
       <div className="space-y-3">
@@ -220,11 +213,7 @@ export function FlagshipShowcase() {
                       isVoiceCard ? "text-cyan-300 font-bold" : "text-[#00D2FF]"
                     }`}
                   >
-                    {isVoiceCard
-                      ? isVoiceStudioOpen
-                        ? "▲ Active (Click to Close)"
-                        : "⚡ Open Voice Studio →"
-                      : "Configure →"}
+                    {isVoiceCard ? "Launch Voice Studio →" : "Configure →"}
                   </span>
                 </div>
               </div>

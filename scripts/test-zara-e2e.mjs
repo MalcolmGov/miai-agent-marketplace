@@ -52,6 +52,17 @@ async function runZaraE2E() {
     assert("/agents page check", false, err.message);
   }
 
+  // 3. /voice Dedicated Luxury Studio Page
+  try {
+    const voicePage = await fetchRoute("/voice");
+    assert("/voice renders HTTP 200", voicePage.status === 200);
+    assert("/voice contains Zara Voice Studio title", voicePage.text.includes("Zara Voice Studio"));
+    assert("/voice contains ElevenLabs Engine badge", voicePage.text.includes("ElevenLabs Turbo 2.5"));
+    assert("/voice contains Tap to Speak Naturally CTA", voicePage.text.includes("Tap to Speak Naturally"));
+  } catch (err) {
+    assert("/voice page check", false, err.message);
+  }
+
   // 3. /api/voice/speak API Endpoint
   try {
     const voicePost = await fetchRoute("/api/voice/speak", {
