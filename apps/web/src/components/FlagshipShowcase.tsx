@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ZARA_FLAGSHIP_AGENTS, type FlagshipAgent } from "@/lib/flagship-agents";
-import { VoiceStudioChamber } from "./VoiceStudioChamber";
+
 
 function FlagshipIcon({ icon }: { icon: string }) {
   switch (icon) {
