@@ -107,6 +107,14 @@ export function ActionsPanel({
   const slackConnected = Boolean(byId.get("slack")?.connected) || connected.includes("slack");
   const isWorkflow = isWorkflowFamilyId(agentId);
 
+  // Signed-out/expired-session API calls 401 under OIDC — route through login and straight
+  // back to this studio step instead of stranding the user on a bare "Unauthorized" error.
+  function redirectToLogin(): void {
+    if (typeof window === "undefined") return;
+    const here = `${window.location.pathname}${window.location.search}`;
+    window.location.href = `/login?return_to=${encodeURIComponent(here)}`;
+  }
+
   // Business Problem Area mapping for this agent
   const problemArea = useMemo(() => {
     return getBusinessProblemForAgent(agentId, agentName, agentCategory);
@@ -125,6 +133,10 @@ export function ActionsPanel({
           config: { api_key: "demo-sandbox-token", simulated: "true" },
         }),
       });
+      if (res.status === 401) {
+        redirectToLogin();
+        return;
+      }
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? t("actions.errorSaveCredentials"));
@@ -181,6 +193,10 @@ export function ActionsPanel({
 
   async function refreshStatus() {
     const res = await fetch("/api/oauth/status");
+    if (res.status === 401) {
+      redirectToLogin();
+      return;
+    }
     const data = await res.json();
     setStatus(data.oauth ?? []);
     if (typeof data.callbackUrl === "string") setCallbackUrl(data.callbackUrl);
@@ -243,6 +259,10 @@ export function ActionsPanel({
       if (connectorId === "email") qs.set("emailProvider", emailProvider);
 
       const res = await fetch(`/api/oauth/${connectorId}/start?${qs}`);
+      if (res.status === 401) {
+        redirectToLogin();
+        return;
+      }
       const data = await res.json();
       if (!res.ok) {
         setError(
@@ -264,11 +284,15 @@ export function ActionsPanel({
   async function disconnect(connectorId: string) {
     setBusy(connectorId);
     try {
-      await fetch(`/api/oauth/${connectorId}/disconnect`, {
+      const res = await fetch(`/api/oauth/${connectorId}/disconnect`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ agentId }),
       });
+      if (res.status === 401) {
+        redirectToLogin();
+        return;
+      }
       setTestStatus((prev) => {
         const next = { ...prev };
         delete next[connectorId];
@@ -295,6 +319,10 @@ export function ActionsPanel({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ agentId, connectorId, config }),
       });
+      if (res.status === 401) {
+        redirectToLogin();
+        return;
+      }
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? t("actions.errorSaveCredentials"));
@@ -320,6 +348,10 @@ export function ActionsPanel({
       });
       const latencyMs = Math.max(16, Math.round(performance.now() - start));
       const data = await res.json();
+      if (res.status === 401) {
+        redirectToLogin();
+        return;
+      }
       if (res.ok && data.ok) {
         setTestStatus((prev) => ({
           ...prev,

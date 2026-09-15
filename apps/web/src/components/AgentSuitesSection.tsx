@@ -34,9 +34,9 @@ const ENTERPRISE_SUITES: AgentSuite[] = [
     bundlePrice: "$1,800 / mo",
     agents: [
       { name: "AI CFO", role: "Cash runway & variance forecasting", icon: "📊", familyId: "financial-reporting" },
-      { name: "Accounts Payable Agent", role: "3-way PO matching & batch pay", icon: "🧾", familyId: "invoicing" },
+      { name: "Accounts Payable Agent", role: "3-way PO matching & batch pay", icon: "🧾", familyId: "procurement" },
       { name: "AR & Collections Agent", role: "Smart multi-channel recovery", icon: "💰", familyId: "bookkeeping" },
-      { name: "Autonomous Invoice Processing", role: "Touchless OCR ledger posting", icon: "📁", familyId: "invoicing" },
+      { name: "Autonomous Invoice Processing", role: "Touchless OCR ledger posting", icon: "📁", familyId: "bookkeeping" },
     ],
     connectors: ["xero", "sage", "quickbooks", "paystack"],
     description: "Unifies every financial touchpoint into an automated, zero-error ledger pipeline with daily runway simulations and board reporting.",

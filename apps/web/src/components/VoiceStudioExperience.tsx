@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 interface ISpeechRecognitionResult {
   [index: number]: { transcript: string };
   length: number;
+  isFinal?: boolean;
 }
 
 interface ISpeechRecognitionEvent {
@@ -78,6 +79,12 @@ export function VoiceStudioExperience() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const currentBufferSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // True while the mic is meant to be open (user's turn) — lets onend distinguish an
+  // intentional stop from the browser silently ending the session (no-speech timeout).
+  const listeningIntentRef = useRef(false);
+  // Bounded auto-restart budget so transient recognition drops don't kill the two-way
+  // loop, while hard failures (no mic, denied permission) still stop cleanly.
+  const restartAttemptsRef = useRef(0);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const shockwavesRef = useRef<Array<{ r: number; maxR: number; alpha: number }>>([]);
   const twoWayModeRef = useRef(true);
@@ -297,35 +304,74 @@ export function VoiceStudioExperience() {
       };
 
       recognition.onresult = (event: ISpeechRecognitionEvent) => {
+        // Accumulate the FULL utterance across every result segment. Iterating only from
+        // event.resultIndex drops earlier finalized segments and submits fragments.
+        let finalTranscript = "";
         let interimTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          interimTranscript += event.results[i][0].transcript;
+        for (let i = 0; i < event.results.length; ++i) {
+          const res = event.results[i];
+          if (res.isFinal) finalTranscript += res[0].transcript + " ";
+          else interimTranscript += res[0].transcript;
         }
 
-        const clean = interimTranscript.trim();
+        const clean = `${finalTranscript}${interimTranscript}`.trim();
         if (!clean) return;
 
         setSubtitles(`"${clean}"`);
+        restartAttemptsRef.current = 0; // live speech heard — restore the restart budget
 
         if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-        silenceTimerRef.current = setTimeout(() => {
-          stopListening();
-          handleVoiceInput(clean);
-        }, 850);
+        // Endpoint on a natural pause: quick once a segment finalizes, patient while only
+        // interim hypotheses stream in — people pause longer than 850ms mid-thought.
+        const hasFinalSegment = finalTranscript.trim().length > 0;
+        silenceTimerRef.current = setTimeout(
+          () => {
+            stopListening();
+            handleVoiceInput(clean);
+          },
+          hasFinalSegment ? 900 : 1700,
+        );
       };
 
       recognition.onerror = (event: { error?: string }) => {
         setIsListening(false);
-        setSpeakerTag("STANDBY");
-        if (event?.error === "not-allowed") {
-          setSubtitles("⚠️ Microphone permission denied. Please allow microphone access in your browser settings to enable two-way voice.");
+        // Hard failures must not auto-restart; transient ones (no-speech, network) are
+        // recovered by the bounded restart in onend below.
+        if (
+          event?.error === "not-allowed" ||
+          event?.error === "service-not-allowed" ||
+          event?.error === "audio-capture"
+        ) {
+          listeningIntentRef.current = false;
+          setSpeakerTag("STANDBY");
+          setSubtitles("⚠️ Microphone unavailable. Allow mic access in your browser settings, or use the text input below.");
         }
       };
 
       recognition.onend = () => {
         setIsListening(false);
+        // Chrome ends continuous recognition after ~10s of silence (no-speech) or on
+        // transient network drops. While it is still the user's turn, transparently
+        // re-open the mic so the two-way loop never dies silently.
+        if (
+          listeningIntentRef.current &&
+          recognitionRef.current === recognition &&
+          restartAttemptsRef.current < 3
+        ) {
+          restartAttemptsRef.current += 1;
+          setTimeout(() => {
+            if (listeningIntentRef.current) startListening();
+          }, 250);
+          return;
+        }
+        if (listeningIntentRef.current) {
+          listeningIntentRef.current = false;
+          setSpeakerTag("STANDBY");
+          setSubtitles("Mic paused — tap the microphone when you're ready to speak.");
+        }
       };
 
+      listeningIntentRef.current = true;
       recognitionRef.current = recognition;
       recognition.start();
     } catch {
@@ -334,6 +380,7 @@ export function VoiceStudioExperience() {
   }
 
   function stopListening() {
+    listeningIntentRef.current = false;
     if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
     if (recognitionRef.current) {
       try {
@@ -347,7 +394,6 @@ export function VoiceStudioExperience() {
   function handleVoiceInput(userSpokenText: string) {
     const clean = userSpokenText.trim();
     if (!clean) return;
-    const lower = clean.toLowerCase();
 
     // Check if the user is merely greeting or saying hello without specifying a problem/agent
     const isCasualGreeting =
@@ -355,43 +401,12 @@ export function VoiceStudioExperience() {
       /^(how\s+are\s+you|who\s+are\s+you|what\s+can\s+you\s+do|help|what\s+is\s+this|test|testing|can\s+you\s+hear\s+me)\b/i.test(clean) ||
       (clean.split(/\s+/).length <= 3 && /^(hi|hello|hey|yo|yes|ok|okay|morning|afternoon|evening|hi\s+zara|hello\s+zara|hey\s+zara)$/i.test(clean));
 
-    // Specific problem / agent intent indicators
+    // Specific problem / agent intent indicators. Word-boundary matched: substring checks
+    // on short tokens misroute everyday sentences ("with" contains "it", "three" contains "hr").
     const hasProblemOrAgentIntent =
-      lower.includes("agent") ||
-      lower.includes("build") ||
-      lower.includes("create") ||
-      lower.includes("make") ||
-      lower.includes("need") ||
-      lower.includes("want") ||
-      lower.includes("automate") ||
-      lower.includes("problem") ||
-      lower.includes("issue") ||
-      lower.includes("bottleneck") ||
-      lower.includes("invoice") ||
-      lower.includes("debt") ||
-      lower.includes("collection") ||
-      lower.includes("order") ||
-      lower.includes("courier") ||
-      lower.includes("shipping") ||
-      lower.includes("return") ||
-      lower.includes("shopify") ||
-      lower.includes("slack") ||
-      lower.includes("it") ||
-      lower.includes("access") ||
-      lower.includes("password") ||
-      lower.includes("support") ||
-      lower.includes("customer") ||
-      lower.includes("client") ||
-      lower.includes("lead") ||
-      lower.includes("sales") ||
-      lower.includes("marketing") ||
-      lower.includes("hr") ||
-      lower.includes("onboard") ||
-      lower.includes("finance") ||
-      lower.includes("accounting") ||
-      lower.includes("xero") ||
-      lower.includes("paystack") ||
-      lower.includes("webhook");
+      /\b(agent|agents|build|create|make|need|want|automate|automation|problem|problems|issue|issues|bottleneck|invoice|invoices|debt|debts|collection|collections|order|orders|courier|shipping|delivery|return|returns|shopify|slack|helpdesk|vpn|access|password|passwords|support|customer|customers|client|clients|lead|leads|sales|marketing|hr|payroll|onboarding|finance|accounting|xero|paystack|webhook|webhooks)\b/i.test(
+        clean,
+      );
 
     if (isCasualGreeting && !hasProblemOrAgentIntent) {
       respondToGreeting(clean);
@@ -411,7 +426,7 @@ export function VoiceStudioExperience() {
     } else if (lower.includes("how are you")) {
       reply = "I'm doing well, thank you! I'm ready to architect custom agents for your business. Describe a workflow or operational bottleneck you'd like to automate.";
     } else {
-      reply = "Hello Malcolm! I'm Zara, your operations architect. Tell me what operational bottleneck or agent you need, and I will compile and deploy it directly into your My Agents tab.";
+      reply = "Hello! I'm Zara, your operations architect. Tell me what operational bottleneck or agent you need, and I will compile and deploy it directly into your My Agents tab.";
     }
 
     setSpeakerTag("ZARA");
@@ -429,7 +444,7 @@ export function VoiceStudioExperience() {
     const lower = userSpokenText.toLowerCase();
     let compiled: SynthesizedAgent;
 
-    if (lower.includes("invoice") || lower.includes("collection") || lower.includes("debt") || lower.includes("xero")) {
+    if (/\b(invoice|invoices|collection|collections|debt|debts|xero|receivable|receivables)\b/i.test(lower)) {
       compiled = {
         name: "AR Collections Specialist",
         role: "Automated debt recovery, Xero ledger reconciliation & Paystack payment arrangements",
@@ -437,7 +452,7 @@ export function VoiceStudioExperience() {
         tools: ["Xero Invoices API", "Paystack Links", "Aging Scheduler", "POPIA Ledger"],
         systemPrompt: "You are the AR Collections Specialist. Manage overdue receivables and issue payment plans compliant with National Credit Act guidelines.",
       };
-    } else if (lower.includes("order") || lower.includes("shopify") || lower.includes("delivery") || lower.includes("return") || lower.includes("courier")) {
+    } else if (/\b(order|orders|shopify|delivery|deliveries|return|returns|courier|waybill|waybills|shipping)\b/i.test(lower)) {
       compiled = {
         name: "Omnichannel Order Specialist",
         role: "Autonomous courier waybill tracking, size exchanges & instant refund management",
@@ -445,7 +460,7 @@ export function VoiceStudioExperience() {
         tools: ["Shopify GraphQL", "WhatsApp Cloud Webhook", "The Courier Guy", "Store Credit Emitter"],
         systemPrompt: "You are the Omnichannel Order Specialist. Track waybills and process size exchange authorizations autonomously within approved thresholds.",
       };
-    } else if (lower.includes("it") || lower.includes("slack") || lower.includes("access") || lower.includes("password") || lower.includes("vpn")) {
+    } else if (/\b(slack|vpn|password|passwords|access|mfa|okta|servicenow)\b/i.test(lower)) {
       compiled = {
         name: "SecOps Identity Concierge",
         role: "Role-based Slack channel provisioning, temporary VPN credentials & MFA resets",
@@ -453,7 +468,7 @@ export function VoiceStudioExperience() {
         tools: ["Okta OAuth2", "ServiceNow REST", "Slack Admin API", "Audit Hash Ledger"],
         systemPrompt: "You are the SecOps Identity Concierge. Handle access requests and credential rotation with zero-trust verification.",
       };
-    } else if (lower.includes("support") || lower.includes("customer") || lower.includes("whatsapp") || lower.includes("ticket") || lower.includes("helpdesk")) {
+    } else if (/\b(support|customer|customers|whatsapp|ticket|tickets|helpdesk|client|clients)\b/i.test(lower)) {
       compiled = {
         name: "Customer Experience Concierge",
         role: "24/7 client ticket resolution, sentiment-aware escalation & WhatsApp concierge",
@@ -461,7 +476,7 @@ export function VoiceStudioExperience() {
         tools: ["WhatsApp Cloud Webhook", "Zendesk API", "Knowledge RAG", "Sentiment Guardrail"],
         systemPrompt: "You are the Customer Experience Concierge. Resolve client inquiries autonomously and escalate edge cases with full context.",
       };
-    } else if (lower.includes("lead") || lower.includes("sales") || lower.includes("crm") || lower.includes("hubspot") || lower.includes("prospect")) {
+    } else if (/\b(lead|leads|sales|crm|hubspot|prospect|prospects|pipeline|qualify|qualification)\b/i.test(lower)) {
       compiled = {
         name: "Revenue Operations Prospector",
         role: "Autonomous lead scoring, HubSpot CRM enrichment & Calendly meeting dispatch",
@@ -532,11 +547,18 @@ export function VoiceStudioExperience() {
     setBargeInFlash(true);
     shockwavesRef.current.push({ r: 25, maxR: 280, alpha: 1.0 });
     setSpeakerTag("STANDBY");
-    setSubtitles("⚡ Interrupted instantaneously. Speak naturally or tap below.");
+    setSubtitles("⚡ Interrupted — go ahead, I'm listening.");
 
     setTimeout(() => {
       setBargeInFlash(false);
     }, 1400);
+
+    // Interrupting means the user wants the floor — hand the mic straight over instead
+    // of making them tap a second time.
+    restartAttemptsRef.current = 0;
+    setTimeout(() => {
+      startListening();
+    }, 300);
   }
 
   function handleVoiceToggle() {
@@ -549,6 +571,7 @@ export function VoiceStudioExperience() {
       stopListening();
       return;
     }
+    restartAttemptsRef.current = 0;
     startListening();
   }
 

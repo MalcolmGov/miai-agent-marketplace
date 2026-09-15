@@ -78,5 +78,8 @@ const GATED_PAGE_PREFIXES = ["/my-agents", "/workspace", "/ops", "/insights", "/
 export function isGatedBusinessPage(pathname: string): boolean {
   if (pathname.startsWith("/api/")) return false;
   if (pathname.startsWith("/agents/") && !pathname.startsWith("/agents/v1/")) return true;
+  // /catalogue/:id is a rewrite alias for /agents/:id (see next.config.ts) — gate it
+  // identically, otherwise the alias silently bypasses the studio login gate.
+  if (pathname.startsWith("/catalogue/")) return true;
   return GATED_PAGE_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }

@@ -359,7 +359,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
           </Link>
 
           <Link
-            href="/catalogue/invoicing"
+            href="/catalogue/procurement"
             className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 backdrop-blur-sm transition hover:border-[#00D2FF]/40 hover:bg-[#121924] active:scale-[0.98]"
           >
             <div className="flex items-center justify-between">
@@ -379,7 +379,7 @@ export function MyInstantAIDashboard({ tokenBalance = 11716 }: { tokenBalance?: 
           </Link>
 
           <Link
-            href="/catalogue/cold-email-lead-gen"
+            href="/catalogue/sales-qualifier"
             className="group rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#121924]/80 p-4 backdrop-blur-sm transition hover:border-[#00D2FF]/40 hover:bg-[#121924] active:scale-[0.98]"
           >
             <div className="flex items-center justify-between">

@@ -168,8 +168,8 @@ describe("resolveAuth business-session branch (isolation + owner)", () => {
 
 describe("business page gate (opt-in, safe direction)", () => {
   it("gates the console pages and the studio, but not the hub/embed/public pages", () => {
-    // gated business console pages + the studio
-    for (const p of ["/my-agents", "/workspace", "/ops", "/insights", "/create", "/agents/us-hotel-guest"]) {
+    // gated business console pages + the studio (incl. its /catalogue/:id rewrite alias)
+    for (const p of ["/my-agents", "/workspace", "/ops", "/insights", "/create", "/agents/us-hotel-guest", "/catalogue/us-hotel-guest"]) {
       assert.equal(paths.isGatedBusinessPage(p), true, `${p} should be gated`);
     }
     // open: the /agents hub, the embed asset, public/consumer pages, and all API paths

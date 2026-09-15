@@ -68,7 +68,7 @@ export const ZARA_FLAGSHIP_AGENTS: FlagshipAgent[] = [
   {
     id: "flagship.accounts_payable",
     name: "Accounts Payable Agent",
-    familyId: "invoicing",
+    familyId: "procurement",
     cat: "Finance",
     icon: "receipt",
     roi: "R35,000 / mo",
@@ -110,7 +110,7 @@ export const ZARA_FLAGSHIP_AGENTS: FlagshipAgent[] = [
   {
     id: "flagship.invoice_processing",
     name: "Invoice Processing Agent",
-    familyId: "invoicing",
+    familyId: "bookkeeping",
     cat: "Finance",
     icon: "files",
     roi: "R32,000 / mo",
@@ -131,7 +131,7 @@ export const ZARA_FLAGSHIP_AGENTS: FlagshipAgent[] = [
   {
     id: "flagship.procurement",
     name: "Procurement Agent",
-    familyId: "operations",
+    familyId: "procurement",
     cat: "Operations",
     icon: "package",
     roi: "R40,000 / mo",
