@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     }
 
     // Call ElevenLabs Neural Streaming API with optimized latency and premier warmth settings
-    const elResp = await fetch(
+    let elResp = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream?optimize_streaming_latency=3`,
       {
         method: "POST",
@@ -53,9 +53,37 @@ export async function POST(req: Request) {
       }
     );
 
+    // Universal fallback: if the custom voice ID is not found or fails on this account, retry with standard voice (Rachel)
+    const universalFallbackVoice = "21m00Tcm4TlvDq8ikWAM";
+    if ((!elResp.ok || !elResp.body) && voiceId !== universalFallbackVoice) {
+      const errDetail = await elResp.text().catch(() => "");
+      console.warn(`[Voice API] Voice ${voiceId} failed (${elResp.status}: ${errDetail}). Retrying with universal voice ${universalFallbackVoice}...`);
+      elResp = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${universalFallbackVoice}/stream?optimize_streaming_latency=3`,
+        {
+          method: "POST",
+          headers: {
+            "xi-api-key": apiKey,
+            "Content-Type": "application/json",
+            Accept: "audio/mpeg",
+          },
+          body: JSON.stringify({
+            text,
+            model_id: modelId,
+            voice_settings: {
+              stability: 0.38,
+              similarity_boost: 0.88,
+              style: 0.24,
+              use_speaker_boost: true,
+            },
+          }),
+        }
+      );
+    }
+
     if (!elResp.ok || !elResp.body) {
       const errText = await elResp.text().catch(() => "ElevenLabs upstream error");
-      console.warn("[Voice API] ElevenLabs error:", elResp.status, errText);
+      console.warn("[Voice API] ElevenLabs final error:", elResp.status, errText);
       return NextResponse.json({
         ok: true,
         fallback: true,

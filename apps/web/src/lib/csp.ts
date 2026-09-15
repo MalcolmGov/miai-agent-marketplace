@@ -16,6 +16,7 @@ export function buildContentSecurityPolicy(nonce: string): string {
     `script-src ${scriptSrc.join(" ")}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
+    "media-src 'self' blob: data:",
     "font-src 'self' data:",
     "connect-src 'self' https: wss:",
     "worker-src 'self' blob:",
