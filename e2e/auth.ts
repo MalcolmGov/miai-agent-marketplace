@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import type { BrowserContext } from "@playwright/test";
+import type { APIRequestContext, BrowserContext } from "@playwright/test";
 
 /**
  * Authenticated-E2E session minting.
@@ -34,6 +34,29 @@ export function e2eSessionConfigured(): boolean {
 
 export const E2E_SESSION_SKIP_REASON =
   "Needs E2E_SESSION_SECRET (target's MIAI_SESSION_SECRET) — set it to run authenticated smoke tests; see docs/PROD_E2E.md";
+
+/** Mock x-roles headers only authenticate when the target itself runs mock/dev auth. */
+export const MOCK_ROLES_SKIP_REASON =
+  "Mock x-roles identity only applies under mock/dev auth — the target runs MIAI_AUTH_MODE=oidc";
+
+/** Read the target's auth mode from /api/health ("oidc" | "mock" | "dev" | ""). */
+export async function targetAuthMode(request: APIRequestContext): Promise<string> {
+  try {
+    const res = await request.get("/api/health");
+    const body = (await res.json()) as { authMode?: string };
+    return String(body?.authMode || "");
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Session headers for API specs, or undefined on non-OIDC targets / without a secret —
+ * in those modes the config's mock x-roles headers handle auth as before.
+ */
+export function sessionHeaders(): Record<string, string> | undefined {
+  return e2eSessionConfigured() ? authHeaders() : undefined;
+}
 
 function b64url(input: string): string {
   return Buffer.from(input, "utf8").toString("base64url");

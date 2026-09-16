@@ -1,7 +1,15 @@
 import { test, expect } from "@playwright/test";
 import { SMOKE_AGENT_ID, dismissConsent } from "../helpers";
+import { authenticateContext, e2eSessionConfigured, E2E_SESSION_SKIP_REASON } from "../auth";
 
+// Studio chat is a gated surface under OIDC — minted session required.
 test.describe("UAT · unsafe refusal path @uat @handover", () => {
+  test.skip(!e2eSessionConfigured(), E2E_SESSION_SKIP_REASON);
+
+  test.beforeEach(async ({ context, baseURL }) => {
+    await authenticateContext(context, baseURL ?? "http://127.0.0.1:3000");
+  });
+
   test("sandbox refuses card details in chat UI", async ({ page }) => {
     test.setTimeout(90_000);
     await dismissConsent(page);
