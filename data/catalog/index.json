@@ -1526,6 +1526,117 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-sales-closer",
+    "name": "Africa Sales Closer",
+    "tier": "pro",
+    "category": "sales",
+    "market": "africa",
+    "summary": "Africa Sales Closer — Sales Closer — Always-on salesperson for website, app and WhatsApp — generates and qualifies leads conversationally, recommends grounded options, handles objections, books meeti…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack",
+      "stripe"
+    ]
+  },
+  {
+    "id": "asia-sales-closer",
+    "name": "Asia Sales Closer",
+    "tier": "pro",
+    "category": "sales",
+    "market": "asia",
+    "summary": "Asia Sales Closer — Sales Closer — Always-on salesperson for website, app and WhatsApp — generates and qualifies leads conversationally, recommends grounded options, handles objections, books meeti…",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack",
+      "stripe"
+    ]
+  },
+  {
+    "id": "eu-sales-closer",
+    "name": "EU Sales Closer",
+    "tier": "pro",
+    "category": "sales",
+    "market": "eu",
+    "summary": "EU Sales Closer — Sales Closer — Always-on salesperson for website, app and WhatsApp — generates and qualifies leads conversationally, recommends grounded options, handles objections, books meeti…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack",
+      "stripe"
+    ]
+  },
+  {
+    "id": "oceania-sales-closer",
+    "name": "Oceania Sales Closer",
+    "tier": "pro",
+    "category": "sales",
+    "market": "oceania",
+    "summary": "Oceania Sales Closer — Sales Closer — Always-on salesperson for website, app and WhatsApp — generates and qualifies leads conversationally, recommends grounded options, handles objections, books meeti…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack",
+      "stripe"
+    ]
+  },
+  {
+    "id": "us-sales-closer",
+    "name": "US Sales Closer",
+    "tier": "pro",
+    "category": "sales",
+    "market": "us",
+    "summary": "US Sales Closer — Always-on salesperson for website, app and WhatsApp — generates and qualifies leads conversationally, recommends grounded options, handles objections, books meetings, issues quo…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "google_calendar",
+      "hubspot",
+      "slack",
+      "stripe"
+    ]
+  },
+  {
     "id": "africa-sales-development-rep",
     "name": "Africa Sales Development Rep",
     "tier": "pro",

@@ -1765,6 +1765,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-sales-closer",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_offerings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "qualify_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_quote",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-sales-development-rep",
     "phase": 1,
     "bindings": [
@@ -3963,6 +3997,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "get_return_status",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-sales-closer",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_offerings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "qualify_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_quote",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
       },
       {
         "tool": "handoff_to_human",
@@ -6297,6 +6365,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "get_return_status",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-sales-closer",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_offerings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "qualify_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_meeting",
+        "connector": "m365_calendar"
+      },
+      {
+        "tool": "create_quote",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
       },
       {
         "tool": "handoff_to_human",
@@ -8845,6 +8947,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-sales-closer",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_offerings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "qualify_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_quote",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-sales-development-rep",
     "phase": 1,
     "bindings": [
@@ -9581,6 +9717,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "get_return_status",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "sales-closer",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_offerings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "qualify_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_quote",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
       },
       {
         "tool": "handoff_to_human",
@@ -11501,6 +11671,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "get_return_status",
         "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-sales-closer",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_offerings",
+        "connector": "webhook"
+      },
+      {
+        "tool": "qualify_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "book_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_quote",
+        "connector": "webhook"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
       },
       {
         "tool": "handoff_to_human",

@@ -2624,6 +2624,37 @@
     "catalogueReady": true
   },
   {
+    "id": "sales-closer",
+    "name": "Sales Closer",
+    "tier": "pro",
+    "category": "sales",
+    "summary": "Always-on salesperson for website, app and WhatsApp — generates and qualifies leads conversationally, recommends grounded options, handles objections, books meetings, issues quote references and sends secure payment links, with confirm-before-write and honest-selling guardrails built in.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "za": "africa-sales-closer",
+      "africa": "africa-sales-closer",
+      "asia": "asia-sales-closer",
+      "eu": "eu-sales-closer",
+      "oceania": "oceania-sales-closer",
+      "us": "us-sales-closer"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": true,
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
+  },
+  {
     "id": "sales-development-rep",
     "name": "Sales Development Rep",
     "tier": "pro",
