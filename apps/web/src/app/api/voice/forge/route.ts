@@ -10,6 +10,7 @@ import {
 } from "@/lib/marketplace-assistant";
 import { embedKeyFor, upsertWorkspaceAgent } from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { isChatLanguage, replyLanguageSystemAppend } from "@/lib/chat-languages";
 import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
 
 export const dynamic = "force-dynamic";
@@ -54,9 +55,9 @@ export async function POST(req: Request) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
 
-  let body: { transcript?: string };
+  let body: { transcript?: string; replyLanguage?: string };
   try {
-    body = (await req.json()) as { transcript?: string };
+    body = (await req.json()) as { transcript?: string; replyLanguage?: string };
   } catch {
     return apiErrorFromRequest(req, 400, "Invalid JSON body");
   }
@@ -65,6 +66,10 @@ export async function POST(req: Request) {
   if (transcript.split(/\s+/).filter(Boolean).length < 3) {
     return apiErrorFromRequest(req, 400, "Tell me a bit more — describe the workflow you want to automate.");
   }
+
+  // Spoken language chosen in the studio — steers the model's understanding and the reply.
+  const requestedLang = (body.replyLanguage || "en").trim().toLowerCase();
+  const replyLanguage = isChatLanguage(requestedLang) ? requestedLang : "en";
 
   const basePkg = await getMarketplaceAssistantPackage();
   if (!basePkg) return apiErrorFromRequest(req, 503, "Voice architect unavailable");
@@ -98,7 +103,12 @@ export async function POST(req: Request) {
     '{"mode":"custom","name":"<2-4 word title>","role":"<one line>","category":"<sales|operations|finance|support|commerce|custom>","systemPrompt":"<3-5 sentence agent persona for THIS business>","tools":["<4-6 snake_case tool ids>"],"reply":"<2-3 warm sentences, no emoji>"}',
     "Rules: prefer recommend whenever a family reasonably fits. NEVER invent a family id — use only ids from the catalogue. Never promise prices. The reply is spoken aloud, so keep it natural.",
     "CRITICAL: Your ENTIRE response must be only that single JSON object — no prose before or after, no markdown fences. If you catch yourself writing a sentence, stop and output the JSON instead.",
-  ].join("\n\n");
+    replyLanguage !== "en"
+      ? `The user is speaking ${replyLanguage}. Understand the transcript in ${replyLanguage} and write every "reply" field in ${replyLanguage} (native script where applicable).`
+      : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 
   let decision: Decision | null = null;
   try {
@@ -112,7 +122,10 @@ export async function POST(req: Request) {
         model: pkg.manifest.model.primary,
         mode: "live",
         state: "live",
-        systemAppend: instructions,
+        replyLanguage,
+        systemAppend: [instructions, replyLanguage !== "en" ? replyLanguageSystemAppend(replyLanguage) : ""]
+          .filter(Boolean)
+          .join("\n\n"),
         sessionId: `voice-forge-${randomUUID()}`,
       },
       { wallet: createWalletAdapter() },

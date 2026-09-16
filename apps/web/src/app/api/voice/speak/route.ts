@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    let body: { text?: string; voiceId?: string; modelId?: string } = {};
+    let body: { text?: string; voiceId?: string; modelId?: string; languageCode?: string } = {};
     try {
       body = await req.json();
     } catch {
@@ -20,6 +20,12 @@ export async function POST(req: Request) {
     // deployments.
     const voiceId = body.voiceId || process.env.ELEVENLABS_VOICE_ID || "dOH0XAoGHoc4a487cs6i";
     const modelId = body.modelId || process.env.ELEVENLABS_MODEL_ID || "eleven_turbo_v2_5";
+    // Optional spoken language (2-letter ISO 639-1). Only non-English codes are forwarded — the
+    // default English path stays byte-identical (avoids changing behaviour for existing deploys).
+    const languageCode =
+      typeof body.languageCode === "string" && /^[a-z]{2}$/.test(body.languageCode) && body.languageCode !== "en"
+        ? body.languageCode
+        : "";
 
     if (!apiKey) {
       // In local dev without ElevenLabs API key, signal browser speech fallback
@@ -45,6 +51,7 @@ export async function POST(req: Request) {
         body: JSON.stringify({
           text,
           model_id: modelId,
+          ...(languageCode ? { language_code: languageCode } : {}),
           voice_settings: {
             // 0.5 = steadier enterprise delivery (matches the approved voice samples; 0.38
             // was expressive to the point of variability).
@@ -74,6 +81,7 @@ export async function POST(req: Request) {
           body: JSON.stringify({
             text,
             model_id: modelId,
+            ...(languageCode ? { language_code: languageCode } : {}),
             voice_settings: {
               stability: 0.5,
               similarity_boost: 0.88,
