@@ -58,9 +58,9 @@ export interface MarketPack {
 
 const FAMILY_PREFIX_RE = /^(us|eu|africa|asia|oceania)-/;
 
-/** Indexed commercial catalogue: 100 families × 5 regions (ZA is Africa, not a 6th market). */
+/** Indexed commercial catalogue: 101 families × 5 regions (ZA is Africa, not a 6th market). */
 export const INDEXED_MARKETS = ["us", "eu", "africa", "asia", "oceania"] as const;
-export const INDEXED_AGENT_COUNT = 500;
+export const INDEXED_AGENT_COUNT = 505;
 
 function catalogDir(): string {
   return path.resolve(process.cwd(), process.env.CATALOG_DIR ?? "../../data/catalog");

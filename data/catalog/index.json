@@ -1526,6 +1526,112 @@
     "readiness": "catalogue-ready"
   },
   {
+    "id": "africa-sales-development-rep",
+    "name": "Africa Sales Development Rep",
+    "tier": "pro",
+    "category": "sales",
+    "market": "africa",
+    "summary": "Africa Sales Development Rep — Sales Development Rep — Runs outbound prospecting end-to-end — researches prospects, drafts personalised multi-touch outreach, books intro meetings and keeps the CRM clean, with…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
+  },
+  {
+    "id": "asia-sales-development-rep",
+    "name": "Asia Sales Development Rep",
+    "tier": "pro",
+    "category": "sales",
+    "market": "asia",
+    "summary": "Asia Sales Development Rep — Sales Development Rep — Runs outbound prospecting end-to-end — researches prospects, drafts personalised multi-touch outreach, books intro meetings and keeps the CRM clean, with…",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
+  },
+  {
+    "id": "eu-sales-development-rep",
+    "name": "EU Sales Development Rep",
+    "tier": "pro",
+    "category": "sales",
+    "market": "eu",
+    "summary": "EU Sales Development Rep — Sales Development Rep — Runs outbound prospecting end-to-end — researches prospects, drafts personalised multi-touch outreach, books intro meetings and keeps the CRM clean, with…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
+  },
+  {
+    "id": "oceania-sales-development-rep",
+    "name": "Oceania Sales Development Rep",
+    "tier": "pro",
+    "category": "sales",
+    "market": "oceania",
+    "summary": "Oceania Sales Development Rep — Sales Development Rep — Runs outbound prospecting end-to-end — researches prospects, drafts personalised multi-touch outreach, books intro meetings and keeps the CRM clean, with…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
+  },
+  {
+    "id": "us-sales-development-rep",
+    "name": "US Sales Development Rep",
+    "tier": "pro",
+    "category": "sales",
+    "market": "us",
+    "summary": "US Sales Development Rep — Runs outbound prospecting end-to-end — researches prospects, drafts personalised multi-touch outreach, books intro meetings and keeps the CRM clean, with confirm-before-write an…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 7,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "google_calendar",
+      "slack"
+    ]
+  },
+  {
     "id": "africa-sales-forecasting",
     "name": "Africa Sales Forecasting Desk",
     "tier": "pro",

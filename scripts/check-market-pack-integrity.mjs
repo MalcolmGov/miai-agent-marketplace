@@ -2,7 +2,7 @@
 /**
  * Catalogue integrity gate (Phase 5 C8/C9).
  *
- * - index.json has exactly 500 agents (100 families × 5 markets)
+ * - index.json has exactly 505 agents (101 families × 5 markets)
  * - every families.markets.* id exists in index.json
  * - each family has us/eu/africa/asia/oceania when present in markets
  * - unprefixed *.agent.json packs may exist on disk (legacy ZA aliases) but must NOT appear in index
@@ -23,11 +23,11 @@ const indexIds = new Set(index.map((a) => a.id));
 const errors = [];
 const warnings = [];
 
-if (!Array.isArray(index) || index.length !== 500) {
-  errors.push(`index.json expected 500 agents, got ${index.length}`);
+if (!Array.isArray(index) || index.length !== 505) {
+  errors.push(`index.json expected 505 agents, got ${index.length}`);
 }
-if (!Array.isArray(families) || families.length !== 100) {
-  errors.push(`families.json expected 100 families, got ${families.length}`);
+if (!Array.isArray(families) || families.length !== 101) {
+  errors.push(`families.json expected 101 families, got ${families.length}`);
 }
 
 for (const f of families) {

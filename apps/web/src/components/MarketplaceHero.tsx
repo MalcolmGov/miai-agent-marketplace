@@ -7,12 +7,12 @@ import { useT } from "@/lib/locale";
 
 export function MarketplaceHero({
   familyCount,
-  agentCount = 515,
+  agentCount = 520,
   onSearch,
   onSelectFeature,
 }: {
   familyCount: number;
-  /** Indexed catalogue SKUs (100 families × 5 regions). */
+  /** Indexed catalogue SKUs (101 families × 5 regions). */
   agentCount?: number;
   categoryCount?: number;
   workflowCount?: number;
@@ -128,7 +128,7 @@ export function MarketplaceHero({
           AI Agent Marketplace
         </h1>
         <p className="mt-3 text-sm text-[var(--muted)] sm:text-base">
-          Browse 515+ enterprise AI agents across 100 industry families, flagship suites, and 5 global markets.
+          Browse 520+ enterprise AI agents across 101 industry families, flagship suites, and 5 global markets.
         </p>
 
         {/* 4 Premier Interactive Spotlight Cards */}
@@ -213,7 +213,7 @@ export function MarketplaceHero({
             type="text"
             value={promptText}
             onChange={(e) => setPromptText(e.target.value)}
-            placeholder="Search 500 AI agents (e.g. Autonomous Shopping Agent, Dental, IT)..."
+            placeholder="Search 505 AI agents (e.g. Autonomous Shopping Agent, Dental, IT)..."
             className="flex-1 bg-transparent px-2.5 py-2 text-base sm:text-sm text-white placeholder-[var(--muted-dim)] focus:outline-none"
           />
 
