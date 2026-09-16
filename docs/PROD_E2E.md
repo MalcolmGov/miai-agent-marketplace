@@ -77,7 +77,13 @@ redeploy, re-run.
 The boot gate is fully automated. The **authenticated** journeys need a real OIDC session (the
 staging `@smoke`/`@handover` suites use mock-auth headers and won't apply under real OIDC), so run
 these against the environment with a real login (or a session token injected into the request
-context):
+context).
+
+For the business-session surface (studio pages, rent/configure APIs), [`e2e/auth.ts`](../e2e/auth.ts)
+can mint the standard HS256 session cookie headlessly — set `E2E_SESSION_SECRET` (the target's
+`MIAI_SESSION_SECRET`) and optionally `E2E_BUSINESS_EMAIL` (must be on the invite allowlist), then
+run `pnpm smoke:staging`. The token passes the same signature + audience + allowlist checks as a
+real login. See [TESTING.md](./TESTING.md#authenticated-tests-against-oidc-environments).
 
 1. **OIDC sign-in** end to end → authenticated session.
 2. **Live agent turn** on the real model → response with metered token usage.

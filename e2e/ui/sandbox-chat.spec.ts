@@ -1,7 +1,15 @@
 import { test, expect } from "@playwright/test";
 import { SMOKE_AGENT_ID } from "../helpers";
+import { authenticateContext, e2eSessionConfigured, E2E_SESSION_SKIP_REASON } from "../auth";
 
+// Studio chat lives on the gated /agents/:id page under OIDC — minted session required.
 test.describe("Sandbox chat critical path @uat @handover", () => {
+  test.skip(!e2eSessionConfigured(), E2E_SESSION_SKIP_REASON);
+
+  test.beforeEach(async ({ context, baseURL }) => {
+    await authenticateContext(context, baseURL ?? "http://127.0.0.1:3000");
+  });
+
   test("sends a message and gets a studio response bubble", async ({ page }) => {
     test.setTimeout(120_000);
     await page.goto(`/agents/${SMOKE_AGENT_ID}?step=try`);

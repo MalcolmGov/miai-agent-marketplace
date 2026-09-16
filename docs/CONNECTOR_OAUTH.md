@@ -19,9 +19,14 @@ OAuth `state` is HMAC-signed (self-contained) so consent → callback works acro
 
 ## Why you see “Env missing”
 
-The Connect button is only enabled when both client id **and** secret exist in the process env.  
-Slack works today because `SLACK_OAUTH_CLIENT_ID` / `SLACK_OAUTH_CLIENT_SECRET` are set on Railway.  
-Google, Microsoft, Shopify, HubSpot, etc. need the same treatment.
+The Connect button is only enabled when both client id **and** secret exist in the process env.
+
+**Configured on Railway today** (verified Sept 2026): Google (Calendar, Gmail, Tasks, Contacts,
+Drive, YouTube), Slack, HubSpot, Calendly, Spotify.
+
+**Still pending OAuth app registration** (MyInstantAI or the deploying org creates the apps — see
+the env matrix below): Microsoft (M365 Calendar / Teams / Outlook mail), Shopify, Xero, QuickBooks,
+Zendesk, Notion, Todoist.
 
 Live tool execution for those connectors is already implemented in `@miai/connectors` — credentials are the blocker, not product code.
 

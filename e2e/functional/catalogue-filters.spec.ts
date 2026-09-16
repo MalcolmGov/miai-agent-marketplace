@@ -12,7 +12,8 @@ test.describe("Functional · catalogue filters @functional", () => {
   });
 
   test("Go-live 100 pilot filter activates", async ({ page }) => {
-    await page.goto("/?pilot=1#catalogue");
+    // Catalogue browse lives at /agents since the B2B dashboard pivot (homepage is the dashboard).
+    await page.goto("/agents?pilot=1#catalogue");
     await expect(page.locator("#catalogue")).toBeVisible({ timeout: 30_000 });
     await expect(page).toHaveURL(/pilot=1/);
     const pilotChip = page.getByRole("button", { name: /Go-live 100/i });
@@ -24,9 +25,17 @@ test.describe("Functional · catalogue filters @functional", () => {
 
   test("Learn more opens capability detail dialog", async ({ page }) => {
     await openCatalogue(page);
-    await page.getByRole("button", { name: /Learn more|Details/i }).first().click();
-    await expect(page.locator('[aria-labelledby="agent-detail-title"]')).toBeVisible({
-      timeout: 15_000,
-    });
+    // Scope to #catalogue: the page also renders "Details" buttons in the hero/rails
+    // above the grid, and an unscoped .first() matches those (they don't open the modal).
+    // Retry the click until React hydration has wired the card handlers — Playwright's
+    // actionability checks pass on the SSR button before onClick is attached, so a
+    // single early click can be swallowed on a cold page.
+    const detailsBtn = page.locator("#catalogue").getByRole("button", { name: /Learn more|Details/i }).first();
+    await expect(async () => {
+      await detailsBtn.click({ timeout: 5_000 });
+      await expect(page.locator('[aria-labelledby="agent-detail-title"]')).toBeVisible({
+        timeout: 5_000,
+      });
+    }).toPass({ timeout: 30_000 });
   });
 });
