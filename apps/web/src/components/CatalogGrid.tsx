@@ -294,6 +294,8 @@ export function CatalogGrid({
 type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connectors" | "catalogue";
 
   const [marketplaceView, setMarketplaceView] = useState<MarketplaceView>("all");
+  // Family grid batch size — “Show more” grows it; filters reset it (see effect below).
+  const [visibleCount, setVisibleCount] = useState(24);
   const [listening, setListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechHint, setSpeechHint] = useState<string | null>(null);
@@ -529,6 +531,13 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
     return items.filter((item) => saved.has(item.id));
   }, [items, savedOnly, saved]);
 
+  // Progressive disclosure: the family grid starts with one screenful — “Show more” fetches the
+  // next batch. Reset whenever the result set changes so every filter starts compact.
+  // (103 families rendered at once made the page ~7,500px tall.)
+  useEffect(() => {
+    setVisibleCount(24);
+  }, [q, market, category, audience, workflowsOnly, pilotOnly, savedOnly]);
+
   return (
     <div className="biz-market space-y-8">
       <MarketplaceHero
@@ -560,7 +569,7 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
                 : "text-slate-400 hover:text-white hover:bg-white/5"
             }`}
           >
-            <span>🌟 Full Showcase</span>
+            <span>✨ Overview</span>
           </button>
 
           <button
@@ -663,18 +672,22 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
         </div>
       </div>
 
+      {/* The default “Overview” view is the curated path: hero → connectors strip → catalogue.
+          Flagships / Boardroom / Suites live behind their own nav tabs and hero cards so the
+          marketplace page stays scannable (~8k px shorter — they used to stack in view “all”). */}
+
       {/* 1. Flagship & Voice Studio */}
-      {(marketplaceView === "all" || marketplaceView === "voice-studio") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+      {marketplaceView === "voice-studio" && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
         <FlagshipShowcase />
       )}
 
       {/* 2. AI Executive Boardroom */}
-      {(marketplaceView === "all" || marketplaceView === "boardroom") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+      {marketplaceView === "boardroom" && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
         <MarketplaceBoardroom />
       )}
 
       {/* 3. Enterprise Agent Suites */}
-      {(marketplaceView === "all" || marketplaceView === "suites") && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
+      {marketplaceView === "suites" && !q && category === "all" && !savedOnly && !pilotOnly && !workflowsOnly && (
         <AgentSuitesSection />
       )}
 
@@ -918,7 +931,7 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
         </div>
 
         <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {displayedItems.map((item, idx) => {
+          {displayedItems.slice(0, visibleCount).map((item, idx) => {
             const hasWorkflow = isWorkflowFamilyId(item.id);
             const hrefMarket = market !== "all" && item.markets[market] ? market : null;
             const href =
@@ -1041,6 +1054,18 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             );
           })}
         </div>
+
+        {!pending && displayedItems.length > visibleCount ? (
+          <div className="flex justify-center pt-2">
+            <button
+              type="button"
+              onClick={() => setVisibleCount((v) => v + 24)}
+              className="btn btn-ghost text-xs"
+            >
+              Show more agents ({Math.min(visibleCount, displayedItems.length)} of {displayedItems.length}) ↓
+            </button>
+          </div>
+        ) : null}
 
         {detail ? (
           <AgentDetailModal
