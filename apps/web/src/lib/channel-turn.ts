@@ -6,6 +6,7 @@ import { getAgentPackage } from "@/lib/catalog";
 import {
   isChatLanguage,
   replyLanguageSystemAppend,
+  unconfiguredReply,
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
 import { createSessionStore } from "@/lib/channel-sessions";
@@ -151,6 +152,8 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
       agentId: string;
       sessionKey: string;
       turnInput: Parameters<typeof runTurn>[0];
+      /** Tenant has no business knowledge and no sources — answer without a model. */
+      unconfigured: boolean;
     }
 > {
   if (!input.key || !input.message.trim()) {
@@ -201,11 +204,13 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
   // template out on purpose, so live visitors must not hear it read back to them.
   const clearedKnowledge = typeof rental.knowledge === "string" && rental.knowledge.trim() === "";
   let knowledgeBase = rental.knowledge || pkg.knowledge;
+  /** Nothing to ground on at all → answer deterministically instead of calling the model. */
+  let unconfigured = false;
   if (clearedKnowledge) {
-    // Uploaded / crawled sources stand alone; with no sources the agent gets the notice instead of
-    // the package template.
+    // Uploaded / crawled sources stand alone; with no sources at all the turn never reaches a model.
     const hasSources = await hasReadyKnowledgeSources(workspaceId, agentId);
     knowledgeBase = hasSources ? "" : CLEARED_KNOWLEDGE_NOTICE;
+    unconfigured = !hasSources;
   }
   const knowledgeOverride = await getComposedKnowledge(workspaceId, agentId, knowledgeBase);
 
@@ -233,6 +238,7 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
     workspaceId,
     agentId,
     sessionKey,
+    unconfigured,
     turnInput: {
       workspaceId,
       agentId,
@@ -314,9 +320,72 @@ async function finalizeChannelTurn(
   };
 }
 
+function resolvedReplyLanguage(value: string | undefined): ChatLanguageCode {
+  return isChatLanguage(value) ? value : "en";
+}
+
+/**
+ * The whole turn for a tenant with nothing configured: record it (the owner sees the visitor in
+ * their history, which is the signal to finish setup) and answer with the fixed notice above.
+ */
+async function finalizeUnconfiguredTurn(
+  input: ChannelTurnInput,
+  prepared: {
+    workspaceId: string;
+    agentId: string;
+    sessionKey: string;
+    turnInput: Parameters<typeof runTurn>[0];
+  },
+): Promise<ChannelTurnOk> {
+  // Deterministic on purpose: an LLM told to be "the Sales Closer" with nothing to ground on
+  // invents a business of its own (observed in production), and a widget on a tenant's site must
+  // never do that. No model call, nothing debited, reply in the visitor's language.
+  const reply = unconfiguredReply(resolvedReplyLanguage(prepared.turnInput.replyLanguage));
+  const messages: ChannelMessage[] = [
+    ...(prepared.turnInput.messages as ChannelMessage[]),
+    { role: "user", content: input.message.trim() },
+    { role: "assistant", content: reply },
+  ];
+  await setChannelHistory(input.channel, prepared.sessionKey, messages);
+
+  const correlationId = input.correlationId?.trim() || newCorrelationId();
+  const balance = (await createWalletAdapter().getBalance(prepared.workspaceId).catch(() => ({ tokens: 0 })))
+    .tokens;
+  await recordChatTurn({
+    correlationId,
+    workspaceId: prepared.workspaceId,
+    agentId: prepared.agentId,
+    channel: input.channel,
+    sessionId: input.sessionId ?? "anon",
+    userMessage: input.message.trim(),
+    assistantMessage: reply,
+    toolCalls: [],
+    tokensDebited: 0,
+    paused: false,
+    model: prepared.turnInput.model,
+    mode: "live",
+    replyLanguage: prepared.turnInput.replyLanguage,
+    auditType: input.channel === "app" ? "app_turn" : "embed_turn",
+    extraDetail: { unconfigured: true, streamed: Boolean(input.onDelta), balance },
+  });
+
+  return {
+    ok: true,
+    workspaceId: prepared.workspaceId,
+    agentId: prepared.agentId,
+    assistantMessage: reply,
+    paused: false,
+    balance,
+    tokensDebited: 0,
+    messages,
+    correlationId,
+  };
+}
+
 export async function runChannelTurn(input: ChannelTurnInput): Promise<ChannelTurnResult> {
   const prepared = await prepareChannelTurn(input);
   if (!prepared.ok) return prepared;
+  if (prepared.unconfigured) return finalizeUnconfiguredTurn(input, prepared);
 
   const result = await runTurn(prepared.turnInput, { wallet: createWalletAdapter() });
   return finalizeChannelTurn(input, prepared, result);
@@ -326,6 +395,12 @@ export async function runChannelTurn(input: ChannelTurnInput): Promise<ChannelTu
 export async function runChannelTurnStream(input: ChannelTurnInput): Promise<ChannelTurnResult> {
   const prepared = await prepareChannelTurn(input);
   if (!prepared.ok) return prepared;
+  if (prepared.unconfigured) {
+    // Keep the streamed widget typing behaviour identical to a model reply.
+    const reply = unconfiguredReply(resolvedReplyLanguage(prepared.turnInput.replyLanguage));
+    for (const chunk of chunkReplyForStream(reply)) input.onDelta?.(chunk);
+    return finalizeUnconfiguredTurn(input, prepared);
+  }
 
   const result = await runTurn(prepared.turnInput, {
     wallet: createWalletAdapter(),
