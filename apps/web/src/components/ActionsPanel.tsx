@@ -542,7 +542,7 @@ export function ActionsPanel({
                 onClick={onProceedToSandbox}
                 className="btn btn-primary text-xs px-4 py-2 inline-flex items-center gap-2 shadow-glow-sm"
               >
-                <span>Continue to Test</span>
+                <span>Continue — Add tokens</span>
                 <span>→</span>
               </button>
             ) : null}
@@ -920,10 +920,11 @@ export function ActionsPanel({
         <div className="space-y-1">
           <p className="text-sm font-bold text-white flex items-center gap-2">
             <span>🧪</span>
-            <span>Ready to test without configuring live accounts?</span>
+            <span>Ready to continue without configuring live accounts?</span>
           </p>
           <p className="text-xs text-[var(--muted)]">
-            You can skip directly to the Sandbox. All actions will return safe, realistic simulated responses.
+            You can continue without connecting — tools can be connected anytime, even after going
+            live. Unconnected tools stay honest: actions return safe simulated responses.
           </p>
         </div>
         {onProceedToSandbox && (
@@ -932,7 +933,7 @@ export function ActionsPanel({
             onClick={onProceedToSandbox}
             className="btn btn-primary text-xs px-4 py-2 shrink-0 inline-flex items-center gap-1.5 shadow-glow-sm"
           >
-            <span>Go to Sandbox Chat</span>
+            <span>Continue — Add tokens</span>
             <span>→</span>
           </button>
         )}

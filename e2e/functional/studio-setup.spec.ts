@@ -39,8 +39,8 @@ test.describe("Functional · studio setup journey @functional", () => {
     });
   });
 
-  test("model picker is present on install step", async ({ page }) => {
-    await page.goto(`/agents/${SMOKE_AGENT_ID}?step=install`);
+  test("model picker is present on the configure (knowledge) step", async ({ page }) => {
+    await page.goto(`/agents/${SMOKE_AGENT_ID}?step=knowledge`);
     await expect(page.locator("#studio-model")).toBeVisible({ timeout: 30_000 });
   });
 
