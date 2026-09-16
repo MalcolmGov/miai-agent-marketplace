@@ -30,6 +30,7 @@ export async function GET(req: Request) {
           connectedConnectors: r.connectedConnectors ?? [],
           rentedAt: r.rentedAt ?? null,
           publicKey: r.publicKey,
+          embedRevoked: r.embedRevoked === true,
           isCustom: r.isCustom ?? false,
           accentColor: r.accentColor,
           readiness: preflight

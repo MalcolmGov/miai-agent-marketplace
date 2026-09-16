@@ -3,11 +3,69 @@ import { RENT_USD, marketplaceCategory } from "@miai/agent-protocol";
 import { getPreset } from "@miai/presets";
 import { listConnectors } from "@miai/connectors";
 import { getAgentPackage } from "@/lib/catalog";
-import { getWorkspaceAgent } from "@/lib/store";
+import {
+  appendAudit,
+  deleteWorkspaceAgent,
+  getWorkspaceAgent,
+  setEmbedRevoked,
+} from "@/lib/store";
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
+import { requireRole } from "@/lib/security";
 import { redactAgentPackage } from "@/lib/agent-ip";
+import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
 
 export const dynamic = "force-dynamic";
+
+/** PATCH — enable/disable an agent without deleting it. Disabling revokes the embed key
+ *  (every widget/app request is rejected) while keeping the record, settings and history. */
+export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "admin");
+  if (forbidden) return forbidden;
+
+  const { id } = await ctx.params;
+  let body: { embedRevoked?: boolean };
+  try {
+    body = (await req.json()) as { embedRevoked?: boolean };
+  } catch {
+    return apiErrorFromRequest(req, 400, "Invalid JSON body");
+  }
+  if (typeof body.embedRevoked !== "boolean") {
+    return apiErrorFromRequest(req, 400, "embedRevoked (boolean) is required");
+  }
+
+  const updated = await setEmbedRevoked(auth.workspaceId, id, body.embedRevoked);
+  if (!updated) return apiErrorFromRequest(req, 404, "Agent not rented in this workspace");
+
+  await appendAudit({
+    workspaceId: auth.workspaceId,
+    agentId: id,
+    type: body.embedRevoked ? "agent_disabled" : "agent_enabled",
+    detail: { userId: auth.userId },
+  });
+  return apiOk({ agentId: id, embedRevoked: body.embedRevoked });
+}
+
+/** DELETE — permanently remove a rented agent from the workspace and revoke its embed key. */
+export async function DELETE(req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const auth = await requireAuth(req);
+  if (!isAuthContext(auth)) return auth;
+  const forbidden = requireRole(auth, "admin");
+  if (forbidden) return forbidden;
+
+  const { id } = await ctx.params;
+  const existed = await deleteWorkspaceAgent(auth.workspaceId, id);
+  if (!existed) return apiErrorFromRequest(req, 404, "Agent not rented in this workspace");
+
+  await appendAudit({
+    workspaceId: auth.workspaceId,
+    agentId: id,
+    type: "agent_deleted",
+    detail: { userId: auth.userId },
+  });
+  return apiOk({ agentId: id, deleted: true });
+}
 
 export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const auth = await requireAuth(req);
