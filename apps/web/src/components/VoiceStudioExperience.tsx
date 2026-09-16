@@ -68,6 +68,8 @@ export function VoiceStudioExperience() {
   const [showTextInput, setShowTextInput] = useState(false);
   const [specDrawerOpen, setSpecDrawerOpen] = useState(false);
   const [synthesizedAgent, setSynthesizedAgent] = useState<SynthesizedAgent | null>(null);
+  /** Marketplace family matched to the spoken request (when no custom build was needed). */
+  const [recommendation, setRecommendation] = useState<{ familyId: string; familyName: string } | null>(null);
   const [bargeInFlash, setBargeInFlash] = useState(false);
   const [twoWayMode, setTwoWayMode] = useState(true);
 
@@ -75,6 +77,8 @@ export function VoiceStudioExperience() {
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number | null>(null);
   const recognitionRef = useRef<ISpeechRecognitionInstance | null>(null);
+  /** Latest accumulated transcript — lets "Tap to Send" and the quiet-timer submit the full utterance. */
+  const lastTranscriptRef = useRef("");
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const currentBufferSourceRef = useRef<AudioBufferSourceNode | null>(null);
@@ -298,6 +302,7 @@ export function VoiceStudioExperience() {
       recognition.lang = "en-US";
 
       recognition.onstart = () => {
+        lastTranscriptRef.current = "";
         setIsListening(true);
         setSpeakerTag("YOU");
         setSubtitles("Listening... speak your business workflow or bottleneck naturally.");
@@ -317,19 +322,28 @@ export function VoiceStudioExperience() {
         const clean = `${finalTranscript}${interimTranscript}`.trim();
         if (!clean) return;
 
+        lastTranscriptRef.current = clean;
         setSubtitles(`"${clean}"`);
         restartAttemptsRef.current = 0; // live speech heard — restore the restart budget
 
         if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-        // Endpoint on a natural pause: quick once a segment finalizes, patient while only
-        // interim hypotheses stream in — people pause longer than 850ms mid-thought.
-        const hasFinalSegment = finalTranscript.trim().length > 0;
+        // Generous end-of-utterance detection: act only after ~3s of genuine quiet, and never
+        // on a fragment. The previous 0.9s endpoint fired while people were still mid-sentence
+        // and "deployed" agents from half a request.
         silenceTimerRef.current = setTimeout(
           () => {
+            const words = clean.split(/\s+/).filter(Boolean).length;
+            if (words < 5) {
+              setSubtitles(
+                "I'm still listening — describe the full workflow or outcome you want. Take your time.",
+              );
+              restartAttemptsRef.current = 0;
+              return; // keep the floor; do NOT act on a fragment
+            }
             stopListening();
             handleVoiceInput(clean);
           },
-          hasFinalSegment ? 900 : 1700,
+          3000,
         );
       };
 
@@ -441,104 +455,61 @@ export function VoiceStudioExperience() {
 
     shockwavesRef.current.push({ r: 20, maxR: 320, alpha: 1.0 });
 
-    const lower = userSpokenText.toLowerCase();
-    let compiled: SynthesizedAgent;
-
-    if (/\b(invoice|invoices|collection|collections|debt|debts|xero|receivable|receivables)\b/i.test(lower)) {
-      compiled = {
-        name: "AR Collections Specialist",
-        role: "Automated debt recovery, Xero ledger reconciliation & Paystack payment arrangements",
-        confidence: 94,
-        tools: ["Xero Invoices API", "Paystack Links", "Aging Scheduler", "POPIA Ledger"],
-        systemPrompt: "You are the AR Collections Specialist. Manage overdue receivables and issue payment plans compliant with National Credit Act guidelines.",
-      };
-    } else if (/\b(order|orders|shopify|delivery|deliveries|return|returns|courier|waybill|waybills|shipping)\b/i.test(lower)) {
-      compiled = {
-        name: "Omnichannel Order Specialist",
-        role: "Autonomous courier waybill tracking, size exchanges & instant refund management",
-        confidence: 98,
-        tools: ["Shopify GraphQL", "WhatsApp Cloud Webhook", "The Courier Guy", "Store Credit Emitter"],
-        systemPrompt: "You are the Omnichannel Order Specialist. Track waybills and process size exchange authorizations autonomously within approved thresholds.",
-      };
-    } else if (/\b(slack|vpn|password|passwords|access|mfa|okta|servicenow)\b/i.test(lower)) {
-      compiled = {
-        name: "SecOps Identity Concierge",
-        role: "Role-based Slack channel provisioning, temporary VPN credentials & MFA resets",
-        confidence: 96,
-        tools: ["Okta OAuth2", "ServiceNow REST", "Slack Admin API", "Audit Hash Ledger"],
-        systemPrompt: "You are the SecOps Identity Concierge. Handle access requests and credential rotation with zero-trust verification.",
-      };
-    } else if (/\b(support|customer|customers|whatsapp|ticket|tickets|helpdesk|client|clients)\b/i.test(lower)) {
-      compiled = {
-        name: "Customer Experience Concierge",
-        role: "24/7 client ticket resolution, sentiment-aware escalation & WhatsApp concierge",
-        confidence: 97,
-        tools: ["WhatsApp Cloud Webhook", "Zendesk API", "Knowledge RAG", "Sentiment Guardrail"],
-        systemPrompt: "You are the Customer Experience Concierge. Resolve client inquiries autonomously and escalate edge cases with full context.",
-      };
-    } else if (/\b(lead|leads|sales|crm|hubspot|prospect|prospects|pipeline|qualify|qualification)\b/i.test(lower)) {
-      compiled = {
-        name: "Revenue Operations Prospector",
-        role: "Autonomous lead scoring, HubSpot CRM enrichment & Calendly meeting dispatch",
-        confidence: 95,
-        tools: ["HubSpot CRM", "Calendly API", "Email Dispatcher", "Clearbit Enrichment"],
-        systemPrompt: "You are the Revenue Operations Prospector. Qualify inbound inquiries and coordinate executive calendar slots.",
-      };
-    } else {
-      compiled = {
-        name: "Autonomous Operations Architect",
-        role: `Enterprise agent compiled for: "${userSpokenText.slice(0, 48)}..."`,
-        confidence: 92,
-        tools: ["Workflow DAG Runner", "Universal Webhook Emitter", "Context RAG Engine", "Audit Logger"],
-        systemPrompt: `You are the Autonomous Operations Architect synthesized for: ${userSpokenText}.`,
-      };
-    }
-
-    setSynthesizedAgent(compiled);
-    setIsCompiling(false);
-
-    // Persist agent into workspace via custom agent API and localStorage
-    const slug = compiled.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    // Real understanding — the server decides between recommending an EXISTING marketplace
+    // family and compiling a genuinely custom agent, grounded in the live catalogue.
+    // (This replaced a keyword→canned-template router that "deployed" an agent from half a
+    // request the moment one keyword matched.)
     try {
-      await fetch("/api/agents/custom", {
+      const res = await fetch("/api/voice/forge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: compiled.name,
-          role: compiled.role,
-          description: compiled.role,
-          systemPrompt: compiled.systemPrompt,
-          tools: compiled.tools,
-          category: "operations",
-          tier: "enterprise",
-          accentColor: "#00D2FF",
-          state: "live",
-        }),
+        body: JSON.stringify({ transcript: userSpokenText }),
       });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        mode?: "recommend" | "custom";
+        reply?: string;
+        familyId?: string;
+        familyName?: string;
+        agent?: { agentId?: string; name?: string; role?: string };
+      };
+      if (!res.ok || !data.ok || !data.reply) {
+        throw new Error(`forge ${res.status}`);
+      }
+
+      setSpeakerTag("ZARA");
+      setSubtitles(`"${data.reply}"`);
+
+      if (data.mode === "recommend" && data.familyId) {
+        setRecommendation({ familyId: data.familyId, familyName: data.familyName || "Recommended agent" });
+        setSynthesizedAgent(null);
+        speakZaraAudio(data.reply);
+        return;
+      }
+
+      if (data.mode === "custom" && data.agent?.name) {
+        setSynthesizedAgent({
+          name: data.agent.name,
+          role: data.agent.role || "Custom enterprise agent",
+          confidence: 96,
+          tools: [],
+          systemPrompt: "",
+        });
+        setRecommendation(null);
+        speakZaraAudio(data.reply);
+        return;
+      }
+
+      speakZaraAudio(data.reply);
     } catch {
-      // ignore network errors in offline/dev
+      const fallback =
+        "I couldn't reach your workspace just now. If you're signed in, try again in a moment — or browse the marketplace and I'll match your workflow to an existing agent.";
+      setSpeakerTag("ZARA");
+      setSubtitles(`"${fallback}"`);
+      speakZaraAudio(fallback);
+    } finally {
+      setIsCompiling(false);
     }
-
-    try {
-      const localCustom = JSON.parse(localStorage.getItem("miai.customAgents") || "[]");
-      localCustom.unshift({
-        agentId: slug,
-        name: compiled.name,
-        summary: compiled.role,
-        state: "live",
-        tier: "enterprise",
-        market: "global",
-        connectedConnectors: [],
-        rentedAt: new Date().toISOString(),
-        isCustom: true,
-        accentColor: "#00D2FF",
-      });
-      localStorage.setItem("miai.customAgents", JSON.stringify(localCustom.slice(0, 25)));
-    } catch {}
-
-    const spokenResponse = `I have compiled and deployed ${compiled.name}. Certified toolsets and safety guardrails are pre-audited. It is now saved and active under your My Agents tab.`;
-    setSubtitles(`"${spokenResponse}"`);
-    speakZaraAudio(spokenResponse);
   }
 
   function triggerBargeIn() {
@@ -568,9 +539,18 @@ export function VoiceStudioExperience() {
       return;
     }
     if (isListening) {
+      // "Tap to Send": finish the turn NOW with everything heard so far — previously this only
+      // stopped the mic and the transcript was silently dropped unless the quiet-timer fired.
+      const heard = lastTranscriptRef.current.trim();
       stopListening();
+      if (heard.split(/\s+/).filter(Boolean).length >= 3) {
+        handleVoiceInput(heard);
+      } else {
+        setSubtitles("I didn't catch enough — tap the mic and describe the workflow you want to automate.");
+      }
       return;
     }
+    lastTranscriptRef.current = "";
     restartAttemptsRef.current = 0;
     startListening();
   }
@@ -1159,6 +1139,28 @@ export function VoiceStudioExperience() {
           </div>
         )}
 
+        {/* Marketplace Family Match Pill */}
+        {recommendation && (
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative z-30 mb-4 flex items-center gap-3 rounded-2xl border border-cyan-400/40 bg-black/80 px-5 py-2.5 backdrop-blur-xl shadow-[0_0_30px_rgba(6,182,212,0.3)] animate-fadeIn pointer-events-auto"
+          >
+            <span className="flex h-2.5 w-2.5 rounded-full bg-cyan-400 animate-pulse" />
+            <div className="text-left">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
+                ✓ Matched from the marketplace
+              </div>
+              <div className="text-sm font-black text-white">{recommendation.familyName}</div>
+            </div>
+            <Link
+              href={`/agents/${recommendation.familyId}`}
+              className="ml-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 px-3.5 py-1.5 text-xs font-black text-slate-950 hover:brightness-110 transition shadow-md"
+            >
+              Rent &amp; set up →
+            </Link>
+          </div>
+        )}
+
         {/* Floating Poetic Subtitles */}
         <div className="relative z-20 max-w-2xl px-6 text-center space-y-2 pointer-events-none">
           <div className="text-[11px] font-mono uppercase tracking-widest text-cyan-400/90 font-bold">
@@ -1249,6 +1251,17 @@ export function VoiceStudioExperience() {
             >
               <span>🤖</span>
               <span>Open in My Agents →</span>
+            </Link>
+          )}
+
+          {/* Rent & Set Up Button (Appears when the request matched a catalogue family) */}
+          {recommendation && (
+            <Link
+              href={`/agents/${recommendation.familyId}`}
+              className="flex items-center gap-2 rounded-2xl border border-cyan-400/40 bg-cyan-500/20 px-4 py-3.5 text-xs font-black text-cyan-300 hover:bg-cyan-500/30 transition animate-fadeIn shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+            >
+              <span>🛍️</span>
+              <span>Rent &amp; set up →</span>
             </Link>
           )}
 
