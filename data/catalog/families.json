@@ -2624,6 +2624,37 @@
     "catalogueReady": true
   },
   {
+    "id": "sales-development-rep",
+    "name": "Sales Development Rep",
+    "tier": "pro",
+    "category": "sales",
+    "summary": "Runs outbound prospecting end-to-end — researches prospects, drafts personalised multi-touch outreach, books intro meetings and keeps the CRM clean, with confirm-before-write and opt-out compliance built in.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "za": "africa-sales-development-rep",
+      "africa": "africa-sales-development-rep",
+      "asia": "asia-sales-development-rep",
+      "eu": "eu-sales-development-rep",
+      "oceania": "oceania-sales-development-rep",
+      "us": "us-sales-development-rep"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": true,
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
+  },
+  {
     "id": "sales-forecasting",
     "name": "Sales Forecasting",
     "tier": "standard",
