@@ -437,7 +437,8 @@ export function AgentStudio({
   function skipConnect() {
     writeSetupFlag(agentId, "skip-connect");
     setSkippedConnect(true);
-    setActiveStep("try");
+    // Sandbox now runs BEFORE connect (fastest path to value) — skipping connect moves on to tokens.
+    setActiveStep("tokens");
   }
 
   function confirmKnowledge() {
@@ -660,6 +661,73 @@ export function AgentStudio({
               configMsg={configMsg}
               showSelectedTip={state === "selected"}
             />
+
+            {/* Reasoning Engine (Model) — model choice is configuration, so it lives on the
+                Configure/Knowledge step (was oddly stacked above the Go-live panel). */}
+            <div className="mx-auto mt-4 max-w-3xl">
+              <div id="studio-model" className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-5 shadow-[0_4px_24px_-10px_rgba(0,0,0,0.4)]">
+                <div className="card-specular-rim" />
+                <div className="mb-3 flex items-baseline justify-between">
+                  <div>
+                    <h2 className="text-sm font-bold text-white tracking-tight">{t("studio.model")}</h2>
+                    <p className="text-xs text-[var(--muted)] mt-0.5">
+                      Select reasoning engine for live deployment &amp; inference
+                    </p>
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--accent-bright)]">
+                    Selected: {model}
+                  </span>
+                </div>
+                <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+                  {MODELS.map((mod) => {
+                    const isSelected = model === mod.id;
+                    const speedTag =
+                      mod.id === "gemini-flash" ? "⚡ Sub-120ms" :
+                      mod.id === "gpt-4o-mini" ? "⚡ ~180ms" :
+                      mod.id === "claude-sonnet" ? "⚡ ~250ms" :
+                      mod.id === "gpt-4o" ? "⚡ ~320ms" : "⚡ ~600ms";
+                    const depthTag =
+                      mod.id === "claude-opus" || mod.id === "gpt-4o"
+                        ? "Deep Reasoning"
+                        : mod.id === "claude-sonnet"
+                        ? "Enterprise Standard"
+                        : "High Throughput";
+
+                    return (
+                      <button
+                        key={mod.id}
+                        type="button"
+                        onClick={() => setModel(mod.id)}
+                        className={`relative flex flex-col justify-between rounded-xl border p-3 text-left transition-all ${
+                          isSelected
+                            ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-panel))] shadow-[0_0_16px_color-mix(in_srgb,var(--accent)_22%,transparent)]"
+                            : "border-[var(--line)] bg-[var(--bg-elev)] hover:border-white/20 hover:bg-[var(--bg-panel-hover)]"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span className={`text-xs font-bold ${isSelected ? "text-[var(--accent-bright)]" : "text-white"}`}>
+                            {mod.label}
+                          </span>
+                          <span className={`rounded-md px-1.5 py-0.5 text-[9px] font-mono font-bold ${
+                            isSelected ? "bg-[var(--accent)] text-[var(--accent-ink)]" : "bg-white/10 text-[var(--muted)]"
+                          }`}>
+                            {mod.burn}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-[11px] text-[var(--muted)] line-clamp-1">
+                          {mod.blurb}
+                        </p>
+                        <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--line)] pt-1.5 text-[9.5px]">
+                          <span className="font-semibold text-[var(--accent-bright)]">{speedTag}</span>
+                          <span className="text-[var(--muted-dim)]">•</span>
+                          <span className="text-[var(--muted-dim)]">{depthTag}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         ) : null}
 
@@ -685,7 +753,7 @@ export function AgentStudio({
               connectors={data.connectors}
               connected={connected}
               onConnected={(ids) => setConnected(ids)}
-              onProceedToSandbox={() => goStep("try")}
+              onProceedToSandbox={() => goStep("tokens")}
               onSkip={() => skipConnect()}
             />
           </div>
@@ -737,70 +805,6 @@ export function AgentStudio({
 
         {activeStep === "install" ? (
           <div className="mx-auto max-w-3xl space-y-4">
-            {/* Reasoning Engine (Model) Configuration */}
-            <div id="studio-model" className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-5 shadow-[0_4px_24px_-10px_rgba(0,0,0,0.4)]">
-              <div className="card-specular-rim" />
-              <div className="mb-3 flex items-baseline justify-between">
-                <div>
-                  <h2 className="text-sm font-bold text-white tracking-tight">{t("studio.model")}</h2>
-                  <p className="text-xs text-[var(--muted)] mt-0.5">
-                    Select reasoning engine for live deployment &amp; inference
-                  </p>
-                </div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--accent-bright)]">
-                  Selected: {model}
-                </span>
-              </div>
-              <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-                {MODELS.map((mod) => {
-                  const isSelected = model === mod.id;
-                  const speedTag =
-                    mod.id === "gemini-flash" ? "⚡ Sub-120ms" :
-                    mod.id === "gpt-4o-mini" ? "⚡ ~180ms" :
-                    mod.id === "claude-sonnet" ? "⚡ ~250ms" :
-                    mod.id === "gpt-4o" ? "⚡ ~320ms" : "⚡ ~600ms";
-                  const depthTag =
-                    mod.id === "claude-opus" || mod.id === "gpt-4o"
-                      ? "Deep Reasoning"
-                      : mod.id === "claude-sonnet"
-                      ? "Enterprise Standard"
-                      : "High Throughput";
-
-                  return (
-                    <button
-                      key={mod.id}
-                      type="button"
-                      onClick={() => setModel(mod.id)}
-                      className={`relative flex flex-col justify-between rounded-xl border p-3 text-left transition-all ${
-                        isSelected
-                          ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_14%,var(--bg-panel))] shadow-[0_0_16px_color-mix(in_srgb,var(--accent)_22%,transparent)]"
-                          : "border-[var(--line)] bg-[var(--bg-elev)] hover:border-white/20 hover:bg-[var(--bg-panel-hover)]"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <span className={`text-xs font-bold ${isSelected ? "text-[var(--accent-bright)]" : "text-white"}`}>
-                          {mod.label}
-                        </span>
-                        <span className={`rounded-md px-1.5 py-0.5 text-[9px] font-mono font-bold ${
-                          isSelected ? "bg-[var(--accent)] text-[var(--accent-ink)]" : "bg-white/10 text-[var(--muted)]"
-                        }`}>
-                          {mod.burn}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-[11px] text-[var(--muted)] line-clamp-1">
-                        {mod.blurb}
-                      </p>
-                      <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--line)] pt-1.5 text-[9.5px]">
-                        <span className="font-semibold text-[var(--accent-bright)]">{speedTag}</span>
-                        <span className="text-[var(--muted-dim)]">•</span>
-                        <span className="text-[var(--muted-dim)]">{depthTag}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
             <InstallPanel
               ready={Boolean(publicKey) && state !== "selected"}
               publicKey={publicKey}

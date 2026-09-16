@@ -6,8 +6,8 @@ export type SetupStepId = "knowledge" | "connect" | "try" | "tokens" | "install"
 
 export const SETUP_STEPS: SetupStepId[] = [
   "knowledge",
-  "connect",
   "try",
+  "connect",
   "tokens",
   "install",
 ];
@@ -137,25 +137,25 @@ export function SetupGuide({
       requirementLabel: "Required — your business content",
     },
     {
-      id: "connect",
-      title: connectTitle,
-      detail: isCommerce
-        ? "Optional. Skip to try the agent on catalog knowledge alone. Connect Shopify / Stripe later for live inventory, orders, and checkout execution."
-        : isWorkflow
-          ? "Optional. Skip to try the agent on knowledge alone. Connect Calendar / Slack later for live bookings and handoffs."
-          : "Optional. Skip to try the agent on knowledge alone. Connect tools later if you need live writes.",
-      done: connectDone,
-      requirement: "optional",
-      requirementLabel: "Optional — knowledge-only is fine",
-    },
-    {
       id: "try",
       title: "Sandbox",
       detail:
-        "Try a real customer scenario first. Sandbox is free — no live API writes, no tokens spent.",
+        "Try a real customer scenario first. Sandbox is free — no live API writes, no tokens spent. This is the fastest way to see your agent answer like your business.",
       done: triedChat,
       requirement: "recommended",
       requirementLabel: "Recommended",
+    },
+    {
+      id: "connect",
+      title: connectTitle,
+      detail: isCommerce
+        ? "Optional. Connect Shopify / Stripe for live inventory, orders, and checkout execution — or skip; you can connect anytime, even after going live."
+        : isWorkflow
+          ? "Optional. Connect Calendar / Slack for live bookings and handoffs — or skip; you can connect anytime, even after going live."
+          : "Optional. Connect tools for live writes — or skip; you can connect anytime, even after going live.",
+      done: connectDone,
+      requirement: "optional",
+      requirementLabel: "Optional — knowledge-only is fine",
     },
     {
       id: "tokens",
@@ -217,7 +217,7 @@ export function SetupGuide({
       ? "Save & continue"
       : activeStep === "connect"
         ? toolsConnected
-          ? "Continue — Sandbox"
+          ? "Continue — Add tokens"
           : "Connect Accounts Below ↓"
         : activeStep === "tokens"
           ? "Add tokens"
@@ -378,7 +378,7 @@ export function SetupGuide({
                   </button>
                   {activeStep === "connect" && !toolsConnected ? (
                     <button type="button" className="btn btn-ghost text-xs" onClick={onSkipConnect}>
-                      Skip for now — Test in Sandbox →
+                      Skip for now — Add tokens →
                     </button>
                   ) : null}
                   {activeStep === "tokens" && nxt ? (
