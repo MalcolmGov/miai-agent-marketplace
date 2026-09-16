@@ -51,8 +51,9 @@ export async function getJsonWithRoles<T = Record<string, unknown>>(
 export async function getJson<T = Record<string, unknown>>(
   request: APIRequestContext,
   path: string,
+  headers?: Record<string, string>,
 ): Promise<{ status: number; body: T }> {
-  const res = await request.get(path);
+  const res = await request.get(path, { headers });
   const body = (await res.json()) as T;
   return { status: res.status(), body };
 }
@@ -61,8 +62,9 @@ export async function postJson<T = Record<string, unknown>>(
   request: APIRequestContext,
   path: string,
   data: unknown,
+  headers?: Record<string, string>,
 ): Promise<{ status: number; body: T }> {
-  const res = await request.post(path, { data });
+  const res = await request.post(path, { data, headers });
   let body: T;
   try {
     body = (await res.json()) as T;
@@ -97,6 +99,9 @@ export async function dismissConsent(page: Page): Promise<void> {
 
 export async function openCatalogue(page: Page): Promise<void> {
   await dismissConsent(page);
-  await page.goto("/");
+  // The catalogue grid (#catalogue) lives on the /agents hub — the homepage is the
+  // dashboard since the B2B pivot, and /agents is the deliberately public browse
+  // surface (see apps/web/src/lib/public-paths.ts).
+  await page.goto("/agents");
   await expect(page.locator("#catalogue")).toBeVisible({ timeout: 30_000 });
 }
