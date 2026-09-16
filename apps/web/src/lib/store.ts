@@ -705,6 +705,27 @@ export async function listAudit(
 }
 
 /** Remove all rented agents for a workspace (memory + Postgres or file fallback). */
+/** Delete a single rented agent (the workspace "Delete" action) — removes the record and its
+ *  embed key mapping from both the in-memory store and Postgres. */
+export async function deleteWorkspaceAgent(workspaceId: string, agentId: string): Promise<boolean> {
+  await ensureStoreHydrated();
+  const rec = store().workspaces.get(workspaceId);
+  const existed = Boolean(rec?.agents.get(agentId));
+  rec?.agents.delete(agentId);
+
+  if (getPool()) {
+    try {
+      await query("DELETE FROM miai_rentals WHERE workspace_id = $1 AND agent_id = $2", [workspaceId, agentId]);
+    } catch (err) {
+      console.error("[store] single rental delete failed, writing file fallback", err);
+      await persist();
+    }
+  } else {
+    await persist();
+  }
+  return existed;
+}
+
 export async function clearWorkspaceRentals(workspaceId: string): Promise<number> {
   await ensureStoreHydrated();
   const rec = store().workspaces.get(workspaceId);

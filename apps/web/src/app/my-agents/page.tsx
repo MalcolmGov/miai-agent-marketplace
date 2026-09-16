@@ -22,6 +22,8 @@ interface RentalItem {
   connectedConnectors: string[];
   rentedAt: string | null;
   publicKey?: string;
+  /** True when the owner disabled this agent — its embed key is rejected everywhere. */
+  embedRevoked?: boolean;
   isCustom?: boolean;
   accentColor?: string;
   readiness?: { ready: boolean; missing: MissingConnector[] };
@@ -161,6 +163,8 @@ function MyAgentsContent() {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [marketFilter, setMarketFilter] = useState<string>("all");
+  /** "Connected Tools" KPI drill-down — show only agents with at least one live connector. */
+  const [toolsOnly, setToolsOnly] = useState(false);
 
   useEffect(() => {
     const tab = searchParams.get("tab");
@@ -251,6 +255,10 @@ function MyAgentsContent() {
       list = list.filter((item) => (item.market?.toLowerCase() ?? "") === marketFilter.toLowerCase());
     }
 
+    if (toolsOnly) {
+      list = list.filter((item) => (item.connectedConnectors?.length ?? 0) > 0);
+    }
+
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       list = list.filter(
@@ -263,7 +271,7 @@ function MyAgentsContent() {
     }
 
     return list;
-  }, [items, activeTab, activeList, inactiveList, marketFilter, searchQuery]);
+  }, [items, activeTab, activeList, inactiveList, marketFilter, searchQuery, toolsOnly]);
 
   const displayedActive = useMemo(
     () => filteredItems.filter((i) => isAgentActive(i)),
@@ -321,7 +329,15 @@ function MyAgentsContent() {
       {/* KPI Stats Overview */}
       {items !== null && items.length > 0 ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="panel relative overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)]">
+          <button
+            type="button"
+            onClick={() => {
+              setToolsOnly(false);
+              handleTabChange("active");
+            }}
+            title="Show active agents"
+            className="panel w-full cursor-pointer text-left relative overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+          >
             <div className="card-specular-rim" />
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted-dim)]">
@@ -335,9 +351,17 @@ function MyAgentsContent() {
             <p className="mt-1 text-[11px] text-[var(--accent-bright)] font-medium">
               Serving live channels
             </p>
-          </div>
+          </button>
 
-          <div className="panel relative overflow-hidden rounded-2xl border border-[color-mix(in_srgb,#f59e0b_35%,var(--line))] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)]">
+          <button
+            type="button"
+            onClick={() => {
+              setToolsOnly(false);
+              handleTabChange("inactive");
+            }}
+            title="Show draft agents awaiting setup"
+            className="panel w-full cursor-pointer text-left relative overflow-hidden rounded-2xl border border-[color-mix(in_srgb,#f59e0b_35%,var(--line))] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
+          >
             <div className="card-specular-rim" />
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted-dim)]">
@@ -351,9 +375,17 @@ function MyAgentsContent() {
             <p className="mt-1 text-[11px] text-amber-400/90 font-medium">
               Awaiting credentials
             </p>
-          </div>
+          </button>
 
-          <div className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)]">
+          <button
+            type="button"
+            onClick={() => {
+              setToolsOnly(false);
+              handleTabChange("all");
+            }}
+            title="Show the full fleet"
+            className="panel w-full cursor-pointer text-left relative overflow-hidden rounded-2xl border border-[var(--line)] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+          >
             <div className="card-specular-rim" />
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted-dim)]">
@@ -367,9 +399,19 @@ function MyAgentsContent() {
             <p className="mt-1 text-[11px] text-[var(--muted-dim)] font-medium">
               Rented agent units
             </p>
-          </div>
+          </button>
 
-          <div className="panel relative overflow-hidden rounded-2xl border border-[var(--line)] p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)]">
+          <button
+            type="button"
+            onClick={() => {
+              handleTabChange("all");
+              setToolsOnly(true);
+            }}
+            title="Show only agents with connected tools"
+            className={`panel w-full cursor-pointer text-left relative overflow-hidden rounded-2xl border p-4 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.5)] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
+              toolsOnly ? "border-[var(--accent)]" : "border-[var(--line)]"
+            }`}
+          >
             <div className="card-specular-rim" />
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted-dim)]">
@@ -383,7 +425,7 @@ function MyAgentsContent() {
             <p className="mt-1 text-[11px] text-[var(--muted-dim)] font-medium">
               Actions &amp; payment rails
             </p>
-          </div>
+          </button>
         </div>
       ) : null}
 
@@ -629,7 +671,7 @@ function MyAgentsContent() {
         /* Single Tab View: Active OR Inactive Only */
         <div className="grid gap-3.5">
           {filteredItems.map((item) => (
-            <AgentCard key={item.agentId} item={item} active={isAgentActive(item)} />
+            <AgentCard key={item.agentId} item={item} active={isAgentActive(item)} onChanged={fetchRentals} />
           ))}
         </div>
       )}
@@ -637,8 +679,48 @@ function MyAgentsContent() {
   );
 }
 
-function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
+function AgentCard({
+  item,
+  active,
+  onChanged,
+}: {
+  item: RentalItem;
+  active: boolean;
+  /** Refetch the fleet after a disable/enable or delete. */
+  onChanged?: () => void;
+}) {
+  const [busy, setBusy] = useState<string | null>(null);
   const market = item.market?.toLowerCase() ?? "";
+
+  async function toggleDisabled() {
+    if (busy) return;
+    setBusy("toggle");
+    try {
+      await fetch(`/api/agents/${item.agentId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ embedRevoked: !item.embedRevoked }),
+      });
+      onChanged?.();
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function deleteAgent() {
+    if (busy) return;
+    const ok = window.confirm(
+      `Delete “${item.name}”? Its embed key stops working immediately and the agent is removed from this workspace.`,
+    );
+    if (!ok) return;
+    setBusy("delete");
+    try {
+      await fetch(`/api/agents/${item.agentId}`, { method: "DELETE" });
+      onChanged?.();
+    } finally {
+      setBusy(null);
+    }
+  }
   const marketMeta = MARKET_LABELS[market] ?? {
     label: item.market?.toUpperCase() ?? "GLOBAL",
     flag: "🌐",
@@ -699,6 +781,15 @@ function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
                   {rentalStatusLabel(item.state)}
                 </span>
               )}
+
+              {item.embedRevoked ? (
+                <span
+                  className="rounded-md bg-rose-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-rose-300 border border-rose-500/35"
+                  title="Disabled — the embed key is rejected; re-enable anytime"
+                >
+                  Disabled
+                </span>
+              ) : null}
 
               {/* Tier Chip */}
               <span className="chip !py-0.5 !text-[10px] font-medium">
@@ -763,7 +854,7 @@ function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
         </div>
 
         {/* Right: Actions */}
-        <div className="flex shrink-0 items-center gap-2 sm:self-center">
+        <div className="flex shrink-0 flex-col items-stretch gap-2 sm:self-center">
           <Link
             href={`/agents/${item.agentId}`}
             className={`btn inline-flex items-center gap-1.5 text-xs px-3.5 py-2 font-semibold transition-all ${
@@ -775,6 +866,36 @@ function AgentCard({ item, active }: { item: RentalItem; active: boolean }) {
             <span>{active ? "Open Studio" : "Resume Setup"}</span>
             <IconArrowRight className="h-3.5 w-3.5" />
           </Link>
+
+          {/* Owner controls: disable (keeps everything, key rejected) or delete (permanent) */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => void toggleDisabled()}
+              disabled={busy !== null}
+              title={
+                item.embedRevoked
+                  ? "Re-enable: the embed key starts working again"
+                  : "Disable: widget/app requests are rejected immediately; the agent stays in your workspace"
+              }
+              className={`flex-1 rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold transition-colors disabled:opacity-50 ${
+                item.embedRevoked
+                  ? "border-emerald-500/35 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
+                  : "border-amber-500/35 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
+              }`}
+            >
+              {busy === "toggle" ? "…" : item.embedRevoked ? "Enable" : "Disable"}
+            </button>
+            <button
+              type="button"
+              onClick={() => void deleteAgent()}
+              disabled={busy !== null}
+              title="Delete: removes the agent and its embed key permanently"
+              className="flex-1 rounded-lg border border-rose-500/35 bg-rose-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-rose-300 transition-colors hover:bg-rose-500/20 disabled:opacity-50"
+            >
+              {busy === "delete" ? "…" : "Delete"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
