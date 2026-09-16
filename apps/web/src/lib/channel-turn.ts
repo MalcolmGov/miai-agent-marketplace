@@ -9,7 +9,7 @@ import {
   type ChatLanguageCode,
 } from "@/lib/chat-languages";
 import { createSessionStore } from "@/lib/channel-sessions";
-import { getComposedKnowledge } from "@/lib/knowledge";
+import { getComposedKnowledge, hasReadyKnowledgeSources } from "@/lib/knowledge";
 import {
   getWorkspaceAgent,
   originAllowed,
@@ -27,6 +27,27 @@ export type ChannelMessage = {
 };
 
 const LIVE_STATES = new Set(["live", "rented", "paused_no_tokens"]);
+
+/**
+ * Live channels must never serve the package's example template once a tenant has deliberately
+ * cleared the profile field: the widget would introduce itself as a fictional business (the
+ * catalogue example, e.g. "Brightline Studio") on the tenant's live site. Cleared means cleared —
+ * the agent runs with the notice below until real knowledge (or a source) is added.
+ * Untouched / legacy rentals still fall back to the template so try-it-now demos keep working.
+ */
+const CLEARED_KNOWLEDGE_NOTICE = [
+  "# Business knowledge",
+  "",
+  "(Not configured: the workspace owner has not provided business knowledge for this agent yet.)",
+].join("\n");
+
+const CLEARED_KNOWLEDGE_POLICY = [
+  "## Knowledge status",
+  "This agent has no business profile: the owner cleared (or never saved) their business knowledge.",
+  "Never present example/template content — business names, prices, offers, policies — as this",
+  "business's own, and never invent such details. If the visitor asks for something the knowledge",
+  "base does not cover, say you don't have that detail yet and offer to connect them with a human.",
+].join("\n");
 
 const HANDOFF_POLICY: Record<ChannelKind, string> = {
   embed: [
@@ -176,11 +197,17 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
     };
   }
 
-  const knowledgeOverride = await getComposedKnowledge(
-    workspaceId,
-    agentId,
-    rental.knowledge || pkg.knowledge,
-  );
+  // Explicitly cleared ("") is NOT the same as never set (undefined): the tenant took the example
+  // template out on purpose, so live visitors must not hear it read back to them.
+  const clearedKnowledge = typeof rental.knowledge === "string" && rental.knowledge.trim() === "";
+  let knowledgeBase = rental.knowledge || pkg.knowledge;
+  if (clearedKnowledge) {
+    // Uploaded / crawled sources stand alone; with no sources the agent gets the notice instead of
+    // the package template.
+    const hasSources = await hasReadyKnowledgeSources(workspaceId, agentId);
+    knowledgeBase = hasSources ? "" : CLEARED_KNOWLEDGE_NOTICE;
+  }
+  const knowledgeOverride = await getComposedKnowledge(workspaceId, agentId, knowledgeBase);
 
   const sessionKey = `${input.channel}::${workspaceId}::${agentId}::${input.sessionId ?? "anon"}`;
   const history = await getChannelHistory(input.channel, sessionKey);
@@ -196,6 +223,7 @@ async function prepareChannelTurn(input: ChannelTurnInput): Promise<
     HANDOFF_POLICY[input.channel],
     replyLanguage !== "en" ? replyLanguageSystemAppend(replyLanguage) : "",
     preflight.systemAppend,
+    clearedKnowledge ? CLEARED_KNOWLEDGE_POLICY : "",
   ]
     .filter(Boolean)
     .join("\n\n");

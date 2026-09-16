@@ -60,10 +60,15 @@ const NAME_KEYS = new Set([
 /**
  * Build substitution map for `{{vars}}` in agent packages.
  * Prefer example literals from knowledge, then manifest name, then safe demo defaults.
+ *
+ * `neutralName` is for live turns where the tenant's own knowledge was supplied and it names no
+ * business: callers pass it so the prompt says "this business" instead of wearing the catalogue
+ * example (or the role name) as the tenant's business name.
  */
 export function buildTemplateVars(
   pkg: AgentPackage,
   overrides?: Record<string, string>,
+  opts?: { neutralName?: boolean },
 ): Record<string, string> {
   const blob = [pkg.system_prompt, pkg.knowledge, pkg.guardrails].join("\n");
   const keys = new Set<string>();
@@ -71,7 +76,11 @@ export function buildTemplateVars(
 
   const examples = examplesFromText(blob);
   const primaryExample = examples[0] ? shortName(examples[0]) : "";
-  const displayName = primaryExample || pkg.manifest.name.replace(/\s*\(.*?\)\s*/g, "").trim();
+  const displayName =
+    primaryExample ||
+    (opts?.neutralName
+      ? "this business"
+      : pkg.manifest.name.replace(/\s*\(.*?\)\s*/g, "").trim());
 
   const phone = extractContact(blob, "phone") || "+1 (555) 010-2000";
   const email = extractContact(blob, "email") || "support@example.com";
