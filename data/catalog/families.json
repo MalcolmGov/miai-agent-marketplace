@@ -416,6 +416,37 @@
     "catalogueReady": true
   },
   {
+    "id": "collections",
+    "name": "Collections & Debt Recovery",
+    "tier": "pro",
+    "category": "finance",
+    "summary": "Fair, compliant collections for overdue invoices and accounts — verifies the customer before any disclosure, explains the approved balance and repayment options, records promise-to-pay, dispute and hardship cases, sends secure payment links and routes anything legal, disputed or vulnerable to a human, with FDCPA-style conduct rules, confirm-before-write and no-pressure safeguards built in.",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app"
+    ],
+    "health": false,
+    "markets": {
+      "za": "africa-collections",
+      "us": "us-collections",
+      "eu": "eu-collections",
+      "africa": "africa-collections",
+      "asia": "asia-collections",
+      "oceania": "oceania-collections"
+    },
+    "packs": [
+      "us",
+      "eu",
+      "africa",
+      "asia",
+      "oceania"
+    ],
+    "hasZa": true,
+    "readiness": "catalogue-ready",
+    "catalogueReady": true
+  },
+  {
     "id": "contract-review",
     "name": "Contract Review",
     "tier": "standard",

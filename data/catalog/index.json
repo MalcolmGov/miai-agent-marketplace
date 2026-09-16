@@ -245,6 +245,117 @@
     ]
   },
   {
+    "id": "us-collections",
+    "name": "US Collections & Debt Recovery",
+    "tier": "pro",
+    "category": "finance",
+    "market": "us",
+    "summary": "Fair, compliant collections for overdue invoices and accounts — verifies the customer before any disclosure, explains the approved balance and repayment options, records promise…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 9,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack",
+      "stripe",
+      "webhook"
+    ]
+  },
+  {
+    "id": "eu-collections",
+    "name": "EU Collections & Debt Recovery",
+    "tier": "pro",
+    "category": "finance",
+    "market": "eu",
+    "summary": "EU Collections & Debt Recovery — Fair, compliant collections for overdue invoices and accounts — verifies the customer before any disclosure, explains the approved balance and repayment options, records promise…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 9,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack",
+      "stripe",
+      "webhook"
+    ]
+  },
+  {
+    "id": "africa-collections",
+    "name": "Africa Collections & Debt Recovery",
+    "tier": "pro",
+    "category": "finance",
+    "market": "africa",
+    "summary": "Africa Collections & Debt Recovery — Fair, compliant collections for overdue invoices and accounts — verifies the customer before any disclosure, explains the approved balance and repayment options, records promise…",
+    "channels": [
+      "whatsapp",
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 9,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack",
+      "stripe",
+      "webhook"
+    ]
+  },
+  {
+    "id": "asia-collections",
+    "name": "Asia Collections & Debt Recovery",
+    "tier": "pro",
+    "category": "finance",
+    "market": "asia",
+    "summary": "Asia Collections & Debt Recovery — Fair, compliant collections for overdue invoices and accounts — verifies the customer before any disclosure, explains the approved balance and repayment options, records promise…",
+    "channels": [
+      "web",
+      "app",
+      "sms"
+    ],
+    "tools": 9,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack",
+      "stripe",
+      "webhook"
+    ]
+  },
+  {
+    "id": "oceania-collections",
+    "name": "Oceania Collections & Debt Recovery",
+    "tier": "pro",
+    "category": "finance",
+    "market": "oceania",
+    "summary": "Oceania Collections & Debt Recovery — Fair, compliant collections for overdue invoices and accounts — verifies the customer before any disclosure, explains the approved balance and repayment options, records promise…",
+    "channels": [
+      "sms",
+      "web",
+      "app"
+    ],
+    "tools": 9,
+    "evals": 16,
+    "readiness": "catalogue-ready",
+    "requiresConnectors": [
+      "hubspot",
+      "slack",
+      "stripe",
+      "webhook"
+    ]
+  },
+  {
     "id": "africa-contract-review",
     "name": "Africa Contract Review Desk",
     "tier": "enterprise",

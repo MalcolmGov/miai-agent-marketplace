@@ -319,6 +319,48 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-collections",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "verify_customer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_account_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_repayment_options",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_promise_to_pay",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_dispute",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_hardship_review",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "mark_do_not_contact",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-contract-review",
     "phase": 1,
     "bindings": [
@@ -2559,6 +2601,48 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "asia-collections",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "verify_customer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_account_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_repayment_options",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_promise_to_pay",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_dispute",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_hardship_review",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "mark_do_not_contact",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "asia-contract-review",
     "phase": 1,
     "bindings": [
@@ -4569,6 +4653,48 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "collections",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "verify_customer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_account_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_repayment_options",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_promise_to_pay",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_dispute",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_hardship_review",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "mark_do_not_contact",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "course-advisor",
     "phase": 1,
     "bindings": [
@@ -4918,6 +5044,48 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-collections",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "verify_customer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_account_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_repayment_options",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_promise_to_pay",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_dispute",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_hardship_review",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "mark_do_not_contact",
         "connector": "webhook"
       },
       {
@@ -7492,6 +7660,48 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "oceania-collections",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "verify_customer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_account_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_repayment_options",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_promise_to_pay",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_dispute",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_hardship_review",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "mark_do_not_contact",
         "connector": "webhook"
       },
       {
@@ -10224,6 +10434,48 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_prep_instructions",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-collections",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "verify_customer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_account_statement",
+        "connector": "webhook"
+      },
+      {
+        "tool": "get_repayment_options",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_promise_to_pay",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "send_payment_link",
+        "connector": "stripe"
+      },
+      {
+        "tool": "capture_dispute",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "capture_hardship_review",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "mark_do_not_contact",
         "connector": "webhook"
       },
       {
