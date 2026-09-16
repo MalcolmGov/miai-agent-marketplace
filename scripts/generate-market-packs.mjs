@@ -63,10 +63,11 @@ function localizeText(text, pack, sourceMarket) {
   if (!text || typeof text !== "string") return text;
   let out = text;
 
-  // Emergency numbers
-  out = out.replace(/\b911\b/g, pack.emergency === "911" ? "911" : pack.emergency);
-  out = out.replace(/\b112\b/g, pack.emergency === "112" ? "112" : pack.emergency);
-  out = out.replace(/\b000\b/g, pack.emergency === "000" ? "000" : pack.emergency);
+  // Emergency numbers. The digit guards matter: a bare \b000\b also matched the tail of money
+  // like "R25,000" and rewrote it into "R25,911" / "R25,112" / "R25,<emergency>".
+  out = out.replace(/(?<![\d,])911(?!\d)/g, pack.emergency === "911" ? "911" : pack.emergency);
+  out = out.replace(/(?<![\d,])112(?!\d)/g, pack.emergency === "112" ? "112" : pack.emergency);
+  out = out.replace(/(?<![\d,])000(?!\d)/g, pack.emergency === "000" ? "000" : pack.emergency);
   out = out.replace(/\b10111\b/g, pack.emergency);
   out = out.replace(/call emergency services right now \(in the United States:[^)]+\)/gi, `call **${pack.emergency}**`);
   out = out.replace(/United States:\s*\*\*911\*\*[^.]*\./gi, `${pack.regionPhrase}: **${pack.emergency}**.`);
@@ -172,8 +173,8 @@ function applyOverlay(sourcePkg, sourceMarket, family, pack, health) {
       for (const key of ["input", "expected", "notes", "user", "assistant"]) {
         if (typeof copy[key] === "string") {
           let v = copy[key]
-            .replace(/\b911\b/g, pack.emergency)
-            .replace(/\b112\b/g, pack.emergency === "112" ? "112" : pack.emergency)
+            .replace(/(?<![\d,])911(?!\d)/g, pack.emergency)
+            .replace(/(?<![\d,])112(?!\d)/g, pack.emergency === "112" ? "112" : pack.emergency)
             .replace(/\bUSD\b/g, pack.currency)
             .replace(/\bEUR\b/g, pack.currency)
             .replace(/\$(\d)/g, pack.currency === "EUR" ? "€$1" : `${pack.currency} $1`);

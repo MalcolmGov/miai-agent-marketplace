@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T09:13:27.324Z",
+  "generatedAt": "2026-09-16T10:11:36.370Z",
   "mode": "static-only",
   "qualityLane": "mock-contract",
   "tokenCost": 0,
@@ -206,6 +206,20 @@
       "market": "africa",
       "category": "vertical",
       "evalCount": 18,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
+      "id": "africa-collections",
+      "family": "collections",
+      "market": "africa",
+      "category": "finance",
+      "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
       "runtimeFailed": 0,
@@ -1677,6 +1691,20 @@
       "allFailures": []
     },
     {
+      "id": "asia-collections",
+      "family": "collections",
+      "market": "asia",
+      "category": "finance",
+      "evalCount": 16,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
       "id": "asia-contract-review",
       "family": "contract-review",
       "market": "asia",
@@ -2979,6 +3007,20 @@
       "allFailures": []
     },
     {
+      "id": "collections",
+      "family": "collections",
+      "market": "africa",
+      "category": "finance",
+      "evalCount": 16,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
       "id": "course-advisor",
       "family": "course-advisor",
       "market": "africa",
@@ -3208,6 +3250,20 @@
       "market": "eu",
       "category": "vertical",
       "evalCount": 18,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
+      "id": "eu-collections",
+      "family": "collections",
+      "market": "eu",
+      "category": "finance",
+      "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
       "runtimeFailed": 0,
@@ -4891,6 +4947,20 @@
       "market": "oceania",
       "category": "vertical",
       "evalCount": 18,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
+      "id": "oceania-collections",
+      "family": "collections",
+      "market": "oceania",
+      "category": "finance",
+      "evalCount": 16,
       "staticIssues": [],
       "driftCount": 0,
       "runtimeFailed": 0,
@@ -6661,6 +6731,20 @@
       "allFailures": []
     },
     {
+      "id": "us-collections",
+      "family": "collections",
+      "market": "us",
+      "category": "finance",
+      "evalCount": 16,
+      "staticIssues": [],
+      "driftCount": 0,
+      "runtimeFailed": 0,
+      "runtimeTotal": 0,
+      "failedCaseIds": [],
+      "sampleFailures": [],
+      "allFailures": []
+    },
+    {
       "id": "us-contract-review",
       "family": "contract-review",
       "market": "us",
@@ -8060,16 +8144,16 @@
       "staticHigh": 0
     },
     {
-      "family": "contract-review",
-      "agents": 5,
+      "family": "collections",
+      "agents": 6,
       "drift": 0,
       "runtimeFail": 0,
       "runtimeTotal": 0,
       "staticHigh": 0
     },
     {
-      "family": "course-advisor",
-      "agents": 6,
+      "family": "contract-review",
+      "agents": 5,
       "drift": 0,
       "runtimeFail": 0,
       "runtimeTotal": 0,

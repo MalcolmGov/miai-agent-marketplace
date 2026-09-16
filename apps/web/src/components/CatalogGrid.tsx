@@ -542,8 +542,8 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
   return (
     <div className="biz-market space-y-8">
       <MarketplaceHero
-        familyCount={totalFamilies || familyCount || 102}
-        agentCount={525}
+        familyCount={totalFamilies || familyCount || 103}
+        agentCount={530}
         categoryCount={industryCategoryCount}
         workflowCount={WORKFLOW_FAMILY_IDS.length}
         onSearch={(term) => {
