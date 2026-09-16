@@ -54,9 +54,23 @@ const VOICE_PROFILES = [
   { id: "21m00Tcm4TlvDq8ikWAM", name: "Janet (Calm & Polished)", badge: "Executive" },
 ];
 
+/** Spoken-language support — one selector drives mic recognition, agent replies AND synthesis. */
+const VOICE_LANGS = [
+  { code: "en", label: "English", stt: "en-US" },
+  { code: "es", label: "Español", stt: "es-ES" },
+  { code: "fr", label: "Français", stt: "fr-FR" },
+  { code: "de", label: "Deutsch", stt: "de-DE" },
+  { code: "it", label: "Italiano", stt: "it-IT" },
+  { code: "zh", label: "中文", stt: "zh-CN" },
+  { code: "hi", label: "हिन्दी", stt: "hi-IN" },
+  { code: "sw", label: "Kiswahili", stt: "sw-KE" },
+] as const;
+
 export function VoiceStudioExperience() {
   const [activeMode, setActiveMode] = useState("forge");
   const [selectedVoiceId, setSelectedVoiceId] = useState("dOH0XAoGHoc4a487cs6i");
+  /** Spoken language for the whole loop: mic recognition, agent reply, synthesis. */
+  const [voiceLang, setVoiceLang] = useState<string>("en");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
@@ -142,6 +156,7 @@ export function VoiceStudioExperience() {
         body: JSON.stringify({
           text: textToSpeak,
           voiceId: selectedVoiceId,
+          languageCode: voiceLang,
         }),
       });
 
@@ -300,7 +315,8 @@ export function VoiceStudioExperience() {
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = "en-US";
+      // Spoken-language selector: the mic transcribes in the chosen language.
+      recognition.lang = VOICE_LANGS.find((l) => l.code === voiceLang)?.stt ?? "en-US";
 
       recognition.onstart = () => {
         lastTranscriptRef.current = "";
@@ -464,7 +480,7 @@ export function VoiceStudioExperience() {
       const res = await fetch("/api/voice/forge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcript: userSpokenText }),
+        body: JSON.stringify({ transcript: userSpokenText, replyLanguage: voiceLang }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -1067,6 +1083,23 @@ export function VoiceStudioExperience() {
               {VOICE_PROFILES.map((vp) => (
                 <option key={vp.id} value={vp.id} className="bg-slate-900 text-white">
                   {vp.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Spoken Language Selector — drives mic recognition, agent replies & synthesis */}
+          <div className="flex items-center rounded-2xl border border-white/10 bg-black/50 p-1 backdrop-blur-md">
+            <span className="px-2 text-[10px] font-mono uppercase text-slate-500 font-semibold">🌐 SPEAK</span>
+            <select
+              value={voiceLang}
+              onChange={(e) => setVoiceLang(e.target.value)}
+              aria-label="Spoken language"
+              className="bg-transparent text-xs font-semibold text-emerald-300 focus:outline-none cursor-pointer pr-2"
+            >
+              {VOICE_LANGS.map((l) => (
+                <option key={l.code} value={l.code} className="bg-slate-900 text-white">
+                  {l.label}
                 </option>
               ))}
             </select>
