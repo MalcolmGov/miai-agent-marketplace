@@ -11,13 +11,16 @@ test.describe("Functional · catalogue filters @functional", () => {
     });
   });
 
-  test("Go-live 100 pilot filter activates", async ({ page }) => {
+  test("Go-live pilot filter activates", async ({ page }) => {
     // Catalogue browse lives at /agents since the B2B dashboard pivot (homepage is the dashboard).
     await page.goto("/agents?pilot=1#catalogue");
     await expect(page.locator("#catalogue")).toBeVisible({ timeout: 30_000 });
     await expect(page).toHaveURL(/pilot=1/);
-    const pilotChip = page.getByRole("button", { name: /Go-live 100/i });
+    // The toolbar facet is labelled "Go-live" (catalog.demo6) — the only Go-live button on the hub;
+    // "Go-live 100" is the /demo shortlist copy. Assert it is genuinely engaged, not just visible.
+    const pilotChip = page.getByRole("button", { name: /Go-live/i });
     await expect(pilotChip).toBeVisible();
+    await expect(pilotChip).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("link", { name: /Rent \/ setup|Setup/i }).first()).toBeVisible({
       timeout: 20_000,
     });
