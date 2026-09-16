@@ -169,9 +169,9 @@ export function SetupGuide({
     },
     {
       id: "install",
-      title: "Go live and activate",
+      title: visitedInstall && rented ? "Live & activated" : "Go live and activate",
       detail: rented
-        ? "Copy website embed or App link — once installed, you’re running."
+        ? "You're live — nothing else is required. Preview the widget below anytime; copy the website snippet only if you want it embedded on your own site."
         : "Activate this agent (free) to get your embed key, then copy the website embed or App link.",
       done: visitedInstall && rented,
       requirement: "required",
@@ -352,9 +352,32 @@ export function SetupGuide({
 
             <div className="mt-3 flex flex-wrap gap-2">
               {activeStep === "install" && visitedInstall && rented ? (
-                <p className="text-xs text-[var(--accent)]">
-                  Setup complete. Use the embed or App link below anytime.
-                </p>
+                <div className="w-full space-y-2.5 rounded-xl border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-4 py-3.5">
+                  <p className="flex items-center gap-2 text-sm font-semibold text-[var(--accent-bright)]">
+                    <span aria-hidden>✅</span> {"You're live — nothing else is required."}
+                  </p>
+                  <p className="text-xs leading-relaxed text-[var(--muted)]">
+                    This agent is activated and ready to chat. Your prepaid tokens meter usage
+                    automatically:
+                  </p>
+                  <ul className="space-y-1.5 text-xs leading-relaxed text-[var(--text)]">
+                    <li>
+                      <span className="font-semibold">Preview it now:</span> hit “Preview Floating
+                      Widget” below, or open the App link — no setup needed.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Embedding on your own website? (optional):</span>{" "}
+                      copy the snippet below and paste it before the closing {"</body>"} tag.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Not embedding anywhere?</span>{" "}
+                      {"You're done — find this agent under “My agents” anytime."}
+                    </li>
+                  </ul>
+                  <a href="/my-agents" className="btn btn-primary inline-flex text-xs">
+                    Done — view My agents →
+                  </a>
+                </div>
               ) : (
                 <>
                   <button
