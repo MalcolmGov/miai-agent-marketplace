@@ -57,7 +57,12 @@ describe("channel metering (P0-2): distinct visitor sessions are charged, not de
     wallet.resetWalletAdapterForTests();
     const ws = "ws-embed";
     const agent = "africa-front-desk";
-    const rental = await store.upsertWorkspaceAgent(ws, agent, { state: "live" });
+    // Seed knowledge like /api/rent does: a rental with nothing configured now answers
+    // deterministically without a model call (no tokens to meter), which is not what this test is about.
+    const rental = await store.upsertWorkspaceAgent(ws, agent, {
+      state: "live",
+      knowledge: "## Hours\nMon–Fri 09:00–17:00.\n\n## Services\nGeneral enquiries and bookings.",
+    });
     const key = rental.publicKey;
     assert.ok(key, "embed key minted");
 

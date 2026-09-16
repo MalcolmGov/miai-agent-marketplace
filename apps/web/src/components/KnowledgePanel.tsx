@@ -254,10 +254,11 @@ export function KnowledgePanel({
 
       {isEmpty ? (
         <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] px-4 py-3 text-xs leading-relaxed text-[var(--muted)]">
-          <span className="font-bold text-[var(--text)]">No knowledge yet.</span> Your agent
-          can&apos;t answer business questions until you add knowledge — paste it above, upload a
-          file, or add a website source below. (Sandbox demos still work: they fall back to the
-          example template.)
+          <span className="font-bold text-[var(--text)]">No knowledge yet.</span> Until you add
+          knowledge, your embedded agent replies with a short &ldquo;not set up yet&rdquo; message
+          and offers a human — it never answers (or invents) business details. Paste it above,
+          upload a file, or add a website source below. (Sandbox demos still work: they fall back
+          to the example template.)
         </div>
       ) : null}
 
