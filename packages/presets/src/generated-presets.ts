@@ -1765,6 +1765,44 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "africa-sales-development-rep",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_icp_profile",
+        "connector": "webhook"
+      },
+      {
+        "tool": "research_prospect",
+        "connector": "webhook"
+      },
+      {
+        "tool": "draft_outreach",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_crm_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_followup_sequence",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_closer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "africa-sales-forecasting",
     "phase": 1,
     "bindings": [
@@ -2179,6 +2217,40 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       {
         "tool": "capture_brief",
         "connector": "hubspot"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "agentic-commerce",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "search_catalog",
+        "connector": "webhook"
+      },
+      {
+        "tool": "check_inventory",
+        "connector": "webhook"
+      },
+      {
+        "tool": "assemble_cart",
+        "connector": "webhook"
+      },
+      {
+        "tool": "generate_purchase_mandate",
+        "connector": "webhook"
+      },
+      {
+        "tool": "authorize_checkout",
+        "connector": "webhook"
+      },
+      {
+        "tool": "track_order",
+        "connector": "shopify"
       },
       {
         "tool": "handoff_to_human",
@@ -3890,6 +3962,44 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "asia-sales-development-rep",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_icp_profile",
+        "connector": "webhook"
+      },
+      {
+        "tool": "research_prospect",
+        "connector": "webhook"
+      },
+      {
+        "tool": "draft_outreach",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_crm_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_followup_sequence",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_closer",
         "connector": "webhook"
       },
       {
@@ -6186,6 +6296,44 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "teams"
+      }
+    ]
+  },
+  {
+    "agentId": "eu-sales-development-rep",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_icp_profile",
+        "connector": "webhook"
+      },
+      {
+        "tool": "research_prospect",
+        "connector": "webhook"
+      },
+      {
+        "tool": "draft_outreach",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_crm_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "m365_calendar"
+      },
+      {
+        "tool": "create_followup_sequence",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_closer",
         "connector": "webhook"
       },
       {
@@ -8697,6 +8845,44 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
     ]
   },
   {
+    "agentId": "oceania-sales-development-rep",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_icp_profile",
+        "connector": "webhook"
+      },
+      {
+        "tool": "research_prospect",
+        "connector": "webhook"
+      },
+      {
+        "tool": "draft_outreach",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_crm_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_followup_sequence",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_closer",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
     "agentId": "oceania-sales-forecasting",
     "phase": 1,
     "bindings": [
@@ -9394,6 +9580,44 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "sales-development-rep",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_icp_profile",
+        "connector": "webhook"
+      },
+      {
+        "tool": "research_prospect",
+        "connector": "webhook"
+      },
+      {
+        "tool": "draft_outreach",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_crm_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_followup_sequence",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_closer",
         "connector": "webhook"
       },
       {
@@ -11276,6 +11500,44 @@ export const GENERATED_PRESETS: GeneratedPreset[] = [
       },
       {
         "tool": "get_return_status",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_human",
+        "connector": "slack"
+      }
+    ]
+  },
+  {
+    "agentId": "us-sales-development-rep",
+    "phase": 1,
+    "bindings": [
+      {
+        "tool": "get_icp_profile",
+        "connector": "webhook"
+      },
+      {
+        "tool": "research_prospect",
+        "connector": "webhook"
+      },
+      {
+        "tool": "draft_outreach",
+        "connector": "webhook"
+      },
+      {
+        "tool": "log_crm_lead",
+        "connector": "hubspot"
+      },
+      {
+        "tool": "schedule_meeting",
+        "connector": "google_calendar"
+      },
+      {
+        "tool": "create_followup_sequence",
+        "connector": "webhook"
+      },
+      {
+        "tool": "handoff_to_closer",
         "connector": "webhook"
       },
       {
