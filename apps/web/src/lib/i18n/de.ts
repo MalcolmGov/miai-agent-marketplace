@@ -63,7 +63,7 @@ export const de: Dictionary = {
   "catalog.allMarkets": "Alle Märkte",
   "catalog.industry": "Branche",
   "catalog.allIndustries": "Alle Branchen",
-  "catalog.agents": "Agenten",
+  "catalog.agents": "Agent-Familien",
   "catalog.workflowsOf": "von {total} Workflows",
   "catalog.workflowsLabel": "Workflows",
   "catalog.smartApplied": "Smart",

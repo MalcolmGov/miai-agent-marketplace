@@ -62,7 +62,7 @@ export const en = {
   "catalog.allMarkets": "All markets",
   "catalog.industry": "Industry",
   "catalog.allIndustries": "All industries",
-  "catalog.agents": "agents",
+  "catalog.agents": "agent families",
   "catalog.workflowsOf": "of {total} workflows",
   "catalog.workflowsLabel": "workflows",
   "catalog.smartApplied": "Smart",

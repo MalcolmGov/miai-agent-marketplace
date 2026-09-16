@@ -203,7 +203,8 @@ function ToggleFacet({
 }: {
   label: string;
   active: boolean;
-  count: number;
+  /** Optional count badge — omit for a calmer toolbar (the result count updates below anyway). */
+  count?: number;
   title: string;
   onToggle: () => void;
 }) {
@@ -216,7 +217,7 @@ function ToggleFacet({
       title={title}
     >
       {label}
-      <span className="cat-count">{count}</span>
+      {typeof count === "number" ? <span className="cat-count">{count}</span> : null}
     </button>
   );
 }
@@ -582,11 +583,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             }`}
           >
             <span>⚡ Voice Studio & Flagships</span>
-            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
-              marketplaceView === "voice-studio" ? "bg-slate-950 text-[#00D2FF]" : "bg-[#00D2FF]/20 text-[#00D2FF]"
-            }`}>
-              KILLER FORGE
-            </span>
           </button>
 
           <button
@@ -599,11 +595,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             }`}
           >
             <span>🏛️ AI Executive Boardroom</span>
-            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
-              marketplaceView === "boardroom" ? "bg-slate-950 text-purple-300" : "bg-purple-500/20 text-purple-300"
-            }`}>
-              10 SEATS
-            </span>
           </button>
 
           <button
@@ -616,11 +607,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             }`}
           >
             <span>📦 Enterprise Suites</span>
-            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
-              marketplaceView === "suites" ? "bg-slate-950 text-emerald-400" : "bg-emerald-500/20 text-emerald-400"
-            }`}>
-              5 BUNDLES
-            </span>
           </button>
 
           <button
@@ -785,7 +771,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             <ToggleFacet
               label={t("catalog.workflows")}
               active={workflowsOnly}
-              count={workflowsOnly ? familyCount : WORKFLOW_FAMILY_IDS.length}
               title={t("catalog.workflowHint")}
               onToggle={() => {
                 setSmartFilter(false);
@@ -803,7 +788,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             <ToggleFacet
               label={t("catalog.demo6")}
               active={pilotOnly}
-              count={pilotOnly ? familyCount : 100}
               title={t("catalog.goliveHint")}
               onToggle={() => {
                 setSmartFilter(false);
@@ -1001,7 +985,7 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
 
                   {/* Title & Micro-Badges */}
                   <div className="mt-2 sm:mt-3">
-                    <h3 className="text-[12.5px] sm:text-[15px] font-bold leading-snug tracking-tight text-white transition-colors duration-200 group-hover:text-[var(--accent-bright)] line-clamp-2 min-h-[32px] sm:min-h-[40px] flex items-center">
+                    <h3 className="text-[12.5px] sm:text-[15px] font-bold leading-snug tracking-tight text-white transition-colors duration-200 group-hover:text-[var(--accent-bright)] line-clamp-2">
                       {item.name}
                     </h3>
 
@@ -1016,7 +1000,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
                           className="inline-flex items-center gap-1 rounded border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold text-amber-300"
                           title={`Requires ${item.requiresConnectors.map(connectorLabel).join(", ")} setup`}
                         >
-                          <span className="h-1 w-1 rounded-full bg-amber-400 animate-pulse" aria-hidden />
                           <span>Needs connector</span>
                         </span>
                       ) : null}
@@ -1044,7 +1027,7 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
 
                   <Link
                     href={href}
-                    className="inline-flex items-center gap-1 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#3dd6c6] to-[#20b2aa] hover:from-[#4ee5d5] hover:to-[#2bc4bb] px-2.5 sm:px-4 py-1 sm:py-1.5 text-[10.5px] sm:text-[12px] font-bold text-slate-950 transition-all duration-200 shadow-[0_0_12px_rgba(61,214,198,0.45)] hover:shadow-[0_0_20px_rgba(61,214,198,0.7)] hover:scale-[1.03] active:scale-[0.98]"
+                    className="inline-flex items-center gap-1 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#3dd6c6] to-[#20b2aa] hover:from-[#4ee5d5] hover:to-[#2bc4bb] px-2.5 sm:px-4 py-1 sm:py-1.5 text-[10.5px] sm:text-[12px] font-bold text-slate-950 transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
                   >
                     <span>Setup</span>
                     <span aria-hidden className="text-[10px] font-bold transition-transform duration-200 group-hover:translate-x-0.5">→</span>

@@ -28,8 +28,6 @@ export function MarketplaceHero({
       featureId: "voice-studio" as const,
       tag: "Voice Studio Forge",
       tagColor: "bg-[#00D2FF]/15 text-[#00D2FF] border-[#00D2FF]/40",
-      badge: "KILLER FEATURE",
-      badgeColor: "bg-[#00D2FF] text-slate-950",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
           <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
@@ -44,8 +42,6 @@ export function MarketplaceHero({
       featureId: "boardroom" as const,
       tag: "AI Boardroom",
       tagColor: "bg-purple-500/15 text-purple-300 border-purple-500/40",
-      badge: "10-SEAT QUORUM",
-      badgeColor: "bg-purple-400 text-slate-950",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -60,8 +56,6 @@ export function MarketplaceHero({
       featureId: "suites" as const,
       tag: "Agent Suites",
       tagColor: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
-      badge: "5 BUNDLES",
-      badgeColor: "bg-emerald-400 text-slate-950",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
           <rect width="7" height="7" x="3" y="3" rx="1" />
@@ -77,16 +71,14 @@ export function MarketplaceHero({
       featureId: "connectors" as const,
       tag: "Connectors",
       tagColor: "bg-cyan-500/15 text-cyan-300 border-cyan-500/40",
-      badge: "14 INTEGRATIONS",
-      badgeColor: "bg-cyan-400 text-slate-950",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
           <path d="M12 2v8M12 18v4M4.93 4.93l5.66 5.66M13.41 13.41l5.66 5.66" />
           <circle cx="12" cy="14" r="4" />
         </svg>
       ),
-      title: "Zara-Grade Connectors Directory",
-      desc: "OAuth 2.0 & MCP integrations for Xero, Sage, QuickBooks, HubSpot, Salesforce & Paystack.",
+      title: "Connectors Directory",
+      desc: "OAuth 2.0, API keys, webhooks & MCP — 17 integrations incl. Google, Microsoft, Slack, Shopify, Stripe, Xero, QuickBooks & HubSpot.",
     },
   ];
 
@@ -156,9 +148,6 @@ export function MarketplaceHero({
                       {card.tag}
                     </span>
                   </div>
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${card.badgeColor}`}>
-                    {card.badge}
-                  </span>
                 </div>
                 <h4 className="mt-2.5 text-sm font-bold text-white group-hover:text-[var(--accent)] transition-colors">
                   {card.title}
