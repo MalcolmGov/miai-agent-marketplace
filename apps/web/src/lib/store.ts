@@ -712,6 +712,13 @@ export async function deleteWorkspaceAgent(workspaceId: string, agentId: string)
   const rec = store().workspaces.get(workspaceId);
   const existed = Boolean(rec?.agents.get(agentId));
   rec?.agents.delete(agentId);
+  // Drop any legacy key-mapping entry that pointed at this agent, so a deleted agent leaves
+  // nothing behind that could resolve again if the same id is rented later.
+  if (rec) {
+    for (const [key, mappedAgentId] of [...rec.embedKeys.entries()]) {
+      if (mappedAgentId === agentId) rec.embedKeys.delete(key);
+    }
+  }
 
   if (getPool()) {
     try {

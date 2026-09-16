@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { rentalStatusLabel } from "@/components/SetupGuide";
+import { DeleteAgentDialog } from "@/components/DeleteAgentDialog";
 import { InsightsDashboard } from "@/components/dashboard/InsightsDashboard";
 
 interface MissingConnector {
@@ -165,6 +166,10 @@ function MyAgentsContent() {
   const [marketFilter, setMarketFilter] = useState<string>("all");
   /** "Connected Tools" KPI drill-down — show only agents with at least one live connector. */
   const [toolsOnly, setToolsOnly] = useState(false);
+  /** Permanent-delete confirmation (in-app dialog, never window.confirm). */
+  const [deleteTarget, setDeleteTarget] = useState<RentalItem | null>(null);
+  const [deleteBusy, setDeleteBusy] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     const tab = searchParams.get("tab");
@@ -173,6 +178,32 @@ function MyAgentsContent() {
     else if (tab === "inactive") setActiveTab("inactive");
     else if (tab === "all") setActiveTab("all");
   }, [searchParams]);
+
+  async function confirmDelete() {
+    if (!deleteTarget || deleteBusy) return;
+    setDeleteBusy(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch(`/api/agents/${encodeURIComponent(deleteTarget.agentId)}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const detail = await res.json().catch(() => ({}));
+        setDeleteError(
+          detail?.error
+            ? `${detail.error} — the agent was not deleted.`
+            : "Couldn't delete this agent. Please try again.",
+        );
+        return;
+      }
+      setDeleteTarget(null);
+      fetchRentals();
+    } catch {
+      setDeleteError("Network problem — the agent was not deleted. Please try again.");
+    } finally {
+      setDeleteBusy(false);
+    }
+  }
 
   const fetchRentals = () => {
     fetch("/api/rentals")
@@ -639,7 +670,13 @@ function MyAgentsContent() {
               </div>
               <div className="grid gap-3.5">
                 {displayedActive.map((item) => (
-                  <AgentCard key={item.agentId} item={item} active={true} />
+                  <AgentCard
+                    key={item.agentId}
+                    item={item}
+                    active={true}
+                    onChanged={fetchRentals}
+                    onRequestDelete={setDeleteTarget}
+                  />
                 ))}
               </div>
             </div>
@@ -661,7 +698,13 @@ function MyAgentsContent() {
               </div>
               <div className="grid gap-3.5">
                 {displayedInactive.map((item) => (
-                  <AgentCard key={item.agentId} item={item} active={false} />
+                  <AgentCard
+                    key={item.agentId}
+                    item={item}
+                    active={false}
+                    onChanged={fetchRentals}
+                    onRequestDelete={setDeleteTarget}
+                  />
                 ))}
               </div>
             </div>
@@ -671,10 +714,29 @@ function MyAgentsContent() {
         /* Single Tab View: Active OR Inactive Only */
         <div className="grid gap-3.5">
           {filteredItems.map((item) => (
-            <AgentCard key={item.agentId} item={item} active={isAgentActive(item)} onChanged={fetchRentals} />
+            <AgentCard
+              key={item.agentId}
+              item={item}
+              active={isAgentActive(item)}
+              onChanged={fetchRentals}
+              onRequestDelete={setDeleteTarget}
+            />
           ))}
         </div>
       )}
+
+      <DeleteAgentDialog
+        open={deleteTarget !== null}
+        agentName={deleteTarget?.name ?? ""}
+        busy={deleteBusy}
+        error={deleteError}
+        onCancel={() => {
+          if (deleteBusy) return;
+          setDeleteTarget(null);
+          setDeleteError(null);
+        }}
+        onConfirm={() => void confirmDelete()}
+      />
     </div>
   );
 }
@@ -683,11 +745,14 @@ function AgentCard({
   item,
   active,
   onChanged,
+  onRequestDelete,
 }: {
   item: RentalItem;
   active: boolean;
   /** Refetch the fleet after a disable/enable or delete. */
   onChanged?: () => void;
+  /** Open the page-level delete confirmation (permanent action, so it lives in one dialog). */
+  onRequestDelete?: (item: RentalItem) => void;
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const market = item.market?.toLowerCase() ?? "";
@@ -707,20 +772,6 @@ function AgentCard({
     }
   }
 
-  async function deleteAgent() {
-    if (busy) return;
-    const ok = window.confirm(
-      `Delete “${item.name}”? Its embed key stops working immediately and the agent is removed from this workspace.`,
-    );
-    if (!ok) return;
-    setBusy("delete");
-    try {
-      await fetch(`/api/agents/${item.agentId}`, { method: "DELETE" });
-      onChanged?.();
-    } finally {
-      setBusy(null);
-    }
-  }
   const marketMeta = MARKET_LABELS[market] ?? {
     label: item.market?.toUpperCase() ?? "GLOBAL",
     flag: "🌐",
@@ -888,12 +939,12 @@ function AgentCard({
             </button>
             <button
               type="button"
-              onClick={() => void deleteAgent()}
+              onClick={() => onRequestDelete?.(item)}
               disabled={busy !== null}
-              title="Delete: removes the agent and its embed key permanently"
+              title="Delete: removes the agent, its knowledge uploads and its embed key permanently"
               className="flex-1 rounded-lg border border-rose-500/35 bg-rose-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-rose-300 transition-colors hover:bg-rose-500/20 disabled:opacity-50"
             >
-              {busy === "delete" ? "…" : "Delete"}
+              Delete
             </button>
           </div>
         </div>

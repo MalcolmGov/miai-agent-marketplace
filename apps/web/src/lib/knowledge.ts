@@ -223,6 +223,33 @@ export async function deleteKnowledgeForWorkspace(workspaceId: string): Promise<
   return deleted;
 }
 
+/**
+ * Delete every ingested source for one agent — used when the agent itself is deleted from the
+ * workspace, so "delete" really means the tenant's uploaded knowledge goes with it (no orphans
+ * that would silently re-attach if the agent is rented again).
+ */
+export async function deleteKnowledgeForAgent(
+  workspaceId: string,
+  agentId: string,
+): Promise<number> {
+  await hydrate();
+  const k = key(workspaceId, agentId);
+  const deleted = (mem().get(k) ?? []).length;
+  mem().delete(k);
+  if (databaseUrl()) {
+    try {
+      await query("DELETE FROM miai_knowledge_sources WHERE workspace_id = $1 AND agent_id = $2", [
+        workspaceId,
+        agentId,
+      ]);
+    } catch (err) {
+      console.error("[knowledge] postgres agent delete failed", err);
+    }
+  }
+  await persist();
+  return deleted;
+}
+
 export async function deleteKnowledgeSource(
   workspaceId: string,
   agentId: string,
