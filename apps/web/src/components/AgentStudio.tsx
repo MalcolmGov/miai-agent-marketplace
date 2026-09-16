@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { KnowledgePanel } from "./KnowledgePanel";
+import { RegionStrip, type RegionFact } from "./RegionStrip";
 import { ActionsPanel } from "./ActionsPanel";
 import { InstallPanel } from "./InstallPanel";
 import { TokenTopUpPanel } from "./TokenTopUpPanel";
@@ -132,14 +133,19 @@ function stepFromUrl(): SetupStepId | null {
 export function AgentStudio({
   agentId,
   scriptIntegrity,
+  regions,
 }: {
   agentId: string;
   scriptIntegrity: string;
+  regions?: RegionFact[];
 }) {
   const t = useT();
   const [data, setData] = useState<AgentPayload | null>(null);
   const [model, setModel] = useState("claude-sonnet");
   const [knowledge, setKnowledge] = useState("");
+  // The package's shipped knowledge is the "example template" — used by KnowledgePanel to
+  // mark it as such and to tell the difference between "untouched" and "deliberately cleared".
+  const [templateKnowledge, setTemplateKnowledge] = useState("");
   const [tier, setTier] = useState<keyof typeof TIER_PRICES>("standard");
   const [publicKey, setPublicKey] = useState("");
   const [state, setState] = useState("selected");
@@ -180,6 +186,7 @@ export function AgentStudio({
     setData(json);
     setModel(json.rental?.model ?? json.package.manifest.model.primary);
     setKnowledge(json.rental?.knowledge ?? json.package.knowledge);
+    setTemplateKnowledge(json.package.knowledge ?? "");
     setTier(json.rental?.tier ?? json.package.manifest.tier);
     setPublicKey(json.rental?.publicKey ?? "");
     setState(json.rental?.state ?? "selected");
@@ -582,6 +589,8 @@ export function AgentStudio({
         </div>
       </div>
 
+      <RegionStrip familyName={data?.package.manifest.name} regions={regions ?? []} />
+
       {welcomeBanner ? (
         <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-[var(--bg-panel)] p-4 text-xs shadow-lg">
           <div className="flex items-center gap-3">
@@ -643,6 +652,7 @@ export function AgentStudio({
               agentName={data.package.manifest.name}
               agentCategory={data.marketplaceCategory ?? data.package.manifest.category}
               knowledge={knowledge}
+              templateKnowledge={templateKnowledge}
               onKnowledgeChange={setKnowledge}
               saving={saving}
               onSaveDraft={() => void saveConfig(false)}
