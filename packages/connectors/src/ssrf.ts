@@ -3,7 +3,11 @@
  * Used by webhook POSTs and (via re-export) knowledge crawls.
  */
 import dns from "node:dns/promises";
+import http from "node:http";
+import https from "node:https";
 import net from "node:net";
+import { Readable } from "node:stream";
+import zlib from "node:zlib";
 
 const BLOCKED_HOSTNAMES = new Set([
   "localhost",
@@ -127,52 +131,130 @@ export function withTimeoutSignal(existing: AbortSignal | null | undefined, ms: 
   return existing ? AbortSignal.any([existing, timeout]) : timeout;
 }
 
+/** Body shapes callers actually use (JSON strings, form-encoded, raw bytes). */
+type PinnedBody = string | Uint8Array;
+
+function toNodeHeaders(init: RequestInit | undefined, hasStringBody: boolean): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (init?.headers) {
+    new Headers(init.headers).forEach((value, key) => {
+      out[key] = value;
+    });
+  }
+  // Same default undici's fetch applies to string bodies, so server-side payloads keep working
+  // when a caller forgets the header.
+  if (hasStringBody && !("content-type" in out)) {
+    out["content-type"] = "text/plain;charset=UTF-8";
+  }
+  return out;
+}
+
+function bodyToBuffer(body: RequestInit["body"]): PinnedBody | undefined {
+  if (body == null) return undefined;
+  if (typeof body === "string") return body;
+  if (body instanceof Uint8Array) return body; // Buffer is a Uint8Array
+  if (body instanceof ArrayBuffer) return new Uint8Array(body);
+  if (body instanceof URLSearchParams) return body.toString();
+  throw new Error("safeFetch: unsupported request body type");
+}
+
+/** Transparently undo the encodings a real server is most likely to send. */
+function decodeBody(res: http.IncomingMessage): http.IncomingMessage | Readable {
+  const encoding = String(res.headers["content-encoding"] ?? "").toLowerCase();
+  if (encoding === "gzip" || encoding === "x-gzip") return res.pipe(zlib.createGunzip());
+  if (encoding === "deflate") return res.pipe(zlib.createInflate());
+  if (encoding === "br") return res.pipe(zlib.createBrotliDecompress());
+  return res;
+}
+
+const BODYLESS_STATUS = new Set([101, 204, 205, 304]);
+
+/**
+ * Issue the request against a pre-validated IP. Exported for unit tests.
+ *
+ * Callers MUST run `assertSafeOutboundUrl` first: this function performs no SSRF checks of its own.
+ * The socket's DNS lookup is pinned to `ip` (anti-rebinding) while TLS SNI, certificate
+ * verification and the Host header all stay on the real hostname — so pinning never weakens TLS.
+ * Redirects are never followed (callers handle Location themselves), matching fetch's
+ * `redirect: "manual"`.
+ */
+export function pinnedRequest(
+  url: URL,
+  ip: string,
+  family: 4 | 6,
+  init?: RequestInit & { signal?: AbortSignal | null },
+): Promise<Response> {
+  const timeoutMs = Number(process.env.MIAI_CONNECTOR_TIMEOUT_MS) || 10000;
+  // Bound the connector call so a hung endpoint (customer webhook / MCP / vendor API) cannot pin the
+  // request slot forever. Env-overridable.
+  const signal = withTimeoutSignal(init?.signal, timeoutMs);
+  const isHttps = url.protocol === "https:";
+  const hostname = url.hostname.replace(/^\[|\]$/g, "");
+  const body = bodyToBuffer(init?.body);
+  const headers = toNodeHeaders(init, typeof body === "string");
+
+  return new Promise<Response>((resolve, reject) => {
+    const req = (isHttps ? https : http).request(
+      url,
+      {
+        method: init?.method ?? "GET",
+        headers,
+        // Pin the connection: every hostname lookup resolves to the address we already vetted.
+        // Node may call lookup with `all: true` (happy-eyeballs); answer both shapes.
+        lookup: (_hostname, options, cb) => {
+          const opts = options as { all?: boolean } | undefined;
+          if (opts?.all) {
+            (cb as unknown as (err: null, a: { address: string; family: number }[]) => void)(null, [
+              { address: ip, family },
+            ]);
+            return;
+          }
+          (cb as unknown as (err: null, address: string, family: number) => void)(null, ip, family);
+        },
+        servername: isHttps && !net.isIP(hostname) ? hostname : undefined,
+        signal,
+      },
+      (res) => {
+        const status = res.statusCode ?? 502;
+        if (status < 200) {
+          res.resume();
+          reject(new Error(`Unexpected interim response (HTTP ${status})`));
+          return;
+        }
+        const encoded = decodeBody(res);
+        const outHeaders = new Headers();
+        for (const [key, value] of Object.entries(res.headers)) {
+          if (value === undefined) continue;
+          if (key === "content-encoding" || key === "content-length") continue; // body is re-streamed
+          if (Array.isArray(value)) for (const v of value) outHeaders.append(key, v);
+          else outHeaders.set(key, String(value));
+        }
+        const bodyless = BODYLESS_STATUS.has(status) || (init?.method ?? "GET").toUpperCase() === "HEAD";
+        if (bodyless) encoded.resume?.();
+        resolve(
+          new Response(
+            bodyless ? null : (Readable.toWeb(encoded) as unknown as ReadableStream<Uint8Array>),
+            { status, statusText: res.statusMessage, headers: outHeaders },
+          ),
+        );
+      },
+    );
+    req.on("error", reject);
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
 /**
  * Fetch after SSRF checks, pinning DNS to a validated address (mitigates rebinding).
- * Uses undici's connect.lookup override when available; otherwise fetch with redirect:manual.
+ * Uses node's own http/https client so the pinned path works in the standalone production image
+ * (the previous undici dynamic import was unavailable there, failing every outbound connector call).
  */
 export async function safeFetch(raw: string, init?: RequestInit): Promise<Response> {
   const result = await assertSafeOutboundUrl(raw);
   if (!result.ok) throw new Error(`SSRF blocked: ${result.reason}`);
   const { url, addresses } = result;
   const ip = addresses[0];
-  const family = net.isIPv6(ip) ? 6 : 4;
-
-  const headers = new Headers(init?.headers);
-  const merged: RequestInit = {
-    ...init,
-    headers,
-    redirect: init?.redirect ?? "manual",
-  };
-
-  // Node ships undici; pin connect to the pre-validated IP (anti DNS-rebinding).
-  // Fail closed if undici is unavailable — never silently drop the pin via bare fetch.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let undici: any;
-  try {
-    undici = await Function('return import("undici")')();
-  } catch (err) {
-    throw new Error(
-      `SSRF blocked: undici unavailable for DNS-pinned fetch (${err instanceof Error ? err.message : "import failed"})`,
-    );
-  }
-  const agent = new undici.Agent({
-    connect: {
-      lookup: (
-        _hostname: string,
-        _opts: object,
-        cb: (err: Error | null, address: string, family: number) => void,
-      ) => {
-        cb(null, ip, family);
-      },
-    },
-  });
-  // Bound the connector call so a hung endpoint (customer webhook / MCP / vendor API) cannot pin the
-  // request slot forever. Env-overridable.
-  const timeoutMs = Number(process.env.MIAI_CONNECTOR_TIMEOUT_MS) || 10000;
-  return (await undici.fetch(url.toString(), {
-    ...merged,
-    dispatcher: agent,
-    signal: withTimeoutSignal(merged.signal, timeoutMs),
-  })) as Response;
+  const family: 4 | 6 = net.isIPv6(ip) ? 6 : 4;
+  return pinnedRequest(url, ip, family, init);
 }
