@@ -619,11 +619,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             }`}
           >
             <span>🔌 Certified Connectors</span>
-            <span className={`rounded px-1.5 py-0.2 text-[9px] font-extrabold uppercase ${
-              marketplaceView === "connectors" ? "bg-slate-950 text-cyan-300" : "bg-cyan-500/20 text-cyan-300"
-            }`}>
-              14
-            </span>
           </button>
 
           <button
@@ -641,9 +636,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             }`}
           >
             <span>🌐 Global Regional Catalog</span>
-            <span className="rounded bg-white/10 px-1.5 py-0.2 text-[9px] font-extrabold text-slate-300">
-              500
-            </span>
           </button>
 
           <Link
@@ -651,9 +643,6 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
             className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all shrink-0 border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.15)] ml-auto"
           >
             <span>🤖 My Agents</span>
-            <span className="rounded bg-cyan-400/20 px-1.5 py-0.2 text-[9px] font-extrabold text-cyan-200 uppercase tracking-wider">
-              WORKSPACE
-            </span>
           </Link>
         </div>
       </div>
@@ -754,20 +743,23 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
           </div>
 
           <div className="catalog-filter-scroll" role="group" aria-label={t("catalog.audience")}>
-            {AUDIENCES.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                onClick={() => {
-                  setSmartFilter(false);
-                  setAudience(a.id);
-                }}
-                aria-pressed={audience === a.id}
-                className={`facet ${audience === a.id ? "facet-active" : ""}`}
-              >
-                {t(a.labelKey)}
-              </button>
-            ))}
+            {/* One segmented control for the audience facet — three loose pills read as noise. */}
+            <div className="seg shrink-0" role="group" aria-label={t("catalog.audience")}>
+              {AUDIENCES.map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  onClick={() => {
+                    setSmartFilter(false);
+                    setAudience(a.id);
+                  }}
+                  aria-pressed={audience === a.id}
+                  className={`seg-btn ${audience === a.id ? "seg-btn-active" : ""}`}
+                >
+                  {t(a.labelKey)}
+                </button>
+              ))}
+            </div>
             <ToggleFacet
               label={t("catalog.workflows")}
               active={workflowsOnly}
@@ -953,9 +945,10 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
                       />
                     </div>
 
-                    <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+                    <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+                      {/* Category: a quiet dot + label — the bordered pill was pure chrome. */}
                       <span
-                        className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[11px] font-medium tracking-wide text-slate-300 max-w-[75px] sm:max-w-none truncate"
+                        className="inline-flex min-w-0 items-center gap-1.5 text-[9px] sm:text-[10.5px] font-medium tracking-wide text-slate-400/90"
                         title={item.marketplaceCategory}
                       >
                         <span
@@ -963,20 +956,20 @@ type MarketplaceView = "all" | "voice-studio" | "boardroom" | "suites" | "connec
                           style={{ background: categoryAccent(item.marketplaceCategory) }}
                           aria-hidden
                         />
-                        <span className="truncate">{item.marketplaceCategory}</span>
+                        <span className="truncate max-w-[75px] sm:max-w-none">{item.marketplaceCategory}</span>
                       </span>
                       <button
                         type="button"
                         onClick={() => toggleSaved(item.id)}
                         aria-pressed={saved.has(item.id)}
                         aria-label={saved.has(item.id) ? "Saved" : "Save agent"}
-                        className={`inline-flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-md sm:rounded-lg border transition-all duration-200 ${
+                        className={`inline-flex h-6 w-6 shrink-0 items-center justify-center transition-colors duration-200 ${
                           saved.has(item.id)
-                            ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent-bright)]"
-                            : "border-white/[0.08] bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
+                            ? "text-[var(--accent-bright)]"
+                            : "text-slate-500 hover:text-white"
                         }`}
                       >
-                        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill={saved.has(item.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill={saved.has(item.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
                           <path d="M6 4h12v16l-6-4-6 4z" strokeLinejoin="round" />
                         </svg>
                       </button>
