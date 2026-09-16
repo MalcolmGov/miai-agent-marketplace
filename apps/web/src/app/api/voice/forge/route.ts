@@ -66,8 +66,17 @@ export async function POST(req: Request) {
     return apiErrorFromRequest(req, 400, "Tell me a bit more — describe the workflow you want to automate.");
   }
 
-  const pkg = await getMarketplaceAssistantPackage();
-  if (!pkg) return apiErrorFromRequest(req, 503, "Voice architect unavailable");
+  const basePkg = await getMarketplaceAssistantPackage();
+  if (!basePkg) return apiErrorFromRequest(req, 503, "Voice architect unavailable");
+  // Dedicated forge package — NOT the marketplace assistant's package: its knowledge/persona
+  // hijacked the task (it answered a platform question instead of forging). This prompt is the
+  // package's only instruction; the live catalogue rides in via systemAppend.
+  const pkg = {
+    ...basePkg,
+    system_prompt:
+      "You turn ONE spoken business request into a decision: recommend an existing marketplace agent family, or design a custom agent. Follow the STRUCTURED OUTPUT instructions exactly and reply with a single JSON object only.",
+    knowledge: " ",
+  };
 
   const families = await listFamilies();
   const byId = new Map(families.map((f) => [f.id, f]));
