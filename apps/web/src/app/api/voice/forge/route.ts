@@ -88,6 +88,7 @@ export async function POST(req: Request) {
     "or",
     '{"mode":"custom","name":"<2-4 word title>","role":"<one line>","category":"<sales|operations|finance|support|commerce|custom>","systemPrompt":"<3-5 sentence agent persona for THIS business>","tools":["<4-6 snake_case tool ids>"],"reply":"<2-3 warm sentences, no emoji>"}',
     "Rules: prefer recommend whenever a family reasonably fits. NEVER invent a family id — use only ids from the catalogue. Never promise prices. The reply is spoken aloud, so keep it natural.",
+    "CRITICAL: Your ENTIRE response must be only that single JSON object — no prose before or after, no markdown fences. If you catch yourself writing a sentence, stop and output the JSON instead.",
   ].join("\n\n");
 
   let decision: Decision | null = null;
@@ -107,9 +108,25 @@ export async function POST(req: Request) {
       },
       { wallet: createWalletAdapter() },
     );
-    const parsed = extractJson(result.assistantMessage || "") as Decision | null;
-    if (parsed && (parsed.mode === "recommend" || parsed.mode === "custom")) decision = parsed;
-  } catch {
+    const text = result.assistantMessage || "";
+    const parsed = extractJson(text) as Decision | null;
+    if (parsed && (parsed.mode === "recommend" || parsed.mode === "custom")) {
+      decision = parsed;
+    } else {
+      // Resilience: the persona prompt sometimes wins and the model replies in prose. If the
+      // prose clearly names one catalogue family, treat it as a recommendation of that family.
+      const lower = text.toLowerCase();
+      const named = families.find(
+        (f) => f.name.length > 5 && lower.includes(f.name.toLowerCase()),
+      );
+      if (named) {
+        decision = { mode: "recommend", familyId: named.id, reply: text.trim().slice(0, 400) };
+      } else {
+        console.error("voice_forge_non_json", text.slice(0, 300));
+      }
+    }
+  } catch (e) {
+    console.error("voice_forge_failed", e);
     decision = null;
   }
 
