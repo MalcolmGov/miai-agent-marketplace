@@ -296,3 +296,13 @@ export async function getComposedKnowledge(
   const sources = await listKnowledgeSources(ownerId, agentId);
   return composeKnowledge(base, sources);
 }
+
+/**
+ * True when this owner+agent has at least one ingested source with usable content.
+ * The live path uses this to tell "the tenant cleared the profile field and has nothing else" (show
+ * the not-configured notice) apart from "profile empty, but uploaded sources exist" (sources only).
+ */
+export async function hasReadyKnowledgeSources(ownerId: string, agentId: string): Promise<boolean> {
+  const sources = await listKnowledgeSources(ownerId, agentId);
+  return sources.some((s) => s.status === "ready" && s.content.trim().length > 0);
+}

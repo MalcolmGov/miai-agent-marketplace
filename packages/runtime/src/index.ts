@@ -2584,9 +2584,19 @@ export async function runTurn(
   const onToolStart = deps?.onToolStart;
   const skipDebit = Boolean(deps?.skipDebit);
 
-  // Fill {{business_name}} etc. so customers never see raw template tokens.
-  const templateVars = buildTemplateVars(req.pkg);
-  const pkg = materializePackage(req.pkg);
+  // Fill {{business_name}} etc. so customers never see raw template tokens. Live callers pass the
+  // tenant's EFFECTIVE knowledge (their edited field, or the "not configured" notice) — materialise
+  // the vars from that, not from the package's example knowledge, or an edited/cleared profile
+  // still names the catalogue example business ("Brightline Studio") in the prompt.
+  const varSource = req.knowledgeOverride
+    ? { ...req.pkg, knowledge: req.knowledgeOverride }
+    : req.pkg;
+  const templateVars = buildTemplateVars(varSource, undefined, {
+    // No example literal in the tenant's own knowledge: say "this business" rather than echo a
+    // role name back as their business name.
+    neutralName: Boolean(req.knowledgeOverride) && !/Example\s*\(replace\)/i.test(req.knowledgeOverride ?? ""),
+  });
+  const pkg = materializePackage(req.pkg, templateVars);
   req = {
     ...req,
     pkg,

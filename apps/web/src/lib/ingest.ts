@@ -170,7 +170,7 @@ export async function fetchWithSsrfGuard(
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      // safeFetch validates + pins DNS; fail-closed if undici pin unavailable.
+      // safeFetch validates + pins DNS via node's http client (no external dependency).
       const res = await safeFetch(current, {
         signal: controller.signal,
         headers: {
