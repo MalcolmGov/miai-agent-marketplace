@@ -10,6 +10,9 @@
  *    data-suggestions comma-separated quick-reply chips
  *    data-footer      brand name shown before "· Powered by MyInstantAI"
  *    data-theme       "dark" | "light"          (default "dark")
+ *    data-layout      "floating" | "inline"     (default "floating")
+ *                     inline = full-viewport immersive chat (no launcher,
+ *                     panel always open) for hosted/preview surfaces.
  */
 export const AGENT_JS_SCRIPT = String.raw`
 (function () {
@@ -30,6 +33,7 @@ export const AGENT_JS_SCRIPT = String.raw`
   var greeting = attr("data-greeting", "Hi — I'm an AI assistant (not a human). I can help with questions about our products and services, or connect you to a person.");
   var footer   = attr("data-footer", "");
   var theme    = (attr("data-theme", "dark") === "light") ? "light" : "dark";
+  var inline   = attr("data-layout", "floating") === "inline";
   var sugAttr  = attr("data-suggestions", "What do you offer?,How does it work?,What does it cost?,Talk to a human");
   var suggestions = sugAttr.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 4);
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -88,7 +92,8 @@ export const AGENT_JS_SCRIPT = String.raw`
     '.miai-bav{width:26px;height:26px;border-radius:8px;flex:none;margin-top:auto;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,var(--mi-a),var(--mi-a2));color:var(--mi-ink)}',
     '.miai-bav svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
     '.miai-m{padding:11px 14px;font-size:13.5px;line-height:1.55;white-space:pre-wrap;word-wrap:break-word;max-width:262px}',
-    '.miai-u .miai-m{color:var(--mi-ink);background:linear-gradient(135deg,var(--mi-a),var(--mi-a2));border-radius:16px 16px 5px 16px;font-weight:500}',
+    // user rows carry class 'miai-row u' — selector must match that, not '.miai-u'.
+    '.miai-row.u .miai-m{color:var(--mi-ink);background:linear-gradient(135deg,var(--mi-a),var(--mi-a2));border-radius:16px 16px 5px 16px;font-weight:500}',
     '.miai-a .miai-m{color:var(--mi-text);background:var(--mi-card);border:1px solid var(--mi-bord);border-radius:16px 16px 16px 5px}',
 
     /* ---- typing ---- */
@@ -119,7 +124,17 @@ export const AGENT_JS_SCRIPT = String.raw`
     '#miai-foot{text-align:center;font-size:10.5px;color:var(--mi-sub);padding:9px 12px;background:var(--mi-panel);border-top:1px solid var(--mi-bord);letter-spacing:.01em}',
     '#miai-foot b{color:var(--mi-text);opacity:.75;font-weight:600}',
     '#miai-foot span{color:var(--mi-a)}'
-  ].join("\n");
+  ].concat(inline ? [
+    /* ---- inline layout (full-viewport immersive chat; host frame provides chrome) ---- */
+    '#miai-fab{display:none!important}',
+    '#miai-panel{position:fixed;inset:0;right:0;bottom:0;width:auto;height:auto;max-width:none;max-height:none;border:0;border-radius:0;box-shadow:none;opacity:1;transform:none;pointer-events:auto}',
+    '#miai-close{display:none}',
+    '#miai-sugs{flex-direction:row;flex-wrap:wrap;gap:8px;padding:2px 14px 12px 48px}',
+    '.miai-chip{align-self:auto}',
+    '.miai-m{max-width:min(78%,560px)}',
+    '#miai-input{padding:13px 16px}',
+    '#miai-foot{font-size:11px;padding:10px 12px}'
+  ] : []).join("\n");
 
   var chatIcon = '<svg class="mi-ic-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
   var xIcon = '<svg class="mi-ic-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
@@ -209,7 +224,9 @@ export const AGENT_JS_SCRIPT = String.raw`
   }
   function botRow() {
     var row = document.createElement("div");
-    row.className = "miai-row";
+    // 'miai-a' carries the assistant bubble styling (.miai-a .miai-m) — without it
+    // bot messages rendered as bare text instead of a card bubble.
+    row.className = "miai-row miai-a";
     row.innerHTML = '<div class="miai-bav">' + botIcon + '</div><div class="miai-m"></div>';
     msgs.appendChild(row);
     return row.querySelector(".miai-m");
@@ -284,6 +301,9 @@ export const AGENT_JS_SCRIPT = String.raw`
   }
 
   form.addEventListener("submit", function (e) { e.preventDefault(); var t = input.value; input.value = ""; submit(t); });
+
+  // Inline layout: the panel is the whole surface — open it immediately (no launcher).
+  if (inline && !opened) { toggle(true); }
 })();
 `;
 
