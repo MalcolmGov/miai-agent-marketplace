@@ -12,6 +12,7 @@ import {
 import { isAuthContext, requireAuth } from "@/lib/request-auth";
 import { requireRole } from "@/lib/security";
 import { redactAgentPackage } from "@/lib/agent-ip";
+import { deleteKnowledgeForAgent } from "@/lib/knowledge";
 import { apiErrorFromRequest, apiOk } from "@/lib/api-error";
 
 export const dynamic = "force-dynamic";
@@ -47,7 +48,11 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   return apiOk({ agentId: id, embedRevoked: body.embedRevoked });
 }
 
-/** DELETE — permanently remove a rented agent from the workspace and revoke its embed key. */
+/**
+ * DELETE — permanently remove a rented agent from the workspace: its record, its embed key and the
+ * knowledge sources the tenant uploaded for it. Chat history and audit events are intentionally
+ * kept (an audit trail is not something a workspace owner should be able to erase from here).
+ */
 export async function DELETE(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const auth = await requireAuth(req);
   if (!isAuthContext(auth)) return auth;
@@ -58,13 +63,17 @@ export async function DELETE(req: Request, ctx: { params: Promise<{ id: string }
   const existed = await deleteWorkspaceAgent(auth.workspaceId, id);
   if (!existed) return apiErrorFromRequest(req, 404, "Agent not rented in this workspace");
 
+  // Delete the agent's ingested knowledge too, otherwise the uploads linger as orphans and would
+  // silently re-attach if the same agent is rented again.
+  const knowledgeSources = await deleteKnowledgeForAgent(auth.workspaceId, id).catch(() => 0);
+
   await appendAudit({
     workspaceId: auth.workspaceId,
     agentId: id,
     type: "agent_deleted",
-    detail: { userId: auth.userId },
+    detail: { userId: auth.userId, knowledgeSources },
   });
-  return apiOk({ agentId: id, deleted: true });
+  return apiOk({ agentId: id, deleted: true, knowledgeSources });
 }
 
 export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }) {
