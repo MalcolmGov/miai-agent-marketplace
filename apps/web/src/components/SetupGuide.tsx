@@ -352,29 +352,17 @@ export function SetupGuide({
 
             <div className="mt-3 flex flex-wrap gap-2">
               {activeStep === "install" && visitedInstall && rented ? (
-                <div className="w-full space-y-2.5 rounded-xl border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-4 py-3.5">
-                  <p className="flex items-center gap-2 text-sm font-semibold text-[var(--accent-bright)]">
-                    <span aria-hidden>✅</span> {"You're live — nothing else is required."}
+                // One-liner only — the Go-live panel below carries the full guidance (preview,
+                // snippet, domain lock). The earlier 3-bullet block duplicated it and stacked
+                // two “You're live” moments on one screen.
+                <div className="flex w-full flex-wrap items-center gap-3 rounded-xl border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] px-4 py-2.5">
+                  <p className="text-xs font-semibold text-[var(--accent-bright)]">
+                    <span aria-hidden>✅</span> {"You're live — nothing else is required."}{" "}
+                    <span className="font-normal text-[var(--muted)]">
+                      Full guidance in the Go-live panel below.
+                    </span>
                   </p>
-                  <p className="text-xs leading-relaxed text-[var(--muted)]">
-                    This agent is activated and ready to chat. Your prepaid tokens meter usage
-                    automatically:
-                  </p>
-                  <ul className="space-y-1.5 text-xs leading-relaxed text-[var(--text)]">
-                    <li>
-                      <span className="font-semibold">Preview it now:</span> hit “Preview Floating
-                      Widget” below, or open the App link — no setup needed.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Embedding on your own website? (optional):</span>{" "}
-                      copy the snippet below and paste it before the closing {"</body>"} tag.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Not embedding anywhere?</span>{" "}
-                      {"You're done — find this agent under “My agents” anytime."}
-                    </li>
-                  </ul>
-                  <a href="/my-agents" className="btn btn-primary inline-flex text-xs">
+                  <a href="/my-agents" className="btn btn-primary ml-auto inline-flex text-xs">
                     Done — view My agents →
                   </a>
                 </div>

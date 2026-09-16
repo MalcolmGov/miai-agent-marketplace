@@ -23,9 +23,42 @@ function cap(list: string[], n: number): string[] {
  * as regional packs (compliance regimes, languages, channel mix per market) and links to
  * each regional studio. Renders nothing for legacy families without market packs.
  */
-export function RegionStrip({ familyName, regions }: { familyName?: string; regions: RegionFact[] }) {
+export function RegionStrip({
+  familyName,
+  regions,
+  compact = false,
+}: {
+  familyName?: string;
+  regions: RegionFact[];
+  /** True on an active (rented) setup — the full discovery panel collapses to a slim one-liner. */
+  compact?: boolean;
+}) {
   const [compare, setCompare] = useState(false);
   if (!regions || regions.length < 2) return null;
+
+  if (compact) {
+    return (
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] px-3.5 py-2 text-xs text-[var(--muted)]">
+        <span className="font-medium text-[var(--text)]">🌍 Also in:</span>
+        {regions.map((r) => (
+          <Link
+            key={r.market}
+            href={`/agents/${r.packId}`}
+            className={`rounded-full border px-2 py-0.5 font-medium transition-colors ${
+              r.current
+                ? "border-[var(--accent)] text-[var(--accent-bright)]"
+                : "border-[var(--line)] hover:border-[var(--accent)] hover:text-white"
+            }`}
+            title={r.compliance.length ? `Compliance: ${r.compliance.join(", ").toUpperCase()}` : undefined}
+          >
+            {r.flag} {r.label}
+            {r.current ? " ✓" : ""}
+          </Link>
+        ))}
+        <span className="text-[10px]">regional packs of “{familyName ?? "this agent"}”</span>
+      </div>
+    );
+  }
 
   return (
     <div className="panel p-4 sm:p-5 space-y-3">

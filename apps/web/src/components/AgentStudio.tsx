@@ -589,7 +589,7 @@ export function AgentStudio({
         </div>
       </div>
 
-      <RegionStrip familyName={data?.package.manifest.name} regions={regions ?? []} />
+      <RegionStrip familyName={data?.package.manifest.name} regions={regions ?? []} compact={rented} />
 
       {welcomeBanner ? (
         <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-[var(--bg-panel)] p-4 text-xs shadow-lg">
