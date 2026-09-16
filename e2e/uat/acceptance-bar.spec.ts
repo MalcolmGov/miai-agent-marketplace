@@ -17,13 +17,13 @@ test.describe("UAT · acceptance bar @uat", () => {
     }
   });
 
-  test("licence entitlement: 505 indexed SKUs × 5 markets", async ({ request }) => {
+  test("licence entitlement: 510 indexed SKUs × 5 markets", async ({ request }) => {
     const { body } = await getJson<{
       totalAgents?: number;
       agentCount?: number;
       packs?: Array<{ id: string }>;
     }>(request, "/api/catalog");
-    expect(body.totalAgents ?? body.agentCount).toBe(505);
+    expect(body.totalAgents ?? body.agentCount).toBe(510);
     expect((body.packs ?? []).map((p) => p.id).sort()).toEqual([...INDEXED_MARKETS].sort());
   });
 

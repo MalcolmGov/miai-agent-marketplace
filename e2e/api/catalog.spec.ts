@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { INDEXED_MARKETS, getJson } from "../helpers";
 
 test.describe("API catalog @smoke", () => {
-  test("GET /api/catalog exposes 505 agents across 5 markets", async ({ request }) => {
+  test("GET /api/catalog exposes 510 agents across 5 markets", async ({ request }) => {
     const { status, body } = await getJson<{
       totalAgents?: number;
       packs?: Array<{ id: string }>;
@@ -10,7 +10,7 @@ test.describe("API catalog @smoke", () => {
       familyCount?: number;
     }>(request, "/api/catalog");
     expect(status).toBe(200);
-    expect(body.totalAgents ?? body.agentCount).toBe(505);
+    expect(body.totalAgents ?? body.agentCount).toBe(510);
     const packIds = (body.packs ?? []).map((p) => p.id).sort();
     expect(packIds).toEqual([...INDEXED_MARKETS].sort());
   });
