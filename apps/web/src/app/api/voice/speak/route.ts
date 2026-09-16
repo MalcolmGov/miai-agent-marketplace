@@ -15,8 +15,10 @@ export async function POST(req: Request) {
     }
 
     const apiKey = process.env.ELEVENLABS_API_KEY || "";
-    // Default to the flagship Zara neural voice; overridable per-request or via env for white-label deployments
-    const voiceId = body.voiceId || process.env.ELEVENLABS_VOICE_ID || "QeKcckTBICc3UuWL7ETc";
+    // Flagship voice: Sarah — Alluring, Intimate, Charming (owner-selected; high-fidelity
+    // expressive en-US). Overridable per-request or via ELEVENLABS_VOICE_ID for white-label
+    // deployments.
+    const voiceId = body.voiceId || process.env.ELEVENLABS_VOICE_ID || "dOH0XAoGHoc4a487cs6i";
     const modelId = body.modelId || process.env.ELEVENLABS_MODEL_ID || "eleven_turbo_v2_5";
 
     if (!apiKey) {
@@ -44,7 +46,9 @@ export async function POST(req: Request) {
           text,
           model_id: modelId,
           voice_settings: {
-            stability: 0.38,
+            // 0.5 = steadier enterprise delivery (matches the approved voice samples; 0.38
+            // was expressive to the point of variability).
+            stability: 0.5,
             similarity_boost: 0.88,
             style: 0.24,
             use_speaker_boost: true,
@@ -53,7 +57,7 @@ export async function POST(req: Request) {
       }
     );
 
-    // Universal fallback: if the custom voice ID is not found or fails on this account, retry with standard voice (Rachel)
+    // Universal fallback: if the custom voice ID is not found or fails on this account, retry with standard voice (Janet/Rachel)
     const universalFallbackVoice = "21m00Tcm4TlvDq8ikWAM";
     if ((!elResp.ok || !elResp.body) && voiceId !== universalFallbackVoice) {
       const errDetail = await elResp.text().catch(() => "");
@@ -71,7 +75,7 @@ export async function POST(req: Request) {
             text,
             model_id: modelId,
             voice_settings: {
-              stability: 0.38,
+              stability: 0.5,
               similarity_boost: 0.88,
               style: 0.24,
               use_speaker_boost: true,
