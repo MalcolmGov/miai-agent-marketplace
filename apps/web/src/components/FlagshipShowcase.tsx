@@ -114,12 +114,8 @@ export function FlagshipShowcase() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] pb-3">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="flex h-2.5 w-2.5 rounded-full bg-[#00D2FF] shadow-[0_0_10px_#00D2FF] animate-pulse" />
             <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
               <span>Flagship Enterprise Agents</span>
-              <span className="rounded-full bg-gradient-to-r from-[#00D2FF]/20 to-[#7C3AED]/20 border border-[#00D2FF]/40 px-2.5 py-0.5 text-[10px] font-bold text-[#00D2FF] uppercase tracking-wider">
-                Zara Autonomous Suite
-              </span>
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-slate-400 max-w-3xl">
@@ -140,8 +136,8 @@ export function FlagshipShowcase() {
       {/* Flagship Agent Cards Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between px-1">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-            Autonomous C-Suite & Flagship Specialists ({ZARA_FLAGSHIP_AGENTS.length})
+          <h3 className="text-sm font-bold text-white tracking-tight">
+            Flagship specialists · {ZARA_FLAGSHIP_AGENTS.length}
           </h3>
           <span className="text-xs text-slate-400">Click any card to explore or launch</span>
         </div>
@@ -172,16 +168,9 @@ export function FlagshipShowcase() {
                       <FlagshipIcon icon={agent.icon} />
                     </div>
 
-                    <div className="flex flex-col items-end gap-1">
-                      {isVoiceCard && (
-                        <span className="rounded-full bg-cyan-400/20 border border-cyan-400/50 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-cyan-300 animate-pulse">
-                          ⚡ KILLER FEATURE
-                        </span>
-                      )}
-                      <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
-                        {agent.roi}
-                      </span>
-                    </div>
+                    <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+                      {agent.roi}
+                    </span>
                   </div>
 
                   {/* Name & Description */}
@@ -202,12 +191,7 @@ export function FlagshipShowcase() {
                 </div>
 
                 {/* Footer Row */}
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                    <span>{agent.tools}</span>
-                    <span>&bull;</span>
-                    <span>{agent.evals}</span>
-                  </div>
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-end text-xs">
                   <span
                     className={`font-semibold group-hover:translate-x-0.5 transition-transform ${
                       isVoiceCard ? "text-cyan-300 font-bold" : "text-[#00D2FF]"
