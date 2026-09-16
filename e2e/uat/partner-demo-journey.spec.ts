@@ -61,7 +61,10 @@ test.describe("UAT · partner demo journey @uat", () => {
     // Public — no session needed (the /agents hub deliberately stays open).
     await page.goto("/agents?pilot=1#catalogue");
     await expect(page.locator("#catalogue")).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByRole("button", { name: /Go-live 100/i })).toBeVisible();
+    // Facet label is "Go-live" on the hub (the /demo shortlist keeps the "Go-live 100" copy).
+    const pilotChip = page.getByRole("button", { name: /Go-live/i });
+    await expect(pilotChip).toBeVisible();
+    await expect(pilotChip).toHaveAttribute("aria-pressed", "true");
     // At least one featured vertical present
     await expect(
       page.getByText(/Customer Support|Executive|Hotel|Dental|Sales/i).first(),
