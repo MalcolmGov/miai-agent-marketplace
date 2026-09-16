@@ -48,14 +48,15 @@ const MODES = [
 ];
 
 const VOICE_PROFILES = [
-  { id: "QeKcckTBICc3UuWL7ETc", name: "Zara Neural (Flagship)", badge: "Flagship Signature" },
-  { id: "21m00Tcm4TlvDq8ikWAM", name: "Rachel (Calm & Polished)", badge: "Executive" },
-  { id: "AZnzlk1XvdvUeBnXmlld", name: "Domi (Confident & Crisp)", badge: "Dynamic" },
+  { id: "dOH0XAoGHoc4a487cs6i", name: "Sarah (Alluring & Charming)", badge: "Flagship Signature" },
+  { id: "QeKcckTBICc3UuWL7ETc", name: "Aria (Soft & Neutral)", badge: "Professional" },
+  { id: "JBFqnCBsd6RMkjVDRZzb", name: "George (Warm Storyteller)", badge: "Premium" },
+  { id: "21m00Tcm4TlvDq8ikWAM", name: "Janet (Calm & Polished)", badge: "Executive" },
 ];
 
 export function VoiceStudioExperience() {
   const [activeMode, setActiveMode] = useState("forge");
-  const [selectedVoiceId, setSelectedVoiceId] = useState("QeKcckTBICc3UuWL7ETc");
+  const [selectedVoiceId, setSelectedVoiceId] = useState("dOH0XAoGHoc4a487cs6i");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
