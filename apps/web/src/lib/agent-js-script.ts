@@ -137,7 +137,9 @@ export const AGENT_JS_SCRIPT = String.raw`
   var shadow = root.attachShadow({ mode: "open" });
   shadow.innerHTML =
     '<style>' + css + '</style>' +
-    '<button id="miai-fab" type="button" aria-label="Open chat" style="position:relative">' + chatIcon + xIcon + '<span id="miai-dot">1</span></button>' +
+    // NB: no inline position style — it would override the stylesheet and drop the
+    // launcher into normal document flow instead of pinning it bottom-right.
+    '<button id="miai-fab" type="button" aria-label="Open chat">' + chatIcon + xIcon + '<span id="miai-dot">1</span></button>' +
     '<div id="miai-panel" role="dialog" aria-label="Chat with ' + esc(title) + '">' +
     '  <div id="miai-head">' +
     '    <div id="miai-ava">' + botIcon + '</div>' +
