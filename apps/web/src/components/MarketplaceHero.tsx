@@ -130,6 +130,12 @@ export function MarketplaceHero({
         <p className="mt-3 text-sm text-[var(--muted)] sm:text-base">
           Browse 525+ enterprise AI agents across 102 industry families, flagship suites, and 5 global markets.
         </p>
+        <Link
+          href="/markets"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--bg-elev)] px-3.5 py-1.5 text-xs font-medium text-[var(--muted)] hover:border-[var(--accent)] hover:text-white transition-all"
+        >
+          🌍 See the five-market localization model →
+        </Link>
 
         {/* 4 Premier Interactive Spotlight Cards */}
         <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 text-left">

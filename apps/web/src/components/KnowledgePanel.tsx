@@ -22,6 +22,7 @@ export function KnowledgePanel({
   agentName,
   agentCategory,
   knowledge,
+  templateKnowledge,
   onKnowledgeChange,
   saving,
   onSaveDraft,
@@ -33,6 +34,8 @@ export function KnowledgePanel({
   agentName?: string;
   agentCategory?: string;
   knowledge: string;
+  /** The package's shipped example knowledge — enables the "template" banner when untouched. */
+  templateKnowledge?: string;
   onKnowledgeChange: (v: string) => void;
   saving: boolean;
   onSaveDraft: () => void;
@@ -53,6 +56,12 @@ export function KnowledgePanel({
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Distinguish the three real states of this field so tenants never go live on the example
+  // by accident: untouched template · deliberately cleared (empty) · their own knowledge.
+  const template = (templateKnowledge ?? "").trim();
+  const isTemplate = template.length > 0 && knowledge.trim() === template;
+  const isEmpty = knowledge.trim().length === 0;
 
   const refresh = useCallback(async () => {
     const res = await fetch(`/api/knowledge?agentId=${encodeURIComponent(agentId)}`);
@@ -224,6 +233,33 @@ export function KnowledgePanel({
           Markdown supported
         </span>
       </div>
+
+      {isTemplate ? (
+        <div className="flex flex-col gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-xs leading-relaxed text-amber-200">
+            <span className="font-bold">⚠ Example template — not your business.</span>{" "}
+            This field is pre-filled so you can try the agent instantly. Replace it with your own
+            business information (or upload sources below) before going live — visitors will
+            otherwise see example content.
+          </div>
+          <button
+            type="button"
+            onClick={() => onKnowledgeChange("")}
+            className="shrink-0 self-start rounded-lg border border-amber-400/50 bg-amber-500/15 px-3 py-1.5 text-[11px] font-semibold text-amber-100 hover:bg-amber-500/25 transition-colors sm:self-center"
+          >
+            Clear template
+          </button>
+        </div>
+      ) : null}
+
+      {isEmpty ? (
+        <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elev)] px-4 py-3 text-xs leading-relaxed text-[var(--muted)]">
+          <span className="font-bold text-[var(--text)]">No knowledge yet.</span> Your agent
+          can&apos;t answer business questions until you add knowledge — paste it above, upload a
+          file, or add a website source below. (Sandbox demos still work: they fall back to the
+          example template.)
+        </div>
+      ) : null}
 
       <div className="relative">
         <textarea
