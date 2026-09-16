@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listFamilies } from "@/lib/catalog";
+import { listCatalog } from "@/lib/catalog";
 import { marketLocalizationMatrix, showcaseSummaries } from "@/lib/localization";
 
 export const metadata: Metadata = {
@@ -35,13 +35,16 @@ function chips(list: string[], tone: "emerald" | "slate", n = 9) {
 }
 
 export default async function MarketsPage() {
-  const [families, matrix, showcase] = await Promise.all([
-    listFamilies(),
+  const [entries, matrix, showcase] = await Promise.all([
+    listCatalog(),
     marketLocalizationMatrix(),
     showcaseSummaries("sales-closer"),
   ]);
   const totalSkus = matrix.reduce((n, m) => n + m.skus, 0);
-  const familyCount = families.length;
+  // Indexed families only — keeps the headline arithmetic exact (families × 5 = agents).
+  const familyCount = new Set(
+    entries.map((e) => e.id.replace(/^(us|eu|africa|asia|oceania)-/, "")),
+  ).size;
 
   return (
     <div className="biz-market mx-auto max-w-6xl space-y-8 px-4 py-10">
